@@ -34,6 +34,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #define _NRF52832_PERIPHERALS_H
 
 
+/* Power Peripheral */
+#define POWER_PRESENT
+#define POWER_COUNT 1
+
+#define POWER_FEATURE_RAM_REGISTERS_PRESENT
+#define POWER_FEATURE_RAM_REGISTERS_COUNT       8
+
 /* Floating Point Unit */
 #define FPU_PRESENT
 #define FPU_COUNT 1
@@ -66,6 +73,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RADIO_PRESENT
 #define RADIO_COUNT 1
 
+#define RADIO_EASYDMA_MAXCNT_SIZE 8
+
 /* Accelerated Address Resolver */
 #define AAR_PRESENT
 #define AAR_COUNT 1
@@ -83,6 +92,8 @@ POSSIBILITY OF SUCH DAMAGE.
 /* NFC Tag */
 #define NFCT_PRESENT
 #define NFCT_COUNT 1
+
+#define NFCT_EASYDMA_MAXCNT_SIZE 9
 
 /* Peripheral to Peripheral Interconnect */
 #define PPI_PRESENT
@@ -156,9 +167,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM1_FEATURE_HARDWARE_CSN_PRESENT  0
 #define SPIM2_FEATURE_HARDWARE_CSN_PRESENT  0
 
+#define SPIM0_EASYDMA_MAXCNT_SIZE 8
+#define SPIM1_EASYDMA_MAXCNT_SIZE 8
+#define SPIM2_EASYDMA_MAXCNT_SIZE 8
+
 /* Serial Peripheral Interface Slave with DMA*/
 #define SPIS_PRESENT
 #define SPIS_COUNT 3
+
+#define SPIS0_EASYDMA_MAXCNT_SIZE 8
+#define SPIS1_EASYDMA_MAXCNT_SIZE 8
+#define SPIS2_EASYDMA_MAXCNT_SIZE 8
 
 /* Two Wire Interface Master */
 #define TWI_PRESENT
@@ -168,9 +187,15 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_PRESENT
 #define TWIM_COUNT 2
 
+#define TWIM0_EASYDMA_MAXCNT_SIZE 8
+#define TWIM1_EASYDMA_MAXCNT_SIZE 8
+
 /* Two Wire Interface Slave with DMA */
 #define TWIS_PRESENT
 #define TWIS_COUNT 2
+
+#define TWIS0_EASYDMA_MAXCNT_SIZE 8
+#define TWIS1_EASYDMA_MAXCNT_SIZE 8
 
 /* Universal Asynchronous Receiver-Transmitter */
 #define UART_PRESENT
@@ -180,6 +205,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_PRESENT
 #define UARTE_COUNT 1
 
+#define UARTE0_EASYDMA_MAXCNT_SIZE 8
+
 /* Quadrature Decoder */
 #define QDEC_PRESENT
 #define QDEC_COUNT 1
@@ -187,6 +214,8 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Successive Approximation Analog to Digital Converter */
 #define SAADC_PRESENT
 #define SAADC_COUNT 1
+
+#define SAADC_EASYDMA_MAXCNT_SIZE 15
 
 /* GPIO Tasks and Events */
 #define GPIOTE_PRESENT
@@ -217,13 +246,21 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PWM1_CH_NUM 4
 #define PWM2_CH_NUM 4
 
+#define PWM0_EASYDMA_MAXCNT_SIZE 15
+#define PWM1_EASYDMA_MAXCNT_SIZE 15
+#define PWM2_EASYDMA_MAXCNT_SIZE 15
+
 /* Pulse Density Modulator */
 #define PDM_PRESENT
 #define PDM_COUNT 1
 
+#define PDM_EASYDMA_MAXCNT_SIZE 15
+
 /* Inter-IC Sound Interface */
 #define I2S_PRESENT
 #define I2S_COUNT 1
+
+#define I2S_EASYDMA_MAXCNT_SIZE 14
 
 
 #endif      // _NRF52832_PERIPHERALS_H

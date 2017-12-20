@@ -159,7 +159,7 @@ typedef void (*nrfx_adc_event_handler_t)(nrfx_adc_evt_t const * p_event);
  * If a valid event handler is provided, the driver is initialized in non-blocking mode.
  * If event_handler is NULL, the driver works in blocking mode.
  *
- * @param[in] p_config Driver configuration.
+ * @param[in] p_config      Pointer to the structure with initial configuration.
  * @param[in] event_handler Event handler provided by the user.
  *
  * @retval    NRFX_SUCCESS If initialization was successful.

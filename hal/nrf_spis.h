@@ -291,7 +291,7 @@ __STATIC_INLINE void nrf_spis_pins_set(NRF_SPIS_Type * p_reg,
  */
 __STATIC_INLINE void nrf_spis_tx_buffer_set(NRF_SPIS_Type * p_reg,
                                             uint8_t const * p_buffer,
-                                            uint8_t         length);
+                                            size_t          length);
 
 /**
  * @brief Function for setting the receive buffer.
@@ -302,7 +302,7 @@ __STATIC_INLINE void nrf_spis_tx_buffer_set(NRF_SPIS_Type * p_reg,
  */
 __STATIC_INLINE void nrf_spis_rx_buffer_set(NRF_SPIS_Type * p_reg,
                                             uint8_t * p_buffer,
-                                            uint8_t   length);
+                                            size_t    length);
 
 /**
  * @brief Function for getting the number of bytes transmitted
@@ -312,7 +312,7 @@ __STATIC_INLINE void nrf_spis_rx_buffer_set(NRF_SPIS_Type * p_reg,
  *
  * @returns Number of bytes transmitted.
  */
-__STATIC_INLINE uint8_t nrf_spis_tx_amount_get(NRF_SPIS_Type const * p_reg);
+__STATIC_INLINE size_t nrf_spis_tx_amount_get(NRF_SPIS_Type const * p_reg);
 
 /**
  * @brief Function for getting the number of bytes received
@@ -322,7 +322,7 @@ __STATIC_INLINE uint8_t nrf_spis_tx_amount_get(NRF_SPIS_Type const * p_reg);
  *
  * @returns Number of bytes received.
  */
-__STATIC_INLINE uint8_t nrf_spis_rx_amount_get(NRF_SPIS_Type const * p_reg);
+__STATIC_INLINE size_t nrf_spis_rx_amount_get(NRF_SPIS_Type const * p_reg);
 
 /**
  * @brief Function for setting the SPI configuration.
@@ -449,36 +449,61 @@ __STATIC_INLINE void nrf_spis_pins_set(NRF_SPIS_Type * p_reg,
                                        uint32_t miso_pin,
                                        uint32_t csn_pin)
 {
+#if defined (NRF51)
     p_reg->PSELSCK  = sck_pin;
     p_reg->PSELMOSI = mosi_pin;
     p_reg->PSELMISO = miso_pin;
     p_reg->PSELCSN  = csn_pin;
+#else
+    p_reg->PSEL.SCK  = sck_pin;
+    p_reg->PSEL.MOSI = mosi_pin;
+    p_reg->PSEL.MISO = miso_pin;
+    p_reg->PSEL.CSN  = csn_pin;
+#endif
 }
 
 __STATIC_INLINE void nrf_spis_tx_buffer_set(NRF_SPIS_Type * p_reg,
                                             uint8_t const * p_buffer,
-                                            uint8_t         length)
+                                            size_t          length)
 {
+#if defined (NRF51)
     p_reg->TXDPTR = (uint32_t)p_buffer;
     p_reg->MAXTX  = length;
+#else
+    p_reg->TXD.PTR    = (uint32_t)p_buffer;
+    p_reg->TXD.MAXCNT = length;
+#endif
 }
 
 __STATIC_INLINE void nrf_spis_rx_buffer_set(NRF_SPIS_Type * p_reg,
                                             uint8_t * p_buffer,
-                                            uint8_t   length)
+                                            size_t    length)
 {
+#if defined (NRF51)
     p_reg->RXDPTR = (uint32_t)p_buffer;
     p_reg->MAXRX  = length;
+#else
+    p_reg->RXD.PTR    = (uint32_t)p_buffer;
+    p_reg->RXD.MAXCNT = length;
+#endif
 }
 
-__STATIC_INLINE uint8_t nrf_spis_tx_amount_get(NRF_SPIS_Type const * p_reg)
+__STATIC_INLINE size_t nrf_spis_tx_amount_get(NRF_SPIS_Type const * p_reg)
 {
-    return (uint8_t) p_reg->AMOUNTTX;
+#if defined (NRF51)
+    return p_reg->AMOUNTTX;
+#else
+    return p_reg->TXD.AMOUNT;
+#endif
 }
 
-__STATIC_INLINE uint8_t nrf_spis_rx_amount_get(NRF_SPIS_Type const * p_reg)
+__STATIC_INLINE size_t nrf_spis_rx_amount_get(NRF_SPIS_Type const * p_reg)
 {
-    return (uint8_t) p_reg->AMOUNTRX;
+#if defined (NRF51)
+    return p_reg->AMOUNTRX;
+#else
+    return p_reg->RXD.AMOUNT;
+#endif
 }
 
 __STATIC_INLINE void nrf_spis_configure(NRF_SPIS_Type * p_reg,

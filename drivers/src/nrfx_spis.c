@@ -44,10 +44,44 @@
 #define NRFX_LOG_MODULE SPIS
 #include <nrfx_log.h>
 
+#if defined(NRF51) && !defined(SPIS1_EASYDMA_MAXCNT_SIZE)
+/* MDK comes with SPIS0 definition of maximum transmission length but nRF51 Series is equipped
+ * with SPIS1 only. It is a simple workaround and will be removed in the next release of the MDK.
+ */
+#define SPIS1_EASYDMA_MAXCNT_SIZE SPIS0_EASYDMA_MAXCNT_SIZE
+#endif
+
 #define EVT_TO_STR(event)                                           \
     (event == NRF_SPIS_EVENT_ACQUIRED ? "NRF_SPIS_EVENT_ACQUIRED" : \
     (event == NRF_SPIS_EVENT_END      ? "NRF_SPIS_EVENT_END"      : \
                                         "UNKNOWN ERROR"))
+
+#define SPISX_LENGTH_VALIDATE(peripheral, drv_inst_idx, rx_len, tx_len) \
+    (((drv_inst_idx) == NRFX_CONCAT_3(NRFX_, peripheral, _INST_IDX)) && \
+     NRFX_EASYDMA_LENGTH_VALIDATE(peripheral, rx_len, tx_len))
+
+#if NRFX_CHECK(NRFX_SPIS0_ENABLED)
+#define SPIS0_LENGTH_VALIDATE(...)  SPISX_LENGTH_VALIDATE(SPIS0, __VA_ARGS__)
+#else
+#define SPIS0_LENGTH_VALIDATE(...)  0
+#endif
+
+#if NRFX_CHECK(NRFX_SPIS1_ENABLED)
+#define SPIS1_LENGTH_VALIDATE(...)  SPISX_LENGTH_VALIDATE(SPIS1, __VA_ARGS__)
+#else
+#define SPIS1_LENGTH_VALIDATE(...)  0
+#endif
+
+#if NRFX_CHECK(NRFX_SPIS2_ENABLED)
+#define SPIS2_LENGTH_VALIDATE(...)  SPISX_LENGTH_VALIDATE(SPIS2, __VA_ARGS__)
+#else
+#define SPIS2_LENGTH_VALIDATE(...)  0
+#endif
+
+#define SPIS_LENGTH_VALIDATE(drv_inst_idx, rx_len, tx_len)  \
+    (SPIS0_LENGTH_VALIDATE(drv_inst_idx, rx_len, tx_len) || \
+     SPIS1_LENGTH_VALIDATE(drv_inst_idx, rx_len, tx_len) || \
+     SPIS2_LENGTH_VALIDATE(drv_inst_idx, rx_len, tx_len))
 
 
 #if NRFX_CHECK(NRFX_SPIS_NRF52_ANOMALY_109_WORKAROUND_ENABLED)
@@ -308,8 +342,8 @@ static void spis_state_entry_action_execute(NRF_SPIS_Type * p_spis,
             event.tx_amount = nrf_spis_tx_amount_get(p_spis);
             NRFX_LOG_INFO("Transfer rx_len:%d.", event.rx_amount);
             NRFX_LOG_DEBUG("Rx data:");
-            NRFX_LOG_HEXDUMP_DEBUG((uint8_t *)p_cb->rx_buffer,
-                                  event.rx_amount * sizeof(p_cb->rx_buffer));
+            NRFX_LOG_HEXDUMP_DEBUG((uint8_t const *)p_cb->rx_buffer,
+                                   event.rx_amount * sizeof(p_cb->rx_buffer[0]));
             NRFX_ASSERT(p_cb->handler != NULL);
             p_cb->handler(event);
             break;
@@ -334,12 +368,11 @@ static void spis_state_change(NRF_SPIS_Type   * p_spis,
     spis_state_entry_action_execute(p_spis, p_cb);
 }
 
-
 nrfx_err_t nrfx_spis_buffers_set(nrfx_spis_t const * const p_instance,
                                  uint8_t           const * p_tx_buffer,
-                                 uint8_t                   tx_buffer_length,
+                                 size_t                    tx_buffer_length,
                                  uint8_t                 * p_rx_buffer,
-                                 uint8_t                   rx_buffer_length)
+                                 size_t                    rx_buffer_length)
 {
     spis_cb_t * p_cb = &m_cb[p_instance->drv_inst_idx];
     nrfx_err_t err_code;
@@ -347,6 +380,13 @@ nrfx_err_t nrfx_spis_buffers_set(nrfx_spis_t const * const p_instance,
     if (p_rx_buffer == NULL || p_tx_buffer == NULL)
     {
         return NRFX_ERROR_NULL;
+    }
+
+    if (!SPIS_LENGTH_VALIDATE(p_instance->drv_inst_idx,
+                              rx_buffer_length,
+                              tx_buffer_length))
+    {
+        return NRFX_ERROR_INVALID_LENGTH;
     }
 
     // EasyDMA requires that transfer buffers are placed in Data RAM region;

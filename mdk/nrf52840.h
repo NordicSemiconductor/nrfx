@@ -6,7 +6,7 @@
  *           nrf52840 from Nordic Semiconductor.
  *
  * @version  V1
- * @date     12. May 2017
+ * @date     3. October 2017
  *
  * @note     Generated with SVDConv V2.81d 
  *           from CMSIS SVD File 'nrf52840.svd' Version 1,
@@ -616,8 +616,8 @@ typedef struct {                                    /*!< UICR Structure         
                                                          or GPIO                                                               */
   __IO uint32_t  DEBUGCTRL;                         /*!< Processor debug control                                               */
   __I  uint32_t  RESERVED2[59];
-  __IO uint32_t  EXTSUPPLY;                         /*!< Enable external circuitry to be supplied from VDD pin. Applicable
-                                                         in high voltage mode only.                                            */
+  __IO uint32_t  DCDCDRIVE0;                        /*!< Set drive level for REG0 DCDC mode. Using high drive will slightly
+                                                         reduce DCDC efficiency.                                               */
   __IO uint32_t  REGOUT0;                           /*!< GPIO reference voltage / external output supply voltage in high
                                                          voltage mode                                                          */
 } NRF_UICR_Type;
@@ -694,26 +694,31 @@ typedef struct {                                    /*!< CLOCK Structure        
   __I  uint32_t  RESERVED1;
   __IO uint32_t  EVENTS_DONE;                       /*!< Calibration of LFCLK RC oscillator complete event                     */
   __IO uint32_t  EVENTS_CTTO;                       /*!< Calibration timer timeout                                             */
-  __I  uint32_t  RESERVED2[124];
+  __I  uint32_t  RESERVED2[5];
+  __IO uint32_t  EVENTS_CTSTARTED;                  /*!< Calibration timer has been started and is ready to process new
+                                                         tasks                                                                 */
+  __IO uint32_t  EVENTS_CTSTOPPED;                  /*!< Calibration timer has been stopped and is ready to process new
+                                                         tasks                                                                 */
+  __I  uint32_t  RESERVED3[117];
   __IO uint32_t  INTENSET;                          /*!< Enable interrupt                                                      */
   __IO uint32_t  INTENCLR;                          /*!< Disable interrupt                                                     */
-  __I  uint32_t  RESERVED3[63];
+  __I  uint32_t  RESERVED4[63];
   __I  uint32_t  HFCLKRUN;                          /*!< Status indicating that HFCLKSTART task has been triggered             */
   __I  uint32_t  HFCLKSTAT;                         /*!< HFCLK status                                                          */
-  __I  uint32_t  RESERVED4;
+  __I  uint32_t  RESERVED5;
   __I  uint32_t  LFCLKRUN;                          /*!< Status indicating that LFCLKSTART task has been triggered             */
   __I  uint32_t  LFCLKSTAT;                         /*!< LFCLK status                                                          */
   __I  uint32_t  LFCLKSRCCOPY;                      /*!< Copy of LFCLKSRC register, set when LFCLKSTART task was triggered     */
-  __I  uint32_t  RESERVED5[62];
+  __I  uint32_t  RESERVED6[62];
   __IO uint32_t  LFCLKSRC;                          /*!< Clock source for the LFCLK                                            */
-  __I  uint32_t  RESERVED6[3];
+  __I  uint32_t  RESERVED7[3];
   __IO uint32_t  HFXODEBOUNCE;                      /*!< HFXO debounce time. The HFXO is started by triggering the TASKS_HFCLKSTART
                                                          task.                                                                 */
-  __I  uint32_t  RESERVED7[3];
+  __I  uint32_t  RESERVED8[3];
   __IO uint32_t  CTIV;                              /*!< Calibration timer interval                                            */
-  __I  uint32_t  RESERVED8[8];
+  __I  uint32_t  RESERVED9[8];
   __IO uint32_t  TRACECONFIG;                       /*!< Clocking options for the Trace Port debug interface                   */
-  __I  uint32_t  RESERVED9[21];
+  __I  uint32_t  RESERVED10[21];
   __IO uint32_t  LFRCMODE;                          /*!< LFRC mode configuration                                               */
 } NRF_CLOCK_Type;
 
@@ -975,7 +980,10 @@ typedef struct {                                    /*!< SPIM Structure         
   __IO uint32_t  CONFIG;                            /*!< Configuration register                                                */
   __I  uint32_t  RESERVED14[2];
   SPIM_IFTIMING_Type IFTIMING;                      /*!< Unspecified                                                           */
-  __I  uint32_t  RESERVED15[22];
+  __IO uint32_t  CSNPOL;                            /*!< Polarity of CSN output                                                */
+  __IO uint32_t  PSELDCX;                           /*!< Pin select for DCX signal                                             */
+  __IO uint32_t  DCXCNT;                            /*!< DCX configuration                                                     */
+  __I  uint32_t  RESERVED15[19];
   __IO uint32_t  ORC;                               /*!< Byte transmitted after TXD.MAXCNT bytes have been transmitted
                                                          in the case when RXD.MAXCNT is greater than TXD.MAXCNT                */
 } NRF_SPIM_Type;
@@ -1393,14 +1401,12 @@ typedef struct {                                    /*!< TIMER Structure        
   __I  uint32_t  RESERVED3[64];
   __IO uint32_t  INTENSET;                          /*!< Enable interrupt                                                      */
   __IO uint32_t  INTENCLR;                          /*!< Disable interrupt                                                     */
-  __I  uint32_t  RESERVED4[61];
-  __I  uint32_t  STATUS;                            /*!< Timer status                                                          */
-  __I  uint32_t  RESERVED5[64];
+  __I  uint32_t  RESERVED4[126];
   __IO uint32_t  MODE;                              /*!< Timer mode selection                                                  */
   __IO uint32_t  BITMODE;                           /*!< Configure the number of bits used by the TIMER                        */
-  __I  uint32_t  RESERVED6;
+  __I  uint32_t  RESERVED5;
   __IO uint32_t  PRESCALER;                         /*!< Timer prescaler register                                              */
-  __I  uint32_t  RESERVED7[11];
+  __I  uint32_t  RESERVED6[11];
   __IO uint32_t  CC[6];                             /*!< Description collection[0]: Capture/Compare register 0                 */
 } NRF_TIMER_Type;
 
@@ -1709,13 +1715,12 @@ typedef struct {                                    /*!< COMP Structure         
   __I  uint32_t  RESERVED4[63];
   __IO uint32_t  ENABLE;                            /*!< COMP enable                                                           */
   __IO uint32_t  PSEL;                              /*!< Pin select                                                            */
-  __IO uint32_t  REFSEL;                            /*!< Reference source select                                               */
+  __IO uint32_t  REFSEL;                            /*!< Reference source select for single-ended mode                         */
   __IO uint32_t  EXTREFSEL;                         /*!< External reference select                                             */
   __I  uint32_t  RESERVED5[8];
   __IO uint32_t  TH;                                /*!< Threshold configuration for hysteresis unit                           */
   __IO uint32_t  MODE;                              /*!< Mode configuration                                                    */
   __IO uint32_t  HYST;                              /*!< Comparator hysteresis enable                                          */
-  __IO uint32_t  ISOURCE;                           /*!< Current source select on analog input                                 */
 } NRF_COMP_Type;
 
 
@@ -1891,21 +1896,23 @@ typedef struct {                                    /*!< PDM Structure          
 typedef struct {                                    /*!< NVMC Structure                                                        */
   __I  uint32_t  RESERVED0[256];
   __I  uint32_t  READY;                             /*!< Ready flag                                                            */
-  __I  uint32_t  RESERVED1[64];
+  __I  uint32_t  RESERVED1;
+  __I  uint32_t  READYNEXT;                         /*!< Ready flag                                                            */
+  __I  uint32_t  RESERVED2[62];
   __IO uint32_t  CONFIG;                            /*!< Configuration register                                                */
   
   union {
+    __IO uint32_t  ERASEPAGE;                       /*!< Register for erasing a page in code area                              */
     __IO uint32_t  ERASEPCR1;                       /*!< Deprecated register - Register for erasing a page in code area.
                                                          Equivalent to ERASEPAGE.                                              */
-    __IO uint32_t  ERASEPAGE;                       /*!< Register for erasing a page in code area                              */
   };
   __IO uint32_t  ERASEALL;                          /*!< Register for erasing all non-volatile user memory                     */
   __IO uint32_t  ERASEPCR0;                         /*!< Deprecated register - Register for erasing a page in code area.
                                                          Equivalent to ERASEPAGE.                                              */
   __IO uint32_t  ERASEUICR;                         /*!< Register for erasing user information configuration registers         */
-  __I  uint32_t  RESERVED2[10];
+  __I  uint32_t  RESERVED3[10];
   __IO uint32_t  ICACHECNF;                         /*!< I-code cache configuration register.                                  */
-  __I  uint32_t  RESERVED3;
+  __I  uint32_t  RESERVED4;
   __IO uint32_t  IHIT;                              /*!< I-code cache hit counter.                                             */
   __IO uint32_t  IMISS;                             /*!< I-code cache miss counter.                                            */
 } NRF_NVMC_Type;
@@ -2138,8 +2145,7 @@ typedef struct {                                    /*!< USBD Structure         
   __IO uint32_t  ISOSPLIT;                          /*!< Controls the split of ISO buffers                                     */
   __I  uint32_t  FRAMECNTR;                         /*!< Returns the current value of the start of frame counter               */
   __I  uint32_t  RESERVED9[2];
-  __IO uint32_t  LOWPOWER;                          /*!< First silicon only: Controls USBD peripheral low-power mode
-                                                         during USB suspend                                                    */
+  __IO uint32_t  LOWPOWER;                          /*!< Controls USBD peripheral low-power mode during USB suspend            */
   __IO uint32_t  ISOINCONFIG;                       /*!< Controls the response of the ISO IN endpoint to an IN token
                                                          when no data is ready to be sent                                      */
   __I  uint32_t  RESERVED10[51];
@@ -2231,12 +2237,12 @@ typedef struct {                                    /*!< GPIO Structure         
 
 
 /**
-  * @brief ARM CryptoCell register interface (CRYPTOCELL)
+  * @brief ARM TrustZone CryptoCell register interface (CRYPTOCELL)
   */
 
 typedef struct {                                    /*!< CRYPTOCELL Structure                                                  */
   __I  uint32_t  RESERVED0[320];
-  __IO uint32_t  ENABLE;                            /*!< Control power and clock for ARM CryptoCell subsystem                  */
+  __IO uint32_t  ENABLE;                            /*!< Control power and clock for CRYPTOCELL subsystem                      */
 } NRF_CRYPTOCELL_Type;
 
 

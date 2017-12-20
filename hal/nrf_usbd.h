@@ -1219,6 +1219,10 @@ void nrf_usbd_dpdmvalue_set(nrf_usbd_dpdmvalue_t val)
 
 void nrf_usbd_dtoggle_set(uint8_t ep, nrf_usbd_dtoggle_t op)
 {
+    ASSERT(NRF_USBD_EP_VALIDATE(ep));
+    ASSERT(!NRF_USBD_EPISO_CHECK(ep));
+    NRF_USBD->DTOGGLE = ep | (NRF_USBD_DTOGGLE_NOP << USBD_DTOGGLE_VALUE_Pos);
+    __DSB();
     NRF_USBD->DTOGGLE = ep | (op << USBD_DTOGGLE_VALUE_Pos);
     __ISB();
     __DSB();
@@ -1228,7 +1232,7 @@ nrf_usbd_dtoggle_t nrf_usbd_dtoggle_get(uint8_t ep)
 {
     uint32_t retval;
     /* Select the endpoint to read */
-    nrf_usbd_dtoggle_set(ep, NRF_USBD_DTOGGLE_NOP);
+    NRF_USBD->DTOGGLE = ep | (NRF_USBD_DTOGGLE_NOP << USBD_DTOGGLE_VALUE_Pos);
     retval = ((NRF_USBD->DTOGGLE) & USBD_DTOGGLE_VALUE_Msk) >> USBD_DTOGGLE_VALUE_Pos;
     return (nrf_usbd_dtoggle_t)retval;
 }
@@ -1240,11 +1244,11 @@ bool nrf_usbd_ep_enable_check(uint8_t ep)
 
     if (NRF_USBD_EPIN_CHECK(ep))
     {
-        return 0 != (NRF_USBD->EPINEN & (1UL<<epnr));
+        return 0 != (NRF_USBD->EPINEN & (1UL << epnr));
     }
     else
     {
-        return 0 != (NRF_USBD->EPOUTEN & (1UL<<epnr));
+        return 0 != (NRF_USBD->EPOUTEN & (1UL << epnr));
     }
 }
 
@@ -1255,11 +1259,11 @@ void nrf_usbd_ep_enable(uint8_t ep)
 
     if (NRF_USBD_EPIN_CHECK(ep))
     {
-        NRF_USBD->EPINEN |= 1UL<<epnr;
+        NRF_USBD->EPINEN |= 1UL << epnr;
     }
     else
     {
-        NRF_USBD->EPOUTEN |= 1UL<<epnr;
+        NRF_USBD->EPOUTEN |= 1UL << epnr;
     }
     __ISB();
     __DSB();
@@ -1272,11 +1276,11 @@ void nrf_usbd_ep_disable(uint8_t ep)
 
     if (NRF_USBD_EPIN_CHECK(ep))
     {
-        NRF_USBD->EPINEN &= ~(1UL<<epnr);
+        NRF_USBD->EPINEN &= ~(1UL << epnr);
     }
     else
     {
-        NRF_USBD->EPOUTEN &= ~(1UL<<epnr);
+        NRF_USBD->EPOUTEN &= ~(1UL << epnr);
     }
     __ISB();
     __DSB();

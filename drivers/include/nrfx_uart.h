@@ -59,9 +59,6 @@ enum {
 #if NRFX_CHECK(NRFX_UART0_ENABLED)
     NRFX_UART0_INST_IDX,
 #endif
-#if NRFX_CHECK(NRFX_UART1_ENABLED)
-    NRFX_UART1_INST_IDX,
-#endif
     NRFX_UART_ENABLED_COUNT
 };
 
@@ -163,7 +160,7 @@ typedef void (*nrfx_uart_event_handler_t)(nrfx_uart_event_t const * p_event,
  * This function configures and enables UART. After this function GPIO pins are controlled by UART.
  *
  * @param[in] p_instance    Pointer to the driver instance structure.
- * @param[in] p_config      Initial configuration.
+ * @param[in] p_config      Pointer to the structure with initial configuration.
  * @param[in] event_handler Event handler provided by the user. If not provided driver works in
  *                          blocking mode.
  *
@@ -226,7 +223,7 @@ __STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_insta
  */
 nrfx_err_t nrfx_uart_tx(nrfx_uart_t const * p_instance,
                         uint8_t const *     p_data,
-                        uint32_t            length);
+                        size_t              length);
 
 /**
  * @brief Function for checking if UART is currently transmitting.
@@ -275,7 +272,7 @@ void nrfx_uart_tx_abort(nrfx_uart_t const * p_instance);
  */
 nrfx_err_t nrfx_uart_rx(nrfx_uart_t const * p_instance,
                         uint8_t *           p_data,
-                        uint32_t            length);
+                        size_t              length);
 
 
 
@@ -348,7 +345,6 @@ __STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_insta
 
 
 void nrfx_uart_0_irq_handler(void);
-void nrfx_uart_1_irq_handler(void);
 
 
 /** @} */

@@ -45,11 +45,6 @@
     (event == NRF_SAADC_EVENT_STOPPED       ? "NRF_SAADC_EVENT_STOPPED"       : \
                                               "UNKNOWN EVENT"))))))
 
-#define EVT_TO_STR_LIMIT(event)                               \
-    (event == NRF_SAADC_LIMIT_LOW  ? "NRF_SAADC_LIMIT_LOW"  : \
-    (event == NRF_SAADC_LIMIT_HIGH ? "NRF_SAADC_LIMIT_HIGH" : \
-                                     "UNKNOWN EVENT"))
-
 
 typedef enum
 {
@@ -64,8 +59,6 @@ typedef struct
     nrf_saadc_input_t pselp;
     nrf_saadc_input_t pseln;
 } nrf_saadc_psel_buffer;
-
-static const nrfx_saadc_config_t m_default_config = NRFX_SAADC_DEFAULT_CONFIG;
 
 /** @brief SAADC control block.*/
 typedef struct
@@ -196,9 +189,9 @@ void nrfx_saadc_irq_handler(void)
                 evt.type                  = NRFX_SAADC_EVT_LIMIT;
                 evt.data.limit.channel    = LIMIT_EVENT_TO_CHANNEL(event);
                 evt.data.limit.limit_type = LIMIT_EVENT_TO_LIMIT_TYPE(event);
-                NRFX_LOG_DEBUG("Event limit, channel: %d, limit type: %s.",
+                NRFX_LOG_DEBUG("Event limit, channel: %d, limit type: %d.",
                                evt.data.limit.channel,
-                               EVT_TO_STR_LIMIT(evt.data.limit.limit_type));
+                               evt.data.limit.limit_type);
                 m_cb.event_handler(&evt);
             }
         }
@@ -209,6 +202,7 @@ void nrfx_saadc_irq_handler(void)
 nrfx_err_t nrfx_saadc_init(nrfx_saadc_config_t const * p_config,
                            nrfx_saadc_event_handler_t  event_handler)
 {
+    NRFX_ASSERT(p_config);
     nrfx_err_t err_code;
 
     if (m_cb.state != NRFX_DRV_STATE_UNINITIALIZED)
@@ -226,11 +220,6 @@ nrfx_err_t nrfx_saadc_init(nrfx_saadc_config_t const * p_config,
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
         return err_code;
-    }
-
-    if (p_config == NULL)
-    {
-        p_config = &m_default_config;
     }
 
     m_cb.event_handler = event_handler;

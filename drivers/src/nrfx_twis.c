@@ -323,8 +323,8 @@ static void nrfx_twis_state_machine(NRF_TWIS_Type *        p_reg,
             else
             {
                 nrfx_twis_process_error(p_cb,
-                    NRFX_TWIS_EVT_GENERAL_ERROR,
-                    nrf_twis_error_source_get_and_clear(p_reg));
+                                        NRFX_TWIS_EVT_GENERAL_ERROR,
+                                        nrf_twis_error_source_get_and_clear(p_reg));
                 ev = 0;
             }
             break;
@@ -341,8 +341,8 @@ static void nrfx_twis_state_machine(NRF_TWIS_Type *        p_reg,
             else
             {
                 nrfx_twis_process_error(p_cb,
-                    NRFX_TWIS_EVT_READ_ERROR,
-                    nrf_twis_error_source_get_and_clear(p_reg));
+                                        NRFX_TWIS_EVT_READ_ERROR,
+                                        nrf_twis_error_source_get_and_clear(p_reg));
                 substate = NRFX_TWIS_SUBSTATE_IDLE;
                 ev = 0;
             }
@@ -354,10 +354,10 @@ static void nrfx_twis_state_machine(NRF_TWIS_Type *        p_reg,
             {
                 evdata.type = NRFX_TWIS_EVT_READ_DONE;
                 evdata.data.tx_amount = nrf_twis_tx_amount_get(p_reg);
-                NRFX_LOG_INFO("Transfer rx_len:%d", evdata.data.tx_amount);
+                NRFX_LOG_INFO("Transfer tx_len:%d", evdata.data.tx_amount);
                 NRFX_LOG_DEBUG("Tx data:");
                 NRFX_LOG_HEXDUMP_DEBUG((uint8_t const *)p_reg->TXD.PTR,
-                                       evdata.data.tx_amount);
+                                       evdata.data.tx_amount * sizeof(uint8_t));
                 call_event_handler(p_cb, &evdata);
                 /* Go to idle and repeat the state machine if READ or WRITE events detected.
                  * This time READ or WRITE would be started */
@@ -367,8 +367,8 @@ static void nrfx_twis_state_machine(NRF_TWIS_Type *        p_reg,
             else
             {
                 nrfx_twis_process_error(p_cb,
-                    NRFX_TWIS_EVT_READ_ERROR,
-                    nrf_twis_error_source_get_and_clear(p_reg));
+                                        NRFX_TWIS_EVT_READ_ERROR,
+                                        nrf_twis_error_source_get_and_clear(p_reg));
                 substate = NRFX_TWIS_SUBSTATE_IDLE;
                 ev = 0;
             }
@@ -386,8 +386,8 @@ static void nrfx_twis_state_machine(NRF_TWIS_Type *        p_reg,
             else
             {
                 nrfx_twis_process_error(p_cb,
-                    NRFX_TWIS_EVT_WRITE_ERROR,
-                    nrf_twis_error_source_get_and_clear(p_reg));
+                                        NRFX_TWIS_EVT_WRITE_ERROR,
+                                        nrf_twis_error_source_get_and_clear(p_reg));
                 substate = NRFX_TWIS_SUBSTATE_IDLE;
                 ev = 0;
             }
@@ -408,8 +408,8 @@ static void nrfx_twis_state_machine(NRF_TWIS_Type *        p_reg,
             else
             {
                 nrfx_twis_process_error(p_cb,
-                    NRFX_TWIS_EVT_WRITE_ERROR,
-                    nrf_twis_error_source_get_and_clear(p_reg));
+                                        NRFX_TWIS_EVT_WRITE_ERROR,
+                                        nrf_twis_error_source_get_and_clear(p_reg));
                 substate = NRFX_TWIS_SUBSTATE_IDLE;
                 ev = 0;
             }

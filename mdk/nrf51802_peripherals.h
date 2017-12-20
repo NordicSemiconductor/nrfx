@@ -34,6 +34,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #define _NRF51802_PERIPHERALS_H
 
 
+/* Power Peripheral */
+#define POWER_PRESENT
+#define POWER_COUNT 1
+
+#define POWER_FEATURE_RAMON_REGISTERS_PRESENT
+
 /* Software Interrupts */
 #define SWI_PRESENT
 #define SWI_COUNT 6
@@ -114,6 +120,8 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Serial Peripheral Interface Slave with DMA */
 #define SPIS_PRESENT
 #define SPIS_COUNT 1
+
+#define SPIS0_EASYDMA_MAXCNT_SIZE 8
 
 /* Two Wire Interface Master */
 #define TWI_PRESENT

@@ -75,8 +75,9 @@ Refer to the "driver configuration" section in the API reference for a given
 driver for more information regarding configuration options available for it.
 
 @section nrfx_additional_reqs Additional requirements
+
 Nordic SoCs are based on ARM® Cortex™-M series processors. Before you can
-start developing with nrfx, you must add the CMSIS header files to include
+start developing with @em nrfx, you must add the CMSIS header files to include
 paths during the compilation process. Download these files from the following
 website:
 

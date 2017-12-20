@@ -91,6 +91,7 @@ void nrfx_qdec_irq_handler(void)
 nrfx_err_t nrfx_qdec_init(nrfx_qdec_config_t const * p_config,
                           nrfx_qdec_event_handler_t  event_handler)
 {
+    NRFX_ASSERT(p_config);
     nrfx_err_t err_code;
 
     if (m_state != NRFX_DRV_STATE_UNINITIALIZED)
@@ -100,12 +101,6 @@ nrfx_err_t nrfx_qdec_init(nrfx_qdec_config_t const * p_config,
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
         return err_code;
-    }
-
-    if (p_config == NULL)
-    {
-        static nrfx_qdec_config_t const default_config = NRFX_QDEC_DEFAULT_CONFIG;
-        p_config = &default_config;
     }
 
     if (event_handler)
@@ -199,9 +194,9 @@ void nrfx_qdec_accumulators_read(int16_t * p_acc, int16_t * p_accdbl)
     *p_accdbl = (int16_t)nrf_qdec_accdblread_get();
 
     NRFX_LOG_DEBUG("Accumulators data, ACC register:");
-    NRFX_LOG_HEXDUMP_DEBUG((uint8_t *)p_acc, sizeof(p_acc));
+    NRFX_LOG_HEXDUMP_DEBUG((uint8_t *)p_acc, sizeof(p_acc[0]));
     NRFX_LOG_DEBUG("Accumulators data, ACCDBL register:");
-    NRFX_LOG_HEXDUMP_DEBUG((uint8_t *)p_accdbl, sizeof(p_accdbl));
+    NRFX_LOG_HEXDUMP_DEBUG((uint8_t *)p_accdbl, sizeof(p_accdbl[0]));
 }
 
 #endif // NRFX_CHECK(NRFX_QDEC_ENABLED)

@@ -88,7 +88,7 @@ typedef struct
  *
  * If no configuration structure is provided, the driver is initialized with the default settings.
  *
- * @param[in] p_config      Initial configuration. If NULL, the default configuration is used.
+ * @param[in] p_config      Pointer to the structure with initial configuration.
  * @param[in] event_handler Handler function.
  *
  * @retval NRFX_ERROR_INVALID_PARAM If the configuration is invalid.

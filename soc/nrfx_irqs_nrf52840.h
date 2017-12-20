@@ -178,12 +178,7 @@ extern "C" {
 // USBD_IRQn
 
 // UARTE1_IRQn
-#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_5_ENABLED)
-#define nrfx_prs_box_5_irq_handler  UARTE1_IRQHandler
-#else
 #define nrfx_uarte_1_irq_handler    UARTE1_IRQHandler
-#define nrfx_uart_1_irq_handler     UARTE1_IRQHandler
-#endif
 
 // QSPI_IRQn
 #define nrfx_qspi_irq_handler       QSPI_IRQHandler

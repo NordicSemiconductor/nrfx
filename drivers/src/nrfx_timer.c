@@ -156,6 +156,12 @@ void nrfx_timer_disable(nrfx_timer_t const * const p_instance)
     NRFX_LOG_INFO("Disabled instance: %d.", p_instance->instance_id);
 }
 
+bool nrfx_timer_is_enabled(nrfx_timer_t const * const p_instance)
+{
+    NRFX_ASSERT(m_cb[p_instance->instance_id].state != NRFX_DRV_STATE_UNINITIALIZED);
+    return (m_cb[p_instance->instance_id].state == NRFX_DRV_STATE_POWERED_ON);
+}
+
 void nrfx_timer_resume(nrfx_timer_t const * const p_instance)
 {
     NRFX_ASSERT(m_cb[p_instance->instance_id].state == NRFX_DRV_STATE_POWERED_ON);
@@ -187,7 +193,7 @@ void nrfx_timer_increment(nrfx_timer_t const * const p_instance)
 uint32_t nrfx_timer_capture(nrfx_timer_t const * const p_instance,
                             nrf_timer_cc_channel_t     cc_channel)
 {
-    NRFX_ASSERT(m_cb[p_instance->instance_id].state == NRFX_DRV_STATE_POWERED_ON);
+    NRFX_ASSERT(m_cb[p_instance->instance_id].state != NRFX_DRV_STATE_UNINITIALIZED);
     NRFX_ASSERT(cc_channel < p_instance->cc_channel_count);
 
     nrf_timer_task_trigger(p_instance->p_reg,
@@ -204,6 +210,7 @@ void nrfx_timer_compare(nrfx_timer_t const * const p_instance,
 
     if (enable_int)
     {
+        nrf_timer_event_clear(p_instance->p_reg, nrf_timer_compare_event_get(cc_channel));
         nrf_timer_int_enable(p_instance->p_reg, timer_int);
     }
     else

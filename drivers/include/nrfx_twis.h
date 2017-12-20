@@ -171,7 +171,7 @@ typedef struct
  * @attention                 @em p_instance has to be global object.
  *                            It would be used by interrupts so make it sure that object
  *                            would not be destroyed when function is leaving.
- * @param[in] p_config        Initial configuration.
+ * @param[in] p_config        Pointer to the structure with initial configuration.
  * @param[in] event_handler   Event handler provided by the user.
  *
  * @retval NRFX_SUCCESS             If initialization was successful.

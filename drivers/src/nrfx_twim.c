@@ -38,6 +38,7 @@
 #endif
 
 #include <nrfx_twim.h>
+#include <hal/nrf_gpio.h>
 #include "prs/nrfx_prs.h"
 
 #define NRFX_LOG_MODULE TWIM
@@ -66,35 +67,32 @@
     (type == NRFX_TWIM_XFER_TXTX ? "XFER_TXTX" : \
                                    "UNKNOWN TRANSFER TYPE"))))
 
+#define TWIM_PIN_INIT(_pin) nrf_gpio_cfg((_pin),                     \
+                                         NRF_GPIO_PIN_DIR_INPUT,     \
+                                         NRF_GPIO_PIN_INPUT_CONNECT, \
+                                         NRF_GPIO_PIN_PULLUP,        \
+                                         NRF_GPIO_PIN_S0D1,          \
+                                         NRF_GPIO_PIN_NOSENSE)
 
-#define SCL_PIN_INIT_CONF                                     \
-    ( (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) \
-    | (GPIO_PIN_CNF_DRIVE_S0D1     << GPIO_PIN_CNF_DRIVE_Pos) \
-    | (GPIO_PIN_CNF_PULL_Pullup    << GPIO_PIN_CNF_PULL_Pos)  \
-    | (GPIO_PIN_CNF_INPUT_Connect  << GPIO_PIN_CNF_INPUT_Pos) \
-    | (GPIO_PIN_CNF_DIR_Input      << GPIO_PIN_CNF_DIR_Pos))
+#define TWIMX_LENGTH_VALIDATE(peripheral, drv_inst_idx, len1, len2)     \
+    (((drv_inst_idx) == NRFX_CONCAT_3(NRFX_, peripheral, _INST_IDX)) && \
+     NRFX_EASYDMA_LENGTH_VALIDATE(peripheral, len1, len2))
 
-#define SDA_PIN_INIT_CONF        SCL_PIN_INIT_CONF
+#if NRFX_CHECK(NRFX_TWIM0_ENABLED)
+#define TWIM0_LENGTH_VALIDATE(...)  TWIMX_LENGTH_VALIDATE(TWIM0, __VA_ARGS__)
+#else
+#define TWIM0_LENGTH_VALIDATE(...)  0
+#endif
 
-#define SDA_PIN_UNINIT_CONF                                     \
-    ( (GPIO_PIN_CNF_SENSE_Disabled   << GPIO_PIN_CNF_SENSE_Pos) \
-    | (GPIO_PIN_CNF_DRIVE_H0H1       << GPIO_PIN_CNF_DRIVE_Pos) \
-    | (GPIO_PIN_CNF_PULL_Disabled    << GPIO_PIN_CNF_PULL_Pos)  \
-    | (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) \
-    | (GPIO_PIN_CNF_DIR_Input        << GPIO_PIN_CNF_DIR_Pos))
+#if NRFX_CHECK(NRFX_TWIM1_ENABLED)
+#define TWIM1_LENGTH_VALIDATE(...)  TWIMX_LENGTH_VALIDATE(TWIM1, __VA_ARGS__)
+#else
+#define TWIM1_LENGTH_VALIDATE(...)  0
+#endif
 
-#define SCL_PIN_UNINIT_CONF      SDA_PIN_UNINIT_CONF
-
-#define SCL_PIN_INIT_CONF_CLR                                 \
-    ( (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) \
-    | (GPIO_PIN_CNF_DRIVE_S0D1     << GPIO_PIN_CNF_DRIVE_Pos) \
-    | (GPIO_PIN_CNF_PULL_Pullup    << GPIO_PIN_CNF_PULL_Pos)  \
-    | (GPIO_PIN_CNF_INPUT_Connect  << GPIO_PIN_CNF_INPUT_Pos) \
-    | (GPIO_PIN_CNF_DIR_Output     << GPIO_PIN_CNF_DIR_Pos))
-
-#define SDA_PIN_INIT_CONF_CLR    SCL_PIN_INIT_CONF_CLR
-
-#define HW_TIMEOUT      10000
+#define TWIM_LENGTH_VALIDATE(drv_inst_idx, len1, len2)  \
+    (TWIM0_LENGTH_VALIDATE(drv_inst_idx, len1, len2) || \
+     TWIM1_LENGTH_VALIDATE(drv_inst_idx, len1, len2))
 
 // Control block - driver instance local data.
 typedef struct
@@ -105,7 +103,7 @@ typedef struct
     nrfx_twim_xfer_desc_t   xfer_desc;
     uint32_t                flags;
     uint8_t *               p_curr_buf;
-    uint8_t                 curr_length;
+    size_t                  curr_length;
     bool                    curr_no_stop;
     nrfx_drv_state_t        state;
     bool                    error;
@@ -190,8 +188,8 @@ nrfx_err_t nrfx_twim_init(nrfx_twim_t const *        p_instance,
        master when the system is in OFF mode, and when the TWI master is
        disabled, these pins must be configured in the GPIO peripheral.
     */
-    NRF_GPIO->PIN_CNF[p_config->scl] = SCL_PIN_INIT_CONF;
-    NRF_GPIO->PIN_CNF[p_config->sda] = SDA_PIN_INIT_CONF;
+    TWIM_PIN_INIT(p_config->scl);
+    TWIM_PIN_INIT(p_config->sda);
 
     NRF_TWIM_Type * p_twim = p_instance->p_twim;
     nrf_twim_pins_set(p_twim, p_config->scl, p_config->sda);
@@ -229,8 +227,8 @@ void nrfx_twim_uninit(nrfx_twim_t const * p_instance)
 
     if (!p_cb->hold_bus_uninit)
     {
-        NRF_GPIO->PIN_CNF[p_instance->p_twim->PSEL.SCL] = SCL_PIN_UNINIT_CONF;
-        NRF_GPIO->PIN_CNF[p_instance->p_twim->PSEL.SDA] = SDA_PIN_UNINIT_CONF;
+        nrf_gpio_cfg_default(p_instance->p_twim->PSEL.SCL);
+        nrf_gpio_cfg_default(p_instance->p_twim->PSEL.SDA);
     }
 
     p_cb->state = NRFX_DRV_STATE_UNINITIALIZED;
@@ -460,6 +458,9 @@ nrfx_err_t nrfx_twim_xfer(nrfx_twim_t           const * p_instance,
                           nrfx_twim_xfer_desc_t const * p_xfer_desc,
                           uint32_t                      flags)
 {
+    NRFX_ASSERT(TWIM_LENGTH_VALIDATE(p_instance->drv_inst_idx,
+                                     p_xfer_desc->primary_length,
+                                     p_xfer_desc->secondary_length));
 
     nrfx_err_t err_code = NRFX_SUCCESS;
     twim_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
@@ -473,11 +474,11 @@ nrfx_err_t nrfx_twim_xfer(nrfx_twim_t           const * p_instance,
                   p_xfer_desc->primary_length,
                   p_xfer_desc->secondary_length);
     NRFX_LOG_DEBUG("Primary buffer data:");
-    NRFX_LOG_HEXDUMP_DEBUG((uint8_t *)p_xfer_desc->p_primary_buf,
-                           p_xfer_desc->primary_length * sizeof(p_xfer_desc->p_primary_buf));
+    NRFX_LOG_HEXDUMP_DEBUG(p_xfer_desc->p_primary_buf,
+                           p_xfer_desc->primary_length * sizeof(p_xfer_desc->p_primary_buf[0]));
     NRFX_LOG_DEBUG("Secondary buffer data:");
-    NRFX_LOG_HEXDUMP_DEBUG((uint8_t *)p_xfer_desc->p_secondary_buf,
-                           p_xfer_desc->secondary_length * sizeof(p_xfer_desc->p_secondary_buf));
+    NRFX_LOG_HEXDUMP_DEBUG(p_xfer_desc->p_secondary_buf,
+                           p_xfer_desc->secondary_length * sizeof(p_xfer_desc->p_secondary_buf[0]));
 
     err_code = twim_xfer(p_cb, (NRF_TWIM_Type *)p_instance->p_twim, p_xfer_desc, flags);
     NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -489,7 +490,7 @@ nrfx_err_t nrfx_twim_xfer(nrfx_twim_t           const * p_instance,
 nrfx_err_t nrfx_twim_tx(nrfx_twim_t const * p_instance,
                         uint8_t             address,
                         uint8_t     const * p_data,
-                        uint8_t             length,
+                        size_t              length,
                         bool                no_stop)
 {
     nrfx_twim_xfer_desc_t xfer = NRFX_TWIM_XFER_DESC_TX(address, (uint8_t*)p_data, length);
@@ -500,7 +501,7 @@ nrfx_err_t nrfx_twim_tx(nrfx_twim_t const * p_instance,
 nrfx_err_t nrfx_twim_rx(nrfx_twim_t const * p_instance,
                         uint8_t             address,
                         uint8_t *           p_data,
-                        uint8_t             length)
+                        size_t              length)
 {
     nrfx_twim_xfer_desc_t xfer = NRFX_TWIM_XFER_DESC_RX(address, p_data, length);
     return nrfx_twim_xfer(p_instance, &xfer, 0);
@@ -573,9 +574,9 @@ static void twim_irq_handler(NRF_TWIM_Type * p_twim, twim_control_block_t * p_cb
         {
 
             event.xfer_desc.primary_length = (p_cb->xfer_desc.type == NRFX_TWIM_XFER_RX) ?
-                (uint8_t)nrf_twim_rxd_amount_get(p_twim) : (uint8_t)nrf_twim_txd_amount_get(p_twim);
+                nrf_twim_rxd_amount_get(p_twim) : nrf_twim_txd_amount_get(p_twim);
             event.xfer_desc.secondary_length = (p_cb->xfer_desc.type == NRFX_TWIM_XFER_TXRX) ?
-                (uint8_t)nrf_twim_rxd_amount_get(p_twim) : (uint8_t)nrf_twim_txd_amount_get(p_twim);
+                nrf_twim_rxd_amount_get(p_twim) : nrf_twim_txd_amount_get(p_twim);
 
         }
         nrf_twim_event_clear(p_twim, NRF_TWIM_EVENT_LASTTX);

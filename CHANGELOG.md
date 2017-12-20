@@ -1,10 +1,27 @@
 # Changelog
-All notable changes to this project will be documented in this file.
+All notable changes to this project are documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+## [0.8.0] - 2017-12-20
+### Added
+- Added XIP support in the QSPI driver.
+- Implemented Errata 132 in the CLOCK driver.
+- Added function for checking if a TIMER instance is enabled.
+- Added extended SPIM support.
 
-## [Unreleased]
+### Changed
+- Updated MDK to 8.15.0. Introduced Segger Embedded Studio startup files.
+- Updated drivers: COMP, PWM, QDEC, SAADC, SPIS, TIMER, TWI, TWIS.
+- Changed the type used for transfer lengths to 'size_t' in drivers: SPI, SPIM, SPIS, TWI, TWIM, TWIS, UART, UARTE. Introduced checking of EasyDMA transfers limits.
+- Updated HALs: COMP, NVMC, UART, UARTE, USBD.
+- Updated template files and documentation of configuration options.
+
+### Fixed
+- Fixed TWI and TWIM drivers so that they now support GPIOs from all ports.
+- Fixed definitions related to compare channels in the TIMER HAL.
+
+### Removed
+- Removed the possibility of passing NULL instead of configuration to get default settings during drivers initialization.
+- Removed support for UART1 and PRS box #5.
 
 ## [0.7.0] - 2017-10-20
 ### Added

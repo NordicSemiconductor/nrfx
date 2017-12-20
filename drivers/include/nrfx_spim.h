@@ -65,6 +65,9 @@ enum {
 #if NRFX_CHECK(NRFX_SPIM2_ENABLED)
     NRFX_SPIM2_INST_IDX,
 #endif
+#if NRFX_CHECK(NRFX_SPIM3_ENABLED)
+    NRFX_SPIM3_INST_IDX,
+#endif
     NRFX_SPIM_ENABLED_COUNT
 };
 
@@ -85,80 +88,73 @@ enum {
 #define NRFX_SPIM_PIN_NOT_USED  0xFF
 
 /**
- * @brief SPIM data rates.
- */
-typedef enum
-{
-    NRFX_SPIM_FREQ_125K = NRF_SPIM_FREQ_125K, ///< 125 kbps.
-    NRFX_SPIM_FREQ_250K = NRF_SPIM_FREQ_250K, ///< 250 kbps.
-    NRFX_SPIM_FREQ_500K = NRF_SPIM_FREQ_500K, ///< 500 kbps.
-    NRFX_SPIM_FREQ_1M   = NRF_SPIM_FREQ_1M,   ///< 1 Mbps.
-    NRFX_SPIM_FREQ_2M   = NRF_SPIM_FREQ_2M,   ///< 2 Mbps.
-    NRFX_SPIM_FREQ_4M   = NRF_SPIM_FREQ_4M,   ///< 4 Mbps.
-    NRFX_SPIM_FREQ_8M   = NRF_SPIM_FREQ_8M    ///< 8 Mbps.
-} nrfx_spim_frequency_t;
-
-/**
- * @brief SPIM modes.
- */
-typedef enum
-{
-    NRFX_SPIM_MODE_0 = NRF_SPIM_MODE_0, ///< SCK active high, sample on leading edge of clock.
-    NRFX_SPIM_MODE_1 = NRF_SPIM_MODE_1, ///< SCK active high, sample on trailing edge of clock.
-    NRFX_SPIM_MODE_2 = NRF_SPIM_MODE_2, ///< SCK active low, sample on leading edge of clock.
-    NRFX_SPIM_MODE_3 = NRF_SPIM_MODE_3  ///< SCK active low, sample on trailing edge of clock.
-} nrfx_spim_mode_t;
-
-/**
- * @brief SPIM bit orders.
- */
-typedef enum
-{
-    NRFX_SPIM_BIT_ORDER_MSB_FIRST = NRF_SPIM_BIT_ORDER_MSB_FIRST, ///< Most significant bit shifted out first.
-    NRFX_SPIM_BIT_ORDER_LSB_FIRST = NRF_SPIM_BIT_ORDER_LSB_FIRST  ///< Least significant bit shifted out first.
-} nrfx_spim_bit_order_t;
-
-/**
  * @brief SPIM master driver instance configuration structure.
  */
 typedef struct
 {
     uint8_t sck_pin;      ///< SCK pin number.
     uint8_t mosi_pin;     ///< MOSI pin number (optional).
-                          /**< Set to @ref NRFX_SPI_PIN_NOT_USED
+                          /**< Set to @ref NRFX_SPIM_PIN_NOT_USED
                            *   if this signal is not needed. */
     uint8_t miso_pin;     ///< MISO pin number (optional).
-                          /**< Set to @ref NRFX_SPI_PIN_NOT_USED
+                          /**< Set to @ref NRFX_SPIM_PIN_NOT_USED
                            *   if this signal is not needed. */
     uint8_t ss_pin;       ///< Slave Select pin number (optional).
-                          /**< Set to @ref NRFX_SPI_PIN_NOT_USED
-                           *   if this signal is not needed. The driver
-                           *   supports only active low for this signal.
-                           *   If the signal should be active high,
-                           *   it must be controlled externally. */
+                          /**< Set to @ref NRFX_SPIM_PIN_NOT_USED
+                           *   if this signal is not needed. */
+    bool ss_active_high;  ///< Polarity of the Slave Select pin during transmission.
     uint8_t irq_priority; ///< Interrupt priority.
     uint8_t orc;          ///< Over-run character.
                           /**< This character is used when all bytes from the TX buffer are sent,
                                but the transfer continues due to RX. */
-    nrfx_spim_frequency_t frequency; ///< SPI frequency.
-    nrfx_spim_mode_t      mode;      ///< SPI mode.
-    nrfx_spim_bit_order_t bit_order; ///< SPI bit order.
+    nrf_spim_frequency_t frequency; ///< SPI frequency.
+    nrf_spim_mode_t      mode;      ///< SPI mode.
+    nrf_spim_bit_order_t bit_order; ///< SPI bit order.
+#if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED) || defined(__NRFX_DOXYGEN__)
+    uint8_t              dcx_pin;     ///< D/CX pin number (optional).
+    uint8_t              rx_delay;    ///< Sample delay for input serial data on MISO.
+                                      /**< The value specifies the delay, in number of 64 MHz clock cycles
+                                       *   (15.625 ns), from the the sampling edge of SCK (leading edge for
+                                       *   CONFIG.CPHA = 0, trailing edge for CONFIG.CPHA = 1) until
+                                       *   the input serial data is sampled.*/
+    bool                 use_hw_ss;   ///< Indication to use software or hardware controlled Slave Select pin.
+    uint8_t              ss_duration; ///< Slave Select duration before and after transmission.
+                                      /**< Minimum duration between the edge of CSN and the edge of SCK and minimum
+                                       *   duration of CSN must stay inactive between transactions.
+                                       *   The value is specified in number of 64 MHz clock cycles (15.625 ns).
+                                       *   Supported only for hardware controlled Slave Select.*/
+#endif
 } nrfx_spim_config_t;
+
+#if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief SPIM master instance extended default configuration.
+ */
+    #define NRFX_SPIM_DEFAULT_EXTENDED_CONFIG   \
+        .dcx_pin      = NRFX_SPIM_PIN_NOT_USED, \
+        .rx_delay     = 0x00,                   \
+        .ss_duration  = 0x00,                   \
+        .use_hw_ss    = false,
+#else
+    #define NRFX_SPIM_DEFAULT_EXTENDED_CONFIG
+#endif
 
 /**
  * @brief SPIM master instance default configuration.
  */
-#define NRFX_SPIM_DEFAULT_CONFIG                           \
-{                                                          \
-    .sck_pin      = NRFX_SPIM_PIN_NOT_USED,                \
-    .mosi_pin     = NRFX_SPIM_PIN_NOT_USED,                \
-    .miso_pin     = NRFX_SPIM_PIN_NOT_USED,                \
-    .ss_pin       = NRFX_SPIM_PIN_NOT_USED,                \
-    .irq_priority = NRFX_SPIM_DEFAULT_CONFIG_IRQ_PRIORITY, \
-    .orc          = 0xFF,                                  \
-    .frequency    = NRFX_SPIM_FREQ_4M,                     \
-    .mode         = NRFX_SPIM_MODE_0,                      \
-    .bit_order    = NRFX_SPIM_BIT_ORDER_MSB_FIRST,         \
+#define NRFX_SPIM_DEFAULT_CONFIG                             \
+{                                                            \
+    .sck_pin        = NRFX_SPIM_PIN_NOT_USED,                \
+    .mosi_pin       = NRFX_SPIM_PIN_NOT_USED,                \
+    .miso_pin       = NRFX_SPIM_PIN_NOT_USED,                \
+    .ss_pin         = NRFX_SPIM_PIN_NOT_USED,                \
+    .ss_active_high = false,                                 \
+    .irq_priority   = NRFX_SPIM_DEFAULT_CONFIG_IRQ_PRIORITY, \
+    .orc            = 0xFF,                                  \
+    .frequency      = NRF_SPIM_FREQ_4M,                      \
+    .mode           = NRF_SPIM_MODE_0,                       \
+    .bit_order      = NRF_SPIM_BIT_ORDER_MSB_FIRST,          \
+    NRFX_SPIM_DEFAULT_EXTENDED_CONFIG                        \
 }
 
 #define NRFX_SPIM_FLAG_TX_POSTINC          (1UL << 0) /**< TX buffer address incremented after transfer. */
@@ -173,9 +169,9 @@ typedef struct
 typedef struct
 {
     uint8_t const * p_tx_buffer; ///< Pointer to TX buffer.
-    uint8_t         tx_length;   ///< TX buffer length.
+    size_t          tx_length;   ///< TX buffer length.
     uint8_t       * p_rx_buffer; ///< Pointer to RX buffer.
-    uint8_t         rx_length;   ///< RX buffer length.
+    size_t          rx_length;   ///< RX buffer length.
 } nrfx_spim_xfer_desc_t;
 
 /**
@@ -236,7 +232,7 @@ typedef void (* nrfx_spim_evt_handler_t)(nrfx_spim_evt_t const * p_event,
  * This function configures and enables the specified peripheral.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
- * @param[in] p_config   Pointer to the structure with the initial configuration.
+ * @param[in] p_config   Pointer to the structure with initial configuration.
  *
  * @param     handler    Event handler provided by the user. If NULL, transfers
  *                       will be performed in blocking mode.
@@ -248,6 +244,8 @@ typedef void (* nrfx_spim_evt_handler_t)(nrfx_spim_evt_t const * p_event,
  *                                  instance ID is already in use. This is
  *                                  possible only if @ref nrfx_prs module
  *                                  is enabled.
+ * @retval NRFX_ERROR_NOT_SUPPORTED If requested configuration is not supported
+ *                                  by the SPIM instance.
  */
 nrfx_err_t nrfx_spim_init(nrfx_spim_t const * const  p_instance,
                           nrfx_spim_config_t const * p_config,
@@ -264,41 +262,7 @@ void       nrfx_spim_uninit(nrfx_spim_t const * const p_instance);
 /**
  * @brief Function for starting the SPI data transfer.
  *
- * If an event handler was provided in the @ref nrfx_spim_init call, this function
- * returns immediately and the handler is called when the transfer is done.
- * Otherwise, the transfer is performed in blocking mode, which means that this function
- * returns when the transfer is finished.
- *
- * @note Peripherals using EasyDMA (including SPIM) require the transfer buffers
- *       to be placed in the Data RAM region. If this condition is not met,
- *       this function will fail with the error code NRFX_ERROR_INVALID_ADDR.
- *
- * @param[in] p_instance       Pointer to the driver instance structure.
- * @param[in] p_tx_buffer      Pointer to the transmit buffer. Can be NULL
- *                             if there is nothing to send.
- * @param     tx_buffer_length Length of the transmit buffer.
- * @param[in] p_rx_buffer      Pointer to the receive buffer. Can be NULL
- *                             if there is nothing to receive.
- * @param     rx_buffer_length Length of the receive buffer.
- *
- * @retval NRFX_SUCCESS            If the operation was successful.
- * @retval NRFX_ERROR_BUSY         If a previously started transfer has not finished
- *                                 yet.
- * @retval NRFX_ERROR_INVALID_ADDR If the provided buffers are not placed in the Data
- *                                 RAM region.
- */
-nrfx_err_t nrfx_spim_transfer(nrfx_spim_t const * const p_instance,
-                              uint8_t           const * p_tx_buffer,
-                              uint8_t                   tx_buffer_length,
-                              uint8_t                 * p_rx_buffer,
-                              uint8_t                   rx_buffer_length);
-
-/**
- * @brief Function for starting the SPI data transfer with additional options.
- *
- * @note This function is intended to be used only in non-blocking mode.
- *
- * Additional options are provided using the flags parameter:
+ * Additional options are provided using the @c flags parameter:
  *
  * - @ref NRFX_SPIM_FLAG_TX_POSTINC and @ref NRFX_SPIM_FLAG_RX_POSTINC<span></span>:
  *   Post-incrementation of buffer addresses. Supported only by SPIM.
@@ -341,6 +305,41 @@ nrfx_err_t nrfx_spim_xfer(nrfx_spim_t const * const     p_instance,
                           nrfx_spim_xfer_desc_t const * p_xfer_desc,
                           uint32_t                      flags);
 
+#if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for starting the SPI data transfer with DCX control.
+ *
+ * See @ref nrfx_spim_xfer for description of additional options of transfer
+ * provided by the @c flags parameter.
+ *
+ * @note Peripherals that use EasyDMA (including SPIM) require the transfer buffers
+ *       to be placed in the Data RAM region. If this condition is not met,
+ *       this function will fail with the error code NRFX_ERROR_INVALID_ADDR.
+ *
+ * @param p_instance  Pointer to the driver instance structure.
+ * @param p_xfer_desc Pointer to the transfer descriptor.
+ * @param flags       Transfer options (0 for default settings).
+ * @param cmd_length  Length of the command bytes preceding the data
+ *                    bytes. The DCX line will be low during transmission
+ *                    of command bytes and high during transmission of data bytes.
+ *                    Maximum value available for dividing the transmitted bytes
+ *                    into command bytes and data bytes is @ref NRF_SPIM_DCX_CNT_ALL_CMD - 1.
+ *                    The @ref NRF_SPIM_DCX_CNT_ALL_CMD value passed as the
+ *                    @c cmd_length parameter causes all transmitted bytes
+ *                    to be marked as command bytes.
+ *
+ * @retval NRFX_SUCCESS              If the procedure was successful.
+ * @retval NRFX_ERROR_BUSY           If the driver is not ready for a new transfer.
+ * @retval NRFX_ERROR_NOT_SUPPORTED  If the provided parameters are not supported.
+ * @retval NRFX_ERROR_INVALID_ADDR   If the provided buffers are not placed in the Data
+ *                                   RAM region.
+ */
+nrfx_err_t nrfx_spim_xfer_dcx(nrfx_spim_t const * const     p_instance,
+                              nrfx_spim_xfer_desc_t const * p_xfer_desc,
+                              uint32_t                      flags,
+                              uint8_t                       cmd_length);
+#endif
+
 /**
  * @brief Function for returning the address of a SPIM start task.
  *
@@ -376,6 +375,7 @@ void nrfx_spim_abort(nrfx_spim_t const * p_instance);
 void nrfx_spim_0_irq_handler(void);
 void nrfx_spim_1_irq_handler(void);
 void nrfx_spim_2_irq_handler(void);
+void nrfx_spim_3_irq_handler(void);
 
 
 /** @} */

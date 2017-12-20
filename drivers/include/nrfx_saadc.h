@@ -168,7 +168,7 @@ typedef void (* nrfx_saadc_event_handler_t)(nrfx_saadc_evt_t const * p_event);
 /**
  * @brief Function for initializing the SAADC.
  *
- * @param[in] p_config      Pointer to a configuration structure. If NULL, the default one is used.
+ * @param[in] p_config      Pointer to the structure with initial configuration.
  * @param[in] event_handler Event handler provided by the user.
  *
  * @retval    NRFX_SUCCESS If initialization was successful.

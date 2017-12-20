@@ -163,7 +163,7 @@ typedef void (*nrfx_uarte_event_handler_t)(nrfx_uarte_event_t const * p_event,
  * This function configures and enables UARTE. After this function GPIO pins are controlled by UARTE.
  *
  * @param[in] p_instance    Pointer to the driver instance structure.
- * @param[in] p_config      Initial configuration.
+ * @param[in] p_config      Pointer to the structure with initial configuration.
  * @param[in] event_handler Event handler provided by the user. If not provided driver works in
  *                          blocking mode.
  *
@@ -221,7 +221,10 @@ __STATIC_INLINE uint32_t nrfx_uarte_event_address_get(nrfx_uarte_t const * p_ins
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  * @param[in] p_data     Pointer to data.
- * @param[in] length     Number of bytes to send.
+ * @param[in] length     Number of bytes to send. Maximum possible length is
+ *                       dependent on the used SoC (see the MAXCNT register
+ *                       description in the Product Specification). The driver
+ *                       checks it with assertion.
  *
  * @retval    NRFX_SUCCESS            If initialization was successful.
  * @retval    NRFX_ERROR_BUSY         If driver is already transferring.
@@ -231,7 +234,7 @@ __STATIC_INLINE uint32_t nrfx_uarte_event_address_get(nrfx_uarte_t const * p_ins
  */
 nrfx_err_t nrfx_uarte_tx(nrfx_uarte_t const * p_instance,
                          uint8_t const *      p_data,
-                         uint8_t              length);
+                         size_t               length);
 
 /**
  * @brief Function for checking if UARTE is currently transmitting.
@@ -272,7 +275,10 @@ void nrfx_uarte_tx_abort(nrfx_uarte_t const * p_instance);
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  * @param[in] p_data     Pointer to data.
- * @param[in] length     Number of bytes to receive.
+ * @param[in] length     Number of bytes to receive. Maximum possible length is
+ *                       dependent on the used SoC (see the MAXCNT register
+ *                       description in the Product Specification). The driver
+ *                       checks it with assertion.
  *
  * @retval    NRFX_SUCCESS            If initialization was successful.
  * @retval    NRFX_ERROR_BUSY         If the driver is already receiving
@@ -285,7 +291,7 @@ void nrfx_uarte_tx_abort(nrfx_uarte_t const * p_instance);
  */
 nrfx_err_t nrfx_uarte_rx(nrfx_uarte_t const * p_instance,
                          uint8_t *            p_data,
-                         uint8_t              length);
+                         size_t               length);
 
 
 

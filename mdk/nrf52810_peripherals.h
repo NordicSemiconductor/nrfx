@@ -34,6 +34,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #define _NRF52810_PERIPHERALS_H
 
 
+/* Power Peripheral */
+#define POWER_PRESENT
+#define POWER_COUNT 1
+
+#define POWER_FEATURE_RAM_REGISTERS_PRESENT
+#define POWER_FEATURE_RAM_REGISTERS_COUNT       3
+
 /* Systick timer */
 #define SYSTICK_PRESENT
 #define SYSTICK_COUNT 1
@@ -57,6 +64,8 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Radio */
 #define RADIO_PRESENT
 #define RADIO_COUNT 1
+
+#define RADIO_EASYDMA_MAXCNT_SIZE 8
 
 /* Accelerated Address Resolver */
 #define AAR_PRESENT
@@ -127,21 +136,31 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define SPIM0_FEATURE_HARDWARE_CSN_PRESENT  0
 
+#define SPIM0_EASYDMA_MAXCNT_SIZE 10
+
 /* Serial Peripheral Interface Slave with DMA*/
 #define SPIS_PRESENT
 #define SPIS_COUNT 1
+
+#define SPIS0_EASYDMA_MAXCNT_SIZE 10
 
 /* Two Wire Interface Master with DMA */
 #define TWIM_PRESENT
 #define TWIM_COUNT 1
 
+#define TWIM0_EASYDMA_MAXCNT_SIZE 10
+
 /* Two Wire Interface Slave with DMA */
 #define TWIS_PRESENT
 #define TWIS_COUNT 1
 
+#define TWIS0_EASYDMA_MAXCNT_SIZE 10
+
 /* Universal Asynchronous Receiver-Transmitter with DMA */
 #define UARTE_PRESENT
 #define UARTE_COUNT 1
+
+#define UARTE0_EASYDMA_MAXCNT_SIZE 10
 
 /* Quadrature Decoder */
 #define QDEC_PRESENT
@@ -150,6 +169,8 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Successive Approximation Analog to Digital Converter */
 #define SAADC_PRESENT
 #define SAADC_COUNT 1
+
+#define SAADC_EASYDMA_MAXCNT_SIZE 15
 
 /* GPIO Tasks and Events */
 #define GPIOTE_PRESENT
@@ -170,9 +191,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define PWM0_CH_NUM 4
 
+#define PWM0_EASYDMA_MAXCNT_SIZE 15
+
 /* Pulse Density Modulator */
 #define PDM_PRESENT
 #define PDM_COUNT 1
+
+#define PDM_EASYDMA_MAXCNT_SIZE 15
 
 
 #endif      // _NRF52810_PERIPHERALS_H

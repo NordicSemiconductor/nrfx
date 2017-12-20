@@ -217,8 +217,7 @@ nrfx_power_usb_event_handler_t nrfx_power_usb_handler_get(void);
  *
  * Enabled power module driver would process all the interrupts from power system.
  *
- * @param[in] p_config Driver configuration. Can be NULL - the default configuration
- *                     from @em sdk_config.h file would be used then.
+ * @param[in] p_config Pointer to the structure with initial configuration.
  *
  * @retval NRFX_SUCCESS                   Successfully initialized.
  * @retval NRFX_ERROR_ALREADY_INITIALIZED Module was already initialized.

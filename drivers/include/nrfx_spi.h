@@ -167,9 +167,9 @@ typedef struct
 typedef struct
 {
     uint8_t const * p_tx_buffer; ///< Pointer to TX buffer.
-    uint32_t        tx_length;   ///< TX buffer length.
+    size_t          tx_length;   ///< TX buffer length.
     uint8_t       * p_rx_buffer; ///< Pointer to RX buffer.
-    uint32_t        rx_length;   ///< RX buffer length.
+    size_t          rx_length;   ///< RX buffer length.
 }nrfx_spi_xfer_desc_t;
 
 /**
@@ -230,7 +230,7 @@ typedef void (* nrfx_spi_evt_handler_t)(nrfx_spi_evt_t const * p_event,
  * This function configures and enables the specified peripheral.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
- * @param[in] p_config   Pointer to the structure with the initial configuration.
+ * @param[in] p_config   Pointer to the structure with initial configuration.
  *
  * @param     handler    Event handler provided by the user. If NULL, transfers
  *                       will be performed in blocking mode.
@@ -263,31 +263,10 @@ void       nrfx_spi_uninit(nrfx_spi_t const * const p_instance);
  * Otherwise, the transfer is performed in blocking mode, which means that this function
  * returns when the transfer is finished.
  *
- * @param[in] p_instance       Pointer to the driver instance structure.
- * @param[in] p_tx_buffer      Pointer to the transmit buffer. Can be NULL
- *                             if there is nothing to send.
- * @param     tx_buffer_length Length of the transmit buffer.
- * @param[in] p_rx_buffer      Pointer to the receive buffer. Can be NULL
- *                             if there is nothing to receive.
- * @param     rx_buffer_length Length of the receive buffer.
- *
- * @retval NRFX_SUCCESS    If the operation was successful.
- * @retval NRFX_ERROR_BUSY If a previously started transfer has not finished yet.
- */
-nrfx_err_t nrfx_spi_transfer(nrfx_spi_t const * const p_instance,
-                             uint8_t          const * p_tx_buffer,
-                             uint32_t                 tx_buffer_length,
-                             uint8_t                * p_rx_buffer,
-                             uint32_t                 rx_buffer_length);
-
-/**
- * @brief Function for starting the SPI data transfer with additional option flags.
- *
- * Currently, no additional flags available.
- *
  * @param p_instance  Pointer to the driver instance structure.
  * @param p_xfer_desc Pointer to the transfer descriptor.
  * @param flags       Transfer options (0 for default settings).
+ *                    Currently, no additional flags are available.
  *
  * @retval NRFX_SUCCESS             If the procedure was successful.
  * @retval NRFX_ERROR_BUSY          If the driver is not ready for a new transfer.

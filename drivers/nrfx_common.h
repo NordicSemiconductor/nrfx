@@ -117,6 +117,19 @@ extern "C" {
  */
 #define NRFX_ROUNDED_DIV(a, b)  (((a) + ((b) / 2)) / (b))
 
+/**@brief Macro for checking if given lengths of EasyDMA transfers do not exceed
+ *        the limit of the specified peripheral.
+ *
+ * @param peripheral Peripheral to check the lengths against.
+ * @param length1    First length to be checked.
+ * @param length2    Second length to be checked (pass 0 if not needed).
+ *
+ * @return
+ */
+#define NRFX_EASYDMA_LENGTH_VALIDATE(peripheral, length1, length2)            \
+    (((length1) < (1U << NRFX_CONCAT_2(peripheral, _EASYDMA_MAXCNT_SIZE))) && \
+     ((length2) < (1U << NRFX_CONCAT_2(peripheral, _EASYDMA_MAXCNT_SIZE))))
+
 
 /**
  * @brief IRQ handler type.

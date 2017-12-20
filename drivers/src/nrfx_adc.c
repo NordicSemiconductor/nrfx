@@ -52,11 +52,11 @@ typedef struct
 } adc_cb_t;
 
 static adc_cb_t m_cb;
-static const nrfx_adc_config_t m_default_config = NRFX_ADC_DEFAULT_CONFIG;
 
 nrfx_err_t nrfx_adc_init(nrfx_adc_config_t const * p_config,
                          nrfx_adc_event_handler_t  event_handler)
 {
+    NRFX_ASSERT(p_config);
     nrfx_err_t err_code;
 
     if (m_cb.state != NRFX_DRV_STATE_UNINITIALIZED)
@@ -71,10 +71,6 @@ nrfx_err_t nrfx_adc_init(nrfx_adc_config_t const * p_config,
     nrf_adc_event_clear(NRF_ADC_EVENT_END);
     if (event_handler)
     {
-        if (!p_config)
-        {
-            p_config = (nrfx_adc_config_t *)&m_default_config;
-        }
         NRFX_IRQ_PRIORITY_SET(ADC_IRQn, p_config->interrupt_priority);
         NRFX_IRQ_ENABLE(ADC_IRQn);
     }

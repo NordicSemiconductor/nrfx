@@ -69,7 +69,7 @@ nrfx_err_t nrfx_rtc_init(nrfx_rtc_t const * const  p_instance,
                          nrfx_rtc_config_t const * p_config,
                          nrfx_rtc_handler_t        handler)
 {
-    NRFX_ASSERT(p_config != NULL);
+    NRFX_ASSERT(p_config);
 
     nrfx_err_t err_code;
 

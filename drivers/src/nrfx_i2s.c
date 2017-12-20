@@ -62,10 +62,6 @@ typedef struct
 } i2s_control_block_t;
 static i2s_control_block_t m_cb;
 
-
-static nrfx_i2s_config_t const m_default_config = NRFX_I2S_DEFAULT_CONFIG;
-
-
 static void configure_pins(nrfx_i2s_config_t const * p_config)
 {
     uint32_t mck_pin, sdout_pin, sdin_pin;
@@ -127,6 +123,7 @@ static void configure_pins(nrfx_i2s_config_t const * p_config)
 nrfx_err_t nrfx_i2s_init(nrfx_i2s_config_t const * p_config,
                          nrfx_i2s_data_handler_t   handler)
 {
+    NRFX_ASSERT(p_config);
     NRFX_ASSERT(handler);
 
     nrfx_err_t err_code;
@@ -138,11 +135,6 @@ nrfx_err_t nrfx_i2s_init(nrfx_i2s_config_t const * p_config,
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
         return err_code;
-    }
-
-    if (p_config == NULL)
-    {
-        p_config = &m_default_config;
     }
 
     if (!nrf_i2s_configure(NRF_I2S, p_config->mode,

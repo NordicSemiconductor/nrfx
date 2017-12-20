@@ -58,8 +58,11 @@ typedef enum
     NRF_COMP_INPUT_4 = COMP_PSEL_PSEL_AnalogInput4,        /*!< AIN4 selected as analog input. */
     NRF_COMP_INPUT_5 = COMP_PSEL_PSEL_AnalogInput5,        /*!< AIN5 selected as analog input. */
     NRF_COMP_INPUT_6 = COMP_PSEL_PSEL_AnalogInput6,        /*!< AIN6 selected as analog input. */
-#ifdef COMP_PSEL_PSEL_AnalogInput7
-    NRF_COMP_INPUT_7 = COMP_PSEL_PSEL_AnalogInput7         /*!< AIN7 selected as analog input. */
+#if defined (COMP_PSEL_PSEL_AnalogInput7) || defined (__NRFX_DOXYGEN__)
+    NRF_COMP_INPUT_7 = COMP_PSEL_PSEL_AnalogInput7,        /*!< AIN7 selected as analog input. */
+#endif
+#if defined (COMP_PSEL_PSEL_VddDiv2) || defined (__NRFX_DOXYGEN__)
+    NRF_COMP_VDD_DIV2 = COMP_PSEL_PSEL_VddDiv2,            /*!< VDD/2 selected as analog input. */
 #endif
 }nrf_comp_input_t;
 
@@ -126,6 +129,7 @@ typedef enum
     NRF_COMP_HYST_50mV = COMP_HYST_HYST_Hyst50mV     /*!< Comparator hysteresis enabled. */
 }nrf_comp_hyst_t;
 
+#if defined (COMP_ISOURCE_ISOURCE_Msk) || defined (__NRFX_DOXYGEN__)
 /**
  * @brief COMP current source selection on analog input.
  */
@@ -136,6 +140,7 @@ typedef enum
     NRF_COMP_ISOURCE_Ien5uA = COMP_ISOURCE_ISOURCE_Ien5mA,      /*!< Current source enabled (+/- 5 uA). */
     NRF_COMP_ISOURCE_Ien10uA = COMP_ISOURCE_ISOURCE_Ien10mA     /*!< Current source enabled (+/- 10 uA). */
 }nrf_isource_t;
+#endif
 
 /**
  * @enum nrf_comp_task_t
@@ -242,12 +247,14 @@ __STATIC_INLINE void nrf_comp_speed_mode_set(nrf_comp_sp_mode_t speed_mode);
 __STATIC_INLINE void nrf_comp_hysteresis_set(nrf_comp_hyst_t hyst);
 
 
+#if defined (COMP_ISOURCE_ISOURCE_Msk) || defined (__NRFX_DOXYGEN__)
 /**
  * @brief Function for setting the current source on the analog input.
  *
  * @param[in] isource                   COMP current source selection on analog input.
  */
 __STATIC_INLINE void nrf_comp_isource_set(nrf_isource_t isource);
+#endif
 
 
 /**
@@ -411,10 +418,12 @@ __STATIC_INLINE void nrf_comp_hysteresis_set(nrf_comp_hyst_t hyst)
     NRF_COMP->HYST = (hyst << COMP_HYST_HYST_Pos) & COMP_HYST_HYST_Msk;
 }
 
+#if defined (COMP_ISOURCE_ISOURCE_Msk)
 __STATIC_INLINE void nrf_comp_isource_set(nrf_isource_t isource)
 {
     NRF_COMP->ISOURCE = (isource << COMP_ISOURCE_ISOURCE_Pos) & COMP_ISOURCE_ISOURCE_Msk;
 }
+#endif
 
 __STATIC_INLINE void nrf_comp_input_select(nrf_comp_input_t input)
 {

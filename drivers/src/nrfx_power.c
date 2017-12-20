@@ -49,21 +49,6 @@ extern bool nrfx_clock_irq_enabled;
  */
 
 /**
- * @brief Default configuration
- *
- * The structure with default configuration data.
- * This structure would be used if configuration pointer given
- * to the @ref nrfx_power_init is set to NULL.
- */
-static const nrfx_power_config_t m_drv_power_config_default =
-{
-    .dcdcen = NRFX_POWER_CONFIG_DEFAULT_DCDCEN,
-#if NRF_POWER_HAS_VDDH || defined(__NRFX_DOXYGEN__)
-    .dcdcenhv = NRFX_POWER_CONFIG_DEFAULT_DCDCENHV,
-#endif
-};
-
-/**
  * This variable is used to check whether common POWER_CLOCK common interrupt
  * should be disabled or not if @ref nrfx_clock tries to disable the interrupt.
  */
@@ -111,18 +96,16 @@ nrfx_power_usb_event_handler_t nrfx_power_usb_handler_get(void)
 
 nrfx_err_t nrfx_power_init(nrfx_power_config_t const * p_config)
 {
-    nrfx_power_config_t const * p_used_config;
+    NRFX_ASSERT(p_config);
     if (m_initialized)
     {
         return NRFX_ERROR_ALREADY_INITIALIZED;
     }
 
-    p_used_config = (p_config != NULL) ?
-        p_config : (&m_drv_power_config_default);
 #if NRF_POWER_HAS_VDDH
-    nrf_power_dcdcen_vddh_set(p_used_config->dcdcenhv);
+    nrf_power_dcdcen_vddh_set(p_config->dcdcenhv);
 #endif
-    nrf_power_dcdcen_set(p_used_config->dcdcen);
+    nrf_power_dcdcen_set(p_config->dcdcen);
 
     nrfx_power_clock_irq_init();
 

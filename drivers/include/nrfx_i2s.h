@@ -151,7 +151,6 @@ typedef void (* nrfx_i2s_data_handler_t)(uint32_t const * p_data_received,
  * @brief Function for initializing the I2S driver.
  *
  * @param[in] p_config Pointer to the structure with initial configuration.
- *                     If NULL, the default configuration is used.
  * @param[in] handler  Data handler provided by the user. Must not be NULL.
  *
  * @retval NRFX_SUCCESS             If initialization was successful.

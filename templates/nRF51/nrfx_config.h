@@ -465,33 +465,56 @@
 #define NRFX_PRS_BOX_1_ENABLED 1
 #endif
 
-// <q> NRFX_PRS_BOX_2_ENABLED  - Enables box 2 in the module.
+// <e> NRFX_PRS_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef NRFX_PRS_CONFIG_LOG_ENABLED
+#define NRFX_PRS_CONFIG_LOG_ENABLED 0
+#endif
+// <o> NRFX_PRS_CONFIG_LOG_LEVEL  - Default Severity level
 
+// <0=> Off
+// <1=> Error
+// <2=> Warning
+// <3=> Info
+// <4=> Debug
 
-#ifndef NRFX_PRS_BOX_2_ENABLED
-#define NRFX_PRS_BOX_2_ENABLED 1
+#ifndef NRFX_PRS_CONFIG_LOG_LEVEL
+#define NRFX_PRS_CONFIG_LOG_LEVEL 3
 #endif
 
-// <q> NRFX_PRS_BOX_3_ENABLED  - Enables box 3 in the module.
+// <o> NRFX_PRS_CONFIG_INFO_COLOR  - ANSI escape code prefix.
 
+// <0=> Default
+// <1=> Black
+// <2=> Red
+// <3=> Green
+// <4=> Yellow
+// <5=> Blue
+// <6=> Magenta
+// <7=> Cyan
+// <8=> White
 
-#ifndef NRFX_PRS_BOX_3_ENABLED
-#define NRFX_PRS_BOX_3_ENABLED 1
+#ifndef NRFX_PRS_CONFIG_INFO_COLOR
+#define NRFX_PRS_CONFIG_INFO_COLOR 0
 #endif
 
-// <q> NRFX_PRS_BOX_4_ENABLED  - Enables box 4 in the module.
+// <o> NRFX_PRS_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
 
+// <0=> Default
+// <1=> Black
+// <2=> Red
+// <3=> Green
+// <4=> Yellow
+// <5=> Blue
+// <6=> Magenta
+// <7=> Cyan
+// <8=> White
 
-#ifndef NRFX_PRS_BOX_4_ENABLED
-#define NRFX_PRS_BOX_4_ENABLED 1
+#ifndef NRFX_PRS_CONFIG_DEBUG_COLOR
+#define NRFX_PRS_CONFIG_DEBUG_COLOR 0
 #endif
 
-// <q> NRFX_PRS_BOX_5_ENABLED  - Enables box 5 in the module.
-
-
-#ifndef NRFX_PRS_BOX_5_ENABLED
-#define NRFX_PRS_BOX_5_ENABLED 1
-#endif
+// </e>
 
 // </e>
 
@@ -950,6 +973,16 @@
 #define NRFX_SPI1_ENABLED 1
 #endif
 
+// <o> NRFX_SPI_MISO_PULL_CFG  - MISO pin pull configuration.
+
+// <0=> NRF_GPIO_PIN_NOPULL
+// <1=> NRF_GPIO_PIN_PULLDOWN
+// <3=> NRF_GPIO_PIN_PULLUP
+
+#ifndef NRFX_SPI_MISO_PULL_CFG
+#define NRFX_SPI_MISO_PULL_CFG 1
+#endif
+
 // <o> NRFX_SPI_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
 
 // <0=> 0 (highest)
@@ -1375,17 +1408,19 @@
 // <643072=> 2400 baud
 // <1290240=> 4800 baud
 // <2576384=> 9600 baud
-// <3862528=> 14400 baud
+// <3866624=> 14400 baud
 // <5152768=> 19200 baud
-// <7716864=> 28800 baud
-// <10289152=> 38400 baud
-// <15400960=> 57600 baud
+// <7729152=> 28800 baud
+// <8388608=> 31250 baud
+// <10309632=> 38400 baud
+// <15007744=> 56000 baud
+// <15462400=> 57600 baud
 // <20615168=> 76800 baud
 // <30924800=> 115200 baud
-// <61865984=> 230400 baud
+// <61845504=> 230400 baud
 // <67108864=> 250000 baud
-// <121634816=> 460800 baud
-// <251658240=> 921600 baud
+// <123695104=> 460800 baud
+// <247386112=> 921600 baud
 // <268435456=> 1000000 baud
 
 #ifndef NRFX_UART_DEFAULT_CONFIG_BAUDRATE

@@ -35,7 +35,3 @@ nrfx documentation is availabe in the `doc\html` folder of the release package.
 You can also generate documentation yourself from the source code. To do it, install doxygen
 and run one of the scripts: `generate_html_doc.bat` or `generate_html_doc.sh`. Generated
 documentation will be stored in the `doc\html` directory. Use `index.html` to open it.
-
-## Licence
-
-nrfx is licensed under the BSD 3-clause License. License text can be found in every source file.

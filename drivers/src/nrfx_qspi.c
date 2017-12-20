@@ -110,6 +110,7 @@ nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
                           nrfx_qspi_handler_t        handler,
                           void *                     p_context)
 {
+    NRFX_ASSERT(p_config);
     if (m_cb.state != NRFX_DRV_STATE_UNINITIALIZED)
     {
         return NRFX_ERROR_INVALID_STATE;
@@ -120,6 +121,7 @@ nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
         return NRFX_ERROR_INVALID_PARAM;
     }
 
+    nrf_qspi_xip_offset_set(NRF_QSPI, p_config->xip_offset);
     nrf_qspi_ifconfig0_set(NRF_QSPI, &p_config->prot_if);
     nrf_qspi_ifconfig1_set(NRF_QSPI, &p_config->phy_if);
 

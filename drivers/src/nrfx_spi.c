@@ -58,7 +58,7 @@ typedef struct
     //  are not concurrently used in IRQ handlers and main line code]
     uint8_t     ss_pin;
     uint8_t     orc;
-    uint32_t    bytes_transferred;
+    size_t      bytes_transferred;
 
     bool        abort;
 } spi_control_block_t;
@@ -145,7 +145,7 @@ nrfx_err_t nrfx_spi_init(nrfx_spi_t const * const  p_instance,
     if (p_config->miso_pin != NRFX_SPI_PIN_NOT_USED)
     {
         miso_pin = p_config->miso_pin;
-        nrf_gpio_cfg_input(miso_pin, NRF_GPIO_PIN_NOPULL);
+        nrf_gpio_cfg_input(miso_pin, (nrf_gpio_pin_pull_t)NRFX_SPI_MISO_PULL_CFG);
     }
     else
     {
@@ -254,9 +254,8 @@ static bool transfer_byte(NRF_SPI_Type * p_spi, spi_control_block_t * p_cb)
     // NOTE - we've already used 'p_cb->bytes_transferred + 1' bytes from our
     //        buffers, because we take advantage of double buffering of TXD
     //        register (so in effect one byte is still being transmitted now);
-    //        see how the transfer is started in the 'nrfx_spi_transfer'
-    //        function.
-    uint32_t bytes_used = p_cb->bytes_transferred + 1;
+    //        see how the transfer is started in the 'spi_xfer' function.
+    size_t bytes_used = p_cb->bytes_transferred + 1;
 
     if (p_cb->abort)
     {
@@ -383,20 +382,6 @@ nrfx_err_t nrfx_spi_xfer(nrfx_spi_t     const * const p_instance,
                   __func__,
                   NRFX_LOG_ERROR_STRING_GET(err_code));
     return err_code;
-}
-
-nrfx_err_t nrfx_spi_transfer(nrfx_spi_t const * const p_instance,
-                             uint8_t          const * p_tx_buffer,
-                             uint32_t                 tx_buffer_length,
-                             uint8_t                * p_rx_buffer,
-                             uint32_t                 rx_buffer_length)
-{
-    nrfx_spi_xfer_desc_t xfer_desc;
-    xfer_desc.p_tx_buffer = p_tx_buffer;
-    xfer_desc.p_rx_buffer = p_rx_buffer;
-    xfer_desc.tx_length   = tx_buffer_length;
-    xfer_desc.rx_length   = rx_buffer_length;
-    return nrfx_spi_xfer(p_instance, &xfer_desc, 0);
 }
 
 void nrfx_spi_abort(nrfx_spi_t const * p_instance)

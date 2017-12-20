@@ -129,8 +129,8 @@ typedef struct
 {
     nrfx_twi_xfer_type_t    type;             ///< Type of transfer.
     uint8_t                 address;          ///< Slave address.
-    uint32_t                primary_length;   ///< Number of bytes transferred.
-    uint32_t                secondary_length; ///< Number of bytes transferred.
+    size_t                  primary_length;   ///< Number of bytes transferred.
+    size_t                  secondary_length; ///< Number of bytes transferred.
     uint8_t *               p_primary_buf;    ///< Pointer to transferred data.
     uint8_t *               p_secondary_buf;  ///< Pointer to transferred data.
 } nrfx_twi_xfer_desc_t;
@@ -195,7 +195,7 @@ typedef void (* nrfx_twi_evt_handler_t)(nrfx_twi_evt_t const * p_event,
  * @brief Function for initializing the TWI driver instance.
  *
  * @param[in] p_instance      Pointer to the driver instance structure.
- * @param[in] p_config        Initial configuration.
+ * @param[in] p_config        Pointer to the structure with initial configuration.
  * @param[in] event_handler   Event handler provided by the user. If NULL, blocking mode is enabled.
  * @param[in] p_context       Context passed to event handler.
  *
@@ -255,7 +255,7 @@ void nrfx_twi_disable(nrfx_twi_t const * p_instance);
 nrfx_err_t nrfx_twi_tx(nrfx_twi_t const * p_instance,
                        uint8_t            address,
                        uint8_t const *    p_data,
-                       uint32_t           length,
+                       size_t             length,
                        bool               no_stop);
 
 /**
@@ -279,7 +279,7 @@ nrfx_err_t nrfx_twi_tx(nrfx_twi_t const * p_instance,
 nrfx_err_t nrfx_twi_rx(nrfx_twi_t const * p_instance,
                        uint8_t            address,
                        uint8_t *          p_data,
-                       uint32_t           length);
+                       size_t             length);
 
 /**
  * @brief Function for preparing a TWI transfer.
@@ -333,7 +333,7 @@ bool nrfx_twi_is_busy(nrfx_twi_t const * p_instance);
  *
  * @return     Data count.
  */
-uint32_t nrfx_twi_data_count_get(nrfx_twi_t const * const p_instance);
+size_t nrfx_twi_data_count_get(nrfx_twi_t const * const p_instance);
 
 /**
  * @brief Function for returning the address of a STOPPED TWI event.

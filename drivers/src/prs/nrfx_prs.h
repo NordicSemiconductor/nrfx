@@ -78,8 +78,6 @@ extern "C" {
     #define NRFX_PRS_BOX_3_ADDR     NRF_COMP
     // UARTE0, UART0
     #define NRFX_PRS_BOX_4_ADDR     NRF_UARTE0
-    // UARTE1, UART1
-    #define NRFX_PRS_BOX_5_ADDR     NRF_UARTE1
 #else
     #error "Unknown device."
 #endif
@@ -123,7 +121,6 @@ void nrfx_prs_box_1_irq_handler(void);
 void nrfx_prs_box_2_irq_handler(void);
 void nrfx_prs_box_3_irq_handler(void);
 void nrfx_prs_box_4_irq_handler(void);
-void nrfx_prs_box_5_irq_handler(void);
 
 /** @} */
 

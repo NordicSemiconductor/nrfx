@@ -85,8 +85,8 @@ typedef enum
 typedef struct
 {
     nrfx_spis_event_type_t evt_type;        //!< Type of event.
-    uint32_t                  rx_amount;    //!< Number of bytes received in last transaction. This parameter is only valid for @ref NRFX_SPIS_XFER_DONE events.
-    uint32_t                  tx_amount;    //!< Number of bytes transmitted in last transaction. This parameter is only valid for @ref NRFX_SPIS_XFER_DONE events.
+    size_t                 rx_amount;    //!< Number of bytes received in the last transaction. This parameter is only valid for @ref NRFX_SPIS_XFER_DONE events.
+    size_t                 tx_amount;    //!< Number of bytes transmitted in the last transaction. This parameter is only valid for @ref NRFX_SPIS_XFER_DONE events.
 } nrfx_spis_event_t;
 
 /** @brief SPI slave driver instance data structure. */
@@ -166,8 +166,7 @@ typedef void (*nrfx_spis_event_handler_t)(nrfx_spis_event_t event);
  *       to detect falling edges on CSN pin.
  *
  * @param[in] p_instance    Pointer to the driver instance structure.
- * @param[in] p_config      Pointer to the structure with the initial configuration.
- *                          If NULL, the default configuration will be used.
+ * @param[in] p_config      Pointer to the structure with initial configuration.
  * @param[in] event_handler Function to be called by the SPI slave driver upon event.
  *
  * @retval NRFX_SUCCESS             If the initialization was successful.
@@ -221,13 +220,14 @@ void nrfx_spis_uninit(nrfx_spis_t const * const p_instance);
  * @retval NRFX_ERROR_INVALID_STATE  If the operation failed because the SPI slave device is in an incorrect state.
  * @retval NRFX_ERROR_INVALID_ADDR   If the provided buffers are not placed in the Data
  *                                   RAM region.
+ * @retval NRFX_ERROR_INVALID_LENGTH If provided lengths exceed the EasyDMA limits for the peripheral.
  * @retval NRFX_ERROR_INTERNAL       If the operation failed because of an internal error.
  */
 nrfx_err_t nrfx_spis_buffers_set(nrfx_spis_t const * const p_instance,
                                  uint8_t           const * p_tx_buffer,
-                                 uint8_t                   tx_buffer_length,
+                                 size_t                    tx_buffer_length,
                                  uint8_t                 * p_rx_buffer,
-                                 uint8_t                   rx_buffer_length);
+                                 size_t                    rx_buffer_length);
 
 
 void nrfx_spis_0_irq_handler(void);

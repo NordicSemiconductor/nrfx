@@ -6,7 +6,7 @@
  *           nrf52810 from Nordic Semiconductor.
  *
  * @version  V1
- * @date     12. May 2017
+ * @date     3. October 2017
  *
  * @note     Generated with SVDConv V2.81d 
  *           from CMSIS SVD File 'nrf52810.svd' Version 1,
@@ -495,8 +495,6 @@ typedef struct {                                    /*!< CLOCK Structure        
   __IO uint32_t  LFCLKSRC;                          /*!< Clock source for the LFCLK                                            */
   __I  uint32_t  RESERVED6[7];
   __IO uint32_t  CTIV;                              /*!< Calibration timer interval                                            */
-  __I  uint32_t  RESERVED7[8];
-  __IO uint32_t  TRACECONFIG;                       /*!< Clocking options for the Trace Port debug interface                   */
 } NRF_CLOCK_Type;
 
 
@@ -1254,13 +1252,12 @@ typedef struct {                                    /*!< COMP Structure         
   __I  uint32_t  RESERVED4[63];
   __IO uint32_t  ENABLE;                            /*!< COMP enable                                                           */
   __IO uint32_t  PSEL;                              /*!< Pin select                                                            */
-  __IO uint32_t  REFSEL;                            /*!< Reference source select                                               */
+  __IO uint32_t  REFSEL;                            /*!< Reference source select for single-ended mode                         */
   __IO uint32_t  EXTREFSEL;                         /*!< External reference select                                             */
   __I  uint32_t  RESERVED5[8];
   __IO uint32_t  TH;                                /*!< Threshold configuration for hysteresis unit                           */
   __IO uint32_t  MODE;                              /*!< Mode configuration                                                    */
   __IO uint32_t  HYST;                              /*!< Comparator hysteresis enable                                          */
-  __IO uint32_t  ISOURCE;                           /*!< Current source select on analog input                                 */
 } NRF_COMP_Type;
 
 
@@ -1391,7 +1388,7 @@ typedef struct {                                    /*!< PDM Structure          
 
 
 /**
-  * @brief Non Volatile Memory Controller (NVMC)
+  * @brief Non-volatile memory controller (NVMC)
   */
 
 typedef struct {                                    /*!< NVMC Structure                                                        */
@@ -1401,9 +1398,9 @@ typedef struct {                                    /*!< NVMC Structure         
   __IO uint32_t  CONFIG;                            /*!< Configuration register                                                */
   
   union {
+    __IO uint32_t  ERASEPAGE;                       /*!< Register for erasing a page in code area                              */
     __IO uint32_t  ERASEPCR1;                       /*!< Deprecated register - Register for erasing a page in code area.
                                                          Equivalent to ERASEPAGE.                                              */
-    __IO uint32_t  ERASEPAGE;                       /*!< Register for erasing a page in code area                              */
   };
   __IO uint32_t  ERASEALL;                          /*!< Register for erasing all non-volatile user memory                     */
   __IO uint32_t  ERASEPCR0;                         /*!< Deprecated register - Register for erasing a page in code area.

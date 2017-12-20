@@ -359,6 +359,15 @@ __STATIC_INLINE void nrf_qspi_pins_set(NRF_QSPI_Type *         p_reg,
                                        const nrf_qspi_pins_t * p_pins);
 
 /**
+ * @brief Function for setting the QSPI XIPOFFSET register.
+ *
+ * @param[in] p_reg      Pointer to the peripheral register structure.
+ * @param[in] xip_offset Address offset in the external memory for Execute in Place operation.
+ */
+__STATIC_INLINE void nrf_qspi_xip_offset_set(NRF_QSPI_Type * p_reg,
+                                             uint32_t        xip_offset);
+
+/**
  * @brief Function for setting the QSPI IFCONFIG0 register.
  *
  * @param[in] p_reg    Pointer to the peripheral register structure.
@@ -555,6 +564,12 @@ __STATIC_INLINE void nrf_qspi_pins_set(NRF_QSPI_Type * p_reg, const nrf_qspi_pin
     p_reg->PSEL.IO1 = NRF_QSPI_PIN_VAL(p_pins->io1_pin);
     p_reg->PSEL.IO2 = NRF_QSPI_PIN_VAL(p_pins->io2_pin);
     p_reg->PSEL.IO3 = NRF_QSPI_PIN_VAL(p_pins->io3_pin);
+}
+
+__STATIC_INLINE void nrf_qspi_xip_offset_set(NRF_QSPI_Type * p_reg,
+                                             uint32_t        xip_offset)
+{
+    p_reg->XIPOFFSET = xip_offset;
 }
 
 __STATIC_INLINE void nrf_qspi_ifconfig0_set(NRF_QSPI_Type *              p_reg,

@@ -117,12 +117,12 @@ typedef void (*nrfx_pdm_event_handler_t)(nrfx_pdm_evt_t const * const p_evt);
 /**
  * @brief Function for initializing the PDM interface.
  *
- * @param[in] p_config      Pointer to a configuration structure. Cannot be NULL.
+ * @param[in] p_config      Pointer to the structure with initial configuration.
  * @param[in] event_handler Event handler provided by the user. Cannot be NULL.
  *
  * @retval    NRFX_SUCCESS If initialization was successful.
  * @retval    NRFX_ERROR_INVALID_STATE If the driver is already initialized.
- * @retval    NRFX_ERROR_INVALID_PARAM If invalid parameters were specified.
+ * @retval    NRFX_ERROR_INVALID_PARAM If specified event handler is NULL.
  */
 nrfx_err_t nrfx_pdm_init(nrfx_pdm_config_t const * p_config,
                          nrfx_pdm_event_handler_t  event_handler);

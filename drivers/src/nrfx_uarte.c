@@ -48,6 +48,26 @@
     (event == NRF_UARTE_EVENT_ERROR ? "NRF_UARTE_EVENT_ERROR" : \
                                       "UNKNOWN EVENT")
 
+#define UARTEX_LENGTH_VALIDATE(peripheral, drv_inst_idx, len1, len2)     \
+    (((drv_inst_idx) == NRFX_CONCAT_3(NRFX_, peripheral, _INST_IDX)) && \
+     NRFX_EASYDMA_LENGTH_VALIDATE(peripheral, len1, len2))
+
+#if NRFX_CHECK(NRFX_UARTE0_ENABLED)
+#define UARTE0_LENGTH_VALIDATE(...)  UARTEX_LENGTH_VALIDATE(UARTE0, __VA_ARGS__)
+#else
+#define UARTE0_LENGTH_VALIDATE(...)  0
+#endif
+
+#if NRFX_CHECK(NRFX_UARTE1_ENABLED)
+#define UARTE1_LENGTH_VALIDATE(...)  UARTEX_LENGTH_VALIDATE(UARTE1, __VA_ARGS__)
+#else
+#define UARTE1_LENGTH_VALIDATE(...)  0
+#endif
+
+#define UARTE_LENGTH_VALIDATE(drv_inst_idx, length)     \
+    (UARTE0_LENGTH_VALIDATE(drv_inst_idx, length, 0) || \
+     UARTE1_LENGTH_VALIDATE(drv_inst_idx, length, 0))
+
 
 typedef struct
 {
@@ -56,9 +76,9 @@ typedef struct
     uint8_t            const * p_tx_buffer;
     uint8_t                  * p_rx_buffer;
     uint8_t                  * p_rx_secondary_buffer;
-    uint8_t                    tx_buffer_length;
-    uint8_t                    rx_buffer_length;
-    uint8_t                    rx_secondary_buffer_length;
+    size_t                     tx_buffer_length;
+    size_t                     rx_buffer_length;
+    size_t                     rx_secondary_buffer_length;
     nrfx_drv_state_t           state;
 } uarte_control_block_t;
 static uarte_control_block_t m_cb[NRFX_UARTE_ENABLED_COUNT];
@@ -234,12 +254,13 @@ void nrfx_uarte_uninit(nrfx_uarte_t const * p_instance)
 
 nrfx_err_t nrfx_uarte_tx(nrfx_uarte_t const * p_instance,
                          uint8_t const *      p_data,
-                         uint8_t              length)
+                         size_t               length)
 {
     uarte_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
     NRFX_ASSERT(p_data);
     NRFX_ASSERT(length > 0);
+    NRFX_ASSERT(UARTE_LENGTH_VALIDATE(p_instance->drv_inst_idx, length));
 
     nrfx_err_t err_code;
 
@@ -306,13 +327,14 @@ bool nrfx_uarte_tx_in_progress(nrfx_uarte_t const * p_instance)
 
 nrfx_err_t nrfx_uarte_rx(nrfx_uarte_t const * p_instance,
                          uint8_t *            p_data,
-                         uint8_t              length)
+                         size_t               length)
 {
     uarte_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
     NRFX_ASSERT(m_cb[p_instance->drv_inst_idx].state == NRFX_DRV_STATE_INITIALIZED);
     NRFX_ASSERT(p_data);
     NRFX_ASSERT(length > 0);
+    NRFX_ASSERT(UARTE_LENGTH_VALIDATE(p_instance->drv_inst_idx, length));
 
     nrfx_err_t err_code;
 
@@ -424,7 +446,7 @@ uint32_t nrfx_uarte_errorsrc_get(nrfx_uarte_t const * p_instance)
 }
 
 static void rx_done_event(uarte_control_block_t * p_cb,
-                          uint8_t                 bytes,
+                          size_t                  bytes,
                           uint8_t *               p_data)
 {
     nrfx_uarte_event_t event;
@@ -437,7 +459,7 @@ static void rx_done_event(uarte_control_block_t * p_cb,
 }
 
 static void tx_done_event(uarte_control_block_t * p_cb,
-                          uint8_t                 bytes)
+                          size_t                  bytes)
 {
     nrfx_uarte_event_t event;
 
@@ -484,7 +506,7 @@ static void uarte_irq_handler(NRF_UARTE_Type *        p_uarte,
         event.data.error.rxtx.bytes  = nrf_uarte_rx_amount_get(p_uarte);
         event.data.error.rxtx.p_data = p_cb->p_rx_buffer;
 
-        //abort transfer
+        // Abort transfer.
         p_cb->rx_buffer_length = 0;
         p_cb->rx_secondary_buffer_length = 0;
 
@@ -493,9 +515,9 @@ static void uarte_irq_handler(NRF_UARTE_Type *        p_uarte,
     else if (nrf_uarte_event_check(p_uarte, NRF_UARTE_EVENT_ENDRX))
     {
         nrf_uarte_event_clear(p_uarte, NRF_UARTE_EVENT_ENDRX);
-        uint8_t amount = nrf_uarte_rx_amount_get(p_uarte);
+        size_t amount = nrf_uarte_rx_amount_get(p_uarte);
         // If the transfer was stopped before completion, amount of transfered bytes
-        // will not be equal to the buffer length. Interrupted trunsfer is ignored.
+        // will not be equal to the buffer length. Interrupted transfer is ignored.
         if (amount == p_cb->rx_buffer_length)
         {
             if (p_cb->rx_secondary_buffer_length)

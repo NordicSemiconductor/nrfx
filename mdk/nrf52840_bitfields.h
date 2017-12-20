@@ -318,6 +318,20 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: CLOCK_INTENSET */
 /* Description: Enable interrupt */
 
+/* Bit 11 : Write '1' to Enable interrupt for CTSTOPPED event */
+#define CLOCK_INTENSET_CTSTOPPED_Pos (11UL) /*!< Position of CTSTOPPED field. */
+#define CLOCK_INTENSET_CTSTOPPED_Msk (0x1UL << CLOCK_INTENSET_CTSTOPPED_Pos) /*!< Bit mask of CTSTOPPED field. */
+#define CLOCK_INTENSET_CTSTOPPED_Disabled (0UL) /*!< Read: Disabled */
+#define CLOCK_INTENSET_CTSTOPPED_Enabled (1UL) /*!< Read: Enabled */
+#define CLOCK_INTENSET_CTSTOPPED_Set (1UL) /*!< Enable */
+
+/* Bit 10 : Write '1' to Enable interrupt for CTSTARTED event */
+#define CLOCK_INTENSET_CTSTARTED_Pos (10UL) /*!< Position of CTSTARTED field. */
+#define CLOCK_INTENSET_CTSTARTED_Msk (0x1UL << CLOCK_INTENSET_CTSTARTED_Pos) /*!< Bit mask of CTSTARTED field. */
+#define CLOCK_INTENSET_CTSTARTED_Disabled (0UL) /*!< Read: Disabled */
+#define CLOCK_INTENSET_CTSTARTED_Enabled (1UL) /*!< Read: Enabled */
+#define CLOCK_INTENSET_CTSTARTED_Set (1UL) /*!< Enable */
+
 /* Bit 4 : Write '1' to Enable interrupt for CTTO event */
 #define CLOCK_INTENSET_CTTO_Pos (4UL) /*!< Position of CTTO field. */
 #define CLOCK_INTENSET_CTTO_Msk (0x1UL << CLOCK_INTENSET_CTTO_Pos) /*!< Bit mask of CTTO field. */
@@ -348,6 +362,20 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* Register: CLOCK_INTENCLR */
 /* Description: Disable interrupt */
+
+/* Bit 11 : Write '1' to Disable interrupt for CTSTOPPED event */
+#define CLOCK_INTENCLR_CTSTOPPED_Pos (11UL) /*!< Position of CTSTOPPED field. */
+#define CLOCK_INTENCLR_CTSTOPPED_Msk (0x1UL << CLOCK_INTENCLR_CTSTOPPED_Pos) /*!< Bit mask of CTSTOPPED field. */
+#define CLOCK_INTENCLR_CTSTOPPED_Disabled (0UL) /*!< Read: Disabled */
+#define CLOCK_INTENCLR_CTSTOPPED_Enabled (1UL) /*!< Read: Enabled */
+#define CLOCK_INTENCLR_CTSTOPPED_Clear (1UL) /*!< Disable */
+
+/* Bit 10 : Write '1' to Disable interrupt for CTSTARTED event */
+#define CLOCK_INTENCLR_CTSTARTED_Pos (10UL) /*!< Position of CTSTARTED field. */
+#define CLOCK_INTENCLR_CTSTARTED_Msk (0x1UL << CLOCK_INTENCLR_CTSTARTED_Pos) /*!< Bit mask of CTSTARTED field. */
+#define CLOCK_INTENCLR_CTSTARTED_Disabled (0UL) /*!< Read: Disabled */
+#define CLOCK_INTENCLR_CTSTARTED_Enabled (1UL) /*!< Read: Enabled */
+#define CLOCK_INTENCLR_CTSTARTED_Clear (1UL) /*!< Disable */
 
 /* Bit 4 : Write '1' to Disable interrupt for CTTO event */
 #define CLOCK_INTENCLR_CTTO_Pos (4UL) /*!< Position of CTTO field. */
@@ -665,7 +693,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define COMP_PSEL_PSEL_AnalogInput7 (7UL) /*!< AIN7 selected as analog input */
 
 /* Register: COMP_REFSEL */
-/* Description: Reference source select */
+/* Description: Reference source select for single-ended mode */
 
 /* Bits 2..0 : Reference select */
 #define COMP_REFSEL_REFSEL_Pos (0UL) /*!< Position of REFSEL field. */
@@ -679,11 +707,17 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: COMP_EXTREFSEL */
 /* Description: External reference select */
 
-/* Bit 0 : External analog reference select */
+/* Bits 2..0 : External analog reference select */
 #define COMP_EXTREFSEL_EXTREFSEL_Pos (0UL) /*!< Position of EXTREFSEL field. */
-#define COMP_EXTREFSEL_EXTREFSEL_Msk (0x1UL << COMP_EXTREFSEL_EXTREFSEL_Pos) /*!< Bit mask of EXTREFSEL field. */
+#define COMP_EXTREFSEL_EXTREFSEL_Msk (0x7UL << COMP_EXTREFSEL_EXTREFSEL_Pos) /*!< Bit mask of EXTREFSEL field. */
 #define COMP_EXTREFSEL_EXTREFSEL_AnalogReference0 (0UL) /*!< Use AIN0 as external analog reference */
 #define COMP_EXTREFSEL_EXTREFSEL_AnalogReference1 (1UL) /*!< Use AIN1 as external analog reference */
+#define COMP_EXTREFSEL_EXTREFSEL_AnalogReference2 (2UL) /*!< Use AIN2 as external analog reference */
+#define COMP_EXTREFSEL_EXTREFSEL_AnalogReference3 (3UL) /*!< Use AIN3 as external analog reference */
+#define COMP_EXTREFSEL_EXTREFSEL_AnalogReference4 (4UL) /*!< Use AIN4 as external analog reference */
+#define COMP_EXTREFSEL_EXTREFSEL_AnalogReference5 (5UL) /*!< Use AIN5 as external analog reference */
+#define COMP_EXTREFSEL_EXTREFSEL_AnalogReference6 (6UL) /*!< Use AIN6 as external analog reference */
+#define COMP_EXTREFSEL_EXTREFSEL_AnalogReference7 (7UL) /*!< Use AIN7 as external analog reference */
 
 /* Register: COMP_TH */
 /* Description: Threshold configuration for hysteresis unit */
@@ -699,18 +733,18 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: COMP_MODE */
 /* Description: Mode configuration */
 
-/* Bit 8 : Main operation mode */
+/* Bit 8 : Main operation modes */
 #define COMP_MODE_MAIN_Pos (8UL) /*!< Position of MAIN field. */
 #define COMP_MODE_MAIN_Msk (0x1UL << COMP_MODE_MAIN_Pos) /*!< Bit mask of MAIN field. */
-#define COMP_MODE_MAIN_SE (0UL) /*!< Single ended mode */
+#define COMP_MODE_MAIN_SE (0UL) /*!< Single-ended mode */
 #define COMP_MODE_MAIN_Diff (1UL) /*!< Differential mode */
 
-/* Bits 1..0 : Speed and power mode */
+/* Bits 1..0 : Speed and power modes */
 #define COMP_MODE_SP_Pos (0UL) /*!< Position of SP field. */
 #define COMP_MODE_SP_Msk (0x3UL << COMP_MODE_SP_Pos) /*!< Bit mask of SP field. */
-#define COMP_MODE_SP_Low (0UL) /*!< Low power mode */
+#define COMP_MODE_SP_Low (0UL) /*!< Low-power mode */
 #define COMP_MODE_SP_Normal (1UL) /*!< Normal mode */
-#define COMP_MODE_SP_High (2UL) /*!< High speed mode */
+#define COMP_MODE_SP_High (2UL) /*!< High-speed mode */
 
 /* Register: COMP_HYST */
 /* Description: Comparator hysteresis enable */
@@ -721,29 +755,18 @@ POSSIBILITY OF SUCH DAMAGE.
 #define COMP_HYST_HYST_NoHyst (0UL) /*!< Comparator hysteresis disabled */
 #define COMP_HYST_HYST_Hyst50mV (1UL) /*!< Comparator hysteresis enabled */
 
-/* Register: COMP_ISOURCE */
-/* Description: Current source select on analog input */
-
-/* Bits 1..0 : Comparator hysteresis */
-#define COMP_ISOURCE_ISOURCE_Pos (0UL) /*!< Position of ISOURCE field. */
-#define COMP_ISOURCE_ISOURCE_Msk (0x3UL << COMP_ISOURCE_ISOURCE_Pos) /*!< Bit mask of ISOURCE field. */
-#define COMP_ISOURCE_ISOURCE_Off (0UL) /*!< Current source disabled */
-#define COMP_ISOURCE_ISOURCE_Ien2mA5 (1UL) /*!< Current source enabled (+/- 2.5 uA) */
-#define COMP_ISOURCE_ISOURCE_Ien5mA (2UL) /*!< Current source enabled (+/- 5 uA) */
-#define COMP_ISOURCE_ISOURCE_Ien10mA (3UL) /*!< Current source enabled (+/- 10 uA) */
-
 
 /* Peripheral: CRYPTOCELL */
-/* Description: ARM CryptoCell register interface */
+/* Description: ARM TrustZone CryptoCell register interface */
 
 /* Register: CRYPTOCELL_ENABLE */
-/* Description: Control power and clock for ARM CryptoCell subsystem */
+/* Description: Control power and clock for CRYPTOCELL subsystem */
 
-/* Bit 0 : Enable or disable the CryptoCell subsystem */
+/* Bit 0 : Enable or disable the CRYPTOCELL subsystem */
 #define CRYPTOCELL_ENABLE_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
 #define CRYPTOCELL_ENABLE_ENABLE_Msk (0x1UL << CRYPTOCELL_ENABLE_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
-#define CRYPTOCELL_ENABLE_ENABLE_Disabled (0UL) /*!< CryptoCell subsystem disabled */
-#define CRYPTOCELL_ENABLE_ENABLE_Enabled (1UL) /*!< CryptoCell subsystem enabled */
+#define CRYPTOCELL_ENABLE_ENABLE_Disabled (0UL) /*!< CRYPTOCELL subsystem disabled */
+#define CRYPTOCELL_ENABLE_ENABLE_Enabled (1UL) /*!< CRYPTOCELL subsystem enabled */
 
 
 /* Peripheral: ECB */
@@ -2082,8 +2105,8 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bit 0 : Comparator hysteresis enable */
 #define LPCOMP_HYST_HYST_Pos (0UL) /*!< Position of HYST field. */
 #define LPCOMP_HYST_HYST_Msk (0x1UL << LPCOMP_HYST_HYST_Pos) /*!< Bit mask of HYST field. */
-#define LPCOMP_HYST_HYST_NoHyst (0UL) /*!< Comparator hysteresis disabled */
-#define LPCOMP_HYST_HYST_Hyst50mV (1UL) /*!< Comparator hysteresis disabled (typ. 50 mV) */
+#define LPCOMP_HYST_HYST_Disabled (0UL) /*!< Comparator hysteresis disabled */
+#define LPCOMP_HYST_HYST_Enabled (1UL) /*!< Comparator hysteresis enabled */
 
 
 /* Peripheral: MWU */
@@ -4074,6 +4097,15 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NVMC_READY_READY_Busy (0UL) /*!< NVMC is busy (on-going write or erase operation) */
 #define NVMC_READY_READY_Ready (1UL) /*!< NVMC is ready */
 
+/* Register: NVMC_READYNEXT */
+/* Description: Ready flag */
+
+/* Bit 0 : NVMC can accept a new write operation */
+#define NVMC_READYNEXT_READYNEXT_Pos (0UL) /*!< Position of READYNEXT field. */
+#define NVMC_READYNEXT_READYNEXT_Msk (0x1UL << NVMC_READYNEXT_READYNEXT_Pos) /*!< Bit mask of READYNEXT field. */
+#define NVMC_READYNEXT_READYNEXT_Busy (0UL) /*!< NVMC cannot accept any write operation */
+#define NVMC_READYNEXT_READYNEXT_Ready (1UL) /*!< NVMC is ready */
+
 /* Register: NVMC_CONFIG */
 /* Description: Configuration register */
 
@@ -4084,19 +4116,19 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NVMC_CONFIG_WEN_Wen (1UL) /*!< Write enabled */
 #define NVMC_CONFIG_WEN_Een (2UL) /*!< Erase enabled */
 
-/* Register: NVMC_ERASEPAGE */
-/* Description: Register for erasing a page in code area */
-
-/* Bits 31..0 : Register for starting erase of a page in code area */
-#define NVMC_ERASEPAGE_ERASEPAGE_Pos (0UL) /*!< Position of ERASEPAGE field. */
-#define NVMC_ERASEPAGE_ERASEPAGE_Msk (0xFFFFFFFFUL << NVMC_ERASEPAGE_ERASEPAGE_Pos) /*!< Bit mask of ERASEPAGE field. */
-
 /* Register: NVMC_ERASEPCR1 */
 /* Description: Deprecated register -  Register for erasing a page in code area. Equivalent to ERASEPAGE. */
 
 /* Bits 31..0 : Register for erasing a page in code area. Equivalent to ERASEPAGE. */
 #define NVMC_ERASEPCR1_ERASEPCR1_Pos (0UL) /*!< Position of ERASEPCR1 field. */
 #define NVMC_ERASEPCR1_ERASEPCR1_Msk (0xFFFFFFFFUL << NVMC_ERASEPCR1_ERASEPCR1_Pos) /*!< Bit mask of ERASEPCR1 field. */
+
+/* Register: NVMC_ERASEPAGE */
+/* Description: Register for erasing a page in code area */
+
+/* Bits 31..0 : Register for starting erase of a page in code area */
+#define NVMC_ERASEPAGE_ERASEPAGE_Pos (0UL) /*!< Position of ERASEPAGE field. */
+#define NVMC_ERASEPAGE_ERASEPAGE_Msk (0xFFFFFFFFUL << NVMC_ERASEPAGE_ERASEPAGE_Pos) /*!< Bit mask of ERASEPAGE field. */
 
 /* Register: NVMC_ERASEALL */
 /* Description: Register for erasing all non-volatile user memory */
@@ -7993,9 +8025,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PWM_DECODER_MODE_RefreshCount (0UL) /*!< SEQ[n].REFRESH is used to determine loading internal compare registers */
 #define PWM_DECODER_MODE_NextStep (1UL) /*!< NEXTSTEP task causes a new value to be loaded to internal compare registers */
 
-/* Bits 2..0 : How a sequence is read from RAM and spread to the compare register */
+/* Bits 1..0 : How a sequence is read from RAM and spread to the compare register */
 #define PWM_DECODER_LOAD_Pos (0UL) /*!< Position of LOAD field. */
-#define PWM_DECODER_LOAD_Msk (0x7UL << PWM_DECODER_LOAD_Pos) /*!< Bit mask of LOAD field. */
+#define PWM_DECODER_LOAD_Msk (0x3UL << PWM_DECODER_LOAD_Pos) /*!< Bit mask of LOAD field. */
 #define PWM_DECODER_LOAD_Common (0UL) /*!< 1st half word (16-bit) used in all PWM channels 0..3 */
 #define PWM_DECODER_LOAD_Grouped (1UL) /*!< 1st half word (16-bit) used in channel 0..1; 2nd word in channel 2..3 */
 #define PWM_DECODER_LOAD_Individual (2UL) /*!< 1st half word (16-bit) in ch.0; 2nd in ch.1; ...; 4th in ch.3 */
@@ -9297,7 +9329,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RADIO_MODE_MODE_Msk (0xFUL << RADIO_MODE_MODE_Pos) /*!< Bit mask of MODE field. */
 #define RADIO_MODE_MODE_Nrf_1Mbit (0UL) /*!< 1 Mbit/s Nordic proprietary radio mode */
 #define RADIO_MODE_MODE_Nrf_2Mbit (1UL) /*!< 2 Mbit/s Nordic proprietary radio mode */
-#define RADIO_MODE_MODE_Nrf_250Kbit (2UL) /*!< Deprecated enumerator -  250 kbit/s Nordic proprietary radio mode */
 #define RADIO_MODE_MODE_Ble_1Mbit (3UL) /*!< 1 Mbit/s Bluetooth Low Energy */
 #define RADIO_MODE_MODE_Ble_2Mbit (4UL) /*!< 2 Mbit/s Bluetooth Low Energy */
 #define RADIO_MODE_MODE_Ble_LR125Kbit (5UL) /*!< Long range 125 kbit/s (TX Only - RX supports both) */
@@ -11083,6 +11114,39 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM_IFTIMING_CSNDUR_CSNDUR_Pos (0UL) /*!< Position of CSNDUR field. */
 #define SPIM_IFTIMING_CSNDUR_CSNDUR_Msk (0xFFUL << SPIM_IFTIMING_CSNDUR_CSNDUR_Pos) /*!< Bit mask of CSNDUR field. */
 
+/* Register: SPIM_CSNPOL */
+/* Description: Polarity of CSN output */
+
+/* Bit 0 : Polarity of CSN output */
+#define SPIM_CSNPOL_CSNPOL_Pos (0UL) /*!< Position of CSNPOL field. */
+#define SPIM_CSNPOL_CSNPOL_Msk (0x1UL << SPIM_CSNPOL_CSNPOL_Pos) /*!< Bit mask of CSNPOL field. */
+#define SPIM_CSNPOL_CSNPOL_LOW (0UL) /*!< Active low (idle state high) */
+#define SPIM_CSNPOL_CSNPOL_HIGH (1UL) /*!< Active high (idle state low) */
+
+/* Register: SPIM_PSELDCX */
+/* Description: Pin select for DCX signal */
+
+/* Bit 31 : Connection */
+#define SPIM_PSELDCX_CONNECT_Pos (31UL) /*!< Position of CONNECT field. */
+#define SPIM_PSELDCX_CONNECT_Msk (0x1UL << SPIM_PSELDCX_CONNECT_Pos) /*!< Bit mask of CONNECT field. */
+#define SPIM_PSELDCX_CONNECT_Connected (0UL) /*!< Connect */
+#define SPIM_PSELDCX_CONNECT_Disconnected (1UL) /*!< Disconnect */
+
+/* Bit 5 : Port number */
+#define SPIM_PSELDCX_PORT_Pos (5UL) /*!< Position of PORT field. */
+#define SPIM_PSELDCX_PORT_Msk (0x1UL << SPIM_PSELDCX_PORT_Pos) /*!< Bit mask of PORT field. */
+
+/* Bits 4..0 : Pin number */
+#define SPIM_PSELDCX_PIN_Pos (0UL) /*!< Position of PIN field. */
+#define SPIM_PSELDCX_PIN_Msk (0x1FUL << SPIM_PSELDCX_PIN_Pos) /*!< Bit mask of PIN field. */
+
+/* Register: SPIM_DCXCNT */
+/* Description: DCX configuration */
+
+/* Bits 3..0 : This register specifies the number of command bytes preceding the data bytes. The PSEL.DCX line will be low during transmission of command bytes and high during transmission of data bytes. Value 0xF indicates that all bytes are command bytes. */
+#define SPIM_DCXCNT_DCXCNT_Pos (0UL) /*!< Position of DCXCNT field. */
+#define SPIM_DCXCNT_DCXCNT_Msk (0xFUL << SPIM_DCXCNT_DCXCNT_Pos) /*!< Bit mask of DCXCNT field. */
+
 /* Register: SPIM_ORC */
 /* Description: Byte transmitted after TXD.MAXCNT bytes have been transmitted in the case when RXD.MAXCNT is greater than TXD.MAXCNT */
 
@@ -11266,16 +11330,16 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: SPIS_RXD_MAXCNT */
 /* Description: Maximum number of bytes in receive buffer */
 
-/* Bits 7..0 : Maximum number of bytes in receive buffer */
+/* Bits 15..0 : Maximum number of bytes in receive buffer */
 #define SPIS_RXD_MAXCNT_MAXCNT_Pos (0UL) /*!< Position of MAXCNT field. */
-#define SPIS_RXD_MAXCNT_MAXCNT_Msk (0xFFUL << SPIS_RXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
+#define SPIS_RXD_MAXCNT_MAXCNT_Msk (0xFFFFUL << SPIS_RXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
 
 /* Register: SPIS_RXD_AMOUNT */
 /* Description: Number of bytes received in last granted transaction */
 
-/* Bits 7..0 : Number of bytes received in the last granted transaction */
+/* Bits 15..0 : Number of bytes received in the last granted transaction */
 #define SPIS_RXD_AMOUNT_AMOUNT_Pos (0UL) /*!< Position of AMOUNT field. */
-#define SPIS_RXD_AMOUNT_AMOUNT_Msk (0xFFUL << SPIS_RXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
+#define SPIS_RXD_AMOUNT_AMOUNT_Msk (0xFFFFUL << SPIS_RXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
 
 /* Register: SPIS_TXD_PTR */
 /* Description: TXD data pointer */
@@ -11287,16 +11351,16 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: SPIS_TXD_MAXCNT */
 /* Description: Maximum number of bytes in transmit buffer */
 
-/* Bits 7..0 : Maximum number of bytes in transmit buffer */
+/* Bits 15..0 : Maximum number of bytes in transmit buffer */
 #define SPIS_TXD_MAXCNT_MAXCNT_Pos (0UL) /*!< Position of MAXCNT field. */
-#define SPIS_TXD_MAXCNT_MAXCNT_Msk (0xFFUL << SPIS_TXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
+#define SPIS_TXD_MAXCNT_MAXCNT_Msk (0xFFFFUL << SPIS_TXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
 
 /* Register: SPIS_TXD_AMOUNT */
 /* Description: Number of bytes transmitted in last granted transaction */
 
-/* Bits 7..0 : Number of bytes transmitted in last granted transaction */
+/* Bits 15..0 : Number of bytes transmitted in last granted transaction */
 #define SPIS_TXD_AMOUNT_AMOUNT_Pos (0UL) /*!< Position of AMOUNT field. */
-#define SPIS_TXD_AMOUNT_AMOUNT_Msk (0xFFUL << SPIS_TXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
+#define SPIS_TXD_AMOUNT_AMOUNT_Msk (0xFFFFUL << SPIS_TXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
 
 /* Register: SPIS_CONFIG */
 /* Description: Configuration register */
@@ -11651,15 +11715,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER_INTENCLR_COMPARE0_Disabled (0UL) /*!< Read: Disabled */
 #define TIMER_INTENCLR_COMPARE0_Enabled (1UL) /*!< Read: Enabled */
 #define TIMER_INTENCLR_COMPARE0_Clear (1UL) /*!< Disable */
-
-/* Register: TIMER_STATUS */
-/* Description: Timer status */
-
-/* Bit 0 : Timer status */
-#define TIMER_STATUS_STATUS_Pos (0UL) /*!< Position of STATUS field. */
-#define TIMER_STATUS_STATUS_Msk (0x1UL << TIMER_STATUS_STATUS_Pos) /*!< Bit mask of STATUS field. */
-#define TIMER_STATUS_STATUS_Stopped (0UL) /*!< Timer is stopped */
-#define TIMER_STATUS_STATUS_Started (1UL) /*!< Timer is started */
 
 /* Register: TIMER_MODE */
 /* Description: Timer mode selection */
@@ -12170,16 +12225,16 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: TWIM_RXD_MAXCNT */
 /* Description: Maximum number of bytes in receive buffer */
 
-/* Bits 7..0 : Maximum number of bytes in receive buffer */
+/* Bits 15..0 : Maximum number of bytes in receive buffer */
 #define TWIM_RXD_MAXCNT_MAXCNT_Pos (0UL) /*!< Position of MAXCNT field. */
-#define TWIM_RXD_MAXCNT_MAXCNT_Msk (0xFFUL << TWIM_RXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
+#define TWIM_RXD_MAXCNT_MAXCNT_Msk (0xFFFFUL << TWIM_RXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
 
 /* Register: TWIM_RXD_AMOUNT */
 /* Description: Number of bytes transferred in the last transaction */
 
-/* Bits 7..0 : Number of bytes transferred in the last transaction. In case of NACK error, includes the NACK'ed byte. */
+/* Bits 15..0 : Number of bytes transferred in the last transaction. In case of NACK error, includes the NACK'ed byte. */
 #define TWIM_RXD_AMOUNT_AMOUNT_Pos (0UL) /*!< Position of AMOUNT field. */
-#define TWIM_RXD_AMOUNT_AMOUNT_Msk (0xFFUL << TWIM_RXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
+#define TWIM_RXD_AMOUNT_AMOUNT_Msk (0xFFFFUL << TWIM_RXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
 
 /* Register: TWIM_RXD_LIST */
 /* Description: EasyDMA list type */
@@ -12200,16 +12255,16 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: TWIM_TXD_MAXCNT */
 /* Description: Maximum number of bytes in transmit buffer */
 
-/* Bits 7..0 : Maximum number of bytes in transmit buffer */
+/* Bits 15..0 : Maximum number of bytes in transmit buffer */
 #define TWIM_TXD_MAXCNT_MAXCNT_Pos (0UL) /*!< Position of MAXCNT field. */
-#define TWIM_TXD_MAXCNT_MAXCNT_Msk (0xFFUL << TWIM_TXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
+#define TWIM_TXD_MAXCNT_MAXCNT_Msk (0xFFFFUL << TWIM_TXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
 
 /* Register: TWIM_TXD_AMOUNT */
 /* Description: Number of bytes transferred in the last transaction */
 
-/* Bits 7..0 : Number of bytes transferred in the last transaction. In case of NACK error, includes the NACK'ed byte. */
+/* Bits 15..0 : Number of bytes transferred in the last transaction. In case of NACK error, includes the NACK'ed byte. */
 #define TWIM_TXD_AMOUNT_AMOUNT_Pos (0UL) /*!< Position of AMOUNT field. */
-#define TWIM_TXD_AMOUNT_AMOUNT_Msk (0xFFUL << TWIM_TXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
+#define TWIM_TXD_AMOUNT_AMOUNT_Msk (0xFFFFUL << TWIM_TXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
 
 /* Register: TWIM_TXD_LIST */
 /* Description: EasyDMA list type */
@@ -12456,16 +12511,16 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: TWIS_RXD_MAXCNT */
 /* Description: Maximum number of bytes in RXD buffer */
 
-/* Bits 7..0 : Maximum number of bytes in RXD buffer */
+/* Bits 15..0 : Maximum number of bytes in RXD buffer */
 #define TWIS_RXD_MAXCNT_MAXCNT_Pos (0UL) /*!< Position of MAXCNT field. */
-#define TWIS_RXD_MAXCNT_MAXCNT_Msk (0xFFUL << TWIS_RXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
+#define TWIS_RXD_MAXCNT_MAXCNT_Msk (0xFFFFUL << TWIS_RXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
 
 /* Register: TWIS_RXD_AMOUNT */
 /* Description: Number of bytes transferred in the last RXD transaction */
 
-/* Bits 7..0 : Number of bytes transferred in the last RXD transaction */
+/* Bits 15..0 : Number of bytes transferred in the last RXD transaction */
 #define TWIS_RXD_AMOUNT_AMOUNT_Pos (0UL) /*!< Position of AMOUNT field. */
-#define TWIS_RXD_AMOUNT_AMOUNT_Msk (0xFFUL << TWIS_RXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
+#define TWIS_RXD_AMOUNT_AMOUNT_Msk (0xFFFFUL << TWIS_RXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
 
 /* Register: TWIS_TXD_PTR */
 /* Description: TXD Data pointer */
@@ -12477,16 +12532,16 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: TWIS_TXD_MAXCNT */
 /* Description: Maximum number of bytes in TXD buffer */
 
-/* Bits 7..0 : Maximum number of bytes in TXD buffer */
+/* Bits 15..0 : Maximum number of bytes in TXD buffer */
 #define TWIS_TXD_MAXCNT_MAXCNT_Pos (0UL) /*!< Position of MAXCNT field. */
-#define TWIS_TXD_MAXCNT_MAXCNT_Msk (0xFFUL << TWIS_TXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
+#define TWIS_TXD_MAXCNT_MAXCNT_Msk (0xFFFFUL << TWIS_TXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
 
 /* Register: TWIS_TXD_AMOUNT */
 /* Description: Number of bytes transferred in the last TXD transaction */
 
-/* Bits 7..0 : Number of bytes transferred in the last TXD transaction */
+/* Bits 15..0 : Number of bytes transferred in the last TXD transaction */
 #define TWIS_TXD_AMOUNT_AMOUNT_Pos (0UL) /*!< Position of AMOUNT field. */
-#define TWIS_TXD_AMOUNT_AMOUNT_Msk (0xFFUL << TWIS_TXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
+#define TWIS_TXD_AMOUNT_AMOUNT_Msk (0xFFFFUL << TWIS_TXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
 
 /* Register: TWIS_ADDRESS */
 /* Description: Description collection[0]:  TWI slave address 0 */
@@ -13171,16 +13226,16 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: UARTE_RXD_MAXCNT */
 /* Description: Maximum number of bytes in receive buffer */
 
-/* Bits 9..0 : Maximum number of bytes in receive buffer */
+/* Bits 15..0 : Maximum number of bytes in receive buffer */
 #define UARTE_RXD_MAXCNT_MAXCNT_Pos (0UL) /*!< Position of MAXCNT field. */
-#define UARTE_RXD_MAXCNT_MAXCNT_Msk (0x3FFUL << UARTE_RXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
+#define UARTE_RXD_MAXCNT_MAXCNT_Msk (0xFFFFUL << UARTE_RXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
 
 /* Register: UARTE_RXD_AMOUNT */
 /* Description: Number of bytes transferred in the last transaction */
 
-/* Bits 9..0 : Number of bytes transferred in the last transaction */
+/* Bits 15..0 : Number of bytes transferred in the last transaction */
 #define UARTE_RXD_AMOUNT_AMOUNT_Pos (0UL) /*!< Position of AMOUNT field. */
-#define UARTE_RXD_AMOUNT_AMOUNT_Msk (0x3FFUL << UARTE_RXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
+#define UARTE_RXD_AMOUNT_AMOUNT_Msk (0xFFFFUL << UARTE_RXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
 
 /* Register: UARTE_TXD_PTR */
 /* Description: Data pointer */
@@ -13192,16 +13247,16 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: UARTE_TXD_MAXCNT */
 /* Description: Maximum number of bytes in transmit buffer */
 
-/* Bits 9..0 : Maximum number of bytes in transmit buffer */
+/* Bits 15..0 : Maximum number of bytes in transmit buffer */
 #define UARTE_TXD_MAXCNT_MAXCNT_Pos (0UL) /*!< Position of MAXCNT field. */
-#define UARTE_TXD_MAXCNT_MAXCNT_Msk (0x3FFUL << UARTE_TXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
+#define UARTE_TXD_MAXCNT_MAXCNT_Msk (0xFFFFUL << UARTE_TXD_MAXCNT_MAXCNT_Pos) /*!< Bit mask of MAXCNT field. */
 
 /* Register: UARTE_TXD_AMOUNT */
 /* Description: Number of bytes transferred in the last transaction */
 
-/* Bits 9..0 : Number of bytes transferred in the last transaction */
+/* Bits 15..0 : Number of bytes transferred in the last transaction */
 #define UARTE_TXD_AMOUNT_AMOUNT_Pos (0UL) /*!< Position of AMOUNT field. */
-#define UARTE_TXD_AMOUNT_AMOUNT_Msk (0x3FFUL << UARTE_TXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
+#define UARTE_TXD_AMOUNT_AMOUNT_Msk (0xFFFFUL << UARTE_TXD_AMOUNT_AMOUNT_Pos) /*!< Bit mask of AMOUNT field. */
 
 /* Register: UARTE_CONFIG */
 /* Description: Configuration of parity and hardware flow control */
@@ -13299,14 +13354,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UICR_DEBUGCTRL_CPUNIDEN_Disabled (0x00UL) /*!< Disable CPU ITM and ETM functionality */
 #define UICR_DEBUGCTRL_CPUNIDEN_Enabled (0xFFUL) /*!< Enable CPU ITM and ETM functionality (default behavior) */
 
-/* Register: UICR_EXTSUPPLY */
-/* Description: Enable external circuitry to be supplied from VDD pin. Applicable in high voltage mode only. */
+/* Register: UICR_DCDCDRIVE0 */
+/* Description: Set drive level for REG0 DCDC mode. Using high drive will slightly reduce DCDC efficiency. */
 
-/* Bit 0 : Enable external circuitry to be supplied from VDD pin (output of REG0 stage) */
-#define UICR_EXTSUPPLY_EXTSUPPLY_Pos (0UL) /*!< Position of EXTSUPPLY field. */
-#define UICR_EXTSUPPLY_EXTSUPPLY_Msk (0x1UL << UICR_EXTSUPPLY_EXTSUPPLY_Pos) /*!< Bit mask of EXTSUPPLY field. */
-#define UICR_EXTSUPPLY_EXTSUPPLY_Disabled (0UL) /*!< No current can be drawn from the VDD pin */
-#define UICR_EXTSUPPLY_EXTSUPPLY_Enabled (1UL) /*!< It is allowed to supply external circuitry from the VDD pin */
+/* Bit 0 : Set drive level for REG0 DCDC mode. */
+#define UICR_DCDCDRIVE0_DCDCDRIVE0_Pos (0UL) /*!< Position of DCDCDRIVE0 field. */
+#define UICR_DCDCDRIVE0_DCDCDRIVE0_Msk (0x1UL << UICR_DCDCDRIVE0_DCDCDRIVE0_Pos) /*!< Bit mask of DCDCDRIVE0 field. */
+#define UICR_DCDCDRIVE0_DCDCDRIVE0_Low (0UL) /*!< Low drive */
+#define UICR_DCDCDRIVE0_DCDCDRIVE0_High (1UL) /*!< High drive */
 
 /* Register: UICR_REGOUT0 */
 /* Description: GPIO reference voltage / external output supply voltage in high voltage mode */
@@ -14455,7 +14510,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define USBD_FRAMECNTR_FRAMECNTR_Msk (0x7FFUL << USBD_FRAMECNTR_FRAMECNTR_Pos) /*!< Bit mask of FRAMECNTR field. */
 
 /* Register: USBD_LOWPOWER */
-/* Description: First silicon only: Controls USBD peripheral low-power mode during USB suspend */
+/* Description: Controls USBD peripheral low-power mode during USB suspend */
 
 /* Bit 0 : Controls USBD peripheral low-power mode during USB suspend */
 #define USBD_LOWPOWER_LOWPOWER_Pos (0UL) /*!< Position of LOWPOWER field. */

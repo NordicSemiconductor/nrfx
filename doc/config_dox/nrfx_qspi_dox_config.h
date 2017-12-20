@@ -20,6 +20,13 @@
  */
 #define NRFX_QSPI_CONFIG_SCK_DELAY
 
+/** @brief Address offset in the external memory for Execute in Place operation.
+ *
+ *
+ * @note This is an NRF_CONFIG macro.
+ */
+#define NRFX_QSPI_CONFIG_XIP_OFFSET
+
 /** @brief Number of data lines and opcode used for reading.
  *
  *  Following options are available:

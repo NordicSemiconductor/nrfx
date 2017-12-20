@@ -114,22 +114,24 @@ typedef enum
  */
 typedef enum
 {
-    NRF_UARTE_BAUDRATE_1200   =  UARTE_BAUDRATE_BAUDRATE_Baud1200,   ///< 1200 baud.
-    NRF_UARTE_BAUDRATE_2400   =  UARTE_BAUDRATE_BAUDRATE_Baud2400,   ///< 2400 baud.
-    NRF_UARTE_BAUDRATE_4800   =  UARTE_BAUDRATE_BAUDRATE_Baud4800,   ///< 4800 baud.
-    NRF_UARTE_BAUDRATE_9600   =  UARTE_BAUDRATE_BAUDRATE_Baud9600,   ///< 9600 baud.
-    NRF_UARTE_BAUDRATE_14400  =  UARTE_BAUDRATE_BAUDRATE_Baud14400,  ///< 14400 baud.
-    NRF_UARTE_BAUDRATE_19200  =  UARTE_BAUDRATE_BAUDRATE_Baud19200,  ///< 19200 baud.
-    NRF_UARTE_BAUDRATE_28800  =  UARTE_BAUDRATE_BAUDRATE_Baud28800,  ///< 28800 baud.
-    NRF_UARTE_BAUDRATE_38400  =  UARTE_BAUDRATE_BAUDRATE_Baud38400,  ///< 38400 baud.
-    NRF_UARTE_BAUDRATE_57600  =  UARTE_BAUDRATE_BAUDRATE_Baud57600,  ///< 57600 baud.
-    NRF_UARTE_BAUDRATE_76800  =  UARTE_BAUDRATE_BAUDRATE_Baud76800,  ///< 76800 baud.
-    NRF_UARTE_BAUDRATE_115200 =  UARTE_BAUDRATE_BAUDRATE_Baud115200, ///< 115200 baud.
-    NRF_UARTE_BAUDRATE_230400 =  UARTE_BAUDRATE_BAUDRATE_Baud230400, ///< 230400 baud.
-    NRF_UARTE_BAUDRATE_250000 =  UARTE_BAUDRATE_BAUDRATE_Baud250000, ///< 250000 baud.
-    NRF_UARTE_BAUDRATE_460800 =  UARTE_BAUDRATE_BAUDRATE_Baud460800, ///< 460800 baud.
-    NRF_UARTE_BAUDRATE_921600 =  UARTE_BAUDRATE_BAUDRATE_Baud921600, ///< 921600 baud.
-    NRF_UARTE_BAUDRATE_1000000 =  UARTE_BAUDRATE_BAUDRATE_Baud1M,    ///< 1000000 baud.
+    NRF_UARTE_BAUDRATE_1200    = UARTE_BAUDRATE_BAUDRATE_Baud1200,   ///< 1200 baud.
+    NRF_UARTE_BAUDRATE_2400    = UARTE_BAUDRATE_BAUDRATE_Baud2400,   ///< 2400 baud.
+    NRF_UARTE_BAUDRATE_4800    = UARTE_BAUDRATE_BAUDRATE_Baud4800,   ///< 4800 baud.
+    NRF_UARTE_BAUDRATE_9600    = UARTE_BAUDRATE_BAUDRATE_Baud9600,   ///< 9600 baud.
+    NRF_UARTE_BAUDRATE_14400   = UARTE_BAUDRATE_BAUDRATE_Baud14400,  ///< 14400 baud.
+    NRF_UARTE_BAUDRATE_19200   = UARTE_BAUDRATE_BAUDRATE_Baud19200,  ///< 19200 baud.
+    NRF_UARTE_BAUDRATE_28800   = UARTE_BAUDRATE_BAUDRATE_Baud28800,  ///< 28800 baud.
+    NRF_UARTE_BAUDRATE_31250   = UARTE_BAUDRATE_BAUDRATE_Baud31250,  ///< 31250 baud.
+    NRF_UARTE_BAUDRATE_38400   = UARTE_BAUDRATE_BAUDRATE_Baud38400,  ///< 38400 baud.
+    NRF_UARTE_BAUDRATE_56000   = UARTE_BAUDRATE_BAUDRATE_Baud56000,  ///< 56000 baud.
+    NRF_UARTE_BAUDRATE_57600   = UARTE_BAUDRATE_BAUDRATE_Baud57600,  ///< 57600 baud.
+    NRF_UARTE_BAUDRATE_76800   = UARTE_BAUDRATE_BAUDRATE_Baud76800,  ///< 76800 baud.
+    NRF_UARTE_BAUDRATE_115200  = UARTE_BAUDRATE_BAUDRATE_Baud115200, ///< 115200 baud.
+    NRF_UARTE_BAUDRATE_230400  = UARTE_BAUDRATE_BAUDRATE_Baud230400, ///< 230400 baud.
+    NRF_UARTE_BAUDRATE_250000  = UARTE_BAUDRATE_BAUDRATE_Baud250000, ///< 250000 baud.
+    NRF_UARTE_BAUDRATE_460800  = UARTE_BAUDRATE_BAUDRATE_Baud460800, ///< 460800 baud.
+    NRF_UARTE_BAUDRATE_921600  = UARTE_BAUDRATE_BAUDRATE_Baud921600, ///< 921600 baud.
+    NRF_UARTE_BAUDRATE_1000000 = UARTE_BAUDRATE_BAUDRATE_Baud1M,     ///< 1000000 baud.
 } nrf_uarte_baudrate_t;
 
 /**
@@ -369,7 +371,7 @@ __STATIC_INLINE void nrf_uarte_baudrate_set(NRF_UARTE_Type   * p_reg, nrf_uarte_
  */
 __STATIC_INLINE void nrf_uarte_tx_buffer_set(NRF_UARTE_Type * p_reg,
                                              uint8_t  const * p_buffer,
-                                             uint8_t          length);
+                                             size_t           length);
 
 /**
  * @brief Function for getting number of bytes transmitted in the last transaction.
@@ -389,7 +391,7 @@ __STATIC_INLINE uint32_t nrf_uarte_tx_amount_get(NRF_UARTE_Type * p_reg);
  */
 __STATIC_INLINE void nrf_uarte_rx_buffer_set(NRF_UARTE_Type * p_reg,
                                              uint8_t * p_buffer,
-                                             uint8_t   length);
+                                             size_t    length);
 
 /**
  * @brief Function for getting number of bytes received in the last transaction.
@@ -530,7 +532,7 @@ __STATIC_INLINE void nrf_uarte_baudrate_set(NRF_UARTE_Type   * p_reg, nrf_uarte_
 
 __STATIC_INLINE void nrf_uarte_tx_buffer_set(NRF_UARTE_Type * p_reg,
                                              uint8_t  const * p_buffer,
-                                             uint8_t          length)
+                                             size_t           length)
 {
     p_reg->TXD.PTR    = (uint32_t)p_buffer;
     p_reg->TXD.MAXCNT = length;
@@ -543,7 +545,7 @@ __STATIC_INLINE uint32_t nrf_uarte_tx_amount_get(NRF_UARTE_Type * p_reg)
 
 __STATIC_INLINE void nrf_uarte_rx_buffer_set(NRF_UARTE_Type * p_reg,
                                              uint8_t * p_buffer,
-                                             uint8_t   length)
+                                             size_t    length)
 {
     p_reg->RXD.PTR    = (uint32_t)p_buffer;
     p_reg->RXD.MAXCNT = length;

@@ -297,7 +297,7 @@ __STATIC_INLINE void nrf_twim_address_set(NRF_TWIM_Type * p_reg,
  */
 __STATIC_INLINE void nrf_twim_tx_buffer_set(NRF_TWIM_Type * p_reg,
                                             uint8_t const * p_buffer,
-                                            uint8_t         length);
+                                            size_t          length);
 
 /**
  * @brief Function for setting the receive buffer.
@@ -308,14 +308,14 @@ __STATIC_INLINE void nrf_twim_tx_buffer_set(NRF_TWIM_Type * p_reg,
  */
 __STATIC_INLINE void nrf_twim_rx_buffer_set(NRF_TWIM_Type * p_reg,
                                             uint8_t * p_buffer,
-                                            uint8_t   length);
+                                            size_t    length);
 
 __STATIC_INLINE void nrf_twim_shorts_set(NRF_TWIM_Type * p_reg,
                                          uint32_t shorts_mask);
 
-__STATIC_INLINE uint32_t nrf_twim_txd_amount_get(NRF_TWIM_Type * p_reg);
+__STATIC_INLINE size_t nrf_twim_txd_amount_get(NRF_TWIM_Type * p_reg);
 
-__STATIC_INLINE uint32_t nrf_twim_rxd_amount_get(NRF_TWIM_Type * p_reg);
+__STATIC_INLINE size_t nrf_twim_rxd_amount_get(NRF_TWIM_Type * p_reg);
 
 /**
  * @brief Function for enabling the TX list feature.
@@ -453,7 +453,7 @@ __STATIC_INLINE void nrf_twim_address_set(NRF_TWIM_Type * p_reg,
 
 __STATIC_INLINE void nrf_twim_tx_buffer_set(NRF_TWIM_Type * p_reg,
                                             uint8_t const * p_buffer,
-                                            uint8_t         length)
+                                            size_t          length)
 {
     p_reg->TXD.PTR    = (uint32_t)p_buffer;
     p_reg->TXD.MAXCNT = length;
@@ -461,7 +461,7 @@ __STATIC_INLINE void nrf_twim_tx_buffer_set(NRF_TWIM_Type * p_reg,
 
 __STATIC_INLINE void nrf_twim_rx_buffer_set(NRF_TWIM_Type * p_reg,
                                             uint8_t * p_buffer,
-                                            uint8_t   length)
+                                            size_t    length)
 {
     p_reg->RXD.PTR    = (uint32_t)p_buffer;
     p_reg->RXD.MAXCNT = length;
@@ -473,12 +473,12 @@ __STATIC_INLINE void nrf_twim_shorts_set(NRF_TWIM_Type * p_reg,
     p_reg->SHORTS = shorts_mask;
 }
 
-__STATIC_INLINE uint32_t nrf_twim_txd_amount_get(NRF_TWIM_Type * p_reg)
+__STATIC_INLINE size_t nrf_twim_txd_amount_get(NRF_TWIM_Type * p_reg)
 {
     return p_reg->TXD.AMOUNT;
 }
 
-__STATIC_INLINE uint32_t nrf_twim_rxd_amount_get(NRF_TWIM_Type * p_reg)
+__STATIC_INLINE size_t nrf_twim_rxd_amount_get(NRF_TWIM_Type * p_reg)
 {
     return p_reg->RXD.AMOUNT;
 }

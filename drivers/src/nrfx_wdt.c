@@ -47,8 +47,6 @@ static nrfx_drv_state_t m_state;
 /**@brief WDT alloc table. */
 static uint32_t m_alloc_index;
 
-static const nrfx_wdt_config_t m_default_config = NRFX_WDT_DEAFULT_CONFIG;
-
 /**@brief WDT interrupt handler. */
 void nrfx_wdt_irq_handler(void)
 {
@@ -63,6 +61,7 @@ void nrfx_wdt_irq_handler(void)
 nrfx_err_t nrfx_wdt_init(nrfx_wdt_config_t const * p_config,
                          nrfx_wdt_event_handler_t  wdt_event_handler)
 {
+    NRFX_ASSERT(p_config);
     NRFX_ASSERT(wdt_event_handler != NULL);
     nrfx_err_t err_code;
     m_wdt_event_handler = wdt_event_handler;
@@ -78,11 +77,6 @@ nrfx_err_t nrfx_wdt_init(nrfx_wdt_config_t const * p_config,
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
         return err_code;
-    }
-
-    if (p_config == NULL)
-    {
-        p_config = &m_default_config;
     }
 
     nrf_wdt_behaviour_set(p_config->behaviour);

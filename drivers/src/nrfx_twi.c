@@ -38,6 +38,7 @@
 #endif
 
 #include <nrfx_twi.h>
+#include <hal/nrf_gpio.h>
 #include "prs/nrfx_prs.h"
 
 #define NRFX_LOG_MODULE TWI
@@ -65,53 +66,32 @@
     (type == NRFX_TWI_XFER_TXTX ? "XFER_TXTX" : \
                                   "UNKNOWN TRANSFER TYPE"))))
 
-
-#define SCL_PIN_INIT_CONF                                     \
-    ( (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) \
-    | (GPIO_PIN_CNF_DRIVE_S0D1     << GPIO_PIN_CNF_DRIVE_Pos) \
-    | (GPIO_PIN_CNF_PULL_Pullup    << GPIO_PIN_CNF_PULL_Pos)  \
-    | (GPIO_PIN_CNF_INPUT_Connect  << GPIO_PIN_CNF_INPUT_Pos) \
-    | (GPIO_PIN_CNF_DIR_Input      << GPIO_PIN_CNF_DIR_Pos))
-
-#define SDA_PIN_INIT_CONF        SCL_PIN_INIT_CONF
-
-#define SDA_PIN_UNINIT_CONF                                     \
-    ( (GPIO_PIN_CNF_SENSE_Disabled   << GPIO_PIN_CNF_SENSE_Pos) \
-    | (GPIO_PIN_CNF_DRIVE_H0H1       << GPIO_PIN_CNF_DRIVE_Pos) \
-    | (GPIO_PIN_CNF_PULL_Disabled    << GPIO_PIN_CNF_PULL_Pos)  \
-    | (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) \
-    | (GPIO_PIN_CNF_DIR_Input        << GPIO_PIN_CNF_DIR_Pos))
-
-#define SCL_PIN_UNINIT_CONF      SDA_PIN_UNINIT_CONF
-
-#define SCL_PIN_INIT_CONF_CLR                                 \
-    ( (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) \
-    | (GPIO_PIN_CNF_DRIVE_S0D1     << GPIO_PIN_CNF_DRIVE_Pos) \
-    | (GPIO_PIN_CNF_PULL_Pullup    << GPIO_PIN_CNF_PULL_Pos)  \
-    | (GPIO_PIN_CNF_INPUT_Connect  << GPIO_PIN_CNF_INPUT_Pos) \
-    | (GPIO_PIN_CNF_DIR_Output     << GPIO_PIN_CNF_DIR_Pos))
-
-#define SDA_PIN_INIT_CONF_CLR    SCL_PIN_INIT_CONF_CLR
+#define TWI_PIN_INIT(_pin) nrf_gpio_cfg((_pin),                     \
+                                        NRF_GPIO_PIN_DIR_INPUT,     \
+                                        NRF_GPIO_PIN_INPUT_CONNECT, \
+                                        NRF_GPIO_PIN_PULLUP,        \
+                                        NRF_GPIO_PIN_S0D1,          \
+                                        NRF_GPIO_PIN_NOSENSE)
 
 #define HW_TIMEOUT      10000
 
 // Control block - driver instance local data.
 typedef struct
 {
-    nrfx_twi_evt_handler_t    handler;
-    void *                    p_context;
-    volatile uint32_t         int_mask;
-    nrfx_twi_xfer_desc_t      xfer_desc;
-    uint32_t                  flags;
-    uint8_t *                 p_curr_buf;
-    uint8_t                   curr_length;
-    bool                      curr_no_stop;
-    nrfx_drv_state_t          state;
-    bool                      error;
-    volatile bool             busy;
-    bool                      repeated;
-    uint8_t                   bytes_transferred;
-    bool                      hold_bus_uninit;
+    nrfx_twi_evt_handler_t  handler;
+    void *                  p_context;
+    volatile uint32_t       int_mask;
+    nrfx_twi_xfer_desc_t    xfer_desc;
+    uint32_t                flags;
+    uint8_t *               p_curr_buf;
+    uint8_t                 curr_length;
+    bool                    curr_no_stop;
+    nrfx_drv_state_t        state;
+    bool                    error;
+    volatile bool           busy;
+    bool                    repeated;
+    uint8_t                 bytes_transferred;
+    bool                    hold_bus_uninit;
 } twi_control_block_t;
 
 static twi_control_block_t m_cb[NRFX_TWI_ENABLED_COUNT];
@@ -190,8 +170,8 @@ nrfx_err_t nrfx_twi_init(nrfx_twi_t const *        p_instance,
        master when the system is in OFF mode, and when the TWI master is
        disabled, these pins must be configured in the GPIO peripheral.
     */
-    NRF_GPIO->PIN_CNF[p_config->scl] = SCL_PIN_INIT_CONF;
-    NRF_GPIO->PIN_CNF[p_config->sda] = SDA_PIN_INIT_CONF;
+    TWI_PIN_INIT(p_config->scl);
+    TWI_PIN_INIT(p_config->sda);
 
     NRF_TWI_Type * p_twi = p_instance->p_twi;
     nrf_twi_pins_set(p_twi, p_config->scl, p_config->sda);
@@ -229,8 +209,8 @@ void nrfx_twi_uninit(nrfx_twi_t const * p_instance)
 
     if (!p_cb->hold_bus_uninit)
     {
-        NRF_GPIO->PIN_CNF[p_instance->p_twi->PSELSCL] = SCL_PIN_UNINIT_CONF;
-        NRF_GPIO->PIN_CNF[p_instance->p_twi->PSELSDA] = SDA_PIN_UNINIT_CONF;
+        nrf_gpio_cfg_default(p_instance->p_twi->PSELSCL);
+        nrf_gpio_cfg_default(p_instance->p_twi->PSELSDA);
     }
 
     p_cb->state = NRFX_DRV_STATE_UNINITIALIZED;
@@ -603,11 +583,11 @@ nrfx_err_t nrfx_twi_xfer(nrfx_twi_t           const * p_instance,
                   p_xfer_desc->primary_length,
                   p_xfer_desc->secondary_length);
     NRFX_LOG_DEBUG("Primary buffer data:");
-    NRFX_LOG_HEXDUMP_DEBUG((uint8_t *)p_xfer_desc->p_primary_buf,
-                           p_xfer_desc->primary_length * sizeof(p_xfer_desc->p_primary_buf));
+    NRFX_LOG_HEXDUMP_DEBUG(p_xfer_desc->p_primary_buf,
+                           p_xfer_desc->primary_length * sizeof(p_xfer_desc->p_primary_buf[0]));
     NRFX_LOG_DEBUG("Secondary buffer data:");
-    NRFX_LOG_HEXDUMP_DEBUG((uint8_t *)p_xfer_desc->p_secondary_buf,
-                           p_xfer_desc->secondary_length * sizeof(p_xfer_desc->p_secondary_buf));
+    NRFX_LOG_HEXDUMP_DEBUG(p_xfer_desc->p_secondary_buf,
+                           p_xfer_desc->secondary_length * sizeof(p_xfer_desc->p_secondary_buf[0]));
 
     err_code = twi_xfer(p_cb, (NRF_TWI_Type  *)p_instance->p_twi, p_xfer_desc, flags);
     NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -619,7 +599,7 @@ nrfx_err_t nrfx_twi_xfer(nrfx_twi_t           const * p_instance,
 nrfx_err_t nrfx_twi_tx(nrfx_twi_t const * p_instance,
                        uint8_t            address,
                        uint8_t    const * p_data,
-                       uint32_t           length,
+                       size_t             length,
                        bool               no_stop)
 {
     nrfx_twi_xfer_desc_t xfer = NRFX_TWI_XFER_DESC_TX(address, (uint8_t*)p_data, length);
@@ -630,13 +610,13 @@ nrfx_err_t nrfx_twi_tx(nrfx_twi_t const * p_instance,
 nrfx_err_t nrfx_twi_rx(nrfx_twi_t const * p_instance,
                        uint8_t            address,
                        uint8_t *          p_data,
-                       uint32_t           length)
+                       size_t             length)
 {
     nrfx_twi_xfer_desc_t xfer = NRFX_TWI_XFER_DESC_RX(address, p_data, length);
     return nrfx_twi_xfer(p_instance, &xfer, 0);
 }
 
-uint32_t nrfx_twi_data_count_get(nrfx_twi_t const * const p_instance)
+size_t nrfx_twi_data_count_get(nrfx_twi_t const * const p_instance)
 {
     return m_cb[p_instance->drv_inst_idx].bytes_transferred;
 }

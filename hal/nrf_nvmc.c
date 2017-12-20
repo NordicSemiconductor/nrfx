@@ -36,25 +36,25 @@
 #include <nrfx.h>
 #include <nrf_nvmc.h>
 
+static inline void wait_for_flash_ready(void)
+{
+    while (NRF_NVMC->READY == NVMC_READY_READY_Busy) {;}
+}
 
 void nrf_nvmc_page_erase(uint32_t address)
 {
     // Enable erase.
     NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Een;
-    while (NRF_NVMC->READY == NVMC_READY_READY_Busy)
-    {
-    }
+    __ISB();
+    __DSB();
 
     // Erase the page
     NRF_NVMC->ERASEPAGE = address;
-    while (NRF_NVMC->READY == NVMC_READY_READY_Busy)
-    {
-    }
+    wait_for_flash_ready();
 
     NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Ren;
-    while (NRF_NVMC->READY == NVMC_READY_READY_Busy)
-    {
-    }
+    __ISB();
+    __DSB();
 }
 
 
@@ -67,41 +67,36 @@ void nrf_nvmc_write_byte(uint32_t address, uint8_t value)
 
     // Enable write.
     NRF_NVMC->CONFIG = (NVMC_CONFIG_WEN_Wen << NVMC_CONFIG_WEN_Pos);
-    while (NRF_NVMC->READY == NVMC_READY_READY_Busy)
-    {
-    }
+    __ISB();
+    __DSB();
 
     *(uint32_t*)address32 = value32;
-    while (NRF_NVMC->READY == NVMC_READY_READY_Busy)
-    {
-    }
+    wait_for_flash_ready();
 
     NRF_NVMC->CONFIG = (NVMC_CONFIG_WEN_Ren << NVMC_CONFIG_WEN_Pos);
-    {
-    }
+    __ISB();
+    __DSB();
 }
 
 void nrf_nvmc_write_word(uint32_t address, uint32_t value)
 {
     // Enable write.
     NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen;
-    while (NRF_NVMC->READY == NVMC_READY_READY_Busy){
-    }
+    __ISB();
+    __DSB();
 
     *(uint32_t*)address = value;
-    while (NRF_NVMC->READY == NVMC_READY_READY_Busy){
-    }
+    wait_for_flash_ready();
 
     NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Ren;
-    while (NRF_NVMC->READY == NVMC_READY_READY_Busy)
-    {
-    }
+    __ISB();
+    __DSB();
 }
 
 void nrf_nvmc_write_bytes(uint32_t address, const uint8_t * src, uint32_t num_bytes)
 {
     uint32_t i;
-    for (i=0;i<num_bytes;i++)
+    for (i = 0; i < num_bytes; i++)
     {
        nrf_nvmc_write_byte(address + i,src[i]);
     }
@@ -113,21 +108,17 @@ void nrf_nvmc_write_words(uint32_t address, const uint32_t * src, uint32_t num_w
 
     // Enable write.
     NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen;
-    while (NRF_NVMC->READY == NVMC_READY_READY_Busy)
-    {
-    }
+    __ISB();
+    __DSB();
 
-    for (i=0;i<num_words;i++)
+    for (i = 0; i < num_words; i++)
     {
         ((uint32_t*)address)[i] = src[i];
-        while (NRF_NVMC->READY == NVMC_READY_READY_Busy)
-        {
-        }
+        wait_for_flash_ready();
     }
 
     NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Ren;
-    while (NRF_NVMC->READY == NVMC_READY_READY_Busy)
-    {
-    }
+    __ISB();
+    __DSB();
 }
 

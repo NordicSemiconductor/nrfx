@@ -88,6 +88,51 @@ static nrfx_clock_cb_t m_clock_cb;
 bool nrfx_clock_irq_enabled;
 #endif
 
+#ifdef NRF52832_XXAA
+
+// ANOMALY 132 - LFCLK needs to avoid frame from 66us to 138us after LFCLK stop. This solution
+//               applies delay of 138us before starting LFCLK.
+#define ANOMALY_132_REQ_DELAY_US 138UL
+
+// nRF52832 is clocked with 64MHz.
+#define ANOMALY_132_NRF52832_FREQ_MHZ 64UL
+
+// Convert time to cycles.
+#define ANOMALY_132_DELAY_CYCLES (ANOMALY_132_REQ_DELAY_US * ANOMALY_132_NRF52832_FREQ_MHZ)
+
+/**
+ * @brief Function for applying delay of 138us before starting LFCLK.
+ */
+static void nrfx_clock_anomaly_132(void)
+{
+    uint32_t cyccnt_inital;
+    uint32_t core_debug;
+    uint32_t dwt_ctrl;
+
+    // Preserve DEMCR register to do not influence into its configuration. Enable the trace and
+    // debug blocks. It is required to read and write data to DWT block.
+    core_debug = CoreDebug->DEMCR;
+    CoreDebug->DEMCR = core_debug | CoreDebug_DEMCR_TRCENA_Msk;
+
+    // Preserve CTRL register in DWT block to do not influence into its configuration. Make sure
+    // that cycle counter is enabled.
+    dwt_ctrl = DWT->CTRL;
+    DWT->CTRL = dwt_ctrl | DWT_CTRL_CYCCNTENA_Msk;
+
+    // Store start value of cycle counter.
+    cyccnt_inital = DWT->CYCCNT;
+
+    // Delay required time.
+    while ((DWT->CYCCNT - cyccnt_inital) < ANOMALY_132_DELAY_CYCLES)
+    {}
+
+    // Restore preserved registers.
+    DWT->CTRL = dwt_ctrl;
+    CoreDebug->DEMCR = core_debug;
+}
+
+#endif // NRF52832_XXAA
+
 nrfx_err_t nrfx_clock_init(nrfx_clock_event_handler_t event_handler)
 {
     nrfx_err_t err_code = NRFX_SUCCESS;
@@ -155,6 +200,11 @@ void nrfx_clock_lfclk_start(void)
     NRFX_ASSERT(m_clock_cb.module_initialized);
     nrf_clock_event_clear(NRF_CLOCK_EVENT_LFCLKSTARTED);
     nrf_clock_int_enable(NRF_CLOCK_INT_LF_STARTED_MASK);
+
+#ifdef NRF52832_XXAA
+    nrfx_clock_anomaly_132();
+#endif
+
     nrf_clock_task_trigger(NRF_CLOCK_TASK_LFCLKSTART);
 }
 
