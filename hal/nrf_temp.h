@@ -55,19 +55,56 @@ extern "C" {
  */
 static __INLINE void nrf_temp_init(void)
 {
-    /**@note Workaround for PAN_028 rev2.0A anomaly 31 - TEMP: Temperature offset value has to be manually loaded to the TEMP module */
+    /**@note Workaround for PAN_028 rev2.0A anomaly 31 - TEMP: Temperature offset value has to be
+             manually loaded to the TEMP module */
     *(uint32_t *) 0x4000C504 = 0;
 }
 
 /**
  * @brief Function for reading temperature measurement.
  *
- * The function reads the 10 bit 2's complement value and transforms it to a 32 bit 2's complement value.
+ * The function reads the 10 bit 2's complement value and transforms it to a 32 bit 2's
+ * complement value.
  */
 static __INLINE int32_t nrf_temp_read(void)
 {
-    /**@note Workaround for PAN_028 rev2.0A anomaly 28 - TEMP: Negative measured values are not represented correctly */
-    return ((NRF_TEMP->TEMP & MASK_SIGN) != 0) ? (int32_t)(NRF_TEMP->TEMP | MASK_SIGN_EXTENSION) : (NRF_TEMP->TEMP);
+    /**@note Workaround for PAN_028 rev2.0A anomaly 28 - TEMP: Negative measured values are not
+             represented correctly */
+    return ((NRF_TEMP->TEMP & MASK_SIGN) != 0) ? (int32_t)(NRF_TEMP->TEMP | MASK_SIGN_EXTENSION)
+                                               : (NRF_TEMP->TEMP);
+}
+
+/**
+ * @brief Function for triggering start of temperature measurement.
+ *
+ * This function triggers the TEMP peripheral to start measuring temperature. The function also
+ * clears the DATARDY event register before starting the one-shot operation.
+ */
+static __INLINE void nrf_temp_start(void)
+{
+    NRF_TEMP->EVENTS_DATARDY = 0;
+    NRF_TEMP->TASKS_START    = 1;
+}
+
+/**
+ * @brief Function for triggering stop of temperature measurement.
+ *
+ * This function triggers the TEMP peripheral to stop measuring temperature.
+ */
+static __INLINE void nrf_temp_stop(void)
+{
+    NRF_TEMP->TASKS_STOP = 1;
+}
+
+/**
+ * @brief Function for checking if the temperature measurement has completed.
+ *
+ * This function checks if a DATARDY event register is set and the temperature measurement can
+ * be read using @ref nrf_temp_read.
+ */
+static __INLINE bool nrf_temp_data_ready(void)
+{
+    return (NRF_TEMP->EVENTS_DATARDY == 1);
 }
 
 /** @} */
