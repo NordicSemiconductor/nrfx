@@ -168,7 +168,7 @@ nrfx_err_t nrfx_rtc_cc_disable(nrfx_rtc_t const * const p_instance, uint32_t cha
             return err_code;
         }
     }
-    NRFX_LOG_INFO("RTC id: %d, channel disabled: %d.", p_instance->instance_id, channel);
+    NRFX_LOG_INFO("RTC id: %d, channel disabled: %lu.", p_instance->instance_id, channel);
     err_code = NRFX_SUCCESS;
     NRFX_LOG_INFO("Function: %s, error code: %s.", __func__, NRFX_LOG_ERROR_STRING_GET(err_code));
     return err_code;
@@ -220,7 +220,7 @@ nrfx_err_t nrfx_rtc_cc_set(nrfx_rtc_t const * const p_instance,
     }
     nrf_rtc_event_enable(p_instance->p_reg,int_mask);
 
-    NRFX_LOG_INFO("RTC id: %d, channel enabled: %d, compare value: %d.",
+    NRFX_LOG_INFO("RTC id: %d, channel enabled: %lu, compare value: %lu.",
                   p_instance->instance_id,
                   channel,
                   val);
@@ -301,7 +301,7 @@ static void irq_handler(NRF_RTC_Type * p_reg,
             nrf_rtc_event_disable(p_reg,int_mask);
             nrf_rtc_int_disable(p_reg,int_mask);
             nrf_rtc_event_clear(p_reg,event);
-            NRFX_LOG_DEBUG("Event: %s, instance id: %d.", EVT_TO_STR(event), instance_id);
+            NRFX_LOG_DEBUG("Event: %s, instance id: %lu.", EVT_TO_STR(event), instance_id);
             m_handlers[instance_id]((nrfx_rtc_int_type_t)i);
         }
         int_mask <<= 1;
@@ -312,7 +312,7 @@ static void irq_handler(NRF_RTC_Type * p_reg,
         nrf_rtc_event_pending(p_reg, event))
     {
         nrf_rtc_event_clear(p_reg, event);
-        NRFX_LOG_DEBUG("Event: %s, instance id: %d.", EVT_TO_STR(event), instance_id);
+        NRFX_LOG_DEBUG("Event: %s, instance id: %lu.", EVT_TO_STR(event), instance_id);
         m_handlers[instance_id](NRFX_RTC_INT_TICK);
     }
 
@@ -321,7 +321,7 @@ static void irq_handler(NRF_RTC_Type * p_reg,
         nrf_rtc_event_pending(p_reg, event))
     {
         nrf_rtc_event_clear(p_reg,event);
-        NRFX_LOG_DEBUG("Event: %s, instance id: %d.", EVT_TO_STR(event), instance_id);
+        NRFX_LOG_DEBUG("Event: %s, instance id: %lu.", EVT_TO_STR(event), instance_id);
         m_handlers[instance_id](NRFX_RTC_INT_OVERFLOW);
     }
 }
