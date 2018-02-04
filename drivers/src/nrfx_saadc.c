@@ -497,7 +497,7 @@ nrfx_err_t nrfx_saadc_buffer_convert(nrf_saadc_value_t * p_buffer, uint16_t size
     m_cb.buffer_size        = size;
     m_cb.p_secondary_buffer = NULL;
 
-    NRFX_LOG_INFO("Function: %d, buffer length: %d, active channels: %d.",
+    NRFX_LOG_INFO("Function: %s, buffer length: %d, active channels: %d.",
                   __func__,
                   size,
                   m_cb.active_channels);
