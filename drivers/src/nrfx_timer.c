@@ -219,7 +219,7 @@ void nrfx_timer_compare(nrfx_timer_t const * const p_instance,
     }
 
     nrf_timer_cc_write(p_instance->p_reg, cc_channel, cc_value);
-    NRFX_LOG_INFO("Timer id: %d, capture value set: %d, channel: %d.",
+    NRFX_LOG_INFO("Timer id: %d, capture value set: %lu, channel: %d.",
                   p_instance->instance_id,
                   cc_value,
                   cc_channel);
@@ -241,7 +241,7 @@ void nrfx_timer_extended_compare(nrfx_timer_t const * const p_instance,
                        cc_channel,
                        cc_value,
                        enable_int);
-    NRFX_LOG_INFO("Timer id: %d, capture value set: %d, channel: %d.",
+    NRFX_LOG_INFO("Timer id: %d, capture value set: %lu, channel: %d.",
                   p_instance->instance_id,
                   cc_value,
                   cc_channel);
