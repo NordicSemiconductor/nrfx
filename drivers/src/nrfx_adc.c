@@ -94,7 +94,6 @@ void nrfx_adc_uninit(void)
 
 void nrfx_adc_channel_enable(nrfx_adc_channel_t * const p_channel)
 {
-    NRFX_ASSERT(!is_address_from_stack(p_channel));
     NRFX_ASSERT(!nrfx_adc_is_busy());
 
     p_channel->p_next = NULL;

@@ -182,8 +182,7 @@ void nrfx_adc_uninit(void);
  * called, all channels that have been enabled with this function are sampled.
  *
  * @note The channel instance variable @p p_channel is used by the driver as an item
- *       in a list. Therefore, it cannot be an automatic variable, and an assertion fails if it is
- *       an automatic variable (if asserts are enabled).
+ *       in a list. Therefore, it cannot be an automatic variable that is located on the stack.
  */
 void nrfx_adc_channel_enable(nrfx_adc_channel_t * const p_channel);
 
