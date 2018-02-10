@@ -250,7 +250,7 @@ static void pdm_start()
 static void pdm_buf_request()
 {
     m_cb.irq_buff_request = 1;
-    NVIC_SetPendingIRQ(PDM_IRQn);
+    NRFX_IRQ_PENDING_SET(PDM_IRQn);
 }
 
 nrfx_err_t nrfx_pdm_start(void)

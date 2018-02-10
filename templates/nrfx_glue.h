@@ -98,6 +98,27 @@ extern "C" {
  */
 #define NRFX_IRQ_DISABLE(irq_number)
 
+/**
+ * @brief Macro for setting a specific IRQ as pending.
+ *
+ * @param irq_number  IRQ number.
+ */
+#define NRFX_IRQ_PENDING_SET(irq_number)
+
+/**
+ * @brief Macro for clearing the pending status of a specific IRQ.
+ *
+ * @param irq_number  IRQ number.
+ */
+#define NRFX_IRQ_PENDING_CLEAR(irq_number)
+
+/**
+ * @brief Macro for checking the pending status of a specific IRQ.
+ *
+ * @retval true  If the IRQ is pending.
+ * @retval false Otherwise.
+ */
+#define NRFX_IRQ_IS_PENDING(irq_number)
 
 /**
  * @brief Macro for entering into a critical section.
