@@ -271,7 +271,7 @@ void nrfx_swi_trigger(nrfx_swi_t swi, uint8_t flag_number)
     if (p_egu == NULL)
     {
         m_swi_flags[swi - NRFX_SWI_EGU_COUNT] |= (1 << flag_number);
-        NVIC_SetPendingIRQ(swi_irq_number_get(swi));
+        NRFX_IRQ_PENDING_SET(swi_irq_number_get(swi));
     }
     else
 #endif // (NRFX_SWI_EGU_COUNT < SWI_COUNT)
@@ -283,7 +283,7 @@ void nrfx_swi_trigger(nrfx_swi_t swi, uint8_t flag_number)
 #else // -> #if !NRFX_SWI_EGU_COUNT
 
     m_swi_flags[swi - NRFX_SWI_EGU_COUNT] |= (1 << flag_number);
-    NVIC_SetPendingIRQ(swi_irq_number_get(swi));
+    NRFX_IRQ_PENDING_SET(swi_irq_number_get(swi));
 
 #endif
 }
