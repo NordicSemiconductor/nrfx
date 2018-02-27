@@ -46,6 +46,8 @@
     #include "nrf52832_peripherals.h"
 #elif defined(NRF52840_XXAA)
     #include "nrf52840_peripherals.h"
+#else
+    #error Unknown chip variant
 #endif
 
 /*lint --flb "Leave library region" */
