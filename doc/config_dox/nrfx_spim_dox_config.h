@@ -148,5 +148,16 @@
  */
 #define NRFX_SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED
 
+/** @brief Enables nRF52840 anomaly 198 workaround for SPIM3.
+ *
+ * See more in the Errata document located at 
+ * https://infocenter.nordicsemi.com/
+ *
+ *  Set to 1 to activate.
+ *
+ * @note This is an NRF_CONFIG macro.
+ */
+#define NRFX_SPIM3_NRF52840_ANOMALY_198_WORKAROUND_ENABLED
+
 
 /** @} */

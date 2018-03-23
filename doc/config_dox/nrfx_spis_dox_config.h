@@ -51,28 +51,6 @@
  */
 #define NRFX_SPIS_DEFAULT_CONFIG_IRQ_PRIORITY
 
-/** @brief Mode
- *
- *  Following options are available:
- * - 0 - MODE_0
- * - 1 - MODE_1
- * - 2 - MODE_2
- * - 3 - MODE_3
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_SPIS_DEFAULT_MODE
-
-/** @brief SPIS default bit order
- *
- *  Following options are available:
- * - 0 - MSB first
- * - 1 - LSB first
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_SPIS_DEFAULT_BIT_ORDER
-
 /** @brief SPIS default DEF character
  *
  *  Minimum value: 0

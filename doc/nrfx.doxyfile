@@ -678,6 +678,7 @@ WARN_LOGFILE = warnings_nrfx.txt
 
 INPUT = ../drivers \
         ../hal \
+        ../soc \
         ../templates \
         config_dox \
         .
