@@ -695,10 +695,10 @@ void nrfx_gpiote_irq_handler(void)
             if (mask & status)
             {
                 nrfx_gpiote_pin_t pin = nrf_gpiote_event_pin_get(i);
-                NRFX_LOG_DEBUG("Event in number: %d.", i);
+                NRFX_LOG_DEBUG("Event in number: %lu.", i);
                 nrf_gpiote_polarity_t        polarity = nrf_gpiote_event_polarity_get(i);
                 nrfx_gpiote_evt_handler_t handler  = channel_handler_get(i);
-                NRFX_LOG_DEBUG("Pin: %d, polarity: %d.", pin, polarity);
+                NRFX_LOG_DEBUG("Pin: %lu, polarity: %d.", pin, polarity);
                 if (handler)
                 {
                     handler(pin, polarity);
@@ -750,7 +750,7 @@ void nrfx_gpiote_irq_handler(void)
                         if ((pin_state && (sense == NRF_GPIO_PIN_SENSE_HIGH)) ||
                             (!pin_state && (sense == NRF_GPIO_PIN_SENSE_LOW))  )
                         {
-                            NRFX_LOG_DEBUG("PORT event for pin: %d, polarity: %d.", pin, polarity);
+                            NRFX_LOG_DEBUG("PORT event for pin: %lu, polarity: %d.", pin, polarity);
                             if (polarity == NRF_GPIOTE_POLARITY_TOGGLE)
                             {
                                 nrf_gpio_pin_sense_t next_sense =
