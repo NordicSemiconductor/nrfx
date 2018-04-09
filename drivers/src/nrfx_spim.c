@@ -263,6 +263,11 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t  const * const p_instance,
     }
     m_cb[p_instance->drv_inst_idx].miso_pin = p_config->miso_pin;
     // - Slave Select (optional) - output with initial value 1 (inactive).
+
+    // 'p_cb->ss_pin' variable is used during transfers to check if SS pin should be toggled,
+    // so this field needs to be initialized even if the pin is not used.
+    p_cb->ss_pin = p_config->ss_pin;
+
     if (p_config->ss_pin != NRFX_SPIM_PIN_NOT_USED)
     {
         if (p_config->ss_active_high)
@@ -285,7 +290,6 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t  const * const p_instance,
                                    p_config->ss_duration);
         }
 #endif
-        m_cb[p_instance->drv_inst_idx].ss_pin = p_config->ss_pin;
         m_cb[p_instance->drv_inst_idx].ss_active_high = p_config->ss_active_high;
     }
 
