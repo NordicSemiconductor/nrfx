@@ -313,6 +313,15 @@ __STATIC_INLINE uint32_t nrf_gpio_pin_out_read(uint32_t pin_number);
 __STATIC_INLINE nrf_gpio_pin_sense_t nrf_gpio_pin_sense_get(uint32_t pin_number);
 
 /**
+ * @brief Function for reading the direction configuration of a GPIO pin.
+ *
+ * @param pin_number Specifies the pin number to read.
+ *
+ * @retval Direction configuration.
+ */
+__STATIC_INLINE nrf_gpio_pin_dir_t nrf_gpio_pin_dir_get(uint32_t pin_number);
+
+/**
  * @brief Function for setting output direction on selected pins on a given port.
  *
  * @param p_reg    Pointer to the peripheral registers structure.
@@ -662,6 +671,15 @@ __STATIC_INLINE nrf_gpio_pin_sense_t nrf_gpio_pin_sense_get(uint32_t pin_number)
 
     return (nrf_gpio_pin_sense_t)((reg->PIN_CNF[pin_number] &
                                    GPIO_PIN_CNF_SENSE_Msk) >> GPIO_PIN_CNF_SENSE_Pos);
+}
+
+
+__STATIC_INLINE nrf_gpio_pin_dir_t nrf_gpio_pin_dir_get(uint32_t pin_number)
+{
+    NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
+
+    return (nrf_gpio_pin_dir_t)((reg->PIN_CNF[pin_number] &
+                                 GPIO_PIN_CNF_DIR_Msk) >> GPIO_PIN_CNF_DIR_Pos);
 }
 
 
