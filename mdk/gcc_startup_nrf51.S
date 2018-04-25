@@ -164,7 +164,7 @@ Reset_Handler:
     ldr r2, =__data_start__
     ldr r3, =__bss_start__
 
-    subs r3, r2
+    subs r3, r3, r2
     ble .L_loop1_done
 
 .L_loop1:
@@ -191,7 +191,7 @@ Reset_Handler:
 
     movs r0, 0
 
-    subs r2, r1
+    subs r2, r2, r1
     ble .L_loop3_done
 
 .L_loop3:
