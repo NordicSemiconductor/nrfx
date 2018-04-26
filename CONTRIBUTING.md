@@ -17,7 +17,8 @@ branch on a forked repository and merged back to the master branch using pull re
 ### Working on branches
 Before merging a branch back to the master branch, a few requirements must be met.
 
- * Make sure that CLA (Contributor License Agreement) has been accepted.
+ * Make sure that [CLA (Contributor License Agreement)](https://cla-assistant.io/NordicSemiconductor/nrfx)
+ has been accepted.
  * Make commits clear and consistent. Make sure that each commit is well-described and contains
  one logical change (see [Commit message rules](#commit-message-rules) for more). If there are
  more commits related to one logical change, squash them.
