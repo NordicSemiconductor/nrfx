@@ -188,6 +188,13 @@ __STATIC_INLINE nrf_ppi_channel_enable_t nrf_ppi_channel_enable_get(nrf_ppi_chan
 __STATIC_INLINE void nrf_ppi_channel_disable_all(void);
 
 /**
+ * @brief Function for enabling multiple PPI channels.
+ *
+ * @param[in] mask Channel mask.
+ */
+__STATIC_INLINE void nrf_ppi_channels_enable(uint32_t mask);
+
+/**
  * @brief Function for disabling multiple PPI channels.
  *
  * @param[in] mask Channel mask.
@@ -365,6 +372,11 @@ __STATIC_INLINE nrf_ppi_channel_enable_t nrf_ppi_channel_enable_get(nrf_ppi_chan
 __STATIC_INLINE void nrf_ppi_channel_disable_all(void)
 {
     NRF_PPI->CHENCLR = ((uint32_t)0xFFFFFFFFuL);
+}
+
+__STATIC_INLINE void nrf_ppi_channels_enable(uint32_t mask)
+{
+    NRF_PPI->CHENSET = mask;
 }
 
 __STATIC_INLINE void nrf_ppi_channels_disable(uint32_t mask)
