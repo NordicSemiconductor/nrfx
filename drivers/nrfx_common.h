@@ -153,6 +153,23 @@ do {                                                         \
 } while(0)
 
 /**
+ * @brief Macro for getting the interrupt number assigned to a specific
+ *        peripheral.
+ *
+ * In Nordic SoCs the IRQ number assigned to a peripheral is equal to the ID
+ * of this peripheral, and there is a direct relationship between this ID and
+ * the peripheral base address, i.e. the address of a fixed block of 0x1000
+ * bytes of address space assigned to this peripheral.
+ * See the chapter "Peripheral interface" (sections "Peripheral ID" and
+ * "Interrupts") in the product specification of a given SoC.
+ *
+ * @param[in] base_addr  Peripheral base address or pointer.
+ *
+ * @return Interrupt number associated with the specified peripheral.
+ */
+#define NRFX_IRQ_NUMBER_GET(base_addr)  (uint8_t)((uint32_t)(base_addr) >> 12)
+
+/**
  * @brief IRQ handler type.
  */
 typedef void (* nrfx_irq_handler_t)(void);
@@ -233,8 +250,7 @@ __STATIC_INLINE bool nrfx_is_in_ram(void const * p_object)
 
 __STATIC_INLINE IRQn_Type nrfx_get_irq_number(void const * p_reg)
 {
-    uint8_t irq_number = (uint8_t)(((uint32_t)p_reg) >> 12u);
-    return (IRQn_Type)irq_number;
+    return (IRQn_Type)NRFX_IRQ_NUMBER_GET(p_reg);
 }
 
 __STATIC_INLINE uint32_t nrfx_bitpos_to_event(uint32_t bit)
