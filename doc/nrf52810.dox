@@ -2,6 +2,8 @@
 @page nrf52810_drivers nRF52810 Drivers
 @{
 
+@ref nrf_ccm
+
 @ref nrf_clock
 
 @ref nrf_comp

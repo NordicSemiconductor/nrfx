@@ -4,6 +4,8 @@
 
 @ref nrf_adc
 
+@ref nrf_ccm
+
 @ref nrf_clock
 
 @ref nrf_ecb
