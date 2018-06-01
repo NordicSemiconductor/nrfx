@@ -26,6 +26,8 @@
 
 @ref nrf_qdec
 
+@ref nrf_radio
+
 @ref nrf_rng
 
 @ref nrf_rtc
