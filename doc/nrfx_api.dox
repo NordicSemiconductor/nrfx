@@ -32,6 +32,8 @@
 
 @defgroup nrf_qspi QSPI
 
+@defgroup nrf_radio RADIO
+
 @defgroup nrf_rng RNG
 
 @defgroup nrf_rtc RTC
