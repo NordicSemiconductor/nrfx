@@ -1,21 +1,21 @@
-/**
+/*
  * Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
  *    list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Neither the name of the copyright holder nor the names of its
  *    contributors may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -83,6 +83,10 @@
      SPIM2_LENGTH_VALIDATE(drv_inst_idx, rx_len, tx_len) || \
      SPIM3_LENGTH_VALIDATE(drv_inst_idx, rx_len, tx_len))
 
+#if defined(NRF52840_XXAA) && (NRFX_CHECK(NRFX_SPIM3_ENABLED))
+// Enable workaround for nRF52840 anomaly 195 (SPIM3 continues to draw current after disable).
+#define USE_WORKAROUND_FOR_ANOMALY_195
+#endif
 
 // Control block - driver instance local data.
 typedef struct
@@ -171,14 +175,13 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t  const * const p_instance,
     }
 
 #if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED)
-
-    // Currently, only SPIM3 in nRF52840 supports the extended features. Other instances must be checked.
+    // Currently, only SPIM3 in nRF52840 supports the extended features.
+    // Other instances must be checked.
     if ((p_instance->drv_inst_idx != NRFX_SPIM3_INST_IDX) &&
-           ((p_config->dcx_pin     != NRFX_SPIM_PIN_NOT_USED) ||
-            (p_config->frequency   == NRF_SPIM_FREQ_16M)      ||
-            (p_config->frequency   == NRF_SPIM_FREQ_32M)      ||
-            (p_config->rx_delay    != 0x00)                   ||
-            (p_config->use_hw_ss)))
+        ((p_config->dcx_pin   != NRFX_SPIM_PIN_NOT_USED) ||
+         (p_config->frequency == NRF_SPIM_FREQ_16M)      ||
+         (p_config->frequency == NRF_SPIM_FREQ_32M)      ||
+         (p_config->use_hw_ss)))
     {
         err_code = NRFX_ERROR_NOT_SUPPORTED;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -364,6 +367,13 @@ void nrfx_spim_uninit(nrfx_spim_t const * const p_instance)
         nrf_gpio_cfg_default(p_cb->miso_pin);
     }
     nrf_spim_disable(p_spim);
+
+#ifdef USE_WORKAROUND_FOR_ANOMALY_195
+    if (p_spim == NRF_SPIM3)
+    {
+        *(volatile uint32_t *)0x4002F004 = 1;
+    }
+#endif
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
     nrfx_prs_release(p_instance->p_reg);
