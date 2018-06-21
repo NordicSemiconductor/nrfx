@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+### Fixed
+- Fixed starting TWIM TXRX transfer after preceding transfer was without stop condition.
+
 ## [1.1.0] - 2018-06-15
 ### Added
 - Implemented workaround for nRF52832 and nRF52840 anomaly 194 in the I2S driver.
