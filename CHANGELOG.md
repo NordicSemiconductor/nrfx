@@ -1,9 +1,19 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
-## [Unreleased]
+## [1.2.0] - 2018-09-06
+### Added
+- Added function for checking if a specific channel is enabled in the GPIOTE HAL.
+- Added support for using the QDEC driver without LED.
+- Added functions for modifying only the event endpoint or only the task endpoint in the PPI HAL.
+- Added function for reading the pin pull configuration in the GPIO HAL.
+
 ### Fixed
-- Fixed starting TWIM TXRX transfer after preceding transfer was without stop condition.
+- Fixed a double buffering bug that occurred in the UARTE driver after the RX abort.
+- Fixed the TXRX transfers in the TWIM driver. They can now be started after transfers that are not ended with the stop condition.
+
+### Changed
+- Corrected ISOSPLIT enumerator names in the USBD HAL.
 
 ## [1.1.0] - 2018-06-15
 ### Added
