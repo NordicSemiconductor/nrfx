@@ -249,6 +249,7 @@ nrfx_err_t nrfx_saadc_init(nrfx_saadc_config_t const * p_config,
 void nrfx_saadc_uninit(void)
 {
     NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    nrfx_err_t err_code;
 
     nrf_saadc_int_disable(NRF_SAADC_INT_ALL);
     NRFX_IRQ_DISABLE(SAADC_IRQn);
@@ -266,7 +267,7 @@ void nrfx_saadc_uninit(void)
     {
         if (m_cb.psel[channel].pselp != NRF_SAADC_INPUT_DISABLED)
         {
-            nrfx_err_t err_code = nrfx_saadc_channel_uninit(channel);
+            err_code = nrfx_saadc_channel_uninit(channel);
             NRFX_ASSERT(err_code == NRFX_SUCCESS);
         }
     }
