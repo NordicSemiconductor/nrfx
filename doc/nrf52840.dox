@@ -18,6 +18,8 @@
 
 @ref nrf_lpcomp
 
+@ref nrf_nfct
+
 @ref nrf_nvmc
 
 @ref nrf_pdm
