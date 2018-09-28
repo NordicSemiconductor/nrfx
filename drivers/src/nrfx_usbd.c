@@ -2231,14 +2231,14 @@ void * nrfx_usbd_feeder_buffer_get(void)
     return m_tx_buffer;
 }
 
-nrfx_err_t nrfx_usbd_ep_status_get(nrfx_usbd_ep_t ep, size_t * p_size)
+nrfx_usbd_ep_status_t nrfx_usbd_ep_status_get(nrfx_usbd_ep_t ep, size_t * p_size)
 {
-    nrfx_err_t ret;
+    nrfx_usbd_ep_status_t ret;
 
     usbd_ep_state_t const * p_state = ep_state_access(ep);
     NRFX_CRITICAL_SECTION_ENTER();
     *p_size = p_state->transfer_cnt;
-    ret = (p_state->handler.consumer == NULL) ? p_state->status : NRFX_ERROR_BUSY;
+    ret = (p_state->handler.consumer == NULL) ? p_state->status : NRFX_USBD_EP_BUSY;
     NRFX_CRITICAL_SECTION_EXIT();
     return ret;
 }

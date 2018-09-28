@@ -31,11 +31,7 @@
 #include "nrfx_atomic.h"
 
 #ifndef NRFX_ATOMIC_USE_BUILT_IN
-#if (defined(__GNUC__) && defined(WIN32))
-    #define NRFX_ATOMIC_USE_BUILT_IN 1
-#else
     #define NRFX_ATOMIC_USE_BUILT_IN 0
-#endif
 #endif // NRFX_ATOMIC_USE_BUILT_IN
 
 #if ((__CORTEX_M >= 0x03U) || (__CORTEX_SC >= 300U))

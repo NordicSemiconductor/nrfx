@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [1.3.1] - 2018-09-28
+### Fixed
+- Corrected the type of nrfx_usbd_ep_status_get() return value.
+- Corrected calls to undefined macros in NFCT and USBD drivers.
+
 ## [1.3.0] - 2018-09-21
 ### Added
 - Added HAL and driver for NFCT.
