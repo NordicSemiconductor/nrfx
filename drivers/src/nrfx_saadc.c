@@ -626,4 +626,21 @@ void nrfx_saadc_limits_set(uint8_t channel, int16_t limit_low, int16_t limit_hig
         nrf_saadc_int_enable(int_mask);
     }
 }
+
+void nrfx_enable_adc_chan(int chan, nrf_saadc_input_t   pselp,
+                          nrf_saadc_input_t             pseln)
+{
+    NRFX_ASSERT(m_cb.active_channels < NRF_SAADC_CHANNEL_COUNT);
+    ++m_cb.active_channels;
+    nrf_saadc_channel_input_set(chan, pselp, pseln);
+}
+
+void nrfx_disable_adc_chan(int chan)
+{
+    NRFX_ASSERT(m_cb.active_channels != 0);
+    --m_cb.active_channels;
+    nrf_saadc_channel_input_set(chan, NRF_SAADC_INPUT_DISABLED,
+                                NRF_SAADC_INPUT_DISABLED);
+}
+
 #endif // NRFX_CHECK(NRFX_SAADC_ENABLED)
