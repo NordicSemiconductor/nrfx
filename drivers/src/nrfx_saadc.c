@@ -627,20 +627,48 @@ void nrfx_saadc_limits_set(uint8_t channel, int16_t limit_low, int16_t limit_hig
     }
 }
 
-void nrfx_enable_adc_chan(int chan, nrf_saadc_input_t   pselp,
-                          nrf_saadc_input_t             pseln)
+
+nrfx_err_t nrfx_saadc_channel_enable(int chan, nrf_saadc_input_t pselp,
+                                     nrf_saadc_input_t           pseln)
 {
+    nrfx_err_t err_code;
+
+    if (m_cb.adc_state != NRF_SAADC_STATE_IDLE)
+    {
+        err_code = NRFX_ERROR_BUSY;
+        NRFX_LOG_WARNING("Function: %s error code: %s.",
+                         __func__,
+                         NRFX_LOG_ERROR_STRING_GET(err_code));
+        return err_code;
+    }
+
+    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
     NRFX_ASSERT(m_cb.active_channels < NRF_SAADC_CHANNEL_COUNT);
     ++m_cb.active_channels;
     nrf_saadc_channel_input_set(chan, pselp, pseln);
+
+    return NRFX_SUCCESS;
 }
 
-void nrfx_disable_adc_chan(int chan)
+
+nrfx_err_t nrfx_saadc_channel_disable(int chan)
 {
+    nrfx_err_t err_code;
+
+    if (m_cb.adc_state != NRF_SAADC_STATE_IDLE)
+    {
+        err_code = NRFX_ERROR_BUSY;
+        NRFX_LOG_WARNING("Function: %s error code: %s.",
+                         __func__,
+                         NRFX_LOG_ERROR_STRING_GET(err_code));
+        return err_code;
+    }
+
     NRFX_ASSERT(m_cb.active_channels != 0);
     --m_cb.active_channels;
     nrf_saadc_channel_input_set(chan, NRF_SAADC_INPUT_DISABLED,
                                 NRF_SAADC_INPUT_DISABLED);
-}
 
+    return NRFX_SUCCESS;
+}
 #endif // NRFX_CHECK(NRFX_SAADC_ENABLED)

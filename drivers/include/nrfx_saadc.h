@@ -306,6 +306,28 @@ void nrfx_saadc_limits_set(uint8_t channel, int16_t limit_low, int16_t limit_hig
 
 void nrfx_saadc_irq_handler(void);
 
+/**
+ * @brief Function for enabling an SAADC channel
+ *
+ * @param chan  SAADC channel number
+ * @param pselp Input positive pin selection
+ * @param pseln Input negative pin selection
+ *
+ * @retval NRFX_SUCCESS    If the ADC driver is not busy.
+ * @retval NRFX_ERROR_BUSY If the ADC driver is busy.
+ */
+nrfx_err_t nrfx_saadc_channel_enable(int chan, nrf_saadc_input_t pselp,
+                                     nrf_saadc_input_t           pseln);
+
+/**
+ * @brief Function for disabling an SAADC channel
+ *
+ * @param chan  SAADC channel number
+ *
+ * @retval NRFX_SUCCESS    If the ADC driver is not busy.
+ * @retval NRFX_ERROR_BUSY If the ADC driver is busy.
+ */
+nrfx_err_t nrfx_saadc_channel_disable(int chan);
 
 /** @} */
 
