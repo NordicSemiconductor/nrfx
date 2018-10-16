@@ -116,6 +116,10 @@ nrfx_err_t nrfx_timer_init(nrfx_timer_t const * const  p_instance,
 
 void nrfx_timer_uninit(nrfx_timer_t const * const p_instance)
 {
+    if (m_cb[p_instance->instance_id].state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
     NRFX_IRQ_DISABLE(nrfx_get_irq_number(p_instance->p_reg));
 
     #define DISABLE_ALL UINT32_MAX

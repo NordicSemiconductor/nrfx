@@ -89,7 +89,9 @@ void nrfx_rng_stop(void)
 
 void nrfx_rng_uninit(void)
 {
-    NRFX_ASSERT(m_rng_state == NRFX_DRV_STATE_INITIALIZED);
+    if (m_rng_state == NRFX_DRV_STATE_UNINITIALIZED) {
+        return;
+    }
 
     nrf_rng_int_disable(NRF_RNG_INT_VALRDY_MASK);
     nrf_rng_task_trigger(NRF_RNG_TASK_STOP);

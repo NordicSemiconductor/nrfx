@@ -183,7 +183,10 @@ nrfx_err_t nrfx_i2s_init(nrfx_i2s_config_t const * p_config,
 
 void nrfx_i2s_uninit(void)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    if (m_cb.state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
 
     nrfx_i2s_stop();
 

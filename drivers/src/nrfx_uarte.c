@@ -233,7 +233,10 @@ nrfx_err_t nrfx_uarte_init(nrfx_uarte_t const *        p_instance,
 void nrfx_uarte_uninit(nrfx_uarte_t const * p_instance)
 {
     uarte_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
-
+    if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
     nrf_uarte_disable(p_instance->p_reg);
 
     if (p_cb->handler)

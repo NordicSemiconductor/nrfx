@@ -176,7 +176,10 @@ nrfx_err_t nrfx_pwm_init(nrfx_pwm_t const * const p_instance,
 void nrfx_pwm_uninit(nrfx_pwm_t const * const p_instance)
 {
     pwm_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+    if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
 
     NRFX_IRQ_DISABLE(nrfx_get_irq_number(p_instance->p_registers));
 #if defined(USE_DMA_ISSUE_WORKAROUND)

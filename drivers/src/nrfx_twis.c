@@ -546,7 +546,10 @@ void nrfx_twis_uninit(nrfx_twis_t const * p_instance)
 {
     NRF_TWIS_Type *        p_reg = p_instance->p_reg;
     twis_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+    if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
 
     TWIS_PSEL_Type psel = p_reg->PSEL;
 

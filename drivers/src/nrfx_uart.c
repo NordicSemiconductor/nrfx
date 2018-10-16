@@ -213,6 +213,10 @@ nrfx_err_t nrfx_uart_init(nrfx_uart_t const *        p_instance,
 void nrfx_uart_uninit(nrfx_uart_t const * p_instance)
 {
     uart_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+    if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
 
     nrf_uart_disable(p_instance->p_reg);
 

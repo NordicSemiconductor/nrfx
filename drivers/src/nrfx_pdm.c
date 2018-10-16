@@ -226,6 +226,10 @@ nrfx_err_t nrfx_pdm_init(nrfx_pdm_config_t const * p_config,
 
 void nrfx_pdm_uninit(void)
 {
+    if (m_cb.drv_state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
     nrf_pdm_disable();
     nrf_pdm_psel_disconnect();
     m_cb.drv_state = NRFX_DRV_STATE_UNINITIALIZED;

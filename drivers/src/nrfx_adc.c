@@ -154,7 +154,10 @@ void nrfx_adc_all_channels_disable(void)
 
 void nrfx_adc_sample(void)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    if (m_cb.state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
     NRFX_ASSERT(!nrf_adc_busy_check());
     nrf_adc_task_trigger(NRF_ADC_TASK_START);
 }

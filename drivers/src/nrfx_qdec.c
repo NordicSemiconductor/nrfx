@@ -153,7 +153,10 @@ nrfx_err_t nrfx_qdec_init(nrfx_qdec_config_t const * p_config,
 
 void nrfx_qdec_uninit(void)
 {
-    NRFX_ASSERT(m_state != NRFX_DRV_STATE_UNINITIALIZED);
+    if (m_state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
     nrfx_qdec_disable();
     NRFX_IRQ_DISABLE(QDEC_IRQn);
     m_state = NRFX_DRV_STATE_UNINITIALIZED;

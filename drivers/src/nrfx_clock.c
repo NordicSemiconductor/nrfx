@@ -208,7 +208,10 @@ void nrfx_clock_disable(void)
 
 void nrfx_clock_uninit(void)
 {
-    NRFX_ASSERT(m_clock_cb.module_initialized);
+    if (!m_clock_cb.module_initialized)
+    {
+        return;
+    }
     nrfx_clock_lfclk_stop();
     nrfx_clock_hfclk_stop();
     m_clock_cb.module_initialized = false;

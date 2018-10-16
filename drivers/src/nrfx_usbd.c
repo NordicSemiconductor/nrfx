@@ -1197,7 +1197,7 @@ static void ev_setup_handler(void)
     }
 
     m_last_setup_dir =
-        ((bmRequestType & USBD_BMREQUESTTYPE_DIRECTION_Msk) == 
+        ((bmRequestType & USBD_BMREQUESTTYPE_DIRECTION_Msk) ==
          (USBD_BMREQUESTTYPE_DIRECTION_HostToDevice << USBD_BMREQUESTTYPE_DIRECTION_Pos)) ?
         NRFX_USBD_EPOUT0 : NRFX_USBD_EPIN0;
 
@@ -1658,7 +1658,7 @@ void nrfx_usbd_irq_handler(void)
 nrfx_err_t nrfx_usbd_init(nrfx_usbd_event_handler_t event_handler)
 {
     NRFX_ASSERT((nrfx_usbd_errata_type_52840_eng_a() ||
-                 nrfx_usbd_errata_type_52840_eng_b() || 
+                 nrfx_usbd_errata_type_52840_eng_b() ||
                  nrfx_usbd_errata_type_52840_eng_c() ||
                  nrfx_usbd_errata_type_52840_eng_d())
                );
@@ -1700,7 +1700,10 @@ nrfx_err_t nrfx_usbd_init(nrfx_usbd_event_handler_t event_handler)
 
 void nrfx_usbd_uninit(void)
 {
-    NRFX_ASSERT(m_drv_state == NRFX_DRV_STATE_INITIALIZED);
+    if (m_drv_state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
 
     m_event_handler = NULL;
     m_drv_state = NRFX_DRV_STATE_UNINITIALIZED;
@@ -1729,7 +1732,7 @@ void nrfx_usbd_enable(void)
         }
         NRFX_CRITICAL_SECTION_EXIT();
     }
-    
+
     if (nrfx_usbd_errata_171())
     {
         NRFX_CRITICAL_SECTION_ENTER();
@@ -1754,7 +1757,7 @@ void nrfx_usbd_enable(void)
         /* Empty loop */
     }
     nrf_usbd_eventcause_clear(NRF_USBD_EVENTCAUSE_READY_MASK);
-    
+
     if (nrfx_usbd_errata_171())
     {
         NRFX_CRITICAL_SECTION_ENTER();
