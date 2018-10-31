@@ -195,7 +195,10 @@ nrfx_err_t nrfx_twi_init(nrfx_twi_t const *        p_instance,
 void nrfx_twi_uninit(nrfx_twi_t const * p_instance)
 {
     twi_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+    if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
 
     if (p_cb->handler)
     {

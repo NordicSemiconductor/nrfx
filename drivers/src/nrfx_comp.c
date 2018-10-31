@@ -145,7 +145,10 @@ nrfx_err_t nrfx_comp_init(nrfx_comp_config_t const * p_config,
 
 void nrfx_comp_uninit(void)
 {
-    NRFX_ASSERT(m_state != NRFX_DRV_STATE_UNINITIALIZED);
+    if (m_state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
     NRFX_IRQ_DISABLE(COMP_LPCOMP_IRQn);
     nrf_comp_disable();
 #if NRFX_CHECK(NRFX_PRS_ENABLED)

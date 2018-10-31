@@ -263,7 +263,10 @@ bool nrfx_gpiote_is_init(void)
 
 void nrfx_gpiote_uninit(void)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    if (m_cb.state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
 
     uint32_t i;
 

@@ -248,7 +248,10 @@ nrfx_err_t nrfx_saadc_init(nrfx_saadc_config_t const * p_config,
 
 void nrfx_saadc_uninit(void)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    if (m_cb.state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
 
     nrf_saadc_int_disable(NRF_SAADC_INT_ALL);
     NRFX_IRQ_DISABLE(SAADC_IRQn);

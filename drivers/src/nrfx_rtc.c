@@ -98,13 +98,16 @@ nrfx_err_t nrfx_rtc_init(nrfx_rtc_t const * const  p_instance,
 
 void nrfx_rtc_uninit(nrfx_rtc_t const * const p_instance)
 {
+    if (m_cb[p_instance->instance_id].state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
     uint32_t mask = NRF_RTC_INT_TICK_MASK     |
                     NRF_RTC_INT_OVERFLOW_MASK |
                     NRF_RTC_INT_COMPARE0_MASK |
                     NRF_RTC_INT_COMPARE1_MASK |
                     NRF_RTC_INT_COMPARE2_MASK |
                     NRF_RTC_INT_COMPARE3_MASK;
-    NRFX_ASSERT(m_cb[p_instance->instance_id].state != NRFX_DRV_STATE_UNINITIALIZED);
 
     NRFX_IRQ_DISABLE(p_instance->irq);
 

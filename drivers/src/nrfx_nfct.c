@@ -67,7 +67,7 @@ typedef struct
 #endif // NRF52840_XXAA
 #define NRFX_NFCT_TIMER_INSTANCE         4    /**< Timer instance used for various workarounds for the NFCT HW issues.*/
 
-static nrfx_nfct_timer_workaround_t m_timer_workaround = 
+static nrfx_nfct_timer_workaround_t m_timer_workaround =
 {
     .timer = NRFX_TIMER_INSTANCE(NRFX_NFCT_TIMER_INSTANCE),
 };
@@ -261,7 +261,7 @@ static void nrfx_nfct_field_event_handler(volatile nrfx_nfct_field_state_t field
 #elif defined(NRF52832_XXAA) || defined(NRF52832_XXAB)
                 nrfx_timer_clear(&m_timer_workaround.timer);
                 nrfx_timer_enable(&m_timer_workaround.timer);
-                m_timer_workaround.field_state_cnt = 0;  
+                m_timer_workaround.field_state_cnt = 0;
 #endif // NRF52840_XXAA
 
                 m_nfct_cb.field_on = true;
@@ -400,7 +400,7 @@ static void nrfx_nfct_field_timer_handler(nrf_timer_event_t event_type, void * p
 static inline nrfx_err_t nrfx_nfct_field_timer_config(void)
 {
     nrfx_err_t          err_code;
-    nrfx_timer_config_t timer_cfg = 
+    nrfx_timer_config_t timer_cfg =
     {
         .frequency          = NRF_TIMER_FREQ_1MHz,
         .mode               = NRF_TIMER_MODE_TIMER,
@@ -496,6 +496,10 @@ nrfx_err_t nrfx_nfct_init(nrfx_nfct_config_t const * p_config)
 
 void nrfx_nfct_uninit(void)
 {
+    if (m_nfct_cb.state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
     nrfx_nfct_disable();
 
 #ifdef USE_TIMER_WORKAROUND
@@ -701,7 +705,7 @@ nrfx_err_t nrfx_nfct_nfcid1_default_bytes_get(uint8_t * const p_nfcid1_buff,
             p_nfcid1_buff[9] = (uint8_t) (nfc_tag_header2 >> 16);
         }
         /* Begin: Bugfix for FTPAN-181. */
-        /* Workaround for wrong value in NFCID1. Value 0x88 cannot be used as byte 3 
+        /* Workaround for wrong value in NFCID1. Value 0x88 cannot be used as byte 3
            of a double-size NFCID1, according to the NFC Forum Digital Protocol specification. */
         else if (p_nfcid1_buff[3] == 0x88)
         {
@@ -747,7 +751,7 @@ void nrfx_nfct_irq_handler(void)
     if (NRFX_NFCT_EVT_ACTIVE(FIELDLOST))
     {
         nrf_nfct_event_clear(NRF_NFCT_EVENT_FIELDLOST);
-        current_field = (current_field == NRFX_NFC_FIELD_STATE_NONE) ? 
+        current_field = (current_field == NRFX_NFC_FIELD_STATE_NONE) ?
                         NRFX_NFC_FIELD_STATE_OFF : NRFX_NFC_FIELD_STATE_UNKNOWN;
 
         NRFX_LOG_DEBUG("Field lost");
@@ -776,7 +780,7 @@ void nrfx_nfct_irq_handler(void)
 
         if (NRFX_NFCT_EVT_ACTIVE(RXERROR))
         {
-            nfct_evt.params.rx_frameend.rx_status = 
+            nfct_evt.params.rx_frameend.rx_status =
                 (nrf_nfct_rx_frame_status_get() & NRFX_NFCT_FRAME_STATUS_RX_ALL_MASK);
             nrf_nfct_event_clear(NRF_NFCT_EVENT_RXERROR);
 
@@ -814,7 +818,7 @@ void nrfx_nfct_irq_handler(void)
     if (NRFX_NFCT_EVT_ACTIVE(SELECTED))
     {
         nrf_nfct_event_clear(NRF_NFCT_EVENT_SELECTED);
-        /* Clear also RX END and RXERROR events because SW does not take care of 
+        /* Clear also RX END and RXERROR events because SW does not take care of
            commands that were received before selecting the tag. */
         nrf_nfct_event_clear(NRF_NFCT_EVENT_RXFRAMEEND);
         nrf_nfct_event_clear(NRF_NFCT_EVENT_RXERROR);

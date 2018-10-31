@@ -213,7 +213,10 @@ nrfx_err_t nrfx_twim_init(nrfx_twim_t const *        p_instance,
 void nrfx_twim_uninit(nrfx_twim_t const * p_instance)
 {
     twim_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+    if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return;
+    }
 
     if (p_cb->handler)
     {

@@ -117,7 +117,10 @@ nrfx_err_t nrfx_power_init(nrfx_power_config_t const * p_config)
 
 void nrfx_power_uninit(void)
 {
-    NRFX_ASSERT(m_initialized);
+    if (!m_initialized)
+    {
+        return;
+    }
 
 #if NRFX_CHECK(NRFX_CLOCK_ENABLED)
     if (!nrfx_clock_irq_enabled)

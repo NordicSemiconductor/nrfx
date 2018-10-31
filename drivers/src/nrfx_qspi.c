@@ -250,7 +250,10 @@ nrfx_err_t nrfx_qspi_mem_busy_check(void)
 
 void nrfx_qspi_uninit(void)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    if (m_cb.state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+       return;
+    }
 
     nrf_qspi_int_disable(NRF_QSPI, NRF_QSPI_INT_READY_MASK);
 
