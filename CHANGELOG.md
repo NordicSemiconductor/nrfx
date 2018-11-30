@@ -1,6 +1,24 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [1.4.0] - 2018-11-30
+### Added
+- Added the nrfx_is_word_aligned() function for checking whether an address is word-aligned.
+- Added HAL for ACL.
+- Added functions for disabling and re-enabling interrupts in the SWI driver.
+- Added possibility to completely remove interrupt handling from the WDT driver.
+
+### Changed
+- Updated the documentation for the nrfx_uarte_rx() function. It now correctly reflects the actual behavior of the function.
+
+### Fixed
+- Corrected the type of the nrfx_uarte_xfer_evt_t structure field that holds the amount of transferred bytes.
+- Corrected the way of disabling interrupts in the NFCT driver when moving the peripheral to the disabled state.
+- Fixed a typo in the name of the bmRequest field in the nrfx_usbd_setup_t structure. The new correct name is bRequest.
+- Fixed the nrfx_ppi_channel_fork_assign() function. It now accepts also pre-programmed channels.
+- Fixed handling of long custom instruction responses in the QSPI driver.
+- Fixed a bug affecting the conversion of time to ticks in the TIMER HAL.
+
 ## [1.3.1] - 2018-09-28
 ### Fixed
 - Corrected the type of nrfx_usbd_ep_status_get() return value.

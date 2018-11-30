@@ -32,6 +32,16 @@
  */
 #define NRFX_WDT_CONFIG_RELOAD_VALUE
 
+/** @brief Remove WDT IRQ handling from WDT driver
+ *
+ *  Following options are available:
+ * - 0 - Include WDT IRQ handling
+ * - 1 - Remove WDT IRQ handling
+ *
+ * @note This is an NRF_CONFIG macro.
+ */
+#define NRFX_WDT_CONFIG_NO_IRQ
+
 /** @brief Interrupt priority
  *
  *  Following options are available:

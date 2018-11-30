@@ -4,6 +4,8 @@
 @brief List of all drivers available in nrfx.
 @defgroup nrf_adc ADC
 
+@defgroup nrf_acl ACL
+
 @defgroup nrf_ccm CCM
 
 @defgroup nrf_clock CLOCK
