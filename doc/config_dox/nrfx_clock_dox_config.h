@@ -22,6 +22,14 @@
  */
 #define NRFX_CLOCK_CONFIG_LF_SRC
 
+/** @brief Enables LF Clock Calibration Support
+ *
+ *  Set to 1 to activate.
+ *
+ * @note This is an NRF_CONFIG macro.
+ */
+#define NRFX_CLOCK_CONFIG_LF_CAL_ENABLED
+
 /** @brief Interrupt priority
  *
  *  Following options are available:

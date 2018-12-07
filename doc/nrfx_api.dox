@@ -12,6 +12,8 @@
 
 @defgroup nrf_comp COMP
 
+@defgroup nrf_dppi DPPI
+
 @defgroup nrf_ecb ECB
 
 @defgroup nrf_gpio GPIO
@@ -19,6 +21,8 @@
 @defgroup nrf_gpiote GPIOTE
 
 @defgroup nrf_i2s I2S
+
+@defgroup nrf_kmu KMU
 
 @defgroup nrf_lpcomp LPCOMP
 
@@ -52,6 +56,8 @@
 
 @defgroup nrf_spis SPIS
 
+@defgroup nrf_spu SPU
+
 @defgroup nrf_systick Cortex-M Systick
 
 @defgroup nrf_swi_egu SWI/EGU
@@ -71,6 +77,8 @@
 @defgroup nrf_uarte UARTE
 
 @defgroup nrf_usbd USBD
+
+@defgroup nrf_vmc VMC
 
 @defgroup nrf_wdt WDT
 @}

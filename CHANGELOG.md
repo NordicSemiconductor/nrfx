@@ -1,6 +1,20 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [1.5.0] - 2018-12-12
+### Added
+- Added support for nRF9160.
+- Added allocator for DPPI.
+- Added HALs: DPPI, KMU, REGULATORS, SPU, VMC.
+- Added support for DPPI subscription and publishing in HALs related to nRF9160.
+- Added support for instances 2 and 3 in SPIS, TWIM, TWIS, and UARTE drivers.
+
+### Changed
+- Updated MDK to version 8.21.1.
+
+### Fixed
+- Corrected NRFX_I2S_CONFIG_RATIO value in nrfx_config.h. It now correctly uses supported value.
+
 ## [1.4.0] - 2018-11-30
 ### Added
 - Added the nrfx_is_word_aligned() function for checking whether an address is word-aligned.

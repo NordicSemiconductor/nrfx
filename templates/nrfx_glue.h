@@ -238,6 +238,16 @@ extern "C" {
 //------------------------------------------------------------------------------
 
 /**
+ * @brief Bitmask defining DPPI channels reserved to be used outside of nrfx.
+ */
+#define NRFX_DPPI_CHANNELS_USED  0
+
+/**
+ * @brief Bitmask defining DPPI groups reserved to be used outside of nrfx.
+ */
+#define NRFX_DPPI_GROUPS_USED    0
+
+/**
  * @brief Bitmask defining PPI channels reserved to be used outside of nrfx.
  */
 #define NRFX_PPI_CHANNELS_USED  0
