@@ -93,7 +93,7 @@ typedef struct
     uint8_t            const * p_tx_buffer;
     uint8_t                  * p_rx_buffer;
     uint8_t                  * p_rx_secondary_buffer;
-    size_t                     tx_buffer_length;
+    volatile size_t            tx_buffer_length;
     size_t                     rx_buffer_length;
     size_t                     rx_secondary_buffer_length;
     nrfx_drv_state_t           state;
