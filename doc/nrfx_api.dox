@@ -6,6 +6,8 @@
 
 @defgroup nrf_acl ACL
 
+@defgroup nrf_bprot BPROT
+
 @defgroup nrf_ccm CCM
 
 @defgroup nrf_clock CLOCK
@@ -25,6 +27,10 @@
 @defgroup nrf_kmu KMU
 
 @defgroup nrf_lpcomp LPCOMP
+
+@defgroup nrf_mpu MPU
+
+@defgroup nrf_mwu MWU
 
 @defgroup nrf_nfct NFCT
 

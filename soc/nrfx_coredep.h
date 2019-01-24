@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2019, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@
 #elif defined(NRF51)
     #define NRFX_DELAY_CPU_FREQ_MHZ 16
     #define NRFX_DELAY_DWT_PRESENT  0
-#elif defined(NRF52810_XXAA)
+#elif defined(NRF52810_XXAA) || defined(NRF52811_XXAA)
     #define NRFX_DELAY_CPU_FREQ_MHZ 64
     #define NRFX_DELAY_DWT_PRESENT  0
 #elif defined(NRF52832_XXAA) || defined (NRF52832_XXAB)
@@ -133,7 +133,7 @@ __STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
         0xd8fd, // BHI .-2
         0x4770  // BX LR
         };
-    #elif defined(NRF52810_XXAA)
+    #elif defined(NRF52810_XXAA) || defined(NRF52811_XXAA)
     // The loop takes 7 cycles: 1 for SUBS, 2 for BHI, 2 flash wait states for each instruction.
     static const uint16_t delay_bytecode[] = {
         0x3807, // SUBS r0, #7

@@ -1,6 +1,25 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [1.6.0] - 2019-01-18
+### Added
+- Added support for nRF52811.
+- Added support for the legacy peripherals SPI, TWI, and UART in nRF52810.
+- Added support for SAMPLERATE in nrf_saadc.h.
+- Added clearing of the STOPPED event in the nrfx_saadc_init() function to prevent driver deadlock in some cases.
+- Added HALs: BPROT, MPU, MWU.
+- Added function for reading the pin input buffer configuration in the GPIO HAL.
+- Implemented workaround for nRF9160 anomaly 1 in the I2S driver.
+
+### Changed
+- Improved handling of hardware anomalies in the USBD driver.
+- Updated MDK to version 8.23.1.
+
+### Fixed
+- Fixed the condition in NRFX_WAIT_FOR in the nrfx_saadc_abort() function. The macro now correctly waits for a stop of the driver.
+- Fixed the pending interrupt clearing in NVIC in the nrfx_usbd_stop() function. The driver now correctly handles power management.
+- Fixed the case when nrfx_uarte_tx_in_progress() function would return an incorrect value. The driver now correctly updates the tx_buffer_length variable internally.
+
 ## [1.5.0] - 2018-12-12
 ### Added
 - Added support for nRF9160.
