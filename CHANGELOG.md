@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [1.6.1] - 2019-01-29
+### Fixed
+- Fixed an issue in the NFCT driver that caused a performance loss on nRF52832. The interrupt configuration is now properly restored after the NRFX_NFCT_EVT_FIELD_LOST event.
+
 ## [1.6.0] - 2019-01-18
 ### Added
 - Added support for nRF52811.

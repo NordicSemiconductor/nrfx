@@ -346,6 +346,9 @@ static inline void nrfx_nfct_reset(void)
     // Restore interrupts.
     nrf_nfct_int_enable(int_enabled);
 
+    // Disable interrupts associated with data exchange.
+    nrf_nfct_int_disable(NRFX_NFCT_RX_INT_MASK | NRFX_NFCT_TX_INT_MASK);
+
     NRFX_LOG_INFO("Reinitialize");
 }
 
