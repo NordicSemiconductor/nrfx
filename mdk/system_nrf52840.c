@@ -200,7 +200,8 @@ static bool errata_36(void)
             return true;
         }
     }
-    
+
+    /* Apply by default for unknown devices until errata is confirmed fixed. */
     return true;
 }
 
@@ -221,7 +222,8 @@ static bool errata_66(void)
             return true;
         }
     }
-    
+
+    /* Apply by default for unknown devices until errata is confirmed fixed. */
     return true;
 }
 
@@ -290,7 +292,8 @@ static bool errata_136(void)
             return true;
         }
     }
-    
+
+    /* Apply by default for unknown devices until errata is confirmed fixed. */
     return true;
 }
 

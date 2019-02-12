@@ -36,6 +36,7 @@ static bool errata_31(void);
 static bool errata_36(void);
 static bool errata_66(void);
 static bool errata_103(void);
+static bool errata_108(void);
 static bool errata_136(void);
 
 /* Helper functions for Errata workarounds in nRF52832 */
@@ -45,7 +46,6 @@ static bool errata_16(void);
 static bool errata_32(void);
 static bool errata_37(void);
 static bool errata_57(void);
-static bool errata_108(void);
 static bool errata_182(void);
 #endif
 
@@ -168,14 +168,12 @@ void SystemInit(void)
     if (errata_103()){
         NRF_CCM->MAXPACKETSIZE = 0xFBul;
     }
-    
-    #if defined (DEVELOP_IN_NRF52832)
+
     /* Workaround for Errata 108 "RAM: RAM content cannot be trusted upon waking up from System ON Idle or System OFF mode" found at the Errata document
        for your device located at https://www.nordicsemi.com/DocLib  */
     if (errata_108()){
         *(volatile uint32_t *)0x40000EE4 = *(volatile uint32_t *)0x10000258 & 0x0000004F;
     }
-    #endif
     
     /* Workaround for Errata 136 "System: Bits in RESETREAS are set when they should not be" found at the Errata document
        for your device located at https://www.nordicsemi.com/DocLib  */
@@ -248,10 +246,15 @@ static bool errata_16(void)
 
 static bool errata_31(void)
 {
-    if ((*(uint32_t *)0x10000130ul == 0xAul) && (*(uint32_t *)0x10000134ul == 0x0ul)){
-        return true;
+    if (*(uint32_t *)0x10000130ul == 0xAul){
+        if (*(uint32_t *)0x10000134ul == 0x0ul){
+            return true;
+        }
+        if (*(uint32_t *)0x10000134ul == 0x1ul){
+            return true;
+        }
     }
-    
+
     #if defined (DEVELOP_IN_NRF52832)
     if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
         if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x30){
@@ -263,10 +266,11 @@ static bool errata_31(void)
         if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x50){
             return true;
         }
+        return false;
     }
     #endif
 
-    /* Fix should always apply. */
+    /* Apply by default for unknown devices until errata is confirmed fixed. */
     return true;
 }
 
@@ -285,10 +289,15 @@ static bool errata_32(void)
 
 static bool errata_36(void)
 {
-    if ((*(uint32_t *)0x10000130ul == 0xAul) && (*(uint32_t *)0x10000134ul == 0x0ul)){
-        return true;
+    if (*(uint32_t *)0x10000130ul == 0xAul){
+        if (*(uint32_t *)0x10000134ul == 0x0ul){
+            return true;
+        }
+        if (*(uint32_t *)0x10000134ul == 0x1ul){
+            return true;
+        }
     }
-    
+
     #if defined (DEVELOP_IN_NRF52832)
     if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
         if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x30){
@@ -300,10 +309,12 @@ static bool errata_36(void)
         if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x50){
             return true;
         }
+        return false;
     }
+
     #endif
 
-    /* Fix should always apply. */
+    /* Apply by default for unknown devices until errata is confirmed fixed. */
     return true;
 }
 
@@ -335,33 +346,39 @@ static bool errata_57(void)
 
 static bool errata_66(void)
 {
-    if ((*(uint32_t *)0x10000130ul == 0xAul) && (*(uint32_t *)0x10000134ul == 0x0ul)){
-        return true;
+    if (*(uint32_t *)0x10000130ul == 0xAul){
+        if (*(uint32_t *)0x10000134ul == 0x0ul){
+            return true;
+        }
+        if (*(uint32_t *)0x10000134ul == 0x1ul){
+            return true;
+        }
     }
-    
+
     #if defined (DEVELOP_IN_NRF52832)
     if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
         if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x50){
             return true;
         }
+        return false;
     }
     #endif
 
-    /* Fix should always apply. */
+    /* Apply by default for unknown devices until errata is confirmed fixed. */
     return true;
 }
 
 static bool errata_103(void)
 {
-    if ((*(uint32_t *)0x10000130ul == 0xAul) && (*(uint32_t *)0x10000134ul == 0x0ul)){
-        return true;
+    if (*(uint32_t *)0x10000130ul == 0xAul){
+        if (*(uint32_t *)0x10000134ul == 0x0ul){
+            return true;
+        }
     }
 
-    /* Fix should always apply. */
-    return true;
+    return false;
 }
 
-#if defined (DEVELOP_IN_NRF52832)
 static bool errata_108(void)
 {
     if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
@@ -378,14 +395,18 @@ static bool errata_108(void)
 
     return false;
 }
-#endif
 
 static bool errata_136(void)
 {
-    if ((*(uint32_t *)0x10000130ul == 0xAul) && (*(uint32_t *)0x10000134ul == 0x0ul)){
-        return true;
+    if (*(uint32_t *)0x10000130ul == 0xAul){
+        if (*(uint32_t *)0x10000134ul == 0x0ul){
+            return true;
+        }
+        if (*(uint32_t *)0x10000134ul == 0x1ul){
+            return true;
+        }
     }
-    
+
     #if defined (DEVELOP_IN_NRF52832)
     if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
         if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x30){
@@ -397,10 +418,11 @@ static bool errata_136(void)
         if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x50){
             return true;
         }
+        return false;
     }
     #endif
 
-    /* Fix should always apply. */
+    /* Apply by default for unknown devices until errata is confirmed fixed. */
     return true;
 }
 
