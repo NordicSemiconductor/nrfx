@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 - 2018, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2019, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -236,6 +236,16 @@ extern "C" {
 #define NRFX_CUSTOM_ERROR_CODES 0
 
 //------------------------------------------------------------------------------
+
+/**
+ * @brief Bitmask defining DPPI channels reserved to be used outside of nrfx.
+ */
+#define NRFX_DPPI_CHANNELS_USED  0
+
+/**
+ * @brief Bitmask defining DPPI groups reserved to be used outside of nrfx.
+ */
+#define NRFX_DPPI_GROUPS_USED    0
 
 /**
  * @brief Bitmask defining PPI channels reserved to be used outside of nrfx.

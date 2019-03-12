@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2018, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2019, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -371,7 +371,7 @@ typedef struct
 typedef struct
 {
     uint8_t  bmRequestType; //!< byte 0
-    uint8_t  bmRequest;     //!< byte 1
+    uint8_t  bRequest;      //!< byte 1
     uint16_t wValue;        //!< byte 2, 3
     uint16_t wIndex;        //!< byte 4, 5
     uint16_t wLength;       //!< byte 6, 7
