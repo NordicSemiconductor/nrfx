@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2019, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,8 @@ extern "C" {
  * @brief Hardware access layer (HAL) for the Near Field Communication Tag (NFCT) peripheral.
  */
 
-#define NRF_NFCT_CRC_SIZE 2 /**< CRC size in bytes. */
+#define NRF_NFCT_CRC_SIZE 2                 /**< CRC size in bytes. */
+#define NRF_NFCT_DISABLE_ALL_INT 0xFFFFFFFF /**< Value to disable all interrupts. */
 
 /**
  * @brief NFCT tasks

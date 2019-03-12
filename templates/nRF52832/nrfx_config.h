@@ -22,6 +22,12 @@
 #define NRFX_CLOCK_CONFIG_LF_SRC 1
 #endif
 
+// <q> NRFX_CLOCK_CONFIG_LF_CAL_ENABLED  - Enables LF Clock Calibration Support
+
+#ifndef NRFX_CLOCK_CONFIG_LF_CAL_ENABLED
+#define NRFX_CLOCK_CONFIG_LF_CAL_ENABLED 0
+#endif
+
 // <o> NRFX_CLOCK_CONFIG_IRQ_PRIORITY  - Interrupt priority
 
 // <0=> 0 (highest)
@@ -431,7 +437,7 @@
 // <8=> 512x
 
 #ifndef NRFX_I2S_CONFIG_RATIO
-#define NRFX_I2S_CONFIG_RATIO 2000
+#define NRFX_I2S_CONFIG_RATIO 5
 #endif
 
 // <o> NRFX_I2S_CONFIG_IRQ_PRIORITY  - Interrupt priority
@@ -638,14 +644,14 @@
 #endif
 // <o> NRFX_NFCT_CONFIG_IRQ_PRIORITY  - Interrupt priority
 
-// <0=> 0 (highest) 
-// <1=> 1 
-// <2=> 2 
-// <3=> 3 
-// <4=> 4 
-// <5=> 5 
-// <6=> 6 
-// <7=> 7 
+// <0=> 0 (highest)
+// <1=> 1
+// <2=> 2
+// <3=> 3
+// <4=> 4
+// <5=> 5
+// <6=> 6
+// <7=> 7
 
 #ifndef NRFX_NFCT_CONFIG_IRQ_PRIORITY
 #define NRFX_NFCT_CONFIG_IRQ_PRIORITY 7
@@ -658,11 +664,11 @@
 #endif
 // <o> NRFX_NFCT_CONFIG_LOG_LEVEL  - Default Severity level
 
-// <0=> Off 
-// <1=> Error 
-// <2=> Warning 
-// <3=> Info 
-// <4=> Debug 
+// <0=> Off
+// <1=> Error
+// <2=> Warning
+// <3=> Info
+// <4=> Debug
 
 #ifndef NRFX_NFCT_CONFIG_LOG_LEVEL
 #define NRFX_NFCT_CONFIG_LOG_LEVEL 3
@@ -670,15 +676,15 @@
 
 // <o> NRFX_NFCT_CONFIG_INFO_COLOR  - ANSI escape code prefix.
 
-// <0=> Default 
-// <1=> Black 
-// <2=> Red 
-// <3=> Green 
-// <4=> Yellow 
-// <5=> Blue 
-// <6=> Magenta 
-// <7=> Cyan 
-// <8=> White 
+// <0=> Default
+// <1=> Black
+// <2=> Red
+// <3=> Green
+// <4=> Yellow
+// <5=> Blue
+// <6=> Magenta
+// <7=> Cyan
+// <8=> White
 
 #ifndef NRFX_NFCT_CONFIG_INFO_COLOR
 #define NRFX_NFCT_CONFIG_INFO_COLOR 0
@@ -686,15 +692,15 @@
 
 // <o> NRFX_NFCT_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
 
-// <0=> Default 
-// <1=> Black 
-// <2=> Red 
-// <3=> Green 
-// <4=> Yellow 
-// <5=> Blue 
-// <6=> Magenta 
-// <7=> Cyan 
-// <8=> White 
+// <0=> Default
+// <1=> Black
+// <2=> Red
+// <3=> Green
+// <4=> Yellow
+// <5=> Blue
+// <6=> Magenta
+// <7=> Cyan
+// <8=> White
 
 #ifndef NRFX_NFCT_CONFIG_DEBUG_COLOR
 #define NRFX_NFCT_CONFIG_DEBUG_COLOR 0
@@ -2000,7 +2006,7 @@
 
 
 #ifndef NRFX_EGU_ENABLED
-#define NRFX_EGU_ENABLED 0
+#define NRFX_EGU_ENABLED 1
 #endif
 
 // <q> NRFX_SWI0_DISABLED  - Exclude SWI0 from being utilized by the driver
@@ -2869,6 +2875,15 @@
 
 #ifndef NRFX_WDT_CONFIG_RELOAD_VALUE
 #define NRFX_WDT_CONFIG_RELOAD_VALUE 2000
+#endif
+
+// <o> NRFX_WDT_CONFIG_NO_IRQ  - Remove WDT IRQ handling from WDT driver
+
+// <0=> Include WDT IRQ handling
+// <1=> Remove WDT IRQ handling
+
+#ifndef NRFX_WDT_CONFIG_NO_IRQ
+#define NRFX_WDT_CONFIG_NO_IRQ 0
 #endif
 
 // <o> NRFX_WDT_CONFIG_IRQ_PRIORITY  - Interrupt priority
