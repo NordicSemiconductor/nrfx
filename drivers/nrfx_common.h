@@ -35,6 +35,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include "nrfx_array_size.h"
 
 #include <nrf.h>
 #include <nrf_peripherals.h>
@@ -129,14 +130,6 @@ extern "C" {
  */
 #define NRFX_CEIL_DIV(a, b)  ((((a) - 1) / (b)) + 1)
 
-/**
- * @brief Macro for getting the number of elements in an array.
- *
- * @param array  Name of the array.
- *
- * @return Array element count.
- */
-#define NRFX_ARRAY_SIZE(array) (sizeof(array) / sizeof((array)[0]))
 
 /**@brief Macro for checking if given lengths of EasyDMA transfers do not exceed
  *        the limit of the specified peripheral.
