@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [1.7.1] - 2019-04-08
+### Added
+- Added functions in the NVMC driver for getting the flash page size, the count of pages and the total flash size.
+
+### Fixed
+- Fixed handling of short unaligned write requests (1 or 2 bytes in length) in the nrfx_nvmc_bytes_write() function.
+
 ## [1.7.0] - 2019-03-29
 ### Added
 - Added drivers for NVMC and TEMP.
