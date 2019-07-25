@@ -2743,7 +2743,7 @@
 #define NRFX_UARTE0_ENABLED 1
 #endif
 
-// <o> NRFX_UARTE1_ENABLED - Enable UARTE1 instance
+// <q> NRFX_UARTE1_ENABLED - Enable UARTE1 instance
 #ifndef NRFX_UARTE1_ENABLED
 #define NRFX_UARTE1_ENABLED 1
 #endif

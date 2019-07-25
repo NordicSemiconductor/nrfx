@@ -1,6 +1,26 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [1.7.2] - 2019-07-25
+### Added
+- Added functions in the DPPI, GPIOTE, PPI, RTC, and TIMER HALs for getting tasks and events specified by index.
+- Added the possibility of suspending transfers in the TWI driver. This allows combining several transfers into one continuous TWI transaction.
+- Added termination of transfers at deinitialization of the UARTE driver.
+- Added buffer alignment checks in the QSPI driver.
+- Introduced the NRFX_OFFSETOF macro that duplicates the functionality of the built-in offsetof() mechanism, but can be used without issues also with non-constant expressions.
+- Added an alternative way of ending the DMA transfer loop in the USBD driver.
+- Added the CTSTARTED and CTSTOPPED events to the CLOCK HAL.
+
+### Changed
+- Removed an assertion that prevented setting the data payload size of isochronous endpoints to zero, to fulfill requirements of the USB 2.0 specification, paragraph 5.6.3.
+- Declared the tx_buffer_length field in the UART driver's control block as volatile to prevent issues in case of compilation with high optimization level.
+
+### Fixed
+- Fixed an incorrect conversion of frequency values in the RADIO HAL.
+- Fixed an incorrectly enabled interrupt in the QSPI driver.
+- Corrected the LFCLK source selection values in the template configuration file for nRF9160.
+- Fixed support for external LFCLK sources for nRF52811.
+
 ## [1.7.1] - 2019-04-08
 ### Added
 - Added functions in the NVMC driver for getting the flash page size, the count of pages and the total flash size.
