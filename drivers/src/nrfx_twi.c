@@ -48,7 +48,8 @@
     (event == NRFX_TWI_EVT_DONE         ? "EVT_DONE"         : \
     (event == NRFX_TWI_EVT_ADDRESS_NACK ? "EVT_ADDRESS_NACK" : \
     (event == NRFX_TWI_EVT_DATA_NACK    ? "EVT_DATA_NACK"    : \
-                                          "UNKNOWN ERROR")))
+    (event == NRFX_TWI_EVT_OVERRUN      ? "EVT_OVERRUN"      : \
+                                          "UNKNOWN ERROR"))))
 
 #define EVT_TO_STR_TWI(event)                                       \
     (event == NRF_TWI_EVENT_STOPPED   ? "NRF_TWI_EVENT_STOPPED"   : \
@@ -687,6 +688,11 @@ static void twi_irq_handler(NRF_TWI_Type * p_twi, twi_control_block_t * p_cb)
             {
                 event.type = NRFX_TWI_EVT_DATA_NACK;
                 NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRFX_TWI_EVT_DATA_NACK));
+            }
+            else if (errorsrc & NRF_TWI_ERROR_OVERRUN)
+            {
+                event.type = NRFX_TWI_EVT_OVERRUN;
+                NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRFX_TWI_EVT_OVERRUN));
             }
         }
         else

@@ -106,7 +106,7 @@ nrfx_err_t nrfx_power_init(nrfx_power_config_t const * p_config)
         return NRFX_ERROR_ALREADY_INITIALIZED;
     }
 
-#if NRF_POWER_HAS_VDDH
+#if NRF_POWER_HAS_DCDCEN_VDDH
     nrf_power_dcdcen_vddh_set(p_config->dcdcenhv);
 #endif
 #if NRF_POWER_HAS_DCDCEN

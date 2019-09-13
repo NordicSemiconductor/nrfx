@@ -59,13 +59,9 @@
 #elif defined(NRF52810_XXAA) || defined(NRF52811_XXAA)
     #define NRFX_DELAY_CPU_FREQ_MHZ 64
     #define NRFX_DELAY_DWT_PRESENT  0
-#elif defined(NRF52832_XXAA) || defined (NRF52832_XXAB)
-    #define NRFX_DELAY_CPU_FREQ_MHZ 64
-    #define NRFX_DELAY_DWT_PRESENT  1
-#elif defined(NRF52840_XXAA)
-    #define NRFX_DELAY_CPU_FREQ_MHZ 64
-    #define NRFX_DELAY_DWT_PRESENT  1
-#elif defined(NRF9160_XXAA)
+#elif defined(NRF52832_XXAA) || defined(NRF52832_XXAB) || \
+      defined(NRF52833_XXAA) || defined(NRF52840_XXAA) || \
+      defined(NRF9160_XXAA)
     #define NRFX_DELAY_CPU_FREQ_MHZ 64
     #define NRFX_DELAY_DWT_PRESENT  1
 #else

@@ -71,7 +71,7 @@
  */
 #if defined(NRF52810_XXAA) || defined(NRF52811_XXAA) || defined(NRF52840_XXAA)
     #define NVMC_PAGE_ERASE_DURATION_MS  85
-#elif defined(NRF9160_XXAA)
+#elif defined(NRF52833_XXAA) || defined(NRF9160_XXAA)
     #define NVMC_PAGE_ERASE_DURATION_MS  87
 #else
     #error "Page partial erase present but could not determine its total duration for given SoC"

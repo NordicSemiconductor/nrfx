@@ -66,8 +66,15 @@ extern "C" {
 #define NRF_POWER_HAS_VDDH 0
 #endif // defined(POWER_POFCON_THRESHOLDVDDH_Msk) || defined(__NRFX_DOXYGEN__)
 
+#if defined(POWER_DCDCEN0_DCDCEN_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether DCDCEN for REG0 is present. */
+#define NRF_POWER_HAS_DCDCEN_VDDH 1
+#else
+#define NRF_POWER_HAS_DCDCEN_VDDH 0
+#endif
+
 #if defined(POWER_DCDCEN_DCDCEN_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether DCDCEN is present. */
+/** @brief Symbol indicating whether DCDCEN for REG1 is present. */
 #define NRF_POWER_HAS_DCDCEN 1
 #else
 #define NRF_POWER_HAS_DCDCEN 0
@@ -697,7 +704,7 @@ __STATIC_INLINE void nrf_power_rampower_mask_off(uint8_t block, uint32_t section
 __STATIC_INLINE uint32_t nrf_power_rampower_mask_get(uint8_t block);
 #endif /* defined(POWER_RAM_POWER_S0POWER_Msk) || defined(__NRFX_DOXYGEN__) */
 
-#if NRF_POWER_HAS_VDDH
+#if NRF_POWER_HAS_DCDCEN_VDDH
 /**
  * @brief Function for enabling or disabling the DCDC converter on VDDH.
  *
@@ -712,7 +719,9 @@ __STATIC_INLINE void nrf_power_dcdcen_vddh_set(bool enable);
  * @retval false Converter is disabled.
  */
 __STATIC_INLINE bool nrf_power_dcdcen_vddh_get(void);
+#endif // NRF_POWER_HAS_DCDCEN_VDDH
 
+#if NRF_POWER_HAS_VDDH
 /**
  * @brief Function for getting the main supply status.
  *
@@ -1030,7 +1039,7 @@ __STATIC_INLINE uint32_t nrf_power_rampower_mask_get(uint8_t block)
 }
 #endif /* defined(POWER_RAM_POWER_S0POWER_Msk) */
 
-#if NRF_POWER_HAS_VDDH
+#if NRF_POWER_HAS_DCDCEN_VDDH
 __STATIC_INLINE void nrf_power_dcdcen_vddh_set(bool enable)
 {
     NRF_POWER->DCDCEN0 = (enable ?
@@ -1044,7 +1053,9 @@ __STATIC_INLINE bool nrf_power_dcdcen_vddh_get(void)
             ==
            (POWER_DCDCEN0_DCDCEN_Enabled << POWER_DCDCEN0_DCDCEN_Pos);
 }
+#endif // NRF_POWER_HAS_DCDCEN_VDDH
 
+#if NRF_POWER_HAS_VDDH
 __STATIC_INLINE nrf_power_mainregstatus_t nrf_power_mainregstatus_get(void)
 {
     return (nrf_power_mainregstatus_t)(((NRF_POWER->MAINREGSTATUS) &

@@ -102,8 +102,13 @@ nrfx_err_t nrfx_nvmc_page_partial_erase_init(uint32_t address, uint32_t duration
 /**
  * @brief Function for performing a part of the complete page erase (also known as partial erase).
  *
- * Each part takes the amount of time specified during the initialization.
  * This function must be called several times to erase the whole page, once for each erase part.
+ *
+ * @note The actual time needed to perform each part of the page erase is longer than the partial
+ *       erase duration specified in the call to @ref nrfx_nvmc_page_partial_erase_init,
+ *       since the NVMC peripheral needs certain additional amount of time to handle the process.
+ *       For details regarding this additional time, see the "Electrical specification" section
+ *       for the NVMC peripheral in the Product Specification.
  *
  * @note Using a page that was not completely erased leads to undefined behavior.
  *       Depending on the source of the code being executed,
