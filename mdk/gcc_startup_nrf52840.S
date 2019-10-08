@@ -68,7 +68,7 @@ __HeapBase:
 __HeapLimit:
     .size __HeapLimit, . - __HeapLimit
 
-    .section .isr_vector
+    .section .isr_vector,"ax" /* "ax" flags needed when putting isr_vectors in a own linker output section not beeing .text */
     .align 2
     .globl __isr_vector
 __isr_vector:
