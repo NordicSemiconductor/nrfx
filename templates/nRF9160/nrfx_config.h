@@ -3,10 +3,11 @@
 
 /*
  * The MDK provides macros for accessing the peripheral register structures
- * by using their secure and non-secure address mappings (with the names containing
- * the suffix _S or _NS, respectively). Because the nrfx drivers use the macros without
- * any suffixes, you must translate the names. The following section provides configuration
- * for the name translation. It must be modified to reflect the actual configuration set in NRF_SPU.
+ * by using their secure and non-secure address mappings (with the names
+ * containing the suffix _S or _NS, respectively). Because the nrfx drivers
+ * use the macros without any suffixes, you must translate the names.
+ * The following section provides configuration for the name translation.
+ * It must be modified to reflect the actual configuration set in NRF_SPU.
  */
 #define NRF_CLOCK      NRF_CLOCK_S
 #define NRF_DPPIC      NRF_DPPIC_S
@@ -57,7 +58,11 @@
 #define NRF_VMC        NRF_VMC_S
 #define NRF_WDT        NRF_WDT_S
 
-/* Unchangable configuration. */
+/*
+ * The following section provides the name translation for peripherals with
+ * only one type of access available. For these peripherals, you cannot choose
+ * between secure and non-secure mapping.
+ */
 #define NRF_CRYPTOCELL NRF_CRYPTOCELL_S
 #define NRF_FICR       NRF_FICR_S
 #define NRF_GPIOTE0    NRF_GPIOTE0_S
@@ -67,7 +72,6 @@
 
 /* Fixups for GPIOTE HAL and driver. */
 #define NRF_GPIOTE        NRF_GPIOTE0_S
-#define GPIOTE_IRQn       GPIOTE0_IRQn
 #define GPIOTE_IRQHandler GPIOTE0_IRQHandler
 
 // <<< Use Configuration Wizard in Context Menu >>>\n

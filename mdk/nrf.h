@@ -36,7 +36,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* MDK version */
 #define MDK_MAJOR_VERSION   8 
 #define MDK_MINOR_VERSION   27 
-#define MDK_MICRO_VERSION   0 
+#define MDK_MICRO_VERSION   1 
 
 /* Define NRF51_SERIES for common use in nRF51 series devices. Only if not previously defined. */
 #if defined (NRF51422_XXAA) ||\

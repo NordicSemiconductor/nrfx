@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [1.8.1] - 2019-10-21
+### Added
+- Added functions in the GPIOTE driver for getting task or event for the specified GPIO pin.
+
+### Changed
+- Updated MDK to version 8.27.1.
+- Moved the nrfx_gppi helper from helpers/nrfx_gppi/ to helpers/.
+- Changed the interrupt initialization in the GPIOTE driver, so that mapping of the GPIOTEx_IRQn enumeration values is no longer needed for nRF9160.
+
 ## [1.8.0] - 2019-08-27
 ### Added
 - Added support for nRF52833.

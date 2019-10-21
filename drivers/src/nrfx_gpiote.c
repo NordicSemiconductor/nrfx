@@ -28,6 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 #include <nrfx.h>
 
 #if NRFX_CHECK(NRFX_GPIOTE_ENABLED)
@@ -246,8 +247,8 @@ nrfx_err_t nrfx_gpiote_init(void)
 
     memset(m_cb.configured_pins, 0, sizeof(m_cb.configured_pins));
 
-    NRFX_IRQ_PRIORITY_SET(GPIOTE_IRQn, NRFX_GPIOTE_CONFIG_IRQ_PRIORITY);
-    NRFX_IRQ_ENABLE(GPIOTE_IRQn);
+    NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number(NRF_GPIOTE), NRFX_GPIOTE_CONFIG_IRQ_PRIORITY);
+    NRFX_IRQ_ENABLE(nrfx_get_irq_number(NRF_GPIOTE));
     nrf_gpiote_event_clear(NRF_GPIOTE_EVENTS_PORT);
     nrf_gpiote_int_enable(GPIOTE_INTENSET_PORT_Msk);
     m_cb.state = NRFX_DRV_STATE_INITIALIZED;
@@ -416,41 +417,57 @@ void nrfx_gpiote_out_task_disable(nrfx_gpiote_pin_t pin)
 }
 
 
-uint32_t nrfx_gpiote_out_task_addr_get(nrfx_gpiote_pin_t pin)
+nrf_gpiote_tasks_t nrfx_gpiote_out_task_get(nrfx_gpiote_pin_t pin)
 {
     NRFX_ASSERT(pin < NUMBER_OF_PINS);
     NRFX_ASSERT(pin_in_use_by_te(pin));
 
-    nrf_gpiote_tasks_t task = TE_OUT_IDX_TO_TASK_ADDR((uint32_t)channel_port_get(pin));
+    return TE_OUT_IDX_TO_TASK_ADDR((uint32_t)channel_port_get(pin));
+}
+
+
+uint32_t nrfx_gpiote_out_task_addr_get(nrfx_gpiote_pin_t pin)
+{
+    nrf_gpiote_tasks_t task = nrfx_gpiote_out_task_get(pin);
     return nrf_gpiote_task_addr_get(task);
 }
 
 
 #if defined(GPIOTE_FEATURE_SET_PRESENT)
+nrf_gpiote_tasks_t nrfx_gpiote_set_task_get(nrfx_gpiote_pin_t pin)
+{
+    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(pin_in_use_by_te(pin));
+
+    return TE_SET_IDX_TO_TASK_ADDR((uint32_t)channel_port_get(pin));
+}
+
+
 uint32_t nrfx_gpiote_set_task_addr_get(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
-    NRFX_ASSERT(pin_in_use_by_te(pin));
-
-    nrf_gpiote_tasks_t task = TE_SET_IDX_TO_TASK_ADDR((uint32_t)channel_port_get(pin));
+    nrf_gpiote_tasks_t task = nrfx_gpiote_set_task_get(pin);
     return nrf_gpiote_task_addr_get(task);
 }
-
-
 #endif // defined(GPIOTE_FEATURE_SET_PRESENT)
 
+
 #if defined(GPIOTE_FEATURE_CLR_PRESENT)
-uint32_t nrfx_gpiote_clr_task_addr_get(nrfx_gpiote_pin_t pin)
+nrf_gpiote_tasks_t nrfx_gpiote_clr_task_get(nrfx_gpiote_pin_t pin)
 {
     NRFX_ASSERT(pin < NUMBER_OF_PINS);
     NRFX_ASSERT(pin_in_use_by_te(pin));
 
-    nrf_gpiote_tasks_t task = TE_CLR_IDX_TO_TASK_ADDR((uint32_t)channel_port_get(pin));
-    return nrf_gpiote_task_addr_get(task);
+    return TE_CLR_IDX_TO_TASK_ADDR((uint32_t)channel_port_get(pin));
 }
 
 
+uint32_t nrfx_gpiote_clr_task_addr_get(nrfx_gpiote_pin_t pin)
+{
+    nrf_gpiote_tasks_t task = nrfx_gpiote_clr_task_get(pin);
+    return nrf_gpiote_task_addr_get(task);
+}
 #endif // defined(GPIOTE_FEATURE_CLR_PRESENT)
+
 
 void nrfx_gpiote_out_task_force(nrfx_gpiote_pin_t pin, uint8_t state)
 {
@@ -641,17 +658,23 @@ bool nrfx_gpiote_in_is_set(nrfx_gpiote_pin_t pin)
 }
 
 
-uint32_t nrfx_gpiote_in_event_addr_get(nrfx_gpiote_pin_t pin)
+nrf_gpiote_events_t nrfx_gpiote_in_event_get(nrfx_gpiote_pin_t pin)
 {
     NRFX_ASSERT(pin < NUMBER_OF_PINS);
     NRFX_ASSERT(pin_in_use_by_port(pin) || pin_in_use_by_te(pin));
 
-    nrf_gpiote_events_t event = NRF_GPIOTE_EVENTS_PORT;
-
     if (pin_in_use_by_te(pin))
     {
-        event = TE_IDX_TO_EVENT_ADDR((uint32_t)channel_port_get(pin));
+        return TE_IDX_TO_EVENT_ADDR((uint32_t)channel_port_get(pin));
     }
+
+    return NRF_GPIOTE_EVENTS_PORT;
+}
+
+
+uint32_t nrfx_gpiote_in_event_addr_get(nrfx_gpiote_pin_t pin)
+{
+    nrf_gpiote_events_t event = nrfx_gpiote_in_event_get(pin);
     return nrf_gpiote_event_addr_get(event);
 }
 
