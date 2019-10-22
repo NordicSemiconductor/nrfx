@@ -100,6 +100,10 @@ typedef struct
     uint16_t           top_value;    ///< Value up to which the pulse generator counter counts.
     nrf_pwm_dec_load_t load_mode;    ///< Mode of loading sequence data from RAM.
     nrf_pwm_dec_step_t step_mode;    ///< Mode of advancing the active sequence.
+    bool               skip_gpio_cfg; ///< Skip the GPIO configuration
+                                      /**< When this flag is set, the user is responsible for
+                                       *   providing the proper configuration of the output pins,
+                                       *   as the driver does not touch it at all. */
 } nrfx_pwm_config_t;
 
 /**
@@ -130,6 +134,7 @@ typedef struct
     .top_value    = 1000,                                        \
     .load_mode    = NRF_PWM_LOAD_COMMON,                         \
     .step_mode    = NRF_PWM_STEP_AUTO,                           \
+    .skip_gpio_cfg = false                                       \
 }
 
 /** @brief PWM flags providing additional playback options. */
