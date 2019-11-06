@@ -349,7 +349,7 @@ bool nrfx_twim_is_busy(nrfx_twim_t const * p_instance)
 }
 
 
-__STATIC_INLINE void twim_list_enable_handle(NRF_TWIM_Type * p_twim, uint32_t flags)
+static void twim_list_enable_handle(NRF_TWIM_Type * p_twim, uint32_t flags)
 {
     if (NRFX_TWIM_FLAG_TX_POSTINC & flags)
     {
@@ -369,10 +369,10 @@ __STATIC_INLINE void twim_list_enable_handle(NRF_TWIM_Type * p_twim, uint32_t fl
         nrf_twim_rx_list_disable(p_twim);
     }
 }
-__STATIC_INLINE nrfx_err_t twim_xfer(twim_control_block_t        * p_cb,
-                                     NRF_TWIM_Type               * p_twim,
-                                     nrfx_twim_xfer_desc_t const * p_xfer_desc,
-                                     uint32_t                      flags)
+static nrfx_err_t twim_xfer(twim_control_block_t        * p_cb,
+                            NRF_TWIM_Type               * p_twim,
+                            nrfx_twim_xfer_desc_t const * p_xfer_desc,
+                            uint32_t                      flags)
 {
     nrfx_err_t err_code = NRFX_SUCCESS;
     nrf_twim_task_t  start_task = NRF_TWIM_TASK_STARTTX;
@@ -576,36 +576,16 @@ nrfx_err_t nrfx_twim_xfer(nrfx_twim_t           const * p_instance,
     return err_code;
 }
 
-nrfx_err_t nrfx_twim_tx(nrfx_twim_t const * p_instance,
-                        uint8_t             address,
-                        uint8_t     const * p_data,
-                        size_t              length,
-                        bool                no_stop)
-{
-    nrfx_twim_xfer_desc_t xfer = NRFX_TWIM_XFER_DESC_TX(address, (uint8_t*)p_data, length);
-
-    return nrfx_twim_xfer(p_instance, &xfer, no_stop ? NRFX_TWIM_FLAG_TX_NO_STOP : 0);
-}
-
-nrfx_err_t nrfx_twim_rx(nrfx_twim_t const * p_instance,
-                        uint8_t             address,
-                        uint8_t *           p_data,
-                        size_t              length)
-{
-    nrfx_twim_xfer_desc_t xfer = NRFX_TWIM_XFER_DESC_RX(address, p_data, length);
-    return nrfx_twim_xfer(p_instance, &xfer, 0);
-}
-
 uint32_t nrfx_twim_start_task_get(nrfx_twim_t const * p_instance,
                                   nrfx_twim_xfer_type_t xfer_type)
 {
-    return (uint32_t)nrf_twim_task_address_get(p_instance->p_twim,
+    return nrf_twim_task_address_get(p_instance->p_twim,
         (xfer_type != NRFX_TWIM_XFER_RX) ? NRF_TWIM_TASK_STARTTX : NRF_TWIM_TASK_STARTRX);
 }
 
 uint32_t nrfx_twim_stopped_event_get(nrfx_twim_t const * p_instance)
 {
-    return (uint32_t)nrf_twim_event_address_get(p_instance->p_twim, NRF_TWIM_EVENT_STOPPED);
+    return nrf_twim_event_address_get(p_instance->p_twim, NRF_TWIM_EVENT_STOPPED);
 }
 
 static void twim_irq_handler(NRF_TWIM_Type * p_twim, twim_control_block_t * p_cb)

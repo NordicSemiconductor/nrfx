@@ -18,6 +18,7 @@ SoCs, as well as startup and initialization files for them.
 * nRF52832
 * nRF52833
 * nRF52840
+* nRF5340
 * nRF9160
 
 ## Directories

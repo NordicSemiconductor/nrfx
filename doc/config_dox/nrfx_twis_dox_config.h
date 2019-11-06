@@ -11,6 +11,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_TWIS_ENABLED
+
 /** @brief Enable TWIS0 instance
  *
  *  Set to 1 to activate.
@@ -46,42 +47,6 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_TWIS_NO_SYNC_MODE
-
-/** @brief Address0
- *
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_TWIS_DEFAULT_CONFIG_ADDR0
-
-/** @brief Address1
- *
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_TWIS_DEFAULT_CONFIG_ADDR1
-
-/** @brief SCL pin pull configuration
- *
- *  Following options are available:
- * - 0 - Disabled
- * - 1 - Pull down
- * - 3 - Pull up
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_TWIS_DEFAULT_CONFIG_SCL_PULL
-
-/** @brief SDA pin pull configuration
- *
- *  Following options are available:
- * - 0 - Disabled
- * - 1 - Pull down
- * - 3 - Pull up
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_TWIS_DEFAULT_CONFIG_SDA_PULL
 
 /** @brief Interrupt priority
  *

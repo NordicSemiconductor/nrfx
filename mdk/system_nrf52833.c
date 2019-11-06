@@ -26,15 +26,12 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include <stdint.h>
 #include <stdbool.h>
 #include "nrf.h"
+#include "nrf_erratas.h"
 #include "system_nrf52833.h"
 
 /*lint ++flb "Enter library region" */
 
 #define __SYSTEM_CLOCK_64M      (64000000UL)
-
-static bool errata_36(void);
-static bool errata_66(void);
-static bool errata_136(void);
 
 #if defined ( __CC_ARM )
     uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_64M;
@@ -152,40 +149,6 @@ void SystemInit(void)
     #endif
 
     SystemCoreClockUpdate();
-}
-
-static bool errata_36(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0xDul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-
-static bool errata_66(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0xDul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-static bool errata_136(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0xDul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-
-    return false;
 }
 
 /*lint --flb "Leave library region" */

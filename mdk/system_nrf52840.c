@@ -26,19 +26,12 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include <stdint.h>
 #include <stdbool.h>
 #include "nrf.h"
+#include "nrf_erratas.h"
 #include "system_nrf52840.h"
 
 /*lint ++flb "Enter library region" */
 
 #define __SYSTEM_CLOCK_64M      (64000000UL)
-
-static bool errata_36(void);
-static bool errata_66(void);
-static bool errata_98(void);
-static bool errata_103(void);
-static bool errata_115(void);
-static bool errata_120(void);
-static bool errata_136(void);
 
 
 #if defined ( __CC_ARM )
@@ -181,120 +174,6 @@ void SystemInit(void)
     #endif
 
     SystemCoreClockUpdate();
-}
-
-
-static bool errata_36(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x1ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x2ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x3ul){
-            return true;
-        }
-    }
-
-    /* Apply by default for unknown devices until errata is confirmed fixed. */
-    return true;
-}
-
-
-static bool errata_66(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x1ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x2ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x3ul){
-            return true;
-        }
-    }
-
-    /* Apply by default for unknown devices until errata is confirmed fixed. */
-    return true;
-}
-
-
-static bool errata_98(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-
-static bool errata_103(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-
-static bool errata_115(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-
-static bool errata_120(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-
-static bool errata_136(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x1ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x2ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x3ul){
-            return true;
-        }
-    }
-
-    /* Apply by default for unknown devices until errata is confirmed fixed. */
-    return true;
 }
 
 /*lint --flb "Leave library region" */

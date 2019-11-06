@@ -11,58 +11,13 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_UART_ENABLED
+
 /** @brief Enable UART0 instance
  *
  *
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_UART0_ENABLED
-
-/** @brief Hardware Flow Control
- *
- *  Following options are available:
- * - 0 - Disabled
- * - 1 - Enabled
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_UART_DEFAULT_CONFIG_HWFC
-
-/** @brief Parity
- *
- *  Following options are available:
- * - 0 - Excluded
- * - 14 - Included
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_UART_DEFAULT_CONFIG_PARITY
-
-/** @brief Default Baudrate
- *
- *  Following options are available:
- * - 323584 - 1200 baud
- * - 643072 - 2400 baud
- * - 1290240 - 4800 baud
- * - 2576384 - 9600 baud
- * - 3866624 - 14400 baud
- * - 5152768 - 19200 baud
- * - 7729152 - 28800 baud
- * - 8388608 - 31250 baud
- * - 10309632 - 38400 baud
- * - 15007744 - 56000 baud
- * - 15462400 - 57600 baud
- * - 20615168 - 76800 baud
- * - 30924800 - 115200 baud
- * - 61845504 - 230400 baud
- * - 67108864 - 250000 baud
- * - 123695104 - 460800 baud
- * - 247386112 - 921600 baud
- * - 268435456 - 1000000 baud
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_UART_DEFAULT_CONFIG_BAUDRATE
 
 /** @brief Interrupt priority
  *
@@ -87,6 +42,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_UART_CONFIG_LOG_ENABLED
+
 /** @brief Default Severity level
  *
  *  Following options are available:

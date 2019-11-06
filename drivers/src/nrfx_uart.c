@@ -83,9 +83,9 @@ static void apply_config(nrfx_uart_t        const * p_instance,
     }
 
     nrf_uart_baudrate_set(p_instance->p_reg, p_config->baudrate);
-    nrf_uart_configure(p_instance->p_reg, p_config->parity, p_config->hwfc);
+    nrf_uart_configure(p_instance->p_reg, &p_config->hal_cfg);
     nrf_uart_txrx_pins_set(p_instance->p_reg, p_config->pseltxd, p_config->pselrxd);
-    if (p_config->hwfc == NRF_UART_HWFC_ENABLED)
+    if (p_config->hal_cfg.hwfc == NRF_UART_HWFC_ENABLED)
     {
         if (p_config->pselcts != NRF_UART_PSEL_DISCONNECTED)
         {

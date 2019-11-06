@@ -26,23 +26,12 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include <stdint.h>
 #include <stdbool.h>
 #include "nrf.h"
+#include "nrf_erratas.h"
 #include "system_nrf52811.h"
 
 /*lint ++flb "Enter library region" */
 
 #define __SYSTEM_CLOCK_64M      (64000000UL)
-
-static bool errata_31(void);
-static bool errata_36(void);
-static bool errata_66(void);
-static bool errata_136(void);
-static bool errata_217(void);
-
-/* nRF52840 erratas */
-#ifdef DEVELOP_IN_NRF52840
-    static bool errata_103(void);
-    static bool errata_115(void);
-#endif
 
 #if defined ( __CC_ARM )
     uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_64M;
@@ -149,144 +138,22 @@ void SystemInit(void)
         }
     #endif
 
+    /* When developing on an nrf52840, make sure NFC pins are mapped as GPIO. */
+    #if defined (DEVELOP_IN_NRF52840)
+        if (((*((uint32_t *)0x10001200) & (1 << 0)) != 0) || ((*((uint32_t *)0x10001204) & (1 << 0)) != 0)){
+            NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen << NVMC_CONFIG_WEN_Pos;
+            while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
+            *((uint32_t *)0x10001200) = 0;
+            while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
+            *((uint32_t *)0x10001204) = 0;
+            while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
+            NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Ren << NVMC_CONFIG_WEN_Pos;
+            while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
+            NVIC_SystemReset();
+        }
+    #endif
+
     SystemCoreClockUpdate();
-}
-
-static bool errata_31(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0xEul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-
-    /* Apply by default for unknown devices until errata is confirmed fixed. */
-    return true;
-}
-
-static bool errata_36(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0xEul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-
-    #ifdef DEVELOP_IN_NRF52840
-        if (*(uint32_t *)0x10000130ul == 0x8ul){
-            if (*(uint32_t *)0x10000134ul == 0x0ul){
-                return true;
-            }
-            if (*(uint32_t *)0x10000134ul == 0x1ul){
-                return true;
-            }
-            if (*(uint32_t *)0x10000134ul == 0x2ul){
-                return true;
-            }
-            if (*(uint32_t *)0x10000134ul == 0x3ul){
-                return true;
-            }
-        }
-    #endif
-
-    /* Apply by default for unknown devices until errata is confirmed fixed. */
-    return true;
-}
-
-static bool errata_66(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0xEul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-
-    #ifdef DEVELOP_IN_NRF52840
-        if (*(uint32_t *)0x10000130ul == 0x8ul){
-            if (*(uint32_t *)0x10000134ul == 0x0ul){
-                return true;
-            }
-            if (*(uint32_t *)0x10000134ul == 0x1ul){
-                return true;
-            }
-            if (*(uint32_t *)0x10000134ul == 0x2ul){
-                return true;
-            }
-            if (*(uint32_t *)0x10000134ul == 0x3ul){
-                return true;
-            }
-        }
-    #endif
-
-    /* Apply by default for unknown devices until errata is confirmed fixed. */
-    return true;
-}
-
-static bool errata_136(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0xEul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-
-    #ifdef DEVELOP_IN_NRF52840
-        if (*(uint32_t *)0x10000130ul == 0x8ul){
-            if (*(uint32_t *)0x10000134ul == 0x0ul){
-                return true;
-            }
-            if (*(uint32_t *)0x10000134ul == 0x1ul){
-                return true;
-            }
-            if (*(uint32_t *)0x10000134ul == 0x2ul){
-                return true;
-            }
-            if (*(uint32_t *)0x10000134ul == 0x3ul){
-                return true;
-            }
-        }
-    #endif
-
-    /* Apply by default for unknown devices until errata is confirmed fixed. */
-    return true;
-}
-
-
-#ifdef DEVELOP_IN_NRF52840
-    static bool errata_103(void)
-    {
-        if (*(uint32_t *)0x10000130ul == 0x8ul){
-            if (*(uint32_t *)0x10000134ul == 0x0ul){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    static bool errata_115(void)
-    {
-        if (*(uint32_t *)0x10000130ul == 0x8ul){
-            if (*(uint32_t *)0x10000134ul == 0x0ul){
-                return true;
-            }
-        }
-
-        return false;
-    }
-#endif
-
-static bool errata_217(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0xEul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-
-    /* Apply by default for unknown devices until errata is confirmed fixed. */
-    return true;
 }
 
 

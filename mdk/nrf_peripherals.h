@@ -58,7 +58,12 @@ POSSIBILITY OF SUCH DAMAGE.
         #include "nrf52833_peripherals.h"
     #elif defined(NRF52840_XXAA)
         #include "nrf52840_peripherals.h"
-            
+    
+    #elif defined (NRF5340_XXAA_APPLICATION)
+        #include "nrf5340_application_peripherals.h"      
+    #elif defined (NRF5340_XXAA_NETWORK)
+        #include "nrf5340_network_peripherals.h"
+        
     #elif defined(NRF9160_XXAA)
         #include "nrf9160_peripherals.h"
         

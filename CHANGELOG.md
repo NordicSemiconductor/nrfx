@@ -1,6 +1,38 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [2.0.0] - 2019-11-06
+### Added
+- Added support for nRF5340.
+- Added HALs for: CACHE, FPU, MUTEX, and RESET.
+- Added driver and HAL for IPC.
+- Added possibility to configure in UART and UARTE the number of stop bits and the type of parity, when a given SoC allows it.
+- Added function in the GPIO HAL for selecting the MCU to control the specified pin.
+- Added support for ONESHOT register in the TIMER HAL.
+- Added support for LIST feature in HALs for SPIS and TWIS.
+- Added possibility to choose TIMER instance used for workarounds in the NFCT driver.
+
+### Changed
+- Updated MDK to 8.29.0.
+- Enhanced PWM driver API: added the "p_context" parameter to the event handler.
+- Updated address and task getters in all HALs to return values as uint32_t type.
+- Updated all HAL functions to take the pointer to the structure of registers of the peripheral as their first argument.
+- Changed __STATIC_INLINE symbol to NRF_STATIC_INLINE for HALs and NRFX_STATIC_INLINE for drivers.
+- Refactored the SAADC driver and HAL.
+- Refactored the WDT driver and HAL to support multiple instances.
+- Changed nrfx_gpiote_init() function to take the interrupt priority as its parameter. Previously this priority was an nrfx_config option.
+- Changed nrf_usbd_ep_all_disable() function to disable really all endpoints. Use nrf_usbd_ep_default_config() to restore the default endpoint configuration.
+- Updated nrfx_gpiote_out_init() and nrfx_gpiote_in_init() return codes. Now NRFX_ERROR_INVALID_STATE is changed to NRFX_ERROR_BUSY.
+- Replaced the SWI/EGU driver with one for EGU only.
+- Aligned symbol names for default IRQ priority in nrfx_config. These symbols are now adhering to the following standard: NRFX_xxx_DEFAULT_CONFIG_IRQ_PRIORITY.
+- Changed the way of configuring the MISO pin pull setting in SPI and SPIM drivers. Now it can be set separately for each instance.
+
+### Removed
+- Removed deprecated functions from drivers: TWI and TWIM. See migration guide for details.
+- Removed deprecated functions from HALs: ECB, NVMC, and TEMP. See migration guide for details.
+- Removed redundant bariers in the nrfx_usbd driver.
+- Removed the default configuration values for drivers from the nrfx_config header files.
+
 ## [1.8.1] - 2019-10-21
 ### Added
 - Added functions in the GPIOTE driver for getting task or event for the specified GPIO pin.

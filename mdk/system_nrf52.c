@@ -26,23 +26,12 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include <stdint.h>
 #include <stdbool.h>
 #include "nrf.h"
+#include "nrf_erratas.h"
 #include "system_nrf52.h"
 
 /*lint ++flb "Enter library region" */
 
 #define __SYSTEM_CLOCK_64M      (64000000UL)
-
-static bool errata_12(void);
-static bool errata_16(void);
-static bool errata_31(void);
-static bool errata_32(void);
-static bool errata_36(void);
-static bool errata_37(void);
-static bool errata_57(void);
-static bool errata_66(void);
-static bool errata_108(void);
-static bool errata_136(void);
-static bool errata_182(void);
 
 
 #if defined ( __CC_ARM )
@@ -212,161 +201,6 @@ void SystemInit(void)
     #endif
 
     SystemCoreClockUpdate();
-}
-
-
-static bool errata_12(void)
-{
-    if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x30){
-            return true;
-        }
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x40){
-            return true;
-        }
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x50){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-static bool errata_16(void)
-{
-    if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x30){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-static bool errata_31(void)
-{
-    if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x30){
-            return true;
-        }
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x40){
-            return true;
-        }
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x50){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-static bool errata_32(void)
-{
-    if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x30){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-static bool errata_36(void)
-{
-    if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x30){
-            return true;
-        }
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x40){
-            return true;
-        }
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x50){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-static bool errata_37(void)
-{
-    if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x30){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-static bool errata_57(void)
-{
-    if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x30){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-static bool errata_66(void)
-{
-    if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x50){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-
-static bool errata_108(void)
-{
-    if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x30){
-            return true;
-        }
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x40){
-            return true;
-        }
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x50){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-
-static bool errata_136(void)
-{
-    if ((((*(uint32_t *)0xF0000FE0) & 0x000000FF) == 0x6) && (((*(uint32_t *)0xF0000FE4) & 0x0000000F) == 0x0)){
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x30){
-            return true;
-        }
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x40){
-            return true;
-        }
-        if (((*(uint32_t *)0xF0000FE8) & 0x000000F0) == 0x50){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-
-static bool errata_182(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x6ul){
-        if (*(uint32_t *)0x10000134ul == 0x6ul){
-            return true;
-        }
-    }
-
-    return false;
 }
 
 

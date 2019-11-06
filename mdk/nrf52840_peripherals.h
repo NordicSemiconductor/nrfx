@@ -48,6 +48,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #define POWER_FEATURE_VDDH_PRESENT
 #define POWER_FEATURE_VDDH_DCDC_PRESENT
 
+/* Non-Volatile Memory Controller */
+#define NVMC_PRESENT
+#define NVMC_COUNT 1
+
+#define NVMC_FEATURE_CACHE_PRESENT
+
 /* Floating Point Unit */
 #define FPU_PRESENT
 #define FPU_COUNT 1
