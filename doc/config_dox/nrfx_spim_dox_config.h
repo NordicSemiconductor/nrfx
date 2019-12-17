@@ -11,6 +11,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_SPIM_ENABLED
+
 /** @brief Enable SPIM0 instance
  *
  *  Set to 1 to activate.
@@ -51,17 +52,6 @@
  */
 #define NRFX_SPIM_EXTENDED_ENABLED
 
-/** @brief MISO pin pull configuration.
- *
- *  Following options are available:
- * - 0 - NRF_GPIO_PIN_NOPULL
- * - 1 - NRF_GPIO_PIN_PULLDOWN
- * - 3 - NRF_GPIO_PIN_PULLUP
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_SPIM_MISO_PULL_CFG
-
 /** @brief Interrupt priority
  *
  *  Following options are available:
@@ -85,6 +75,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_SPIM_CONFIG_LOG_ENABLED
+
 /** @brief Default Severity level
  *
  *  Following options are available:

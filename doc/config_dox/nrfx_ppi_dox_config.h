@@ -11,6 +11,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_PPI_ENABLED
+
 /** @brief Enables logging in the module.
  *
  *  Set to 1 to activate.
@@ -18,6 +19,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_PPI_CONFIG_LOG_ENABLED
+
 /** @brief Default Severity level
  *
  *  Following options are available:

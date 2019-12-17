@@ -11,36 +11,6 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_PDM_ENABLED
-/** @brief Mode
- *
- *  Following options are available:
- * - 0 - Stereo
- * - 1 - Mono
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_PDM_CONFIG_MODE
-
-/** @brief Edge
- *
- *  Following options are available:
- * - 0 - Left falling
- * - 1 - Left rising
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_PDM_CONFIG_EDGE
-
-/** @brief Clock frequency
- *
- *  Following options are available:
- * - 134217728 - 1000k
- * - 138412032 - 1032k (default)
- * - 142606336 - 1067k
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_PDM_CONFIG_CLOCK_FREQ
 
 /** @brief Interrupt priority
  *
@@ -65,6 +35,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_PDM_CONFIG_LOG_ENABLED
+
 /** @brief Default Severity level
  *
  *  Following options are available:

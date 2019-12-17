@@ -11,6 +11,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_TWIM_ENABLED
+
 /** @brief Enable TWIM0 instance
  *
  *  Set to 1 to activate.
@@ -26,25 +27,6 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_TWIM1_ENABLED
-
-/** @brief Frequency
- *
- *  Following options are available:
- * - 26738688 - 100k
- * - 67108864 - 250k
- * - 104857600 - 400k
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_TWIM_DEFAULT_CONFIG_FREQUENCY
-
-/** @brief Enables bus holding after uninit
- *
- *  Set to 1 to activate.
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_TWIM_DEFAULT_CONFIG_HOLD_BUS_UNINIT
 
 /** @brief Interrupt priority
  *
@@ -69,6 +51,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_TWIM_CONFIG_LOG_ENABLED
+
 /** @brief Default Severity level
  *
  *  Following options are available:

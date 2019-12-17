@@ -11,6 +11,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_ADC_ENABLED
+
 /** @brief Interrupt priority
  *
  *  Following options are available:
@@ -30,6 +31,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_ADC_CONFIG_LOG_ENABLED
+
 /** @brief Default Severity level
  *
  *  Following options are available:

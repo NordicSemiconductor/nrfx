@@ -11,6 +11,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_CLOCK_ENABLED
+
 /** @brief LF Clock Source
  *
  *  Following options are available:
@@ -53,6 +54,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_CLOCK_CONFIG_LOG_ENABLED
+
 /** @brief Default Severity level
  *
  *  Following options are available:

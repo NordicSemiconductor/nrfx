@@ -11,6 +11,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_RTC_ENABLED
+
 /** @brief Enable RTC0 instance
  *
  *  Set to 1 to activate.
@@ -35,30 +36,6 @@
  */
 #define NRFX_RTC2_ENABLED
 
-/** @brief Maximum possible time[us] in highest priority interrupt
- *
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_RTC_MAXIMUM_LATENCY_US
-
-/** @brief Frequency
- *
- *  Minimum value: 16
- *  Maximum value: 32768
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_RTC_DEFAULT_CONFIG_FREQUENCY
-
-/** @brief Ensures safe compare event triggering
- *
- *  Set to 1 to activate.
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_RTC_DEFAULT_CONFIG_RELIABLE
-
 /** @brief Interrupt priority
  *
  *  Following options are available:
@@ -82,6 +59,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_RTC_CONFIG_LOG_ENABLED
+
 /** @brief Default Severity level
  *
  *  Following options are available:
