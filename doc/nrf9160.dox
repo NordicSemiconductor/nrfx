@@ -8,6 +8,8 @@
 
 @ref nrf_dppi
 
+@ref nrf_egu
+
 @ref nrf_ficr
 
 @ref nrf_gpio
@@ -15,6 +17,8 @@
 @ref nrf_gpiote
 
 @ref nrf_i2s
+
+@ref nrf_ipc
 
 @ref nrf_kmu
 
@@ -35,8 +39,6 @@
 @ref nrf_spis
 
 @ref nrf_spu
-
-@ref nrf_swi_egu
 
 @ref nrf_timer
 

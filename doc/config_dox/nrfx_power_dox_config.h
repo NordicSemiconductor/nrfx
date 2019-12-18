@@ -11,6 +11,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_POWER_ENABLED
+
 /** @brief Interrupt priority
  *
  *  Following options are available:

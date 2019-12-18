@@ -11,6 +11,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_GPIOTE_ENABLED
+
 /** @brief Number of lower power input pins
  *
  *
@@ -41,6 +42,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_GPIOTE_CONFIG_LOG_ENABLED
+
 /** @brief Default Severity level
  *
  *  Following options are available:
