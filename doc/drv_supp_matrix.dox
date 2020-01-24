@@ -14,6 +14,7 @@ Driver           | nRF51 Series | nRF52810/nRF52811 | nRF52832     | nRF52833   
 @ref nrf_clock   |@tagGreenTick |@tagGreenTick      |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |
 @ref nrf_comp    |@tagRedCross  |@tagGreenTick      |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagRedCross  |
 @ref nrf_systick |@tagRedCross  |@tagGreenTick      |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |
+@ref nrf_dcnf    |@tagRedCross  |@tagRedCross       |@tagRedCross  |@tagRedCross  |@tagRedCross  |@tagGreenTick |@tagRedCross  |
 @ref nrf_dppi    |@tagRedCross  |@tagRedCross       |@tagRedCross  |@tagRedCross  |@tagRedCross  |@tagGreenTick |@tagGreenTick |
 @ref nrf_ecb     |@tagGreenTick |@tagGreenTick      |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagRedCross  |
 @ref nrf_egu     |@tagRedCross  |@tagGreenTick      |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |
@@ -52,7 +53,7 @@ Driver           | nRF51 Series | nRF52810/nRF52811 | nRF52832     | nRF52833   
 @ref nrf_twis    |@tagRedCross  |@tagGreenTick      |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |
 @ref nrf_uart    |@tagGreenTick |@tagGreenTick      |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagRedCross  |@tagRedCross  |
 @ref nrf_uarte   |@tagRedCross  |@tagGreenTick      |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |
-@ref nrf_usbd    |@tagRedCross  |@tagRedCross       |@tagRedCross  |@tagGreenTick |@tagGreenTick |@tagRedCross  |@tagRedCross  |
+@ref nrf_usbd    |@tagRedCross  |@tagRedCross       |@tagRedCross  |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagRedCross  |
 @ref nrf_vmc     |@tagRedCross  |@tagRedCross       |@tagRedCross  |@tagRedCross  |@tagRedCross  |@tagGreenTick |@tagGreenTick |
 @ref nrf_wdt     |@tagGreenTick |@tagGreenTick      |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |
 

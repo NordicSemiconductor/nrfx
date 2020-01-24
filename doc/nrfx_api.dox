@@ -21,6 +21,8 @@
 
 @defgroup nrf_systick Cortex-M Systick
 
+@defgroup nrf_dcnf DCNF
+
 @defgroup nrf_dppi DPPI
 
 @defgroup nrf_ecb ECB

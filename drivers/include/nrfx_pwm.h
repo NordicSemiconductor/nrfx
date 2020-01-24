@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -121,20 +121,20 @@ typedef struct
  * @param[in] _out_2 PWM output 2 pin.
  * @param[in] _out_3 PWM output 3 pin.
  */
-#define NRFX_PWM_DEFAULT_CONFIG(_out_0, _out_1, _out_2, _out_3)  \
-{                                                                \
-    .output_pins  = { _out_0,                                    \
-                      _out_1,                                    \
-                      _out_2,                                    \
-                      _out_3                                     \
-                    },                                           \
-    .irq_priority = NRFX_PWM_DEFAULT_CONFIG_IRQ_PRIORITY,        \
-    .base_clock   = NRF_PWM_CLK_1MHz,                            \
-    .count_mode   = NRF_PWM_MODE_UP,                             \
-    .top_value    = 1000,                                        \
-    .load_mode    = NRF_PWM_LOAD_COMMON,                         \
-    .step_mode    = NRF_PWM_STEP_AUTO,                           \
-    .skip_gpio_cfg = false                                       \
+#define NRFX_PWM_DEFAULT_CONFIG(_out_0, _out_1, _out_2, _out_3) \
+{                                                               \
+    .output_pins   = { _out_0,                                  \
+                       _out_1,                                  \
+                       _out_2,                                  \
+                       _out_3                                   \
+                     },                                         \
+    .irq_priority  = NRFX_PWM_DEFAULT_CONFIG_IRQ_PRIORITY,      \
+    .base_clock    = NRF_PWM_CLK_1MHz,                          \
+    .count_mode    = NRF_PWM_MODE_UP,                           \
+    .top_value     = 1000,                                      \
+    .load_mode     = NRF_PWM_LOAD_COMMON,                       \
+    .step_mode     = NRF_PWM_STEP_AUTO,                         \
+    .skip_gpio_cfg = false                                      \
 }
 
 /** @brief PWM flags providing additional playback options. */

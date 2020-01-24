@@ -72,8 +72,8 @@ in a file named:
 This file, similarly to the integration files mentioned above, can be placed
 in any suitable location within the host environment.
 The <a href="../../templates/">templates</a> subfolder contains templates of
-configuration files for all currently supported Nordic SoCs placed in respective
-subfolders.
+configuration files for all currently supported Nordic SoCs. These files are
+included through a common nrfx_config.h file, according to the selected SoC.
 Refer to the "driver configuration" section in the API reference for a given
 driver for more information regarding configuration options available for it.
 
