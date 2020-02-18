@@ -269,7 +269,7 @@ static uint32_t m_ep_ready;
  * Mask prepared USBD data for transmission.
  * It is cleared when no more data to transmit left.
  */
-static uint32_t m_ep_dma_waiting;
+static nrfx_atomic_t m_ep_dma_waiting;
 
 /**
  * @brief Current EasyDMA state.
