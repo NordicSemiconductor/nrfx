@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,16 +40,23 @@
 #define NRFX_LOG_MODULE GPIOTE
 #include <nrfx_log.h>
 
+#if (GPIO_COUNT == 1)
+#define MAX_PIN_NUMBER 32
+#elif (GPIO_COUNT == 2)
+#define MAX_PIN_NUMBER (32 + P1_PIN_NUM)
+#else
+#error "Not supported."
+#endif
 
 #define FORBIDDEN_HANDLER_ADDRESS ((nrfx_gpiote_evt_handler_t)UINT32_MAX)
 #define PIN_NOT_USED              (-1)
 #define PIN_USED                  (-2)
 #define NO_CHANNELS               (-1)
-#define SENSE_FIELD_POS           (6)
-#define SENSE_FIELD_MASK          (0xC0)
+#define POLARITY_FIELD_POS        (6)
+#define POLARITY_FIELD_MASK       (0xC0)
 
 /* Check if every pin can be encoded on provided number of bits. */
-NRFX_STATIC_ASSERT(NUMBER_OF_PINS <= (1 << SENSE_FIELD_POS));
+NRFX_STATIC_ASSERT(MAX_PIN_NUMBER <= (1 << POLARITY_FIELD_POS));
 
 /**
  * @brief Macro for converting task-event index to an address of an event register.
@@ -93,9 +100,9 @@ NRFX_STATIC_ASSERT(NUMBER_OF_PINS <= (1 << SENSE_FIELD_POS));
 typedef struct
 {
     nrfx_gpiote_evt_handler_t handlers[GPIOTE_CH_NUM + NRFX_GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS];
-    int8_t                    pin_assignments[NUMBER_OF_PINS];
+    int8_t                    pin_assignments[MAX_PIN_NUMBER];
     int8_t                    port_handlers_pins[NRFX_GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS];
-    uint8_t                   configured_pins[((NUMBER_OF_PINS)+7) / 8];
+    uint8_t                   configured_pins[((MAX_PIN_NUMBER)+7) / 8];
     nrfx_drv_state_t          state;
 } gpiote_control_block_t;
 
@@ -184,6 +191,17 @@ __STATIC_INLINE nrfx_gpiote_evt_handler_t channel_handler_get(uint32_t channel)
     return m_cb.handlers[channel];
 }
 
+static nrfx_gpiote_pin_t port_handler_pin_get(uint32_t handler_idx)
+{
+    uint8_t pin_and_polarity = (uint8_t)m_cb.port_handlers_pins[handler_idx];
+    return (nrfx_gpiote_pin_t)(pin_and_polarity & ~POLARITY_FIELD_MASK);
+}
+
+static nrf_gpiote_polarity_t port_handler_polarity_get(uint32_t handler_idx)
+{
+    uint8_t pin_and_polarity = (uint8_t)m_cb.port_handlers_pins[handler_idx];
+    return (nrf_gpiote_polarity_t)((pin_and_polarity & POLARITY_FIELD_MASK) >> POLARITY_FIELD_POS);
+}
 
 static int8_t channel_port_alloc(uint32_t pin, nrfx_gpiote_evt_handler_t handler, bool channel)
 {
@@ -235,9 +253,12 @@ nrfx_err_t nrfx_gpiote_init(void)
 
     uint8_t i;
 
-    for (i = 0; i < NUMBER_OF_PINS; i++)
+    for (i = 0; i < MAX_PIN_NUMBER; i++)
     {
-        pin_in_use_clear(i);
+        if (nrf_gpio_pin_present_check(i))
+        {
+            pin_in_use_clear(i);
+        }
     }
 
     for (i = 0; i < (GPIOTE_CH_NUM + NRFX_GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS); i++)
@@ -271,18 +292,21 @@ void nrfx_gpiote_uninit(void)
 
     uint32_t i;
 
-    for (i = 0; i < NUMBER_OF_PINS; i++)
-    {
-        if (pin_in_use_as_non_task_out(i))
+    for (i = 0; i < MAX_PIN_NUMBER; i++)
+    {   
+        if (nrf_gpio_pin_present_check(i))
         {
-            nrfx_gpiote_out_uninit(i);
-        }
-        else if ( pin_in_use_by_gpiote(i))
-        {
-            /* Disable gpiote_in is having the same effect on out pin as gpiote_out_uninit on
-             * so it can be called on all pins used by GPIOTE.
-             */
-            nrfx_gpiote_in_uninit(i);
+            if (pin_in_use_as_non_task_out(i))
+            {
+                nrfx_gpiote_out_uninit(i);
+            }
+            else if (pin_in_use_by_gpiote(i))
+            {
+                /* Disable gpiote_in is having the same effect on out pin as gpiote_out_uninit on
+                 * so it can be called on all pins used by GPIOTE.
+                 */
+                nrfx_gpiote_in_uninit(i);
+            }
         }
     }
     m_cb.state = NRFX_DRV_STATE_UNINITIALIZED;
@@ -293,7 +317,7 @@ void nrfx_gpiote_uninit(void)
 nrfx_err_t nrfx_gpiote_out_init(nrfx_gpiote_pin_t                pin,
                                 nrfx_gpiote_out_config_t const * p_config)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
     NRFX_ASSERT(p_config);
 
@@ -349,7 +373,7 @@ nrfx_err_t nrfx_gpiote_out_init(nrfx_gpiote_pin_t                pin,
 
 void nrfx_gpiote_out_uninit(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use(pin));
 
     if (pin_in_use_by_te(pin))
@@ -369,7 +393,7 @@ void nrfx_gpiote_out_uninit(nrfx_gpiote_pin_t pin)
 
 void nrfx_gpiote_out_set(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use(pin));
     NRFX_ASSERT(!pin_in_use_by_te(pin));
 
@@ -379,7 +403,7 @@ void nrfx_gpiote_out_set(nrfx_gpiote_pin_t pin)
 
 void nrfx_gpiote_out_clear(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use(pin));
     NRFX_ASSERT(!pin_in_use_by_te(pin));
 
@@ -389,7 +413,7 @@ void nrfx_gpiote_out_clear(nrfx_gpiote_pin_t pin)
 
 void nrfx_gpiote_out_toggle(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use(pin));
     NRFX_ASSERT(!pin_in_use_by_te(pin));
 
@@ -399,7 +423,7 @@ void nrfx_gpiote_out_toggle(nrfx_gpiote_pin_t pin)
 
 void nrfx_gpiote_out_task_enable(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use(pin));
     NRFX_ASSERT(pin_in_use_by_te(pin));
 
@@ -409,7 +433,7 @@ void nrfx_gpiote_out_task_enable(nrfx_gpiote_pin_t pin)
 
 void nrfx_gpiote_out_task_disable(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use(pin));
     NRFX_ASSERT(pin_in_use_by_te(pin));
 
@@ -419,7 +443,7 @@ void nrfx_gpiote_out_task_disable(nrfx_gpiote_pin_t pin)
 
 nrf_gpiote_tasks_t nrfx_gpiote_out_task_get(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use_by_te(pin));
 
     return TE_OUT_IDX_TO_TASK_ADDR((uint32_t)channel_port_get(pin));
@@ -436,7 +460,7 @@ uint32_t nrfx_gpiote_out_task_addr_get(nrfx_gpiote_pin_t pin)
 #if defined(GPIOTE_FEATURE_SET_PRESENT)
 nrf_gpiote_tasks_t nrfx_gpiote_set_task_get(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use_by_te(pin));
 
     return TE_SET_IDX_TO_TASK_ADDR((uint32_t)channel_port_get(pin));
@@ -454,7 +478,7 @@ uint32_t nrfx_gpiote_set_task_addr_get(nrfx_gpiote_pin_t pin)
 #if defined(GPIOTE_FEATURE_CLR_PRESENT)
 nrf_gpiote_tasks_t nrfx_gpiote_clr_task_get(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use_by_te(pin));
 
     return TE_CLR_IDX_TO_TASK_ADDR((uint32_t)channel_port_get(pin));
@@ -471,7 +495,7 @@ uint32_t nrfx_gpiote_clr_task_addr_get(nrfx_gpiote_pin_t pin)
 
 void nrfx_gpiote_out_task_force(nrfx_gpiote_pin_t pin, uint8_t state)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use(pin));
     NRFX_ASSERT(pin_in_use_by_te(pin));
 
@@ -483,7 +507,7 @@ void nrfx_gpiote_out_task_force(nrfx_gpiote_pin_t pin, uint8_t state)
 
 void nrfx_gpiote_out_task_trigger(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use(pin));
     NRFX_ASSERT(pin_in_use_by_te(pin));
 
@@ -495,7 +519,7 @@ void nrfx_gpiote_out_task_trigger(nrfx_gpiote_pin_t pin)
 #if defined(GPIOTE_FEATURE_SET_PRESENT)
 void nrfx_gpiote_set_task_trigger(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use(pin));
     NRFX_ASSERT(pin_in_use_by_te(pin));
 
@@ -509,7 +533,7 @@ void nrfx_gpiote_set_task_trigger(nrfx_gpiote_pin_t pin)
 #if  defined(GPIOTE_FEATURE_CLR_PRESENT)
 void nrfx_gpiote_clr_task_trigger(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use(pin));
     NRFX_ASSERT(pin_in_use_by_te(pin));
 
@@ -524,7 +548,7 @@ nrfx_err_t nrfx_gpiote_in_init(nrfx_gpiote_pin_t               pin,
                                nrfx_gpiote_in_config_t const * p_config,
                                nrfx_gpiote_evt_handler_t       evt_handler)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     nrfx_err_t err_code = NRFX_SUCCESS;
 
     /* Only one GPIOTE channel can be assigned to one physical pin. */
@@ -556,8 +580,8 @@ nrfx_err_t nrfx_gpiote_in_init(nrfx_gpiote_pin_t               pin,
             }
             else
             {
-                m_cb.port_handlers_pins[channel -
-                                        GPIOTE_CH_NUM] |= (p_config->sense) << SENSE_FIELD_POS;
+                m_cb.port_handlers_pins[channel - GPIOTE_CH_NUM] |= (p_config->sense) <<
+                                                                    POLARITY_FIELD_POS;
             }
         }
         else
@@ -572,14 +596,12 @@ nrfx_err_t nrfx_gpiote_in_init(nrfx_gpiote_pin_t               pin,
 
 void nrfx_gpiote_in_event_enable(nrfx_gpiote_pin_t pin, bool int_enable)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use_by_gpiote(pin));
     if (pin_in_use_by_port(pin))
     {
-        uint8_t pin_and_sense = (uint8_t)
-            m_cb.port_handlers_pins[channel_port_get(pin) - GPIOTE_CH_NUM];
         nrf_gpiote_polarity_t polarity =
-            (nrf_gpiote_polarity_t)(pin_and_sense >> SENSE_FIELD_POS);
+            port_handler_polarity_get(channel_port_get(pin) - GPIOTE_CH_NUM);
         nrf_gpio_pin_sense_t sense;
         if (polarity == NRF_GPIOTE_POLARITY_TOGGLE)
         {
@@ -617,7 +639,7 @@ void nrfx_gpiote_in_event_enable(nrfx_gpiote_pin_t pin, bool int_enable)
 
 void nrfx_gpiote_in_event_disable(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use_by_gpiote(pin));
     if (pin_in_use_by_port(pin))
     {
@@ -634,7 +656,7 @@ void nrfx_gpiote_in_event_disable(nrfx_gpiote_pin_t pin)
 
 void nrfx_gpiote_in_uninit(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use_by_gpiote(pin));
     nrfx_gpiote_in_event_disable(pin);
     if (pin_in_use_by_te(pin))
@@ -653,14 +675,14 @@ void nrfx_gpiote_in_uninit(nrfx_gpiote_pin_t pin)
 
 bool nrfx_gpiote_in_is_set(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     return nrf_gpio_pin_read(pin) ? true : false;
 }
 
 
 nrf_gpiote_events_t nrfx_gpiote_in_event_get(nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(pin));
     NRFX_ASSERT(pin_in_use_by_port(pin) || pin_in_use_by_te(pin));
 
     if (pin_in_use_by_te(pin))
@@ -678,6 +700,159 @@ uint32_t nrfx_gpiote_in_event_addr_get(nrfx_gpiote_pin_t pin)
     return nrf_gpiote_event_addr_get(event);
 }
 
+#if defined(NRF_GPIO_LATCH_PRESENT)
+static bool latch_pending_read_and_check(uint32_t * latch)
+{
+    nrf_gpio_latches_read_and_clear(0, GPIO_COUNT, latch);
+
+    for (uint32_t port_idx = 0; port_idx < GPIO_COUNT; port_idx++)
+    {
+        if (latch[port_idx])
+        {
+            /* If any of the latch bits is still set, it means another edge has been captured
+             * before or during the interrupt processing. Therefore event-processing loop
+             * should be executed again. */
+            return true;
+        }
+    }
+    return false;
+}
+
+static void port_event_handle(uint32_t * latch)
+{
+    do {
+        for (uint32_t i = 0; i < NRFX_GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS; i++)
+        {
+            if (m_cb.port_handlers_pins[i] == PIN_NOT_USED)
+            {
+                continue;
+            }
+
+            /* Process pin further only if LATCH bit associated with this pin was set. */
+            nrfx_gpiote_pin_t pin = port_handler_pin_get(i);
+            if (nrf_bitmask_bit_is_set(pin, latch))
+            {
+                nrf_gpiote_polarity_t polarity = port_handler_polarity_get(i);
+                nrf_gpio_pin_sense_t sense     = nrf_gpio_pin_sense_get(pin);
+
+                NRFX_LOG_DEBUG("PORT event for pin: %d, polarity: %d.", pin, polarity);
+
+                /* Reconfigure sense to the opposite level, so the internal PINx.DETECT signal
+                 * can be deasserted. Therefore PORT event generated again,
+                 * unless some other PINx.DETECT signal is still active. */
+                nrf_gpio_pin_sense_t next_sense =
+                    (sense == NRF_GPIO_PIN_SENSE_HIGH) ? NRF_GPIO_PIN_SENSE_LOW :
+                                                         NRF_GPIO_PIN_SENSE_HIGH;
+                nrf_gpio_cfg_sense_set(pin, next_sense);
+
+                /* Try to clear LATCH bit corresponding to currently processed pin.
+                 * This may not succeed if the pin's state changed during the interrupt processing
+                 * and now it matches the new sense configuration. In such case,
+                 * the pin will be processed again in another iteration of the outer loop. */
+                nrf_gpio_pin_latch_clear(pin);
+
+                /* Invoke user handler only if the sensed pin level
+                 * matches its polarity configuration. */
+                nrfx_gpiote_evt_handler_t handler =
+                    channel_handler_get((uint32_t)channel_port_get(pin));
+                if (handler &&
+                    ((polarity == NRF_GPIOTE_POLARITY_TOGGLE) ||
+                     (sense == NRF_GPIO_PIN_SENSE_HIGH && polarity == NRF_GPIOTE_POLARITY_LOTOHI) ||
+                     (sense == NRF_GPIO_PIN_SENSE_LOW && polarity == NRF_GPIOTE_POLARITY_HITOLO)))
+                {
+                    handler(pin, polarity);
+                }
+            }
+        }
+    } while (latch_pending_read_and_check(latch));
+}
+
+#else
+
+static bool input_read_and_check(uint32_t * input, uint32_t * pins_to_check)
+{
+    bool process_inputs_again;
+    uint32_t new_input[GPIO_COUNT];
+
+    nrf_gpio_ports_read(0, GPIO_COUNT, new_input);
+
+    process_inputs_again = false;
+    for (uint32_t port_idx = 0; port_idx < GPIO_COUNT; port_idx++)
+    {
+        /* Execute XOR to find out which inputs have changed. */
+        uint32_t input_diff = input[port_idx] ^ new_input[port_idx];
+        input[port_idx] = new_input[port_idx];
+        if (input_diff)
+        {
+            /* If any differences among inputs were found, mark those pins
+             * to be processed again. */
+            pins_to_check[port_idx] = input_diff;
+            process_inputs_again = true;
+        }
+        else
+        {
+            pins_to_check[port_idx] = 0;
+        }
+    }
+    return process_inputs_again;
+}
+
+static void port_event_handle(uint32_t * input)
+{
+    uint32_t pins_to_check[GPIO_COUNT];
+
+    for (uint32_t port_idx = 0; port_idx < GPIO_COUNT; port_idx++)
+    {
+        pins_to_check[port_idx] = 0xFFFFFFFF;
+    }
+
+    do {
+        for (uint32_t i = 0; i < NRFX_GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS; i++)
+        {
+            if (m_cb.port_handlers_pins[i] == PIN_NOT_USED)
+            {
+                continue;
+            }
+
+            nrfx_gpiote_pin_t pin = port_handler_pin_get(i);
+            if (nrf_bitmask_bit_is_set(pin, pins_to_check))
+            {
+                nrf_gpiote_polarity_t polarity = port_handler_polarity_get(i);
+                nrf_gpio_pin_sense_t sense     = nrf_gpio_pin_sense_get(pin);
+                bool pin_state                 = nrf_bitmask_bit_is_set(pin, input);
+
+                /* Process pin further only if its state matches its sense level. */
+                if ((pin_state && (sense == NRF_GPIO_PIN_SENSE_HIGH)) ||
+                    (!pin_state && (sense == NRF_GPIO_PIN_SENSE_LOW)) )
+                {
+                    /* Reconfigure sense to the opposite level, so the internal PINx.DETECT signal
+                     * can be deasserted. Therefore PORT event can be generated again,
+                     * unless some other PINx.DETECT signal is still active. */
+                    NRFX_LOG_DEBUG("PORT event for pin: %d, polarity: %d.", pin, polarity);
+                    nrf_gpio_pin_sense_t next_sense =
+                        (sense == NRF_GPIO_PIN_SENSE_HIGH) ? NRF_GPIO_PIN_SENSE_LOW :
+                                                             NRF_GPIO_PIN_SENSE_HIGH;
+                    nrf_gpio_cfg_sense_set(pin, next_sense);
+
+                    /* Invoke user handler only if the sensed pin level
+                     * matches its polarity configuration. */
+                    nrfx_gpiote_evt_handler_t handler =
+                        channel_handler_get((uint32_t)channel_port_get(pin));
+                    if (handler &&
+                        ((polarity == NRF_GPIOTE_POLARITY_TOGGLE) ||
+                         (sense == NRF_GPIO_PIN_SENSE_HIGH &&
+                          polarity == NRF_GPIOTE_POLARITY_LOTOHI) ||
+                         (sense == NRF_GPIO_PIN_SENSE_LOW &&
+                          polarity == NRF_GPIOTE_POLARITY_HITOLO)))
+                    {
+                        handler(pin, polarity);
+                    }
+                }
+            }
+        }
+    } while (input_read_and_check(input, pins_to_check));
+}
+#endif // defined(NRF_GPIO_LATCH_PRESENT)
 
 void nrfx_gpiote_irq_handler(void)
 {
@@ -708,7 +883,11 @@ void nrfx_gpiote_irq_handler(void)
     {
         nrf_gpiote_event_clear(NRF_GPIOTE_EVENTS_PORT);
         status |= (uint32_t)NRF_GPIOTE_INT_PORT_MASK;
+#if defined(NRF_GPIO_LATCH_PRESENT)
+        nrf_gpio_latches_read_and_clear(0, GPIO_COUNT, input);
+#else
         nrf_gpio_ports_read(0, GPIO_COUNT, input);
+#endif
     }
 
     /* Process pin events. */
@@ -734,107 +913,10 @@ void nrfx_gpiote_irq_handler(void)
         }
     }
 
+    /* Process PORT event. */
     if (status & (uint32_t)NRF_GPIOTE_INT_PORT_MASK)
     {
-        /* Process port event. */
-        uint32_t port_idx;
-        uint8_t  repeat                  = 0;
-        uint32_t toggle_mask[GPIO_COUNT] = {0};
-        uint32_t pins_to_check[GPIO_COUNT];
-
-        // Faster way of doing memset because in interrupt context.
-        for (port_idx = 0; port_idx < GPIO_COUNT; port_idx++)
-        {
-            pins_to_check[port_idx] = 0xFFFFFFFF;
-        }
-
-        do
-        {
-            repeat = 0;
-
-            for (i = 0; i < NRFX_GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS; i++)
-            {
-                uint8_t           pin_and_sense = (uint8_t)m_cb.port_handlers_pins[i];
-                nrfx_gpiote_pin_t pin           = (pin_and_sense & ~SENSE_FIELD_MASK);
-
-                if ((m_cb.port_handlers_pins[i] != PIN_NOT_USED)
-                    && nrf_bitmask_bit_is_set(pin, pins_to_check))
-                {
-                    nrf_gpiote_polarity_t polarity =
-                        (nrf_gpiote_polarity_t)((pin_and_sense &
-                                                 SENSE_FIELD_MASK) >> SENSE_FIELD_POS);
-                    nrfx_gpiote_evt_handler_t handler =
-                        channel_handler_get((uint32_t)channel_port_get(pin));
-                    if (handler || (polarity == NRF_GPIOTE_POLARITY_TOGGLE))
-                    {
-                        if (polarity == NRF_GPIOTE_POLARITY_TOGGLE)
-                        {
-                            nrf_bitmask_bit_set(pin, toggle_mask);
-                        }
-                        nrf_gpio_pin_sense_t sense     = nrf_gpio_pin_sense_get(pin);
-                        uint32_t             pin_state = nrf_bitmask_bit_is_set(pin, input);
-                        if ((pin_state && (sense == NRF_GPIO_PIN_SENSE_HIGH)) ||
-                            (!pin_state && (sense == NRF_GPIO_PIN_SENSE_LOW))  )
-                        {
-                            NRFX_LOG_DEBUG("PORT event for pin: %d, polarity: %d.", pin, polarity);
-                            if (polarity == NRF_GPIOTE_POLARITY_TOGGLE)
-                            {
-                                nrf_gpio_pin_sense_t next_sense =
-                                    (sense == NRF_GPIO_PIN_SENSE_HIGH) ?
-                                    NRF_GPIO_PIN_SENSE_LOW :
-                                    NRF_GPIO_PIN_SENSE_HIGH;
-                                nrf_gpio_cfg_sense_set(pin, next_sense);
-                                ++repeat;
-
-                            }
-                            if (handler)
-                            {
-                                handler(pin, polarity);
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (repeat)
-            {
-                // When one of the pins in low-accuracy and toggle mode becomes active,
-                // it's sense mode is inverted to clear the internal SENSE signal.
-                // State of any other enabled low-accuracy input in toggle mode must be checked
-                // explicitly, because it does not trigger the interrput when SENSE signal is active.
-                // For more information about SENSE functionality, refer to Product Specification.
-
-                uint32_t new_input[GPIO_COUNT];
-                bool     input_unchanged = true;
-                nrf_gpio_ports_read(0, GPIO_COUNT, new_input);
-
-                // Faster way of doing memcmp because in interrupt context.
-                for (port_idx = 0; port_idx < GPIO_COUNT; port_idx++)
-                {
-                    if (new_input[port_idx] != input[port_idx])
-                    {
-                        input_unchanged = false;
-                        break;
-                    }
-                }
-
-                if (input_unchanged)
-                {
-                    // No change.
-                    repeat = 0;
-                }
-                else
-                {
-                    // Faster way of doing memcpy because in interrupt context.
-                    for (port_idx = 0; port_idx < GPIO_COUNT; port_idx++)
-                    {
-                        input[port_idx]         = new_input[port_idx];
-                        pins_to_check[port_idx] = toggle_mask[port_idx];
-                    }
-                }
-            }
-        }
-        while (repeat);
+        port_event_handle(input);
     }
 }
 

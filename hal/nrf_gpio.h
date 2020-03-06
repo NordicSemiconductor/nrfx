@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,12 +52,21 @@ extern "C" {
 #error "Not supported."
 #endif
 
+#if defined(NRF52820_XXAA)
+#include <nrf_erratas.h>
+#endif
+
 /**
  * @defgroup nrf_gpio_hal GPIO HAL
  * @{
  * @ingroup nrf_gpio
  * @brief   Hardware access layer for managing the GPIO peripheral.
  */
+
+#if defined(GPIO_LATCH_PIN0_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the functionality of latching GPIO state change is present. */
+#define NRF_GPIO_LATCH_PRESENT
+#endif
 
 /** @brief Macro for mapping port and pin numbers to values understandable for nrf_gpio functions. */
 #define NRF_GPIO_PIN_MAP(port, pin) (((port) << 5) | ((pin) & 0x1F))
@@ -409,7 +418,7 @@ __STATIC_INLINE void nrf_gpio_port_out_clear(NRF_GPIO_Type * p_reg, uint32_t clr
  */
 __STATIC_INLINE void nrf_gpio_ports_read(uint32_t start_port, uint32_t length, uint32_t * p_masks);
 
-#if defined(GPIO_DETECTMODE_DETECTMODE_LDETECT) || defined(__NRF_DOXYGEN__)
+#if defined(NRF_GPIO_LATCH_PRESENT)
 /**
  * @brief Function for reading latch state of multiple consecutive ports.
  *
@@ -417,8 +426,20 @@ __STATIC_INLINE void nrf_gpio_ports_read(uint32_t start_port, uint32_t length, u
  * @param length     Number of ports to read.
  * @param p_masks    Pointer to output array where latch states will be stored.
  */
-__STATIC_INLINE void nrf_gpio_latches_read(uint32_t start_port, uint32_t length,
+__STATIC_INLINE void nrf_gpio_latches_read(uint32_t   start_port,
+                                           uint32_t   length,
                                            uint32_t * p_masks);
+
+/**
+ * @brief Function for reading and immediate clearing latch state of multiple consecutive ports.
+ *
+ * @param start_port Index of the first port to read and clear.
+ * @param length     Number of ports to read and clear.
+ * @param p_masks    Pointer to output array where latch states will be stored.
+ */
+__STATIC_INLINE void nrf_gpio_latches_read_and_clear(uint32_t   start_port,
+                                                     uint32_t   length,
+                                                     uint32_t * p_masks);
 
 /**
  * @brief Function for reading latch state of single pin.
@@ -435,7 +456,17 @@ __STATIC_INLINE uint32_t nrf_gpio_pin_latch_get(uint32_t pin_number);
  * @param pin_number Pin number.
  */
 __STATIC_INLINE void nrf_gpio_pin_latch_clear(uint32_t pin_number);
-#endif
+#endif // defined(NRF_GPIO_LATCH_PRESENT)
+
+/**
+ * @brief Function for checking if provided pin is present on the MCU.
+ *
+ * @param[in] pin_number Number of the pin to be checked.
+ *
+ * @retval true  Pin is present.
+ * @retval false Pin is not present.
+ */
+__STATIC_INLINE bool nrf_gpio_pin_present_check(uint32_t pin_number);
 
 
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
@@ -449,7 +480,7 @@ __STATIC_INLINE void nrf_gpio_pin_latch_clear(uint32_t pin_number);
  */
 __STATIC_INLINE NRF_GPIO_Type * nrf_gpio_pin_port_decode(uint32_t * p_pin)
 {
-    NRFX_ASSERT(*p_pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(*p_pin));
 #if (GPIO_COUNT == 1)
     return NRF_P0;
 #else
@@ -459,7 +490,7 @@ __STATIC_INLINE NRF_GPIO_Type * nrf_gpio_pin_port_decode(uint32_t * p_pin)
     }
     else
     {
-        *p_pin = *p_pin & (P0_PIN_NUM - 1);
+        *p_pin = *p_pin & 0x1F;
         return NRF_P1;
     }
 #endif
@@ -764,8 +795,10 @@ __STATIC_INLINE void nrf_gpio_ports_read(uint32_t start_port, uint32_t length, u
 }
 
 
-#ifdef GPIO_DETECTMODE_DETECTMODE_LDETECT
-__STATIC_INLINE void nrf_gpio_latches_read(uint32_t start_port, uint32_t length, uint32_t * p_masks)
+#if defined(NRF_GPIO_LATCH_PRESENT)
+__STATIC_INLINE void nrf_gpio_latches_read(uint32_t   start_port,
+                                           uint32_t   length,
+                                           uint32_t * p_masks)
 {
     NRF_GPIO_Type * gpio_regs[GPIO_COUNT] = GPIO_REG_LIST;
     uint32_t        i;
@@ -777,6 +810,23 @@ __STATIC_INLINE void nrf_gpio_latches_read(uint32_t start_port, uint32_t length,
     }
 }
 
+__STATIC_INLINE void nrf_gpio_latches_read_and_clear(uint32_t   start_port,
+                                                     uint32_t   length,
+                                                     uint32_t * p_masks)
+{
+    NRF_GPIO_Type * gpio_regs[GPIO_COUNT] = GPIO_REG_LIST;
+    uint32_t        i;
+
+    for (i = start_port; i < (start_port + length); i++)
+    {
+        *p_masks = gpio_regs[i]->LATCH;
+
+        // The LATCH register is cleared by writing a '1' to the bit that shall be cleared.
+        gpio_regs[i]->LATCH = *p_masks;
+
+        p_masks++;
+    }
+}
 
 __STATIC_INLINE uint32_t nrf_gpio_pin_latch_get(uint32_t pin_number)
 {
@@ -792,9 +842,32 @@ __STATIC_INLINE void nrf_gpio_pin_latch_clear(uint32_t pin_number)
 
     reg->LATCH = (1 << pin_number);
 }
+#endif // defined(NRF_GPIO_LATCH_PRESENT)
 
+__STATIC_INLINE bool nrf_gpio_pin_present_check(uint32_t pin_number)
+{
+    uint32_t port = pin_number >> 5;
+    uint32_t mask = 0;
 
+    switch (port)
+    {
+#ifdef P0_FEATURE_PINS_PRESENT
+        case 0:
+            mask = P0_FEATURE_PINS_PRESENT;
+            break;
 #endif
+#ifdef P1_FEATURE_PINS_PRESENT
+        case 1:
+            mask = P1_FEATURE_PINS_PRESENT;
+            break;
+#endif
+    }
+
+    pin_number &= 0x1F;
+
+    return (mask & (1UL << pin_number)) ? true : false;
+}
+
 #endif // SUPPRESS_INLINE_IMPLEMENTATION
 
 /** @} */

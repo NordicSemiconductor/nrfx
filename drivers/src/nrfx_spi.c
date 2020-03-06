@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -167,11 +167,6 @@ nrfx_err_t nrfx_spi_init(nrfx_spi_t const * const  p_instance,
     nrf_spi_configure(p_spi, p_config->mode, p_config->bit_order);
 
     m_cb[p_instance->drv_inst_idx].orc = p_config->orc;
-
-    if (p_cb->handler)
-    {
-        nrf_spi_int_enable(p_spi, NRF_SPI_INT_READY_MASK);
-    }
 
     nrf_spi_enable(p_spi);
 

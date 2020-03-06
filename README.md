@@ -15,6 +15,7 @@ SoCs, as well as startup and initialization files for them.
 * nRF51 Series
 * nRF52810
 * nRF52811
+* nRF52820
 * nRF52832
 * nRF52833
 * nRF52840

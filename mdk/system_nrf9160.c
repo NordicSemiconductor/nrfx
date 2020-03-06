@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2009-2018 ARM Limited. All rights reserved.
+Copyright (c) 2009-2020 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -26,6 +26,7 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include <stdint.h>
 #include <stdbool.h>
 #include "nrf.h"
+#include "nrf_erratas.h"
 #include "system_nrf9160.h"
 
 /*lint ++flb "Enter library region" */
@@ -63,10 +64,6 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #if !defined(NRF_TRUSTZONE_NONSECURE)
     static bool uicr_HFXOSRC_erased(void);
     static bool uicr_HFXOCNT_erased(void);
-    static bool errata_6(void);
-    static bool errata_14(void);
-    static bool errata_15(void);
-    static bool errata_20(void);
 #endif
 
 void SystemCoreClockUpdate(void)
@@ -87,28 +84,35 @@ void SystemInit(void)
         
         /* Workaround for Errata 6 "POWER: SLEEPENTER and SLEEPEXIT events asserted after pin reset" found at the Errata document
             for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (errata_6()){
+        if (nrf91_errata_6()){
             NRF_POWER_S->EVENTS_SLEEPENTER = (POWER_EVENTS_SLEEPENTER_EVENTS_SLEEPENTER_NotGenerated << POWER_EVENTS_SLEEPENTER_EVENTS_SLEEPENTER_Pos);
             NRF_POWER_S->EVENTS_SLEEPEXIT = (POWER_EVENTS_SLEEPEXIT_EVENTS_SLEEPEXIT_NotGenerated << POWER_EVENTS_SLEEPEXIT_EVENTS_SLEEPEXIT_Pos);
         }
 
         /* Workaround for Errata 14 "REGULATORS: LDO mode at startup" found at the Errata document
             for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (errata_14()){
+        if (nrf91_errata_14()){
             *((volatile uint32_t *)0x50004A38) = 0x01ul;
             NRF_REGULATORS_S->DCDCEN = REGULATORS_DCDCEN_DCDCEN_Enabled << REGULATORS_DCDCEN_DCDCEN_Pos;
         }
 
         /* Workaround for Errata 15 "REGULATORS: LDO mode at startup" found at the Errata document
             for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (errata_15()){
+        if (nrf91_errata_15()){
             NRF_REGULATORS_S->DCDCEN = REGULATORS_DCDCEN_DCDCEN_Enabled << REGULATORS_DCDCEN_DCDCEN_Pos;
         }
 
         /* Workaround for Errata 20 "RAM content cannot be trusted upon waking up from System ON Idle or System OFF mode" found at the Errata document
             for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (errata_20()){
+        if (nrf91_errata_20()){
             *((volatile uint32_t *)0x5003AEE4) = 0xE;
+        }
+
+        /* Workaround for Errata 31 "XOSC32k Startup Failure" found at the Errata document
+            for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+        if (nrf91_errata_31()){
+            *((volatile uint32_t *)0x5000470Cul) = 0x0;
+            *((volatile uint32_t *)0x50004710ul) = 0x1;
         }
 
         /* Trimming of the device. Copy all the trimming values from FICR into the target addresses. Trim
@@ -248,55 +252,6 @@ void SystemInit(void)
         if ((NRF_UICR_S->HFXOSRC & UICR_HFXOSRC_HFXOSRC_Msk) != UICR_HFXOSRC_HFXOSRC_TCXO) {
             return true;
         }
-        return false;
-    }
-    
-
-    bool errata_6()
-    {
-        if (*(uint32_t *)0x00FF0130 == 0x9ul){
-            if (*(uint32_t *)0x00FF0134 == 0x01ul){
-                return true;
-            }
-            if (*(uint32_t *)0x00FF0134 == 0x02ul){
-                return true;
-            }
-        }
-        
-        return false;
-    }
-
-    
-    bool errata_14()
-    {
-        if (*(uint32_t *)0x00FF0130 == 0x9ul){
-            if (*(uint32_t *)0x00FF0134 == 0x01ul){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    bool errata_15()
-    {
-        if (*(uint32_t *)0x00FF0130 == 0x9ul){
-            if (*(uint32_t *)0x00FF0134 == 0x02ul){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    bool errata_20()
-    {
-        if (((*(uint32_t *)0x00FF0004) & 0x1E) != 0x1C){
-            return true;
-        }
-
         return false;
     }
 #endif

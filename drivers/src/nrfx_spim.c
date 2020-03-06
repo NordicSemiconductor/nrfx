@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -315,11 +315,6 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t  const * const p_instance,
     nrf_spim_configure(p_spim, p_config->mode, p_config->bit_order);
 
     nrf_spim_orc_set(p_spim, p_config->orc);
-
-    if (p_cb->handler)
-    {
-        nrf_spim_int_enable(p_spim, NRF_SPIM_INT_END_MASK);
-    }
 
     nrf_spim_enable(p_spim);
 

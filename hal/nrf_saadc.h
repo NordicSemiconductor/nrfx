@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,7 +70,10 @@ typedef enum
     NRF_SAADC_INPUT_AIN5     = SAADC_CH_PSELP_PSELP_AnalogInput5, ///< Analog input 5 (AIN5).
     NRF_SAADC_INPUT_AIN6     = SAADC_CH_PSELP_PSELP_AnalogInput6, ///< Analog input 6 (AIN6).
     NRF_SAADC_INPUT_AIN7     = SAADC_CH_PSELP_PSELP_AnalogInput7, ///< Analog input 7 (AIN7).
-    NRF_SAADC_INPUT_VDD      = SAADC_CH_PSELP_PSELP_VDD           ///< VDD as input.
+    NRF_SAADC_INPUT_VDD      = SAADC_CH_PSELP_PSELP_VDD,          ///< VDD as input.
+#if defined(SAADC_CH_PSELP_PSELP_VDDHDIV5) || defined(__NRFX_DOXYGEN__)
+    NRF_SAADC_INPUT_VDDHDIV5 = SAADC_CH_PSELP_PSELP_VDDHDIV5      ///< VDDH/5 as input.
+#endif
 } nrf_saadc_input_t;
 
 /** @brief Analog-to-digital converter oversampling mode. */
@@ -339,7 +342,7 @@ __STATIC_INLINE volatile uint32_t * nrf_saadc_event_limit_address_get(uint8_t   
  *
  * @return The SAADC channel monitoring limit event.
  */
-__STATIC_INLINE nrf_saadc_event_t nrf_saadc_event_limit_get(uint8_t           channel,
+__STATIC_INLINE nrf_saadc_event_t nrf_saadc_limit_event_get(uint8_t           channel,
                                                             nrf_saadc_limit_t limit_type);
 
 /**
@@ -370,6 +373,13 @@ __STATIC_INLINE void nrf_saadc_channel_pos_input_set(uint8_t           channel,
  * @param[in] high    High limit.
  */
 __STATIC_INLINE void nrf_saadc_channel_limits_set(uint8_t channel, int16_t low, int16_t high);
+
+/**
+ * @brief Function for setting the configuration of SAADC interrupts.
+ *
+ * @param[in] mask Interrupts configuration to be set.
+ */
+__STATIC_INLINE void nrf_saadc_int_set(uint32_t mask);
 
 /**
  * @brief Function for enabling specified SAADC interrupts.
@@ -474,6 +484,13 @@ __STATIC_INLINE uint16_t nrf_saadc_amount_get(void);
 __STATIC_INLINE void nrf_saadc_resolution_set(nrf_saadc_resolution_t resolution);
 
 /**
+ * @brief Function for getting the SAADC sample resolution.
+ *
+ * @return Sample resolution.
+ */
+__STATIC_INLINE nrf_saadc_resolution_t nrf_saadc_resolution_get(void);
+
+/**
  * @brief Function for configuring the oversampling feature.
  *
  * @param[in] oversample Oversampling mode.
@@ -488,6 +505,16 @@ __STATIC_INLINE void nrf_saadc_oversample_set(nrf_saadc_oversample_t oversample)
 __STATIC_INLINE nrf_saadc_oversample_t nrf_saadc_oversample_get(void);
 
 /**
+ * @brief Function for getting the sample count needed for one averaged result for a given
+ *        oversampling configuration.
+ *
+ * @param[in] oversample Oversampling configuration.
+ *
+ * @return Sample count.
+ */
+__STATIC_INLINE uint32_t nrf_saadc_oversample_sample_count_get(nrf_saadc_oversample_t oversample);
+
+/**
  * @brief Function for enabling the continuous sampling.
  *
  * This function configures the SAADC internal timer to automatically take new samples at a fixed
@@ -500,6 +527,14 @@ __STATIC_INLINE nrf_saadc_oversample_t nrf_saadc_oversample_get(void);
  *               from 80 to 2047.
  */
 __STATIC_INLINE void nrf_saadc_continuous_mode_enable(uint16_t cc);
+
+/**
+ * @brief Function for checking if the continuous sampling is enabled.
+ *
+ * @retval true  The continuous sampling is enabled.
+ * @retval false The continuous sampling is disabled.
+ */
+__STATIC_INLINE bool nrf_saadc_continuous_mode_enable_check(void);
 
 /**
  * @brief Function for disabling the continuous sampling.
@@ -525,6 +560,28 @@ __STATIC_INLINE void nrf_saadc_channel_init(uint8_t                             
  */
 __STATIC_INLINE void nrf_saadc_burst_set(uint8_t           channel,
                                          nrf_saadc_burst_t burst);
+
+/**
+ * @brief Function for getting the minimum value of the conversion result.
+ *
+ * The minimum value of the conversion result depends on the configured resolution.
+ *
+ * @param[in] resolution Bit resolution.
+ *
+ * @return Minimum value of the conversion result.
+ */
+__STATIC_INLINE nrf_saadc_value_t nrf_saadc_value_min_get(nrf_saadc_resolution_t resolution);
+
+/**
+ * @brief Function for getting the maximum value of the conversion result.
+ *
+ * The maximum value of the conversion result depends on the configured resolution.
+ *
+ * @param[in] resolution Bit resolution.
+ *
+ * @return Maximum value of the conversion result.
+ */
+__STATIC_INLINE nrf_saadc_value_t nrf_saadc_value_max_get(nrf_saadc_resolution_t resolution);
 
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 
@@ -597,7 +654,7 @@ __STATIC_INLINE volatile uint32_t * nrf_saadc_event_limit_address_get(uint8_t   
     }
 }
 
-__STATIC_INLINE nrf_saadc_event_t nrf_saadc_event_limit_get(uint8_t           channel,
+__STATIC_INLINE nrf_saadc_event_t nrf_saadc_limit_event_get(uint8_t           channel,
                                                             nrf_saadc_limit_t limit_type)
 {
     if (limit_type == NRF_SAADC_LIMIT_HIGH)
@@ -633,6 +690,11 @@ __STATIC_INLINE void nrf_saadc_channel_limits_set(uint8_t channel, int16_t low, 
     NRF_SAADC->CH[channel].LIMIT = (
             (((uint32_t) low << SAADC_CH_LIMIT_LOW_Pos) & SAADC_CH_LIMIT_LOW_Msk)
           | (((uint32_t) high << SAADC_CH_LIMIT_HIGH_Pos) & SAADC_CH_LIMIT_HIGH_Msk));
+}
+
+__STATIC_INLINE void nrf_saadc_int_set(uint32_t mask)
+{
+    NRF_SAADC->INTEN = mask;
 }
 
 __STATIC_INLINE void nrf_saadc_int_enable(uint32_t saadc_int_mask)
@@ -708,6 +770,16 @@ __STATIC_INLINE void nrf_saadc_resolution_set(nrf_saadc_resolution_t resolution)
     NRF_SAADC->RESOLUTION = resolution;
 }
 
+__STATIC_INLINE nrf_saadc_resolution_t nrf_saadc_resolution_get(void)
+{
+    return (nrf_saadc_resolution_t)NRF_SAADC->RESOLUTION;
+}
+
+__STATIC_INLINE uint32_t nrf_saadc_oversample_sample_count_get(nrf_saadc_oversample_t oversample)
+{
+    return (1 << (uint32_t)oversample);
+}
+
 __STATIC_INLINE void nrf_saadc_oversample_set(nrf_saadc_oversample_t oversample)
 {
     NRF_SAADC->OVERSAMPLE = oversample;
@@ -723,6 +795,12 @@ __STATIC_INLINE void nrf_saadc_continuous_mode_enable(uint16_t cc)
     NRFX_ASSERT((cc >= 80) && (cc <= 2047));
     NRF_SAADC->SAMPLERATE = (SAADC_SAMPLERATE_MODE_Timers << SAADC_SAMPLERATE_MODE_Pos)
                             | ((uint32_t)cc << SAADC_SAMPLERATE_CC_Pos);
+}
+
+__STATIC_INLINE bool nrf_saadc_continuous_mode_enable_check(void)
+{
+    return (bool)((NRF_SAADC->SAMPLERATE & SAADC_SAMPLERATE_MODE_Msk)
+                   == (SAADC_SAMPLERATE_MODE_Timers << SAADC_SAMPLERATE_MODE_Pos));
 }
 
 __STATIC_INLINE void nrf_saadc_continuous_mode_disable(void)
@@ -750,6 +828,52 @@ __STATIC_INLINE void nrf_saadc_burst_set(uint8_t           channel,
     NRF_SAADC->CH[channel].CONFIG =
         (NRF_SAADC->CH[channel].CONFIG & ~SAADC_CH_CONFIG_BURST_Msk) |
         (burst << SAADC_CH_CONFIG_BURST_Pos);
+}
+
+__STATIC_INLINE nrf_saadc_value_t nrf_saadc_value_min_get(nrf_saadc_resolution_t resolution)
+{
+    uint8_t res_bits = 0;
+    switch (resolution)
+    {
+        case NRF_SAADC_RESOLUTION_8BIT:
+            res_bits = 8;
+            break;
+        case NRF_SAADC_RESOLUTION_10BIT:
+            res_bits = 10;
+            break;
+        case NRF_SAADC_RESOLUTION_12BIT:
+            res_bits = 12;
+            break;
+        case NRF_SAADC_RESOLUTION_14BIT:
+            res_bits = 14;
+            break;
+        default:
+            NRFX_ASSERT(false);
+    }
+    return (nrf_saadc_value_t)(-(1 << res_bits));
+}
+
+__STATIC_INLINE nrf_saadc_value_t nrf_saadc_value_max_get(nrf_saadc_resolution_t resolution)
+{
+    uint8_t res_bits = 0;
+    switch (resolution)
+    {
+        case NRF_SAADC_RESOLUTION_8BIT:
+            res_bits = 8;
+            break;
+        case NRF_SAADC_RESOLUTION_10BIT:
+            res_bits = 10;
+            break;
+        case NRF_SAADC_RESOLUTION_12BIT:
+            res_bits = 12;
+            break;
+        case NRF_SAADC_RESOLUTION_14BIT:
+            res_bits = 14;
+            break;
+        default:
+            NRFX_ASSERT(false);
+    }
+    return (nrf_saadc_value_t)((1 << res_bits) - 1);
 }
 
 #endif // SUPPRESS_INLINE_IMPLEMENTATION

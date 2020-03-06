@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2018, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2020, Nordic Semiconductor ASA All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -57,6 +57,10 @@ POSSIBILITY OF SUCH DAMAGE.
         #define __PACKED            __packed
     #endif
 
+    #ifndef __UNUSED
+        #define __UNUSED            __attribute__((unused))
+    #endif
+
     #define GET_SP()                __current_sp()
     
 #elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
@@ -79,6 +83,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
     #ifndef __PACKED
         #define __PACKED            __attribute__((packed, aligned(1)))
+    #endif
+
+    #ifndef __UNUSED
+        #define __UNUSED            __attribute__((unused))
     #endif
 
     #define GET_SP()                __current_sp()
@@ -105,6 +113,10 @@ POSSIBILITY OF SUCH DAMAGE.
     #ifndef __PACKED
         #define __PACKED            __packed
     #endif
+
+    #ifndef __UNUSED
+        #define __UNUSED
+    #endif
     
     #define GET_SP()                __get_SP()
 
@@ -130,12 +142,17 @@ POSSIBILITY OF SUCH DAMAGE.
         #define __PACKED           __attribute__((packed)) 
     #endif
 
+    #ifndef __UNUSED
+        #define __UNUSED            __attribute__((unused))
+    #endif
+
     #define GET_SP()                gcc_current_sp()
 
     static inline unsigned int gcc_current_sp(void)
     {
-        register unsigned sp __ASM("sp");
-        return sp;
+        unsigned int stack_pointer = 0;
+        __asm__ __volatile__ ("mov %0, sp" : "=r"(stack_pointer));
+        return stack_pointer;
     }
 
 #elif defined   ( __TASKING__ )
@@ -159,6 +176,10 @@ POSSIBILITY OF SUCH DAMAGE.
     /* Not defined for TASKING. */
     #ifndef __PACKED
         #define __PACKED
+    #endif
+
+    #ifndef __UNUSED
+        #define __UNUSED            __attribute__((unused))
     #endif
 
     #define GET_SP()                __get_MSP()

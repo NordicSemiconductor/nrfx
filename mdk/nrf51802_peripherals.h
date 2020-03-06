@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2018, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2020, Nordic Semiconductor ASA All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -45,6 +45,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define POWER_FEATURE_RAMON_REGISTERS_PRESENT
 
+/* Non-Volatile Memory Controller */
+#define NVMC_PRESENT
+#define NVMC_COUNT 1
+
 /* Software Interrupts */
 #define SWI_PRESENT
 #define SWI_COUNT 6
@@ -54,6 +58,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIO_COUNT 1
 
 #define P0_PIN_NUM 32
+
+#define P0_FEATURE_PINS_PRESENT 0xFFFFFFFFUL
 
 /* MPU and BPROT */
 #define BPROT_PRESENT

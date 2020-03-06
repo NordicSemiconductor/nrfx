@@ -1,6 +1,6 @@
 /*
  
-Copyright (c) 2009-2018 ARM Limited. All rights reserved.
+Copyright (c) 2009-2020 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -68,7 +68,7 @@ __HeapBase:
 __HeapLimit:
     .size __HeapLimit, . - __HeapLimit
 
-    .section .isr_vector
+    .section .isr_vector, "ax"
     .align 2
     .globl __isr_vector
 __isr_vector:

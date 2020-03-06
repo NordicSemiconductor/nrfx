@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2009-2018 ARM Limited. All rights reserved.
+Copyright (c) 2009-2020 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -26,19 +26,12 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include <stdint.h>
 #include <stdbool.h>
 #include "nrf.h"
+#include "nrf_erratas.h"
 #include "system_nrf52840.h"
 
 /*lint ++flb "Enter library region" */
 
 #define __SYSTEM_CLOCK_64M      (64000000UL)
-
-static bool errata_36(void);
-static bool errata_66(void);
-static bool errata_98(void);
-static bool errata_103(void);
-static bool errata_115(void);
-static bool errata_120(void);
-static bool errata_136(void);
 
 
 #if defined ( __CC_ARM )
@@ -78,7 +71,7 @@ void SystemInit(void)
     
     /* Workaround for Errata 36 "CLOCK: Some registers are not reset when expected" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (errata_36()){
+    if (nrf52_errata_36()){
         NRF_CLOCK->EVENTS_DONE = 0;
         NRF_CLOCK->EVENTS_CTTO = 0;
         NRF_CLOCK->CTIV = 0;
@@ -86,7 +79,7 @@ void SystemInit(void)
     
     /* Workaround for Errata 66 "TEMP: Linearity specification not met with default settings" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (errata_66()){
+    if (nrf52_errata_66()){
         NRF_TEMP->A0 = NRF_FICR->TEMP.A0;
         NRF_TEMP->A1 = NRF_FICR->TEMP.A1;
         NRF_TEMP->A2 = NRF_FICR->TEMP.A2;
@@ -108,31 +101,31 @@ void SystemInit(void)
     
     /* Workaround for Errata 98 "NFCT: Not able to communicate with the peer" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (errata_98()){
+    if (nrf52_errata_98()){
         *(volatile uint32_t *)0x4000568Cul = 0x00038148ul;
     }
     
     /* Workaround for Errata 103 "CCM: Wrong reset value of CCM MAXPACKETSIZE" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (errata_103()){
+    if (nrf52_errata_103()){
         NRF_CCM->MAXPACKETSIZE = 0xFBul;
     }
     
     /* Workaround for Errata 115 "RAM: RAM content cannot be trusted upon waking up from System ON Idle or System OFF mode" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (errata_115()){
+    if (nrf52_errata_115()){
         *(volatile uint32_t *)0x40000EE4ul = (*(volatile uint32_t *)0x40000EE4ul & 0xFFFFFFF0ul) | (*(uint32_t *)0x10000258ul & 0x0000000Ful);
     }
     
     /* Workaround for Errata 120 "QSPI: Data read or written is corrupted" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (errata_120()){
+    if (nrf52_errata_120()){
         *(volatile uint32_t *)0x40029640ul = 0x200ul;
     }
     
     /* Workaround for Errata 136 "System: Bits in RESETREAS are set when they should not be" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (errata_136()){
+    if (nrf52_errata_136()){
         if (NRF_POWER->RESETREAS & POWER_RESETREAS_RESETPIN_Msk){
             NRF_POWER->RESETREAS =  ~POWER_RESETREAS_RESETPIN_Msk;
         }
@@ -181,120 +174,6 @@ void SystemInit(void)
     #endif
 
     SystemCoreClockUpdate();
-}
-
-
-static bool errata_36(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x1ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x2ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x3ul){
-            return true;
-        }
-    }
-
-    /* Apply by default for unknown devices until errata is confirmed fixed. */
-    return true;
-}
-
-
-static bool errata_66(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x1ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x2ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x3ul){
-            return true;
-        }
-    }
-
-    /* Apply by default for unknown devices until errata is confirmed fixed. */
-    return true;
-}
-
-
-static bool errata_98(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-
-static bool errata_103(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-
-static bool errata_115(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-
-static bool errata_120(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-
-static bool errata_136(void)
-{
-    if (*(uint32_t *)0x10000130ul == 0x8ul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x1ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x2ul){
-            return true;
-        }
-        if (*(uint32_t *)0x10000134ul == 0x3ul){
-            return true;
-        }
-    }
-
-    /* Apply by default for unknown devices until errata is confirmed fixed. */
-    return true;
 }
 
 /*lint --flb "Leave library region" */

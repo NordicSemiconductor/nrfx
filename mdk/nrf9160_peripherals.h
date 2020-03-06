@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2018, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2020, Nordic Semiconductor ASA All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -44,11 +44,19 @@ POSSIBILITY OF SUCH DAMAGE.
 #define POWER_PRESENT
 #define POWER_COUNT 1
 
+/* Non-Volatile Memory Controller */
+#define NVMC_PRESENT
+#define NVMC_COUNT 1
+
+#define NVMC_FEATURE_CACHE_PRESENT
+
 /* GPIO */
 #define GPIO_PRESENT
 #define GPIO_COUNT 1
 
 #define P0_PIN_NUM 32
+
+#define P0_FEATURE_PINS_PRESENT 0xFFFFFFFFUL
 
 /* Distributed  Peripheral to Peripheral Interconnect */
 #define DPPI_PRESENT
@@ -101,52 +109,52 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM2_MAX_DATARATE  8
 #define SPIM3_MAX_DATARATE  8
 
-#define SPIM0_EASYDMA_MAXCNT_SIZE 16
-#define SPIM1_EASYDMA_MAXCNT_SIZE 16
-#define SPIM2_EASYDMA_MAXCNT_SIZE 16
-#define SPIM3_EASYDMA_MAXCNT_SIZE 16
+#define SPIM0_EASYDMA_MAXCNT_SIZE 12
+#define SPIM1_EASYDMA_MAXCNT_SIZE 12
+#define SPIM2_EASYDMA_MAXCNT_SIZE 12
+#define SPIM3_EASYDMA_MAXCNT_SIZE 12
 
 /* Serial Peripheral Interface Slave with DMA*/
 #define SPIS_PRESENT
 #define SPIS_COUNT 4
 
-#define SPIS0_EASYDMA_MAXCNT_SIZE 16
-#define SPIS1_EASYDMA_MAXCNT_SIZE 16
-#define SPIS2_EASYDMA_MAXCNT_SIZE 16
-#define SPIS3_EASYDMA_MAXCNT_SIZE 16
+#define SPIS0_EASYDMA_MAXCNT_SIZE 12
+#define SPIS1_EASYDMA_MAXCNT_SIZE 12
+#define SPIS2_EASYDMA_MAXCNT_SIZE 12
+#define SPIS3_EASYDMA_MAXCNT_SIZE 12
 
 /* Two Wire Interface Master with DMA */
 #define TWIM_PRESENT
 #define TWIM_COUNT 4
 
-#define TWIM0_EASYDMA_MAXCNT_SIZE 16
-#define TWIM1_EASYDMA_MAXCNT_SIZE 16
-#define TWIM2_EASYDMA_MAXCNT_SIZE 16
-#define TWIM3_EASYDMA_MAXCNT_SIZE 16
+#define TWIM0_EASYDMA_MAXCNT_SIZE 12
+#define TWIM1_EASYDMA_MAXCNT_SIZE 12
+#define TWIM2_EASYDMA_MAXCNT_SIZE 12
+#define TWIM3_EASYDMA_MAXCNT_SIZE 12
 
 /* Two Wire Interface Slave with DMA */
 #define TWIS_PRESENT
 #define TWIS_COUNT 4
 
-#define TWIS0_EASYDMA_MAXCNT_SIZE 16
-#define TWIS1_EASYDMA_MAXCNT_SIZE 16
-#define TWIS2_EASYDMA_MAXCNT_SIZE 16
-#define TWIS3_EASYDMA_MAXCNT_SIZE 16
+#define TWIS0_EASYDMA_MAXCNT_SIZE 12
+#define TWIS1_EASYDMA_MAXCNT_SIZE 12
+#define TWIS2_EASYDMA_MAXCNT_SIZE 12
+#define TWIS3_EASYDMA_MAXCNT_SIZE 12
 
 /* Universal Asynchronous Receiver-Transmitter with DMA */
 #define UARTE_PRESENT
 #define UARTE_COUNT 4
 
-#define UARTE0_EASYDMA_MAXCNT_SIZE 16
-#define UARTE1_EASYDMA_MAXCNT_SIZE 16
-#define UARTE2_EASYDMA_MAXCNT_SIZE 16
-#define UARTE3_EASYDMA_MAXCNT_SIZE 16
-
+#define UARTE0_EASYDMA_MAXCNT_SIZE 12
+#define UARTE1_EASYDMA_MAXCNT_SIZE 12
+#define UARTE2_EASYDMA_MAXCNT_SIZE 12
+#define UARTE3_EASYDMA_MAXCNT_SIZE 12
 
 /* Successive Approximation Analog to Digital Converter */
 #define SAADC_PRESENT
 #define SAADC_COUNT 1
 
+#define SAADC_CH_NUM 8
 #define SAADC_EASYDMA_MAXCNT_SIZE 15
 
 /* GPIO Tasks and Events */
@@ -183,6 +191,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define IPC_COUNT 1
 
 #define IPC_CH_NUM 8
+#define IPC_CONF_NUM 8
 #define IPC_GPMEM_NUM 4
 
 /* FPU */

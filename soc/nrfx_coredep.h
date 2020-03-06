@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2019, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2020, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,7 @@
 #elif defined(NRF51)
     #define NRFX_DELAY_CPU_FREQ_MHZ 16
     #define NRFX_DELAY_DWT_PRESENT  0
-#elif defined(NRF52810_XXAA) || defined(NRF52811_XXAA)
+#elif defined(NRF52810_XXAA) || defined(NRF52811_XXAA) || defined(NRF52820_XXAA)
     #define NRFX_DELAY_CPU_FREQ_MHZ 64
     #define NRFX_DELAY_DWT_PRESENT  0
 #elif defined(NRF52832_XXAA) || defined(NRF52832_XXAB) || \
