@@ -141,11 +141,15 @@ static uint32_t flash_total_size_get(void)
     return flash_page_size_get() * flash_page_count_get();
 }
 
-
 static bool is_page_aligned_check(uint32_t addr)
 {
     /* If the modulo operation returns '0', then the address is aligned. */
     return !(addr % flash_page_size_get());
+}
+
+__STATIC_INLINE bool is_halfword_aligned(uint32_t addr)
+{
+    return ((addr & 0x1u) == 0u);
 }
 
 static uint32_t partial_word_create(uint32_t addr, uint8_t const * bytes, uint32_t bytes_count)
@@ -315,6 +319,25 @@ bool nrfx_nvmc_byte_writable_check(uint32_t addr, uint8_t val_to_check)
     return (val_to_check & val_on_addr) == val_to_check;
 }
 
+bool nrfx_nvmc_halfword_writable_check(uint32_t addr, uint16_t val_to_check)
+{
+    NRFX_ASSERT(((addr - NVMC_FLASH_BASE_ADDRESS) < flash_total_size_get()) ||
+                ((addr - (uint32_t)NRF_UICR) < sizeof(NRF_UICR_Type)));
+    NRFX_ASSERT(is_halfword_aligned(addr));
+
+    uint16_t val_on_addr;
+
+    if ((addr - NVMC_FLASH_BASE_ADDRESS) < flash_total_size_get())
+    {
+        val_on_addr = *(uint16_t const *)addr;
+    }
+    else
+    {
+        val_on_addr = nrfx_nvmc_otp_halfword_read(addr);
+    }
+    return (val_to_check & val_on_addr) == val_to_check;
+}
+
 bool nrfx_nvmc_word_writable_check(uint32_t addr, uint32_t val_to_check)
 {
     NRFX_ASSERT(((addr - NVMC_FLASH_BASE_ADDRESS) < flash_total_size_get()) ||
@@ -333,6 +356,18 @@ void nrfx_nvmc_byte_write(uint32_t addr, uint8_t value)
     uint32_t aligned_addr = addr & ~(0x03UL);
 
     nrfx_nvmc_word_write(aligned_addr, partial_word_create(addr, &value, 1));
+}
+
+void nrfx_nvmc_halfword_write(uint32_t addr, uint16_t value)
+{
+    NRFX_ASSERT(((addr - NVMC_FLASH_BASE_ADDRESS) < flash_total_size_get()) ||
+                ((addr - (uint32_t)NRF_UICR) < sizeof(NRF_UICR_Type)));
+    NRFX_ASSERT(is_halfword_aligned(addr));
+
+    uint32_t aligned_addr = addr & ~(0x03UL);
+
+    nrfx_nvmc_word_write(aligned_addr,
+                    partial_word_create(addr, (const uint8_t *)&value, 2));
 }
 
 void nrfx_nvmc_word_write(uint32_t addr, uint32_t value)
@@ -423,6 +458,17 @@ void nrfx_nvmc_words_write(uint32_t addr, void const * src, uint32_t num_words)
     nvmc_words_write(addr, src, num_words);
 
     nvmc_readonly_mode_set();
+}
+
+uint16_t nrfx_nvmc_otp_halfword_read(uint32_t addr)
+{
+    NRFX_ASSERT(is_halfword_aligned(addr));
+
+    uint32_t aligned_addr = addr & ~(0x03UL);
+    uint32_t val32 = *(const uint32_t *)aligned_addr;
+
+    return (nrfx_is_word_aligned((void const *)addr) ? (uint16_t)(val32)
+                                                     : (uint16_t)(val32 >> 16));
 }
 
 uint32_t nrfx_nvmc_flash_size_get(void)
