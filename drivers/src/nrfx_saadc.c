@@ -286,9 +286,16 @@ nrfx_err_t nrfx_saadc_channel_init(uint8_t                                  chan
     // Oversampling can be used only with one channel.
     NRFX_ASSERT((nrf_saadc_oversample_get() == NRF_SAADC_OVERSAMPLE_DISABLED) ||
                 (m_cb.active_channels == 0));
+
+#if defined(SAADC_CH_PSELP_PSELP_VDDHDIV5)
+    NRFX_ASSERT((p_config->pin_p <= NRF_SAADC_INPUT_VDDHDIV5) &&
+                (p_config->pin_p > NRF_SAADC_INPUT_DISABLED));
+    NRFX_ASSERT(p_config->pin_n <= NRF_SAADC_INPUT_VDDHDIV5);
+#else
     NRFX_ASSERT((p_config->pin_p <= NRF_SAADC_INPUT_VDD) &&
                 (p_config->pin_p > NRF_SAADC_INPUT_DISABLED));
     NRFX_ASSERT(p_config->pin_n <= NRF_SAADC_INPUT_VDD);
+#endif
 
     nrfx_err_t err_code;
 

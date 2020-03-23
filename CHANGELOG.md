@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [1.8.3] - 2020-03-20
+### Added
+- Added documentation pages for nRF52820.
+- Added possibility to use the nRF52833 DK in development for nRF52820. LEDs and buttons in this DK use GPIOs that are not present in the actual nRF52820 device, so accesses to these need special handling in the GPIO HAL.
+
+### Fixed
+- Fixed assertions that check input pin selections in the legacy SAADC driver. Now the VDDHDIV5 setting is handled properly.
+- Fixed the number of machine cycles per single delay loop for nRF52820 in the nrfx_coredep module.
+
 ## [1.8.2] - 2020-03-05
 ### Added
 - Added support for nRF52820.

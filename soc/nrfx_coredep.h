@@ -138,7 +138,7 @@ __STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
         #if defined(NRF51)
             // The loop takes 4 cycles: 1 for SUBS, 3 for BHI.
             #define NRFX_COREDEP_DELAY_US_LOOP_CYCLES  4
-        #elif defined(NRF52810_XXAA) || defined(NRF52811_XXAA)
+        #elif defined(NRF52810_XXAA) || defined(NRF52811_XXAA) || defined(NRF52820_XXAA)
             // The loop takes 7 cycles: 1 for SUBS, 2 for BHI, 2 wait states
             // for each instruction.
             #define NRFX_COREDEP_DELAY_US_LOOP_CYCLES  7
