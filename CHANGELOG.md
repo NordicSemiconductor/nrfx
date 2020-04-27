@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [1.8.4] - 2020-04-27
+- Fixed an issue in the NFCT driver where the FIELDDETECTED event would be ignored and the FIELDLOST event would be processed twice. The driver now properly handles FIELDDETECTED and FIELDLOST events.
+
 ## [1.8.3] - 2020-03-20
 ### Added
 - Added documentation pages for nRF52820.
