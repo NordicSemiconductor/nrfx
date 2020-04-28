@@ -293,6 +293,24 @@ NRF_STATIC_INLINE void nrf_twim_pins_set(NRF_TWIM_Type * p_reg,
                                          uint32_t        sda_pin);
 
 /**
+ * @brief Function for retrieving the SCL pin selection.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return SCL pin selection.
+ */
+NRF_STATIC_INLINE uint32_t nrf_twim_scl_pin_get(NRF_TWIM_Type const * p_reg);
+
+/**
+ * @brief Function for retrieving the SDA pin selection.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return SDA pin selection.
+ */
+NRF_STATIC_INLINE uint32_t nrf_twim_sda_pin_get(NRF_TWIM_Type const * p_reg);
+
+/**
  * @brief Function for setting the TWI master clock frequency.
  *
  * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
@@ -519,6 +537,16 @@ NRF_STATIC_INLINE void nrf_twim_pins_set(NRF_TWIM_Type * p_reg,
 {
     p_reg->PSEL.SCL = scl_pin;
     p_reg->PSEL.SDA = sda_pin;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_twim_scl_pin_get(NRF_TWIM_Type const * p_reg)
+{
+    return p_reg->PSEL.SCL;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_twim_sda_pin_get(NRF_TWIM_Type const * p_reg)
+{
+    return p_reg->PSEL.SDA;
 }
 
 NRF_STATIC_INLINE void nrf_twim_frequency_set(NRF_TWIM_Type * p_reg,

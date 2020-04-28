@@ -595,7 +595,7 @@ void nrfx_saadc_abort(void)
 nrfx_err_t nrfx_saadc_limits_set(uint8_t channel, int16_t limit_low, int16_t limit_high)
 {
     NRFX_ASSERT(m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED);
-    NRFX_ASSERT(limit_high <= limit_low);
+    NRFX_ASSERT(limit_high >= limit_low);
 
     if (!m_cb.event_handler)
     {

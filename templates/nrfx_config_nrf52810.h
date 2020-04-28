@@ -32,6 +32,10 @@
 #ifndef NRFX_CONFIG_NRF52810_H__
 #define NRFX_CONFIG_NRF52810_H__
 
+#ifndef NRFX_CONFIG_H__
+#error "This file should not be included directly. Include nrfx_config.h instead."
+#endif
+
 // <<< Use Configuration Wizard in Context Menu >>>\n
 
 // <h> nRF_Drivers

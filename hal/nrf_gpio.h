@@ -52,6 +52,10 @@ extern "C" {
 #error "Not supported."
 #endif
 
+#if defined(NRF52820_XXAA)
+#include <nrf_erratas.h>
+#endif
+
 /**
  * @defgroup nrf_gpio_hal GPIO HAL
  * @{
@@ -497,6 +501,16 @@ NRF_STATIC_INLINE void nrf_gpio_pin_latch_clear(uint32_t pin_number);
 NRF_STATIC_INLINE void nrf_gpio_pin_mcu_select(uint32_t pin_number, nrf_gpio_pin_mcusel_t mcu);
 #endif
 
+/**
+ * @brief Function for checking if provided pin is present on the MCU.
+ *
+ * @param[in] pin_number Number of the pin to be checked.
+ *
+ * @retval true  Pin is present.
+ * @retval false Pin is not present.
+ */
+NRF_STATIC_INLINE bool nrf_gpio_pin_present_check(uint32_t pin_number);
+
 #ifndef NRF_DECLARE_ONLY
 
 /**
@@ -508,7 +522,7 @@ NRF_STATIC_INLINE void nrf_gpio_pin_mcu_select(uint32_t pin_number, nrf_gpio_pin
  */
 NRF_STATIC_INLINE NRF_GPIO_Type * nrf_gpio_pin_port_decode(uint32_t * p_pin)
 {
-    NRFX_ASSERT(*p_pin < NUMBER_OF_PINS);
+    NRFX_ASSERT(nrf_gpio_pin_present_check(*p_pin));
 #if (GPIO_COUNT == 1)
     return NRF_P0;
 #else
@@ -518,7 +532,7 @@ NRF_STATIC_INLINE NRF_GPIO_Type * nrf_gpio_pin_port_decode(uint32_t * p_pin)
     }
     else
     {
-        *p_pin = *p_pin & (P0_PIN_NUM - 1);
+        *p_pin = *p_pin & 0x1F;
         return NRF_P1;
     }
 #endif
@@ -883,6 +897,41 @@ NRF_STATIC_INLINE void nrf_gpio_pin_mcu_select(uint32_t pin_number, nrf_gpio_pin
     reg->PIN_CNF[pin_number] = cnf | (mcu << GPIO_PIN_CNF_MCUSEL_Pos);
 }
 #endif
+
+NRF_STATIC_INLINE bool nrf_gpio_pin_present_check(uint32_t pin_number)
+{
+    uint32_t port = pin_number >> 5;
+    uint32_t mask = 0;
+
+    switch (port)
+    {
+#ifdef P0_FEATURE_PINS_PRESENT
+        case 0:
+            mask = P0_FEATURE_PINS_PRESENT;
+#if defined(NRF52820_XXAA) && defined(DEVELOP_IN_NRF52833)
+            /* Allow use of the following additional GPIOs that are connected to LEDs and buttons
+             * on the nRF52833 DK:
+             * - P0.11 - Button 1
+             * - P0.12 - Button 2
+             * - P0.13 - LED 1
+             * - P0.24 - Button 3
+             * - P0.25 - Button 4
+             */
+            mask |= 0x03003800;
+#endif // defined(NRF52820_XXAA) && defined(DEVELOP_IN_NRF52833)
+            break;
+#endif
+#ifdef P1_FEATURE_PINS_PRESENT
+        case 1:
+            mask = P1_FEATURE_PINS_PRESENT;
+            break;
+#endif
+    }
+
+    pin_number &= 0x1F;
+
+    return (mask & (1UL << pin_number)) ? true : false;
+}
 
 #endif // NRF_DECLARE_ONLY
 

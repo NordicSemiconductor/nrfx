@@ -8,7 +8,7 @@
   <version>1</version>
   <description>nRF53 reference description for system-on-chip with dual ARM 32-bit Cortex-M33 microcontrollers</description>
   <licenseText>
-Copyright (c) 2010 - 2018, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2020, Nordic Semiconductor ASA All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -4344,7 +4344,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RAMACCERR will publish to.</description>
+              <description>DPPI channel that event RAMACCERR will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -4375,7 +4375,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event FLASHACCERR will publish to.</description>
+              <description>DPPI channel that event FLASHACCERR will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -4406,7 +4406,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event PERIPHACCERR will publish to.</description>
+              <description>DPPI channel that event PERIPHACCERR will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7399,7 +7399,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task HFCLKSTART will subscribe to</description>
+              <description>DPPI channel that task HFCLKSTART will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7430,7 +7430,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task HFCLKSTOP will subscribe to</description>
+              <description>DPPI channel that task HFCLKSTOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7461,7 +7461,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task LFCLKSTART will subscribe to</description>
+              <description>DPPI channel that task LFCLKSTART will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7492,7 +7492,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task LFCLKSTOP will subscribe to</description>
+              <description>DPPI channel that task LFCLKSTOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7523,7 +7523,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CAL will subscribe to</description>
+              <description>DPPI channel that task CAL will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7554,7 +7554,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task HFCLKAUDIOSTART will subscribe to</description>
+              <description>DPPI channel that task HFCLKAUDIOSTART will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7585,7 +7585,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task HFCLKAUDIOSTOP will subscribe to</description>
+              <description>DPPI channel that task HFCLKAUDIOSTOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7616,7 +7616,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task HFCLK192MSTART will subscribe to</description>
+              <description>DPPI channel that task HFCLK192MSTART will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7647,7 +7647,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task HFCLK192MSTOP will subscribe to</description>
+              <description>DPPI channel that task HFCLK192MSTOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7808,7 +7808,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event HFCLKSTARTED will publish to.</description>
+              <description>DPPI channel that event HFCLKSTARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7839,7 +7839,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event LFCLKSTARTED will publish to.</description>
+              <description>DPPI channel that event LFCLKSTARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7870,7 +7870,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event DONE will publish to.</description>
+              <description>DPPI channel that event DONE will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7901,7 +7901,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event HFCLKAUDIOSTARTED will publish to.</description>
+              <description>DPPI channel that event HFCLKAUDIOSTARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7932,7 +7932,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event HFCLK192MSTARTED will publish to.</description>
+              <description>DPPI channel that event HFCLK192MSTARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -9171,7 +9171,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CONSTLAT will subscribe to</description>
+              <description>DPPI channel that task CONSTLAT will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -9202,7 +9202,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task LOWPWR will subscribe to</description>
+              <description>DPPI channel that task LOWPWR will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -9311,7 +9311,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event POFWARN will publish to.</description>
+              <description>DPPI channel that event POFWARN will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -9342,7 +9342,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SLEEPENTER will publish to.</description>
+              <description>DPPI channel that event SLEEPENTER will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -9373,7 +9373,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SLEEPEXIT will publish to.</description>
+              <description>DPPI channel that event SLEEPEXIT will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -10469,7 +10469,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -10500,7 +10500,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -10531,7 +10531,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SUSPEND will subscribe to</description>
+              <description>DPPI channel that task SUSPEND will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -10562,7 +10562,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task RESUME will subscribe to</description>
+              <description>DPPI channel that task RESUME will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -10723,7 +10723,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -10754,7 +10754,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDRX will publish to.</description>
+              <description>DPPI channel that event ENDRX will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -10785,7 +10785,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event END will publish to.</description>
+              <description>DPPI channel that event END will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -10816,7 +10816,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDTX will publish to.</description>
+              <description>DPPI channel that event ENDTX will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -10847,7 +10847,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STARTED will publish to.</description>
+              <description>DPPI channel that event STARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -11893,7 +11893,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task ACQUIRE will subscribe to</description>
+              <description>DPPI channel that task ACQUIRE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -11924,7 +11924,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task RELEASE will subscribe to</description>
+              <description>DPPI channel that task RELEASE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -12033,7 +12033,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event END will publish to.</description>
+              <description>DPPI channel that event END will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -12064,7 +12064,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDRX will publish to.</description>
+              <description>DPPI channel that event ENDRX will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -12095,7 +12095,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ACQUIRED will publish to.</description>
+              <description>DPPI channel that event ACQUIRED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -12985,7 +12985,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTRX will subscribe to</description>
+              <description>DPPI channel that task STARTRX will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -13016,7 +13016,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTTX will subscribe to</description>
+              <description>DPPI channel that task STARTTX will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -13047,7 +13047,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -13078,7 +13078,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SUSPEND will subscribe to</description>
+              <description>DPPI channel that task SUSPEND will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -13109,7 +13109,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task RESUME will subscribe to</description>
+              <description>DPPI channel that task RESUME will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -13322,7 +13322,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -13353,7 +13353,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ERROR will publish to.</description>
+              <description>DPPI channel that event ERROR will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -13384,7 +13384,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SUSPENDED will publish to.</description>
+              <description>DPPI channel that event SUSPENDED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -13415,7 +13415,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXSTARTED will publish to.</description>
+              <description>DPPI channel that event RXSTARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -13446,7 +13446,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXSTARTED will publish to.</description>
+              <description>DPPI channel that event TXSTARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -13477,7 +13477,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event LASTRX will publish to.</description>
+              <description>DPPI channel that event LASTRX will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -13508,7 +13508,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event LASTTX will publish to.</description>
+              <description>DPPI channel that event LASTTX will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -14685,7 +14685,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -14716,7 +14716,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SUSPEND will subscribe to</description>
+              <description>DPPI channel that task SUSPEND will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -14747,7 +14747,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task RESUME will subscribe to</description>
+              <description>DPPI channel that task RESUME will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -14778,7 +14778,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task PREPARERX will subscribe to</description>
+              <description>DPPI channel that task PREPARERX will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -14809,7 +14809,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task PREPARETX will subscribe to</description>
+              <description>DPPI channel that task PREPARETX will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -14996,7 +14996,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -15027,7 +15027,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ERROR will publish to.</description>
+              <description>DPPI channel that event ERROR will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -15058,7 +15058,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXSTARTED will publish to.</description>
+              <description>DPPI channel that event RXSTARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -15089,7 +15089,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXSTARTED will publish to.</description>
+              <description>DPPI channel that event TXSTARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -15120,7 +15120,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event WRITE will publish to.</description>
+              <description>DPPI channel that event WRITE will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -15151,7 +15151,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event READ will publish to.</description>
+              <description>DPPI channel that event READ will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16222,7 +16222,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTRX will subscribe to</description>
+              <description>DPPI channel that task STARTRX will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16253,7 +16253,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOPRX will subscribe to</description>
+              <description>DPPI channel that task STOPRX will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16284,7 +16284,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTTX will subscribe to</description>
+              <description>DPPI channel that task STARTTX will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16315,7 +16315,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOPTX will subscribe to</description>
+              <description>DPPI channel that task STOPTX will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16346,7 +16346,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task FLUSHRX will subscribe to</description>
+              <description>DPPI channel that task FLUSHRX will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16663,7 +16663,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event CTS will publish to.</description>
+              <description>DPPI channel that event CTS will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16694,7 +16694,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event NCTS will publish to.</description>
+              <description>DPPI channel that event NCTS will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16725,7 +16725,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXDRDY will publish to.</description>
+              <description>DPPI channel that event RXDRDY will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16756,7 +16756,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDRX will publish to.</description>
+              <description>DPPI channel that event ENDRX will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16787,7 +16787,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXDRDY will publish to.</description>
+              <description>DPPI channel that event TXDRDY will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16818,7 +16818,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDTX will publish to.</description>
+              <description>DPPI channel that event ENDTX will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16849,7 +16849,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ERROR will publish to.</description>
+              <description>DPPI channel that event ERROR will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16880,7 +16880,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXTO will publish to.</description>
+              <description>DPPI channel that event RXTO will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16911,7 +16911,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXSTARTED will publish to.</description>
+              <description>DPPI channel that event RXSTARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16942,7 +16942,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXSTARTED will publish to.</description>
+              <description>DPPI channel that event TXSTARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -16973,7 +16973,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXSTOPPED will publish to.</description>
+              <description>DPPI channel that event TXSTOPPED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -18950,7 +18950,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task OUT[n] will subscribe to</description>
+              <description>DPPI channel that task OUT[n] will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -18983,7 +18983,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SET[n] will subscribe to</description>
+              <description>DPPI channel that task SET[n] will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -19016,7 +19016,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CLR[n] will subscribe to</description>
+              <description>DPPI channel that task CLR[n] will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -19103,7 +19103,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event IN[n] will publish to.</description>
+              <description>DPPI channel that event IN[n] will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -19134,7 +19134,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event PORT will publish to.</description>
+              <description>DPPI channel that event PORT will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -19863,7 +19863,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -19894,7 +19894,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SAMPLE will subscribe to</description>
+              <description>DPPI channel that task SAMPLE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -19925,7 +19925,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -19956,7 +19956,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CALIBRATEOFFSET will subscribe to</description>
+              <description>DPPI channel that task CALIBRATEOFFSET will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -20204,7 +20204,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STARTED will publish to.</description>
+              <description>DPPI channel that event STARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -20235,7 +20235,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event END will publish to.</description>
+              <description>DPPI channel that event END will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -20266,7 +20266,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event DONE will publish to.</description>
+              <description>DPPI channel that event DONE will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -20297,7 +20297,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RESULTDONE will publish to.</description>
+              <description>DPPI channel that event RESULTDONE will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -20328,7 +20328,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event CALIBRATEDONE will publish to.</description>
+              <description>DPPI channel that event CALIBRATEDONE will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -20359,7 +20359,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -20398,7 +20398,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>CHIDX</name>
-                <description>Channel that event CH[n].LIMITH will publish to.</description>
+                <description>DPPI channel that event CH[n].LIMITH will publish to.</description>
                 <lsb>0</lsb>
                 <msb>7</msb>
               </field>
@@ -20429,7 +20429,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>CHIDX</name>
-                <description>Channel that event CH[n].LIMITL will publish to.</description>
+                <description>DPPI channel that event CH[n].LIMITL will publish to.</description>
                 <lsb>0</lsb>
                 <msb>7</msb>
               </field>
@@ -22839,7 +22839,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -22870,7 +22870,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -22901,7 +22901,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task COUNT will subscribe to</description>
+              <description>DPPI channel that task COUNT will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -22932,7 +22932,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CLEAR will subscribe to</description>
+              <description>DPPI channel that task CLEAR will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -22963,7 +22963,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SHUTDOWN will subscribe to</description>
+              <description>DPPI channel that task SHUTDOWN will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -22996,7 +22996,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CAPTURE[n] will subscribe to</description>
+              <description>DPPI channel that task CAPTURE[n] will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -23057,7 +23057,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event COMPARE[n] will publish to.</description>
+              <description>DPPI channel that event COMPARE[n] will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -24077,7 +24077,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -24108,7 +24108,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -24139,7 +24139,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CLEAR will subscribe to</description>
+              <description>DPPI channel that task CLEAR will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -24170,7 +24170,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task TRIGOVRFLW will subscribe to</description>
+              <description>DPPI channel that task TRIGOVRFLW will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -24203,7 +24203,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CAPTURE[n] will subscribe to</description>
+              <description>DPPI channel that task CAPTURE[n] will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -24314,7 +24314,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TICK will publish to.</description>
+              <description>DPPI channel that event TICK will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -24345,7 +24345,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event OVRFLW will publish to.</description>
+              <description>DPPI channel that event OVRFLW will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -24378,7 +24378,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event COMPARE[n] will publish to.</description>
+              <description>DPPI channel that event COMPARE[n] will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -25438,7 +25438,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>CHIDX</name>
-                <description>Channel that task CHG[n].EN will subscribe to</description>
+                <description>DPPI channel that task CHG[n].EN will subscribe to</description>
                 <lsb>0</lsb>
                 <msb>7</msb>
               </field>
@@ -25469,7 +25469,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>CHIDX</name>
-                <description>Channel that task CHG[n].DIS will subscribe to</description>
+                <description>DPPI channel that task CHG[n].DIS will subscribe to</description>
                 <lsb>0</lsb>
                 <msb>7</msb>
               </field>
@@ -28487,7 +28487,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -28518,7 +28518,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -28601,7 +28601,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TIMEOUT will publish to.</description>
+              <description>DPPI channel that event TIMEOUT will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -28632,7 +28632,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -29483,7 +29483,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -29514,7 +29514,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -29545,7 +29545,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SAMPLE will subscribe to</description>
+              <description>DPPI channel that task SAMPLE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -29680,7 +29680,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event READY will publish to.</description>
+              <description>DPPI channel that event READY will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -29711,7 +29711,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event DOWN will publish to.</description>
+              <description>DPPI channel that event DOWN will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -29742,7 +29742,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event UP will publish to.</description>
+              <description>DPPI channel that event UP will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -29773,7 +29773,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event CROSS will publish to.</description>
+              <description>DPPI channel that event CROSS will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -30637,7 +30637,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -30668,7 +30668,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -30699,7 +30699,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SAMPLE will subscribe to</description>
+              <description>DPPI channel that task SAMPLE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -30834,7 +30834,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event READY will publish to.</description>
+              <description>DPPI channel that event READY will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -30865,7 +30865,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event DOWN will publish to.</description>
+              <description>DPPI channel that event DOWN will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -30896,7 +30896,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event UP will publish to.</description>
+              <description>DPPI channel that event UP will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -30927,7 +30927,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event CROSS will publish to.</description>
+              <description>DPPI channel that event CROSS will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -31645,7 +31645,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task TRIGGER[n] will subscribe to</description>
+              <description>DPPI channel that task TRIGGER[n] will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -31706,7 +31706,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TRIGGERED[n] will publish to.</description>
+              <description>DPPI channel that event TRIGGERED[n] will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -33120,7 +33120,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -33153,7 +33153,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SEQSTART[n] will subscribe to</description>
+              <description>DPPI channel that task SEQSTART[n] will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -33184,7 +33184,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task NEXTSTEP will subscribe to</description>
+              <description>DPPI channel that task NEXTSTEP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -33349,7 +33349,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -33382,7 +33382,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SEQSTARTED[n] will publish to.</description>
+              <description>DPPI channel that event SEQSTARTED[n] will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -33415,7 +33415,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SEQEND[n] will publish to.</description>
+              <description>DPPI channel that event SEQEND[n] will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -33446,7 +33446,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event PWMPERIODEND will publish to.</description>
+              <description>DPPI channel that event PWMPERIODEND will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -33477,7 +33477,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event LOOPSDONE will publish to.</description>
+              <description>DPPI channel that event LOOPSDONE will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -34608,7 +34608,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -34639,7 +34639,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -34748,7 +34748,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STARTED will publish to.</description>
+              <description>DPPI channel that event STARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -34779,7 +34779,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -34810,7 +34810,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event END will publish to.</description>
+              <description>DPPI channel that event END will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -35514,7 +35514,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -35545,7 +35545,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -35684,7 +35684,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXPTRUPD will publish to.</description>
+              <description>DPPI channel that event RXPTRUPD will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -35715,7 +35715,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -35746,7 +35746,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXPTRUPD will publish to.</description>
+              <description>DPPI channel that event TXPTRUPD will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -35777,7 +35777,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event FRAMESTART will publish to.</description>
+              <description>DPPI channel that event FRAMESTART will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -36944,7 +36944,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SEND[n] will subscribe to</description>
+              <description>DPPI channel that task SEND[n] will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -37005,7 +37005,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RECEIVE[n] will publish to.</description>
+              <description>DPPI channel that event RECEIVE[n] will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -39276,7 +39276,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task ACTIVATE will subscribe to</description>
+              <description>DPPI channel that task ACTIVATE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -39307,7 +39307,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task READSTART will subscribe to</description>
+              <description>DPPI channel that task READSTART will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -39338,7 +39338,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task WRITESTART will subscribe to</description>
+              <description>DPPI channel that task WRITESTART will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -39369,7 +39369,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task ERASESTART will subscribe to</description>
+              <description>DPPI channel that task ERASESTART will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -39400,7 +39400,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task DEACTIVATE will subscribe to</description>
+              <description>DPPI channel that task DEACTIVATE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -39457,7 +39457,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event READY will publish to.</description>
+              <description>DPPI channel that event READY will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41065,7 +41065,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task ACTIVATE will subscribe to</description>
+              <description>DPPI channel that task ACTIVATE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41096,7 +41096,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task DISABLE will subscribe to</description>
+              <description>DPPI channel that task DISABLE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41127,7 +41127,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SENSE will subscribe to</description>
+              <description>DPPI channel that task SENSE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41158,7 +41158,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTTX will subscribe to</description>
+              <description>DPPI channel that task STARTTX will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41189,7 +41189,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task ENABLERXDATA will subscribe to</description>
+              <description>DPPI channel that task ENABLERXDATA will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41220,7 +41220,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task GOIDLE will subscribe to</description>
+              <description>DPPI channel that task GOIDLE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41251,7 +41251,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task GOSLEEP will subscribe to</description>
+              <description>DPPI channel that task GOSLEEP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41672,7 +41672,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event READY will publish to.</description>
+              <description>DPPI channel that event READY will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41703,7 +41703,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event FIELDDETECTED will publish to.</description>
+              <description>DPPI channel that event FIELDDETECTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41734,7 +41734,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event FIELDLOST will publish to.</description>
+              <description>DPPI channel that event FIELDLOST will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41765,7 +41765,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXFRAMESTART will publish to.</description>
+              <description>DPPI channel that event TXFRAMESTART will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41796,7 +41796,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXFRAMEEND will publish to.</description>
+              <description>DPPI channel that event TXFRAMEEND will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41827,7 +41827,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXFRAMESTART will publish to.</description>
+              <description>DPPI channel that event RXFRAMESTART will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41858,7 +41858,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXFRAMEEND will publish to.</description>
+              <description>DPPI channel that event RXFRAMEEND will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41889,7 +41889,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ERROR will publish to.</description>
+              <description>DPPI channel that event ERROR will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41920,7 +41920,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXERROR will publish to.</description>
+              <description>DPPI channel that event RXERROR will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41951,7 +41951,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDRX will publish to.</description>
+              <description>DPPI channel that event ENDRX will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41982,7 +41982,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDTX will publish to.</description>
+              <description>DPPI channel that event ENDTX will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -42013,7 +42013,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event AUTOCOLRESSTARTED will publish to.</description>
+              <description>DPPI channel that event AUTOCOLRESSTARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -42044,7 +42044,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event COLLISION will publish to.</description>
+              <description>DPPI channel that event COLLISION will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -42075,7 +42075,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SELECTED will publish to.</description>
+              <description>DPPI channel that event SELECTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -42106,7 +42106,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STARTED will publish to.</description>
+              <description>DPPI channel that event STARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -44315,7 +44315,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -44346,7 +44346,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -44377,7 +44377,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task READCLRACC will subscribe to</description>
+              <description>DPPI channel that task READCLRACC will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -44408,7 +44408,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task RDCLRACC will subscribe to</description>
+              <description>DPPI channel that task RDCLRACC will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -44439,7 +44439,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task RDCLRDBL will subscribe to</description>
+              <description>DPPI channel that task RDCLRDBL will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -44600,7 +44600,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SAMPLERDY will publish to.</description>
+              <description>DPPI channel that event SAMPLERDY will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -44631,7 +44631,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event REPORTRDY will publish to.</description>
+              <description>DPPI channel that event REPORTRDY will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -44662,7 +44662,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ACCOF will publish to.</description>
+              <description>DPPI channel that event ACCOF will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -44693,7 +44693,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event DBLRDY will publish to.</description>
+              <description>DPPI channel that event DBLRDY will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -44724,7 +44724,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -45846,7 +45846,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTEPIN[n] will subscribe to</description>
+              <description>DPPI channel that task STARTEPIN[n] will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -45877,7 +45877,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTISOIN will subscribe to</description>
+              <description>DPPI channel that task STARTISOIN will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -45910,7 +45910,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTEPOUT[n] will subscribe to</description>
+              <description>DPPI channel that task STARTEPOUT[n] will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -45941,7 +45941,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTISOOUT will subscribe to</description>
+              <description>DPPI channel that task STARTISOOUT will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -45972,7 +45972,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task EP0RCVOUT will subscribe to</description>
+              <description>DPPI channel that task EP0RCVOUT will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46003,7 +46003,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task EP0STATUS will subscribe to</description>
+              <description>DPPI channel that task EP0STATUS will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46034,7 +46034,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task EP0STALL will subscribe to</description>
+              <description>DPPI channel that task EP0STALL will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46065,7 +46065,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task DPDMDRIVE will subscribe to</description>
+              <description>DPPI channel that task DPDMDRIVE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46096,7 +46096,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task DPDMNODRIVE will subscribe to</description>
+              <description>DPPI channel that task DPDMNODRIVE will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46417,7 +46417,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event USBRESET will publish to.</description>
+              <description>DPPI channel that event USBRESET will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46448,7 +46448,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STARTED will publish to.</description>
+              <description>DPPI channel that event STARTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46481,7 +46481,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDEPIN[n] will publish to.</description>
+              <description>DPPI channel that event ENDEPIN[n] will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46512,7 +46512,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event EP0DATADONE will publish to.</description>
+              <description>DPPI channel that event EP0DATADONE will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46543,7 +46543,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDISOIN will publish to.</description>
+              <description>DPPI channel that event ENDISOIN will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46576,7 +46576,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDEPOUT[n] will publish to.</description>
+              <description>DPPI channel that event ENDEPOUT[n] will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46607,7 +46607,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDISOOUT will publish to.</description>
+              <description>DPPI channel that event ENDISOOUT will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46638,7 +46638,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SOF will publish to.</description>
+              <description>DPPI channel that event SOF will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46669,7 +46669,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event USBEVENT will publish to.</description>
+              <description>DPPI channel that event USBEVENT will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46700,7 +46700,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event EP0SETUP will publish to.</description>
+              <description>DPPI channel that event EP0SETUP will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -46731,7 +46731,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event EPDATA will publish to.</description>
+              <description>DPPI channel that event EPDATA will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -49699,6 +49699,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <description>Description collection: Number of bytes received last in the data stage of this OUT endpoint</description>
             <addressOffset>0x000</addressOffset>
             <access>read-write</access>
+            <modifiedWriteValues>zeroToClear</modifiedWriteValues>
             <fields>
               <field>
                 <name>SIZE</name>
@@ -50686,7 +50687,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event USBDETECTED will publish to.</description>
+              <description>DPPI channel that event USBDETECTED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -50717,7 +50718,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event USBREMOVED will publish to.</description>
+              <description>DPPI channel that event USBREMOVED will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -50748,7 +50749,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event USBPWRRDY will publish to.</description>
+              <description>DPPI channel that event USBPWRRDY will publish to.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -51576,7 +51577,6 @@ POSSIBILITY OF SUCH DAMAGE.
           <addressOffset>0x400</addressOffset>
           <access>read-only</access>
           <resetValue>0x00000001</resetValue>
-          <!--Security securemapping=NS-->
           <fields>
             <field>
               <name>READY</name>
@@ -51604,7 +51604,6 @@ POSSIBILITY OF SUCH DAMAGE.
           <addressOffset>0x408</addressOffset>
           <access>read-only</access>
           <resetValue>0x00000001</resetValue>
-          <!--Security securemapping=NS-->
           <fields>
             <field>
               <name>READYNEXT</name>
@@ -51787,7 +51786,6 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Unspecified</description>
           <addressOffset>0x584</addressOffset>
           <access>read-write</access>
-          <!--Security securemapping=NS-->
           <fields>
             <field>
               <name>WEN</name>
@@ -51819,7 +51817,6 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Non-secure APPROTECT enable register</description>
           <addressOffset>0x588</addressOffset>
           <access>write-only</access>
-          <!--Security securemapping=NS-->
           <fields>
             <field>
               <name>SET</name>

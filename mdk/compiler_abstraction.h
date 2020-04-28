@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2018, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2020, Nordic Semiconductor ASA All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -150,8 +150,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
     static inline unsigned int gcc_current_sp(void)
     {
-        register unsigned sp __ASM("sp");
-        return sp;
+        unsigned int stack_pointer = 0;
+        __asm__ __volatile__ ("mov %0, sp" : "=r"(stack_pointer));
+        return stack_pointer;
     }
 
 #elif defined   ( __TASKING__ )

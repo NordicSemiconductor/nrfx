@@ -41,7 +41,7 @@ extern "C" {
 /**
 * @defgroup nrf_egu_hal EGU HAL
 * @{
-* @ingroup nrf_swi_egu
+* @ingroup nrf_egu
 * @brief   Hardware access layer for managing the Event Generator Unit (EGU) peripheral.
 */
 

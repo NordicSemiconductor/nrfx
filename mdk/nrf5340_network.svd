@@ -8,7 +8,7 @@
   <version>1</version>
   <description>nRF53 reference description for system-on-chip with dual ARM 32-bit Cortex-M33 microcontrollers</description>
   <licenseText>
-Copyright (c) 2010 - 2018, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2020, Nordic Semiconductor ASA All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -10780,7 +10780,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <description>Data pointer</description>
             <addressOffset>0x000</addressOffset>
             <access>read-write</access>
-            <resetValue>0x00000000</resetValue>
+            <resetValue>0x01000000</resetValue>
             <fields>
               <field>
                 <name>PTR</name>
@@ -13134,7 +13134,7 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
-          <dim>0x6</dim>
+          <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>TASKS_CAPTURE[%s]</name>
           <description>Description collection: Capture Timer value to CC[n] register</description>
@@ -13312,7 +13312,7 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
-          <dim>0x6</dim>
+          <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>SUBSCRIBE_CAPTURE[%s]</name>
           <description>Description collection: Subscribe configuration for task CAPTURE[n]</description>
@@ -13345,7 +13345,7 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
-          <dim>0x6</dim>
+          <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>EVENTS_COMPARE[%s]</name>
           <description>Description collection: Compare event on CC[n] match</description>
@@ -13373,7 +13373,7 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
-          <dim>0x6</dim>
+          <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>PUBLISH_COMPARE[%s]</name>
           <description>Description collection: Publish configuration for event COMPARE[n]</description>
@@ -13520,6 +13520,42 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
+              <name>COMPARE6_CLEAR</name>
+              <description>Shortcut between event COMPARE[6] and task CLEAR</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable shortcut</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable shortcut</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE7_CLEAR</name>
+              <description>Shortcut between event COMPARE[7] and task CLEAR</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable shortcut</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable shortcut</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>COMPARE0_STOP</name>
               <description>Shortcut between event COMPARE[0] and task STOP</description>
               <lsb>16</lsb>
@@ -13614,6 +13650,42 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Shortcut between event COMPARE[5] and task STOP</description>
               <lsb>21</lsb>
               <msb>21</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable shortcut</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable shortcut</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE6_STOP</name>
+              <description>Shortcut between event COMPARE[6] and task STOP</description>
+              <lsb>22</lsb>
+              <msb>22</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable shortcut</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable shortcut</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE7_STOP</name>
+              <description>Shortcut between event COMPARE[7] and task STOP</description>
+              <lsb>23</lsb>
+              <msb>23</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -13730,6 +13802,42 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Enable or disable interrupt for event COMPARE[5]</description>
               <lsb>21</lsb>
               <msb>21</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE6</name>
+              <description>Enable or disable interrupt for event COMPARE[6]</description>
+              <lsb>22</lsb>
+              <msb>22</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE7</name>
+              <description>Enable or disable interrupt for event COMPARE[7]</description>
+              <lsb>23</lsb>
+              <msb>23</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -13891,6 +13999,60 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Write '1' to enable interrupt for event COMPARE[5]</description>
               <lsb>21</lsb>
               <msb>21</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE6</name>
+              <description>Write '1' to enable interrupt for event COMPARE[6]</description>
+              <lsb>22</lsb>
+              <msb>22</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE7</name>
+              <description>Write '1' to enable interrupt for event COMPARE[7]</description>
+              <lsb>23</lsb>
+              <msb>23</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -14083,6 +14245,60 @@ POSSIBILITY OF SUCH DAMAGE.
                 </enumeratedValue>
               </enumeratedValues>
             </field>
+            <field>
+              <name>COMPARE6</name>
+              <description>Write '1' to disable interrupt for event COMPARE[6]</description>
+              <lsb>22</lsb>
+              <msb>22</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE7</name>
+              <description>Write '1' to disable interrupt for event COMPARE[7]</description>
+              <lsb>23</lsb>
+              <msb>23</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
           </fields>
         </register>
         <register>
@@ -14168,7 +14384,7 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
-          <dim>0x6</dim>
+          <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>CC[%s]</name>
           <description>Description collection: Capture/Compare register n</description>
@@ -14184,7 +14400,7 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
-          <dim>0x6</dim>
+          <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>ONESHOTEN[%s]</name>
           <description>Description collection: Enable one-shot operation for Capture/Compare channel n</description>
@@ -31415,7 +31631,6 @@ POSSIBILITY OF SUCH DAMAGE.
           <addressOffset>0x400</addressOffset>
           <access>read-only</access>
           <resetValue>0x00000001</resetValue>
-          <!--Security securemapping=NS-->
           <fields>
             <field>
               <name>READY</name>
@@ -31443,7 +31658,6 @@ POSSIBILITY OF SUCH DAMAGE.
           <addressOffset>0x408</addressOffset>
           <access>read-only</access>
           <resetValue>0x00000001</resetValue>
-          <!--Security securemapping=NS-->
           <fields>
             <field>
               <name>READYNEXT</name>
@@ -31626,7 +31840,6 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Unspecified</description>
           <addressOffset>0x584</addressOffset>
           <access>read-write</access>
-          <!--Security securemapping=NS-->
           <fields>
             <field>
               <name>WEN</name>
@@ -31658,7 +31871,6 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Non-secure APPROTECT enable register</description>
           <addressOffset>0x588</addressOffset>
           <access>write-only</access>
-          <!--Security securemapping=NS-->
           <fields>
             <field>
               <name>SET</name>

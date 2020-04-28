@@ -271,18 +271,26 @@ void nrfx_clock_stop(nrf_clock_domain_t domain)
     switch (domain)
     {
         case NRF_CLOCK_DOMAIN_LFCLK:
+            nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_LF_STARTED_MASK);
+            nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_LFCLKSTARTED);
             nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_LFCLKSTOP);
             break;
         case NRF_CLOCK_DOMAIN_HFCLK:
+            nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_HF_STARTED_MASK);
+            nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_HFCLKSTARTED);
             nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_HFCLKSTOP);
             break;
 #if NRF_CLOCK_HAS_HFCLK192M
         case NRF_CLOCK_DOMAIN_HFCLK192M:
+            nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_HF192M_STARTED_MASK);
+            nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_HFCLK192MSTARTED);
             nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_HFCLK192MSTOP);
             break;
 #endif
 #if NRF_CLOCK_HAS_HFCLKAUDIO
         case NRF_CLOCK_DOMAIN_HFCLKAUDIO:
+            nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_HFAUDIO_STARTED_MASK);
+            nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_HFCLKAUDIOSTARTED);
             nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_HFCLKAUDIOSTOP);
             break;
 #endif
@@ -290,17 +298,24 @@ void nrfx_clock_stop(nrf_clock_domain_t domain)
             NRFX_ASSERT(0);
             return;
     }
+
+    bool stopped;
     if (domain == NRF_CLOCK_DOMAIN_HFCLK)
     {
         nrf_clock_hfclk_t clk_src = NRF_CLOCK_HFCLK_HIGH_ACCURACY;
-        while (nrfx_clock_is_running(domain, &clk_src) && (clk_src == NRF_CLOCK_HFCLK_HIGH_ACCURACY))
-        {}
+        NRFX_WAIT_FOR((!nrfx_clock_is_running(domain, &clk_src) ||
+                       (clk_src != NRF_CLOCK_HFCLK_HIGH_ACCURACY)), 10000, 1, stopped);
     }
     else
     {
-        while (nrfx_clock_is_running(domain, NULL))
-        {}
+        NRFX_WAIT_FOR(!nrfx_clock_is_running(domain, NULL), 10000, 1, stopped);
     }
+
+    if (!stopped)
+    {
+        NRFX_LOG_ERROR("Failed to stop clock domain: %d.", domain);
+    }
+
 #if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_201)
     if (domain == NRF_CLOCK_DOMAIN_HFCLK)
     {

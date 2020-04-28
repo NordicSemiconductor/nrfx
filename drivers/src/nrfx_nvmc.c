@@ -82,7 +82,7 @@
  */
 #if defined(NRF52810_XXAA) || defined(NRF52811_XXAA) || defined(NRF52840_XXAA)
     #define NVMC_PAGE_ERASE_DURATION_MS  85
-#elif defined(NRF52833_XXAA) || defined(NRF9160_XXAA) || \
+#elif defined(NRF52820_XXAA) || defined(NRF52833_XXAA) || defined(NRF9160_XXAA) || \
       defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK)
     #define NVMC_PAGE_ERASE_DURATION_MS  87
 #else
@@ -366,8 +366,7 @@ void nrfx_nvmc_halfword_write(uint32_t addr, uint16_t value)
 
     uint32_t aligned_addr = addr & ~(0x03UL);
 
-    nrfx_nvmc_word_write(aligned_addr,
-                    partial_word_create(addr, (const uint8_t *)&value, 2));
+    nrfx_nvmc_word_write(aligned_addr, partial_word_create(addr, (const uint8_t *)&value, 2));
 }
 
 void nrfx_nvmc_word_write(uint32_t addr, uint32_t value)
