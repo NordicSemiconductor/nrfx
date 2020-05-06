@@ -242,7 +242,7 @@ static void spim_abort(NRF_SPIM_Type * p_spim, spim_control_block_t * p_cb)
     NRFX_WAIT_FOR(nrf_spim_event_check(p_spim, NRF_SPIM_EVENT_STOPPED), 100, 1, stopped);
     if (!stopped)
     {
-        NRFX_LOG_ERROR("Failed to stop instance with base address: %p.", (void *)p_instance->p_reg);
+        NRFX_LOG_ERROR("Failed to stop instance with base address: %p.", (void *)p_spim);
     }
     p_cb->transfer_in_progress = false;
 }
