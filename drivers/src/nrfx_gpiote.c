@@ -523,7 +523,8 @@ nrfx_err_t nrfx_gpiote_in_init(nrfx_gpiote_pin_t               pin,
     }
     else
     {
-        int8_t channel = channel_port_alloc(pin, evt_handler, p_config->hi_accuracy);
+        bool evt_channel = p_config->hi_accuracy ? false : true;
+        int8_t channel = channel_port_alloc(pin, evt_handler, evt_channel);
         if (channel != NO_CHANNELS)
         {
             if (!p_config->skip_gpio_setup)
