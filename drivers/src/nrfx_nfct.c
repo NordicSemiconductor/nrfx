@@ -710,6 +710,18 @@ void nrfx_nfct_irq_handler(void)
         nrfx_nfct_field_event_handler(current_field);
     }
 
+    if (NRFX_NFCT_EVT_ACTIVE(RXFRAMESTART))
+	{
+        nrf_nfct_event_clear(NRF_NFCT, NRF_NFCT_EVENT_RXFRAMESTART);
+
+        nrfx_nfct_evt_t nfct_evt =
+        {
+            .evt_id = NRFX_NFCT_EVT_RX_FRAMESTART
+        };
+
+        NRFX_NFCT_CB_HANDLE(m_nfct_cb.config.cb, nfct_evt);
+	}
+
     if (NRFX_NFCT_EVT_ACTIVE(RXFRAMEEND))
     {
         nrf_nfct_event_clear(NRF_NFCT, NRF_NFCT_EVENT_RXFRAMEEND);
