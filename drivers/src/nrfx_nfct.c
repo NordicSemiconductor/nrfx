@@ -556,6 +556,62 @@ nrfx_err_t nrfx_nfct_tx(nrfx_nfct_data_desc_t const * p_tx_data,
     return err;
 }
 
+nrfx_err_t nrfx_nfct_bits_tx(nrfx_nfct_data_desc_t const * p_tx_data,
+                             nrf_nfct_frame_delay_mode_t   delay_mode)
+{
+    NRFX_ASSERT(p_tx_data);
+    NRFX_ASSERT(p_tx_data->p_data);
+
+    nrfx_err_t err = NRFX_SUCCESS;
+
+    if (p_tx_data->data_size == 0)
+    {
+        return NRFX_ERROR_INVALID_LENGTH;
+    }
+
+    /* Get buffer length, add additional byte if bits go beyond last whole byte */
+    uint32_t buffer_length = NRFX_NFCT_BITS_TO_BYTES(p_tx_data->data_size);
+    if (p_tx_data->data_size & NFCT_TXD_AMOUNT_TXDATABITS_Msk)
+    {
+        ++buffer_length;
+    }
+
+    NRFX_CRITICAL_SECTION_ENTER();
+
+    /* In case when NFC frame transmission has already started, it returns an error. */
+    if (NRFX_NFCT_EVT_ACTIVE(TXFRAMESTART))
+    {
+        err = NRFX_ERROR_BUSY;
+    }
+    else
+    {
+        /* In case when Tx operation was scheduled with delay, stop scheduled Tx operation. */
+#if defined(NRF52_SERIES)
+        *(volatile uint32_t *)0x40005010 = 0x01;
+#elif defined(NRF5340_XXAA_APPLICATION) && defined(NRF_TRUSTZONE_NONSECURE)
+        *(volatile uint32_t *)0x4002D010 = 0x01;
+#elif defined(NRF5340_XXAA_APPLICATION)
+        *(volatile uint32_t *)0x5002D010 = 0x01;
+#endif
+        nrf_nfct_rxtx_buffer_set(NRF_NFCT, (uint8_t *) p_tx_data->p_data, buffer_length);
+        nrf_nfct_tx_bits_set(NRF_NFCT, p_tx_data->data_size);
+        nrf_nfct_frame_delay_mode_set(NRF_NFCT, (nrf_nfct_frame_delay_mode_t) delay_mode);
+        nrfx_nfct_frame_delay_max_set(false);
+
+        nrfx_nfct_rxtx_int_enable(NRFX_NFCT_TX_INT_MASK);
+        nrf_nfct_task_trigger(NRF_NFCT, NRF_NFCT_TASK_STARTTX);
+    }
+
+    NRFX_CRITICAL_SECTION_EXIT();
+
+    if (err == NRFX_SUCCESS)
+    {
+        NRFX_LOG_INFO("Tx start");
+    }
+
+    return err;
+}
+
 void nrfx_nfct_state_force(nrfx_nfct_state_t state)
 {
 #if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_190)
