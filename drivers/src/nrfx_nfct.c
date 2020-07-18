@@ -528,6 +528,36 @@ nrfx_err_t nrfx_nfct_tx(nrfx_nfct_data_desc_t const * p_tx_data,
     return NRFX_SUCCESS;
 }
 
+nrfx_err_t nrfx_nfct_tx_bits(nrfx_nfct_data_desc_t const * p_tx_data,
+                             nrf_nfct_frame_delay_mode_t   delay_mode)
+{
+    NRFX_ASSERT(p_tx_data);
+    NRFX_ASSERT(p_tx_data->p_data);
+
+    if (p_tx_data->data_size == 0)
+    {
+        return NRFX_ERROR_INVALID_LENGTH;
+    }
+
+	// calculate the buffer length in bytes based on the number of bits,
+	// adding an additional byte if there is data beyond the last whole byte.
+	uint32_t buffer_length = NRFX_NFCT_BITS_TO_BYTES(p_tx_data->data_size);
+	if (p_tx_data->data_size & 0b0111)
+	{
+		++buffer_length;
+	}
+
+    nrf_nfct_rxtx_buffer_set((uint8_t *) p_tx_data->p_data, buffer_length);
+    nrf_nfct_tx_bits_set(p_tx_data->data_size);
+    nrf_nfct_frame_delay_mode_set((nrf_nfct_frame_delay_mode_t) delay_mode);
+
+    nrfx_nfct_rxtx_int_enable(NRFX_NFCT_TX_INT_MASK);
+    nrf_nfct_task_trigger(NRF_NFCT_TASK_STARTTX);
+
+    NRFX_LOG_INFO("Tx start");
+    return NRFX_SUCCESS;
+}
+
 void nrfx_nfct_state_force(nrfx_nfct_state_t state)
 {
 #if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_190)
