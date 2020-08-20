@@ -62,7 +62,7 @@ typedef struct
 {
     nrfx_gpiote_evt_handler_t handlers[GPIOTE_CH_NUM + NRFX_GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS];
     int8_t                    pin_assignments[MAX_PIN_NUMBER];
-    int8_t                    port_handlers_pins[NRFX_GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS];
+    int8_t                    port_handlers_pins[GPIOTE_CH_NUM + NRFX_GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS];
     uint8_t                   configured_pins[((MAX_PIN_NUMBER)+7) / 8];
     nrfx_drv_state_t          state;
 } gpiote_control_block_t;
@@ -523,7 +523,8 @@ nrfx_err_t nrfx_gpiote_in_init(nrfx_gpiote_pin_t               pin,
     }
     else
     {
-        int8_t channel = channel_port_alloc(pin, evt_handler, p_config->hi_accuracy);
+        bool evt_channel = p_config->hi_accuracy ? false : true;
+        int8_t channel = channel_port_alloc(pin, evt_handler, evt_channel);
         if (channel != NO_CHANNELS)
         {
             if (!p_config->skip_gpio_setup)
