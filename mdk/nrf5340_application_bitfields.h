@@ -654,7 +654,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_HFCLKRUN_STATUS_Triggered (1UL) /*!< Task triggered */
 
 /* Register: CLOCK_HFCLKSTAT */
-/* Description: Status indicating which HFCLK128M/HFCLK64M source is running Note: Value of this register in any CLOCK instance reflects status only due to configurations/actions in that CLOCK instance. */
+/* Description: Status indicating which HFCLK128M/HFCLK64M source is running This register value in any CLOCK instance reflects status only due to configurations/actions in that CLOCK instance. */
 
 /* Bit 16 : HFCLK state */
 #define CLOCK_HFCLKSTAT_STATE_Pos (16UL) /*!< Position of STATE field. */
@@ -684,7 +684,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_LFCLKRUN_STATUS_Triggered (1UL) /*!< Task triggered */
 
 /* Register: CLOCK_LFCLKSTAT */
-/* Description: Status indicating which LFCLK source is running Note: Value of this register in any CLOCK instance reflects status only due to configurations/actions in that CLOCK instance. */
+/* Description: Status indicating which LFCLK source is running This register value in any CLOCK instance reflects status only due to configurations/actions in that CLOCK instance. */
 
 /* Bit 16 : LFCLK state */
 #define CLOCK_LFCLKSTAT_STATE_Pos (16UL) /*!< Position of STATE field. */
@@ -794,9 +794,9 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: CLOCK_HFCLKCTRL */
 /* Description: HFCLK128M frequency configuration */
 
-/* Bit 0 : High frequency clock HCLK */
+/* Bits 1..0 : High frequency clock HCLK */
 #define CLOCK_HFCLKCTRL_HCLK_Pos (0UL) /*!< Position of HCLK field. */
-#define CLOCK_HFCLKCTRL_HCLK_Msk (0x1UL << CLOCK_HFCLKCTRL_HCLK_Pos) /*!< Bit mask of HCLK field. */
+#define CLOCK_HFCLKCTRL_HCLK_Msk (0x3UL << CLOCK_HFCLKCTRL_HCLK_Pos) /*!< Bit mask of HCLK field. */
 #define CLOCK_HFCLKCTRL_HCLK_Div1 (0UL) /*!< Divide HFCLK by 1 */
 #define CLOCK_HFCLKCTRL_HCLK_Div2 (1UL) /*!< Divide HFCLK by 2 */
 
@@ -1266,7 +1266,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: CTI_CTICONTROL */
 /* Description: CTI Control register */
 
-/* Bit 0 : Enables or disables the CTI */
+/* Bit 0 : Enables or disables the CTI. */
 #define CTI_CTICONTROL_GLBEN_Pos (0UL) /*!< Position of GLBEN field. */
 #define CTI_CTICONTROL_GLBEN_Msk (0x1UL << CTI_CTICONTROL_GLBEN_Pos) /*!< Bit mask of GLBEN field. */
 #define CTI_CTICONTROL_GLBEN_Disabled (0UL) /*!< All cross-triggering mapping logic functionality is disabled. */
@@ -1278,68 +1278,68 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bit 7 : ETM Event Input 3 */
 #define CTI_CTIINTACK_ETMEVTIN3_Pos (7UL) /*!< Position of ETMEVTIN3 field. */
 #define CTI_CTIINTACK_ETMEVTIN3_Msk (0x1UL << CTI_CTIINTACK_ETMEVTIN3_Pos) /*!< Bit mask of ETMEVTIN3 field. */
-#define CTI_CTIINTACK_ETMEVTIN3_Acknowledge (1UL) /*!< Clears the ctitrigout */
+#define CTI_CTIINTACK_ETMEVTIN3_Acknowledge (1UL) /*!< Clears the ctitrigout. */
 
 /* Bit 6 : ETM Event Input 2 */
 #define CTI_CTIINTACK_ETMEVTIN2_Pos (6UL) /*!< Position of ETMEVTIN2 field. */
 #define CTI_CTIINTACK_ETMEVTIN2_Msk (0x1UL << CTI_CTIINTACK_ETMEVTIN2_Pos) /*!< Bit mask of ETMEVTIN2 field. */
-#define CTI_CTIINTACK_ETMEVTIN2_Acknowledge (1UL) /*!< Clears the ctitrigout */
+#define CTI_CTIINTACK_ETMEVTIN2_Acknowledge (1UL) /*!< Clears the ctitrigout. */
 
 /* Bit 5 : ETM Event Input 1 */
 #define CTI_CTIINTACK_ETMEVTIN1_Pos (5UL) /*!< Position of ETMEVTIN1 field. */
 #define CTI_CTIINTACK_ETMEVTIN1_Msk (0x1UL << CTI_CTIINTACK_ETMEVTIN1_Pos) /*!< Bit mask of ETMEVTIN1 field. */
-#define CTI_CTIINTACK_ETMEVTIN1_Acknowledge (1UL) /*!< Clears the ctitrigout */
+#define CTI_CTIINTACK_ETMEVTIN1_Acknowledge (1UL) /*!< Clears the ctitrigout. */
 
 /* Bit 4 : ETM Event Input 0 */
 #define CTI_CTIINTACK_ETMEVTIN0_Pos (4UL) /*!< Position of ETMEVTIN0 field. */
 #define CTI_CTIINTACK_ETMEVTIN0_Msk (0x1UL << CTI_CTIINTACK_ETMEVTIN0_Pos) /*!< Bit mask of ETMEVTIN0 field. */
-#define CTI_CTIINTACK_ETMEVTIN0_Acknowledge (1UL) /*!< Clears the ctitrigout */
+#define CTI_CTIINTACK_ETMEVTIN0_Acknowledge (1UL) /*!< Clears the ctitrigout. */
 
 /* Bit 3 : N/A */
 #define CTI_CTIINTACK_UNUSED1_Pos (3UL) /*!< Position of UNUSED1 field. */
 #define CTI_CTIINTACK_UNUSED1_Msk (0x1UL << CTI_CTIINTACK_UNUSED1_Pos) /*!< Bit mask of UNUSED1 field. */
-#define CTI_CTIINTACK_UNUSED1_Acknowledge (1UL) /*!< Clears the ctitrigout */
+#define CTI_CTIINTACK_UNUSED1_Acknowledge (1UL) /*!< Clears the ctitrigout. */
 
 /* Bit 2 : N/A */
 #define CTI_CTIINTACK_UNUSED0_Pos (2UL) /*!< Position of UNUSED0 field. */
 #define CTI_CTIINTACK_UNUSED0_Msk (0x1UL << CTI_CTIINTACK_UNUSED0_Pos) /*!< Bit mask of UNUSED0 field. */
-#define CTI_CTIINTACK_UNUSED0_Acknowledge (1UL) /*!< Clears the ctitrigout */
+#define CTI_CTIINTACK_UNUSED0_Acknowledge (1UL) /*!< Clears the ctitrigout. */
 
 /* Bit 1 : Processor Restart */
 #define CTI_CTIINTACK_CPURESTART_Pos (1UL) /*!< Position of CPURESTART field. */
 #define CTI_CTIINTACK_CPURESTART_Msk (0x1UL << CTI_CTIINTACK_CPURESTART_Pos) /*!< Bit mask of CPURESTART field. */
-#define CTI_CTIINTACK_CPURESTART_Acknowledge (1UL) /*!< Clears the ctitrigout */
+#define CTI_CTIINTACK_CPURESTART_Acknowledge (1UL) /*!< Clears the ctitrigout. */
 
 /* Bit 0 : Processor debug request */
 #define CTI_CTIINTACK_DEBUGREQ_Pos (0UL) /*!< Position of DEBUGREQ field. */
 #define CTI_CTIINTACK_DEBUGREQ_Msk (0x1UL << CTI_CTIINTACK_DEBUGREQ_Pos) /*!< Bit mask of DEBUGREQ field. */
-#define CTI_CTIINTACK_DEBUGREQ_Acknowledge (1UL) /*!< Clears the ctitrigout */
+#define CTI_CTIINTACK_DEBUGREQ_Acknowledge (1UL) /*!< Clears the ctitrigout. */
 
 /* Register: CTI_CTIAPPSET */
 /* Description: CTI Application Trigger Set register */
 
-/* Bit 3 : Application trigger event for channel 3 */
+/* Bit 3 : Application trigger event for channel 3. */
 #define CTI_CTIAPPSET_APPSET_3_Pos (3UL) /*!< Position of APPSET_3 field. */
 #define CTI_CTIAPPSET_APPSET_3_Msk (0x1UL << CTI_CTIAPPSET_APPSET_3_Pos) /*!< Bit mask of APPSET_3 field. */
 #define CTI_CTIAPPSET_APPSET_3_Inactive (0UL) /*!< Application trigger 3 is inactive. */
 #define CTI_CTIAPPSET_APPSET_3_Active (1UL) /*!< Application trigger 3 is active. */
 #define CTI_CTIAPPSET_APPSET_3_Activate (1UL) /*!< Generate channel event for channel 3. */
 
-/* Bit 2 : Application trigger event for channel 2 */
+/* Bit 2 : Application trigger event for channel 2. */
 #define CTI_CTIAPPSET_APPSET_2_Pos (2UL) /*!< Position of APPSET_2 field. */
 #define CTI_CTIAPPSET_APPSET_2_Msk (0x1UL << CTI_CTIAPPSET_APPSET_2_Pos) /*!< Bit mask of APPSET_2 field. */
 #define CTI_CTIAPPSET_APPSET_2_Inactive (0UL) /*!< Application trigger 2 is inactive. */
 #define CTI_CTIAPPSET_APPSET_2_Active (1UL) /*!< Application trigger 2 is active. */
 #define CTI_CTIAPPSET_APPSET_2_Activate (1UL) /*!< Generate channel event for channel 2. */
 
-/* Bit 1 : Application trigger event for channel 1 */
+/* Bit 1 : Application trigger event for channel 1. */
 #define CTI_CTIAPPSET_APPSET_1_Pos (1UL) /*!< Position of APPSET_1 field. */
 #define CTI_CTIAPPSET_APPSET_1_Msk (0x1UL << CTI_CTIAPPSET_APPSET_1_Pos) /*!< Bit mask of APPSET_1 field. */
 #define CTI_CTIAPPSET_APPSET_1_Inactive (0UL) /*!< Application trigger 1 is inactive. */
 #define CTI_CTIAPPSET_APPSET_1_Active (1UL) /*!< Application trigger 1 is active. */
 #define CTI_CTIAPPSET_APPSET_1_Activate (1UL) /*!< Generate channel event for channel 1. */
 
-/* Bit 0 : Application trigger event for channel 0 */
+/* Bit 0 : Application trigger event for channel 0. */
 #define CTI_CTIAPPSET_APPSET_0_Pos (0UL) /*!< Position of APPSET_0 field. */
 #define CTI_CTIAPPSET_APPSET_0_Msk (0x1UL << CTI_CTIAPPSET_APPSET_0_Pos) /*!< Bit mask of APPSET_0 field. */
 #define CTI_CTIAPPSET_APPSET_0_Inactive (0UL) /*!< Application trigger 0 is inactive. */
@@ -1352,22 +1352,22 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bit 3 : Sets the corresponding bits in the CTIAPPSET to 0. There is one bit of the register for each channel. */
 #define CTI_CTIAPPCLEAR_APPCLEAR_3_Pos (3UL) /*!< Position of APPCLEAR_3 field. */
 #define CTI_CTIAPPCLEAR_APPCLEAR_3_Msk (0x1UL << CTI_CTIAPPCLEAR_APPCLEAR_3_Pos) /*!< Bit mask of APPCLEAR_3 field. */
-#define CTI_CTIAPPCLEAR_APPCLEAR_3_Clear (1UL) /*!< Clears the event for channel 3 */
+#define CTI_CTIAPPCLEAR_APPCLEAR_3_Clear (1UL) /*!< Clears the event for channel 3. */
 
 /* Bit 2 : Sets the corresponding bits in the CTIAPPSET to 0. There is one bit of the register for each channel. */
 #define CTI_CTIAPPCLEAR_APPCLEAR_2_Pos (2UL) /*!< Position of APPCLEAR_2 field. */
 #define CTI_CTIAPPCLEAR_APPCLEAR_2_Msk (0x1UL << CTI_CTIAPPCLEAR_APPCLEAR_2_Pos) /*!< Bit mask of APPCLEAR_2 field. */
-#define CTI_CTIAPPCLEAR_APPCLEAR_2_Clear (1UL) /*!< Clears the event for channel 2 */
+#define CTI_CTIAPPCLEAR_APPCLEAR_2_Clear (1UL) /*!< Clears the event for channel 2. */
 
 /* Bit 1 : Sets the corresponding bits in the CTIAPPSET to 0. There is one bit of the register for each channel. */
 #define CTI_CTIAPPCLEAR_APPCLEAR_1_Pos (1UL) /*!< Position of APPCLEAR_1 field. */
 #define CTI_CTIAPPCLEAR_APPCLEAR_1_Msk (0x1UL << CTI_CTIAPPCLEAR_APPCLEAR_1_Pos) /*!< Bit mask of APPCLEAR_1 field. */
-#define CTI_CTIAPPCLEAR_APPCLEAR_1_Clear (1UL) /*!< Clears the event for channel 1 */
+#define CTI_CTIAPPCLEAR_APPCLEAR_1_Clear (1UL) /*!< Clears the event for channel 1. */
 
 /* Bit 0 : Sets the corresponding bits in the CTIAPPSET to 0. There is one bit of the register for each channel. */
 #define CTI_CTIAPPCLEAR_APPCLEAR_0_Pos (0UL) /*!< Position of APPCLEAR_0 field. */
 #define CTI_CTIAPPCLEAR_APPCLEAR_0_Msk (0x1UL << CTI_CTIAPPCLEAR_APPCLEAR_0_Pos) /*!< Bit mask of APPCLEAR_0 field. */
-#define CTI_CTIAPPCLEAR_APPCLEAR_0_Clear (1UL) /*!< Clears the event for channel 0 */
+#define CTI_CTIAPPCLEAR_APPCLEAR_0_Clear (1UL) /*!< Clears the event for channel 0. */
 
 /* Register: CTI_CTIAPPPULSE */
 /* Description: CTI Application Pulse register */
@@ -1375,76 +1375,76 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bit 3 : Setting a bit HIGH generates a channel event pulse for the selected channel. There is one bit of the register for each channel. */
 #define CTI_CTIAPPPULSE_APPULSE_3_Pos (3UL) /*!< Position of APPULSE_3 field. */
 #define CTI_CTIAPPPULSE_APPULSE_3_Msk (0x1UL << CTI_CTIAPPPULSE_APPULSE_3_Pos) /*!< Bit mask of APPULSE_3 field. */
-#define CTI_CTIAPPPULSE_APPULSE_3_Generate (1UL) /*!< Generates an event pulse on channel 3 */
+#define CTI_CTIAPPPULSE_APPULSE_3_Generate (1UL) /*!< Generates an event pulse on channel 3. */
 
 /* Bit 2 : Setting a bit HIGH generates a channel event pulse for the selected channel. There is one bit of the register for each channel. */
 #define CTI_CTIAPPPULSE_APPULSE_2_Pos (2UL) /*!< Position of APPULSE_2 field. */
 #define CTI_CTIAPPPULSE_APPULSE_2_Msk (0x1UL << CTI_CTIAPPPULSE_APPULSE_2_Pos) /*!< Bit mask of APPULSE_2 field. */
-#define CTI_CTIAPPPULSE_APPULSE_2_Generate (1UL) /*!< Generates an event pulse on channel 2 */
+#define CTI_CTIAPPPULSE_APPULSE_2_Generate (1UL) /*!< Generates an event pulse on channel 2. */
 
 /* Bit 1 : Setting a bit HIGH generates a channel event pulse for the selected channel. There is one bit of the register for each channel. */
 #define CTI_CTIAPPPULSE_APPULSE_1_Pos (1UL) /*!< Position of APPULSE_1 field. */
 #define CTI_CTIAPPPULSE_APPULSE_1_Msk (0x1UL << CTI_CTIAPPPULSE_APPULSE_1_Pos) /*!< Bit mask of APPULSE_1 field. */
-#define CTI_CTIAPPPULSE_APPULSE_1_Generate (1UL) /*!< Generates an event pulse on channel 1 */
+#define CTI_CTIAPPPULSE_APPULSE_1_Generate (1UL) /*!< Generates an event pulse on channel 1. */
 
 /* Bit 0 : Setting a bit HIGH generates a channel event pulse for the selected channel. There is one bit of the register for each channel. */
 #define CTI_CTIAPPPULSE_APPULSE_0_Pos (0UL) /*!< Position of APPULSE_0 field. */
 #define CTI_CTIAPPPULSE_APPULSE_0_Msk (0x1UL << CTI_CTIAPPPULSE_APPULSE_0_Pos) /*!< Bit mask of APPULSE_0 field. */
-#define CTI_CTIAPPPULSE_APPULSE_0_Generate (1UL) /*!< Generates an event pulse on channel 0 */
+#define CTI_CTIAPPPULSE_APPULSE_0_Generate (1UL) /*!< Generates an event pulse on channel 0. */
 
 /* Register: CTI_CTIINEN */
 /* Description: Description collection: CTI Trigger input */
 
-/* Bit 3 : Enables a cross trigger event to channel 3 when a ctitrigin input is activated */
+/* Bit 3 : Enables a cross trigger event to channel 3 when a ctitrigin input is activated. */
 #define CTI_CTIINEN_TRIGINEN_3_Pos (3UL) /*!< Position of TRIGINEN_3 field. */
 #define CTI_CTIINEN_TRIGINEN_3_Msk (0x1UL << CTI_CTIINEN_TRIGINEN_3_Pos) /*!< Bit mask of TRIGINEN_3 field. */
-#define CTI_CTIINEN_TRIGINEN_3_Disabled (0UL) /*!< Input trigger n events are ignored by channel 3 */
-#define CTI_CTIINEN_TRIGINEN_3_Enabled (1UL) /*!< When an event is received on input trigger n (ctitrigin[n]) generate an event on channel 3 */
+#define CTI_CTIINEN_TRIGINEN_3_Disabled (0UL) /*!< Input trigger n events are ignored by channel 3. */
+#define CTI_CTIINEN_TRIGINEN_3_Enabled (1UL) /*!< When an event is received on input trigger n (ctitrigin[n]), generate an event on channel 3. */
 
-/* Bit 2 : Enables a cross trigger event to channel 2 when a ctitrigin input is activated */
+/* Bit 2 : Enables a cross trigger event to channel 2 when a ctitrigin input is activated. */
 #define CTI_CTIINEN_TRIGINEN_2_Pos (2UL) /*!< Position of TRIGINEN_2 field. */
 #define CTI_CTIINEN_TRIGINEN_2_Msk (0x1UL << CTI_CTIINEN_TRIGINEN_2_Pos) /*!< Bit mask of TRIGINEN_2 field. */
-#define CTI_CTIINEN_TRIGINEN_2_Disabled (0UL) /*!< Input trigger n events are ignored by channel 2 */
-#define CTI_CTIINEN_TRIGINEN_2_Enabled (1UL) /*!< When an event is received on input trigger n (ctitrigin[n]) generate an event on channel 2 */
+#define CTI_CTIINEN_TRIGINEN_2_Disabled (0UL) /*!< Input trigger n events are ignored by channel 2. */
+#define CTI_CTIINEN_TRIGINEN_2_Enabled (1UL) /*!< When an event is received on input trigger n (ctitrigin[n]), generate an event on channel 2. */
 
-/* Bit 1 : Enables a cross trigger event to channel 1 when a ctitrigin input is activated */
+/* Bit 1 : Enables a cross trigger event to channel 1 when a ctitrigin input is activated. */
 #define CTI_CTIINEN_TRIGINEN_1_Pos (1UL) /*!< Position of TRIGINEN_1 field. */
 #define CTI_CTIINEN_TRIGINEN_1_Msk (0x1UL << CTI_CTIINEN_TRIGINEN_1_Pos) /*!< Bit mask of TRIGINEN_1 field. */
-#define CTI_CTIINEN_TRIGINEN_1_Disabled (0UL) /*!< Input trigger n events are ignored by channel 1 */
-#define CTI_CTIINEN_TRIGINEN_1_Enabled (1UL) /*!< When an event is received on input trigger n (ctitrigin[n]) generate an event on channel 1 */
+#define CTI_CTIINEN_TRIGINEN_1_Disabled (0UL) /*!< Input trigger n events are ignored by channel 1. */
+#define CTI_CTIINEN_TRIGINEN_1_Enabled (1UL) /*!< When an event is received on input trigger n (ctitrigin[n]), generate an event on channel 1. */
 
-/* Bit 0 : Enables a cross trigger event to channel 0 when a ctitrigin input is activated */
+/* Bit 0 : Enables a cross trigger event to channel 0 when a ctitrigin input is activated. */
 #define CTI_CTIINEN_TRIGINEN_0_Pos (0UL) /*!< Position of TRIGINEN_0 field. */
 #define CTI_CTIINEN_TRIGINEN_0_Msk (0x1UL << CTI_CTIINEN_TRIGINEN_0_Pos) /*!< Bit mask of TRIGINEN_0 field. */
-#define CTI_CTIINEN_TRIGINEN_0_Disabled (0UL) /*!< Input trigger n events are ignored by channel 0 */
-#define CTI_CTIINEN_TRIGINEN_0_Enabled (1UL) /*!< When an event is received on input trigger n (ctitrigin[n]) generate an event on channel 0 */
+#define CTI_CTIINEN_TRIGINEN_0_Disabled (0UL) /*!< Input trigger n events are ignored by channel 0. */
+#define CTI_CTIINEN_TRIGINEN_0_Enabled (1UL) /*!< When an event is received on input trigger n (ctitrigin[n]), generate an event on channel 0. */
 
 /* Register: CTI_CTIOUTEN */
 /* Description: Description collection: CTI Trigger output */
 
-/* Bit 3 : Enables a cross trigger event to ctitrigout when channel 3 when is activated */
+/* Bit 3 : Enables a cross trigger event to ctitrigout when channel 3 is activated. */
 #define CTI_CTIOUTEN_TRIGOUTEN_3_Pos (3UL) /*!< Position of TRIGOUTEN_3 field. */
 #define CTI_CTIOUTEN_TRIGOUTEN_3_Msk (0x1UL << CTI_CTIOUTEN_TRIGOUTEN_3_Pos) /*!< Bit mask of TRIGOUTEN_3 field. */
-#define CTI_CTIOUTEN_TRIGOUTEN_3_Disabled (0UL) /*!< Channel 3 is ignored by output trigger n */
-#define CTI_CTIOUTEN_TRIGOUTEN_3_Enabled (1UL) /*!< When an event occur on channel 3, generate an event on output event n (ctitrigout[n]) */
+#define CTI_CTIOUTEN_TRIGOUTEN_3_Disabled (0UL) /*!< Channel 3 is ignored by output trigger n. */
+#define CTI_CTIOUTEN_TRIGOUTEN_3_Enabled (1UL) /*!< When an event occurs on channel 3, generate an event on output event n (ctitrigout[n]). */
 
-/* Bit 2 : Enables a cross trigger event to ctitrigout when channel 2 when is activated */
+/* Bit 2 : Enables a cross trigger event to ctitrigout when channel 2 is activated. */
 #define CTI_CTIOUTEN_TRIGOUTEN_2_Pos (2UL) /*!< Position of TRIGOUTEN_2 field. */
 #define CTI_CTIOUTEN_TRIGOUTEN_2_Msk (0x1UL << CTI_CTIOUTEN_TRIGOUTEN_2_Pos) /*!< Bit mask of TRIGOUTEN_2 field. */
-#define CTI_CTIOUTEN_TRIGOUTEN_2_Disabled (0UL) /*!< Channel 2 is ignored by output trigger n */
-#define CTI_CTIOUTEN_TRIGOUTEN_2_Enabled (1UL) /*!< When an event occur on channel 2, generate an event on output event n (ctitrigout[n]) */
+#define CTI_CTIOUTEN_TRIGOUTEN_2_Disabled (0UL) /*!< Channel 2 is ignored by output trigger n. */
+#define CTI_CTIOUTEN_TRIGOUTEN_2_Enabled (1UL) /*!< When an event occurs on channel 2, generate an event on output event n (ctitrigout[n]). */
 
-/* Bit 1 : Enables a cross trigger event to ctitrigout when channel 1 when is activated */
+/* Bit 1 : Enables a cross trigger event to ctitrigout when channel 1 is activated. */
 #define CTI_CTIOUTEN_TRIGOUTEN_1_Pos (1UL) /*!< Position of TRIGOUTEN_1 field. */
 #define CTI_CTIOUTEN_TRIGOUTEN_1_Msk (0x1UL << CTI_CTIOUTEN_TRIGOUTEN_1_Pos) /*!< Bit mask of TRIGOUTEN_1 field. */
-#define CTI_CTIOUTEN_TRIGOUTEN_1_Disabled (0UL) /*!< Channel 1 is ignored by output trigger n */
-#define CTI_CTIOUTEN_TRIGOUTEN_1_Enabled (1UL) /*!< When an event occur on channel 1, generate an event on output event n (ctitrigout[n]) */
+#define CTI_CTIOUTEN_TRIGOUTEN_1_Disabled (0UL) /*!< Channel 1 is ignored by output trigger n. */
+#define CTI_CTIOUTEN_TRIGOUTEN_1_Enabled (1UL) /*!< When an event occurs on channel 1, generate an event on output event n (ctitrigout[n]). */
 
-/* Bit 0 : Enables a cross trigger event to ctitrigout when channel 0 when is activated */
+/* Bit 0 : Enables a cross trigger event to ctitrigout when channel 0 is activated. */
 #define CTI_CTIOUTEN_TRIGOUTEN_0_Pos (0UL) /*!< Position of TRIGOUTEN_0 field. */
 #define CTI_CTIOUTEN_TRIGOUTEN_0_Msk (0x1UL << CTI_CTIOUTEN_TRIGOUTEN_0_Pos) /*!< Bit mask of TRIGOUTEN_0 field. */
-#define CTI_CTIOUTEN_TRIGOUTEN_0_Disabled (0UL) /*!< Channel 0 is ignored by output trigger n */
-#define CTI_CTIOUTEN_TRIGOUTEN_0_Enabled (1UL) /*!< When an event occur on channel 0, generate an event on output event n (ctitrigout[n]) */
+#define CTI_CTIOUTEN_TRIGOUTEN_0_Disabled (0UL) /*!< Channel 0 is ignored by output trigger n. */
+#define CTI_CTIOUTEN_TRIGOUTEN_0_Enabled (1UL) /*!< When an event occurs on channel 0, generate an event on output event n (ctitrigout[n]). */
 
 /* Register: CTI_CTITRIGINSTATUS */
 /* Description: CTI Trigger In Status register */
@@ -1452,50 +1452,50 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bit 7 : N/A */
 #define CTI_CTITRIGINSTATUS_UNUSED1_Pos (7UL) /*!< Position of UNUSED1 field. */
 #define CTI_CTITRIGINSTATUS_UNUSED1_Msk (0x1UL << CTI_CTITRIGINSTATUS_UNUSED1_Pos) /*!< Bit mask of UNUSED1 field. */
-#define CTI_CTITRIGINSTATUS_UNUSED1_Inactive (0UL) /*!< Ctitrigin 7 is inactive */
-#define CTI_CTITRIGINSTATUS_UNUSED1_Active (1UL) /*!< Ctitrigin 7 is active */
+#define CTI_CTITRIGINSTATUS_UNUSED1_Inactive (0UL) /*!< Ctitrigin 7 is inactive. */
+#define CTI_CTITRIGINSTATUS_UNUSED1_Active (1UL) /*!< Ctitrigin 7 is active. */
 
 /* Bit 6 : N/A */
 #define CTI_CTITRIGINSTATUS_UNUSED0_Pos (6UL) /*!< Position of UNUSED0 field. */
 #define CTI_CTITRIGINSTATUS_UNUSED0_Msk (0x1UL << CTI_CTITRIGINSTATUS_UNUSED0_Pos) /*!< Bit mask of UNUSED0 field. */
-#define CTI_CTITRIGINSTATUS_UNUSED0_Inactive (0UL) /*!< Ctitrigin 6 is inactive */
-#define CTI_CTITRIGINSTATUS_UNUSED0_Active (1UL) /*!< Ctitrigin 6 is active */
+#define CTI_CTITRIGINSTATUS_UNUSED0_Inactive (0UL) /*!< Ctitrigin 6 is inactive. */
+#define CTI_CTITRIGINSTATUS_UNUSED0_Active (1UL) /*!< Ctitrigin 6 is active. */
 
 /* Bit 5 : ETM Event Output 1 */
 #define CTI_CTITRIGINSTATUS_ETMEVTOUT1_Pos (5UL) /*!< Position of ETMEVTOUT1 field. */
 #define CTI_CTITRIGINSTATUS_ETMEVTOUT1_Msk (0x1UL << CTI_CTITRIGINSTATUS_ETMEVTOUT1_Pos) /*!< Bit mask of ETMEVTOUT1 field. */
-#define CTI_CTITRIGINSTATUS_ETMEVTOUT1_Inactive (0UL) /*!< Ctitrigin 5 is inactive */
-#define CTI_CTITRIGINSTATUS_ETMEVTOUT1_Active (1UL) /*!< Ctitrigin 5 is active */
+#define CTI_CTITRIGINSTATUS_ETMEVTOUT1_Inactive (0UL) /*!< Ctitrigin 5 is inactive. */
+#define CTI_CTITRIGINSTATUS_ETMEVTOUT1_Active (1UL) /*!< Ctitrigin 5 is active. */
 
 /* Bit 4 : ETM Event Output 0 */
 #define CTI_CTITRIGINSTATUS_ETMEVTOUT0_Pos (4UL) /*!< Position of ETMEVTOUT0 field. */
 #define CTI_CTITRIGINSTATUS_ETMEVTOUT0_Msk (0x1UL << CTI_CTITRIGINSTATUS_ETMEVTOUT0_Pos) /*!< Bit mask of ETMEVTOUT0 field. */
-#define CTI_CTITRIGINSTATUS_ETMEVTOUT0_Inactive (0UL) /*!< Ctitrigin 4 is inactive */
-#define CTI_CTITRIGINSTATUS_ETMEVTOUT0_Active (1UL) /*!< Ctitrigin 4 is active */
+#define CTI_CTITRIGINSTATUS_ETMEVTOUT0_Inactive (0UL) /*!< Ctitrigin 4 is inactive. */
+#define CTI_CTITRIGINSTATUS_ETMEVTOUT0_Active (1UL) /*!< Ctitrigin 4 is active. */
 
 /* Bit 3 : DWT Comparator Output 2 */
 #define CTI_CTITRIGINSTATUS_DWTCOMPOUT2_Pos (3UL) /*!< Position of DWTCOMPOUT2 field. */
 #define CTI_CTITRIGINSTATUS_DWTCOMPOUT2_Msk (0x1UL << CTI_CTITRIGINSTATUS_DWTCOMPOUT2_Pos) /*!< Bit mask of DWTCOMPOUT2 field. */
-#define CTI_CTITRIGINSTATUS_DWTCOMPOUT2_Inactive (0UL) /*!< Ctitrigin 3 is inactive */
-#define CTI_CTITRIGINSTATUS_DWTCOMPOUT2_Active (1UL) /*!< Ctitrigin 3 is active */
+#define CTI_CTITRIGINSTATUS_DWTCOMPOUT2_Inactive (0UL) /*!< Ctitrigin 3 is inactive. */
+#define CTI_CTITRIGINSTATUS_DWTCOMPOUT2_Active (1UL) /*!< Ctitrigin 3 is active. */
 
 /* Bit 2 : DWT Comparator Output 1 */
 #define CTI_CTITRIGINSTATUS_DWTCOMPOUT1_Pos (2UL) /*!< Position of DWTCOMPOUT1 field. */
 #define CTI_CTITRIGINSTATUS_DWTCOMPOUT1_Msk (0x1UL << CTI_CTITRIGINSTATUS_DWTCOMPOUT1_Pos) /*!< Bit mask of DWTCOMPOUT1 field. */
-#define CTI_CTITRIGINSTATUS_DWTCOMPOUT1_Inactive (0UL) /*!< Ctitrigin 2 is inactive */
-#define CTI_CTITRIGINSTATUS_DWTCOMPOUT1_Active (1UL) /*!< Ctitrigin 2 is active */
+#define CTI_CTITRIGINSTATUS_DWTCOMPOUT1_Inactive (0UL) /*!< Ctitrigin 2 is inactive. */
+#define CTI_CTITRIGINSTATUS_DWTCOMPOUT1_Active (1UL) /*!< Ctitrigin 2 is active. */
 
 /* Bit 1 : DWT Comparator Output 0 */
 #define CTI_CTITRIGINSTATUS_DWTCOMPOUT0_Pos (1UL) /*!< Position of DWTCOMPOUT0 field. */
 #define CTI_CTITRIGINSTATUS_DWTCOMPOUT0_Msk (0x1UL << CTI_CTITRIGINSTATUS_DWTCOMPOUT0_Pos) /*!< Bit mask of DWTCOMPOUT0 field. */
-#define CTI_CTITRIGINSTATUS_DWTCOMPOUT0_Inactive (0UL) /*!< Ctitrigin 1 is inactive */
-#define CTI_CTITRIGINSTATUS_DWTCOMPOUT0_Active (1UL) /*!< Ctitrigin 1 is active */
+#define CTI_CTITRIGINSTATUS_DWTCOMPOUT0_Inactive (0UL) /*!< Ctitrigin 1 is inactive. */
+#define CTI_CTITRIGINSTATUS_DWTCOMPOUT0_Active (1UL) /*!< Ctitrigin 1 is active. */
 
 /* Bit 0 : Processor Halted */
 #define CTI_CTITRIGINSTATUS_CPUHALTED_Pos (0UL) /*!< Position of CPUHALTED field. */
 #define CTI_CTITRIGINSTATUS_CPUHALTED_Msk (0x1UL << CTI_CTITRIGINSTATUS_CPUHALTED_Pos) /*!< Bit mask of CPUHALTED field. */
-#define CTI_CTITRIGINSTATUS_CPUHALTED_Inactive (0UL) /*!< Ctitrigin 0 is inactive */
-#define CTI_CTITRIGINSTATUS_CPUHALTED_Active (1UL) /*!< Ctitrigin 0 is active */
+#define CTI_CTITRIGINSTATUS_CPUHALTED_Inactive (0UL) /*!< Ctitrigin 0 is inactive. */
+#define CTI_CTITRIGINSTATUS_CPUHALTED_Active (1UL) /*!< Ctitrigin 0 is active. */
 
 /* Register: CTI_CTITRIGOUTSTATUS */
 /* Description: CTI Trigger Out Status register */
@@ -1503,50 +1503,50 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bit 7 : ETM Event Input 3 */
 #define CTI_CTITRIGOUTSTATUS_ETMEVTIN3_Pos (7UL) /*!< Position of ETMEVTIN3 field. */
 #define CTI_CTITRIGOUTSTATUS_ETMEVTIN3_Msk (0x1UL << CTI_CTITRIGOUTSTATUS_ETMEVTIN3_Pos) /*!< Bit mask of ETMEVTIN3 field. */
-#define CTI_CTITRIGOUTSTATUS_ETMEVTIN3_Inactive (0UL) /*!< Ctitrigout 7 is inactive */
-#define CTI_CTITRIGOUTSTATUS_ETMEVTIN3_Active (1UL) /*!< Ctitrigout 7 is active */
+#define CTI_CTITRIGOUTSTATUS_ETMEVTIN3_Inactive (0UL) /*!< Ctitrigout 7 is inactive. */
+#define CTI_CTITRIGOUTSTATUS_ETMEVTIN3_Active (1UL) /*!< Ctitrigout 7 is active. */
 
 /* Bit 6 : ETM Event Input 2 */
 #define CTI_CTITRIGOUTSTATUS_ETMEVTIN2_Pos (6UL) /*!< Position of ETMEVTIN2 field. */
 #define CTI_CTITRIGOUTSTATUS_ETMEVTIN2_Msk (0x1UL << CTI_CTITRIGOUTSTATUS_ETMEVTIN2_Pos) /*!< Bit mask of ETMEVTIN2 field. */
-#define CTI_CTITRIGOUTSTATUS_ETMEVTIN2_Inactive (0UL) /*!< Ctitrigout 6 is inactive */
-#define CTI_CTITRIGOUTSTATUS_ETMEVTIN2_Active (1UL) /*!< Ctitrigout 6 is active */
+#define CTI_CTITRIGOUTSTATUS_ETMEVTIN2_Inactive (0UL) /*!< Ctitrigout 6 is inactive. */
+#define CTI_CTITRIGOUTSTATUS_ETMEVTIN2_Active (1UL) /*!< Ctitrigout 6 is active. */
 
 /* Bit 5 : ETM Event Input 1 */
 #define CTI_CTITRIGOUTSTATUS_ETMEVTIN1_Pos (5UL) /*!< Position of ETMEVTIN1 field. */
 #define CTI_CTITRIGOUTSTATUS_ETMEVTIN1_Msk (0x1UL << CTI_CTITRIGOUTSTATUS_ETMEVTIN1_Pos) /*!< Bit mask of ETMEVTIN1 field. */
-#define CTI_CTITRIGOUTSTATUS_ETMEVTIN1_Inactive (0UL) /*!< Ctitrigout 5 is inactive */
-#define CTI_CTITRIGOUTSTATUS_ETMEVTIN1_Active (1UL) /*!< Ctitrigout 5 is active */
+#define CTI_CTITRIGOUTSTATUS_ETMEVTIN1_Inactive (0UL) /*!< Ctitrigout 5 is inactive. */
+#define CTI_CTITRIGOUTSTATUS_ETMEVTIN1_Active (1UL) /*!< Ctitrigout 5 is active. */
 
 /* Bit 4 : ETM Event Input 0 */
 #define CTI_CTITRIGOUTSTATUS_ETMEVTIN0_Pos (4UL) /*!< Position of ETMEVTIN0 field. */
 #define CTI_CTITRIGOUTSTATUS_ETMEVTIN0_Msk (0x1UL << CTI_CTITRIGOUTSTATUS_ETMEVTIN0_Pos) /*!< Bit mask of ETMEVTIN0 field. */
-#define CTI_CTITRIGOUTSTATUS_ETMEVTIN0_Inactive (0UL) /*!< Ctitrigout 4 is inactive */
-#define CTI_CTITRIGOUTSTATUS_ETMEVTIN0_Active (1UL) /*!< Ctitrigout 4 is active */
+#define CTI_CTITRIGOUTSTATUS_ETMEVTIN0_Inactive (0UL) /*!< Ctitrigout 4 is inactive. */
+#define CTI_CTITRIGOUTSTATUS_ETMEVTIN0_Active (1UL) /*!< Ctitrigout 4 is active. */
 
 /* Bit 3 : N/A */
 #define CTI_CTITRIGOUTSTATUS_UNUSED1_Pos (3UL) /*!< Position of UNUSED1 field. */
 #define CTI_CTITRIGOUTSTATUS_UNUSED1_Msk (0x1UL << CTI_CTITRIGOUTSTATUS_UNUSED1_Pos) /*!< Bit mask of UNUSED1 field. */
-#define CTI_CTITRIGOUTSTATUS_UNUSED1_Inactive (0UL) /*!< Ctitrigout 3 is inactive */
-#define CTI_CTITRIGOUTSTATUS_UNUSED1_Active (1UL) /*!< Ctitrigout 3 is active */
+#define CTI_CTITRIGOUTSTATUS_UNUSED1_Inactive (0UL) /*!< Ctitrigout 3 is inactive. */
+#define CTI_CTITRIGOUTSTATUS_UNUSED1_Active (1UL) /*!< Ctitrigout 3 is active. */
 
 /* Bit 2 : N/A */
 #define CTI_CTITRIGOUTSTATUS_UNUSED0_Pos (2UL) /*!< Position of UNUSED0 field. */
 #define CTI_CTITRIGOUTSTATUS_UNUSED0_Msk (0x1UL << CTI_CTITRIGOUTSTATUS_UNUSED0_Pos) /*!< Bit mask of UNUSED0 field. */
-#define CTI_CTITRIGOUTSTATUS_UNUSED0_Inactive (0UL) /*!< Ctitrigout 2 is inactive */
-#define CTI_CTITRIGOUTSTATUS_UNUSED0_Active (1UL) /*!< Ctitrigout 2 is active */
+#define CTI_CTITRIGOUTSTATUS_UNUSED0_Inactive (0UL) /*!< Ctitrigout 2 is inactive. */
+#define CTI_CTITRIGOUTSTATUS_UNUSED0_Active (1UL) /*!< Ctitrigout 2 is active. */
 
 /* Bit 1 : Processor Restart */
 #define CTI_CTITRIGOUTSTATUS_CPURESTART_Pos (1UL) /*!< Position of CPURESTART field. */
 #define CTI_CTITRIGOUTSTATUS_CPURESTART_Msk (0x1UL << CTI_CTITRIGOUTSTATUS_CPURESTART_Pos) /*!< Bit mask of CPURESTART field. */
-#define CTI_CTITRIGOUTSTATUS_CPURESTART_Inactive (0UL) /*!< Ctitrigout 1 is inactive */
-#define CTI_CTITRIGOUTSTATUS_CPURESTART_Active (1UL) /*!< Ctitrigout 1 is active */
+#define CTI_CTITRIGOUTSTATUS_CPURESTART_Inactive (0UL) /*!< Ctitrigout 1 is inactive. */
+#define CTI_CTITRIGOUTSTATUS_CPURESTART_Active (1UL) /*!< Ctitrigout 1 is active. */
 
 /* Bit 0 : Processor debug request */
 #define CTI_CTITRIGOUTSTATUS_DEBUGREQ_Pos (0UL) /*!< Position of DEBUGREQ field. */
 #define CTI_CTITRIGOUTSTATUS_DEBUGREQ_Msk (0x1UL << CTI_CTITRIGOUTSTATUS_DEBUGREQ_Pos) /*!< Bit mask of DEBUGREQ field. */
-#define CTI_CTITRIGOUTSTATUS_DEBUGREQ_Inactive (0UL) /*!< Ctitrigout 0 is inactive */
-#define CTI_CTITRIGOUTSTATUS_DEBUGREQ_Active (1UL) /*!< Ctitrigout 0 is active */
+#define CTI_CTITRIGOUTSTATUS_DEBUGREQ_Inactive (0UL) /*!< Ctitrigout 0 is inactive. */
+#define CTI_CTITRIGOUTSTATUS_DEBUGREQ_Active (1UL) /*!< Ctitrigout 0 is active. */
 
 /* Register: CTI_CTICHINSTATUS */
 /* Description: CTI Channel In Status register */
@@ -1554,69 +1554,69 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bit 3 : Shows the status of the ctitrigin 3 input. */
 #define CTI_CTICHINSTATUS_CTICHINSTATUS_3_Pos (3UL) /*!< Position of CTICHINSTATUS_3 field. */
 #define CTI_CTICHINSTATUS_CTICHINSTATUS_3_Msk (0x1UL << CTI_CTICHINSTATUS_CTICHINSTATUS_3_Pos) /*!< Bit mask of CTICHINSTATUS_3 field. */
-#define CTI_CTICHINSTATUS_CTICHINSTATUS_3_Inactive (0UL) /*!< Ctichin 3 is inactive */
-#define CTI_CTICHINSTATUS_CTICHINSTATUS_3_Active (1UL) /*!< Ctichin 3 is active */
+#define CTI_CTICHINSTATUS_CTICHINSTATUS_3_Inactive (0UL) /*!< Ctichin 3 is inactive. */
+#define CTI_CTICHINSTATUS_CTICHINSTATUS_3_Active (1UL) /*!< Ctichin 3 is active. */
 
 /* Bit 2 : Shows the status of the ctitrigin 2 input. */
 #define CTI_CTICHINSTATUS_CTICHINSTATUS_2_Pos (2UL) /*!< Position of CTICHINSTATUS_2 field. */
 #define CTI_CTICHINSTATUS_CTICHINSTATUS_2_Msk (0x1UL << CTI_CTICHINSTATUS_CTICHINSTATUS_2_Pos) /*!< Bit mask of CTICHINSTATUS_2 field. */
-#define CTI_CTICHINSTATUS_CTICHINSTATUS_2_Inactive (0UL) /*!< Ctichin 2 is inactive */
-#define CTI_CTICHINSTATUS_CTICHINSTATUS_2_Active (1UL) /*!< Ctichin 2 is active */
+#define CTI_CTICHINSTATUS_CTICHINSTATUS_2_Inactive (0UL) /*!< Ctichin 2 is inactive. */
+#define CTI_CTICHINSTATUS_CTICHINSTATUS_2_Active (1UL) /*!< Ctichin 2 is active. */
 
 /* Bit 1 : Shows the status of the ctitrigin 1 input. */
 #define CTI_CTICHINSTATUS_CTICHINSTATUS_1_Pos (1UL) /*!< Position of CTICHINSTATUS_1 field. */
 #define CTI_CTICHINSTATUS_CTICHINSTATUS_1_Msk (0x1UL << CTI_CTICHINSTATUS_CTICHINSTATUS_1_Pos) /*!< Bit mask of CTICHINSTATUS_1 field. */
-#define CTI_CTICHINSTATUS_CTICHINSTATUS_1_Inactive (0UL) /*!< Ctichin 1 is inactive */
-#define CTI_CTICHINSTATUS_CTICHINSTATUS_1_Active (1UL) /*!< Ctichin 1 is active */
+#define CTI_CTICHINSTATUS_CTICHINSTATUS_1_Inactive (0UL) /*!< Ctichin 1 is inactive. */
+#define CTI_CTICHINSTATUS_CTICHINSTATUS_1_Active (1UL) /*!< Ctichin 1 is active. */
 
 /* Bit 0 : Shows the status of the ctitrigin 0 input. */
 #define CTI_CTICHINSTATUS_CTICHINSTATUS_0_Pos (0UL) /*!< Position of CTICHINSTATUS_0 field. */
 #define CTI_CTICHINSTATUS_CTICHINSTATUS_0_Msk (0x1UL << CTI_CTICHINSTATUS_CTICHINSTATUS_0_Pos) /*!< Bit mask of CTICHINSTATUS_0 field. */
-#define CTI_CTICHINSTATUS_CTICHINSTATUS_0_Inactive (0UL) /*!< Ctichin 0 is inactive */
-#define CTI_CTICHINSTATUS_CTICHINSTATUS_0_Active (1UL) /*!< Ctichin 0 is active */
+#define CTI_CTICHINSTATUS_CTICHINSTATUS_0_Inactive (0UL) /*!< Ctichin 0 is inactive. */
+#define CTI_CTICHINSTATUS_CTICHINSTATUS_0_Active (1UL) /*!< Ctichin 0 is active. */
 
 /* Register: CTI_CTIGATE */
 /* Description: Enable CTI Channel Gate register */
 
-/* Bit 3 : Enable ctichout3 */
+/* Bit 3 : Enable ctichout3. */
 #define CTI_CTIGATE_CTIGATEEN_3_Pos (3UL) /*!< Position of CTIGATEEN_3 field. */
 #define CTI_CTIGATE_CTIGATEEN_3_Msk (0x1UL << CTI_CTIGATE_CTIGATEEN_3_Pos) /*!< Bit mask of CTIGATEEN_3 field. */
-#define CTI_CTIGATE_CTIGATEEN_3_Disabled (0UL) /*!< Disable ctichout channel 3 propagation */
-#define CTI_CTIGATE_CTIGATEEN_3_Enabled (1UL) /*!< Enable ctichout channel 3 propagation */
+#define CTI_CTIGATE_CTIGATEEN_3_Disabled (0UL) /*!< Disable ctichout channel 3 propagation. */
+#define CTI_CTIGATE_CTIGATEEN_3_Enabled (1UL) /*!< Enable ctichout channel 3 propagation. */
 
-/* Bit 2 : Enable ctichout2 */
+/* Bit 2 : Enable ctichout2. */
 #define CTI_CTIGATE_CTIGATEEN_2_Pos (2UL) /*!< Position of CTIGATEEN_2 field. */
 #define CTI_CTIGATE_CTIGATEEN_2_Msk (0x1UL << CTI_CTIGATE_CTIGATEEN_2_Pos) /*!< Bit mask of CTIGATEEN_2 field. */
-#define CTI_CTIGATE_CTIGATEEN_2_Disabled (0UL) /*!< Disable ctichout channel 2 propagation */
-#define CTI_CTIGATE_CTIGATEEN_2_Enabled (1UL) /*!< Enable ctichout channel 2 propagation */
+#define CTI_CTIGATE_CTIGATEEN_2_Disabled (0UL) /*!< Disable ctichout channel 2 propagation. */
+#define CTI_CTIGATE_CTIGATEEN_2_Enabled (1UL) /*!< Enable ctichout channel 2 propagation. */
 
-/* Bit 1 : Enable ctichout1 */
+/* Bit 1 : Enable ctichout1. */
 #define CTI_CTIGATE_CTIGATEEN_1_Pos (1UL) /*!< Position of CTIGATEEN_1 field. */
 #define CTI_CTIGATE_CTIGATEEN_1_Msk (0x1UL << CTI_CTIGATE_CTIGATEEN_1_Pos) /*!< Bit mask of CTIGATEEN_1 field. */
-#define CTI_CTIGATE_CTIGATEEN_1_Disabled (0UL) /*!< Disable ctichout channel 1 propagation */
-#define CTI_CTIGATE_CTIGATEEN_1_Enabled (1UL) /*!< Enable ctichout channel 1 propagation */
+#define CTI_CTIGATE_CTIGATEEN_1_Disabled (0UL) /*!< Disable ctichout channel 1 propagation. */
+#define CTI_CTIGATE_CTIGATEEN_1_Enabled (1UL) /*!< Enable ctichout channel 1 propagation. */
 
-/* Bit 0 : Enable ctichout0 */
+/* Bit 0 : Enable ctichout0. */
 #define CTI_CTIGATE_CTIGATEEN_0_Pos (0UL) /*!< Position of CTIGATEEN_0 field. */
 #define CTI_CTIGATE_CTIGATEEN_0_Msk (0x1UL << CTI_CTIGATE_CTIGATEEN_0_Pos) /*!< Bit mask of CTIGATEEN_0 field. */
-#define CTI_CTIGATE_CTIGATEEN_0_Disabled (0UL) /*!< Disable ctichout channel 0 propagation */
-#define CTI_CTIGATE_CTIGATEEN_0_Enabled (1UL) /*!< Enable ctichout channel 0 propagation */
+#define CTI_CTIGATE_CTIGATEEN_0_Disabled (0UL) /*!< Disable ctichout channel 0 propagation. */
+#define CTI_CTIGATE_CTIGATEEN_0_Enabled (1UL) /*!< Enable ctichout channel 0 propagation. */
 
 /* Register: CTI_DEVARCH */
 /* Description: Device Architecture register */
 
-/* Bit 0 : Contains the CTI device architecture */
+/* Bit 0 : Contains the CTI device architecture. */
 #define CTI_DEVARCH_Architecture_Pos (0UL) /*!< Position of Architecture field. */
 #define CTI_DEVARCH_Architecture_Msk (0x1UL << CTI_DEVARCH_Architecture_Pos) /*!< Bit mask of Architecture field. */
 
 /* Register: CTI_DEVID */
 /* Description: Device Configuration register */
 
-/* Bits 19..16 : Number of ECT channels available */
+/* Bits 19..16 : Number of ECT channels available. */
 #define CTI_DEVID_NUMCH_Pos (16UL) /*!< Position of NUMCH field. */
 #define CTI_DEVID_NUMCH_Msk (0xFUL << CTI_DEVID_NUMCH_Pos) /*!< Bit mask of NUMCH field. */
 
-/* Bits 15..8 : Number of ECT triggers available */
+/* Bits 15..8 : Number of ECT triggers available. */
 #define CTI_DEVID_NUMTRIG_Pos (8UL) /*!< Position of NUMTRIG field. */
 #define CTI_DEVID_NUMTRIG_Msk (0xFFUL << CTI_DEVID_NUMTRIG_Pos) /*!< Bit mask of NUMTRIG field. */
 
@@ -1632,22 +1632,22 @@ POSSIBILITY OF SUCH DAMAGE.
                     the major classification as specified in the MAJOR field. */
 #define CTI_DEVTYPE_SUB_Pos (4UL) /*!< Position of SUB field. */
 #define CTI_DEVTYPE_SUB_Msk (0xFUL << CTI_DEVTYPE_SUB_Pos) /*!< Bit mask of SUB field. */
-#define CTI_DEVTYPE_SUB_Crosstrigger (0b0001UL) /*!< Indicates that this component is a sub-triggering component */
+#define CTI_DEVTYPE_SUB_Crosstrigger (0b0001UL) /*!< Indicates that this component is a sub-triggering component. */
 
 /* Bits 3..0 : Major classification of the type of the debug component as specified in the ARM Architecture Specification for this
-                    debug and trace component */
+                    debug and trace component. */
 #define CTI_DEVTYPE_MAJOR_Pos (0UL) /*!< Position of MAJOR field. */
 #define CTI_DEVTYPE_MAJOR_Msk (0xFUL << CTI_DEVTYPE_MAJOR_Pos) /*!< Bit mask of MAJOR field. */
-#define CTI_DEVTYPE_MAJOR_Controller (0b0100UL) /*!< Indicates that this component allows a debugger to control other components in a CoreSight SoC-400 system */
+#define CTI_DEVTYPE_MAJOR_Controller (0b0100UL) /*!< Indicates that this component allows a debugger to control other components in a CoreSight SoC-400 system. */
 
 /* Register: CTI_PIDR4 */
 /* Description: Peripheral ID4 Register */
 
-/* Bits 7..4 : Always 0b0000. Indicates that the device only occupies 4KB of memory */
+/* Bits 7..4 : Always 0b0000. Indicates that the device only occupies 4KB of memory. */
 #define CTI_PIDR4_SIZE_Pos (4UL) /*!< Position of SIZE field. */
 #define CTI_PIDR4_SIZE_Msk (0xFUL << CTI_PIDR4_SIZE_Pos) /*!< Bit mask of SIZE field. */
 
-/* Bits 3..0 : Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component */
+/* Bits 3..0 : Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component. */
 #define CTI_PIDR4_DES_2_Pos (0UL) /*!< Position of DES_2 field. */
 #define CTI_PIDR4_DES_2_Msk (0xFUL << CTI_PIDR4_DES_2_Pos) /*!< Bit mask of DES_2 field. */
 #define CTI_PIDR4_DES_2_Code (0b0100UL) /*!< JEDEC continuation code */
@@ -1655,23 +1655,23 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: CTI_PIDR0 */
 /* Description: Peripheral ID0 Register */
 
-/* Bits 7..0 : Bits[7:0] of the 12-bit part number of the component. The designer of the component assigns this part number */
+/* Bits 7..0 : Bits[7:0] of the 12-bit part number of the component. The designer of the component assigns this part number. */
 #define CTI_PIDR0_PART_0_Pos (0UL) /*!< Position of PART_0 field. */
 #define CTI_PIDR0_PART_0_Msk (0xFFUL << CTI_PIDR0_PART_0_Pos) /*!< Bit mask of PART_0 field. */
-#define CTI_PIDR0_PART_0_PartnumberL (0x21UL) /*!< Indicates bits[7:0] of the part number of the component */
+#define CTI_PIDR0_PART_0_PartnumberL (0x21UL) /*!< Indicates bits[7:0] of the part number of the component. */
 
 /* Register: CTI_PIDR1 */
 /* Description: Peripheral ID1 Register */
 
-/* Bits 7..4 : Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component */
+/* Bits 7..4 : Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component. */
 #define CTI_PIDR1_DES_0_Pos (4UL) /*!< Position of DES_0 field. */
 #define CTI_PIDR1_DES_0_Msk (0xFUL << CTI_PIDR1_DES_0_Pos) /*!< Bit mask of DES_0 field. */
 #define CTI_PIDR1_DES_0_Arm (0b1011UL) /*!< ARM. Bits[3:0] of the JEDEC JEP106 Identity Code */
 
-/* Bits 3..0 : Bits[11:8] of the 12-bit part number of the component. The designer of the component assigns this part number */
+/* Bits 3..0 : Bits[11:8] of the 12-bit part number of the component. The designer of the component assigns this part number. */
 #define CTI_PIDR1_PART_1_Pos (0UL) /*!< Position of PART_1 field. */
 #define CTI_PIDR1_PART_1_Msk (0xFUL << CTI_PIDR1_PART_1_Pos) /*!< Bit mask of PART_1 field. */
-#define CTI_PIDR1_PART_1_PartnumberH (0b1101UL) /*!< Indicates bits[11:8] of the part number of the component */
+#define CTI_PIDR1_PART_1_PartnumberH (0b1101UL) /*!< Indicates bits[11:8] of the part number of the component. */
 
 /* Register: CTI_PIDR2 */
 /* Description: Peripheral ID2 Register */
@@ -1681,11 +1681,11 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CTI_PIDR2_REVISION_Msk (0xFUL << CTI_PIDR2_REVISION_Pos) /*!< Bit mask of REVISION field. */
 #define CTI_PIDR2_REVISION_Rev0p0 (0b0000UL) /*!< This device is at r0p0 */
 
-/* Bit 3 : Always 1. Indicates that the JEDEC-assigned designer ID is used */
+/* Bit 3 : Always 1. Indicates that the JEDEC-assigned designer ID is used. */
 #define CTI_PIDR2_JEDEC_Pos (3UL) /*!< Position of JEDEC field. */
 #define CTI_PIDR2_JEDEC_Msk (0x1UL << CTI_PIDR2_JEDEC_Pos) /*!< Bit mask of JEDEC field. */
 
-/* Bits 2..0 : Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component */
+/* Bits 2..0 : Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component. */
 #define CTI_PIDR2_DES_1_Pos (0UL) /*!< Position of DES_1 field. */
 #define CTI_PIDR2_DES_1_Msk (0x7UL << CTI_PIDR2_DES_1_Pos) /*!< Bit mask of DES_1 field. */
 #define CTI_PIDR2_DES_1_Arm (0b011UL) /*!< ARM. Bits[6:4] of the JEDEC JEP106 Identity Code */
@@ -1698,21 +1698,21 @@ POSSIBILITY OF SUCH DAMAGE.
                     metal fix can change this field if required, for example, by driving it from registers that reset to 0b0000. */
 #define CTI_PIDR3_REVAND_Pos (4UL) /*!< Position of REVAND field. */
 #define CTI_PIDR3_REVAND_Msk (0xFUL << CTI_PIDR3_REVAND_Pos) /*!< Bit mask of REVAND field. */
-#define CTI_PIDR3_REVAND_NoErrata (0b000UL) /*!< Indicates that there are no errata fixes to this component */
+#define CTI_PIDR3_REVAND_NoErrata (0b000UL) /*!< Indicates that there are no errata fixes to this component. */
 
 /* Bits 3..0 : Customer Modified. Indicates whether the customer has modified the behavior of the component. In most cases,
                     this field is 0b0000. Customers change this value when they make authorized modifications to this component. */
 #define CTI_PIDR3_CMOD_Pos (0UL) /*!< Position of CMOD field. */
 #define CTI_PIDR3_CMOD_Msk (0xFUL << CTI_PIDR3_CMOD_Pos) /*!< Bit mask of CMOD field. */
-#define CTI_PIDR3_CMOD_Unmodified (0b000UL) /*!< Indicates that the customer has not modified this component */
+#define CTI_PIDR3_CMOD_Unmodified (0b000UL) /*!< Indicates that the customer has not modified this component. */
 
 /* Register: CTI_CIDR0 */
 /* Description: Component ID0 Register */
 
-/* Bits 7..0 : Preamble[0]. Contains bits[7:0] of the component identification code */
+/* Bits 7..0 : Preamble[0]. Contains bits[7:0] of the component identification code. */
 #define CTI_CIDR0_PRMBL_0_Pos (0UL) /*!< Position of PRMBL_0 field. */
 #define CTI_CIDR0_PRMBL_0_Msk (0xFFUL << CTI_CIDR0_PRMBL_0_Pos) /*!< Bit mask of PRMBL_0 field. */
-#define CTI_CIDR0_PRMBL_0_Value (0x0DUL) /*!< Bits[7:0] of the identification code */
+#define CTI_CIDR0_PRMBL_0_Value (0x0DUL) /*!< Bits[7:0] of the identification code. */
 
 /* Register: CTI_CIDR1 */
 /* Description: Component ID1 Register */
@@ -1721,42 +1721,42 @@ POSSIBILITY OF SUCH DAMAGE.
                     Contains bits[15:12] of the component identification code */
 #define CTI_CIDR1_CLASS_Pos (4UL) /*!< Position of CLASS field. */
 #define CTI_CIDR1_CLASS_Msk (0xFUL << CTI_CIDR1_CLASS_Pos) /*!< Bit mask of CLASS field. */
-#define CTI_CIDR1_CLASS_Coresight (0b1001UL) /*!< Indicates that the component is a CoreSight component */
+#define CTI_CIDR1_CLASS_Coresight (0b1001UL) /*!< Indicates that the component is a CoreSight component. */
 
-/* Bits 3..0 : Preamble[1]. Contains bits[11:8] of the component identification code */
+/* Bits 3..0 : Preamble[1]. Contains bits[11:8] of the component identification code. */
 #define CTI_CIDR1_PRMBL_1_Pos (0UL) /*!< Position of PRMBL_1 field. */
 #define CTI_CIDR1_PRMBL_1_Msk (0xFUL << CTI_CIDR1_PRMBL_1_Pos) /*!< Bit mask of PRMBL_1 field. */
-#define CTI_CIDR1_PRMBL_1_Value (0b0000UL) /*!< Bits[11:8] of the identification code */
+#define CTI_CIDR1_PRMBL_1_Value (0b0000UL) /*!< Bits[11:8] of the identification code. */
 
 /* Register: CTI_CIDR2 */
 /* Description: Component ID2 Register */
 
-/* Bits 7..0 : Preamble[2]. Contains bits[23:16] of the component identification code */
+/* Bits 7..0 : Preamble[2]. Contains bits[23:16] of the component identification code. */
 #define CTI_CIDR2_PRMBL_2_Pos (0UL) /*!< Position of PRMBL_2 field. */
 #define CTI_CIDR2_PRMBL_2_Msk (0xFFUL << CTI_CIDR2_PRMBL_2_Pos) /*!< Bit mask of PRMBL_2 field. */
-#define CTI_CIDR2_PRMBL_2_Value (0x05UL) /*!< Bits[23:16] of the identification code */
+#define CTI_CIDR2_PRMBL_2_Value (0x05UL) /*!< Bits[23:16] of the identification code. */
 
 /* Register: CTI_CIDR3 */
 /* Description: Component ID3 Register */
 
-/* Bits 7..0 : Preamble[3]. Contains bits[31:24] of the component identification code */
+/* Bits 7..0 : Preamble[3]. Contains bits[31:24] of the component identification code. */
 #define CTI_CIDR3_PRMBL_3_Pos (0UL) /*!< Position of PRMBL_3 field. */
 #define CTI_CIDR3_PRMBL_3_Msk (0xFFUL << CTI_CIDR3_PRMBL_3_Pos) /*!< Bit mask of PRMBL_3 field. */
-#define CTI_CIDR3_PRMBL_3_Value (0xB1UL) /*!< Bits[31:24] of the identification code */
+#define CTI_CIDR3_PRMBL_3_Value (0xB1UL) /*!< Bits[31:24] of the identification code. */
 
 
 /* Peripheral: CTRLAPPERI */
 /* Description: Control access port 0 */
 
 /* Register: CTRLAPPERI_MAILBOX_RXDATA */
-/* Description: Data sent from the debugger to the CPU */
+/* Description: Data sent from the debugger to the CPU. */
 
 /* Bits 31..0 : Data received from debugger */
 #define CTRLAPPERI_MAILBOX_RXDATA_RXDATA_Pos (0UL) /*!< Position of RXDATA field. */
 #define CTRLAPPERI_MAILBOX_RXDATA_RXDATA_Msk (0xFFFFFFFFUL << CTRLAPPERI_MAILBOX_RXDATA_RXDATA_Pos) /*!< Bit mask of RXDATA field. */
 
 /* Register: CTRLAPPERI_MAILBOX_RXSTATUS */
-/* Description: Status to indicate if data sent from the debugger to the CPU has been read */
+/* Description: This register shows a status that indicates if data sent from the debugger to the CPU has been read. */
 
 /* Bit 0 : Status of data in register RXDATA */
 #define CTRLAPPERI_MAILBOX_RXSTATUS_RXSTATUS_Pos (0UL) /*!< Position of RXSTATUS field. */
@@ -1765,14 +1765,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CTRLAPPERI_MAILBOX_RXSTATUS_RXSTATUS_DataPending (1UL) /*!< Data pending in register RXDATA */
 
 /* Register: CTRLAPPERI_MAILBOX_TXDATA */
-/* Description: Data sent from the CPU to the debugger */
+/* Description: Data sent from the CPU to the debugger. */
 
 /* Bits 31..0 : Data sent to debugger */
 #define CTRLAPPERI_MAILBOX_TXDATA_TXDATA_Pos (0UL) /*!< Position of TXDATA field. */
 #define CTRLAPPERI_MAILBOX_TXDATA_TXDATA_Msk (0xFFFFFFFFUL << CTRLAPPERI_MAILBOX_TXDATA_TXDATA_Pos) /*!< Bit mask of TXDATA field. */
 
 /* Register: CTRLAPPERI_MAILBOX_TXSTATUS */
-/* Description: Status to indicate if data sent from the CPU to the debugger has been read */
+/* Description: This register shows a status that indicates if the data sent from the CPU to the debugger has been read. */
 
 /* Bit 0 : Status of data in register TXDATA */
 #define CTRLAPPERI_MAILBOX_TXSTATUS_TXSTATUS_Pos (0UL) /*!< Position of TXSTATUS field. */
@@ -1781,39 +1781,39 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CTRLAPPERI_MAILBOX_TXSTATUS_TXSTATUS_DataPending (1UL) /*!< Data pending in register TXDATA */
 
 /* Register: CTRLAPPERI_ERASEPROTECT_LOCK */
-/* Description: Lock register ERASEPROTECT.DISABLE from being written until next reset */
+/* Description: This register locks the ERASEPROTECT.DISABLE register from being written until next reset. */
 
-/* Bit 0 : Lock register ERASEPROTECT.DISABLE from being written until next reset */
+/* Bit 0 : Lock ERASEPROTECT.DISABLE register from being written until next reset */
 #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Pos (0UL) /*!< Position of LOCK field. */
 #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Msk (0x1UL << CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Pos) /*!< Bit mask of LOCK field. */
 #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Unlocked (0UL) /*!< Register ERASEPROTECT.DISABLE is writeable */
 #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Locked (1UL) /*!< Register ERASEPROTECT.DISABLE is read-only */
 
 /* Register: CTRLAPPERI_ERASEPROTECT_DISABLE */
-/* Description: Disable ERASEPROTECT and perform ERASEALL */
+/* Description: This register disables the ERASEPROTECT register and performs an  ERASEALL operation. */
 
-/* Bits 31..0 : The ERASEALL sequence will be initiated if value of KEY fields are non-zero and KEY fields match on both CPU and debugger side */
+/* Bits 31..0 : The ERASEALL sequence is initiated if the value of the KEY fields are non-zero and the KEY fields match on both the CPU and debugger sides. */
 #define CTRLAPPERI_ERASEPROTECT_DISABLE_KEY_Pos (0UL) /*!< Position of KEY field. */
 #define CTRLAPPERI_ERASEPROTECT_DISABLE_KEY_Msk (0xFFFFFFFFUL << CTRLAPPERI_ERASEPROTECT_DISABLE_KEY_Pos) /*!< Bit mask of KEY field. */
 
 /* Register: CTRLAPPERI_APPROTECT_LOCK */
-/* Description: Lock register APPROTECT.DISABLE from being written to until next reset */
+/* Description: This register locks the APPROTECT.DISABLE register from being written to until next reset. */
 
-/* Bit 0 : Lock register APPROTECT.DISABLE from being written to until next reset */
+/* Bit 0 : Lock the APPROTECT.DISABLE register from being written to until next reset */
 #define CTRLAPPERI_APPROTECT_LOCK_LOCK_Pos (0UL) /*!< Position of LOCK field. */
 #define CTRLAPPERI_APPROTECT_LOCK_LOCK_Msk (0x1UL << CTRLAPPERI_APPROTECT_LOCK_LOCK_Pos) /*!< Bit mask of LOCK field. */
 #define CTRLAPPERI_APPROTECT_LOCK_LOCK_Unlocked (0UL) /*!< Register APPROTECT.DISABLE is writeable */
 #define CTRLAPPERI_APPROTECT_LOCK_LOCK_Locked (1UL) /*!< Register APPROTECT.DISABLE is read-only */
 
 /* Register: CTRLAPPERI_APPROTECT_DISABLE */
-/* Description: Disable APPROTECT and enable debug access to non-secure mode */
+/* Description: This register disables the APPROTECT register and enables debug access to non-secure mode. */
 
-/* Bits 31..0 : Disable APPROTECT and enable debug access to non-secure mode until next pin reset if KEY fields match The current APPROTECT value as configured from UICR is bypassed if value of KEY fields are non-zero and KEY fields match on both CPU and debugger side */
+/* Bits 31..0 : Disable APPROTECT and enable debug access to non-secure mode until the next pin reset if the KEY fields match. The current APPROTECT value as configured from UICR is bypassed if the value of the KEY fields are non-zero and the KEY fields match on both the CPU and debugger sides. */
 #define CTRLAPPERI_APPROTECT_DISABLE_KEY_Pos (0UL) /*!< Position of KEY field. */
 #define CTRLAPPERI_APPROTECT_DISABLE_KEY_Msk (0xFFFFFFFFUL << CTRLAPPERI_APPROTECT_DISABLE_KEY_Pos) /*!< Bit mask of KEY field. */
 
 /* Register: CTRLAPPERI_SECUREAPPROTECT_LOCK */
-/* Description: Lock register SECUREAPPROTECT.DISABLE from being written until next reset */
+/* Description: This register locks the SECUREAPPROTECT.DISABLE register from being written until next reset. */
 
 /* Bit 0 : Lock register SECUREAPPROTECT.DISABLE from being written until next reset */
 #define CTRLAPPERI_SECUREAPPROTECT_LOCK_LOCK_Pos (0UL) /*!< Position of LOCK field. */
@@ -1822,32 +1822,32 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CTRLAPPERI_SECUREAPPROTECT_LOCK_LOCK_Locked (1UL) /*!< Register SECUREAPPROTECT.DISABLE is read-only */
 
 /* Register: CTRLAPPERI_SECUREAPPROTECT_DISABLE */
-/* Description: Disable SECUREAPPROTECT and enable debug access to secure mode */
+/* Description: This register disables the SECUREAPPROTECT register and enables debug access to secure mode. */
 
-/* Bits 31..0 : Disable SECUREAPPROTECT and enable debug of secure mode until next pin reset if KEY fields match The current SECUREAPPROTECT value as configured from UICR is bypassed if value of KEY fields are non-zero and KEY fields match on both CPU and debugger side */
+/* Bits 31..0 : Disable SECUREAPPROTECT and enable debug of secure mode until the next pin reset if the KEY fields match. The current SECUREAPPROTECT value as configured from UICR is bypassed if the value of the KEY fields are non-zero and the KEY fields match on both the CPU and debugger sides. */
 #define CTRLAPPERI_SECUREAPPROTECT_DISABLE_KEY_Pos (0UL) /*!< Position of KEY field. */
 #define CTRLAPPERI_SECUREAPPROTECT_DISABLE_KEY_Msk (0xFFFFFFFFUL << CTRLAPPERI_SECUREAPPROTECT_DISABLE_KEY_Pos) /*!< Bit mask of KEY field. */
 
 /* Register: CTRLAPPERI_STATUS */
 /* Description: Status bits for CTRL-AP peripheral */
 
-/* Bit 2 : Status bit for access port protection in secure mode */
-#define CTRLAPPERI_STATUS_SECUREAPPROTECT_Pos (2UL) /*!< Position of SECUREAPPROTECT field. */
+/* Bit 2 : Status bit for device debug interface mode */
+#define CTRLAPPERI_STATUS_DBGIFACEMODE_Pos (2UL) /*!< Position of DBGIFACEMODE field. */
+#define CTRLAPPERI_STATUS_DBGIFACEMODE_Msk (0x1UL << CTRLAPPERI_STATUS_DBGIFACEMODE_Pos) /*!< Bit mask of DBGIFACEMODE field. */
+#define CTRLAPPERI_STATUS_DBGIFACEMODE_Disabled (0UL) /*!< No debugger attached */
+#define CTRLAPPERI_STATUS_DBGIFACEMODE_Enabled (1UL) /*!< Debugger is attached and device is in debug interface mode */
+
+/* Bit 1 : Status bit for access port protection in secure mode */
+#define CTRLAPPERI_STATUS_SECUREAPPROTECT_Pos (1UL) /*!< Position of SECUREAPPROTECT field. */
 #define CTRLAPPERI_STATUS_SECUREAPPROTECT_Msk (0x1UL << CTRLAPPERI_STATUS_SECUREAPPROTECT_Pos) /*!< Bit mask of SECUREAPPROTECT field. */
 #define CTRLAPPERI_STATUS_SECUREAPPROTECT_Disabled (0UL) /*!< Secure mode access port protection is currently disabled */
 #define CTRLAPPERI_STATUS_SECUREAPPROTECT_Enabled (1UL) /*!< Secure mode access port protection is currently enabled */
 
-/* Bit 1 : Status bit for access port protection in non-secure mode */
-#define CTRLAPPERI_STATUS_APPROTECT_Pos (1UL) /*!< Position of APPROTECT field. */
+/* Bit 0 : Status bit for access port protection in non-secure mode */
+#define CTRLAPPERI_STATUS_APPROTECT_Pos (0UL) /*!< Position of APPROTECT field. */
 #define CTRLAPPERI_STATUS_APPROTECT_Msk (0x1UL << CTRLAPPERI_STATUS_APPROTECT_Pos) /*!< Bit mask of APPROTECT field. */
 #define CTRLAPPERI_STATUS_APPROTECT_Disabled (0UL) /*!< Non-secure mode access port protection is currently disabled */
 #define CTRLAPPERI_STATUS_APPROTECT_Enabled (1UL) /*!< Non-secure mode access port protection is currently enabled */
-
-/* Bit 0 : Status bit for device debug interface mode */
-#define CTRLAPPERI_STATUS_DBGIFACEMODE_Pos (0UL) /*!< Position of DBGIFACEMODE field. */
-#define CTRLAPPERI_STATUS_DBGIFACEMODE_Msk (0x1UL << CTRLAPPERI_STATUS_DBGIFACEMODE_Pos) /*!< Bit mask of DBGIFACEMODE field. */
-#define CTRLAPPERI_STATUS_DBGIFACEMODE_Disabled (0UL) /*!< No debugger attached */
-#define CTRLAPPERI_STATUS_DBGIFACEMODE_Enabled (1UL) /*!< Debugger is attached and device is in debug interface mode */
 
 
 /* Peripheral: DCNF */
@@ -3228,7 +3228,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 31..0 : Part Variant, Hardware version and Production configuration, encoded as ASCII */
 #define FICR_INFO_VARIANT_VARIANT_Pos (0UL) /*!< Position of VARIANT field. */
 #define FICR_INFO_VARIANT_VARIANT_Msk (0xFFFFFFFFUL << FICR_INFO_VARIANT_VARIANT_Pos) /*!< Bit mask of VARIANT field. */
-#define FICR_INFO_VARIANT_VARIANT_AAAA (0x41414141UL) /*!< AAAA */
+#define FICR_INFO_VARIANT_VARIANT_QKAA (0x514B4141UL) /*!< QKAA */
 #define FICR_INFO_VARIANT_VARIANT_Unspecified (0xFFFFFFFFUL) /*!< Unspecified */
 
 /* Register: FICR_INFO_PACKAGE */
@@ -3879,6 +3879,15 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIOTE_INTENCLR_IN0_Enabled (1UL) /*!< Read: Enabled */
 #define GPIOTE_INTENCLR_IN0_Clear (1UL) /*!< Disable */
 
+/* Register: GPIOTE_LATENCY */
+/* Description: Latency selection for Event mode (MODE=Event) with rising or falling edge detection on the pin. */
+
+/* Bit 0 : Latency setting */
+#define GPIOTE_LATENCY_LATENCY_Pos (0UL) /*!< Position of LATENCY field. */
+#define GPIOTE_LATENCY_LATENCY_Msk (0x1UL << GPIOTE_LATENCY_LATENCY_Pos) /*!< Bit mask of LATENCY field. */
+#define GPIOTE_LATENCY_LATENCY_LowPower (0UL) /*!< Low power setting, for signals with minimum hold time tGPIOTE,HOLD,LP; refer to Electrical specification section */
+#define GPIOTE_LATENCY_LATENCY_LowLatency (1UL) /*!< Low latency setting, for signals with minimum hold time tGPIOTE,HOLD,LL; refer to Electrical specification section */
+
 /* Register: GPIOTE_CONFIG */
 /* Description: Description collection: Configuration for OUT[n], SET[n], and CLR[n] tasks and IN[n] event */
 
@@ -3924,9 +3933,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define I2S_TASKS_START_TASKS_START_Trigger (1UL) /*!< Trigger task */
 
 /* Register: I2S_TASKS_STOP */
-/* Description: Stops I2S transfer. Also stops MCK generator. Triggering this task will cause the event STOPPED to be generated. */
+/* Description: Stops I2S transfer and MCK generator. Triggering this task will cause the event STOPPED to be generated. */
 
-/* Bit 0 : Stops I2S transfer. Also stops MCK generator. Triggering this task will cause the event STOPPED to be generated. */
+/* Bit 0 : Stops I2S transfer and MCK generator. Triggering this task will cause the event STOPPED to be generated. */
 #define I2S_TASKS_STOP_TASKS_STOP_Pos (0UL) /*!< Position of TASKS_STOP field. */
 #define I2S_TASKS_STOP_TASKS_STOP_Msk (0x1UL << I2S_TASKS_STOP_TASKS_STOP_Pos) /*!< Bit mask of TASKS_STOP field. */
 #define I2S_TASKS_STOP_TASKS_STOP_Trigger (1UL) /*!< Trigger task */
@@ -6719,7 +6728,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: NVMC_CONFIG */
 /* Description: Configuration register */
 
-/* Bits 2..0 : Program memory access mode. It is strongly recommended to only activate erase and write modes when they are actively used. Enabling write or erase will invalidate the cache and keep it invalidated. */
+/* Bits 2..0 : Program memory access mode. It is strongly recommended to only activate erase and write modes when they are actively used. */
 #define NVMC_CONFIG_WEN_Pos (0UL) /*!< Position of WEN field. */
 #define NVMC_CONFIG_WEN_Msk (0x7UL << NVMC_CONFIG_WEN_Pos) /*!< Bit mask of WEN field. */
 #define NVMC_CONFIG_WEN_Ren (0UL) /*!< Read only access */
@@ -6743,39 +6752,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NVMC_ERASEPAGEPARTIALCFG_DURATION_Pos (0UL) /*!< Position of DURATION field. */
 #define NVMC_ERASEPAGEPARTIALCFG_DURATION_Msk (0x7FUL << NVMC_ERASEPAGEPARTIALCFG_DURATION_Pos) /*!< Bit mask of DURATION field. */
 
-/* Register: NVMC_ICACHECNF */
-/* Description: I-code cache configuration register */
-
-/* Bit 8 : Cache profiling enable */
-#define NVMC_ICACHECNF_CACHEPROFEN_Pos (8UL) /*!< Position of CACHEPROFEN field. */
-#define NVMC_ICACHECNF_CACHEPROFEN_Msk (0x1UL << NVMC_ICACHECNF_CACHEPROFEN_Pos) /*!< Bit mask of CACHEPROFEN field. */
-#define NVMC_ICACHECNF_CACHEPROFEN_Disabled (0UL) /*!< Disable cache profiling */
-#define NVMC_ICACHECNF_CACHEPROFEN_Enabled (1UL) /*!< Enable cache profiling */
-
-/* Bit 0 : Cache enable */
-#define NVMC_ICACHECNF_CACHEEN_Pos (0UL) /*!< Position of CACHEEN field. */
-#define NVMC_ICACHECNF_CACHEEN_Msk (0x1UL << NVMC_ICACHECNF_CACHEEN_Pos) /*!< Bit mask of CACHEEN field. */
-#define NVMC_ICACHECNF_CACHEEN_Disabled (0UL) /*!< Disable cache. Invalidates all cache entries. */
-#define NVMC_ICACHECNF_CACHEEN_Enabled (1UL) /*!< Enable cache */
-
-/* Register: NVMC_IHIT */
-/* Description: I-code cache hit counter */
-
-/* Bits 31..0 : Number of cache hits Write zero to clear */
-#define NVMC_IHIT_HITS_Pos (0UL) /*!< Position of HITS field. */
-#define NVMC_IHIT_HITS_Msk (0xFFFFFFFFUL << NVMC_IHIT_HITS_Pos) /*!< Bit mask of HITS field. */
-
-/* Register: NVMC_IMISS */
-/* Description: I-code cache miss counter */
-
-/* Bits 31..0 : Number of cache misses Write zero to clear */
-#define NVMC_IMISS_MISSES_Pos (0UL) /*!< Position of MISSES field. */
-#define NVMC_IMISS_MISSES_Msk (0xFFFFFFFFUL << NVMC_IMISS_MISSES_Pos) /*!< Bit mask of MISSES field. */
-
 /* Register: NVMC_CONFIGNS */
 /* Description: Unspecified */
 
-/* Bits 1..0 : Program memory access mode. It is strongly recommended to only activate erase and write modes when they are actively used. Enabling write or erase will invalidate the cache and keep it invalidated. */
+/* Bits 1..0 : Program memory access mode. It is strongly recommended to only activate erase and write modes when they are actively used. */
 #define NVMC_CONFIGNS_WEN_Pos (0UL) /*!< Position of WEN field. */
 #define NVMC_CONFIGNS_WEN_Msk (0x3UL << NVMC_CONFIGNS_WEN_Pos) /*!< Bit mask of WEN field. */
 #define NVMC_CONFIGNS_WEN_Ren (0UL) /*!< Read only access */
@@ -6818,7 +6798,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bit 0 : Enable or disable bypass of LFCLK crystal oscillator with external clock source */
 #define OSCILLATORS_XOSC32KI_BYPASS_BYPASS_Pos (0UL) /*!< Position of BYPASS field. */
 #define OSCILLATORS_XOSC32KI_BYPASS_BYPASS_Msk (0x1UL << OSCILLATORS_XOSC32KI_BYPASS_BYPASS_Pos) /*!< Bit mask of BYPASS field. */
-#define OSCILLATORS_XOSC32KI_BYPASS_BYPASS_Disabled (0UL) /*!< Disable (use with xtal or low-swing external source) */
+#define OSCILLATORS_XOSC32KI_BYPASS_BYPASS_Disabled (0UL) /*!< Disable (use with crystal or low-swing external source) */
 #define OSCILLATORS_XOSC32KI_BYPASS_BYPASS_Enabled (1UL) /*!< Enable (use with rail-to-rail external source) */
 
 /* Register: OSCILLATORS_XOSC32KI_INTCAP */
@@ -8571,11 +8551,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIO_PIN_CNF_DRIVE_D0H1 (5UL) /*!< Disconnect '0', high drive '1' (normally used for wired-or connections) */
 #define GPIO_PIN_CNF_DRIVE_S0D1 (6UL) /*!< Standard '0', disconnect '1' (normally used for wired-and connections) */
 #define GPIO_PIN_CNF_DRIVE_H0D1 (7UL) /*!< High drive '0', disconnect '1' (normally used for wired-and connections) */
-#define GPIO_PIN_CNF_DRIVE_E0S1 (9UL) /*!< Extra high drive '0', standard '1' */
-#define GPIO_PIN_CNF_DRIVE_S0E1 (10UL) /*!< Standard '0', extra high drive '1' */
 #define GPIO_PIN_CNF_DRIVE_E0E1 (11UL) /*!< Extra high drive '0', extra high drive '1' */
-#define GPIO_PIN_CNF_DRIVE_D0E1 (13UL) /*!< Disconnect '0', extra high drive '1' (normally used for wired-or connections) */
-#define GPIO_PIN_CNF_DRIVE_E0D1 (15UL) /*!< Extra high drive '0', disconnect '1' (normally used for wired-and connections) */
 
 /* Bits 3..2 : Pull configuration */
 #define GPIO_PIN_CNF_PULL_Pos (2UL) /*!< Position of PULL field. */
@@ -8907,17 +8883,17 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Description: Power control 0 */
 
 /* Register: POWER_TASKS_CONSTLAT */
-/* Description: Enable constant latency mode */
+/* Description: Enable Constant Latency mode */
 
-/* Bit 0 : Enable constant latency mode */
+/* Bit 0 : Enable Constant Latency mode */
 #define POWER_TASKS_CONSTLAT_TASKS_CONSTLAT_Pos (0UL) /*!< Position of TASKS_CONSTLAT field. */
 #define POWER_TASKS_CONSTLAT_TASKS_CONSTLAT_Msk (0x1UL << POWER_TASKS_CONSTLAT_TASKS_CONSTLAT_Pos) /*!< Bit mask of TASKS_CONSTLAT field. */
 #define POWER_TASKS_CONSTLAT_TASKS_CONSTLAT_Trigger (1UL) /*!< Trigger task */
 
 /* Register: POWER_TASKS_LOWPWR */
-/* Description: Enable low power mode (variable latency) */
+/* Description: Enable Low-Power mode (variable latency) */
 
-/* Bit 0 : Enable low power mode (variable latency) */
+/* Bit 0 : Enable Low-Power mode (variable latency) */
 #define POWER_TASKS_LOWPWR_TASKS_LOWPWR_Pos (0UL) /*!< Position of TASKS_LOWPWR field. */
 #define POWER_TASKS_LOWPWR_TASKS_LOWPWR_Msk (0x1UL << POWER_TASKS_LOWPWR_TASKS_LOWPWR_Pos) /*!< Bit mask of TASKS_LOWPWR field. */
 #define POWER_TASKS_LOWPWR_TASKS_LOWPWR_Trigger (1UL) /*!< Trigger task */
@@ -9947,23 +9923,23 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: QDEC_REPORTPER */
 /* Description: Number of samples to be taken before REPORTRDY and DBLRDY events can be generated */
 
-/* Bits 3..0 : Specifies the number of samples to be accumulated in the ACC register before the REPORTRDY and DBLRDY events can be generated */
+/* Bits 3..0 : Specifies the number of samples to be accumulated in the ACC register before the REPORTRDY and DBLRDY events can be generated. */
 #define QDEC_REPORTPER_REPORTPER_Pos (0UL) /*!< Position of REPORTPER field. */
 #define QDEC_REPORTPER_REPORTPER_Msk (0xFUL << QDEC_REPORTPER_REPORTPER_Pos) /*!< Bit mask of REPORTPER field. */
-#define QDEC_REPORTPER_REPORTPER_10Smpl (0UL) /*!< 10 samples / report */
-#define QDEC_REPORTPER_REPORTPER_40Smpl (1UL) /*!< 40 samples / report */
-#define QDEC_REPORTPER_REPORTPER_80Smpl (2UL) /*!< 80 samples / report */
-#define QDEC_REPORTPER_REPORTPER_120Smpl (3UL) /*!< 120 samples / report */
-#define QDEC_REPORTPER_REPORTPER_160Smpl (4UL) /*!< 160 samples / report */
-#define QDEC_REPORTPER_REPORTPER_200Smpl (5UL) /*!< 200 samples / report */
-#define QDEC_REPORTPER_REPORTPER_240Smpl (6UL) /*!< 240 samples / report */
-#define QDEC_REPORTPER_REPORTPER_280Smpl (7UL) /*!< 280 samples / report */
-#define QDEC_REPORTPER_REPORTPER_1Smpl (8UL) /*!< 1 sample / report */
+#define QDEC_REPORTPER_REPORTPER_10Smpl (0UL) /*!< 10 samples/report */
+#define QDEC_REPORTPER_REPORTPER_40Smpl (1UL) /*!< 40 samples/report */
+#define QDEC_REPORTPER_REPORTPER_80Smpl (2UL) /*!< 80 samples/report */
+#define QDEC_REPORTPER_REPORTPER_120Smpl (3UL) /*!< 120 samples/report */
+#define QDEC_REPORTPER_REPORTPER_160Smpl (4UL) /*!< 160 samples/report */
+#define QDEC_REPORTPER_REPORTPER_200Smpl (5UL) /*!< 200 samples/report */
+#define QDEC_REPORTPER_REPORTPER_240Smpl (6UL) /*!< 240 samples/report */
+#define QDEC_REPORTPER_REPORTPER_280Smpl (7UL) /*!< 280 samples/report */
+#define QDEC_REPORTPER_REPORTPER_1Smpl (8UL) /*!< 1 sample/report */
 
 /* Register: QDEC_ACC */
 /* Description: Register accumulating the valid transitions */
 
-/* Bits 31..0 : Register accumulating all valid samples (not double transition) read from the SAMPLE register */
+/* Bits 31..0 : Register accumulating all valid samples (not double transition) read from the SAMPLE register. */
 #define QDEC_ACC_ACC_Pos (0UL) /*!< Position of ACC field. */
 #define QDEC_ACC_ACC_Msk (0xFFFFFFFFUL << QDEC_ACC_ACC_Pos) /*!< Bit mask of ACC field. */
 
@@ -10165,9 +10141,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define QSPI_SUBSCRIBE_DEACTIVATE_CHIDX_Msk (0xFFUL << QSPI_SUBSCRIBE_DEACTIVATE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: QSPI_EVENTS_READY */
-/* Description: QSPI peripheral is ready. This event will be generated as a response to any QSPI task. */
+/* Description: QSPI peripheral is ready. This event will be generated as a response to all QSPI tasks except DEACTIVATE. */
 
-/* Bit 0 : QSPI peripheral is ready. This event will be generated as a response to any QSPI task. */
+/* Bit 0 : QSPI peripheral is ready. This event will be generated as a response to all QSPI tasks except DEACTIVATE. */
 #define QSPI_EVENTS_READY_EVENTS_READY_Pos (0UL) /*!< Position of EVENTS_READY field. */
 #define QSPI_EVENTS_READY_EVENTS_READY_Msk (0x1UL << QSPI_EVENTS_READY_EVENTS_READY_Pos) /*!< Bit mask of EVENTS_READY field. */
 #define QSPI_EVENTS_READY_EVENTS_READY_NotGenerated (0UL) /*!< Event not generated */
@@ -10547,18 +10523,18 @@ POSSIBILITY OF SUCH DAMAGE.
 #define QSPI_DMA_ENC_NONCE2_NONCE2_Msk (0xFFFFFFFFUL << QSPI_DMA_ENC_NONCE2_NONCE2_Pos) /*!< Bit mask of NONCE2 field. */
 
 /* Register: QSPI_DMA_ENC_ENABLE */
-/* Description: Enable stream cipher for XIP */
+/* Description: Enable stream cipher for EasyDMA */
 
-/* Bit 0 : Enable or disable stream cipher for XIP */
+/* Bit 0 : Enable or disable stream cipher for EasyDMA */
 #define QSPI_DMA_ENC_ENABLE_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
 #define QSPI_DMA_ENC_ENABLE_ENABLE_Msk (0x1UL << QSPI_DMA_ENC_ENABLE_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
-#define QSPI_DMA_ENC_ENABLE_ENABLE_Disabled (0UL) /*!< Disable stream cipher for QSPI XIP */
-#define QSPI_DMA_ENC_ENABLE_ENABLE_Enabled (1UL) /*!< Enable stream cipher for QSPI XIP */
+#define QSPI_DMA_ENC_ENABLE_ENABLE_Disabled (0UL) /*!< Disable stream cipher for QSPI EasyDMA */
+#define QSPI_DMA_ENC_ENABLE_ENABLE_Enabled (1UL) /*!< Enable stream cipher for QSPI EasyDMA */
 
 /* Register: QSPI_IFCONFIG1 */
 /* Description: Interface configuration. */
 
-/* Bits 31..28 : SCK frequency is given as 96 MHz / (SCKFREQ + 1). */
+/* Bits 31..28 : SCK frequency is derived from PCLK192M with SCK frequency = PCLK192M / (2*(SCKFREQ + 1)). */
 #define QSPI_IFCONFIG1_SCKFREQ_Pos (28UL) /*!< Position of SCKFREQ field. */
 #define QSPI_IFCONFIG1_SCKFREQ_Msk (0xFUL << QSPI_IFCONFIG1_SCKFREQ_Pos) /*!< Bit mask of SCKFREQ field. */
 
@@ -10566,7 +10542,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define QSPI_IFCONFIG1_SPIMODE_Pos (25UL) /*!< Position of SPIMODE field. */
 #define QSPI_IFCONFIG1_SPIMODE_Msk (0x1UL << QSPI_IFCONFIG1_SPIMODE_Pos) /*!< Bit mask of SPIMODE field. */
 #define QSPI_IFCONFIG1_SPIMODE_MODE0 (0UL) /*!< Mode 0: Data are captured on the clock rising edge and data is output on a falling edge. Base level of clock is 0 (CPOL=0, CPHA=0). */
-#define QSPI_IFCONFIG1_SPIMODE_MODE3 (1UL) /*!< Mode 3: Data are captured on the clock falling edge and data is output on a rising edge. Base level of clock is 1 (CPOL=1, CPHA=1). */
 
 /* Bit 24 : Enter/exit deep power-down mode (DPM) for external flash memory. */
 #define QSPI_IFCONFIG1_DPMEN_Pos (24UL) /*!< Position of DPMEN field. */
@@ -10732,13 +10707,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define QSPI_CINSTRDAT1_BYTE4_Pos (0UL) /*!< Position of BYTE4 field. */
 #define QSPI_CINSTRDAT1_BYTE4_Msk (0xFFUL << QSPI_CINSTRDAT1_BYTE4_Pos) /*!< Bit mask of BYTE4 field. */
 
-/* Register: QSPI_IFTIMING */
-/* Description: SPI interface timing. */
-
-/* Bits 10..8 : Timing related to sampling of the input serial data. The value of RXDELAY specifies the number of 192 MHz cycles (5.208 ns) delay from the the rising edge of the SPI Clock (SCK) until the input serial data is sampled. As en example, if set to 0 the input serial data is sampled on the rising edge of SCK. */
-#define QSPI_IFTIMING_RXDELAY_Pos (8UL) /*!< Position of RXDELAY field. */
-#define QSPI_IFTIMING_RXDELAY_Msk (0x7UL << QSPI_IFTIMING_RXDELAY_Pos) /*!< Bit mask of RXDELAY field. */
-
 
 /* Peripheral: REGULATORS */
 /* Description: Voltage regulators 0 */
@@ -10837,12 +10805,6 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: RESET_RESETREAS */
 /* Description: Reset reason */
 
-/* Bit 27 : Reset from network CTRL-AP detected */
-#define RESET_RESETREAS_LCTRLAP_Pos (27UL) /*!< Position of LCTRLAP field. */
-#define RESET_RESETREAS_LCTRLAP_Msk (0x1UL << RESET_RESETREAS_LCTRLAP_Pos) /*!< Bit mask of LCTRLAP field. */
-#define RESET_RESETREAS_LCTRLAP_NotDetected (0UL) /*!< Not detected */
-#define RESET_RESETREAS_LCTRLAP_Detected (1UL) /*!< Detected */
-
 /* Bit 26 : Reset after wakeup from System OFF mode due to VBUS rising into valid range */
 #define RESET_RESETREAS_VBUS_Pos (26UL) /*!< Position of VBUS field. */
 #define RESET_RESETREAS_VBUS_Msk (0x1UL << RESET_RESETREAS_VBUS_Pos) /*!< Bit mask of VBUS field. */
@@ -10861,31 +10823,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RESET_RESETREAS_NFC_NotDetected (0UL) /*!< Not detected */
 #define RESET_RESETREAS_NFC_Detected (1UL) /*!< Detected */
 
-/* Bit 23 : Force off reset from application core detected */
-#define RESET_RESETREAS_MFORCEOFF_Pos (23UL) /*!< Position of MFORCEOFF field. */
-#define RESET_RESETREAS_MFORCEOFF_Msk (0x1UL << RESET_RESETREAS_MFORCEOFF_Pos) /*!< Bit mask of MFORCEOFF field. */
-#define RESET_RESETREAS_MFORCEOFF_NotDetected (0UL) /*!< Not detected */
-#define RESET_RESETREAS_MFORCEOFF_Detected (1UL) /*!< Detected */
-
-/* Bit 18 : Reset from network watchdog timer detected */
-#define RESET_RESETREAS_LDOG_Pos (18UL) /*!< Position of LDOG field. */
-#define RESET_RESETREAS_LDOG_Msk (0x1UL << RESET_RESETREAS_LDOG_Pos) /*!< Bit mask of LDOG field. */
-#define RESET_RESETREAS_LDOG_NotDetected (0UL) /*!< Not detected */
-#define RESET_RESETREAS_LDOG_Detected (1UL) /*!< Detected */
-
-/* Bit 17 : Reset from network CPU lockup detected */
-#define RESET_RESETREAS_LLOCKUP_Pos (17UL) /*!< Position of LLOCKUP field. */
-#define RESET_RESETREAS_LLOCKUP_Msk (0x1UL << RESET_RESETREAS_LLOCKUP_Pos) /*!< Bit mask of LLOCKUP field. */
-#define RESET_RESETREAS_LLOCKUP_NotDetected (0UL) /*!< Not detected */
-#define RESET_RESETREAS_LLOCKUP_Detected (1UL) /*!< Detected */
-
-/* Bit 16 : Reset from network soft reset detected */
-#define RESET_RESETREAS_LSREQ_Pos (16UL) /*!< Position of LSREQ field. */
-#define RESET_RESETREAS_LSREQ_Msk (0x1UL << RESET_RESETREAS_LSREQ_Pos) /*!< Bit mask of LSREQ field. */
-#define RESET_RESETREAS_LSREQ_NotDetected (0UL) /*!< Not detected */
-#define RESET_RESETREAS_LSREQ_Detected (1UL) /*!< Detected */
-
-/* Bit 7 : Reset due to wakeup from System OFF mode when wakeup is triggered by entering the debug interface mode */
+/* Bit 7 : Reset due to wakeup from System OFF mode when wakeup is triggered by entering the Debug Interface mode */
 #define RESET_RESETREAS_DIF_Pos (7UL) /*!< Position of DIF field. */
 #define RESET_RESETREAS_DIF_Msk (0x1UL << RESET_RESETREAS_DIF_Pos) /*!< Bit mask of DIF field. */
 #define RESET_RESETREAS_DIF_NotDetected (0UL) /*!< Not detected */
@@ -10934,13 +10872,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RESET_RESETREAS_RESETPIN_Detected (1UL) /*!< Detected */
 
 /* Register: RESET_NETWORK_FORCEOFF */
-/* Description: Force off power and clock in network core */
+/* Description: Force network core off */
 
-/* Bit 0 : Force off power and clock in network core */
+/* Bit 0 : Force network core off */
 #define RESET_NETWORK_FORCEOFF_FORCEOFF_Pos (0UL) /*!< Position of FORCEOFF field. */
 #define RESET_NETWORK_FORCEOFF_FORCEOFF_Msk (0x1UL << RESET_NETWORK_FORCEOFF_FORCEOFF_Pos) /*!< Bit mask of FORCEOFF field. */
-#define RESET_NETWORK_FORCEOFF_FORCEOFF_Release (0UL) /*!< Release force off signal */
-#define RESET_NETWORK_FORCEOFF_FORCEOFF_Hold (1UL) /*!< Hold force off signal */
+#define RESET_NETWORK_FORCEOFF_FORCEOFF_Release (0UL) /*!< Release Force-OFF */
+#define RESET_NETWORK_FORCEOFF_FORCEOFF_Hold (1UL) /*!< Hold Force-OFF */
 
 
 /* Peripheral: RTC */
@@ -14604,9 +14542,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_EVENTS_ERROR_EVENTS_ERROR_Generated (1UL) /*!< Event generated */
 
 /* Register: TWIM_EVENTS_SUSPENDED */
-/* Description: Last byte has been sent out after the SUSPEND task has been issued, TWI traffic is now suspended. */
+/* Description: SUSPEND task has been issued, TWI traffic is now suspended. */
 
-/* Bit 0 : Last byte has been sent out after the SUSPEND task has been issued, TWI traffic is now suspended. */
+/* Bit 0 : SUSPEND task has been issued, TWI traffic is now suspended. */
 #define TWIM_EVENTS_SUSPENDED_EVENTS_SUSPENDED_Pos (0UL) /*!< Position of EVENTS_SUSPENDED field. */
 #define TWIM_EVENTS_SUSPENDED_EVENTS_SUSPENDED_Msk (0x1UL << TWIM_EVENTS_SUSPENDED_EVENTS_SUSPENDED_Pos) /*!< Bit mask of EVENTS_SUSPENDED field. */
 #define TWIM_EVENTS_SUSPENDED_EVENTS_SUSPENDED_NotGenerated (0UL) /*!< Event not generated */
@@ -16415,7 +16353,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Description: Access port protection */
 
 /* Bits 31..0 : Blocks debugger read/write access to all CPU registers and
-          memory mapped addresses Using any value not listed below will yield unexpected results. */
+          memory mapped addresses Using any value except Unprotected will lead to the protection being enabled. */
 #define UICR_APPROTECT_PALL_Pos (0UL) /*!< Position of PALL field. */
 #define UICR_APPROTECT_PALL_Msk (0xFFFFFFFFUL << UICR_APPROTECT_PALL_Pos) /*!< Bit mask of PALL field. */
 #define UICR_APPROTECT_PALL_Protected (0x00000000UL) /*!< Protected */
@@ -16458,7 +16396,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Description: Secure access port protection */
 
 /* Bits 31..0 : Blocks debugger read/write access to all secure CPU registers and secure memory
-        mapped addresses. Using any value not listed below will yield unexpected results. */
+        mapped addresses. Using any value except Unprotected will lead to the protection being enabled. */
 #define UICR_SECUREAPPROTECT_PALL_Pos (0UL) /*!< Position of PALL field. */
 #define UICR_SECUREAPPROTECT_PALL_Msk (0xFFFFFFFFUL << UICR_SECUREAPPROTECT_PALL_Pos) /*!< Bit mask of PALL field. */
 #define UICR_SECUREAPPROTECT_PALL_Protected (0x00000000UL) /*!< Protected */
@@ -16467,7 +16405,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: UICR_ERASEPROTECT */
 /* Description: Erase protection */
 
-/* Bits 31..0 : Blocks NVMC ERASEALL and CTRLAP ERASEALL functionality. Using any value not listed below will yield unexpected results. */
+/* Bits 31..0 : Blocks NVMC ERASEALL and CTRLAP ERASEALL functionality. Using any value except Unprotected will lead to the protection being enabled. */
 #define UICR_ERASEPROTECT_PALL_Pos (0UL) /*!< Position of PALL field. */
 #define UICR_ERASEPROTECT_PALL_Msk (0xFFFFFFFFUL << UICR_ERASEPROTECT_PALL_Pos) /*!< Bit mask of PALL field. */
 #define UICR_ERASEPROTECT_PALL_Protected (0x00000000UL) /*!< Protected */

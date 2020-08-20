@@ -525,10 +525,7 @@ NRF_STATIC_INLINE void nrf_i2s_event_clear(NRF_I2S_Type *  p_reg,
                                            nrf_i2s_event_t event)
 {
     *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event)) = 0x0UL;
-#if __CORTEX_M == 0x04
-    volatile uint32_t dummy = *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event));
-    (void)dummy;
-#endif
+    nrf_event_readback((uint8_t *)p_reg + (uint32_t)event);
 }
 
 NRF_STATIC_INLINE bool nrf_i2s_event_check(NRF_I2S_Type const * p_reg,

@@ -34,6 +34,8 @@
 
 #if defined(NRF51)
     #include <nrfx_config_nrf51.h>
+#elif defined(NRF52805_XXAA)
+    #include <nrfx_config_nrf52805.h>
 #elif defined(NRF52810_XXAA)
     #include <nrfx_config_nrf52810.h>
 #elif defined(NRF52811_XXAA)

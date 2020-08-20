@@ -33,6 +33,7 @@
 #define NRF_POWER_H__
 
 #include <nrfx.h>
+#include <nrf_erratas.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -876,10 +877,7 @@ NRF_STATIC_INLINE uint32_t nrf_power_task_address_get(NRF_POWER_Type const * p_r
 NRF_STATIC_INLINE void nrf_power_event_clear(NRF_POWER_Type * p_reg, nrf_power_event_t event)
 {
     *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event)) = 0x0UL;
-#if __CORTEX_M == 0x04
-    volatile uint32_t dummy = *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event));
-    (void)dummy;
-#endif
+    nrf_event_readback((uint8_t *)p_reg + (uint32_t)event);
 }
 
 NRF_STATIC_INLINE bool nrf_power_event_check(NRF_POWER_Type const * p_reg, nrf_power_event_t event)
@@ -1149,6 +1147,11 @@ NRF_STATIC_INLINE uint32_t nrf_power_rampower_mask_get(NRF_POWER_Type const * p_
 #if NRF_POWER_HAS_DCDCEN_VDDH
 NRF_STATIC_INLINE void nrf_power_dcdcen_vddh_set(NRF_POWER_Type * p_reg, bool enable)
 {
+    if (nrf52_errata_197())
+    {
+        // Workaround for anomaly 197 "POWER: DCDC of REG0 not functional".
+        *(volatile uint32_t *)0x40000638ul = 1ul;
+    }
     p_reg->DCDCEN0 = (enable ? POWER_DCDCEN0_DCDCEN_Enabled : POWER_DCDCEN0_DCDCEN_Disabled) <<
                      POWER_DCDCEN0_DCDCEN_Pos;
 }

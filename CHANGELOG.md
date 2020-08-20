@@ -1,6 +1,30 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [2.3.0] - 2020-08-19
+### Added
+- Added support for nRF52805.
+- Implemented workaround for nRF52 Series anomaly 197 in the POWER HAL.
+- Implemented workaround for nRF52 Series anomalies 211 and 223 in the USBD driver.
+- Added support for the nRF53 Series in the QSPI HAL.
+- Added function in the GPIO HAL that returns port index.
+- Introduced a QSPI HAL symbol that indicates the availability of the QSPI mode 1.
+- Introduced shortcut functionality in the CCM HAL.
+- Added function in the TIMER HAL for setting the specified shortcuts.
+- Added optional two-stage start procedure of the LFXO in the CLOCK driver.
+
+### Changed
+- Updated MDK to 8.35.0.
+- Divided network and application core-specific functionalities for nRF5340 in the RESET HAL and the reset reason helper.
+
+### Fixed
+- Corrected assertions in the NVMC driver.
+- Corrected return types in the CCM HAL.
+- Fixed setting of program memory access mode for secure code in the NVMC driver.
+- Removed usage of the NRF_UICR symbol on non-secure targets in address validity checks in the NVMC driver.
+- Fixed an error message in the SPIM driver that prevented successful compilation with logging enabled.
+- Fixed unused parameters in the PPI HAL.
+
 ## [2.2.0] - 2020-04-28
 ### Added
 - Added support for nRF52820.

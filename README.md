@@ -13,6 +13,7 @@ SoCs, as well as startup and initialization files for them.
 ## Supported SoCs
 
 * nRF51 Series
+* nRF52805
 * nRF52810
 * nRF52811
 * nRF52820

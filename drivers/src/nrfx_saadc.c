@@ -286,7 +286,7 @@ nrfx_err_t nrfx_saadc_channels_config(nrfx_saadc_channel_t const * p_channels,
                                p_channels[i].channel_index,
                                &p_channels[i].channel_config);
 
-        NRFX_ASSERT(p_channels[i].pin_p);
+        NRFX_ASSERT(p_channels[i].pin_p != NRF_SAADC_INPUT_DISABLED);
         m_cb.channels_pselp[p_channels[i].channel_index] = p_channels[i].pin_p;
         m_cb.channels_pseln[p_channels[i].channel_index] = p_channels[i].pin_n;
         m_cb.channels_configured |= 1U << p_channels[i].channel_index;

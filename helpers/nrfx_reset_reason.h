@@ -78,6 +78,7 @@ typedef enum
     NRFX_RESET_REASON_DIF_MASK       = RESET_RESETREAS_DIF_Msk,
     /**< Reset due to wakeup from System OFF mode when wakeup is triggered by entering the debug
      *   interface mode. */
+#if NRF_RESET_HAS_NETWORK
     NRFX_RESET_REASON_LSREQ_MASK     = RESET_RESETREAS_LSREQ_Msk,
     /**< Reset from network soft reset detected. */
     NRFX_RESET_REASON_LLOCKUP_MASK   = RESET_RESETREAS_LLOCKUP_Msk,
@@ -86,14 +87,17 @@ typedef enum
     /**< Reset from network watchdog timer detected. */
     NRFX_RESET_REASON_MFORCEOFF_MASK = RESET_RESETREAS_MFORCEOFF_Msk,
     /**< Force off reset from application core detected. */
+#endif // NRF_RESET_HAS_NETWORK
     NRFX_RESET_REASON_NFC_MASK       = RESET_RESETREAS_NFC_Msk,
     /**< Reset after wakeup from System OFF mode due to NRF field being detected. */
     NRFX_RESET_REASON_DOG1_MASK      = RESET_RESETREAS_DOG1_Msk,
     /**< Reset from application watchdog timer 1 detected. */
     NRFX_RESET_REASON_VBUS_MASK      = RESET_RESETREAS_VBUS_Msk,
     /**< Reset after wakeup from System OFF mode due to VBUS rising into valid range. */
+#if NRF_RESET_HAS_NETWORK
     NRFX_RESET_REASON_LCTRLAP_MASK   = RESET_RESETREAS_LCTRLAP_Msk,
     /**< Reset from network CTRL-AP detected. */
+#endif // NRF_RESET_HAS_NETWORK
 #else
     NRFX_RESET_REASON_RESETPIN_MASK  = POWER_RESETREAS_RESETPIN_Msk,
     NRFX_RESET_REASON_DOG_MASK       = POWER_RESETREAS_DOG_Msk,
