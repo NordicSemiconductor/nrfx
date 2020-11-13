@@ -37,6 +37,10 @@ In addition, the following locations should be specified as include paths
 [nrfx]/mdk
 @endcode
 
+@note nrfx API functions do not provide thread safety themselves. Users are responsible
+      for providing the proper synchronization of the nrfx function calls in a given environment
+      if those are to be used from different contexts.
+
 @section nrfx_irq_handlers IRQ handlers
 
 The IRQ handlers in all drivers are implemented as ordinary API functions
