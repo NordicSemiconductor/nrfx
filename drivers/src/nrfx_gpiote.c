@@ -434,17 +434,19 @@ static nrfx_err_t gpiote_out_init(nrfx_gpiote_pin_t                pin,
 
         if (err_code == NRFX_SUCCESS)
         {
-            if (p_config->init_state == NRF_GPIOTE_INITIAL_VALUE_HIGH)
-            {
-                nrf_gpio_pin_set(pin);
-            }
-            else
-            {
-                nrf_gpio_pin_clear(pin);
-            }
+            if(!p_config->skip_gpio_setup) {
+                if (p_config->init_state == NRF_GPIOTE_INITIAL_VALUE_HIGH)
+                {
+                    nrf_gpio_pin_set(pin);
+                }
+                else
+                {
+                    nrf_gpio_pin_clear(pin);
+                }
 
-            nrf_gpio_cfg_output(pin);
-            pin_configured_set(pin);
+                nrf_gpio_cfg_output(pin);
+                pin_configured_set(pin);
+            }
         }
     }
 

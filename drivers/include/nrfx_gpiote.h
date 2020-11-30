@@ -145,6 +145,7 @@ typedef struct
     nrf_gpiote_polarity_t action;     /**< Configuration of the pin task. */
     nrf_gpiote_outinit_t  init_state; /**< Initial state of the output pin. */
     bool                  task_pin;   /**< True if the pin is controlled by a GPIOTE task. */
+    bool                  skip_gpio_setup; /**< Do not change GPIO configuration */
 } nrfx_gpiote_out_config_t;
 
 /** @brief Macro for configuring a pin to use as output. GPIOTE is not used for the pin. */
