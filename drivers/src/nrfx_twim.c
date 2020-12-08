@@ -343,6 +343,7 @@ void nrfx_twim_disable(nrfx_twim_t const * p_instance)
     nrf_twim_disable(p_twim);
 
     p_cb->state = NRFX_DRV_STATE_INITIALIZED;
+    p_cb->busy = false;
     NRFX_LOG_INFO("Instance disabled: %d.", p_instance->drv_inst_idx);
 }
 
