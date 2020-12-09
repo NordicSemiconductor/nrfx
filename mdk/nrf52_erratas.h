@@ -194,6 +194,7 @@ static bool nrf52_errata_204(void) __UNUSED;
 static bool nrf52_errata_208(void) __UNUSED;
 static bool nrf52_errata_209(void) __UNUSED;
 static bool nrf52_errata_210(void) __UNUSED;
+static bool nrf52_errata_211(void) __UNUSED;
 static bool nrf52_errata_212(void) __UNUSED;
 static bool nrf52_errata_213(void) __UNUSED;
 static bool nrf52_errata_214(void) __UNUSED;
@@ -798,6 +799,8 @@ static bool nrf52_errata_20(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -1367,6 +1370,8 @@ static bool nrf52_errata_36(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -1925,6 +1930,8 @@ static bool nrf52_errata_55(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -2269,6 +2276,8 @@ static bool nrf52_errata_66(void)
                     case 0x00ul:
                         return true;
                     case 0x01ul:
+                        return true;
+                    case 0x02ul:
                         return true;
                 }
             }
@@ -2864,6 +2873,8 @@ static bool nrf52_errata_78(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -3262,6 +3273,8 @@ static bool nrf52_errata_87(void)
                     case 0x00ul:
                         return true;
                     case 0x01ul:
+                        return true;
+                    case 0x02ul:
                         return true;
                 }
             }
@@ -4611,6 +4624,8 @@ static bool nrf52_errata_136(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -5163,6 +5178,8 @@ static bool nrf52_errata_153(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -5622,6 +5639,8 @@ static bool nrf52_errata_170(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -5800,6 +5819,8 @@ static bool nrf52_errata_173(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -5948,6 +5969,8 @@ static bool nrf52_errata_176(void)
                     case 0x00ul:
                         return true;
                     case 0x01ul:
+                        return true;
+                    case 0x02ul:
                         return true;
                 }
             }
@@ -6313,6 +6336,8 @@ static bool nrf52_errata_183(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -6403,6 +6428,8 @@ static bool nrf52_errata_184(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -6487,6 +6514,8 @@ static bool nrf52_errata_187(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -6570,6 +6599,8 @@ static bool nrf52_errata_190(void)
                     case 0x00ul:
                         return true;
                     case 0x01ul:
+                        return true;
+                    case 0x02ul:
                         return true;
                 }
             }
@@ -6786,6 +6817,8 @@ static bool nrf52_errata_194(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -6899,6 +6932,8 @@ static bool nrf52_errata_196(void)
                     case 0x00ul:
                         return true;
                     case 0x01ul:
+                        return true;
+                    case 0x02ul:
                         return true;
                 }
             }
@@ -7367,6 +7402,65 @@ static bool nrf52_errata_210(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
+                }
+            }
+        #endif
+        return false;
+    #endif
+}
+
+static bool nrf52_errata_211(void)
+{
+    #ifndef NRF52_SERIES
+        return false;
+    #else
+        #if defined (NRF52820_XXAA) || defined (DEVELOP_IN_NRF52820)\
+         || defined (NRF52833_XXAA) || defined (DEVELOP_IN_NRF52833)\
+         || defined (NRF52840_XXAA) || defined (DEVELOP_IN_NRF52840)
+            uint32_t var1 = *(uint32_t *)0x10000130ul;
+            uint32_t var2 = *(uint32_t *)0x10000134ul;
+        #endif
+        #if defined (NRF52840_XXAA) || defined (DEVELOP_IN_NRF52840)
+            if (var1 == 0x08)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return false;
+                    case 0x01ul:
+                        return true;
+                    case 0x02ul:
+                        return true;
+                    case 0x03ul:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF52833_XXAA) || defined (DEVELOP_IN_NRF52833)
+            if (var1 == 0x0D)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    case 0x01ul:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF52820_XXAA) || defined (DEVELOP_IN_NRF52820)
+            if (var1 == 0x10)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    case 0x01ul:
+                        return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -7486,6 +7580,8 @@ static bool nrf52_errata_212(void)
                     case 0x00ul:
                         return true;
                     case 0x01ul:
+                        return true;
+                    case 0x02ul:
                         return true;
                 }
             }
@@ -7789,6 +7885,8 @@ static bool nrf52_errata_218(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -7909,6 +8007,8 @@ static bool nrf52_errata_219(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -7989,6 +8089,8 @@ static bool nrf52_errata_225(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -8068,6 +8170,8 @@ static bool nrf52_errata_228(void)
                         return true;
                     case 0x01ul:
                         return true;
+                    case 0x02ul:
+                        return true;
                 }
             }
         #endif
@@ -8093,6 +8197,8 @@ static bool nrf52_errata_230(void)
                         return true;
                     case 0x01ul:
                         return false;
+                    case 0x02ul:
+                        return false;
                 }
             }
         #endif
@@ -8117,6 +8223,8 @@ static bool nrf52_errata_231(void)
                     case 0x00ul:
                         return true;
                     case 0x01ul:
+                        return false;
+                    case 0x02ul:
                         return false;
                 }
             }
