@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [1.8.6] - 2020-08-31
+### Added
+- Implemented workaround for anomaly 223 in the USBD driver.
+
+### Changed
+- Updated MDK to version 8.35.0.
+
 ## [1.8.5] - 2020-07-09
 ### Added
 - Implemented workaround for anomaly 211 in the USBD driver.
