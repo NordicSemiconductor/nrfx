@@ -239,7 +239,7 @@ nrfx_err_t nrfx_nfct_tx(nrfx_nfct_data_desc_t const * p_tx_data,
 /**
  * @brief Function for transmitting an NFC frame with a specified number of bits.
  *
- * @param[in] p_tx_data   Pointer to the TX buffer. Unlike in nrfx_nfct_tx, data_len is
+ * @param[in] p_tx_data   Pointer to the TX buffer. Unlike in @ref nrfx_nfct_tx, data_len is
  *                        used as the number of bits to transmit, rather than bytes.
  * @param[in] delay_mode  Delay mode of the NFCT frame timer.
  *
