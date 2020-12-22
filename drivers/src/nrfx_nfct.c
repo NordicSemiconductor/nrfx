@@ -711,7 +711,7 @@ void nrfx_nfct_irq_handler(void)
     }
 
     if (NRFX_NFCT_EVT_ACTIVE(RXFRAMESTART))
-	{
+    {
         nrf_nfct_event_clear(NRF_NFCT, NRF_NFCT_EVENT_RXFRAMESTART);
 
         nrfx_nfct_evt_t nfct_evt =
@@ -720,7 +720,7 @@ void nrfx_nfct_irq_handler(void)
         };
 
         NRFX_NFCT_CB_HANDLE(m_nfct_cb.config.cb, nfct_evt);
-	}
+    }
 
     if (NRFX_NFCT_EVT_ACTIVE(RXFRAMEEND))
     {
