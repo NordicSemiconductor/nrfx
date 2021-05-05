@@ -1,6 +1,32 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [2.5.0] - 2021-05-05
+### Added
+- Added support for double-buffered transfers in the QSPI driver.
+- Added support for one-by-one channel configuration in the SAADC driver.
+- Added critical sections for channel allocation and deallocation in the DPPI driver.
+- Added support for generating documentation in the RST format using Sphinx tool.
+- Added high-drive pin configuration in the QSPI, TWIM, and SPIM drivers.
+- Added report period setting of 1 sample in the QDEC HAL.
+- Implemented workaround for nRF53 Series anomaly 121 in the QSPI driver.
+
+### Changed
+- Updated MDK to version 8.40.2.
+- Removed implicit channel deallocation during initialization in the GPIOTE driver.
+- Restricted pins that are supported for specific configuration on nRF5340 in the QSPI, TWIM, and SPIM drivers.
+- Aligned IRQ handler symbols to new naming scheme for nRF53 Series.
+
+### Fixed
+- Fixed register access sequence in the COMP driver.
+- Fixed memory corruption when uninitialized channel was freed in the GPIOTE driver.
+- Fixed spurious access of DCX pin for every instance of the peripheral when extended features were enabled in the SPIM driver.
+- Fixed overwrite of MCUSEL configuration in the nrf_gpio_cfg() function.
+- Fixed driver behavior for zero-length transfer in the TWIM driver.
+- Fixed internal state handling when transfer is aborted before finishing in the TWI and TWIM drivers.
+- Corrected assertions for MPS requirements in the USBD driver.
+- Corrected symbol describing maximum data payload for a full-speed isochronous endpoint in the USBD driver.
+
 ## [2.4.0] - 2020-11-13
 ### Added
 - Added the channel allocator feature in the GPIOTE driver.

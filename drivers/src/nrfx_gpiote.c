@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -258,7 +260,11 @@ nrfx_err_t nrfx_gpiote_init(uint8_t interrupt_priority)
 
     for (i = 0; i < (GPIOTE_CH_NUM + NRFX_GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS); i++)
     {
-        channel_free(i);
+        m_cb.handlers[i] = UNALLOCATED_HANDLER_ADDRESS;
+        if (i >= GPIOTE_CH_NUM)
+        {
+            m_cb.port_handlers_pins[i - GPIOTE_CH_NUM] = (int8_t)PIN_NOT_USED;
+        }
     }
 
     memset(m_cb.configured_pins, 0, sizeof(m_cb.configured_pins));
@@ -813,7 +819,10 @@ void nrfx_gpiote_in_uninit(nrfx_gpiote_pin_t pin)
         nrf_gpio_cfg_default(pin);
         pin_configured_clear(pin);
     }
-    channel_free((uint8_t)channel_port_get(pin));
+    if (pin_in_use_by_gpiote(pin))
+    {
+        channel_free((uint8_t)channel_port_get(pin));
+    }
     pin_in_use_clear(pin);
 }
 

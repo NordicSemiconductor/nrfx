@@ -60,8 +60,6 @@ For a complete overview, see @ref nrfx_drv_supp_matrix.
 
 @ref nrf_radio
 
-@ref nrf_reset
-
 @ref nrf_rng
 
 @ref nrf_rtc

@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2016 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -449,13 +451,13 @@ void nrfx_clock_calibration_timer_stop(void)
 #endif
 }
 
-#if NRF_CLOCK_HAS_HFCLK_DIV || NRF_CLOCK_HAS_HFCLK192M
+#if defined(CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT) || NRF_CLOCK_HAS_HFCLK192M
 nrfx_err_t nrfx_clock_divider_set(nrf_clock_domain_t domain,
                                   nrf_clock_hfclk_div_t div)
 {
     switch(domain)
     {
-#if NRF_CLOCK_HAS_HFCLK_DIV
+#if defined(CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT)
         case NRF_CLOCK_DOMAIN_HFCLK:
             switch (div)
             {

@@ -3,7 +3,9 @@
 
 /*
 
-Copyright (c) 2010 - 2020, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2021, Nordic Semiconductor ASA All rights reserved.
+
+SPDX-License-Identifier: BSD-3-Clause
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -129,6 +131,7 @@ static bool nrf53_errata_116(void) __UNUSED;
 static bool nrf53_errata_117(void) __UNUSED;
 static bool nrf53_errata_119(void) __UNUSED;
 static bool nrf53_errata_121(void) __UNUSED;
+static bool nrf53_errata_122(void) __UNUSED;
 
 /* ========= Errata 1 ========= */
 #if    defined (NRF5340_XXAA) || defined (DEVELOP_IN_NRF5340)
@@ -1771,16 +1774,7 @@ static bool nrf53_errata_36(void)
 }
 
 /* ========= Errata 37 ========= */
-#if    defined (NRF5340_XXAA) || defined (DEVELOP_IN_NRF5340)
-    #if defined(NRF_APPLICATION) || \
-        defined(NRF_NETWORK)
-        #define NRF53_ERRATA_37_PRESENT 1
-    #else
-        #define NRF53_ERRATA_37_PRESENT 0
-    #endif
-#else
-    #define NRF53_ERRATA_37_PRESENT 0
-#endif
+#define NRF53_ERRATA_37_PRESENT 0
 
 #ifndef NRF53_ERRATA_37_ENABLE_WORKAROUND
     #define NRF53_ERRATA_37_ENABLE_WORKAROUND NRF53_ERRATA_37_PRESENT
@@ -1791,36 +1785,6 @@ static bool nrf53_errata_37(void)
     #ifndef NRF53_SERIES
         return false;
     #else
-        #if defined (NRF5340_XXAA) || defined (DEVELOP_IN_NRF5340)
-            #if defined(NRF_APPLICATION)
-                uint32_t var1 = *(uint32_t *)0x00FF0130ul;
-                uint32_t var2 = *(uint32_t *)0x00FF0134ul;
-            #elif defined(NRF_NETWORK)
-                uint32_t var1 = *(uint32_t *)0x01FF0130ul;
-                uint32_t var2 = *(uint32_t *)0x01FF0134ul;
-            #endif
-        #endif
-        #if defined (NRF5340_XXAA) || defined (DEVELOP_IN_NRF5340)
-            #if defined (NRF_APPLICATION)\
-             || defined (NRF_NETWORK)
-                if (var1 == 0x07)
-                {
-                    switch(var2)
-                    {
-                        case 0x02ul:
-                            return true;
-                        case 0x03ul:
-                            return true;
-                        case 0x04ul:
-                            return true;
-                        case 0x05ul:
-                            return true;
-                        default:
-                            return true;
-                    }
-                }
-            #endif
-        #endif
         return false;
     #endif
 }
@@ -2067,11 +2031,11 @@ static bool nrf53_errata_46(void)
                         case 0x03ul:
                             return true;
                         case 0x04ul:
-                            return true;
+                            return false;
                         case 0x05ul:
-                            return true;
+                            return false;
                         default:
-                            return true;
+                            return false;
                     }
                 }
             #endif
@@ -2897,11 +2861,11 @@ static bool nrf53_errata_67(void)
                         case 0x03ul:
                             return true;
                         case 0x04ul:
-                            return true;
+                            return false;
                         case 0x05ul:
-                            return true;
+                            return false;
                         default:
-                            return true;
+                            return false;
                     }
                 }
             #endif
@@ -4136,15 +4100,7 @@ static bool nrf53_errata_99(void)
 }
 
 /* ========= Errata 103 ========= */
-#if    defined (NRF5340_XXAA) || defined (DEVELOP_IN_NRF5340)
-    #if defined(NRF_NETWORK)
-        #define NRF53_ERRATA_103_PRESENT 1
-    #else
-        #define NRF53_ERRATA_103_PRESENT 0
-    #endif
-#else
-    #define NRF53_ERRATA_103_PRESENT 0
-#endif
+#define NRF53_ERRATA_103_PRESENT 0
 
 #ifndef NRF53_ERRATA_103_ENABLE_WORKAROUND
     #define NRF53_ERRATA_103_ENABLE_WORKAROUND NRF53_ERRATA_103_PRESENT
@@ -4155,32 +4111,6 @@ static bool nrf53_errata_103(void)
     #ifndef NRF53_SERIES
         return false;
     #else
-        #if defined (NRF5340_XXAA) || defined (DEVELOP_IN_NRF5340)
-            #if defined(NRF_NETWORK)
-                uint32_t var1 = *(uint32_t *)0x01FF0130ul;
-                uint32_t var2 = *(uint32_t *)0x01FF0134ul;
-            #endif
-        #endif
-        #if defined (NRF5340_XXAA) || defined (DEVELOP_IN_NRF5340)
-            #if defined (NRF_NETWORK)
-                if (var1 == 0x07)
-                {
-                    switch(var2)
-                    {
-                        case 0x02ul:
-                            return true;
-                        case 0x03ul:
-                            return true;
-                        case 0x04ul:
-                            return true;
-                        case 0x05ul:
-                            return true;
-                        default:
-                            return true;
-                    }
-                }
-            #endif
-        #endif
         return false;
     #endif
 }
@@ -4821,6 +4751,56 @@ static bool nrf53_errata_121(void)
                             return false;
                         case 0x03ul:
                             return true;
+                        case 0x04ul:
+                            return true;
+                        case 0x05ul:
+                            return true;
+                        default:
+                            return true;
+                    }
+                }
+            #endif
+        #endif
+        return false;
+    #endif
+}
+
+/* ========= Errata 122 ========= */
+#if    defined (NRF5340_XXAA) || defined (DEVELOP_IN_NRF5340)
+    #if defined(NRF_NETWORK)
+        #define NRF53_ERRATA_122_PRESENT 1
+    #else
+        #define NRF53_ERRATA_122_PRESENT 0
+    #endif
+#else
+    #define NRF53_ERRATA_122_PRESENT 0
+#endif
+
+#ifndef NRF53_ERRATA_122_ENABLE_WORKAROUND
+    #define NRF53_ERRATA_122_ENABLE_WORKAROUND NRF53_ERRATA_122_PRESENT
+#endif
+
+static bool nrf53_errata_122(void)
+{
+    #ifndef NRF53_SERIES
+        return false;
+    #else
+        #if defined (NRF5340_XXAA) || defined (DEVELOP_IN_NRF5340)
+            #if defined(NRF_NETWORK)
+                uint32_t var1 = *(uint32_t *)0x01FF0130ul;
+                uint32_t var2 = *(uint32_t *)0x01FF0134ul;
+            #endif
+        #endif
+        #if defined (NRF5340_XXAA) || defined (DEVELOP_IN_NRF5340)
+            #if defined (NRF_NETWORK)
+                if (var1 == 0x07)
+                {
+                    switch(var2)
+                    {
+                        case 0x02ul:
+                            return false;
+                        case 0x03ul:
+                            return false;
                         case 0x04ul:
                             return true;
                         case 0x05ul:

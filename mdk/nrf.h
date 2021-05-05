@@ -1,6 +1,8 @@
 /*
 
-Copyright (c) 2010 - 2020, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2021, Nordic Semiconductor ASA All rights reserved.
+
+SPDX-License-Identifier: BSD-3-Clause
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -35,8 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* MDK version */
 #define MDK_MAJOR_VERSION   8 
-#define MDK_MINOR_VERSION   37 
-#define MDK_MICRO_VERSION   0 
+#define MDK_MINOR_VERSION   40 
+#define MDK_MICRO_VERSION   2 
 
    
 /* Define coprocessor domains */
@@ -167,9 +169,11 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_APPLICATION)
         #include "nrf5340_application.h"
         #include "nrf5340_application_bitfields.h"
+        #include "nrf5340_application_name_change.h"
     #elif defined (NRF_NETWORK)
         #include "nrf5340_network.h"
         #include "nrf5340_network_bitfields.h"
+        #include "nrf5340_network_name_change.h"
     #endif
 
 #elif defined (NRF9160_XXAA)

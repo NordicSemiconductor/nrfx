@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -274,16 +276,12 @@ NRF_STATIC_INLINE void nrf_gpio_pin_dir_set(uint32_t pin_number, nrf_gpio_pin_di
 /**
  * @brief Function for setting a GPIO pin.
  *
- * For this function to have any effect, the pin must be configured as an output.
- *
  * @param pin_number Specifies the pin number to be set.
  */
 NRF_STATIC_INLINE void nrf_gpio_pin_set(uint32_t pin_number);
 
 /**
  * @brief Function for clearing a GPIO pin.
- *
- * For this function to have any effect, the pin must be configured as an output.
  *
  * @param pin_number Specifies the pin number to clear.
  */
@@ -292,16 +290,12 @@ NRF_STATIC_INLINE void nrf_gpio_pin_clear(uint32_t pin_number);
 /**
  * @brief Function for toggling a GPIO pin.
  *
- * For this function to have any effect, the pin must be configured as an output.
- *
  * @param pin_number Specifies the pin number to toggle.
  */
 NRF_STATIC_INLINE void nrf_gpio_pin_toggle(uint32_t pin_number);
 
 /**
  * @brief Function for writing a value to a GPIO pin.
- *
- * For this function to have any effect, the pin must be configured as an output.
  *
  * @param pin_number Specifies the pin number to write.
  * @param value      Specifies the value to be written to the pin.
@@ -583,11 +577,19 @@ NRF_STATIC_INLINE void nrf_gpio_cfg(
 {
     NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
 
-    reg->PIN_CNF[pin_number] = ((uint32_t)dir << GPIO_PIN_CNF_DIR_Pos)
-                               | ((uint32_t)input << GPIO_PIN_CNF_INPUT_Pos)
-                               | ((uint32_t)pull << GPIO_PIN_CNF_PULL_Pos)
-                               | ((uint32_t)drive << GPIO_PIN_CNF_DRIVE_Pos)
-                               | ((uint32_t)sense << GPIO_PIN_CNF_SENSE_Pos);
+#if defined(GPIO_PIN_CNF_MCUSEL_Msk)
+    /* Preserve MCUSEL setting. */
+    uint32_t cnf = reg->PIN_CNF[pin_number] & GPIO_PIN_CNF_MCUSEL_Msk;
+#else
+    uint32_t cnf = 0;
+#endif
+    cnf |= ((uint32_t)dir << GPIO_PIN_CNF_DIR_Pos)     |
+           ((uint32_t)input << GPIO_PIN_CNF_INPUT_Pos) |
+           ((uint32_t)pull << GPIO_PIN_CNF_PULL_Pos)   |
+           ((uint32_t)drive << GPIO_PIN_CNF_DRIVE_Pos) |
+           ((uint32_t)sense << GPIO_PIN_CNF_SENSE_Pos);
+
+    reg->PIN_CNF[pin_number] = cnf;
 }
 
 

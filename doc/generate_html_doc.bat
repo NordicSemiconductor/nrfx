@@ -1,2 +1,2 @@
-del html\*.* /Q
+del html\*.* xml\*.* /Q
 doxygen nrfx.doxyfile

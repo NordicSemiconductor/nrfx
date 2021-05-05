@@ -40,7 +40,7 @@ PROJECT_NAME           = "nrfx"
 
 ### EDIT THIS ###
 
-PROJECT_NUMBER         = "2.4"
+PROJECT_NUMBER         = "2.5"
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -235,8 +235,9 @@ TAB_SIZE               = 4
 # newlines (in the resulting output). You can put ^^ in the value part of an
 # alias to insert a newline as if a physical newline was in the original file.
 
-ALIASES                = tagGreenTick="@htmlonly<CENTER><font color=\"green\">✔</font></CENTER>@endhtmlonly" \
-                         tagRedCross="@htmlonly<CENTER><font color=\"red\">✖</font></CENTER>@endhtmlonly"
+ALIASES                = "tagGreenTick=\htmlonly<CENTER><font color=\"green\">✔</font></CENTER>\endhtmlonly \xmlonly<verbatim>embed:rst:inline :green:`✔`</verbatim>\endxmlonly" \
+                         "tagRedCross=\htmlonly<CENTER><font color=\"red\">✖</font></CENTER>\endhtmlonly \xmlonly<verbatim>embed:rst:inline :red:`✖`</verbatim>\endxmlonly" \
+                         "nRF5340pinAssignmentsURL=\"https://infocenter.nordicsemi.com/index.jsp?topic=%2Fps_nrf5340%2Fchapters%2Fpin.html\""
 
 # This tag can be used to specify a number of word-keyword mappings (TCL only).
 # A mapping has the form "name=value". For example adding "class=itcl::class"
@@ -1932,7 +1933,7 @@ MAN_LINKS              = NO
 # captures the structure of the code including all documentation.
 # The default value is: NO.
 
-GENERATE_XML           = NO
+GENERATE_XML           = YES
 
 # The XML_OUTPUT tag is used to specify where the XML pages will be put. If a
 # relative path is entered the value of OUTPUT_DIRECTORY will be put in front of

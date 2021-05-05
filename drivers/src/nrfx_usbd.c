@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2016 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -1940,10 +1942,10 @@ void nrfx_usbd_force_bus_wakeup(void)
 
 void nrfx_usbd_ep_max_packet_size_set(nrfx_usbd_ep_t ep, uint16_t size)
 {
-    /* Only power of 2 size allowed */
-    NRFX_ASSERT((size & 0x01) == 0);
-    /* 0 allowed only for ISO endpoints */
-    NRFX_ASSERT((size != 0) || NRF_USBD_EPISO_CHECK(ep));
+    /* Only the power of 2 size allowed for Control Endpoints */
+    NRFX_ASSERT((((size & (size - 1)) == 0) || (NRF_USBD_EP_NR_GET(ep) != 0)));
+    /* Only non zero size allowed for Control Endpoints */
+    NRFX_ASSERT((size != 0) || (NRF_USBD_EP_NR_GET(ep) != 0));
     /* Packet size cannot be higher than maximum buffer size */
     NRFX_ASSERT((NRF_USBD_EPISO_CHECK(ep) && (size <= usbd_ep_iso_capacity(ep))) ||
                 (!NRF_USBD_EPISO_CHECK(ep) && (size <= NRFX_USBD_EPSIZE)));
