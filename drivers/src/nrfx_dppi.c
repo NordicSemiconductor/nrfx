@@ -130,7 +130,7 @@ nrfx_err_t nrfx_dppi_channel_alloc(uint8_t * p_channel)
 
     if (err_code == NRFX_SUCCESS)
     {
-        NRFX_LOG_INFO("Allocated channel: %d.", channel);
+        NRFX_LOG_INFO("Allocated channel: %d.", *p_channel);
     }
     else
     {
