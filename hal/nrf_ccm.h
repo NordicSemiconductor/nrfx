@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2018 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -63,6 +65,12 @@ typedef enum
     NRF_CCM_EVENT_ENDCRYPT = offsetof(NRF_CCM_Type, EVENTS_ENDCRYPT), ///< Encrypt/decrypt complete.
     NRF_CCM_EVENT_ERROR    = offsetof(NRF_CCM_Type, EVENTS_ERROR),    ///< CCM error event.
 } nrf_ccm_event_t;
+
+/** @brief Types of CCM shorts. */
+typedef enum
+{
+    NRF_CCM_SHORT_ENDKSGEN_CRYPT_MASK = CCM_SHORTS_ENDKSGEN_CRYPT_Msk, ///< Shortcut for starting encryption/decryption when the key-stream generation is complete.
+} nrf_ccm_short_mask_t;
 
 /** @brief CCM interrupts. */
 typedef enum
@@ -165,6 +173,33 @@ NRF_STATIC_INLINE bool nrf_ccm_event_check(NRF_CCM_Type const * p_reg,
  */
 NRF_STATIC_INLINE uint32_t nrf_ccm_event_address_get(NRF_CCM_Type const * p_reg,
                                                      nrf_ccm_event_t      event);
+
+/**
+ * @brief Function for enabling the specified shortcuts.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Shortcuts to be enabled.
+ */
+NRF_STATIC_INLINE void nrf_ccm_shorts_enable(NRF_CCM_Type * p_reg,
+                                             uint32_t       mask);
+
+/**
+ * @brief Function for disabling the specified shortcuts.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Shortcuts to be disabled.
+ */
+NRF_STATIC_INLINE void nrf_ccm_shorts_disable(NRF_CCM_Type * p_reg,
+                                              uint32_t       mask);
+
+/**
+ * @brief Function for setting the specified shortcuts.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Shortcuts to be set.
+ */
+NRF_STATIC_INLINE void nrf_ccm_shorts_set(NRF_CCM_Type * p_reg,
+                                          uint32_t       mask);
 
 /**
  * @brief Function for enabling specified interrupts.
@@ -324,6 +359,52 @@ NRF_STATIC_INLINE void nrf_ccm_datarate_override_set(NRF_CCM_Type *     p_reg,
                                                      nrf_ccm_datarate_t datarate);
 #endif // defined(CCM_RATEOVERRIDE_RATEOVERRIDE_Pos) || defined(__NRFX_DOXYGEN__)
 
+#if defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for setting the subscribe configuration for a given
+ *        CCM task.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] task    Task for which to set the configuration.
+ * @param[in] channel Channel through which to subscribe events.
+ */
+NRF_STATIC_INLINE void nrf_ccm_subscribe_set(NRF_CCM_Type * p_reg,
+                                             nrf_ccm_task_t task,
+                                             uint8_t        channel);
+
+/**
+ * @brief Function for clearing the subscribe configuration for a given
+ *        CCM task.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] task  Task for which to clear the configuration.
+ */
+NRF_STATIC_INLINE void nrf_ccm_subscribe_clear(NRF_CCM_Type * p_reg,
+                                               nrf_ccm_task_t task);
+
+/**
+ * @brief Function for setting the publish configuration for a given
+ *        CCM event.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] event   Event for which to set the configuration.
+ * @param[in] channel Channel through which to publish the event.
+ */
+NRF_STATIC_INLINE void nrf_ccm_publish_set(NRF_CCM_Type *  p_reg,
+                                           nrf_ccm_event_t event,
+                                           uint8_t         channel);
+
+/**
+ * @brief Function for clearing the publish configuration for a given
+ *        CCM event.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] event Event for which to clear the configuration.
+ */
+NRF_STATIC_INLINE void nrf_ccm_publish_clear(NRF_CCM_Type *  p_reg,
+                                             nrf_ccm_event_t event);
+#endif // defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
+
 #ifndef NRF_DECLARE_ONLY
 
 NRF_STATIC_INLINE void nrf_ccm_task_trigger(NRF_CCM_Type * p_reg,
@@ -342,10 +423,7 @@ NRF_STATIC_INLINE void nrf_ccm_event_clear(NRF_CCM_Type *  p_reg,
                                            nrf_ccm_event_t event)
 {
     *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event)) = 0x0UL;
-#if __CORTEX_M == 0x04
-    volatile uint32_t dummy = *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event));
-    (void)dummy;
-#endif
+    nrf_event_readback((uint8_t *)p_reg + (uint32_t)event);
 }
 
 NRF_STATIC_INLINE bool nrf_ccm_event_check(NRF_CCM_Type const * p_reg,
@@ -358,6 +436,25 @@ NRF_STATIC_INLINE uint32_t nrf_ccm_event_address_get(NRF_CCM_Type const * p_reg,
                                                      nrf_ccm_event_t      event)
 {
     return ((uint32_t)p_reg + (uint32_t)event);
+}
+
+
+NRF_STATIC_INLINE void nrf_ccm_shorts_enable(NRF_CCM_Type * p_reg,
+                                             uint32_t       mask)
+{
+    p_reg->SHORTS |= mask;
+}
+
+NRF_STATIC_INLINE void nrf_ccm_shorts_disable(NRF_CCM_Type * p_reg,
+                                              uint32_t       mask)
+{
+    p_reg->SHORTS &= ~(mask);
+}
+
+NRF_STATIC_INLINE void nrf_ccm_shorts_set(NRF_CCM_Type * p_reg,
+                                          uint32_t       mask)
+{
+    p_reg->SHORTS = mask;
 }
 
 NRF_STATIC_INLINE void nrf_ccm_int_enable(NRF_CCM_Type * p_reg, uint32_t mask)
@@ -484,6 +581,36 @@ NRF_STATIC_INLINE void nrf_ccm_datarate_override_set(NRF_CCM_Type *     p_reg,
     p_reg->RATEOVERRIDE = ((uint32_t)datarate << CCM_RATEOVERRIDE_RATEOVERRIDE_Pos);
 }
 #endif
+
+#if defined(DPPI_PRESENT)
+NRF_STATIC_INLINE void nrf_ccm_subscribe_set(NRF_CCM_Type * p_reg,
+                                             nrf_ccm_task_t task,
+                                             uint8_t        channel)
+{
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
+            ((uint32_t)channel | CCM_SUBSCRIBE_KSGEN_EN_Msk);
+}
+
+NRF_STATIC_INLINE void nrf_ccm_subscribe_clear(NRF_CCM_Type * p_reg,
+                                               nrf_ccm_task_t task)
+{
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
+}
+
+NRF_STATIC_INLINE void nrf_ccm_publish_set(NRF_CCM_Type *  p_reg,
+                                           nrf_ccm_event_t event,
+                                           uint8_t         channel)
+{
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
+            ((uint32_t)channel | CCM_PUBLISH_ENDKSGEN_EN_Msk);
+}
+
+NRF_STATIC_INLINE void nrf_ccm_publish_clear(NRF_CCM_Type *  p_reg,
+                                             nrf_ccm_event_t event)
+{
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) = 0;
+}
+#endif // defined(DPPI_PRESENT)
 
 #endif // NRF_DECLARE_ONLY
 

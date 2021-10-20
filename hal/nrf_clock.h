@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -82,14 +84,6 @@ extern "C" {
 #define NRF_CLOCK_HAS_HFCLKAUDIO 1
 #else
 #define NRF_CLOCK_HAS_HFCLKAUDIO 0
-#endif
-
-#if (defined(CLOCK_HFCLKCTRL_HCLK_Msk) && !defined(NRF5340_XXAA_NETWORK)) \
-    || defined(__NRFX_DOXYGEN__)
-/** @brief Presence of HFCLK frequency configuration. */
-#define NRF_CLOCK_HAS_HFCLK_DIV 1
-#else
-#define NRF_CLOCK_HAS_HFCLK_DIV 0
 #endif
 
 #if defined(CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Msk) || defined(__NRFX_DOXYGEN__)
@@ -182,7 +176,7 @@ typedef enum
 #endif
 } nrf_clock_domain_t;
 
-#if NRF_CLOCK_HAS_HFCLK_DIV || NRF_CLOCK_HAS_HFCLK192M
+#if defined(CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT) || NRF_CLOCK_HAS_HFCLK192M
 /**
  * @brief High-frequency clock frequency configuration.
  * @details Used by HFCLKCTRL and HFCLK192MCTRL registers.
@@ -195,7 +189,7 @@ typedef enum
     NRF_CLOCK_HFCLK_DIV_4 = CLOCK_HFCLK192MCTRL_HCLK192M_Div4, /**< Divide HFCLK192M by 4 */
 #endif
 } nrf_clock_hfclk_div_t;
-#endif // NRF_CLOCK_HAS_HFCLK_DIV || NRF_CLOCK_HAS_HFCLK192M
+#endif // defined(CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT) || NRF_CLOCK_HAS_HFCLK192M
 
 /**
  * @brief Trigger status of task LFCLKSTART/HFCLKSTART.
@@ -566,7 +560,7 @@ uint16_t nrf_clock_hfclkaudio_config_get(NRF_CLOCK_Type const * p_reg);
 NRF_STATIC_INLINE void nrf_clock_cal_timer_timeout_set(NRF_CLOCK_Type * p_reg, uint32_t interval);
 #endif
 
-#if NRF_CLOCK_HAS_HFCLK_DIV
+#if defined(CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT)
 /**
  * @brief Function for changing the HFCLK frequency divider.
  *
@@ -635,9 +629,9 @@ NRF_STATIC_INLINE nrf_clock_hfclk_t nrf_clock_hfclk192m_src_get(NRF_CLOCK_Type c
  * @param[in] domain    Clock domain.
  * @param[in] alwaysrun Ensure the clock is always running.
  */
-NRF_STATIC_INLINE void nrf_clock_alwaysrun_set(NRF_CLOCK_Type const * p_reg,
-                                               nrf_clock_domain_t     domain,
-                                               bool                   alwaysrun);
+NRF_STATIC_INLINE void nrf_clock_alwaysrun_set(NRF_CLOCK_Type *   p_reg,
+                                               nrf_clock_domain_t domain,
+                                               bool               alwaysrun);
 /**
  * @brief Function for checking if the clock domain is configured to always run.
  *
@@ -743,10 +737,7 @@ NRF_STATIC_INLINE uint32_t nrf_clock_event_address_get(NRF_CLOCK_Type const * p_
 NRF_STATIC_INLINE void nrf_clock_event_clear(NRF_CLOCK_Type * p_reg, nrf_clock_event_t event)
 {
     *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event)) = 0x0UL;
-#if __CORTEX_M == 0x04
-    volatile uint32_t dummy = *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event));
-    (void)dummy;
-#endif
+    nrf_event_readback((uint8_t *)p_reg + (uint32_t)event);
 }
 
 NRF_STATIC_INLINE bool nrf_clock_event_check(NRF_CLOCK_Type const * p_reg, nrf_clock_event_t event)
@@ -921,7 +912,7 @@ uint16_t nrf_clock_hfclkaudio_config_get(NRF_CLOCK_Type const * p_reg)
 }
 #endif
 
-#if NRF_CLOCK_HAS_HFCLK_DIV
+#if defined(CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT)
 NRF_STATIC_INLINE
 void nrf_clock_hfclk_div_set(NRF_CLOCK_Type * p_reg, nrf_clock_hfclk_div_t divider)
 {
@@ -969,34 +960,32 @@ NRF_STATIC_INLINE void nrf_clock_cal_timer_timeout_set(NRF_CLOCK_Type * p_reg, u
 #endif
 
 #if NRF_CLOCK_HAS_ALWAYSRUN
-NRF_STATIC_INLINE void nrf_clock_alwaysrun_set(NRF_CLOCK_Type const * p_reg,
-                                               nrf_clock_domain_t     domain,
-                                               bool                   alwaysrun)
+NRF_STATIC_INLINE void nrf_clock_alwaysrun_set(NRF_CLOCK_Type *   p_reg,
+                                               nrf_clock_domain_t domain,
+                                               bool               alwaysrun)
 {
-    /* ALWAYSRUN registers should be R/W, but are marked as read-only.
-     * Redefine them as R/W as a workaround. */
     switch (domain)
     {
         case NRF_CLOCK_DOMAIN_LFCLK:
-            *(volatile uint32_t *)(&p_reg->LFCLKALWAYSRUN) =
+            p_reg->LFCLKALWAYSRUN =
                 ((alwaysrun << CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Pos)
                  & CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Msk);
             break;
         case NRF_CLOCK_DOMAIN_HFCLK:
-            *(volatile uint32_t *)(&p_reg->HFCLKALWAYSRUN) =
+            p_reg->HFCLKALWAYSRUN =
                 ((alwaysrun << CLOCK_HFCLKALWAYSRUN_ALWAYSRUN_Pos)
                  & CLOCK_HFCLKALWAYSRUN_ALWAYSRUN_Msk);
             break;
 #if NRF_CLOCK_HAS_HFCLK192M
         case NRF_CLOCK_DOMAIN_HFCLK192M:
-            *(volatile uint32_t *)(&p_reg->HFCLK192MALWAYSRUN) =
+            p_reg->HFCLK192MALWAYSRUN =
                 ((alwaysrun << CLOCK_HFCLK192MALWAYSRUN_ALWAYSRUN_Pos)
                  & CLOCK_HFCLK192MALWAYSRUN_ALWAYSRUN_Msk);
             break;
 #endif
 #if NRF_CLOCK_HAS_HFCLKAUDIO
         case NRF_CLOCK_DOMAIN_HFCLKAUDIO:
-            *(volatile uint32_t *)(&p_reg->HFCLKAUDIOALWAYSRUN) =
+            p_reg->HFCLKAUDIOALWAYSRUN =
                 ((alwaysrun << CLOCK_HFCLKAUDIOALWAYSRUN_ALWAYSRUN_Pos)
                  & CLOCK_HFCLKAUDIOALWAYSRUN_ALWAYSRUN_Msk);
             break;

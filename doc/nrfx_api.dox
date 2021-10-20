@@ -69,8 +69,6 @@
 
 @defgroup nrf_radio RADIO
 
-@defgroup nrf_reset RESET
-
 @defgroup nrf_rng RNG
 
 @defgroup nrf_rtc RTC

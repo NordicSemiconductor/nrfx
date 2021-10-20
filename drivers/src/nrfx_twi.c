@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -274,6 +276,7 @@ void nrfx_twi_disable(nrfx_twi_t const * p_instance)
     nrf_twi_disable(p_twi);
 
     p_cb->state = NRFX_DRV_STATE_INITIALIZED;
+    p_cb->busy = false;
     NRFX_LOG_INFO("Instance disabled: %d.", p_instance->drv_inst_idx);
 }
 

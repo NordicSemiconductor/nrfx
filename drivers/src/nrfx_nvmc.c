@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2019 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -80,7 +82,8 @@
  *
  * This value is used to determine whether the partial erase is still in progress.
  */
-#if defined(NRF52810_XXAA) || defined(NRF52811_XXAA) || defined(NRF52840_XXAA)
+#if defined(NRF52805_XXAA) || defined(NRF52810_XXAA) || \
+    defined(NRF52811_XXAA) || defined(NRF52840_XXAA)
     #define NVMC_PAGE_ERASE_DURATION_MS  85
 #elif defined(NRF52820_XXAA) || defined(NRF52833_XXAA) || defined(NRF9160_XXAA) || \
       defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK)
@@ -152,17 +155,20 @@ __STATIC_INLINE bool is_halfword_aligned(uint32_t addr)
     return ((addr & 0x1u) == 0u);
 }
 
-__STATIC_INLINE bool is_valid_address(uint32_t addr)
+__STATIC_INLINE bool is_valid_address(uint32_t addr, bool uicr_allowed)
 {
     if ((addr - NVMC_FLASH_BASE_ADDRESS) < flash_total_size_get())
     {
         return true;
     }
 #if !defined(NRF_TRUSTZONE_NONSECURE)
-    if ((addr - (uint32_t)NRF_UICR) < sizeof(NRF_UICR_Type))
+    if (uicr_allowed &&
+        (addr - (uint32_t)NRF_UICR) < sizeof(NRF_UICR_Type))
     {
         return true;
     }
+#else
+    (void)uicr_allowed;
 #endif
 
     return false;
@@ -253,7 +259,7 @@ static void nvmc_words_write(uint32_t addr, void const * src, uint32_t num_words
 
 nrfx_err_t nrfx_nvmc_page_erase(uint32_t addr)
 {
-    NRFX_ASSERT(is_valid_address(addr));
+    NRFX_ASSERT(is_valid_address(addr, false));
 
     if (!is_page_aligned_check(addr))
     {
@@ -295,7 +301,7 @@ void nrfx_nvmc_all_erase(void)
 #if defined(NRF_NVMC_PARTIAL_ERASE_PRESENT)
 nrfx_err_t nrfx_nvmc_page_partial_erase_init(uint32_t addr, uint32_t duration_ms)
 {
-    NRFX_ASSERT(is_valid_address(addr));
+    NRFX_ASSERT(is_valid_address(addr, false));
 
     if (!is_page_aligned_check(addr))
     {
@@ -341,7 +347,7 @@ bool nrfx_nvmc_page_partial_erase_continue(void)
 
 bool nrfx_nvmc_byte_writable_check(uint32_t addr, uint8_t val_to_check)
 {
-    NRFX_ASSERT(is_valid_address(addr));
+    NRFX_ASSERT(is_valid_address(addr, true));
 
     uint8_t val_on_addr = *(uint8_t const *)addr;
     return (val_to_check & val_on_addr) == val_to_check;
@@ -349,7 +355,7 @@ bool nrfx_nvmc_byte_writable_check(uint32_t addr, uint8_t val_to_check)
 
 bool nrfx_nvmc_halfword_writable_check(uint32_t addr, uint16_t val_to_check)
 {
-    NRFX_ASSERT(is_valid_address(addr));
+    NRFX_ASSERT(is_valid_address(addr, true));
     NRFX_ASSERT(is_halfword_aligned(addr));
 
     uint16_t val_on_addr;
@@ -367,7 +373,7 @@ bool nrfx_nvmc_halfword_writable_check(uint32_t addr, uint16_t val_to_check)
 
 bool nrfx_nvmc_word_writable_check(uint32_t addr, uint32_t val_to_check)
 {
-    NRFX_ASSERT(is_valid_address(addr));
+    NRFX_ASSERT(is_valid_address(addr, true));
     NRFX_ASSERT(nrfx_is_word_aligned((void const *)addr));
 
     uint32_t val_on_addr = *(uint32_t const *)addr;
@@ -376,7 +382,7 @@ bool nrfx_nvmc_word_writable_check(uint32_t addr, uint32_t val_to_check)
 
 void nrfx_nvmc_byte_write(uint32_t addr, uint8_t value)
 {
-    NRFX_ASSERT(is_valid_address(addr));
+    NRFX_ASSERT(is_valid_address(addr, true));
 
     uint32_t aligned_addr = addr & ~(0x03UL);
 
@@ -385,7 +391,7 @@ void nrfx_nvmc_byte_write(uint32_t addr, uint8_t value)
 
 void nrfx_nvmc_halfword_write(uint32_t addr, uint16_t value)
 {
-    NRFX_ASSERT(is_valid_address(addr));
+    NRFX_ASSERT(is_valid_address(addr, true));
     NRFX_ASSERT(is_halfword_aligned(addr));
 
     uint32_t aligned_addr = addr & ~(0x03UL);
@@ -395,7 +401,7 @@ void nrfx_nvmc_halfword_write(uint32_t addr, uint16_t value)
 
 void nrfx_nvmc_word_write(uint32_t addr, uint32_t value)
 {
-    NRFX_ASSERT(is_valid_address(addr));
+    NRFX_ASSERT(is_valid_address(addr, true));
     NRFX_ASSERT(nrfx_is_word_aligned((void const *)addr));
 
     nvmc_write_mode_set();
@@ -407,7 +413,7 @@ void nrfx_nvmc_word_write(uint32_t addr, uint32_t value)
 
 void nrfx_nvmc_bytes_write(uint32_t addr, void const * src, uint32_t num_bytes)
 {
-    NRFX_ASSERT(is_valid_address(addr));
+    NRFX_ASSERT(is_valid_address(addr, true));
 
     nvmc_write_mode_set();
 
@@ -469,7 +475,7 @@ void nrfx_nvmc_bytes_write(uint32_t addr, void const * src, uint32_t num_bytes)
 
 void nrfx_nvmc_words_write(uint32_t addr, void const * src, uint32_t num_words)
 {
-    NRFX_ASSERT(is_valid_address(addr));
+    NRFX_ASSERT(is_valid_address(addr, true));
     NRFX_ASSERT(nrfx_is_word_aligned((void const *)addr));
     NRFX_ASSERT(nrfx_is_word_aligned(src));
 

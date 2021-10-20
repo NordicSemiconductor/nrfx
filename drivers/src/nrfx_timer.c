@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -92,16 +94,7 @@ nrfx_err_t nrfx_timer_init(nrfx_timer_t const *        p_instance,
         return err_code;
     }
 
-    /* Warning 685: Relational operator '<=' always evaluates to 'true'"
-     * Warning in NRF_TIMER_IS_BIT_WIDTH_VALID macro. Macro validate timers resolution.
-     * Not necessary in nRF52 based systems. Obligatory in nRF51 based systems.
-     */
-
-    /*lint -save -e685 */
-
     NRFX_ASSERT(NRF_TIMER_IS_BIT_WIDTH_VALID(p_instance->p_reg, p_config->bit_width));
-
-    //lint -restore
 
     p_cb->handler = timer_event_handler;
     p_cb->context = p_config->p_context;

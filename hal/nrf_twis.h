@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -565,10 +567,7 @@ NRF_STATIC_INLINE uint32_t nrf_twis_task_address_get(NRF_TWIS_Type const * p_reg
 NRF_STATIC_INLINE void nrf_twis_event_clear(NRF_TWIS_Type * p_reg, nrf_twis_event_t event)
 {
     *(nrf_twis_getRegPtr(p_reg, (uint32_t)event)) = 0UL;
-#if __CORTEX_M == 0x04
-    volatile uint32_t dummy = *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event));
-    (void)dummy;
-#endif
+    nrf_event_readback((uint8_t *)p_reg + (uint32_t)event);
 }
 
 NRF_STATIC_INLINE bool nrf_twis_event_check(NRF_TWIS_Type const * p_reg, nrf_twis_event_t event)

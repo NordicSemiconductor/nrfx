@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2017 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -36,9 +38,19 @@
 #include <nrfx_power.h>
 
 #if NRFX_CHECK(NRFX_CLOCK_ENABLED)
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern bool nrfx_clock_irq_enabled;
 extern void nrfx_clock_irq_handler(void);
+
+#ifdef __cplusplus
+}
 #endif
+
+#endif // NRFX_CHECK(NRFX_CLOCK_ENABLED)
 
 /**
  * @internal
@@ -113,7 +125,13 @@ nrfx_err_t nrfx_power_init(nrfx_power_config_t const * p_config)
     nrf_power_dcdcen_set(NRF_POWER, p_config->dcdcen);
 #elif defined(REGULATORS_PRESENT)
     nrf_regulators_dcdcen_set(NRF_REGULATORS, p_config->dcdcen);
+#if !defined(NRF_TRUSTZONE_NONSECURE)
+    if (p_config->dcdcen && nrf53_errata_53())
+    {
+        *((volatile uint32_t *)0x50004728ul) = 0x1;
+    }
 #endif
+#endif // defined(REGULATORS_PRESENT)
 
     nrfx_power_clock_irq_init();
 
@@ -272,6 +290,8 @@ void nrfx_power_usbevt_uninit(void)
 void nrfx_power_irq_handler(void)
 {
     uint32_t enabled = nrf_power_int_enable_get(NRF_POWER);
+    /* Prevent "unused variable" warning when all below blocks are disabled. */
+    (void)enabled;
 
 #if NRFX_POWER_SUPPORTS_POFCON
     if ((0 != (enabled & NRF_POWER_INT_POFWARN_MASK)) &&
