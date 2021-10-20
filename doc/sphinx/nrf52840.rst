@@ -1,0 +1,5 @@
+nRF52840 Drivers
+================
+
+.. doxygenpage:: nrf52840_drivers
+    :content-only:

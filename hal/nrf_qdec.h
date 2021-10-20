@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2014 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -119,15 +121,18 @@ typedef enum
 /** @brief Available report periods. */
 typedef enum
 {
-    NRF_QDEC_REPORTPER_10  = QDEC_REPORTPER_REPORTPER_10Smpl,  /**< QDEC report period 10 samples.  */
-    NRF_QDEC_REPORTPER_40  = QDEC_REPORTPER_REPORTPER_40Smpl,  /**< QDEC report period 40 samples.  */
-    NRF_QDEC_REPORTPER_80  = QDEC_REPORTPER_REPORTPER_80Smpl,  /**< QDEC report period 80 samples.  */
-    NRF_QDEC_REPORTPER_120 = QDEC_REPORTPER_REPORTPER_120Smpl, /**< QDEC report period 120 samples. */
-    NRF_QDEC_REPORTPER_160 = QDEC_REPORTPER_REPORTPER_160Smpl, /**< QDEC report period 160 samples. */
-    NRF_QDEC_REPORTPER_200 = QDEC_REPORTPER_REPORTPER_200Smpl, /**< QDEC report period 200 samples. */
-    NRF_QDEC_REPORTPER_240 = QDEC_REPORTPER_REPORTPER_240Smpl, /**< QDEC report period 240 samples. */
-    NRF_QDEC_REPORTPER_280 = QDEC_REPORTPER_REPORTPER_280Smpl, /**< QDEC report period 280 samples. */
-    NRF_QDEC_REPORTPER_DISABLED                                /**< QDEC reporting disabled.        */
+#if defined(QDEC_REPORTPER_REPORTPER_1Smpl) || defined(__NRFX_DOXYGEN__)
+    NRF_QDEC_REPORTPER_1        = QDEC_REPORTPER_REPORTPER_1Smpl,                                    /**< QDEC report period 1 sample. */
+#endif
+    NRF_QDEC_REPORTPER_10       = QDEC_REPORTPER_REPORTPER_10Smpl,                                   /**< QDEC report period 10 samples. */
+    NRF_QDEC_REPORTPER_40       = QDEC_REPORTPER_REPORTPER_40Smpl,                                   /**< QDEC report period 40 samples. */
+    NRF_QDEC_REPORTPER_80       = QDEC_REPORTPER_REPORTPER_80Smpl,                                   /**< QDEC report period 80 samples. */
+    NRF_QDEC_REPORTPER_120      = QDEC_REPORTPER_REPORTPER_120Smpl,                                  /**< QDEC report period 120 samples. */
+    NRF_QDEC_REPORTPER_160      = QDEC_REPORTPER_REPORTPER_160Smpl,                                  /**< QDEC report period 160 samples. */
+    NRF_QDEC_REPORTPER_200      = QDEC_REPORTPER_REPORTPER_200Smpl,                                  /**< QDEC report period 200 samples. */
+    NRF_QDEC_REPORTPER_240      = QDEC_REPORTPER_REPORTPER_240Smpl,                                  /**< QDEC report period 240 samples. */
+    NRF_QDEC_REPORTPER_280      = QDEC_REPORTPER_REPORTPER_280Smpl,                                  /**< QDEC report period 280 samples. */
+    NRF_QDEC_REPORTPER_DISABLED = (QDEC_REPORTPER_REPORTPER_Msk >> QDEC_REPORTPER_REPORTPER_Pos) + 1 /**< QDEC reporting disabled. Deprecated. */
 } nrf_qdec_reportper_t;
 
 /**
@@ -578,10 +583,7 @@ NRF_STATIC_INLINE uint32_t nrf_qdec_task_address_get(NRF_QDEC_Type const * p_reg
 NRF_STATIC_INLINE void nrf_qdec_event_clear(NRF_QDEC_Type * p_reg, nrf_qdec_event_t event)
 {
     *( (volatile uint32_t *)( (uint8_t *)p_reg + (uint32_t)event) ) = 0;
-#if __CORTEX_M == 0x04
-    volatile uint32_t dummy = *((volatile uint32_t *)((uint8_t *)p_reg + event));
-    (void)dummy;
-#endif
+    nrf_event_readback((uint8_t *)p_reg + (uint32_t)event);
 }
 
 NRF_STATIC_INLINE bool nrf_qdec_event_check(NRF_QDEC_Type const * p_reg, nrf_qdec_event_t event)

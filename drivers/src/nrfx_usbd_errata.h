@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2016 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -66,6 +68,18 @@ static inline bool nrfx_usbd_errata_187(void)
 static inline bool nrfx_usbd_errata_199(void)
 {
     return NRFX_USBD_ERRATA_ENABLE && nrf52_errata_199();
+}
+
+/* Errata: Device remains in SUSPEND too long. */
+static inline bool nrfx_usbd_errata_211(void)
+{
+    return NRFX_USBD_ERRATA_ENABLE && nrf52_errata_211();
+}
+
+/* Errata: Unexpected behavior after reset. **/
+static inline bool nrfx_usbd_errata_223(void)
+{
+    return NRFX_USBD_ERRATA_ENABLE && nrf52_errata_223();
 }
 
 #endif // NRFX_USBD_ERRATA_H__

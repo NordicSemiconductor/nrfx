@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -161,8 +163,8 @@ typedef struct
 {                                                                \
     .addr               = { _addr, 0x00 },                       \
     .scl                = _pin_scl,                              \
-    .scl_pull           = NRF_GPIO_PIN_NOPULL,                   \
     .sda                = _pin_sda,                              \
+    .scl_pull           = NRF_GPIO_PIN_NOPULL,                   \
     .sda_pull           = NRF_GPIO_PIN_NOPULL,                   \
     .interrupt_priority = NRFX_TWIS_DEFAULT_CONFIG_IRQ_PRIORITY  \
 }

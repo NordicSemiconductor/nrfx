@@ -1,0 +1,5 @@
+nRF52810/nRF52811 Drivers
+=========================
+
+.. doxygenpage:: nrf52810_drivers
+    :content-only:

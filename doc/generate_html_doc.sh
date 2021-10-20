@@ -1,2 +1,2 @@
-rm -rf html
+rm -rf html xml
 doxygen nrfx.doxyfile

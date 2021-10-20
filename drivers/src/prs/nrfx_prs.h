@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2017 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -51,7 +53,7 @@ extern "C" {
     #define NRFX_PRS_BOX_0_ADDR     NRF_SPI0
     // SPI1, SPIS1, TWI1
     #define NRFX_PRS_BOX_1_ADDR     NRF_SPI1
-#elif defined(NRF52810_XXAA)
+#elif defined(NRF52805_XXAA) || defined(NRF52810_XXAA)
     // TWIM0, TWIS0, TWI0
     #define NRFX_PRS_BOX_0_ADDR     NRF_TWIM0
     // SPIM0, SPIS0, SPI0

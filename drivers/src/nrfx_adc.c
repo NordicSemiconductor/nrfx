@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -302,7 +304,7 @@ void nrfx_adc_irq_handler(void)
     if (m_cb.p_buffer == NULL)
     {
         nrf_adc_event_clear(NRF_ADC, NRF_ADC_EVENT_END);
-        NRFX_LOG_DEBUG("Event: %s.",NRFX_LOG_ERROR_STRING_GET(NRF_ADC_EVENT_END));
+        NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_ADC_EVENT_END));
         nrf_adc_int_disable(NRF_ADC, NRF_ADC_INT_END_MASK);
         nrf_adc_disable(NRF_ADC);
         nrfx_adc_evt_t evt;
@@ -315,7 +317,7 @@ void nrfx_adc_irq_handler(void)
     }
     else if (adc_sample_process())
     {
-        NRFX_LOG_DEBUG("Event: %s.", NRFX_LOG_ERROR_STRING_GET(NRF_ADC_EVENT_END));
+        NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_ADC_EVENT_END));
         nrf_adc_int_disable(NRF_ADC, NRF_ADC_INT_END_MASK);
         nrfx_adc_evt_t evt;
         evt.type = NRFX_ADC_EVT_DONE;

@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2014 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -188,7 +190,7 @@ nrfx_err_t nrfx_rtc_cc_set(nrfx_rtc_t const * p_instance,
         int32_t diff = cnt - val;
         if (cnt < val)
         {
-            diff += RTC_COUNTER_COUNTER_Msk;
+            diff += NRF_RTC_COUNTER_MAX;
         }
         if (diff < m_cb[p_instance->instance_id].tick_latency)
         {
@@ -268,11 +270,11 @@ uint32_t nrfx_rtc_max_ticks_get(nrfx_rtc_t const * p_instance)
     uint32_t ticks;
     if (m_cb[p_instance->instance_id].reliable)
     {
-        ticks = RTC_COUNTER_COUNTER_Msk - m_cb[p_instance->instance_id].tick_latency;
+        ticks = NRF_RTC_COUNTER_MAX - m_cb[p_instance->instance_id].tick_latency;
     }
     else
     {
-        ticks = RTC_COUNTER_COUNTER_Msk;
+        ticks = NRF_RTC_COUNTER_MAX;
     }
     return ticks;
 }

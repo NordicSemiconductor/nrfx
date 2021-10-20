@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -217,8 +219,12 @@ typedef void (* nrfx_twim_evt_handler_t)(nrfx_twim_evt_t const * p_event,
  * @param[in] event_handler Event handler provided by the user. If NULL, blocking mode is enabled.
  * @param[in] p_context     Context passed to event handler.
  *
+ * @warning On nRF5340, 1 MHz setting is supported only on the dedicated pins. See the chapter
+ *          <a href=@nRF5340pinAssignmentsURL>Pin assignments</a> in the Product Specification.
+ *
  * @retval NRFX_SUCCESS             Initialization was successful.
  * @retval NRFX_ERROR_INVALID_STATE The driver is in invalid state.
+ * @retval NRFX_ERROR_INVALID_PARAM Requested frequency is not available on the specified pins.
  * @retval NRFX_ERROR_BUSY          Some other peripheral with the same
  *                                  instance ID is already in use. This is
  *                                  possible only if @ref nrfx_prs module

@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2016 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -106,17 +108,18 @@ void nrfx_clock_stop(nrf_clock_domain_t domain);
  *
  * XTAL source is assumed for domains with multiple sources.
  *
- * @param[in]  domain  Clock domain.
- * @param[out] clk_src Clock source that is running. Set to NULL if not needed.
- *                     Ignored for HFCLKAUDIO domain. Typecast it to @ref nrf_clock_lfclk_t for
- *                     LFCLK and @ref nrf_clock_hfclk_t for HFCLK and HFCLK192M.
+ * @param[in]  domain    Clock domain.
+ * @param[out] p_clk_src Pointer to a clock source that is running. Set to NULL if not needed.
+ *                       Ignored for HFCLKAUDIO domain. Variable pointed by @p p_clk_src
+ *                       must be of either @ref nrf_clock_lfclk_t type for LFCLK
+ *                       or @ref nrf_clock_hfclk_t type for HFCLK and HFCLK192M.
  *
  * @retval true  The clock domain is running.
  * @retval false The clock domain is not running.
  */
-NRFX_STATIC_INLINE bool nrfx_clock_is_running(nrf_clock_domain_t domain, void * clk_src);
+NRFX_STATIC_INLINE bool nrfx_clock_is_running(nrf_clock_domain_t domain, void * p_clk_src);
 
-#if NRF_CLOCK_HAS_HFCLK_DIV || NRF_CLOCK_HAS_HFCLK_192M
+#if defined(CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT) || NRF_CLOCK_HAS_HFCLK_192M
 /**
  * @brief Function for setting the specified clock domain divider.
  *
@@ -268,12 +271,12 @@ NRFX_STATIC_INLINE uint32_t nrfx_clock_ppi_event_addr(nrf_clock_event_t event);
 
 #ifndef NRFX_DECLARE_ONLY
 
-#if NRF_CLOCK_HAS_HFCLK_DIV || NRF_CLOCK_HAS_HFCLK_192M
+#if defined(CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT) || NRF_CLOCK_HAS_HFCLK_192M
 NRFX_STATIC_INLINE nrf_clock_hfclk_div_t nrfx_clock_divider_get(nrf_clock_domain_t domain)
 {
     switch (domain)
     {
-#if NRF_CLOCK_HAS_HFCLK_DIV
+#if defined(CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT)
         case NRF_CLOCK_DOMAIN_HFCLK:
             return nrf_clock_hfclk_div_get(NRF_CLOCK);
 #endif
@@ -283,10 +286,10 @@ NRFX_STATIC_INLINE nrf_clock_hfclk_div_t nrfx_clock_divider_get(nrf_clock_domain
 #endif
         default:
             NRFX_ASSERT(0);
-            return 0;
+            return (nrf_clock_hfclk_div_t)0;
     }
 }
-#endif // NRF_CLOCK_HAS_HFCLK_DIV || NRF_CLOCK_HAS_HFCLK_192M
+#endif // defined(CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT) || NRF_CLOCK_HAS_HFCLK_192M
 
 NRFX_STATIC_INLINE void nrfx_clock_lfclk_start(void)
 {
@@ -318,9 +321,9 @@ NRFX_STATIC_INLINE uint32_t nrfx_clock_ppi_event_addr(nrf_clock_event_t event)
     return nrf_clock_event_address_get(NRF_CLOCK, event);
 }
 
-NRFX_STATIC_INLINE bool nrfx_clock_is_running(nrf_clock_domain_t domain, void * clk_src)
+NRFX_STATIC_INLINE bool nrfx_clock_is_running(nrf_clock_domain_t domain, void * p_clk_src)
 {
-    return nrf_clock_is_running(NRF_CLOCK, domain, clk_src);
+    return nrf_clock_is_running(NRF_CLOCK, domain, p_clk_src);
 }
 
 NRFX_STATIC_INLINE bool nrfx_clock_hfclk_is_running(void)

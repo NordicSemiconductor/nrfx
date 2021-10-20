@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2017 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,6 +36,8 @@
 
 #if defined(NRF51)
     #include <soc/nrfx_irqs_nrf51.h>
+#elif defined(NRF52805_XXAA)
+    #include <soc/nrfx_irqs_nrf52805.h>
 #elif defined(NRF52810_XXAA)
     #include <soc/nrfx_irqs_nrf52810.h>
 #elif defined(NRF52811_XXAA)

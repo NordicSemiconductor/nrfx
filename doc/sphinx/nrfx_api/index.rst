@@ -1,0 +1,7 @@
+nrfx API
+========
+
+.. toctree::
+    :glob:
+
+    *

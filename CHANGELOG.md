@@ -1,6 +1,75 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [2.5.0] - 2021-05-05
+### Added
+- Added support for double-buffered transfers in the QSPI driver.
+- Added support for one-by-one channel configuration in the SAADC driver.
+- Added critical sections for channel allocation and deallocation in the DPPI driver.
+- Added support for generating documentation in the RST format using Sphinx tool.
+- Added high-drive pin configuration in the QSPI, TWIM, and SPIM drivers.
+- Added report period setting of 1 sample in the QDEC HAL.
+- Implemented workaround for nRF53 Series anomaly 121 in the QSPI driver.
+
+### Changed
+- Updated MDK to version 8.40.2.
+- Removed implicit channel deallocation during initialization in the GPIOTE driver.
+- Restricted pins that are supported for specific configuration on nRF5340 in the QSPI, TWIM, and SPIM drivers.
+- Aligned IRQ handler symbols to new naming scheme for nRF53 Series.
+
+### Fixed
+- Fixed register access sequence in the COMP driver.
+- Fixed memory corruption when uninitialized channel was freed in the GPIOTE driver.
+- Fixed spurious access of DCX pin for every instance of the peripheral when extended features were enabled in the SPIM driver.
+- Fixed overwrite of MCUSEL configuration in the nrf_gpio_cfg() function.
+- Fixed driver behavior for zero-length transfer in the TWIM driver.
+- Fixed internal state handling when transfer is aborted before finishing in the TWI and TWIM drivers.
+- Corrected assertions for MPS requirements in the USBD driver.
+- Corrected symbol describing maximum data payload for a full-speed isochronous endpoint in the USBD driver.
+
+## [2.4.0] - 2020-11-13
+### Added
+- Added the channel allocator feature in the GPIOTE driver.
+- Added support for registers associated with the Direction Finding feature in the RADIO HAL.
+- Added support for the SUBSCRIBE and PUBLISH registers in the following HALs: AAR, CCM, ECB, RADIO, and RNG.
+- Added support for the LATENCY register present on nRF5340 in the GPIOTE driver and the GPIOTE HAL.
+- Implemented workaround for nRF53 Series anomaly 53 in the POWER driver.
+
+### Changed
+- Updated MDK to 8.37.0.
+
+### Fixed
+- Fixed unused parameters in the PPI, CLOCK, SPIM and POWER drivers to resolve compilation warnings, such as 'flags' in the SPIM driver.
+- Fixed a race condition in the COMP driver when interrupt occured before update of the driver internal state.
+- Fixed minor C++ compilation warnings in the drivers.
+- Fixed implementation of workaround for nRF52 Series anomaly 197 in the POWER HAL, which was applied in incorrect configuration.
+- Fixed implementation of workaround for nRF53 Series anomaly 4 in the CLOCK driver, which was applied in incorrect configuration.
+- Fixed the incorrect signature of the nrf_clock_alwaysrun_set() function.
+
+## [2.3.0] - 2020-08-19
+### Added
+- Added support for nRF52805.
+- Implemented workaround for nRF52 Series anomaly 197 in the POWER HAL.
+- Implemented workaround for nRF52 Series anomalies 211 and 223 in the USBD driver.
+- Added support for the nRF53 Series in the QSPI HAL.
+- Added function in the GPIO HAL that returns port index.
+- Introduced a QSPI HAL symbol that indicates the availability of the QSPI mode 1.
+- Introduced shortcut functionality in the CCM HAL.
+- Added function in the TIMER HAL for setting the specified shortcuts.
+- Added optional two-stage start procedure of the LFXO in the CLOCK driver.
+
+### Changed
+- Updated MDK to 8.35.0.
+- Divided network and application core-specific functionalities for nRF5340 in the RESET HAL and the reset reason helper.
+
+### Fixed
+- Corrected assertions in the NVMC driver.
+- Corrected return types in the CCM HAL.
+- Fixed setting of program memory access mode for secure code in the NVMC driver.
+- Removed usage of the NRF_UICR symbol on non-secure targets in address validity checks in the NVMC driver.
+- Fixed an error message in the SPIM driver that prevented successful compilation with logging enabled.
+- Fixed unused parameters in the PPI HAL.
+
 ## [2.2.0] - 2020-04-28
 ### Added
 - Added support for nRF52820.

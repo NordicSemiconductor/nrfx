@@ -1,0 +1,4 @@
+sphinx~=3.5
+sphinx-ncs-theme~=0.6.2
+breathe~=4.28
+m2r2~=0.2

@@ -1,0 +1,5 @@
+nRF52833 Drivers
+================
+
+.. doxygenpage:: nrf52833_drivers
+    :content-only:

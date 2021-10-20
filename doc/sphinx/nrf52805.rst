@@ -1,0 +1,5 @@
+nRF52805 Drivers
+================
+
+.. doxygenpage:: nrf52805_drivers
+    :content-only:

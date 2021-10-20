@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -328,7 +330,6 @@ bool nrfx_uart_tx_in_progress(nrfx_uart_t const * p_instance)
 static void rx_enable(nrfx_uart_t const * p_instance)
 {
     nrf_uart_event_clear(p_instance->p_reg, NRF_UART_EVENT_ERROR);
-    nrf_uart_event_clear(p_instance->p_reg, NRF_UART_EVENT_RXDRDY);
     nrf_uart_task_trigger(p_instance->p_reg, NRF_UART_TASK_STARTRX);
 }
 
