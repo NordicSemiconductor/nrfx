@@ -618,6 +618,13 @@ nrfx_err_t nrfx_nfct_parameter_set(nrfx_nfct_param_t const * p_param)
 nrfx_err_t nrfx_nfct_nfcid1_default_bytes_get(uint8_t * const p_nfcid1_buff,
                                               uint32_t        nfcid1_buff_len)
 {
+#if defined(NRF_TRUSTZONE_NONSECURE)
+    /* The non-secure domain does not have access to NRF_FICR. It must
+    read them indirectly through the secure read service instead. */
+    return NRFX_ERROR_INVALID_STATE;
+
+#else
+
     if ((nfcid1_buff_len != NRFX_NFCT_NFCID1_SINGLE_SIZE) &&
         (nfcid1_buff_len != NRFX_NFCT_NFCID1_DOUBLE_SIZE) &&
         (nfcid1_buff_len != NRFX_NFCT_NFCID1_TRIPLE_SIZE))
@@ -625,15 +632,9 @@ nrfx_err_t nrfx_nfct_nfcid1_default_bytes_get(uint8_t * const p_nfcid1_buff,
         return NRFX_ERROR_INVALID_LENGTH;
     }
 
-#if defined(FICR_NFC_TAGHEADER0_MFGID_Msk) && !defined(NRF_TRUSTZONE_NONSECURE)
     uint32_t nfc_tag_header0 = NRF_FICR->NFC.TAGHEADER0;
     uint32_t nfc_tag_header1 = NRF_FICR->NFC.TAGHEADER1;
     uint32_t nfc_tag_header2 = NRF_FICR->NFC.TAGHEADER2;
-#else
-    uint32_t nfc_tag_header0 = 0x5F;
-    uint32_t nfc_tag_header1 = 0;
-    uint32_t nfc_tag_header2 = 0;
-#endif
 
     p_nfcid1_buff[0] = (uint8_t) (nfc_tag_header0 >> 0);
     p_nfcid1_buff[1] = (uint8_t) (nfc_tag_header0 >> 8);
@@ -663,6 +664,8 @@ nrfx_err_t nrfx_nfct_nfcid1_default_bytes_get(uint8_t * const p_nfcid1_buff,
     }
 
     return NRFX_SUCCESS;
+
+#endif // defined(NRF_TRUSTZONE_NONSECURE)
 }
 
 void nrfx_nfct_autocolres_enable(void)

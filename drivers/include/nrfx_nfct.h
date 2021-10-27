@@ -283,6 +283,7 @@ nrfx_err_t nrfx_nfct_parameter_set(nrfx_nfct_param_t const * p_param);
  *                                   @ref NRFX_NFCT_NFCID1_SINGLE_SIZE,
  *                                   @ref NRFX_NFCT_NFCID1_DOUBLE_SIZE, or
  *                                   @ref NRFX_NFCT_NFCID1_TRIPLE_SIZE.
+ * @retval NRFX_ERROR_INVALID_STATE  when NRF_TRUSTZONE_NONSECURE is defined
  */
 nrfx_err_t nrfx_nfct_nfcid1_default_bytes_get(uint8_t * const p_nfcid1_buff,
                                               uint32_t        nfcid1_buff_len);
