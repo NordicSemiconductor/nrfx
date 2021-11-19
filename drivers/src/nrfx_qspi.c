@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2016 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,6 +36,7 @@
 #if NRFX_CHECK(NRFX_QSPI_ENABLED)
 
 #include <nrfx_qspi.h>
+#include <hal/nrf_gpio.h>
 
 /** @brief Command byte used to read status register. */
 #define QSPI_STD_CMD_RDSR 0x05
@@ -46,6 +49,18 @@
 
 /** @brief Default number of tries in timeout function. */
 #define QSPI_DEF_WAIT_ATTEMPTS 100
+
+/**
+ * @brief Macro for initializing a QSPI pin.
+ *
+ * QSPI peripheral expects high drive pin strength.
+ */
+#define QSPI_PIN_INIT(_pin) nrf_gpio_cfg((_pin),                        \
+                                         NRF_GPIO_PIN_DIR_INPUT,        \
+                                         NRF_GPIO_PIN_INPUT_DISCONNECT, \
+                                         NRF_GPIO_PIN_NOPULL,           \
+                                         NRF_GPIO_PIN_H0H1,             \
+                                         NRF_GPIO_PIN_NOSENSE)
 
 /** @brief Control block - driver instance local data. */
 typedef struct
@@ -95,9 +110,41 @@ static bool qspi_pins_configure(nrf_qspi_pins_t const * p_config)
         return false;
     }
 
+    QSPI_PIN_INIT(p_config->sck_pin);
+    QSPI_PIN_INIT(p_config->csn_pin);
+    QSPI_PIN_INIT(p_config->io0_pin);
+    QSPI_PIN_INIT(p_config->io1_pin);
+    if (p_config->io2_pin != NRF_QSPI_PIN_NOT_CONNECTED)
+    {
+        QSPI_PIN_INIT(p_config->io2_pin);
+    }
+    if (p_config->io3_pin != NRF_QSPI_PIN_NOT_CONNECTED)
+    {
+        QSPI_PIN_INIT(p_config->io3_pin);
+    }
+
     nrf_qspi_pins_set(NRF_QSPI, p_config);
 
     return true;
+}
+
+static void qspi_pins_deconfigure(void)
+{
+    nrf_qspi_pins_t pins;
+    nrf_qspi_pins_get(NRF_QSPI, &pins);
+
+    nrf_gpio_cfg_default(pins.sck_pin);
+    nrf_gpio_cfg_default(pins.csn_pin);
+    nrf_gpio_cfg_default(pins.io0_pin);
+    nrf_gpio_cfg_default(pins.io1_pin);
+    if (pins.io2_pin != NRF_QSPI_PIN_NOT_CONNECTED)
+    {
+        nrf_gpio_cfg_default(pins.io2_pin);
+    }
+    if (pins.io3_pin != NRF_QSPI_PIN_NOT_CONNECTED)
+    {
+        nrf_gpio_cfg_default(pins.io3_pin);
+    }
 }
 
 static nrfx_err_t qspi_ready_wait(void)
@@ -330,15 +377,17 @@ void nrfx_qspi_uninit(void)
         nrf_qspi_cinstr_long_transfer_continue(NRF_QSPI, NRF_QSPI_CINSTR_LEN_1B, true);
     }
 
+    NRFX_IRQ_DISABLE(QSPI_IRQn);
+
     nrf_qspi_int_disable(NRF_QSPI, NRF_QSPI_INT_READY_MASK);
 
     nrf_qspi_task_trigger(NRF_QSPI, NRF_QSPI_TASK_DEACTIVATE);
 
     nrf_qspi_disable(NRF_QSPI);
 
-    NRFX_IRQ_DISABLE(QSPI_IRQn);
-
     nrf_qspi_event_clear(NRF_QSPI, NRF_QSPI_EVENT_READY);
+
+    qspi_pins_deconfigure();
 
     m_cb.state = NRFX_DRV_STATE_UNINITIALIZED;
 }

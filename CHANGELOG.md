@@ -1,6 +1,19 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [1.9.0] - 2021-07-15
+### Added
+- Added high-drive pin configuration in the QSPI driver.
+- Added report period setting of 1 sample in the QDEC HAL.
+
+### Changed
+- Updated MDK to version 8.40.3.
+
+### Fixed
+- Fixed register access sequence in the COMP driver.
+- Fixed memory corruption when uninitialized channel was freed in the GPIOTE driver.
+- Fixed a race condition in the NFCT driver when starting the transfer.
+
 ## [1.8.6] - 2020-08-31
 ### Added
 - Implemented workaround for anomaly 223 in the USBD driver.

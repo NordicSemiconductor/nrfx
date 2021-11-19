@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -668,7 +670,10 @@ void nrfx_gpiote_in_uninit(nrfx_gpiote_pin_t pin)
         nrf_gpio_cfg_default(pin);
         pin_configured_clear(pin);
     }
-    channel_free((uint8_t)channel_port_get(pin));
+    if (pin_in_use_by_gpiote(pin))
+    {
+        channel_free((uint8_t)channel_port_get(pin));
+    }
     pin_in_use_clear(pin);
 }
 
