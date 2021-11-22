@@ -118,7 +118,6 @@ nrfx_err_t nrfx_qdec_init(nrfx_qdec_config_t const * p_config,
         nrf_qdec_ledpol_set(NRF_QDEC, p_config->ledpol);
     }
     nrf_qdec_pins_set(NRF_QDEC, p_config->psela, p_config->pselb, p_config->pselled);
-    nrf_qdec_shorts_enable(NRF_QDEC, NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK);
 
     if (p_config->dbfen)
     {
@@ -133,6 +132,7 @@ nrfx_err_t nrfx_qdec_init(nrfx_qdec_config_t const * p_config,
 
     if (p_config->reportper != NRF_QDEC_REPORTPER_DISABLED)
     {
+        nrf_qdec_shorts_enable(NRF_QDEC, NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK);
         nrf_qdec_reportper_set(NRF_QDEC, p_config->reportper);
         int_mask |= NRF_QDEC_INT_REPORTRDY_MASK;
     }
@@ -158,6 +158,8 @@ void nrfx_qdec_uninit(void)
     NRFX_ASSERT(m_state != NRFX_DRV_STATE_UNINITIALIZED);
     nrfx_qdec_disable();
     NRFX_IRQ_DISABLE(nrfx_get_irq_number(NRF_QDEC));
+
+    nrf_qdec_shorts_disable(NRF_QDEC, NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK);
 
     nrf_gpio_cfg_default(nrf_qdec_phase_a_pin_get(NRF_QDEC));
     nrf_gpio_cfg_default(nrf_qdec_phase_b_pin_get(NRF_QDEC));

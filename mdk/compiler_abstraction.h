@@ -130,7 +130,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     #if (__VER__ >= 8000000)
         #ifndef __ALIGN
-            #define __ALIGN(n) __attribute__((aligned(x)))
+            #define __ALIGN(n) __attribute__((aligned(n)))
         #endif
 
         #ifndef   __PACKED

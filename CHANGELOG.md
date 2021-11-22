@@ -1,6 +1,27 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [2.6.0] - 2021-11-22
+### Added
+- Added new functions for the GPIOTE peripheral management in the GPIOTE driver. Legacy API is now deprecated.
+- Added support for the TIMER CC channels 6 and 7.
+- Added the nrfx_flag32_allocator helper layer to unify resource allocation mechanism across several drivers.
+- Added functions for getting shortcut bitmask associated with specified channel in the TIMER HAL.
+- Added functions for channel allocation and deallocation in the nrfx_gppi helper layer.
+- Added the nrf_gpio_reconfigure() function for selective reconfiguration of the specified pin.
+- Introduced the NRFX_CLOCK_CONFIG_CT_ENABLED symbol for enabling the calibration timer support in the CLOCK driver. The symbol is enabled by default on supported SoCs.
+- Introduced the NRFX_CTZ and NRFX_CLZ macros to allow providing custom implementation for these functionalities. By default `__RBIT()` and `__CLZ()` CMSIS macros are used.
+- Introduced the NRFX_ATOMIC_CAS macro to allow providing custom implementation for atomic compare-and-swap functionality.
+- Implemented workaround for the nRF9160 anomaly 7 in the NVMC driver.
+
+### Changed
+- Updated MDK to version 8.44.1.
+
+### Fixed
+- Fixed missing disabling of interrupts in the nrfx_qspi_lfm_start() and nrfx_qspi_lfm_xfer() functions.
+- Fixed manual sample fetching when REPORTPER is disabled in the QDEC driver.
+- Fixed a race condition in the NFCT driver when starting the transfer.
+
 ## [2.5.0] - 2021-05-05
 ### Added
 - Added support for double-buffered transfers in the QSPI driver.

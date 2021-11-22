@@ -3231,6 +3231,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 31..0 : Part Variant, Hardware version and Production configuration, encoded as ASCII */
 #define FICR_INFO_VARIANT_VARIANT_Pos (0UL) /*!< Position of VARIANT field. */
 #define FICR_INFO_VARIANT_VARIANT_Msk (0xFFFFFFFFUL << FICR_INFO_VARIANT_VARIANT_Pos) /*!< Bit mask of VARIANT field. */
+#define FICR_INFO_VARIANT_VARIANT_CLAA (0x434C4141UL) /*!< CLAA */
 #define FICR_INFO_VARIANT_VARIANT_QKAA (0x514B4141UL) /*!< QKAA */
 #define FICR_INFO_VARIANT_VARIANT_Unspecified (0xFFFFFFFFUL) /*!< Unspecified */
 
@@ -3241,6 +3242,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define FICR_INFO_PACKAGE_PACKAGE_Pos (0UL) /*!< Position of PACKAGE field. */
 #define FICR_INFO_PACKAGE_PACKAGE_Msk (0xFFFFFFFFUL << FICR_INFO_PACKAGE_PACKAGE_Pos) /*!< Bit mask of PACKAGE field. */
 #define FICR_INFO_PACKAGE_PACKAGE_QK (0x2000UL) /*!< QKxx - 94-pin aQFN */
+#define FICR_INFO_PACKAGE_PACKAGE_CL (0x2005UL) /*!< CLxx - WLCSP */
 #define FICR_INFO_PACKAGE_PACKAGE_Unspecified (0xFFFFFFFFUL) /*!< Unspecified */
 
 /* Register: FICR_INFO_RAM */
@@ -12711,9 +12713,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM_IFTIMING_RXDELAY_RXDELAY_Msk (0x7UL << SPIM_IFTIMING_RXDELAY_RXDELAY_Pos) /*!< Bit mask of RXDELAY field. */
 
 /* Register: SPIM_IFTIMING_CSNDUR */
-/* Description: Minimum duration between edge of CSN and edge of SCK and minimum duration CSN must stay high between transactions */
+/* Description: Minimum duration between edge of CSN and edge of SCK. When SHORTS.END_START is used, this is also the minimum duration CSN must stay high between transactions. */
 
-/* Bits 7..0 : Minimum duration between edge of CSN and edge of SCK and minimum duration CSN must stay high between transactions. The value is specified in number of 64 MHz clock cycles (15.625 ns). */
+/* Bits 7..0 : Minimum duration between edge of CSN and edge of SCK. When SHORTS.END_START is used, this is the minimum duration CSN must stay high between transactions. The value is specified in number of 64 MHz clock cycles (15.625 ns). */
 #define SPIM_IFTIMING_CSNDUR_CSNDUR_Pos (0UL) /*!< Position of CSNDUR field. */
 #define SPIM_IFTIMING_CSNDUR_CSNDUR_Msk (0xFFUL << SPIM_IFTIMING_CSNDUR_CSNDUR_Pos) /*!< Bit mask of CSNDUR field. */
 

@@ -22,7 +22,7 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 
 #ifndef SYSTEM_NRF_H
 #define SYSTEM_NRF_H
-
+#ifndef __ASSEMBLY__
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -58,4 +58,5 @@ extern void SystemCoreClockUpdate (void);
 }
 #endif
 
+#endif /* __ASSEMBLY__ */
 #endif /* SYSTEM_NRF_H */

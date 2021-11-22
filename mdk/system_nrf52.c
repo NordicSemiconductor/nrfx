@@ -27,7 +27,7 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include <stdbool.h>
 #include "nrf.h"
 #include "nrf_peripherals.h"
-#include "nrf_erratas.h"
+#include "nrf52_erratas.h"
 #include "system_nrf52.h"
 #include "system_nrf52_approtect.h"
 
@@ -270,6 +270,18 @@ void SystemInit(void)
     #endif
 
     nrf52_handle_approtect();
+
+    #if NRF52_CONFIGURATION_249_ENABLE && (defined(NRF52805_XXAA) || defined(NRF52810_XXAA) || defined(NRF52811_XXAA))
+        if (nrf52_configuration_249() && (NRF_UICR->NRFMDK[0] == 0xFFFFFFFF || NRF_UICR->NRFMDK[1] == 0xFFFFFFFF))
+        {
+            nvmc_config(NVMC_CONFIG_WEN_Wen);
+            NRF_UICR->NRFMDK[0] = 0;
+            nvmc_wait();
+            NRF_UICR->NRFMDK[1] = 0;
+            nvmc_wait();
+            nvmc_config(NVMC_CONFIG_WEN_Ren);
+        }
+    #endif
 
     /* Configure NFCT pins as GPIOs if NFCT is not to be used in your code. If CONFIG_NFCT_PINS_AS_GPIOS is not defined,
        two GPIOs (see Product Specification to see which ones) will be reserved for NFC and will not be available as

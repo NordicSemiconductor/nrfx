@@ -11157,6 +11157,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UICR_CUSTOMER_CUSTOMER_Pos (0UL) /*!< Position of CUSTOMER field. */
 #define UICR_CUSTOMER_CUSTOMER_Msk (0xFFFFFFFFUL << UICR_CUSTOMER_CUSTOMER_Pos) /*!< Bit mask of CUSTOMER field. */
 
+/* Register: UICR_NRFMDK */
+/* Description: Description collection: Reserved for Nordic MDK */
+
+/* Bits 31..0 : Reserved for Nordic MDK */
+#define UICR_NRFMDK_NRFMDK_Pos (0UL) /*!< Position of NRFMDK field. */
+#define UICR_NRFMDK_NRFMDK_Msk (0xFFFFFFFFUL << UICR_NRFMDK_NRFMDK_Pos) /*!< Bit mask of NRFMDK field. */
+
 /* Register: UICR_PSELRESET */
 /* Description: Description collection: Mapping of the nRESET function (see POWER chapter for details) */
 
@@ -11177,7 +11184,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UICR_APPROTECT_PALL_Pos (0UL) /*!< Position of PALL field. */
 #define UICR_APPROTECT_PALL_Msk (0xFFUL << UICR_APPROTECT_PALL_Pos) /*!< Bit mask of PALL field. */
 #define UICR_APPROTECT_PALL_Enabled (0x00UL) /*!< Enable */
-#define UICR_APPROTECT_PALL_Disabled (0xFFUL) /*!< Disable */
+#define UICR_APPROTECT_PALL_HwDisabled (0x5AUL) /*!< Hardware disable of access port protection for devices where access port protection is controlled by hardware and software */
+#define UICR_APPROTECT_PALL_Disabled (0xFFUL) /*!< Hardware disable of access port protection for devices where access port protection is controlled by hardware */
 
 
 /* Peripheral: WDT */

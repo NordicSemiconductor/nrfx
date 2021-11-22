@@ -330,6 +330,11 @@ POSSIBILITY OF SUCH DAMAGE.
                     <value>0x514B4141</value>
                   </enumeratedValue>
                   <enumeratedValue>
+                    <name>CLAA</name>
+                    <description>CLAA</description>
+                    <value>0x434C4141</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
                     <name>Unspecified</name>
                     <description>Unspecified</description>
                     <value>0xFFFFFFFF</value>
@@ -355,6 +360,11 @@ POSSIBILITY OF SUCH DAMAGE.
                     <name>QK</name>
                     <description>QKxx - 94-pin aQFN</description>
                     <value>0x2000</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>CL</name>
+                    <description>CLxx - WLCSP</description>
+                    <value>0x2005</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Unspecified</name>
@@ -11587,14 +11597,14 @@ POSSIBILITY OF SUCH DAMAGE.
           </register>
           <register>
             <name>CSNDUR</name>
-            <description>Minimum duration between edge of CSN and edge of SCK and minimum duration CSN must stay high between transactions</description>
+            <description>Minimum duration between edge of CSN and edge of SCK. When SHORTS.END_START is used, this is also the minimum duration CSN must stay high between transactions.</description>
             <addressOffset>0x004</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000002</resetValue>
             <fields>
               <field>
                 <name>CSNDUR</name>
-                <description>Minimum duration between edge of CSN and edge of SCK and minimum duration CSN must stay high between transactions. The value is specified in number of 64 MHz clock cycles (15.625 ns).</description>
+                <description>Minimum duration between edge of CSN and edge of SCK. When SHORTS.END_START is used, this is the minimum duration CSN must stay high between transactions. The value is specified in number of 64 MHz clock cycles (15.625 ns).</description>
                 <lsb>0</lsb>
                 <msb>7</msb>
               </field>

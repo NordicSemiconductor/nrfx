@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 - 2021, Nordic Semiconductor ASA
+ * Copyright (c) 2021, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -30,45 +30,64 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+#include <helpers/nrfx_flag32_allocator.h>
 
-#ifndef NRF_COMMON_H__
-#define NRF_COMMON_H__
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifndef NRFX_EVENT_READBACK_ENABLED
-#define NRFX_EVENT_READBACK_ENABLED 1
-#endif
-
-#if defined(NRFX_CLZ)
-#define NRF_CLZ(value) NRFX_CLZ(value)
-#else
-#define NRF_CLZ(value) __CLZ(value)
-#endif
-
-#if defined(NRFX_CTZ)
-#define NRF_CTZ(value) NRFX_CTZ(value)
-#else
-#define NRF_CTZ(value) __CLZ(__RBIT(value))
-#endif
-
-#ifndef NRF_DECLARE_ONLY
-
-NRF_STATIC_INLINE void nrf_event_readback(void * p_event_reg)
+#if !defined(NRFX_ATOMIC_CAS)
+static bool nrfx_flag32_atomic_cas(nrfx_atomic_t * p_data, uint32_t old_value, uint32_t new_value)
 {
-#if NRFX_CHECK(NRFX_EVENT_READBACK_ENABLED) && !defined(NRF51)
-    (void)*((volatile uint32_t *)(p_event_reg));
-#else
-    (void)p_event_reg;
-#endif
+    bool status = false;
+    NRFX_CRITICAL_SECTION_ENTER();
+    if (*p_data == old_value)
+    {
+        *p_data = new_value;
+        status = true;
+    }
+    NRFX_CRITICAL_SECTION_EXIT();
+    return status;
 }
 
-#endif // NRF_DECLARE_ONLY
+#define NRFX_ATOMIC_CAS(p_data, old_value, new_value) \
+    nrfx_flag32_atomic_cas(p_data, old_value, new_value)
+#endif // !defined(NRFX_ATOMIC_CAS)
 
-#ifdef __cplusplus
+bool nrfx_flag32_is_allocated(nrfx_atomic_t mask, uint8_t bitpos)
+{
+    return (mask & NRFX_BIT(bitpos)) ? false : true;
 }
-#endif
 
-#endif // NRF_COMMON_H__
+nrfx_err_t nrfx_flag32_alloc(nrfx_atomic_t * p_mask, uint8_t *p_flag)
+{
+    int8_t idx;
+    uint32_t new_mask, prev_mask;
+
+    do {
+        prev_mask = *p_mask;
+        idx = 31 - NRF_CLZ(prev_mask);
+        if (idx < 0) {
+            return NRFX_ERROR_NO_MEM;
+        }
+
+        new_mask = prev_mask & ~NRFX_BIT(idx);
+    } while (!NRFX_ATOMIC_CAS(p_mask, prev_mask, new_mask));
+
+    *p_flag = idx;
+
+    return NRFX_SUCCESS;
+}
+
+nrfx_err_t nrfx_flag32_free(nrfx_atomic_t * p_mask, uint8_t flag)
+{
+    uint32_t new_mask, prev_mask;
+
+    if ((NRFX_BIT(flag) & *p_mask))
+    {
+        return NRFX_ERROR_INVALID_PARAM;
+    }
+
+    do {
+        prev_mask = *p_mask;
+        new_mask = prev_mask | NRFX_BIT(flag);
+    } while (!NRFX_ATOMIC_CAS(p_mask, prev_mask, new_mask));
+
+    return NRFX_SUCCESS;
+}

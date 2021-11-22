@@ -6,7 +6,7 @@
   <name>nrf52</name>
   <series>nrf52</series>
   <version>1</version>
-  <description>nRF52832 reference description for radio MCU with ARM 32-bit Cortex-M4 Microcontroller </description>
+  <description>nRF52 reference description for radio MCU with ARM 32-bit Cortex-M4 Microcontroller </description>
   <licenseText>
 Copyright (c) 2010 - 2021, Nordic Semiconductor ASA All rights reserved.\n
 \n
@@ -252,6 +252,11 @@ POSSIBILITY OF SUCH DAMAGE.\n
                     <value>0x41414142</value>
                   </enumeratedValue>
                   <enumeratedValue>
+                    <name>AAAC</name>
+                    <description>AAAC</description>
+                    <value>0x41414143</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
                     <name>AABA</name>
                     <description>AABA</description>
                     <value>0x41414241</value>
@@ -267,9 +272,39 @@ POSSIBILITY OF SUCH DAMAGE.\n
                     <value>0x41414230</value>
                   </enumeratedValue>
                   <enumeratedValue>
+                    <name>ABB0</name>
+                    <description>ABB0</description>
+                    <value>0x41424230</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
                     <name>AAE0</name>
                     <description>AAE0</description>
                     <value>0x41414530</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>ABE0</name>
+                    <description>ABE0</description>
+                    <value>0x41424530</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>AAGB</name>
+                    <description>AAGB</description>
+                    <value>0x41414742</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>ABGB</name>
+                    <description>ABGB</description>
+                    <value>0x41424742</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>AAG0</name>
+                    <description>AAG0</description>
+                    <value>0x41414730</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>ABG0</name>
+                    <description>ABG0</description>
+                    <value>0x41424730</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Unspecified</name>

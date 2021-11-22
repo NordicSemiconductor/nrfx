@@ -76,6 +76,9 @@ extern "C" {
  *
  * Auxiliary macros for creating endpoint identifiers compatible with the USB specification.
  * @{
+ */
+
+/**
  * @brief Create identifier for IN endpoint.
  *
  * Simple macro to create IN endpoint identifier for given endpoint number.

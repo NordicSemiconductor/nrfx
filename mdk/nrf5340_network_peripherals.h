@@ -115,7 +115,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define DPPI_PRESENT
 #define DPPI_COUNT 1
 
-#define DPPI_CH_NUM 16
+#define DPPI_CH_NUM 32
 #define DPPI_GROUP_NUM 6
 
 /* Event Generator Unit */

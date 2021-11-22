@@ -848,7 +848,7 @@ static void usbd_ep_abort_all(void)
     uint32_t ep_waiting = m_ep_dma_waiting | (m_ep_ready & NRFX_USBD_EPOUT_BIT_MASK);
     while (0 != ep_waiting)
     {
-        uint8_t bitpos = __CLZ(__RBIT(ep_waiting));
+        uint8_t bitpos = NRF_CTZ(ep_waiting);
         if (!NRF_USBD_EPISO_CHECK(bit2ep(bitpos)))
         {
             usbd_ep_abort(bit2ep(bitpos));
@@ -1282,7 +1282,7 @@ static void ev_epdata_handler(void)
     /* All finished endpoint have to be marked as busy */
     while (dataepstatus)
     {
-        uint8_t bitpos    = __CLZ(__RBIT(dataepstatus));
+        uint8_t bitpos    = NRF_CTZ(dataepstatus);
         nrfx_usbd_ep_t ep = bit2ep(bitpos);
         dataepstatus &= ~(1UL << bitpos);
 
@@ -1311,7 +1311,7 @@ static void ev_epdata_handler(void)
 static uint8_t usbd_dma_scheduler_algorithm(uint32_t req)
 {
     /* Only prioritized scheduling mode is supported. */
-    return __CLZ(__RBIT(req));
+    return NRF_CTZ(req);
 }
 
 /**
@@ -1628,7 +1628,7 @@ void nrfx_usbd_irq_handler(void)
     /* Check all enabled interrupts */
     while (to_process)
     {
-        uint8_t event_nr = __CLZ(__RBIT(to_process));
+        uint8_t event_nr = NRF_CTZ(to_process);
         if (nrf_usbd_event_get_and_clear(NRF_USBD,
                                          (nrf_usbd_event_t)nrfx_bitpos_to_event(event_nr)))
         {
@@ -1643,7 +1643,7 @@ void nrfx_usbd_irq_handler(void)
 
     while (active)
     {
-        uint8_t event_nr = __CLZ(__RBIT(active));
+        uint8_t event_nr = NRF_CTZ(active);
         m_isr[event_nr]();
         active &= ~(1UL << event_nr);
     }

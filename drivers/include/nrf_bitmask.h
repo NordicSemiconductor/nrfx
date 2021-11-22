@@ -47,6 +47,15 @@ extern "C" {
  * @brief   Bitmask managing module.
  */
 
+/**
+ * @brief Get number of bytes needed to store the given bitmask.
+ *
+ * @param[in] bits_count Number of bits in the bitmask.
+ *
+ * @return Number of bytes to store requested bit mask.
+ */
+#define BITMASK_BYTES_CALCULATE(bits_count) NRFX_CEIL_DIV(bits_count, 8)
+
 /** @brief Macro for getting index of byte in byte stream where @c abs_bit is put. */
 #define BITMASK_BYTE_GET(abs_bit) ((abs_bit)/8)
 

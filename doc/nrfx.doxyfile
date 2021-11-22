@@ -40,7 +40,7 @@ PROJECT_NAME           = "nrfx"
 
 ### EDIT THIS ###
 
-PROJECT_NUMBER         = "2.5"
+PROJECT_NUMBER         = "2.6"
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -243,7 +243,7 @@ ALIASES                = "tagGreenTick=\htmlonly<CENTER><font color=\"green\">âœ
 # A mapping has the form "name=value". For example adding "class=itcl::class"
 # will allow you to use the command class in the itcl::class meaning.
 
-TCL_SUBST              =
+# TCL_SUBST              =
 
 # Set the OPTIMIZE_OUTPUT_FOR_C tag to YES if your project consists of C sources
 # only. Doxygen will then generate output that is more tailored for C. For
@@ -1082,7 +1082,7 @@ ALPHABETICAL_INDEX     = NO
 # Minimum value: 1, maximum value: 20, default value: 5.
 # This tag requires that the tag ALPHABETICAL_INDEX is set to YES.
 
-COLS_IN_ALPHA_INDEX    = 5
+# COLS_IN_ALPHA_INDEX    = 5
 
 # In case all classes in a project start with a common prefix, all classes will
 # be put under the same header in the alphabetical index. The IGNORE_PREFIX tag
@@ -1789,16 +1789,6 @@ LATEX_BATCHMODE        = NO
 
 LATEX_HIDE_INDICES     = NO
 
-# If the LATEX_SOURCE_CODE tag is set to YES then doxygen will include source
-# code with syntax highlighting in the LaTeX output.
-#
-# Note that which sources are shown also depends on other settings such as
-# SOURCE_BROWSER.
-# The default value is: NO.
-# This tag requires that the tag GENERATE_LATEX is set to YES.
-
-LATEX_SOURCE_CODE      = NO
-
 # The LATEX_BIB_STYLE tag can be used to specify the style to use for the
 # bibliography, e.g. plainnat, or ieeetr. See
 # https://en.wikipedia.org/wiki/BibTeX and \cite for more info.
@@ -2088,30 +2078,14 @@ INCLUDE_FILE_PATTERNS  =
 
 PREDEFINED             = SUPPRESS_INLINE_IMPLEMENTATION \
                          __NRFX_DOXYGEN__ \
-                         CONFIG_PURGE_ENABLED \
-                         == \
-                         1 \
-                         CONFIG_DISASSOCIATE_ENABLED \
-                         == \
-                         1 \
-                         CONFIG_GTS_ENABLED \
-                         == \
-                         1 \
-                         CONFIG_ORPHAN_ENABLED \
-                         == \
-                         1 \
-                         CONFIG_RXE_ENABLED \
-                         == \
-                         1 \
-                         CONFIG_START_ENABLED \
-                         == \
-                         1 \
-                         CONFIG_SYNC_ENABLED \
-                         == \
-                         1 \
-                         CONFIG_PANID_CONFLICT_ENABLED \
-                         == \
-                         1
+                         CONFIG_PURGE_ENABLED=1 \
+                         CONFIG_DISASSOCIATE_ENABLED=1 \
+                         CONFIG_GTS_ENABLED=1 \
+                         CONFIG_ORPHAN_ENABLED=1 \
+                         CONFIG_RXE_ENABLED=1 \
+                         CONFIG_START_ENABLED=1 \
+                         CONFIG_SYNC_ENABLED=1 \
+                         CONFIG_PANID_CONFLICT_ENABLED=1
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The
@@ -2184,7 +2158,7 @@ EXTERNAL_GROUPS        = NO
 # interpreter (i.e. the result of 'which perl').
 # The default file (with absolute path) is: /usr/bin/perl.
 
-PERL_PATH              = /usr/bin/perl
+# PERL_PATH              = /usr/bin/perl
 
 #---------------------------------------------------------------------------
 # Configuration options related to the dot tool
@@ -2206,7 +2180,7 @@ CLASS_DIAGRAMS         = YES
 # the mscgen tool resides. If left empty the tool is assumed to be found in the
 # default search path.
 
-MSCGEN_PATH            =
+# MSCGEN_PATH            =
 
 # You can include diagrams made with dia in doxygen documentation. Doxygen will
 # then run dia to produce the diagram and insert it in the documentation. The

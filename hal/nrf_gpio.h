@@ -201,6 +201,27 @@ NRF_STATIC_INLINE void nrf_gpio_cfg(
     nrf_gpio_pin_sense_t sense);
 
 /**
+ * @brief Function for reconfiguring pin.
+ *
+ * @note This function selectively updates fields in PIN_CNF register. Reconfiguration
+ *       is performed in single register write. Fields for which new configuration is
+ *       not provided remain unchanged.
+ *
+ * @param pin_number Specifies the pin number.
+ * @param p_dir      Pin direction. If NULL, previous setting remains.
+ * @param p_input    Connect or disconnect the input buffer. If NULL, previous setting remains.
+ * @param p_pull     Pull configuration. If NULL, previous setting remains.
+ * @param p_drive    Drive configuration. If NULL, previous setting remains.
+ * @param p_sense    Pin sensing mechanism. If NULL, previous setting remains.
+ */
+NRF_STATIC_INLINE void nrf_gpio_reconfigure(uint32_t                     pin_number,
+                                            const nrf_gpio_pin_dir_t *   p_dir,
+                                            const nrf_gpio_pin_input_t * p_input,
+                                            const nrf_gpio_pin_pull_t *  p_pull,
+                                            const nrf_gpio_pin_drive_t * p_drive,
+                                            const nrf_gpio_pin_sense_t * p_sense);
+
+/**
  * @brief Function for configuring the given GPIO pin number as output, hiding inner details.
  *        This function can be used to configure a pin as simple output with gate driving GPIO_PIN_CNF_DRIVE_S0S1 (normal cases).
  *
@@ -592,6 +613,31 @@ NRF_STATIC_INLINE void nrf_gpio_cfg(
     reg->PIN_CNF[pin_number] = cnf;
 }
 
+NRF_STATIC_INLINE void nrf_gpio_reconfigure(uint32_t                     pin_number,
+                                            const nrf_gpio_pin_dir_t *   p_dir,
+                                            const nrf_gpio_pin_input_t * p_input,
+                                            const nrf_gpio_pin_pull_t *  p_pull,
+                                            const nrf_gpio_pin_drive_t * p_drive,
+                                            const nrf_gpio_pin_sense_t * p_sense)
+{
+    NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
+    uint32_t cnf = reg->PIN_CNF[pin_number];
+    uint32_t to_update = (p_dir   ? GPIO_PIN_CNF_DIR_Msk   : 0) |
+                         (p_input ? GPIO_PIN_CNF_INPUT_Msk : 0) |
+                         (p_pull  ? GPIO_PIN_CNF_PULL_Msk  : 0) |
+                         (p_drive ? GPIO_PIN_CNF_DRIVE_Msk : 0) |
+                         (p_sense ? GPIO_PIN_CNF_SENSE_Msk : 0);
+
+    /* Clear fields that will be updated. */
+    cnf &= ~to_update;
+    cnf |= ((uint32_t)(p_dir   ? *p_dir   : 0) << GPIO_PIN_CNF_DIR_Pos)   |
+           ((uint32_t)(p_input ? *p_input : 0) << GPIO_PIN_CNF_INPUT_Pos) |
+           ((uint32_t)(p_pull  ? *p_pull  : 0) << GPIO_PIN_CNF_PULL_Pos)  |
+           ((uint32_t)(p_drive ? *p_drive : 0) << GPIO_PIN_CNF_DRIVE_Pos) |
+           ((uint32_t)(p_sense ? *p_sense : 0)<< GPIO_PIN_CNF_SENSE_Pos);
+
+    reg->PIN_CNF[pin_number] = cnf;
+}
 
 NRF_STATIC_INLINE void nrf_gpio_cfg_output(uint32_t pin_number)
 {
@@ -631,19 +677,17 @@ NRF_STATIC_INLINE void nrf_gpio_cfg_default(uint32_t pin_number)
 
 NRF_STATIC_INLINE void nrf_gpio_cfg_watcher(uint32_t pin_number)
 {
-    NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
-    uint32_t cnf = reg->PIN_CNF[pin_number] & ~GPIO_PIN_CNF_INPUT_Msk;
+    nrf_gpio_pin_input_t input = NRF_GPIO_PIN_INPUT_CONNECT;
 
-    reg->PIN_CNF[pin_number] = cnf | (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos);
+    nrf_gpio_reconfigure(pin_number, NULL, &input, NULL, NULL, NULL);
 }
 
 
 NRF_STATIC_INLINE void nrf_gpio_input_disconnect(uint32_t pin_number)
 {
-    NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
-    uint32_t cnf = reg->PIN_CNF[pin_number] & ~GPIO_PIN_CNF_INPUT_Msk;
+    nrf_gpio_pin_input_t input = NRF_GPIO_PIN_INPUT_DISCONNECT;
 
-    reg->PIN_CNF[pin_number] = cnf | (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos);
+    nrf_gpio_reconfigure(pin_number, NULL, &input, NULL, NULL, NULL);
 }
 
 
@@ -664,12 +708,8 @@ NRF_STATIC_INLINE void nrf_gpio_cfg_sense_input(uint32_t             pin_number,
 NRF_STATIC_INLINE void nrf_gpio_cfg_sense_set(uint32_t             pin_number,
                                               nrf_gpio_pin_sense_t sense_config)
 {
-    NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
-    uint32_t cnf = reg->PIN_CNF[pin_number] & ~GPIO_PIN_CNF_SENSE_Msk;
-
-    reg->PIN_CNF[pin_number] = cnf | (sense_config << GPIO_PIN_CNF_SENSE_Pos);
+    nrf_gpio_reconfigure(pin_number, NULL, NULL, NULL, NULL, &sense_config);
 }
-
 
 NRF_STATIC_INLINE void nrf_gpio_pin_dir_set(uint32_t pin_number, nrf_gpio_pin_dir_t direction)
 {

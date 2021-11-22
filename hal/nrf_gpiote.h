@@ -64,6 +64,7 @@ extern "C" {
  /** @brief Polarity for the GPIOTE channel. */
 typedef enum
 {
+    NRF_GPIOTE_POLARITY_NONE   = GPIOTE_CONFIG_POLARITY_None,   /**< None. */
     NRF_GPIOTE_POLARITY_LOTOHI = GPIOTE_CONFIG_POLARITY_LoToHi, /**< Low to high. */
     NRF_GPIOTE_POLARITY_HITOLO = GPIOTE_CONFIG_POLARITY_HiToLo, /**< High to low. */
     NRF_GPIOTE_POLARITY_TOGGLE = GPIOTE_CONFIG_POLARITY_Toggle, /**< Toggle. */
@@ -540,7 +541,7 @@ NRF_STATIC_INLINE void nrf_gpiote_event_enable(NRF_GPIOTE_Type * p_reg, uint32_t
 
 NRF_STATIC_INLINE void nrf_gpiote_event_disable(NRF_GPIOTE_Type * p_reg, uint32_t idx)
 {
-   p_reg->CONFIG[idx] &= ~GPIOTE_CONFIG_MODE_Event;
+   p_reg->CONFIG[idx] &= ~GPIOTE_CONFIG_MODE_Msk;
 }
 
 NRF_STATIC_INLINE void nrf_gpiote_event_configure(NRF_GPIOTE_Type *     p_reg,
@@ -585,7 +586,7 @@ NRF_STATIC_INLINE void nrf_gpiote_task_enable(NRF_GPIOTE_Type * p_reg, uint32_t 
 
 NRF_STATIC_INLINE void nrf_gpiote_task_disable(NRF_GPIOTE_Type * p_reg, uint32_t idx)
 {
-    p_reg->CONFIG[idx] &= ~GPIOTE_CONFIG_MODE_Task;
+    p_reg->CONFIG[idx] &= ~GPIOTE_CONFIG_MODE_Msk;
 }
 
 NRF_STATIC_INLINE void nrf_gpiote_task_configure(NRF_GPIOTE_Type *     p_reg,
@@ -614,6 +615,9 @@ NRF_STATIC_INLINE void nrf_gpiote_task_force(NRF_GPIOTE_Type *    p_reg,
 NRF_STATIC_INLINE void nrf_gpiote_te_default(NRF_GPIOTE_Type * p_reg, uint32_t idx)
 {
     p_reg->CONFIG[idx] = 0;
+#if defined(NRF9160_XXAA) || defined(NRF5340_XXAA)
+    p_reg->CONFIG[idx] = 0;
+#endif
 }
 
 NRF_STATIC_INLINE bool nrf_gpiote_te_is_enabled(NRF_GPIOTE_Type const * p_reg, uint32_t idx)

@@ -22,7 +22,7 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 
 #ifndef SYSTEM_NRF52810_H
 #define SYSTEM_NRF52810_H
-
+#ifndef __ASSEMBLY__
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -54,8 +54,10 @@ extern void SystemInit (void);
  */
 extern void SystemCoreClockUpdate (void);
 
+
 #ifdef __cplusplus
 }
 #endif
 
+#endif /* __ASSEMBLY__ */
 #endif /* SYSTEM_NRF52810_H */

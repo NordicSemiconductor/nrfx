@@ -289,6 +289,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPU_PRESENT
 #define SPU_COUNT 1
 
+#define SPU_RAMREGION_SIZE 0x2000ul
+
 /* Inter-IC Sound Interface */
 #define I2S_PRESENT
 #define I2S_COUNT 1

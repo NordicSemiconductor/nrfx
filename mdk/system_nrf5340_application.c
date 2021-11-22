@@ -26,12 +26,14 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include <stdint.h>
 #include <stdbool.h>
 #include "nrf.h"
-#include "nrf_erratas.h"
+#include "nrf_peripherals.h"
+#include "nrf53_erratas.h"
 #include "system_nrf5340_application.h"
 #include "system_nrf53_approtect.h"
 
 /*lint ++flb "Enter library region" */
 
+void SystemStoreFICRNS();
 
 /* NRF5340 application core uses a variable System Clock Frequency that starts at 64MHz */
 #define __SYSTEM_CLOCK_MAX      (128000000UL)
@@ -154,6 +156,10 @@ void SystemInit(void)
         {
             *((volatile uint32_t *)0x5000470Cul) =0x65ul;
         }
+
+        #if !defined(NRF_SKIP_FICR_NS_COPY_TO_RAM)
+            SystemStoreFICRNS();
+        #endif
         
         #if defined(CONFIG_NFCT_PINS_AS_GPIOS)
 
@@ -245,6 +251,51 @@ void SystemInit(void)
     #endif
 
     SystemCoreClockUpdate();
+}
+
+/* Workaround to allow NS code to access FICR. Override NRF_FICR_NS to move FICR_NS buffer. */
+#define FICR_SIZE 0x1000ul
+#define RAM_BASE 0x20000000ul
+#define RAM_END  0x2FFFFFFFul
+
+/* Copy FICR_S to FICR_NS RAM region */
+void SystemStoreFICRNS()
+{
+    if ((uint32_t)NRF_FICR_NS < RAM_BASE || (uint32_t)NRF_FICR_NS + FICR_SIZE > RAM_END)
+    {
+        /* FICR_NS is not in RAM. */
+        return;
+    }
+    /* Copy FICR to NS-accessible RAM block. */
+    volatile uint32_t * from            = (volatile uint32_t *)((uint32_t)NRF_FICR_S + (FICR_SIZE - sizeof(uint32_t)));
+    volatile uint32_t * to              = (volatile uint32_t *)((uint32_t)NRF_FICR_NS + (FICR_SIZE - sizeof(uint32_t)));
+    volatile uint32_t * copy_from_end   = (volatile uint32_t *)NRF_FICR_S;
+    while (from >= copy_from_end)
+    {
+        *(to--) = *(from--);
+    }
+
+    /* Make RAM region NS. */
+    uint32_t ram_region = ((uint32_t)NRF_FICR_NS - (uint32_t)RAM_BASE) / SPU_RAMREGION_SIZE;
+    NRF_SPU_S->RAMREGION[ram_region].PERM &= ~(1 << SPU_RAMREGION_PERM_SECATTR_Pos);
+}
+
+/* Block write and execute access to FICR RAM region */
+void SystemLockFICRNS()
+{
+    if ((uint32_t)NRF_FICR_NS < RAM_BASE || (uint32_t)NRF_FICR_NS + FICR_SIZE > RAM_END)
+    {
+        /* FICR_NS is not in RAM. */
+        return;
+    }
+
+    uint32_t ram_region = ((uint32_t)NRF_FICR_NS - (uint32_t)RAM_BASE) / SPU_RAMREGION_SIZE;
+    NRF_SPU_S->RAMREGION[ram_region].PERM &=
+        ~(
+            (1 << SPU_RAMREGION_PERM_WRITE_Pos) |
+            (1 << SPU_RAMREGION_PERM_EXECUTE_Pos)
+        );
+    NRF_SPU_S->RAMREGION[ram_region].PERM |= 1 << SPU_RAMREGION_PERM_LOCK_Pos;
 }
 
 /*lint --flb "Leave library region" */

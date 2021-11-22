@@ -187,7 +187,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define ACL_ACL_ADDR_ADDR_Msk (0xFFFFFFFFUL << ACL_ACL_ADDR_ADDR_Pos) /*!< Bit mask of ADDR field. */
 
 /* Register: ACL_ACL_SIZE */
-/* Description: Description cluster: Size of region to protect counting from address ACL[n].ADDR. Write '0' as no effect. */
+/* Description: Description cluster: Size of region to protect counting from address ACL[n].ADDR. Writing a '0' has no effect. */
 
 /* Bits 31..0 : Size of flash region n in bytes. Must be a multiple of the flash page size. */
 #define ACL_ACL_SIZE_SIZE_Pos (0UL) /*!< Position of SIZE field. */
@@ -196,17 +196,17 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: ACL_ACL_PERM */
 /* Description: Description cluster: Access permissions for region n as defined by start address ACL[n].ADDR and size ACL[n].SIZE */
 
-/* Bit 2 : Configure read permissions for region n. Write '0' has no effect. */
+/* Bit 2 : Configure read permissions for region n. Writing a '0' has no effect. */
 #define ACL_ACL_PERM_READ_Pos (2UL) /*!< Position of READ field. */
 #define ACL_ACL_PERM_READ_Msk (0x1UL << ACL_ACL_PERM_READ_Pos) /*!< Bit mask of READ field. */
-#define ACL_ACL_PERM_READ_Enable (0UL) /*!< Allow read instructions to region n */
-#define ACL_ACL_PERM_READ_Disable (1UL) /*!< Block read instructions to region n */
+#define ACL_ACL_PERM_READ_Enable (0UL) /*!< Allow read instructions to region n. */
+#define ACL_ACL_PERM_READ_Disable (1UL) /*!< Block read instructions to region n. */
 
-/* Bit 1 : Configure write and erase permissions for region n. Write '0' has no effect. */
+/* Bit 1 : Configure write and erase permissions for region n. Writing a '0' has no effect. */
 #define ACL_ACL_PERM_WRITE_Pos (1UL) /*!< Position of WRITE field. */
 #define ACL_ACL_PERM_WRITE_Msk (0x1UL << ACL_ACL_PERM_WRITE_Pos) /*!< Bit mask of WRITE field. */
-#define ACL_ACL_PERM_WRITE_Enable (0UL) /*!< Allow write and erase instructions to region n */
-#define ACL_ACL_PERM_WRITE_Disable (1UL) /*!< Block write and erase instructions to region n */
+#define ACL_ACL_PERM_WRITE_Enable (0UL) /*!< Allow write and erase instructions to region n. */
+#define ACL_ACL_PERM_WRITE_Disable (1UL) /*!< Block write and erase instructions to region n. */
 
 
 /* Peripheral: APPROTECT */
@@ -230,7 +230,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 /* Peripheral: CCM */
-/* Description: AES CCM Mode Encryption */
+/* Description: AES CCM mode encryption */
 
 /* Register: CCM_TASKS_KSGEN */
 /* Description: Start generation of keystream. This operation will stop by itself when completed. */
@@ -380,19 +380,19 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CCM_MODE_DATARATE_Msk (0x3UL << CCM_MODE_DATARATE_Pos) /*!< Bit mask of DATARATE field. */
 #define CCM_MODE_DATARATE_1Mbit (0UL) /*!< 1 Mbps */
 #define CCM_MODE_DATARATE_2Mbit (1UL) /*!< 2 Mbps */
-#define CCM_MODE_DATARATE_125Kbps (2UL) /*!< 125 Kbps */
-#define CCM_MODE_DATARATE_500Kbps (3UL) /*!< 500 Kbps */
+#define CCM_MODE_DATARATE_125Kbps (2UL) /*!< 125 kbps */
+#define CCM_MODE_DATARATE_500Kbps (3UL) /*!< 500 kbps */
 
-/* Bit 0 : The mode of operation to be used. The settings in this register apply whenever either the KSGEN or CRYPT tasks are triggered. */
+/* Bit 0 : The mode of operation to be used. Settings in this register apply whenever either the KSGEN task or the CRYPT task is triggered. */
 #define CCM_MODE_MODE_Pos (0UL) /*!< Position of MODE field. */
 #define CCM_MODE_MODE_Msk (0x1UL << CCM_MODE_MODE_Pos) /*!< Bit mask of MODE field. */
 #define CCM_MODE_MODE_Encryption (0UL) /*!< AES CCM packet encryption mode */
 #define CCM_MODE_MODE_Decryption (1UL) /*!< AES CCM packet decryption mode */
 
 /* Register: CCM_CNFPTR */
-/* Description: Pointer to data structure holding AES key and NONCE vector */
+/* Description: Pointer to data structure holding the AES key and the NONCE vector */
 
-/* Bits 31..0 : Pointer to the data structure holding the AES key and the CCM NONCE vector (see Table 1 CCM data structure overview) */
+/* Bits 31..0 : Pointer to the data structure holding the AES key and the CCM NONCE vector (see table CCM data structure overview) */
 #define CCM_CNFPTR_CNFPTR_Pos (0UL) /*!< Position of CNFPTR field. */
 #define CCM_CNFPTR_CNFPTR_Msk (0xFFFFFFFFUL << CCM_CNFPTR_CNFPTR_Pos) /*!< Bit mask of CNFPTR field. */
 
@@ -419,22 +419,22 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CCM_SCRATCHPTR_SCRATCHPTR_Msk (0xFFFFFFFFUL << CCM_SCRATCHPTR_SCRATCHPTR_Pos) /*!< Bit mask of SCRATCHPTR field. */
 
 /* Register: CCM_MAXPACKETSIZE */
-/* Description: Length of keystream generated when MODE.LENGTH = Extended. */
+/* Description: Length of keystream generated when MODE.LENGTH = Extended */
 
-/* Bits 7..0 : Length of keystream generated when MODE.LENGTH = Extended. This value must be greater or equal to the subsequent packet payload to be encrypted/decrypted. */
+/* Bits 7..0 : Length of keystream generated when MODE.LENGTH = Extended. This value must be greater than or equal to the subsequent packet payload to be encrypted/decrypted. */
 #define CCM_MAXPACKETSIZE_MAXPACKETSIZE_Pos (0UL) /*!< Position of MAXPACKETSIZE field. */
 #define CCM_MAXPACKETSIZE_MAXPACKETSIZE_Msk (0xFFUL << CCM_MAXPACKETSIZE_MAXPACKETSIZE_Pos) /*!< Bit mask of MAXPACKETSIZE field. */
 
 /* Register: CCM_RATEOVERRIDE */
 /* Description: Data rate override setting. */
 
-/* Bits 1..0 : Data rate override setting. */
+/* Bits 1..0 : Data rate override setting */
 #define CCM_RATEOVERRIDE_RATEOVERRIDE_Pos (0UL) /*!< Position of RATEOVERRIDE field. */
 #define CCM_RATEOVERRIDE_RATEOVERRIDE_Msk (0x3UL << CCM_RATEOVERRIDE_RATEOVERRIDE_Pos) /*!< Bit mask of RATEOVERRIDE field. */
 #define CCM_RATEOVERRIDE_RATEOVERRIDE_1Mbit (0UL) /*!< 1 Mbps */
 #define CCM_RATEOVERRIDE_RATEOVERRIDE_2Mbit (1UL) /*!< 2 Mbps */
-#define CCM_RATEOVERRIDE_RATEOVERRIDE_125Kbps (2UL) /*!< 125 Kbps */
-#define CCM_RATEOVERRIDE_RATEOVERRIDE_500Kbps (3UL) /*!< 500 Kbps */
+#define CCM_RATEOVERRIDE_RATEOVERRIDE_125Kbps (2UL) /*!< 125 kbps */
+#define CCM_RATEOVERRIDE_RATEOVERRIDE_500Kbps (3UL) /*!< 500 kbps */
 
 
 /* Peripheral: CC_HOST_RGF */
@@ -1642,6 +1642,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define FICR_INFO_VARIANT_VARIANT_AAD1 (0x41414431UL) /*!< AAD1 */
 #define FICR_INFO_VARIANT_VARIANT_AADA (0x41414441UL) /*!< AADA */
 #define FICR_INFO_VARIANT_VARIANT_AAEA (0x41414541UL) /*!< AAEA */
+#define FICR_INFO_VARIANT_VARIANT_AAF0 (0x41414630UL) /*!< AAF0 */
+#define FICR_INFO_VARIANT_VARIANT_AAFA (0x41414641UL) /*!< AAFA */
 #define FICR_INFO_VARIANT_VARIANT_BAAA (0x42414141UL) /*!< BAAA */
 #define FICR_INFO_VARIANT_VARIANT_CAAA (0x43414141UL) /*!< CAAA */
 #define FICR_INFO_VARIANT_VARIANT_Unspecified (0xFFFFFFFFUL) /*!< Unspecified */
@@ -1652,6 +1654,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 31..0 : Package option */
 #define FICR_INFO_PACKAGE_PACKAGE_Pos (0UL) /*!< Position of PACKAGE field. */
 #define FICR_INFO_PACKAGE_PACKAGE_Msk (0xFFFFFFFFUL << FICR_INFO_PACKAGE_PACKAGE_Pos) /*!< Bit mask of PACKAGE field. */
+#define FICR_INFO_PACKAGE_PACKAGE_QF (0x2000UL) /*!< QFxx - 6x6 48-pin QFN */
 #define FICR_INFO_PACKAGE_PACKAGE_QI (0x2004UL) /*!< QIxx - 7x7 73-pin aQFN */
 #define FICR_INFO_PACKAGE_PACKAGE_CK (0x2005UL) /*!< CKxx - 3.544 x 3.607 WLCSP */
 #define FICR_INFO_PACKAGE_PACKAGE_Unspecified (0xFFFFFFFFUL) /*!< Unspecified */
@@ -1662,11 +1665,11 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 31..0 : RAM variant */
 #define FICR_INFO_RAM_RAM_Pos (0UL) /*!< Position of RAM field. */
 #define FICR_INFO_RAM_RAM_Msk (0xFFFFFFFFUL << FICR_INFO_RAM_RAM_Pos) /*!< Bit mask of RAM field. */
-#define FICR_INFO_RAM_RAM_K16 (0x10UL) /*!< 16 kByte RAM */
-#define FICR_INFO_RAM_RAM_K32 (0x20UL) /*!< 32 kByte RAM */
-#define FICR_INFO_RAM_RAM_K64 (0x40UL) /*!< 64 kByte RAM */
-#define FICR_INFO_RAM_RAM_K128 (0x80UL) /*!< 128 kByte RAM */
-#define FICR_INFO_RAM_RAM_K256 (0x100UL) /*!< 256 kByte RAM */
+#define FICR_INFO_RAM_RAM_K16 (0x10UL) /*!< 16 kB RAM */
+#define FICR_INFO_RAM_RAM_K32 (0x20UL) /*!< 32 kB RAM */
+#define FICR_INFO_RAM_RAM_K64 (0x40UL) /*!< 64 kB RAM */
+#define FICR_INFO_RAM_RAM_K128 (0x80UL) /*!< 128 kB RAM */
+#define FICR_INFO_RAM_RAM_K256 (0x100UL) /*!< 256 kB RAM */
 #define FICR_INFO_RAM_RAM_Unspecified (0xFFFFFFFFUL) /*!< Unspecified */
 
 /* Register: FICR_INFO_FLASH */
@@ -1675,11 +1678,11 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 31..0 : Flash variant */
 #define FICR_INFO_FLASH_FLASH_Pos (0UL) /*!< Position of FLASH field. */
 #define FICR_INFO_FLASH_FLASH_Msk (0xFFFFFFFFUL << FICR_INFO_FLASH_FLASH_Pos) /*!< Bit mask of FLASH field. */
-#define FICR_INFO_FLASH_FLASH_K128 (0x80UL) /*!< 128 kByte FLASH */
-#define FICR_INFO_FLASH_FLASH_K256 (0x100UL) /*!< 256 kByte FLASH */
-#define FICR_INFO_FLASH_FLASH_K512 (0x200UL) /*!< 512 kByte FLASH */
-#define FICR_INFO_FLASH_FLASH_K1024 (0x400UL) /*!< 1 MByte FLASH */
-#define FICR_INFO_FLASH_FLASH_K2048 (0x800UL) /*!< 2 MByte FLASH */
+#define FICR_INFO_FLASH_FLASH_K128 (0x80UL) /*!< 128 kB FLASH */
+#define FICR_INFO_FLASH_FLASH_K256 (0x100UL) /*!< 256 kB FLASH */
+#define FICR_INFO_FLASH_FLASH_K512 (0x200UL) /*!< 512 kB FLASH */
+#define FICR_INFO_FLASH_FLASH_K1024 (0x400UL) /*!< 1 MB FLASH */
+#define FICR_INFO_FLASH_FLASH_K2048 (0x800UL) /*!< 2 MB FLASH */
 #define FICR_INFO_FLASH_FLASH_Unspecified (0xFFFFFFFFUL) /*!< Unspecified */
 
 /* Register: FICR_PRODTEST */

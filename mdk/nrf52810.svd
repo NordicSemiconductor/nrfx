@@ -722,6 +722,23 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </fields>
         </register>
         <register>
+          <dim>0x8</dim>
+          <dimIncrement>0x4</dimIncrement>
+          <name>NRFMDK[%s]</name>
+          <description>Description collection: Reserved for Nordic MDK</description>
+          <addressOffset>0x100</addressOffset>
+          <access>read-write</access>
+          <resetValue>0xFFFFFFFF</resetValue>
+          <fields>
+            <field>
+              <name>NRFMDK</name>
+              <description>Reserved for Nordic MDK</description>
+              <lsb>0</lsb>
+              <msb>31</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
           <dim>0x2</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>PSELRESET[%s]</name>
@@ -771,8 +788,13 @@ POSSIBILITY OF SUCH DAMAGE.\n
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Disable</description>
+                  <description>Hardware disable of access port protection for devices where access port protection is controlled by hardware</description>
                   <value>0xFF</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HwDisabled</name>
+                  <description>Hardware disable of access port protection for devices where access port protection is controlled by hardware and software</description>
+                  <value>0x5A</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>

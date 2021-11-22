@@ -314,6 +314,16 @@ POSSIBILITY OF SUCH DAMAGE.\n
                     <value>0x41414541</value>
                   </enumeratedValue>
                   <enumeratedValue>
+                    <name>AAF0</name>
+                    <description>AAF0</description>
+                    <value>0x41414630</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>AAFA</name>
+                    <description>AAFA</description>
+                    <value>0x41414641</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
                     <name>Unspecified</name>
                     <description>Unspecified</description>
                     <value>0xFFFFFFFF</value>
@@ -339,6 +349,11 @@ POSSIBILITY OF SUCH DAMAGE.\n
                     <name>QI</name>
                     <description>QIxx - 7x7 73-pin aQFN</description>
                     <value>0x2004</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>QF</name>
+                    <description>QFxx - 6x6 48-pin QFN</description>
+                    <value>0x2000</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>CK</name>
@@ -369,27 +384,27 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <enumeratedValues>
                   <enumeratedValue>
                     <name>K16</name>
-                    <description>16 kByte RAM</description>
+                    <description>16 kB RAM</description>
                     <value>0x10</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>K32</name>
-                    <description>32 kByte RAM</description>
+                    <description>32 kB RAM</description>
                     <value>0x20</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>K64</name>
-                    <description>64 kByte RAM</description>
+                    <description>64 kB RAM</description>
                     <value>0x40</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>K128</name>
-                    <description>128 kByte RAM</description>
+                    <description>128 kB RAM</description>
                     <value>0x80</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>K256</name>
-                    <description>256 kByte RAM</description>
+                    <description>256 kB RAM</description>
                     <value>0x100</value>
                   </enumeratedValue>
                   <enumeratedValue>
@@ -416,27 +431,27 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <enumeratedValues>
                   <enumeratedValue>
                     <name>K128</name>
-                    <description>128 kByte FLASH</description>
+                    <description>128 kB FLASH</description>
                     <value>0x80</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>K256</name>
-                    <description>256 kByte FLASH</description>
+                    <description>256 kB FLASH</description>
                     <value>0x100</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>K512</name>
-                    <description>512 kByte FLASH</description>
+                    <description>512 kB FLASH</description>
                     <value>0x200</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>K1024</name>
-                    <description>1 MByte FLASH</description>
+                    <description>1 MB FLASH</description>
                     <value>0x400</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>K2048</name>
-                    <description>2 MByte FLASH</description>
+                    <description>2 MB FLASH</description>
                     <value>0x800</value>
                   </enumeratedValue>
                   <enumeratedValue>
@@ -5613,8 +5628,8 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Set</name>
-                  <value>1</value>
                   <description>Write: a '1' sets the pin high; a '0' has no effect</description>
+                  <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
@@ -32694,7 +32709,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
     </peripheral>
     <peripheral>
       <name>CCM</name>
-      <description>AES CCM Mode Encryption</description>
+      <description>AES CCM mode encryption</description>
       <baseAddress>0x4000F000</baseAddress>
       <alternatePeripheral>AAR</alternatePeripheral>
       <addressBlock>
@@ -33136,7 +33151,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>MODE</name>
-              <description>The mode of operation to be used. The settings in this register apply whenever either the KSGEN or CRYPT tasks are triggered.</description>
+              <description>The mode of operation to be used. Settings in this register apply whenever either the KSGEN task or the CRYPT task is triggered.</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -33170,12 +33185,12 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>125Kbps</name>
-                  <description>125 Kbps</description>
+                  <description>125 kbps</description>
                   <value>2</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>500Kbps</name>
-                  <description>500 Kbps</description>
+                  <description>500 kbps</description>
                   <value>3</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -33202,13 +33217,13 @@ POSSIBILITY OF SUCH DAMAGE.\n
         </register>
         <register>
           <name>CNFPTR</name>
-          <description>Pointer to data structure holding AES key and NONCE vector</description>
+          <description>Pointer to data structure holding the AES key and the NONCE vector</description>
           <addressOffset>0x508</addressOffset>
           <access>read-write</access>
           <fields>
             <field>
               <name>CNFPTR</name>
-              <description>Pointer to the data structure holding the AES key and the CCM NONCE vector (see Table 1 CCM data structure overview)</description>
+              <description>Pointer to the data structure holding the AES key and the CCM NONCE vector (see table CCM data structure overview)</description>
               <lsb>0</lsb>
               <msb>31</msb>
             </field>
@@ -33259,14 +33274,14 @@ POSSIBILITY OF SUCH DAMAGE.\n
         </register>
         <register>
           <name>MAXPACKETSIZE</name>
-          <description>Length of keystream generated when MODE.LENGTH = Extended.</description>
+          <description>Length of keystream generated when MODE.LENGTH = Extended</description>
           <addressOffset>0x518</addressOffset>
           <access>read-write</access>
           <resetValue>0x000000FB</resetValue>
           <fields>
             <field>
               <name>MAXPACKETSIZE</name>
-              <description>Length of keystream generated when MODE.LENGTH = Extended. This value must be greater or equal to the subsequent packet payload to be encrypted/decrypted.</description>
+              <description>Length of keystream generated when MODE.LENGTH = Extended. This value must be greater than or equal to the subsequent packet payload to be encrypted/decrypted.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -33281,7 +33296,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>RATEOVERRIDE</name>
-              <description>Data rate override setting.</description>
+              <description>Data rate override setting</description>
               <lsb>0</lsb>
               <msb>1</msb>
               <enumeratedValues>
@@ -33297,12 +33312,12 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>125Kbps</name>
-                  <description>125 Kbps</description>
+                  <description>125 kbps</description>
                   <value>2</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>500Kbps</name>
-                  <description>500 Kbps</description>
+                  <description>500 kbps</description>
                   <value>3</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -39975,7 +39990,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </register>
           <register>
             <name>SIZE</name>
-            <description>Description cluster: Size of region to protect counting from address ACL[n].ADDR. Write '0' as no effect.</description>
+            <description>Description cluster: Size of region to protect counting from address ACL[n].ADDR. Writing a '0' has no effect.</description>
             <addressOffset>0x004</addressOffset>
             <access>read-writeonce</access>
             <resetValue>0x00000000</resetValue>
@@ -39997,36 +40012,36 @@ POSSIBILITY OF SUCH DAMAGE.\n
             <fields>
               <field>
                 <name>WRITE</name>
-                <description>Configure write and erase permissions for region n. Write '0' has no effect.</description>
+                <description>Configure write and erase permissions for region n. Writing a '0' has no effect.</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
                 <enumeratedValues>
                   <enumeratedValue>
                     <name>Enable</name>
-                    <description>Allow write and erase instructions to region n</description>
+                    <description>Allow write and erase instructions to region n.</description>
                     <value>0</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Disable</name>
-                    <description>Block write and erase instructions to region n</description>
+                    <description>Block write and erase instructions to region n.</description>
                     <value>1</value>
                   </enumeratedValue>
                 </enumeratedValues>
               </field>
               <field>
                 <name>READ</name>
-                <description>Configure read permissions for region n. Write '0' has no effect.</description>
+                <description>Configure read permissions for region n. Writing a '0' has no effect.</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
                 <enumeratedValues>
                   <enumeratedValue>
                     <name>Enable</name>
-                    <description>Allow read instructions to region n</description>
+                    <description>Allow read instructions to region n.</description>
                     <value>0</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Disable</name>
-                    <description>Block read instructions to region n</description>
+                    <description>Block read instructions to region n.</description>
                     <value>1</value>
                   </enumeratedValue>
                 </enumeratedValues>

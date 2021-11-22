@@ -82,10 +82,7 @@ void nrfx_ppi_free_all(void);
  * @brief Function for allocating a PPI channel.
  * @details This function allocates the first unused PPI channel.
  *
- * @note To ensure the thread safety of the operation, this function uses the
- *       @ref NRFX_CRITICAL_SECTION_ENTER and @ref NRFX_CRITICAL_SECTION_EXIT
- *       macros. No further synchronization mechanism is needed, provided the
- *       macros are properly implemented (see @ref nrfx_glue).
+ * @note Function is thread safe as it uses @ref nrfx_flag32_alloc.
  *
  * @param[out] p_channel Pointer to the PPI channel that has been allocated.
  *
@@ -98,10 +95,7 @@ nrfx_err_t nrfx_ppi_channel_alloc(nrf_ppi_channel_t * p_channel);
  * @brief Function for freeing a PPI channel.
  * @details This function also disables the chosen channel.
  *
- * @note To ensure the thread safety of the operation, this function uses the
- *       @ref NRFX_CRITICAL_SECTION_ENTER and @ref NRFX_CRITICAL_SECTION_EXIT
- *       macros. No further synchronization mechanism is needed, provided the
- *       macros are properly implemented (see @ref nrfx_glue).
+ * @note Function is thread safe as it uses @ref nrfx_flag32_free.
  *
  * @param[in] channel PPI channel to be freed.
  *
@@ -161,10 +155,7 @@ nrfx_err_t nrfx_ppi_channel_disable(nrf_ppi_channel_t channel);
  * @brief Function for allocating a PPI channel group.
  * @details This function allocates the first unused PPI group.
  *
- * @note To ensure the thread safety of the operation, this function uses the
- *       @ref NRFX_CRITICAL_SECTION_ENTER and @ref NRFX_CRITICAL_SECTION_EXIT
- *       macros. No further synchronization mechanism is needed, provided the
- *       macros are properly implemented (see @ref nrfx_glue).
+ * @note Function is thread safe as it uses @ref nrfx_flag32_alloc.
  *
  * @param[out] p_group Pointer to the PPI channel group that has been allocated.
  *
@@ -177,10 +168,7 @@ nrfx_err_t nrfx_ppi_group_alloc(nrf_ppi_channel_group_t * p_group);
  * @brief Function for freeing a PPI channel group.
  * @details This function also disables the chosen group.
  *
- * @note To ensure the thread safety of the operation, this function uses the
- *       @ref NRFX_CRITICAL_SECTION_ENTER and @ref NRFX_CRITICAL_SECTION_EXIT
- *       macros. No further synchronization mechanism is needed, provided the
- *       macros are properly implemented (see @ref nrfx_glue).
+ * @note Function is thread safe as it uses @ref nrfx_flag32_free.
  *
  * @param[in] group PPI channel group to be freed.
  *
