@@ -13,6 +13,7 @@ path += [cwd + '/drivers']
 path += [cwd + '/drivers/include']
 path += [cwd + '/mdk']
 path += [cwd + '/hal']
+path += [cwd + '/drivers/src']
 
 #chip toolchain
 if GetDepend('SOC_NRF52840') == True:
