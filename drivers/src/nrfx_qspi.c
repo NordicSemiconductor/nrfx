@@ -91,6 +91,7 @@ typedef struct
     uint32_t            addr_secondary;     /**< Address for the secondary buffer. */
     nrfx_qspi_evt_ext_t evt_ext;            /**< Extended event. */
     nrfx_qspi_state_t   state;              /**< Driver state. */
+    bool                skip_gpio_cfg;      /**< Do not touch GPIO configuration of used pins. */
 } qspi_control_block_t;
 
 static qspi_control_block_t m_cb;
@@ -163,13 +164,21 @@ static nrfx_err_t qspi_xfer(void *            p_buffer,
     return NRFX_SUCCESS;
 }
 
-static bool qspi_pins_configure(nrf_qspi_pins_t const * p_config)
+static bool qspi_pins_configure(nrfx_qspi_config_t const * p_config)
 {
+    // If both GPIO configuration and pin selection are to be skipped,
+    // the pin numbers may be not specified at all, so even validation
+    // of those numbers cannot be performed.
+    if (p_config->skip_gpio_cfg && p_config->skip_psel_cfg)
+    {
+        return true;
+    }
+
     // Check if the user set meaningful values to struct fields. If not, return false.
-    if ((p_config->sck_pin == NRF_QSPI_PIN_NOT_CONNECTED) ||
-        (p_config->csn_pin == NRF_QSPI_PIN_NOT_CONNECTED) ||
-        (p_config->io0_pin == NRF_QSPI_PIN_NOT_CONNECTED) ||
-        (p_config->io1_pin == NRF_QSPI_PIN_NOT_CONNECTED))
+    if ((p_config->pins.sck_pin == NRF_QSPI_PIN_NOT_CONNECTED) ||
+        (p_config->pins.csn_pin == NRF_QSPI_PIN_NOT_CONNECTED) ||
+        (p_config->pins.io0_pin == NRF_QSPI_PIN_NOT_CONNECTED) ||
+        (p_config->pins.io1_pin == NRF_QSPI_PIN_NOT_CONNECTED))
     {
         return false;
     }
@@ -185,33 +194,39 @@ static bool qspi_pins_configure(nrf_qspi_pins_t const * p_config)
         QSPI_CSN_DEDICATED = NRF_GPIO_PIN_MAP(0, 18)
     };
 
-    if ((p_config->sck_pin != QSPI_SCK_DEDICATED) ||
-        (p_config->csn_pin != QSPI_CSN_DEDICATED) ||
-        (p_config->io0_pin != QSPI_IO0_DEDICATED) ||
-        (p_config->io1_pin != QSPI_IO1_DEDICATED) ||
-        (p_config->io2_pin != NRF_QSPI_PIN_NOT_CONNECTED &&
-         p_config->io2_pin != QSPI_IO2_DEDICATED) ||
-        (p_config->io3_pin != NRF_QSPI_PIN_NOT_CONNECTED &&
-         p_config->io3_pin != QSPI_IO3_DEDICATED))
+    if ((p_config->pins.sck_pin != QSPI_SCK_DEDICATED) ||
+        (p_config->pins.csn_pin != QSPI_CSN_DEDICATED) ||
+        (p_config->pins.io0_pin != QSPI_IO0_DEDICATED) ||
+        (p_config->pins.io1_pin != QSPI_IO1_DEDICATED) ||
+        (p_config->pins.io2_pin != NRF_QSPI_PIN_NOT_CONNECTED &&
+         p_config->pins.io2_pin != QSPI_IO2_DEDICATED) ||
+        (p_config->pins.io3_pin != NRF_QSPI_PIN_NOT_CONNECTED &&
+         p_config->pins.io3_pin != QSPI_IO3_DEDICATED))
     {
         return false;
     }
 #endif
 
-    QSPI_PIN_INIT(p_config->sck_pin);
-    QSPI_PIN_INIT(p_config->csn_pin);
-    QSPI_PIN_INIT(p_config->io0_pin);
-    QSPI_PIN_INIT(p_config->io1_pin);
-    if (p_config->io2_pin != NRF_QSPI_PIN_NOT_CONNECTED)
+    if (!p_config->skip_gpio_cfg)
     {
-        QSPI_PIN_INIT(p_config->io2_pin);
-    }
-    if (p_config->io3_pin != NRF_QSPI_PIN_NOT_CONNECTED)
-    {
-        QSPI_PIN_INIT(p_config->io3_pin);
+        QSPI_PIN_INIT(p_config->pins.sck_pin);
+        QSPI_PIN_INIT(p_config->pins.csn_pin);
+        QSPI_PIN_INIT(p_config->pins.io0_pin);
+        QSPI_PIN_INIT(p_config->pins.io1_pin);
+        if (p_config->pins.io2_pin != NRF_QSPI_PIN_NOT_CONNECTED)
+        {
+            QSPI_PIN_INIT(p_config->pins.io2_pin);
+        }
+        if (p_config->pins.io3_pin != NRF_QSPI_PIN_NOT_CONNECTED)
+        {
+            QSPI_PIN_INIT(p_config->pins.io3_pin);
+        }
     }
 
-    nrf_qspi_pins_set(NRF_QSPI, p_config);
+    if (!p_config->skip_psel_cfg)
+    {
+        nrf_qspi_pins_set(NRF_QSPI, &p_config->pins);
+    }
 
     return true;
 }
@@ -260,7 +275,7 @@ nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
         return NRFX_ERROR_INVALID_STATE;
     }
 
-    if (!qspi_pins_configure(&p_config->pins))
+    if (!qspi_pins_configure(p_config))
     {
         return NRFX_ERROR_INVALID_PARAM;
     }
@@ -286,6 +301,7 @@ nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
 
     m_cb.handler = handler;
     m_cb.p_context = p_context;
+    m_cb.skip_gpio_cfg = p_config->skip_gpio_cfg;
 
     /* QSPI interrupt is disabled because the device should be enabled in polling mode
       (wait for activate task event ready) */
@@ -331,7 +347,7 @@ nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
         nrf_qspi_cinstrdata_set(NRF_QSPI, p_config->length, p_tx_buffer);
     }
 
-    /* For custom instruction transfer driver has to switch to blocking mode. 
+    /* For custom instruction transfer driver has to switch to blocking mode.
      * If driver was previously configured to non-blocking mode, interrupts
      * will get reenabled before next standard transfer.
      */
@@ -501,7 +517,10 @@ void nrfx_qspi_uninit(void)
 
     nrf_qspi_event_clear(NRF_QSPI, NRF_QSPI_EVENT_READY);
 
-    qspi_pins_deconfigure();
+    if (!m_cb.skip_gpio_cfg)
+    {
+        qspi_pins_deconfigure();
+    }
 
     m_cb.state = NRFX_QSPI_STATE_UNINITIALIZED;
 }

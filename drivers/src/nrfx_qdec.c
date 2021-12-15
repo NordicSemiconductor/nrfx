@@ -50,6 +50,7 @@
 
 static nrfx_qdec_event_handler_t m_qdec_event_handler = NULL;
 static nrfx_drv_state_t m_state = NRFX_DRV_STATE_UNINITIALIZED;
+static bool m_skip_gpio_cfg;
 
 void nrfx_qdec_irq_handler(void)
 {
@@ -107,17 +108,30 @@ nrfx_err_t nrfx_qdec_init(nrfx_qdec_config_t const * p_config,
     }
 
     m_qdec_event_handler = event_handler;
+    m_skip_gpio_cfg = p_config->skip_gpio_cfg;
+
+    if (!p_config->skip_gpio_cfg)
+    {
+        nrf_gpio_cfg_input(p_config->psela, NRF_GPIO_PIN_NOPULL);
+        nrf_gpio_cfg_input(p_config->pselb, NRF_GPIO_PIN_NOPULL);
+        if (p_config->pselled != NRF_QDEC_LED_NOT_CONNECTED)
+        {
+            nrf_gpio_cfg_input(p_config->pselled, NRF_GPIO_PIN_NOPULL);
+        }
+    }
+    if (!p_config->skip_psel_cfg)
+    {
+        nrf_qdec_pins_set(NRF_QDEC, p_config->psela, p_config->pselb, p_config->pselled);
+    }
 
     nrf_qdec_sampleper_set(NRF_QDEC, p_config->sampleper);
-    nrf_gpio_cfg_input(p_config->psela, NRF_GPIO_PIN_NOPULL);
-    nrf_gpio_cfg_input(p_config->pselb, NRF_GPIO_PIN_NOPULL);
-    if (p_config->pselled != NRF_QDEC_LED_NOT_CONNECTED)
+    // Change the period and polarity of the LED only when it is used,
+    // otherwise the ledpre field might have an invalid value.
+    if (nrf_qdec_led_pin_get(NRF_QDEC) != NRF_QDEC_LED_NOT_CONNECTED)
     {
-        nrf_gpio_cfg_input(p_config->pselled, NRF_GPIO_PIN_NOPULL);
         nrf_qdec_ledpre_set(NRF_QDEC, p_config->ledpre);
         nrf_qdec_ledpol_set(NRF_QDEC, p_config->ledpol);
     }
-    nrf_qdec_pins_set(NRF_QDEC, p_config->psela, p_config->pselb, p_config->pselled);
 
     if (p_config->dbfen)
     {
@@ -161,13 +175,16 @@ void nrfx_qdec_uninit(void)
 
     nrf_qdec_shorts_disable(NRF_QDEC, NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK);
 
-    nrf_gpio_cfg_default(nrf_qdec_phase_a_pin_get(NRF_QDEC));
-    nrf_gpio_cfg_default(nrf_qdec_phase_b_pin_get(NRF_QDEC));
-
-    uint32_t led_pin = nrf_qdec_led_pin_get(NRF_QDEC);
-    if (led_pin != NRF_QDEC_LED_NOT_CONNECTED)
+    if (!m_skip_gpio_cfg)
     {
-        nrf_gpio_cfg_default(led_pin);
+        nrf_gpio_cfg_default(nrf_qdec_phase_a_pin_get(NRF_QDEC));
+        nrf_gpio_cfg_default(nrf_qdec_phase_b_pin_get(NRF_QDEC));
+
+        uint32_t led_pin = nrf_qdec_led_pin_get(NRF_QDEC);
+        if (led_pin != NRF_QDEC_LED_NOT_CONNECTED)
+        {
+            nrf_gpio_cfg_default(led_pin);
+        }
     }
 
     m_state = NRFX_DRV_STATE_UNINITIALIZED;

@@ -132,6 +132,7 @@ typedef struct
     bool                    repeated;
     uint8_t                 bytes_transferred;
     bool                    hold_bus_uninit;
+    bool                    skip_gpio_cfg;
 #if NRFX_CHECK(NRFX_TWIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED)
     nrf_twim_frequency_t    bus_frequency;
 #endif
@@ -218,6 +219,14 @@ static bool xfer_completeness_check(NRF_TWIM_Type * p_twim, twim_control_block_t
 
 static bool twim_pins_configure(NRF_TWIM_Type * p_twim, nrfx_twim_config_t const * p_config)
 {
+    // If both GPIO configuration and pin selection are to be skipped,
+    // the pin numbers may be not specified at all, so even validation
+    // of those numbers cannot be performed.
+    if (p_config->skip_gpio_cfg && p_config->skip_psel_cfg)
+    {
+        return true;
+    }
+
     nrf_gpio_pin_drive_t drive;
 
 #if NRF_TWIM_HAS_1000_KHZ_FREQ && defined(NRF5340_XXAA)
@@ -246,10 +255,16 @@ static bool twim_pins_configure(NRF_TWIM_Type * p_twim, nrfx_twim_config_t const
        master when the system is in OFF mode, and when the TWI master is
        disabled, these pins must be configured in the GPIO peripheral.
     */
-    TWIM_PIN_INIT(p_config->scl, drive);
-    TWIM_PIN_INIT(p_config->sda, drive);
+    if (!p_config->skip_gpio_cfg)
+    {
+        TWIM_PIN_INIT(p_config->scl, drive);
+        TWIM_PIN_INIT(p_config->sda, drive);
+    }
 
-    nrf_twim_pins_set(p_twim, p_config->scl, p_config->sda);
+    if (!p_config->skip_psel_cfg)
+    {
+        nrf_twim_pins_set(p_twim, p_config->scl, p_config->sda);
+    }
 
     return true;
 }
@@ -260,8 +275,8 @@ nrfx_err_t nrfx_twim_init(nrfx_twim_t const *        p_instance,
                           void *                     p_context)
 {
     NRFX_ASSERT(p_config);
-    NRFX_ASSERT(p_config->scl != p_config->sda);
     twim_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
+    NRF_TWIM_Type * p_twim = p_instance->p_twim;
     nrfx_err_t err_code;
 
     if (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED)
@@ -305,11 +320,11 @@ nrfx_err_t nrfx_twim_init(nrfx_twim_t const *        p_instance,
     p_cb->repeated        = false;
     p_cb->busy            = false;
     p_cb->hold_bus_uninit = p_config->hold_bus_uninit;
+    p_cb->skip_gpio_cfg   = p_config->skip_gpio_cfg;
 #if NRFX_CHECK(NRFX_TWIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED)
     p_cb->bus_frequency   = (nrf_twim_frequency_t)p_config->frequency;
 #endif
 
-    NRF_TWIM_Type * p_twim = p_instance->p_twim;
     if (!twim_pins_configure(p_twim, p_config))
     {
         return NRFX_ERROR_INVALID_PARAM;
@@ -346,7 +361,7 @@ void nrfx_twim_uninit(nrfx_twim_t const * p_instance)
     nrfx_prs_release(p_instance->p_twim);
 #endif
 
-    if (!p_cb->hold_bus_uninit)
+    if (!p_cb->skip_gpio_cfg && !p_cb->hold_bus_uninit)
     {
         nrf_gpio_cfg_default(nrf_twim_scl_pin_get(p_instance->p_twim));
         nrf_gpio_cfg_default(nrf_twim_sda_pin_get(p_instance->p_twim));

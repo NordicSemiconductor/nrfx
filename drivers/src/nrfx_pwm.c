@@ -77,12 +77,20 @@ typedef struct
     void *                    p_context;
     nrfx_drv_state_t volatile state;
     uint8_t                   flags;
+    bool                      skip_gpio_cfg;
 } pwm_control_block_t;
 static pwm_control_block_t m_cb[NRFX_PWM_ENABLED_COUNT];
 
 static void configure_pins(nrfx_pwm_t const *        p_instance,
                            nrfx_pwm_config_t const * p_config)
 {
+    // Nothing to do here if both GPIO configuration and pin selection are
+    // to be skipped (the pin numbers may be then even not specified).
+    if (!(p_config->skip_gpio_cfg && p_config->skip_psel_cfg))
+    {
+        return;
+    }
+
     uint32_t out_pins[NRF_PWM_CHANNEL_COUNT];
     uint8_t i;
 
@@ -96,15 +104,7 @@ static void configure_pins(nrfx_pwm_t const *        p_instance,
 
             if (!p_config->skip_gpio_cfg)
             {
-                if (inverted)
-                {
-                    nrf_gpio_pin_set(out_pins[i]);
-                }
-                else
-                {
-                    nrf_gpio_pin_clear(out_pins[i]);
-                }
-
+                nrf_gpio_pin_write(out_pins[i], inverted ? 1 : 0);
                 nrf_gpio_cfg_output(out_pins[i]);
             }
         }
@@ -114,7 +114,10 @@ static void configure_pins(nrfx_pwm_t const *        p_instance,
         }
     }
 
-    nrf_pwm_pins_set(p_instance->p_registers, out_pins);
+    if (!p_config->skip_psel_cfg)
+    {
+        nrf_pwm_pins_set(p_instance->p_registers, out_pins);
+    }
 }
 
 static void deconfigure_pins(nrfx_pwm_t const * p_instance)
@@ -151,6 +154,7 @@ nrfx_err_t nrfx_pwm_init(nrfx_pwm_t const *        p_instance,
 
     p_cb->handler = handler;
     p_cb->p_context = p_context;
+    p_cb->skip_gpio_cfg = p_config->skip_gpio_cfg;
 
     configure_pins(p_instance, p_config);
 
@@ -204,7 +208,10 @@ void nrfx_pwm_uninit(nrfx_pwm_t const * p_instance)
 
     nrf_pwm_disable(p_instance->p_registers);
 
-    deconfigure_pins(p_instance);
+    if (!p_cb->skip_gpio_cfg)
+    {
+        deconfigure_pins(p_instance);
+    }
 
     p_cb->state = NRFX_DRV_STATE_UNINITIALIZED;
 }

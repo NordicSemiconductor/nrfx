@@ -51,11 +51,25 @@ extern "C" {
 /** @brief QSPI driver instance configuration structure. */
 typedef struct
 {
-    uint32_t             xip_offset;   /**< Address offset into the external memory for Execute in Place operation. */
-    nrf_qspi_pins_t      pins;         /**< Pin configuration structure. */
-    nrf_qspi_prot_conf_t prot_if;      /**< Protocol layer interface configuration structure. */
-    nrf_qspi_phy_conf_t  phy_if;       /**< Physical layer interface configuration structure. */
-    uint8_t              irq_priority; /**< Interrupt priority. */
+    uint32_t             xip_offset;    ///< Address offset into the external memory for Execute in Place operation.
+    nrf_qspi_pins_t      pins;          ///< Pin configuration structure.
+    nrf_qspi_prot_conf_t prot_if;       ///< Protocol layer interface configuration structure.
+    nrf_qspi_phy_conf_t  phy_if;        ///< Physical layer interface configuration structure.
+    uint8_t              irq_priority;  ///< Interrupt priority.
+    bool                 skip_gpio_cfg; ///< Skip GPIO configuration of pins.
+                                        /**< When set to true, the driver does not modify
+                                         *   any GPIO parameters of the used pins. Those
+                                         *   parameters are supposed to be configured
+                                         *   externally before the driver is initialized. */
+    bool                 skip_psel_cfg; ///< Skip pin selection configuration.
+                                        /**< When set to true, the driver does not modify
+                                         *   pin select registers in the peripheral.
+                                         *   Those registers are supposed to be set up
+                                         *   externally before the driver is initialized.
+                                         *   @note When both GPIO configuration and pin
+                                         *   selection are to be skipped, the structure
+                                         *   fields that specify pins can be omitted,
+                                         *   as they are ignored anyway. */
 } nrfx_qspi_config_t;
 
 /**

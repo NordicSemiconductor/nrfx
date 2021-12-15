@@ -83,6 +83,20 @@ typedef struct
 #if NRF_PDM_HAS_MCLKCONFIG
     nrf_pdm_mclksrc_t mclksrc;            ///< Master clock source selection.
 #endif
+    bool              skip_gpio_cfg;      ///< Skip GPIO configuration of pins.
+                                          /**< When set to true, the driver does not modify
+                                           *   any GPIO parameters of the used pins. Those
+                                           *   parameters are supposed to be configured
+                                           *   externally before the driver is initialized. */
+    bool              skip_psel_cfg;      ///< Skip pin selection configuration.
+                                          /**< When set to true, the driver does not modify
+                                           *   pin select registers in the peripheral.
+                                           *   Those registers are supposed to be set up
+                                           *   externally before the driver is initialized.
+                                           *   @note When both GPIO configuration and pin
+                                           *   selection are to be skipped, the structure
+                                           *   fields that specify pins can be omitted,
+                                           *   as they are ignored anyway. */
 } nrfx_pdm_config_t;
 
 
