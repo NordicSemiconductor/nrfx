@@ -86,7 +86,7 @@ static void configure_pins(nrfx_pwm_t const *        p_instance,
 {
     // Nothing to do here if both GPIO configuration and pin selection are
     // to be skipped (the pin numbers may be then even not specified).
-    if (!(p_config->skip_gpio_cfg && p_config->skip_psel_cfg))
+    if (p_config->skip_gpio_cfg && p_config->skip_psel_cfg)
     {
         return;
     }
