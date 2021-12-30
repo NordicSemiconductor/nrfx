@@ -881,6 +881,27 @@ nrf_nfct_selres_protocol_t nrf_nfct_selres_protocol_get(NRF_NFCT_Type const * p_
 NRF_STATIC_INLINE void nrf_nfct_selres_protocol_set(NRF_NFCT_Type *            p_reg,
                                                     nrf_nfct_selres_protocol_t sel_res_protocol);
 
+/**
+ * @brief Function for getting the SEL_RES frame configuration.
+ *
+ * @details The SEL_RES frame is handled automatically by the NFCT hardware.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return SEL_RES frame configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_nfct_selres_get(NRF_NFCT_Type const * p_reg);
+
+/**
+ * @brief Function for setting the SEL_RES frame configuration.
+ *
+ * @details The SEL_RES frame is handled automatically by the NFCT hardware.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] selres SEL_RES frame configuration.
+ */
+NRF_STATIC_INLINE void nrf_nfct_selres_set(NRF_NFCT_Type * p_reg, uint32_t selres);
+
 #ifndef NRF_DECLARE_ONLY
 NRF_STATIC_INLINE void nrf_nfct_task_trigger(NRF_NFCT_Type * p_reg, nrf_nfct_task_t task)
 {
@@ -1259,6 +1280,16 @@ NRF_STATIC_INLINE void nrf_nfct_selres_protocol_set(NRF_NFCT_Type *            p
 {
     p_reg->SELRES = (p_reg->SELRES & ~NFCT_SELRES_PROTOCOL_Msk) |
                     ((uint32_t)sel_res_protocol << NFCT_SELRES_PROTOCOL_Pos);
+}
+
+NRF_STATIC_INLINE uint32_t nrf_nfct_selres_get(NRF_NFCT_Type const * p_reg)
+{
+    return p_reg->SELRES;
+}
+
+NRF_STATIC_INLINE void nrf_nfct_selres_set(NRF_NFCT_Type * p_reg, uint32_t selres)
+{
+    p_reg->SELRES = (p_reg->SELRES & NFCT_SELRES_CASCADE_Msk) | (selres & ~NFCT_SELRES_CASCADE_Msk);
 }
 #endif /* NRF_DECLARE_ONLY */
 
