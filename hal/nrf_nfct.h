@@ -248,13 +248,6 @@ typedef enum
     NRF_NFCT_SENSRES_PLATFORM_CONFIG_OTHER = 0 << NFCT_SENSRES_PLATFCONFIG_Pos
 } nrf_nfct_sensres_platform_config_t;
 
-/** @brief Bit masks for SEL_RES NFC frame configuration. */
-typedef enum
-{
-    NRF_NFCT_SELRES_CASCADE_MASK  = NFCT_SELRES_CASCADE_Msk,  /**< SEL_RES Cascade field bit mask. */
-    NRF_NFCT_SELRES_PROTOCOL_MASK = NFCT_SELRES_PROTOCOL_Msk  /**< SEL_RES Protocol field bit mask. */
-} nrf_nfct_selres_t;
-
 /**
  * @brief Protocol NFC field (bits b7 and b6) configuration for the SEL_RES frame according to
  *        the NFC Forum Digital Protocol Technical Specification.
