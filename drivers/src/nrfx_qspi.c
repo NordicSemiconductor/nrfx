@@ -480,9 +480,16 @@ nrfx_err_t nrfx_qspi_mem_busy_check(void)
     nrfx_err_t ret_code;
     uint8_t status_value = 0;
 
-    nrf_qspi_cinstr_conf_t const config =
-        NRFX_QSPI_DEFAULT_CINSTR(QSPI_STD_CMD_RDSR,
-                                 NRF_QSPI_CINSTR_LEN_2B);
+    nrf_qspi_cinstr_conf_t const config = {
+        .opcode = QSPI_STD_CMD_RDSR,
+        .length = NRF_QSPI_CINSTR_LEN_2B,
+        // Keep the IO3 line high during the transfer. Otherwise, its low level
+        // can be interpreted by the memory chip as an active HOLD#/RESET#
+        // signal and the status register value may not be output.
+        // Such configuration is also consistent with what the QSPI peripheral
+        // uses when it sends the Read Status Register command itself.
+        .io3_level = true,
+    };
     ret_code = nrfx_qspi_cinstr_xfer(&config, &status_value, &status_value);
 
     if (ret_code != NRFX_SUCCESS)

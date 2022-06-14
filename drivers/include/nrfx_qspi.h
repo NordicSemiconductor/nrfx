@@ -343,6 +343,13 @@ nrfx_err_t nrfx_qspi_mem_busy_check(void);
  * Pointers can be addresses from flash memory.
  * This function is a synchronous function and should be used only if necessary.
  *
+ * @note Please note that the @ref NRFX_QSPI_DEFAULT_CINSTR macro provides default values
+ *       for the @p io2_level and @p io3_level fields that cause the IO2 and IO3 lines
+ *       to be kept low during the custom instruction transfer. Such configuration may not
+ *       be suitable in certain circumstances and memory devices can interpret such levels
+ *       of those lines as active WP# and HOLD#/RESET# signals, respectively. Hence, it is
+ *       safer to use a configuration that will keep the lines high during the transfer.
+ *
  * @param[in]  p_config    Pointer to the structure with opcode and transfer configuration.
  * @param[in]  p_tx_buffer Pointer to the array with data to send. Can be NULL if only opcode is transmitted.
  * @param[out] p_rx_buffer Pointer to the array for data to receive. Can be NULL if there is nothing to receive.
@@ -378,6 +385,13 @@ nrfx_err_t nrfx_qspi_cinstr_quick_send(uint8_t               opcode,
  * The long frame mode is a mechanism that allows for arbitrary byte length custom instructions.
  * Use this function to initiate a custom transaction by sending custom instruction opcode.
  * To send and receive data, use @ref nrfx_qspi_lfm_xfer.
+ *
+ * @note Please note that the @ref NRFX_QSPI_DEFAULT_CINSTR macro provides default values
+ *       for the @p io2_level and @p io3_level fields that cause the IO2 and IO3 lines
+ *       to be kept low during the custom instruction transfer. Such configuration may not
+ *       be suitable in certain circumstances and memory devices can interpret such levels
+ *       of those lines as active WP# and HOLD#/RESET# signals, respectively. Hence, it is
+ *       safer to use a configuration that will keep the lines high during the transfer.
  *
  * @param[in] p_config Pointer to the structure with custom instruction opcode and transfer
  *                     configuration. Transfer length must be set to @ref NRF_QSPI_CINSTR_LEN_1B.
