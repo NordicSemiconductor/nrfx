@@ -86,6 +86,7 @@ static nrfx_nfct_timer_workaround_t m_timer_workaround =
 #endif // NRFX_CHECK(NFCT_WORKAROUND_USES_TIMER)
 
 #define NFCT_FRAMEDELAYMAX_DEFAULT     (0x00001000UL) /**< Default value of the FRAMEDELAYMAX. */
+#define NFCT_FRAMEDELAYMIN_DEFAULT     (0x00000480UL) /**< Default value of the FRAMEDELAYMIN. */
 
 /* Mask of all possible interrupts that are relevant for data reception. */
 #define NRFX_NFCT_RX_INT_MASK (NRF_NFCT_INT_RXFRAMESTART_MASK | \
@@ -142,6 +143,7 @@ typedef struct
     nrfx_drv_state_t   state;
     volatile bool      field_on;
     uint32_t           frame_delay_max;
+    uint32_t           frame_delay_min;
 } nrfx_nfct_control_block_t;
 
 static nrfx_nfct_control_block_t m_nfct_cb;
@@ -278,14 +280,16 @@ static void nrfx_nfct_activate_check(void)
 /* Begin: Workaround for anomaly 116 */
 static inline void nrfx_nfct_reset(void)
 {
-    uint32_t                       fdm;
+    uint32_t                       fdmax;
+    uint32_t                       fdmin;
     uint32_t                       int_enabled;
     uint8_t                        nfcid1[NRF_NFCT_SENSRES_NFCID1_SIZE_TRIPLE];
     nrf_nfct_sensres_nfcid1_size_t nfcid1_size;
     nrf_nfct_selres_protocol_t     protocol;
 
     // Save parameter settings before the reset of the NFCT peripheral.
-    fdm         = nrf_nfct_frame_delay_max_get(NRF_NFCT);
+    fdmax       = nrf_nfct_frame_delay_max_get(NRF_NFCT);
+    fdmin       = nrf_nfct_frame_delay_min_get(NRF_NFCT);
     nfcid1_size = nrf_nfct_nfcid1_get(NRF_NFCT, nfcid1);
     protocol    = nrf_nfct_selres_protocol_get(NRF_NFCT);
     int_enabled = nrf_nfct_int_enable_get(NRF_NFCT);
@@ -296,7 +300,8 @@ static inline void nrfx_nfct_reset(void)
     *(volatile uint32_t *)0x40005FFC = 1;
 
     // Restore parameter settings after the reset of the NFCT peripheral.
-    nrf_nfct_frame_delay_max_set(NRF_NFCT, fdm);
+    nrf_nfct_frame_delay_max_set(NRF_NFCT, fdmax);
+    nrf_nfct_frame_delay_min_set(NRF_NFCT, fdmin);
     nrf_nfct_nfcid1_set(NRF_NFCT, nfcid1, nfcid1_size);
     nrf_nfct_selres_protocol_set(NRF_NFCT, protocol);
 
@@ -440,6 +445,7 @@ nrfx_err_t nrfx_nfct_init(nrfx_nfct_config_t const * p_config)
 
     m_nfct_cb.state           = NRFX_DRV_STATE_INITIALIZED;
     m_nfct_cb.frame_delay_max = NFCT_FRAMEDELAYMAX_DEFAULT;
+    m_nfct_cb.frame_delay_min = NFCT_FRAMEDELAYMIN_DEFAULT;
 
     NRFX_LOG_INFO("Initialized");
     return err_code;
@@ -666,8 +672,32 @@ nrfx_err_t nrfx_nfct_parameter_set(nrfx_nfct_param_t const * p_param)
         {
             uint32_t delay     = p_param->data.fdt;
             uint32_t delay_thr = NFCT_FRAMEDELAYMAX_FRAMEDELAYMAX_Msk;
+            uint32_t delay_max;
 
-            m_nfct_cb.frame_delay_max = (delay > delay_thr) ? delay_thr : delay;
+            delay_max = (delay > delay_thr) ? delay_thr : delay;
+            if (delay_max < m_nfct_cb.frame_delay_min)
+            {
+                return NRFX_ERROR_INVALID_PARAM;
+            }
+
+            m_nfct_cb.frame_delay_max = delay_max;
+            break;
+        }
+
+        case NRFX_NFCT_PARAM_ID_FDT_MIN:
+        {
+            uint32_t delay = p_param->data.fdt_min;
+            uint32_t delay_thr = NFCT_FRAMEDELAYMAX_FRAMEDELAYMAX_Msk;
+            uint32_t delay_min;
+
+            delay_min = (delay > delay_thr) ? delay_thr : delay;
+            if (delay_min > m_nfct_cb.frame_delay_max)
+            {
+                return NRFX_ERROR_INVALID_PARAM;
+            }
+
+            m_nfct_cb.frame_delay_min = delay_min;
+            nrf_nfct_frame_delay_min_set(NRF_NFCT, m_nfct_cb.frame_delay_min);
             break;
         }
 

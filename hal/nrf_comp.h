@@ -358,7 +358,7 @@ NRF_STATIC_INLINE void nrf_comp_task_trigger(NRF_COMP_Type * p_reg, nrf_comp_tas
 NRF_STATIC_INLINE void nrf_comp_event_clear(NRF_COMP_Type * p_reg, nrf_comp_event_t event);
 
 /**
- * @brief Function for retrieving the state of the UARTE event.
+ * @brief Function for retrieving the state of the COMP event.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] event Event to be checked.

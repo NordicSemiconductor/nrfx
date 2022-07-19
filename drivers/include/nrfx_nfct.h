@@ -101,6 +101,7 @@ typedef enum
 typedef enum
 {
     NRFX_NFCT_PARAM_ID_FDT,     ///< NFC-A Frame Delay Time parameter.
+    NRFX_NFCT_PARAM_ID_FDT_MIN, ///< NFC-A Frame Delay Time Min parameter.
     NRFX_NFCT_PARAM_ID_SEL_RES, ///< Value of the 'Protocol' field in the NFC-A SEL_RES frame.
     NRFX_NFCT_PARAM_ID_NFCID1,  ///< NFC-A NFCID1 setting (NFC tag identifier).
 } nrfx_nfct_param_id_t;
@@ -119,6 +120,7 @@ typedef struct
     union
     {
         uint32_t           fdt;              ///< NFC-A Frame Delay Time. Filled when nrfx_nfct_param_t.id is @ref NRFX_NFCT_PARAM_ID_FDT.
+        uint32_t           fdt_min;          ///< NFC-A Frame Delay Time Min. Filled when nrfx_nfct_param_t.id is @ref NRFX_NFCT_PARAM_ID_FDT_MIN.
         uint8_t            sel_res_protocol; ///< NFC-A value of the 'Protocol' field in the SEL_RES frame. Filled when nrfx_nfct_param_t.id is @ref NRFX_NFCT_PARAM_ID_SEL_RES.
         nrfx_nfct_nfcid1_t nfcid1;           ///< NFC-A NFCID1 value (tag identifier). Filled when nrfx_nfct_param_t.id is @ref NRFX_NFCT_PARAM_ID_NFCID1.
     } data;                                  ///< Union to store parameter data.

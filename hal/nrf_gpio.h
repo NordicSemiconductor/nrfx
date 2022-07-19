@@ -70,6 +70,13 @@ extern "C" {
 #define NRF_GPIO_LATCH_PRESENT
 #endif
 
+#if defined(GPIO_PIN_CNF_MCUSEL_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating presence of MCU/Subsystem control selection. */
+#define NRF_GPIO_HAS_SEL 1
+#else
+#define NRF_GPIO_HAS_SEL 0
+#endif
+
 /** @brief Macro for mapping port and pin numbers to values understandable for nrf_gpio functions. */
 #define NRF_GPIO_PIN_MAP(port, pin) (((port) << 5) | ((pin) & 0x1F))
 
@@ -141,14 +148,27 @@ typedef enum
     NRF_GPIO_PIN_SENSE_HIGH = GPIO_PIN_CNF_SENSE_High,     ///<  Pin sense high level.
 } nrf_gpio_pin_sense_t;
 
-#if defined(GPIO_PIN_CNF_MCUSEL_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_GPIO_HAS_SEL
 /** @brief Enumerator used for selecting the MCU/Subsystem to control the specified pin. */
 typedef enum
 {
-    NRF_GPIO_PIN_MCUSEL_APP        = GPIO_PIN_CNF_MCUSEL_AppMCU,     ///< Pin controlled by Application MCU.
-    NRF_GPIO_PIN_MCUSEL_NETWORK    = GPIO_PIN_CNF_MCUSEL_NetworkMCU, ///< Pin controlled by Network MCU.
-    NRF_GPIO_PIN_MCUSEL_PERIPHERAL = GPIO_PIN_CNF_MCUSEL_Peripheral, ///< Pin controlled by dedicated peripheral.
-    NRF_GPIO_PIN_MCUSEL_TND        = GPIO_PIN_CNF_MCUSEL_TND,        ///< Pin controlled by Trace and Debug Subsystem.
+    NRF_GPIO_PIN_SEL_APP        = GPIO_PIN_CNF_MCUSEL_AppMCU,     ///< Pin controlled by Application MCU.
+    NRF_GPIO_PIN_SEL_NETWORK    = GPIO_PIN_CNF_MCUSEL_NetworkMCU, ///< Pin controlled by Network MCU.
+    NRF_GPIO_PIN_SEL_PERIPHERAL = GPIO_PIN_CNF_MCUSEL_Peripheral, ///< Pin controlled by dedicated peripheral.
+    NRF_GPIO_PIN_SEL_TND        = GPIO_PIN_CNF_MCUSEL_TND,        ///< Pin controlled by Trace and Debug Subsystem.
+} nrf_gpio_pin_sel_t;
+
+/**
+ * @brief Enumerator used for selecting the MCU to control the specified pin.
+ *
+ * @note This enumerator is deprecated. Use @ref nrf_gpio_pin_sel_t instead.
+ */
+typedef enum
+{
+    NRF_GPIO_PIN_MCUSEL_APP        = NRF_GPIO_PIN_SEL_APP,        ///< Pin controlled by Application MCU.
+    NRF_GPIO_PIN_MCUSEL_NETWORK    = NRF_GPIO_PIN_SEL_NETWORK,    ///< Pin controlled by Network MCU.
+    NRF_GPIO_PIN_MCUSEL_PERIPHERAL = NRF_GPIO_PIN_SEL_PERIPHERAL, ///< Pin controlled by dedicated peripheral.
+    NRF_GPIO_PIN_MCUSEL_TND        = NRF_GPIO_PIN_SEL_TND,        ///< Pin controlled by Trace and Debug Subsystem.
 } nrf_gpio_pin_mcusel_t;
 #endif
 
@@ -507,9 +527,19 @@ NRF_STATIC_INLINE uint32_t nrf_gpio_pin_latch_get(uint32_t pin_number);
 NRF_STATIC_INLINE void nrf_gpio_pin_latch_clear(uint32_t pin_number);
 #endif // defined(NRF_GPIO_LATCH_PRESENT)
 
-#if defined(GPIO_PIN_CNF_MCUSEL_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_GPIO_HAS_SEL
+/**
+ * @brief Function for selecting the MCU or Subsystem to control a GPIO pin.
+ *
+ * @param pin_number Pin_number.
+ * @param ctrl       MCU/Subsystem to control the pin.
+ */
+NRF_STATIC_INLINE void nrf_gpio_pin_control_select(uint32_t pin_number, nrf_gpio_pin_sel_t ctrl);
+
 /**
  * @brief Function for selecting the MCU to control a GPIO pin.
+ *
+ * @note This function is deprecated. Use @ref nrf_gpio_pin_control_select instead.
  *
  * @param pin_number Pin_number.
  * @param mcu        MCU to control the pin.
@@ -598,7 +628,7 @@ NRF_STATIC_INLINE void nrf_gpio_cfg(
 {
     NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
 
-#if defined(GPIO_PIN_CNF_MCUSEL_Msk)
+#if NRF_GPIO_HAS_SEL
     /* Preserve MCUSEL setting. */
     uint32_t cnf = reg->PIN_CNF[pin_number] & GPIO_PIN_CNF_MCUSEL_Msk;
 #else
@@ -940,7 +970,14 @@ NRF_STATIC_INLINE void nrf_gpio_pin_latch_clear(uint32_t pin_number)
 }
 #endif // defined(NRF_GPIO_LATCH_PRESENT)
 
-#if defined(GPIO_PIN_CNF_MCUSEL_Msk)
+#if NRF_GPIO_HAS_SEL
+NRF_STATIC_INLINE void nrf_gpio_pin_control_select(uint32_t pin_number, nrf_gpio_pin_sel_t ctrl)
+{
+    NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
+    uint32_t cnf = reg->PIN_CNF[pin_number] & ~GPIO_PIN_CNF_MCUSEL_Msk;
+    reg->PIN_CNF[pin_number] = cnf | (ctrl << GPIO_PIN_CNF_MCUSEL_Pos);
+}
+
 NRF_STATIC_INLINE void nrf_gpio_pin_mcu_select(uint32_t pin_number, nrf_gpio_pin_mcusel_t mcu)
 {
     NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);

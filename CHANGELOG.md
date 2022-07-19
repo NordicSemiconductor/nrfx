@@ -1,6 +1,23 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [2.9.0] - 2022-07-19
+### Added
+- Added configuration parameter NRFX_NFCT_PARAM_ID_FDT_MIN that allows settting the value of the FRAMEDELAYMIN register.
+- Added nrf_gpio_pin_sel_t enumerator. It should be now used instead of nrf_gpio_pin_mcusel_t, which is deprecated.
+- Added nrf_gpio_pin_control_select() function. It should be now used instead of nrf_gpio_pin_mcu_select(), which is deprecated.
+- Added NRF_TIMER_CC_COUNT_MAX symbol that specifies maximum number of available compare channels.
+- Added NRF_TIMER_ALL_CHANNELS_INT_MASK symbol that is used for creating the interrupt bitmask for all compare channels.
+- Added nrf_timer_prescaler_set() and nrf_timer_prescaler_get() functions that are used for setting and retrieving the prescaler factor. They should be now used instead of nrf_timer_frequency_set() and nrf_timer_frequency_get(), which are deprecated.
+- Added NRFX_MAX(), NRFX_MIN() and NRFX_ABS() macros.
+
+### Changed
+- Updated MDK to version 8.47.0.
+
+### Fixed
+- Fixed logging level in nrfx_uart_init() and nrfx_uarte_init() functions. It was reduced from warning to info.
+- Fixed IO3 level used in nrfx_qspi_mem_busy_check(). The line is now kept high to prevent memory status from being read incorrectly.
+
 ## [2.8.0] - 2022-04-05
 ### Added
 - Added function for getting the currently configured channels in the SAADC driver.

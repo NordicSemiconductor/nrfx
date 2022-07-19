@@ -140,6 +140,35 @@ extern "C" {
 #define NRFX_CONCAT_3_(p1, p2, p3)  p1 ## p2 ## p3
 
 /**
+ * @brief Macro for computing the absolute value of an integer number.
+ *
+ * @param[in] a Input value.
+ *
+ * @return Absolute value.
+ */
+#define NRFX_ABS(a) ((a) < (0) ? -(a) : (a))
+
+/**
+ * @brief Macro for getting the smaller value between two arguments.
+ *
+ * @param[in] a First argument.
+ * @param[in] b Second argument.
+ *
+ * @return Smaller value between two arguments.
+ */
+#define NRFX_MIN(a, b) ((a) < (b) ? (a) : (b))
+
+/**
+ * @brief Macro for getting the larger value between two arguments.
+ *
+ * @param[in] a First argument.
+ * @param[in] b Second argument.
+ *
+ * @return Larger value between two arguments.
+ */
+#define NRFX_MAX(a, b) ((a) > (b) ? (a) : (b))
+
+/**
  * @brief Macro for performing rounded integer division (as opposed to
  *        truncating the result).
  *

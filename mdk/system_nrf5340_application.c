@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2009-2021 ARM Limited. All rights reserved.
+Copyright (c) 2009-2022 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -155,6 +155,20 @@ void SystemInit(void)
         if (nrf53_errata_69())
         {
             *((volatile uint32_t *)0x5000470Cul) =0x65ul;
+        }
+
+        if (nrf53_errata_140())
+        {
+            if (*(volatile uint32_t *)0x50032420 & 0x80000000)
+            {
+                /* Reset occured during calibration */
+                NRF_CLOCK_S->LFCLKSRC = CLOCK_LFCLKSRC_SRC_LFSYNT;
+                NRF_CLOCK_S->TASKS_LFCLKSTART = 1;
+                while (NRF_CLOCK_S->EVENTS_LFCLKSTARTED == 0) {}
+                NRF_CLOCK_S->EVENTS_LFCLKSTARTED = 0;
+                NRF_CLOCK_S->TASKS_LFCLKSTOP = 1;
+                NRF_CLOCK_S->LFCLKSRC = CLOCK_LFCLKSRC_SRC_LFRC;
+            }
         }
 
         #if !defined(NRF_SKIP_FICR_NS_COPY_TO_RAM)
