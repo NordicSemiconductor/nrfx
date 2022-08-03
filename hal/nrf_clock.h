@@ -772,6 +772,17 @@ NRF_STATIC_INLINE bool nrf_clock_start_task_check(NRF_CLOCK_Type const * p_reg,
     }
 }
 
+/*
+ * `-Warray-bounds` warning is disabled for the `nrf_clock_is_running`
+ * function because GCC 12 and above may report a false positive due to the
+ * size of the write access to the memory address pointed by the `p_clk_src`
+ * argument being variable depending on the value of the `domain` argument.
+ */
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
+
 NRF_STATIC_INLINE bool nrf_clock_is_running(NRF_CLOCK_Type const * p_reg,
                                             nrf_clock_domain_t     domain,
                                             void *                 p_clk_src)
@@ -830,6 +841,10 @@ NRF_STATIC_INLINE bool nrf_clock_is_running(NRF_CLOCK_Type const * p_reg,
     }
     return false;
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
 NRF_STATIC_INLINE void nrf_clock_lf_src_set(NRF_CLOCK_Type * p_reg, nrf_clock_lfclk_t source)
 {
