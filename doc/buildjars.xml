@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="buildjars" default="help" basedir=".">
+	<description>Build jar files</description>
+  <property environment="env"/>
+
+<target name="nrfx">
+
+  <jar destfile="drivers_nrfx_v2.10.0.jar"
+      basedir="html"
+      manifest="manifest/MANIFEST.MF.nrfx"
+      excludes="*.jar">
+    </jar>
+  </target>
+
+  <target name="buildjar">
+
+    <property name="build.path"         value="..${file.separator}..${file.separator}..${file.separator}_build${file.separator}${path}${file.separator}" />
+    <property name="out.path"         value="${build.path}${file.separator}_jar" />
+
+    <jar destfile="${out.path}${file.separator}${plugin}.jar"
+      basedir="${build.path}${file.separator}${which}${file.separator}html"
+      manifest="..${file.separator}manifest${file.separator}generated${file.separator}MANIFEST.MF.${which}"
+      excludes="*.jar">
+    </jar>
+  </target>
+
+</project>
