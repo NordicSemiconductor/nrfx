@@ -44,48 +44,48 @@ extern "C" {
 // CLOCK_POWER_IRQn
 #define nrfx_power_clock_irq_handler    CLOCK_POWER_IRQHandler
 
-// UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQn
+// SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQn
 #if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_0_ENABLED)
-#define nrfx_prs_box_0_irq_handler  UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler
+#define nrfx_prs_box_0_irq_handler  SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQHandler
 #else
-#define nrfx_spim_0_irq_handler     UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler
-#define nrfx_spis_0_irq_handler     UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler
-#define nrfx_twim_0_irq_handler     UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler
-#define nrfx_twis_0_irq_handler     UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler
-#define nrfx_uarte_0_irq_handler    UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler
+#define nrfx_spim_0_irq_handler     SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQHandler
+#define nrfx_spis_0_irq_handler     SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQHandler
+#define nrfx_twim_0_irq_handler     SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQHandler
+#define nrfx_twis_0_irq_handler     SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQHandler
+#define nrfx_uarte_0_irq_handler    SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQHandler
 #endif
 
-// UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQn
+// SPIM1_SPIS1_TWIM1_TWIS1_UARTE1_IRQn
 #if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_1_ENABLED)
-#define nrfx_prs_box_1_irq_handler  UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler
+#define nrfx_prs_box_1_irq_handler  SPIM1_SPIS1_TWIM1_TWIS1_UARTE1_IRQHandler
 #else
-#define nrfx_spim_1_irq_handler     UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler
-#define nrfx_spis_1_irq_handler     UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler
-#define nrfx_twim_1_irq_handler     UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler
-#define nrfx_twis_1_irq_handler     UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler
-#define nrfx_uarte_1_irq_handler    UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler
+#define nrfx_spim_1_irq_handler     SPIM1_SPIS1_TWIM1_TWIS1_UARTE1_IRQHandler
+#define nrfx_spis_1_irq_handler     SPIM1_SPIS1_TWIM1_TWIS1_UARTE1_IRQHandler
+#define nrfx_twim_1_irq_handler     SPIM1_SPIS1_TWIM1_TWIS1_UARTE1_IRQHandler
+#define nrfx_twis_1_irq_handler     SPIM1_SPIS1_TWIM1_TWIS1_UARTE1_IRQHandler
+#define nrfx_uarte_1_irq_handler    SPIM1_SPIS1_TWIM1_TWIS1_UARTE1_IRQHandler
 #endif
 
-// UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQn
+// SPIM2_SPIS2_TWIM2_TWIS2_UARTE2_IRQn
 #if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_2_ENABLED)
-#define nrfx_prs_box_2_irq_handler  UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler
+#define nrfx_prs_box_2_irq_handler  SPIM2_SPIS2_TWIM2_TWIS2_UARTE2_IRQHandler
 #else
-#define nrfx_spim_2_irq_handler     UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler
-#define nrfx_spis_2_irq_handler     UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler
-#define nrfx_twim_2_irq_handler     UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler
-#define nrfx_twis_2_irq_handler     UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler
-#define nrfx_uarte_2_irq_handler    UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler
+#define nrfx_spim_2_irq_handler     SPIM2_SPIS2_TWIM2_TWIS2_UARTE2_IRQHandler
+#define nrfx_spis_2_irq_handler     SPIM2_SPIS2_TWIM2_TWIS2_UARTE2_IRQHandler
+#define nrfx_twim_2_irq_handler     SPIM2_SPIS2_TWIM2_TWIS2_UARTE2_IRQHandler
+#define nrfx_twis_2_irq_handler     SPIM2_SPIS2_TWIM2_TWIS2_UARTE2_IRQHandler
+#define nrfx_uarte_2_irq_handler    SPIM2_SPIS2_TWIM2_TWIS2_UARTE2_IRQHandler
 #endif
 
-// UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQn
+// SPIM3_SPIS3_TWIM3_TWIS3_UARTE3_IRQn
 #if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_3_ENABLED)
-#define nrfx_prs_box_3_irq_handler  UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler
+#define nrfx_prs_box_3_irq_handler  SPIM3_SPIS3_TWIM3_TWIS3_UARTE3_IRQHandler
 #else
-#define nrfx_spim_3_irq_handler     UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler
-#define nrfx_spis_3_irq_handler     UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler
-#define nrfx_twim_3_irq_handler     UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler
-#define nrfx_twis_3_irq_handler     UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler
-#define nrfx_uarte_3_irq_handler    UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler
+#define nrfx_spim_3_irq_handler     SPIM3_SPIS3_TWIM3_TWIS3_UARTE3_IRQHandler
+#define nrfx_spis_3_irq_handler     SPIM3_SPIS3_TWIM3_TWIS3_UARTE3_IRQHandler
+#define nrfx_twim_3_irq_handler     SPIM3_SPIS3_TWIM3_TWIS3_UARTE3_IRQHandler
+#define nrfx_twis_3_irq_handler     SPIM3_SPIS3_TWIM3_TWIS3_UARTE3_IRQHandler
+#define nrfx_uarte_3_irq_handler    SPIM3_SPIS3_TWIM3_TWIS3_UARTE3_IRQHandler
 #endif
 
 // GPIOTE0_IRQn

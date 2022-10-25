@@ -87,7 +87,7 @@ enum {
     .drv_inst_idx = NRFX_CONCAT_3(NRFX_WDT, id, _INST_IDX), \
 }
 
-/**@brief Struct for WDT initialization. */
+/** @brief Struct for WDT initialization. */
 typedef struct
 {
     nrf_wdt_behaviour_t    behaviour;          /**< WDT behaviour when CPU in sleep/halt mode. */
@@ -204,6 +204,15 @@ NRFX_STATIC_INLINE uint32_t nrfx_wdt_event_address_get(nrfx_wdt_t const * p_inst
     return nrf_wdt_event_address_get(p_instance->p_reg, event);
 }
 #endif // NRFX_DECLARE_ONLY
+
+/**
+ * @brief Macro returning WDT interrupt handler.
+ *
+ * param[in] idx WDT index.
+ *
+ * @return Interrupt handler.
+ */
+#define NRFX_WDT_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_wdt_, idx, _irq_handler)
 
 /** @} */
 

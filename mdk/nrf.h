@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* MDK version */
 #define MDK_MAJOR_VERSION   8 
-#define MDK_MINOR_VERSION   47 
+#define MDK_MINOR_VERSION   51 
 #define MDK_MICRO_VERSION   0 
 
    

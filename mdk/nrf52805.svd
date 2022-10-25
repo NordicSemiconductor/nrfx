@@ -52,7 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
     <nvicPrioBits>3</nvicPrioBits>
     <vendorSystickConfig>0</vendorSystickConfig>
   </cpu>
-  <headerSystemFilename>system_nrf52805</headerSystemFilename>
+  <headerSystemFilename>system_nrf52</headerSystemFilename>
   <headerDefinitionsPrefix>NRF_</headerDefinitionsPrefix>
   <vendorExtensions>
     <ExampleStackSize>2048</ExampleStackSize>

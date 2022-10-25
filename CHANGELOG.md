@@ -1,6 +1,28 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [2.10.0] - 2022-10-25
+### Added
+- Added NRFX_CONFIG_API_VER_2_9 and NRFX_CONFIG_API_VER_2_10 symbols that guard API-breaking changes. Deprecated API is used by default.
+- Added new signature for the event handler in the IPC driver that accepts event index instead of event bitmask. The previous signature is deprecated.
+- Added nrfx_ipc_gpmem_get() function that is used to get data from the GPMEM register in IPC. It should be now used instead of nrfx_ipc_mem_get(), which is deprecated.
+- Added samples for the following drivers: EGU, PWM, RNG, SAADC, SPIM, SPIS, TEMP, TIMER, TWIM, TWIS, UARTE. They are a part of `zephyrproject-rtos/hal_nordic/nrfx` repository.
+- Introduced the NRFX_{PERIPH}_INST_HANDLER_GET() macro for getting interrupt handler associated with the specified driver instance.
+- Introduced the NRFX_{PERIPH}_INST_GET() macro for getting pointer to the structure of the registers of the specified peripheral.
+- Introduced the NRF_TIMER_PRESCALER_CALCULATE() macro for computing prescaler value for given TIMER base frequency and desired frequency.
+- Introduced the NRF_TIMER_BASE_FREQUENCY_GET() macro for getting base frequency in Hz for the specified TIMER instance.
+- Added missing NRFX_RESET_REASON_CTRLAP_MASK in nrfx_reset_reason_mask_t for nRF9160.
+- Added missing NRFX_RESET_REASON_SREQ_MASK in nrfx_reset_reason_mask_t.
+
+### Changed
+- Updated MDK to version 8.51.0.
+- Refactored the TIMER driver to allow user handler to be NULL.
+- Removed magic numbers from nrf_twim_event_t type in TWIM HAL.
+
+### Fixed
+- Fixed the NRFX_ROUNDED_DIV() macro for negative numbers.
+- Disabled array bounds warning for nrf_clock_is_running() function that was false positive in GCC 12 and above.
+
 ## [2.9.0] - 2022-07-19
 ### Added
 - Added configuration parameter NRFX_NFCT_PARAM_ID_FDT_MIN that allows settting the value of the FRAMEDELAYMIN register.

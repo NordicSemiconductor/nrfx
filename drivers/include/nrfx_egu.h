@@ -143,6 +143,15 @@ void nrfx_egu_trigger(nrfx_egu_t const * p_instance, uint8_t event_idx);
  */
 void nrfx_egu_uninit(nrfx_egu_t const * p_instance);
 
+/**
+ * @brief Macro returning EGU interrupt handler.
+ *
+ * param[in] idx EGU index.
+ *
+ * @return Interrupt handler.
+ */
+#define NRFX_EGU_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_egu_, idx, _irq_handler)
+
 /** @} */
 
 void nrfx_egu_0_irq_handler(void);

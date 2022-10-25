@@ -256,6 +256,15 @@ nrfx_err_t nrfx_spis_buffers_set(nrfx_spis_t const * p_instance,
                                  uint8_t *           p_rx_buffer,
                                  size_t              rx_buffer_length);
 
+/**
+ * @brief Macro returning SPIS interrupt handler.
+ *
+ * param[in] idx SPIS index.
+ *
+ * @return Interrupt handler.
+ */
+#define NRFX_SPIS_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_spis_, idx, _irq_handler)
+
 /** @} */
 
 

@@ -147,9 +147,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_SUBSCRIBE_HFCLKSTART_EN_Disabled (0UL) /*!< Disable subscription */
 #define CLOCK_SUBSCRIBE_HFCLKSTART_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task HFCLKSTART will subscribe to */
+/* Bits 7..0 : DPPI channel that task HFCLKSTART will subscribe to */
 #define CLOCK_SUBSCRIBE_HFCLKSTART_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define CLOCK_SUBSCRIBE_HFCLKSTART_CHIDX_Msk (0xFUL << CLOCK_SUBSCRIBE_HFCLKSTART_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define CLOCK_SUBSCRIBE_HFCLKSTART_CHIDX_Msk (0xFFUL << CLOCK_SUBSCRIBE_HFCLKSTART_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: CLOCK_SUBSCRIBE_HFCLKSTOP */
 /* Description: Subscribe configuration for task HFCLKSTOP */
@@ -160,9 +160,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_SUBSCRIBE_HFCLKSTOP_EN_Disabled (0UL) /*!< Disable subscription */
 #define CLOCK_SUBSCRIBE_HFCLKSTOP_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task HFCLKSTOP will subscribe to */
+/* Bits 7..0 : DPPI channel that task HFCLKSTOP will subscribe to */
 #define CLOCK_SUBSCRIBE_HFCLKSTOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define CLOCK_SUBSCRIBE_HFCLKSTOP_CHIDX_Msk (0xFUL << CLOCK_SUBSCRIBE_HFCLKSTOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define CLOCK_SUBSCRIBE_HFCLKSTOP_CHIDX_Msk (0xFFUL << CLOCK_SUBSCRIBE_HFCLKSTOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: CLOCK_SUBSCRIBE_LFCLKSTART */
 /* Description: Subscribe configuration for task LFCLKSTART */
@@ -173,9 +173,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_SUBSCRIBE_LFCLKSTART_EN_Disabled (0UL) /*!< Disable subscription */
 #define CLOCK_SUBSCRIBE_LFCLKSTART_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task LFCLKSTART will subscribe to */
+/* Bits 7..0 : DPPI channel that task LFCLKSTART will subscribe to */
 #define CLOCK_SUBSCRIBE_LFCLKSTART_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define CLOCK_SUBSCRIBE_LFCLKSTART_CHIDX_Msk (0xFUL << CLOCK_SUBSCRIBE_LFCLKSTART_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define CLOCK_SUBSCRIBE_LFCLKSTART_CHIDX_Msk (0xFFUL << CLOCK_SUBSCRIBE_LFCLKSTART_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: CLOCK_SUBSCRIBE_LFCLKSTOP */
 /* Description: Subscribe configuration for task LFCLKSTOP */
@@ -186,9 +186,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_SUBSCRIBE_LFCLKSTOP_EN_Disabled (0UL) /*!< Disable subscription */
 #define CLOCK_SUBSCRIBE_LFCLKSTOP_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task LFCLKSTOP will subscribe to */
+/* Bits 7..0 : DPPI channel that task LFCLKSTOP will subscribe to */
 #define CLOCK_SUBSCRIBE_LFCLKSTOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define CLOCK_SUBSCRIBE_LFCLKSTOP_CHIDX_Msk (0xFUL << CLOCK_SUBSCRIBE_LFCLKSTOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define CLOCK_SUBSCRIBE_LFCLKSTOP_CHIDX_Msk (0xFFUL << CLOCK_SUBSCRIBE_LFCLKSTOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: CLOCK_EVENTS_HFCLKSTARTED */
 /* Description: HFCLK oscillator started */
@@ -217,9 +217,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_PUBLISH_HFCLKSTARTED_EN_Disabled (0UL) /*!< Disable publishing */
 #define CLOCK_PUBLISH_HFCLKSTARTED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event HFCLKSTARTED will publish to. */
+/* Bits 7..0 : DPPI channel that event HFCLKSTARTED will publish to */
 #define CLOCK_PUBLISH_HFCLKSTARTED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define CLOCK_PUBLISH_HFCLKSTARTED_CHIDX_Msk (0xFUL << CLOCK_PUBLISH_HFCLKSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define CLOCK_PUBLISH_HFCLKSTARTED_CHIDX_Msk (0xFFUL << CLOCK_PUBLISH_HFCLKSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: CLOCK_PUBLISH_LFCLKSTARTED */
 /* Description: Publish configuration for event LFCLKSTARTED */
@@ -230,9 +230,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_PUBLISH_LFCLKSTARTED_EN_Disabled (0UL) /*!< Disable publishing */
 #define CLOCK_PUBLISH_LFCLKSTARTED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event LFCLKSTARTED will publish to. */
+/* Bits 7..0 : DPPI channel that event LFCLKSTARTED will publish to */
 #define CLOCK_PUBLISH_LFCLKSTARTED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define CLOCK_PUBLISH_LFCLKSTARTED_CHIDX_Msk (0xFUL << CLOCK_PUBLISH_LFCLKSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define CLOCK_PUBLISH_LFCLKSTARTED_CHIDX_Msk (0xFFUL << CLOCK_PUBLISH_LFCLKSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: CLOCK_INTEN */
 /* Description: Enable or disable interrupt */
@@ -319,6 +319,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bit 0 : Active clock source */
 #define CLOCK_HFCLKSTAT_SRC_Pos (0UL) /*!< Position of SRC field. */
 #define CLOCK_HFCLKSTAT_SRC_Msk (0x1UL << CLOCK_HFCLKSTAT_SRC_Pos) /*!< Bit mask of SRC field. */
+#define CLOCK_HFCLKSTAT_SRC_HFINT (0UL) /*!< HFINT - 64 MHz on-chip oscillator */
 #define CLOCK_HFCLKSTAT_SRC_HFXO (1UL) /*!< HFXO - 64 MHz clock derived from external 32 MHz crystal oscillator */
 
 /* Register: CLOCK_LFCLKRUN */
@@ -384,14 +385,14 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Description: Control access port */
 
 /* Register: CTRLAPPERI_MAILBOX_RXDATA */
-/* Description: Data sent from the debugger to the CPU */
+/* Description: Data sent from the debugger to the CPU. */
 
 /* Bits 31..0 : Data received from debugger */
 #define CTRLAPPERI_MAILBOX_RXDATA_RXDATA_Pos (0UL) /*!< Position of RXDATA field. */
 #define CTRLAPPERI_MAILBOX_RXDATA_RXDATA_Msk (0xFFFFFFFFUL << CTRLAPPERI_MAILBOX_RXDATA_RXDATA_Pos) /*!< Bit mask of RXDATA field. */
 
 /* Register: CTRLAPPERI_MAILBOX_RXSTATUS */
-/* Description: Status to indicate if data sent from the debugger to the CPU has been read */
+/* Description: This register shows a status that indicates if data sent from the debugger to the CPU has been read. */
 
 /* Bit 0 : Status of data in register RXDATA */
 #define CTRLAPPERI_MAILBOX_RXSTATUS_RXSTATUS_Pos (0UL) /*!< Position of RXSTATUS field. */
@@ -400,14 +401,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CTRLAPPERI_MAILBOX_RXSTATUS_RXSTATUS_DataPending (1UL) /*!< Data pending in register RXDATA */
 
 /* Register: CTRLAPPERI_MAILBOX_TXDATA */
-/* Description: Data sent from the CPU to the debugger */
+/* Description: Data sent from the CPU to the debugger. */
 
 /* Bits 31..0 : Data sent to debugger */
 #define CTRLAPPERI_MAILBOX_TXDATA_TXDATA_Pos (0UL) /*!< Position of TXDATA field. */
 #define CTRLAPPERI_MAILBOX_TXDATA_TXDATA_Msk (0xFFFFFFFFUL << CTRLAPPERI_MAILBOX_TXDATA_TXDATA_Pos) /*!< Bit mask of TXDATA field. */
 
 /* Register: CTRLAPPERI_MAILBOX_TXSTATUS */
-/* Description: Status to indicate if data sent from the CPU to the debugger has been read */
+/* Description: This register shows a status that indicates if the data sent from the CPU to the debugger has been read. */
 
 /* Bit 0 : Status of data in register TXDATA */
 #define CTRLAPPERI_MAILBOX_TXSTATUS_TXSTATUS_Pos (0UL) /*!< Position of TXSTATUS field. */
@@ -416,24 +417,24 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CTRLAPPERI_MAILBOX_TXSTATUS_TXSTATUS_DataPending (1UL) /*!< Data pending in register TXDATA */
 
 /* Register: CTRLAPPERI_ERASEPROTECT_LOCK */
-/* Description: Lock register ERASEPROTECT.DISABLE from being written until next reset */
+/* Description: This register locks the ERASEPROTECT.DISABLE register from being written until next reset. */
 
-/* Bit 0 : Lock register ERASEPROTECT.DISABLE from being written until next reset */
+/* Bit 0 : Lock ERASEPROTECT.DISABLE register from being written until next reset */
 #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Pos (0UL) /*!< Position of LOCK field. */
 #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Msk (0x1UL << CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Pos) /*!< Bit mask of LOCK field. */
 #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Unlocked (0UL) /*!< Register ERASEPROTECT.DISABLE is writeable */
 #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Locked (1UL) /*!< Register ERASEPROTECT.DISABLE is read-only */
 
 /* Register: CTRLAPPERI_ERASEPROTECT_DISABLE */
-/* Description: Disable ERASEPROTECT and perform ERASEALL */
+/* Description: This register disables the ERASEPROTECT register and performs an  ERASEALL operation. */
 
-/* Bits 31..0 : The ERASEALL sequence will be initiated if value of KEY fields are non-zero and KEY fields match on both CPU and debugger side */
+/* Bits 31..0 : The ERASEALL sequence is initiated if the value of the KEY fields are non-zero and the KEY fields match on both the CPU and debugger sides. */
 #define CTRLAPPERI_ERASEPROTECT_DISABLE_KEY_Pos (0UL) /*!< Position of KEY field. */
 #define CTRLAPPERI_ERASEPROTECT_DISABLE_KEY_Msk (0xFFFFFFFFUL << CTRLAPPERI_ERASEPROTECT_DISABLE_KEY_Pos) /*!< Bit mask of KEY field. */
 
 
 /* Peripheral: DPPIC */
-/* Description: Distributed Programmable Peripheral Interconnect Controller 0 */
+/* Description: Distributed programmable peripheral interconnect controller 0 */
 
 /* Register: DPPIC_TASKS_CHG_EN */
 /* Description: Description cluster: Enable channel group n */
@@ -460,9 +461,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define DPPIC_SUBSCRIBE_CHG_EN_EN_Disabled (0UL) /*!< Disable subscription */
 #define DPPIC_SUBSCRIBE_CHG_EN_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task CHG[n].EN will subscribe to */
+/* Bits 7..0 : DPPI channel that task CHG[n].EN will subscribe to */
 #define DPPIC_SUBSCRIBE_CHG_EN_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define DPPIC_SUBSCRIBE_CHG_EN_CHIDX_Msk (0xFUL << DPPIC_SUBSCRIBE_CHG_EN_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define DPPIC_SUBSCRIBE_CHG_EN_CHIDX_Msk (0xFFUL << DPPIC_SUBSCRIBE_CHG_EN_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: DPPIC_SUBSCRIBE_CHG_DIS */
 /* Description: Description cluster: Subscribe configuration for task CHG[n].DIS */
@@ -473,9 +474,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define DPPIC_SUBSCRIBE_CHG_DIS_EN_Disabled (0UL) /*!< Disable subscription */
 #define DPPIC_SUBSCRIBE_CHG_DIS_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task CHG[n].DIS will subscribe to */
+/* Bits 7..0 : DPPI channel that task CHG[n].DIS will subscribe to */
 #define DPPIC_SUBSCRIBE_CHG_DIS_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define DPPIC_SUBSCRIBE_CHG_DIS_CHIDX_Msk (0xFUL << DPPIC_SUBSCRIBE_CHG_DIS_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define DPPIC_SUBSCRIBE_CHG_DIS_CHIDX_Msk (0xFFUL << DPPIC_SUBSCRIBE_CHG_DIS_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: DPPIC_CHEN */
 /* Description: Channel enable register */
@@ -579,235 +580,235 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: DPPIC_CHENSET */
 /* Description: Channel enable set register */
 
-/* Bit 15 : Channel 15 enable set register.  Writing '0' has no effect */
+/* Bit 15 : Channel 15 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH15_Pos (15UL) /*!< Position of CH15 field. */
 #define DPPIC_CHENSET_CH15_Msk (0x1UL << DPPIC_CHENSET_CH15_Pos) /*!< Bit mask of CH15 field. */
-#define DPPIC_CHENSET_CH15_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH15_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH15_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH15_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH15_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 14 : Channel 14 enable set register.  Writing '0' has no effect */
+/* Bit 14 : Channel 14 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH14_Pos (14UL) /*!< Position of CH14 field. */
 #define DPPIC_CHENSET_CH14_Msk (0x1UL << DPPIC_CHENSET_CH14_Pos) /*!< Bit mask of CH14 field. */
-#define DPPIC_CHENSET_CH14_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH14_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH14_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH14_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH14_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 13 : Channel 13 enable set register.  Writing '0' has no effect */
+/* Bit 13 : Channel 13 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH13_Pos (13UL) /*!< Position of CH13 field. */
 #define DPPIC_CHENSET_CH13_Msk (0x1UL << DPPIC_CHENSET_CH13_Pos) /*!< Bit mask of CH13 field. */
-#define DPPIC_CHENSET_CH13_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH13_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH13_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH13_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH13_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 12 : Channel 12 enable set register.  Writing '0' has no effect */
+/* Bit 12 : Channel 12 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH12_Pos (12UL) /*!< Position of CH12 field. */
 #define DPPIC_CHENSET_CH12_Msk (0x1UL << DPPIC_CHENSET_CH12_Pos) /*!< Bit mask of CH12 field. */
-#define DPPIC_CHENSET_CH12_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH12_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH12_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH12_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH12_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 11 : Channel 11 enable set register.  Writing '0' has no effect */
+/* Bit 11 : Channel 11 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH11_Pos (11UL) /*!< Position of CH11 field. */
 #define DPPIC_CHENSET_CH11_Msk (0x1UL << DPPIC_CHENSET_CH11_Pos) /*!< Bit mask of CH11 field. */
-#define DPPIC_CHENSET_CH11_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH11_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH11_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH11_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH11_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 10 : Channel 10 enable set register.  Writing '0' has no effect */
+/* Bit 10 : Channel 10 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH10_Pos (10UL) /*!< Position of CH10 field. */
 #define DPPIC_CHENSET_CH10_Msk (0x1UL << DPPIC_CHENSET_CH10_Pos) /*!< Bit mask of CH10 field. */
-#define DPPIC_CHENSET_CH10_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH10_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH10_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH10_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH10_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 9 : Channel 9 enable set register.  Writing '0' has no effect */
+/* Bit 9 : Channel 9 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH9_Pos (9UL) /*!< Position of CH9 field. */
 #define DPPIC_CHENSET_CH9_Msk (0x1UL << DPPIC_CHENSET_CH9_Pos) /*!< Bit mask of CH9 field. */
-#define DPPIC_CHENSET_CH9_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH9_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH9_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH9_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH9_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 8 : Channel 8 enable set register.  Writing '0' has no effect */
+/* Bit 8 : Channel 8 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH8_Pos (8UL) /*!< Position of CH8 field. */
 #define DPPIC_CHENSET_CH8_Msk (0x1UL << DPPIC_CHENSET_CH8_Pos) /*!< Bit mask of CH8 field. */
-#define DPPIC_CHENSET_CH8_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH8_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH8_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH8_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH8_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 7 : Channel 7 enable set register.  Writing '0' has no effect */
+/* Bit 7 : Channel 7 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH7_Pos (7UL) /*!< Position of CH7 field. */
 #define DPPIC_CHENSET_CH7_Msk (0x1UL << DPPIC_CHENSET_CH7_Pos) /*!< Bit mask of CH7 field. */
-#define DPPIC_CHENSET_CH7_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH7_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH7_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH7_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH7_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 6 : Channel 6 enable set register.  Writing '0' has no effect */
+/* Bit 6 : Channel 6 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH6_Pos (6UL) /*!< Position of CH6 field. */
 #define DPPIC_CHENSET_CH6_Msk (0x1UL << DPPIC_CHENSET_CH6_Pos) /*!< Bit mask of CH6 field. */
-#define DPPIC_CHENSET_CH6_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH6_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH6_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH6_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH6_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 5 : Channel 5 enable set register.  Writing '0' has no effect */
+/* Bit 5 : Channel 5 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH5_Pos (5UL) /*!< Position of CH5 field. */
 #define DPPIC_CHENSET_CH5_Msk (0x1UL << DPPIC_CHENSET_CH5_Pos) /*!< Bit mask of CH5 field. */
-#define DPPIC_CHENSET_CH5_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH5_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH5_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH5_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH5_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 4 : Channel 4 enable set register.  Writing '0' has no effect */
+/* Bit 4 : Channel 4 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH4_Pos (4UL) /*!< Position of CH4 field. */
 #define DPPIC_CHENSET_CH4_Msk (0x1UL << DPPIC_CHENSET_CH4_Pos) /*!< Bit mask of CH4 field. */
-#define DPPIC_CHENSET_CH4_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH4_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH4_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH4_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH4_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 3 : Channel 3 enable set register.  Writing '0' has no effect */
+/* Bit 3 : Channel 3 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH3_Pos (3UL) /*!< Position of CH3 field. */
 #define DPPIC_CHENSET_CH3_Msk (0x1UL << DPPIC_CHENSET_CH3_Pos) /*!< Bit mask of CH3 field. */
-#define DPPIC_CHENSET_CH3_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH3_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH3_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH3_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH3_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 2 : Channel 2 enable set register.  Writing '0' has no effect */
+/* Bit 2 : Channel 2 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH2_Pos (2UL) /*!< Position of CH2 field. */
 #define DPPIC_CHENSET_CH2_Msk (0x1UL << DPPIC_CHENSET_CH2_Pos) /*!< Bit mask of CH2 field. */
-#define DPPIC_CHENSET_CH2_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH2_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH2_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH2_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH2_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 1 : Channel 1 enable set register.  Writing '0' has no effect */
+/* Bit 1 : Channel 1 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH1_Pos (1UL) /*!< Position of CH1 field. */
 #define DPPIC_CHENSET_CH1_Msk (0x1UL << DPPIC_CHENSET_CH1_Pos) /*!< Bit mask of CH1 field. */
-#define DPPIC_CHENSET_CH1_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH1_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH1_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH1_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH1_Set (1UL) /*!< Write: Enable channel */
 
-/* Bit 0 : Channel 0 enable set register.  Writing '0' has no effect */
+/* Bit 0 : Channel 0 enable set register. Writing 0 has no effect. */
 #define DPPIC_CHENSET_CH0_Pos (0UL) /*!< Position of CH0 field. */
 #define DPPIC_CHENSET_CH0_Msk (0x1UL << DPPIC_CHENSET_CH0_Pos) /*!< Bit mask of CH0 field. */
-#define DPPIC_CHENSET_CH0_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENSET_CH0_Enabled (1UL) /*!< Read: channel enabled */
+#define DPPIC_CHENSET_CH0_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENSET_CH0_Enabled (1UL) /*!< Read: Channel enabled */
 #define DPPIC_CHENSET_CH0_Set (1UL) /*!< Write: Enable channel */
 
 /* Register: DPPIC_CHENCLR */
 /* Description: Channel enable clear register */
 
-/* Bit 15 : Channel 15 enable clear register.  Writing '0' has no effect */
+/* Bit 15 : Channel 15 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH15_Pos (15UL) /*!< Position of CH15 field. */
 #define DPPIC_CHENCLR_CH15_Msk (0x1UL << DPPIC_CHENCLR_CH15_Pos) /*!< Bit mask of CH15 field. */
-#define DPPIC_CHENCLR_CH15_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH15_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH15_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH15_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH15_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH15_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 14 : Channel 14 enable clear register.  Writing '0' has no effect */
+/* Bit 14 : Channel 14 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH14_Pos (14UL) /*!< Position of CH14 field. */
 #define DPPIC_CHENCLR_CH14_Msk (0x1UL << DPPIC_CHENCLR_CH14_Pos) /*!< Bit mask of CH14 field. */
-#define DPPIC_CHENCLR_CH14_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH14_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH14_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH14_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH14_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH14_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 13 : Channel 13 enable clear register.  Writing '0' has no effect */
+/* Bit 13 : Channel 13 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH13_Pos (13UL) /*!< Position of CH13 field. */
 #define DPPIC_CHENCLR_CH13_Msk (0x1UL << DPPIC_CHENCLR_CH13_Pos) /*!< Bit mask of CH13 field. */
-#define DPPIC_CHENCLR_CH13_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH13_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH13_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH13_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH13_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH13_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 12 : Channel 12 enable clear register.  Writing '0' has no effect */
+/* Bit 12 : Channel 12 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH12_Pos (12UL) /*!< Position of CH12 field. */
 #define DPPIC_CHENCLR_CH12_Msk (0x1UL << DPPIC_CHENCLR_CH12_Pos) /*!< Bit mask of CH12 field. */
-#define DPPIC_CHENCLR_CH12_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH12_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH12_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH12_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH12_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH12_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 11 : Channel 11 enable clear register.  Writing '0' has no effect */
+/* Bit 11 : Channel 11 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH11_Pos (11UL) /*!< Position of CH11 field. */
 #define DPPIC_CHENCLR_CH11_Msk (0x1UL << DPPIC_CHENCLR_CH11_Pos) /*!< Bit mask of CH11 field. */
-#define DPPIC_CHENCLR_CH11_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH11_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH11_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH11_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH11_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH11_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 10 : Channel 10 enable clear register.  Writing '0' has no effect */
+/* Bit 10 : Channel 10 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH10_Pos (10UL) /*!< Position of CH10 field. */
 #define DPPIC_CHENCLR_CH10_Msk (0x1UL << DPPIC_CHENCLR_CH10_Pos) /*!< Bit mask of CH10 field. */
-#define DPPIC_CHENCLR_CH10_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH10_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH10_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH10_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH10_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH10_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 9 : Channel 9 enable clear register.  Writing '0' has no effect */
+/* Bit 9 : Channel 9 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH9_Pos (9UL) /*!< Position of CH9 field. */
 #define DPPIC_CHENCLR_CH9_Msk (0x1UL << DPPIC_CHENCLR_CH9_Pos) /*!< Bit mask of CH9 field. */
-#define DPPIC_CHENCLR_CH9_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH9_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH9_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH9_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH9_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH9_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 8 : Channel 8 enable clear register.  Writing '0' has no effect */
+/* Bit 8 : Channel 8 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH8_Pos (8UL) /*!< Position of CH8 field. */
 #define DPPIC_CHENCLR_CH8_Msk (0x1UL << DPPIC_CHENCLR_CH8_Pos) /*!< Bit mask of CH8 field. */
-#define DPPIC_CHENCLR_CH8_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH8_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH8_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH8_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH8_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH8_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 7 : Channel 7 enable clear register.  Writing '0' has no effect */
+/* Bit 7 : Channel 7 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH7_Pos (7UL) /*!< Position of CH7 field. */
 #define DPPIC_CHENCLR_CH7_Msk (0x1UL << DPPIC_CHENCLR_CH7_Pos) /*!< Bit mask of CH7 field. */
-#define DPPIC_CHENCLR_CH7_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH7_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH7_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH7_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH7_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH7_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 6 : Channel 6 enable clear register.  Writing '0' has no effect */
+/* Bit 6 : Channel 6 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH6_Pos (6UL) /*!< Position of CH6 field. */
 #define DPPIC_CHENCLR_CH6_Msk (0x1UL << DPPIC_CHENCLR_CH6_Pos) /*!< Bit mask of CH6 field. */
-#define DPPIC_CHENCLR_CH6_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH6_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH6_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH6_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH6_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH6_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 5 : Channel 5 enable clear register.  Writing '0' has no effect */
+/* Bit 5 : Channel 5 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH5_Pos (5UL) /*!< Position of CH5 field. */
 #define DPPIC_CHENCLR_CH5_Msk (0x1UL << DPPIC_CHENCLR_CH5_Pos) /*!< Bit mask of CH5 field. */
-#define DPPIC_CHENCLR_CH5_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH5_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH5_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH5_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH5_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH5_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 4 : Channel 4 enable clear register.  Writing '0' has no effect */
+/* Bit 4 : Channel 4 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH4_Pos (4UL) /*!< Position of CH4 field. */
 #define DPPIC_CHENCLR_CH4_Msk (0x1UL << DPPIC_CHENCLR_CH4_Pos) /*!< Bit mask of CH4 field. */
-#define DPPIC_CHENCLR_CH4_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH4_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH4_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH4_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH4_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH4_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 3 : Channel 3 enable clear register.  Writing '0' has no effect */
+/* Bit 3 : Channel 3 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH3_Pos (3UL) /*!< Position of CH3 field. */
 #define DPPIC_CHENCLR_CH3_Msk (0x1UL << DPPIC_CHENCLR_CH3_Pos) /*!< Bit mask of CH3 field. */
-#define DPPIC_CHENCLR_CH3_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH3_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH3_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH3_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH3_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH3_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 2 : Channel 2 enable clear register.  Writing '0' has no effect */
+/* Bit 2 : Channel 2 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH2_Pos (2UL) /*!< Position of CH2 field. */
 #define DPPIC_CHENCLR_CH2_Msk (0x1UL << DPPIC_CHENCLR_CH2_Pos) /*!< Bit mask of CH2 field. */
-#define DPPIC_CHENCLR_CH2_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH2_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH2_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH2_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH2_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH2_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 1 : Channel 1 enable clear register.  Writing '0' has no effect */
+/* Bit 1 : Channel 1 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH1_Pos (1UL) /*!< Position of CH1 field. */
 #define DPPIC_CHENCLR_CH1_Msk (0x1UL << DPPIC_CHENCLR_CH1_Pos) /*!< Bit mask of CH1 field. */
-#define DPPIC_CHENCLR_CH1_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH1_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH1_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH1_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH1_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH1_Clear (1UL) /*!< Write: Disable channel */
 
-/* Bit 0 : Channel 0 enable clear register.  Writing '0' has no effect */
+/* Bit 0 : Channel 0 enable clear register.  Writing 0 has no effect. */
 #define DPPIC_CHENCLR_CH0_Pos (0UL) /*!< Position of CH0 field. */
 #define DPPIC_CHENCLR_CH0_Msk (0x1UL << DPPIC_CHENCLR_CH0_Pos) /*!< Bit mask of CH0 field. */
-#define DPPIC_CHENCLR_CH0_Disabled (0UL) /*!< Read: channel disabled */
-#define DPPIC_CHENCLR_CH0_Enabled (1UL) /*!< Read: channel enabled */
-#define DPPIC_CHENCLR_CH0_Clear (1UL) /*!< Write: disable channel */
+#define DPPIC_CHENCLR_CH0_Disabled (0UL) /*!< Read: Channel disabled */
+#define DPPIC_CHENCLR_CH0_Enabled (1UL) /*!< Read: Channel enabled */
+#define DPPIC_CHENCLR_CH0_Clear (1UL) /*!< Write: Disable channel */
 
 /* Register: DPPIC_CHG */
-/* Description: Description collection: Channel group n Note: Writes to this register is ignored if either SUBSCRIBE_CHG[n].EN/DIS are enabled. */
+/* Description: Description collection: Channel group n Note: Writes to this register are ignored if either SUBSCRIBE_CHG[n].EN or SUBSCRIBE_CHG[n].DIS is enabled */
 
 /* Bit 15 : Include or exclude channel 15 */
 #define DPPIC_CHG_CH15_Pos (15UL) /*!< Position of CH15 field. */
@@ -926,9 +927,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define EGU_SUBSCRIBE_TRIGGER_EN_Disabled (0UL) /*!< Disable subscription */
 #define EGU_SUBSCRIBE_TRIGGER_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task TRIGGER[n] will subscribe to */
+/* Bits 7..0 : DPPI channel that task TRIGGER[n] will subscribe to */
 #define EGU_SUBSCRIBE_TRIGGER_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define EGU_SUBSCRIBE_TRIGGER_CHIDX_Msk (0xFUL << EGU_SUBSCRIBE_TRIGGER_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define EGU_SUBSCRIBE_TRIGGER_CHIDX_Msk (0xFFUL << EGU_SUBSCRIBE_TRIGGER_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: EGU_EVENTS_TRIGGERED */
 /* Description: Description collection: Event number n generated by triggering the corresponding TRIGGER[n] task */
@@ -948,9 +949,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define EGU_PUBLISH_TRIGGERED_EN_Disabled (0UL) /*!< Disable publishing */
 #define EGU_PUBLISH_TRIGGERED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event TRIGGERED[n] will publish to. */
+/* Bits 7..0 : DPPI channel that event TRIGGERED[n] will publish to */
 #define EGU_PUBLISH_TRIGGERED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define EGU_PUBLISH_TRIGGERED_CHIDX_Msk (0xFUL << EGU_PUBLISH_TRIGGERED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define EGU_PUBLISH_TRIGGERED_CHIDX_Msk (0xFFUL << EGU_PUBLISH_TRIGGERED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: EGU_INTEN */
 /* Description: Enable or disable interrupt */
@@ -1285,37 +1286,34 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Peripheral: FICR */
 /* Description: Factory Information Configuration Registers */
 
+/* Register: FICR_SIPINFO_PARTNO */
+/* Description: SIP part number */
+
+/* Bits 31..0 :   */
+#define FICR_SIPINFO_PARTNO_PARTNO_Pos (0UL) /*!< Position of PARTNO field. */
+#define FICR_SIPINFO_PARTNO_PARTNO_Msk (0xFFFFFFFFUL << FICR_SIPINFO_PARTNO_PARTNO_Pos) /*!< Bit mask of PARTNO field. */
+#define FICR_SIPINFO_PARTNO_PARTNO_9160 (0x00009160UL) /*!< Device is an nRF9160 sip */
+
+/* Register: FICR_SIPINFO_HWREVISION */
+/* Description: Description collection: SIP hardware revision, encoded in ASCII, ex B0A or B1A */
+
+/* Bits 7..0 :   */
+#define FICR_SIPINFO_HWREVISION_HWREVISION_Pos (0UL) /*!< Position of HWREVISION field. */
+#define FICR_SIPINFO_HWREVISION_HWREVISION_Msk (0xFFUL << FICR_SIPINFO_HWREVISION_HWREVISION_Pos) /*!< Bit mask of HWREVISION field. */
+
+/* Register: FICR_SIPINFO_VARIANT */
+/* Description: Description collection: SIP VARIANT, encoded in ASCII, ex SIAA, SIBA or SICA */
+
+/* Bits 7..0 :   */
+#define FICR_SIPINFO_VARIANT_VARIANT_Pos (0UL) /*!< Position of VARIANT field. */
+#define FICR_SIPINFO_VARIANT_VARIANT_Msk (0xFFUL << FICR_SIPINFO_VARIANT_VARIANT_Pos) /*!< Bit mask of VARIANT field. */
+
 /* Register: FICR_INFO_DEVICEID */
 /* Description: Description collection: Device identifier */
 
 /* Bits 31..0 : 64 bit unique device identifier */
 #define FICR_INFO_DEVICEID_DEVICEID_Pos (0UL) /*!< Position of DEVICEID field. */
 #define FICR_INFO_DEVICEID_DEVICEID_Msk (0xFFFFFFFFUL << FICR_INFO_DEVICEID_DEVICEID_Pos) /*!< Bit mask of DEVICEID field. */
-
-/* Register: FICR_INFO_PART */
-/* Description: Part code */
-
-/* Bits 31..0 : Part code */
-#define FICR_INFO_PART_PART_Pos (0UL) /*!< Position of PART field. */
-#define FICR_INFO_PART_PART_Msk (0xFFFFFFFFUL << FICR_INFO_PART_PART_Pos) /*!< Bit mask of PART field. */
-#define FICR_INFO_PART_PART_N9160 (0x9160UL) /*!< nRF9160 */
-
-/* Register: FICR_INFO_VARIANT */
-/* Description: Part Variant, Hardware version and Production configuration */
-
-/* Bits 31..0 : Part Variant, Hardware version and Production configuration, encoded as ASCII */
-#define FICR_INFO_VARIANT_VARIANT_Pos (0UL) /*!< Position of VARIANT field. */
-#define FICR_INFO_VARIANT_VARIANT_Msk (0xFFFFFFFFUL << FICR_INFO_VARIANT_VARIANT_Pos) /*!< Bit mask of VARIANT field. */
-#define FICR_INFO_VARIANT_VARIANT_AAA0 (0x41414130UL) /*!< AAA0 */
-#define FICR_INFO_VARIANT_VARIANT_AAAA (0x41414141UL) /*!< AAAA */
-
-/* Register: FICR_INFO_PACKAGE */
-/* Description: Package option */
-
-/* Bits 31..0 : Package option */
-#define FICR_INFO_PACKAGE_PACKAGE_Pos (0UL) /*!< Position of PACKAGE field. */
-#define FICR_INFO_PACKAGE_PACKAGE_Msk (0xFFFFFFFFUL << FICR_INFO_PACKAGE_PACKAGE_Pos) /*!< Bit mask of PACKAGE field. */
-#define FICR_INFO_PACKAGE_PACKAGE_CC (0x2000UL) /*!< CCxx - 236 ball wlCSP */
 
 /* Register: FICR_INFO_RAM */
 /* Description: RAM variant */
@@ -1464,9 +1462,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIOTE_SUBSCRIBE_OUT_EN_Disabled (0UL) /*!< Disable subscription */
 #define GPIOTE_SUBSCRIBE_OUT_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task OUT[n] will subscribe to */
+/* Bits 7..0 : DPPI channel that task OUT[n] will subscribe to */
 #define GPIOTE_SUBSCRIBE_OUT_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define GPIOTE_SUBSCRIBE_OUT_CHIDX_Msk (0xFUL << GPIOTE_SUBSCRIBE_OUT_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define GPIOTE_SUBSCRIBE_OUT_CHIDX_Msk (0xFFUL << GPIOTE_SUBSCRIBE_OUT_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: GPIOTE_SUBSCRIBE_SET */
 /* Description: Description collection: Subscribe configuration for task SET[n] */
@@ -1477,9 +1475,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIOTE_SUBSCRIBE_SET_EN_Disabled (0UL) /*!< Disable subscription */
 #define GPIOTE_SUBSCRIBE_SET_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task SET[n] will subscribe to */
+/* Bits 7..0 : DPPI channel that task SET[n] will subscribe to */
 #define GPIOTE_SUBSCRIBE_SET_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define GPIOTE_SUBSCRIBE_SET_CHIDX_Msk (0xFUL << GPIOTE_SUBSCRIBE_SET_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define GPIOTE_SUBSCRIBE_SET_CHIDX_Msk (0xFFUL << GPIOTE_SUBSCRIBE_SET_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: GPIOTE_SUBSCRIBE_CLR */
 /* Description: Description collection: Subscribe configuration for task CLR[n] */
@@ -1490,9 +1488,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIOTE_SUBSCRIBE_CLR_EN_Disabled (0UL) /*!< Disable subscription */
 #define GPIOTE_SUBSCRIBE_CLR_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task CLR[n] will subscribe to */
+/* Bits 7..0 : DPPI channel that task CLR[n] will subscribe to */
 #define GPIOTE_SUBSCRIBE_CLR_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define GPIOTE_SUBSCRIBE_CLR_CHIDX_Msk (0xFUL << GPIOTE_SUBSCRIBE_CLR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define GPIOTE_SUBSCRIBE_CLR_CHIDX_Msk (0xFFUL << GPIOTE_SUBSCRIBE_CLR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: GPIOTE_EVENTS_IN */
 /* Description: Description collection: Event generated from pin specified in CONFIG[n].PSEL */
@@ -1521,9 +1519,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIOTE_PUBLISH_IN_EN_Disabled (0UL) /*!< Disable publishing */
 #define GPIOTE_PUBLISH_IN_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event IN[n] will publish to. */
+/* Bits 7..0 : DPPI channel that event IN[n] will publish to */
 #define GPIOTE_PUBLISH_IN_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define GPIOTE_PUBLISH_IN_CHIDX_Msk (0xFUL << GPIOTE_PUBLISH_IN_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define GPIOTE_PUBLISH_IN_CHIDX_Msk (0xFFUL << GPIOTE_PUBLISH_IN_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: GPIOTE_PUBLISH_PORT */
 /* Description: Publish configuration for event PORT */
@@ -1534,9 +1532,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIOTE_PUBLISH_PORT_EN_Disabled (0UL) /*!< Disable publishing */
 #define GPIOTE_PUBLISH_PORT_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event PORT will publish to. */
+/* Bits 7..0 : DPPI channel that event PORT will publish to */
 #define GPIOTE_PUBLISH_PORT_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define GPIOTE_PUBLISH_PORT_CHIDX_Msk (0xFUL << GPIOTE_PUBLISH_PORT_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define GPIOTE_PUBLISH_PORT_CHIDX_Msk (0xFFUL << GPIOTE_PUBLISH_PORT_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: GPIOTE_INTENSET */
 /* Description: Enable interrupt */
@@ -1671,7 +1669,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIOTE_INTENCLR_IN0_Clear (1UL) /*!< Disable */
 
 /* Register: GPIOTE_CONFIG */
-/* Description: Description collection: Configuration for OUT[n], SET[n] and CLR[n] tasks and IN[n] event */
+/* Description: Description collection: Configuration for OUT[n], SET[n], and CLR[n] tasks and IN[n] event */
 
 /* Bit 20 : When in task mode: Initial value of the output when the GPIOTE channel is configured. When in event mode: No effect. */
 #define GPIOTE_CONFIG_OUTINIT_Pos (20UL) /*!< Position of OUTINIT field. */
@@ -1687,7 +1685,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIOTE_CONFIG_POLARITY_HiToLo (2UL) /*!< Task mode: Clear pin from OUT[n] task. Event mode: Generate IN[n] event when falling edge on pin. */
 #define GPIOTE_CONFIG_POLARITY_Toggle (3UL) /*!< Task mode: Toggle pin from OUT[n]. Event mode: Generate IN[n] when any change on pin. */
 
-/* Bits 12..8 : GPIO number associated with SET[n], CLR[n] and OUT[n] tasks and IN[n] event */
+/* Bits 12..8 : GPIO number associated with SET[n], CLR[n], and OUT[n] tasks and IN[n] event */
 #define GPIOTE_CONFIG_PSEL_Pos (8UL) /*!< Position of PSEL field. */
 #define GPIOTE_CONFIG_PSEL_Msk (0x1FUL << GPIOTE_CONFIG_PSEL_Pos) /*!< Bit mask of PSEL field. */
 
@@ -1727,9 +1725,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define I2S_SUBSCRIBE_START_EN_Disabled (0UL) /*!< Disable subscription */
 #define I2S_SUBSCRIBE_START_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task START will subscribe to */
+/* Bits 7..0 : DPPI channel that task START will subscribe to */
 #define I2S_SUBSCRIBE_START_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define I2S_SUBSCRIBE_START_CHIDX_Msk (0xFUL << I2S_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define I2S_SUBSCRIBE_START_CHIDX_Msk (0xFFUL << I2S_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: I2S_SUBSCRIBE_STOP */
 /* Description: Subscribe configuration for task STOP */
@@ -1740,9 +1738,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define I2S_SUBSCRIBE_STOP_EN_Disabled (0UL) /*!< Disable subscription */
 #define I2S_SUBSCRIBE_STOP_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STOP will subscribe to */
+/* Bits 7..0 : DPPI channel that task STOP will subscribe to */
 #define I2S_SUBSCRIBE_STOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define I2S_SUBSCRIBE_STOP_CHIDX_Msk (0xFUL << I2S_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define I2S_SUBSCRIBE_STOP_CHIDX_Msk (0xFFUL << I2S_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: I2S_EVENTS_RXPTRUPD */
 /* Description: The RXD.PTR register has been copied to internal double-buffers.
@@ -1784,9 +1782,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define I2S_PUBLISH_RXPTRUPD_EN_Disabled (0UL) /*!< Disable publishing */
 #define I2S_PUBLISH_RXPTRUPD_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event RXPTRUPD will publish to. */
+/* Bits 7..0 : DPPI channel that event RXPTRUPD will publish to */
 #define I2S_PUBLISH_RXPTRUPD_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define I2S_PUBLISH_RXPTRUPD_CHIDX_Msk (0xFUL << I2S_PUBLISH_RXPTRUPD_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define I2S_PUBLISH_RXPTRUPD_CHIDX_Msk (0xFFUL << I2S_PUBLISH_RXPTRUPD_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: I2S_PUBLISH_STOPPED */
 /* Description: Publish configuration for event STOPPED */
@@ -1797,9 +1795,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define I2S_PUBLISH_STOPPED_EN_Disabled (0UL) /*!< Disable publishing */
 #define I2S_PUBLISH_STOPPED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event STOPPED will publish to. */
+/* Bits 7..0 : DPPI channel that event STOPPED will publish to */
 #define I2S_PUBLISH_STOPPED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define I2S_PUBLISH_STOPPED_CHIDX_Msk (0xFUL << I2S_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define I2S_PUBLISH_STOPPED_CHIDX_Msk (0xFFUL << I2S_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: I2S_PUBLISH_TXPTRUPD */
 /* Description: Publish configuration for event TXPTRUPD */
@@ -1810,9 +1808,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define I2S_PUBLISH_TXPTRUPD_EN_Disabled (0UL) /*!< Disable publishing */
 #define I2S_PUBLISH_TXPTRUPD_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event TXPTRUPD will publish to. */
+/* Bits 7..0 : DPPI channel that event TXPTRUPD will publish to */
 #define I2S_PUBLISH_TXPTRUPD_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define I2S_PUBLISH_TXPTRUPD_CHIDX_Msk (0xFUL << I2S_PUBLISH_TXPTRUPD_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define I2S_PUBLISH_TXPTRUPD_CHIDX_Msk (0xFFUL << I2S_PUBLISH_TXPTRUPD_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: I2S_INTEN */
 /* Description: Enable or disable interrupt */
@@ -2090,12 +2088,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 /* Peripheral: IPC */
-/* Description: Inter Processor Communication 0 */
+/* Description: Interprocessor communication 0 */
 
 /* Register: IPC_TASKS_SEND */
-/* Description: Description collection: Trigger events on channel enabled in SEND_CNF[n]. */
+/* Description: Description collection: Trigger events on IPC channel enabled in SEND_CNF[n] */
 
-/* Bit 0 : Trigger events on channel enabled in SEND_CNF[n]. */
+/* Bit 0 : Trigger events on IPC channel enabled in SEND_CNF[n] */
 #define IPC_TASKS_SEND_TASKS_SEND_Pos (0UL) /*!< Position of TASKS_SEND field. */
 #define IPC_TASKS_SEND_TASKS_SEND_Msk (0x1UL << IPC_TASKS_SEND_TASKS_SEND_Pos) /*!< Bit mask of TASKS_SEND field. */
 #define IPC_TASKS_SEND_TASKS_SEND_Trigger (1UL) /*!< Trigger task */
@@ -2109,14 +2107,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #define IPC_SUBSCRIBE_SEND_EN_Disabled (0UL) /*!< Disable subscription */
 #define IPC_SUBSCRIBE_SEND_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task SEND[n] will subscribe to */
+/* Bits 7..0 : DPPI channel that task SEND[n] will subscribe to */
 #define IPC_SUBSCRIBE_SEND_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define IPC_SUBSCRIBE_SEND_CHIDX_Msk (0xFUL << IPC_SUBSCRIBE_SEND_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define IPC_SUBSCRIBE_SEND_CHIDX_Msk (0xFFUL << IPC_SUBSCRIBE_SEND_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: IPC_EVENTS_RECEIVE */
-/* Description: Description collection: Event received on one or more of the enabled channels in RECEIVE_CNF[n]. */
+/* Description: Description collection: Event received on one or more of the enabled IPC channels in RECEIVE_CNF[n] */
 
-/* Bit 0 : Event received on one or more of the enabled channels in RECEIVE_CNF[n]. */
+/* Bit 0 : Event received on one or more of the enabled IPC channels in RECEIVE_CNF[n] */
 #define IPC_EVENTS_RECEIVE_EVENTS_RECEIVE_Pos (0UL) /*!< Position of EVENTS_RECEIVE field. */
 #define IPC_EVENTS_RECEIVE_EVENTS_RECEIVE_Msk (0x1UL << IPC_EVENTS_RECEIVE_EVENTS_RECEIVE_Pos) /*!< Bit mask of EVENTS_RECEIVE field. */
 #define IPC_EVENTS_RECEIVE_EVENTS_RECEIVE_NotGenerated (0UL) /*!< Event not generated */
@@ -2131,9 +2129,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define IPC_PUBLISH_RECEIVE_EN_Disabled (0UL) /*!< Disable publishing */
 #define IPC_PUBLISH_RECEIVE_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event RECEIVE[n] will publish to. */
+/* Bits 7..0 : DPPI channel that event RECEIVE[n] will publish to */
 #define IPC_PUBLISH_RECEIVE_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define IPC_PUBLISH_RECEIVE_CHIDX_Msk (0xFUL << IPC_PUBLISH_RECEIVE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define IPC_PUBLISH_RECEIVE_CHIDX_Msk (0xFFUL << IPC_PUBLISH_RECEIVE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: IPC_INTEN */
 /* Description: Enable or disable interrupt */
@@ -2356,109 +2354,109 @@ POSSIBILITY OF SUCH DAMAGE.
 #define IPC_INTPEND_RECEIVE0_Pending (1UL) /*!< Read: Pending */
 
 /* Register: IPC_SEND_CNF */
-/* Description: Description collection: Send event configuration for TASKS_SEND[n]. */
+/* Description: Description collection: Send event configuration for TASKS_SEND[n] */
 
-/* Bit 7 : Enable broadcasting on channel 7. */
+/* Bit 7 : Enable broadcasting on IPC channel 7 */
 #define IPC_SEND_CNF_CHEN7_Pos (7UL) /*!< Position of CHEN7 field. */
 #define IPC_SEND_CNF_CHEN7_Msk (0x1UL << IPC_SEND_CNF_CHEN7_Pos) /*!< Bit mask of CHEN7 field. */
-#define IPC_SEND_CNF_CHEN7_Disable (0UL) /*!< Disable broadcast. */
-#define IPC_SEND_CNF_CHEN7_Enable (1UL) /*!< Enable broadcast. */
+#define IPC_SEND_CNF_CHEN7_Disable (0UL) /*!< Disable broadcast */
+#define IPC_SEND_CNF_CHEN7_Enable (1UL) /*!< Enable broadcast */
 
-/* Bit 6 : Enable broadcasting on channel 6. */
+/* Bit 6 : Enable broadcasting on IPC channel 6 */
 #define IPC_SEND_CNF_CHEN6_Pos (6UL) /*!< Position of CHEN6 field. */
 #define IPC_SEND_CNF_CHEN6_Msk (0x1UL << IPC_SEND_CNF_CHEN6_Pos) /*!< Bit mask of CHEN6 field. */
-#define IPC_SEND_CNF_CHEN6_Disable (0UL) /*!< Disable broadcast. */
-#define IPC_SEND_CNF_CHEN6_Enable (1UL) /*!< Enable broadcast. */
+#define IPC_SEND_CNF_CHEN6_Disable (0UL) /*!< Disable broadcast */
+#define IPC_SEND_CNF_CHEN6_Enable (1UL) /*!< Enable broadcast */
 
-/* Bit 5 : Enable broadcasting on channel 5. */
+/* Bit 5 : Enable broadcasting on IPC channel 5 */
 #define IPC_SEND_CNF_CHEN5_Pos (5UL) /*!< Position of CHEN5 field. */
 #define IPC_SEND_CNF_CHEN5_Msk (0x1UL << IPC_SEND_CNF_CHEN5_Pos) /*!< Bit mask of CHEN5 field. */
-#define IPC_SEND_CNF_CHEN5_Disable (0UL) /*!< Disable broadcast. */
-#define IPC_SEND_CNF_CHEN5_Enable (1UL) /*!< Enable broadcast. */
+#define IPC_SEND_CNF_CHEN5_Disable (0UL) /*!< Disable broadcast */
+#define IPC_SEND_CNF_CHEN5_Enable (1UL) /*!< Enable broadcast */
 
-/* Bit 4 : Enable broadcasting on channel 4. */
+/* Bit 4 : Enable broadcasting on IPC channel 4 */
 #define IPC_SEND_CNF_CHEN4_Pos (4UL) /*!< Position of CHEN4 field. */
 #define IPC_SEND_CNF_CHEN4_Msk (0x1UL << IPC_SEND_CNF_CHEN4_Pos) /*!< Bit mask of CHEN4 field. */
-#define IPC_SEND_CNF_CHEN4_Disable (0UL) /*!< Disable broadcast. */
-#define IPC_SEND_CNF_CHEN4_Enable (1UL) /*!< Enable broadcast. */
+#define IPC_SEND_CNF_CHEN4_Disable (0UL) /*!< Disable broadcast */
+#define IPC_SEND_CNF_CHEN4_Enable (1UL) /*!< Enable broadcast */
 
-/* Bit 3 : Enable broadcasting on channel 3. */
+/* Bit 3 : Enable broadcasting on IPC channel 3 */
 #define IPC_SEND_CNF_CHEN3_Pos (3UL) /*!< Position of CHEN3 field. */
 #define IPC_SEND_CNF_CHEN3_Msk (0x1UL << IPC_SEND_CNF_CHEN3_Pos) /*!< Bit mask of CHEN3 field. */
-#define IPC_SEND_CNF_CHEN3_Disable (0UL) /*!< Disable broadcast. */
-#define IPC_SEND_CNF_CHEN3_Enable (1UL) /*!< Enable broadcast. */
+#define IPC_SEND_CNF_CHEN3_Disable (0UL) /*!< Disable broadcast */
+#define IPC_SEND_CNF_CHEN3_Enable (1UL) /*!< Enable broadcast */
 
-/* Bit 2 : Enable broadcasting on channel 2. */
+/* Bit 2 : Enable broadcasting on IPC channel 2 */
 #define IPC_SEND_CNF_CHEN2_Pos (2UL) /*!< Position of CHEN2 field. */
 #define IPC_SEND_CNF_CHEN2_Msk (0x1UL << IPC_SEND_CNF_CHEN2_Pos) /*!< Bit mask of CHEN2 field. */
-#define IPC_SEND_CNF_CHEN2_Disable (0UL) /*!< Disable broadcast. */
-#define IPC_SEND_CNF_CHEN2_Enable (1UL) /*!< Enable broadcast. */
+#define IPC_SEND_CNF_CHEN2_Disable (0UL) /*!< Disable broadcast */
+#define IPC_SEND_CNF_CHEN2_Enable (1UL) /*!< Enable broadcast */
 
-/* Bit 1 : Enable broadcasting on channel 1. */
+/* Bit 1 : Enable broadcasting on IPC channel 1 */
 #define IPC_SEND_CNF_CHEN1_Pos (1UL) /*!< Position of CHEN1 field. */
 #define IPC_SEND_CNF_CHEN1_Msk (0x1UL << IPC_SEND_CNF_CHEN1_Pos) /*!< Bit mask of CHEN1 field. */
-#define IPC_SEND_CNF_CHEN1_Disable (0UL) /*!< Disable broadcast. */
-#define IPC_SEND_CNF_CHEN1_Enable (1UL) /*!< Enable broadcast. */
+#define IPC_SEND_CNF_CHEN1_Disable (0UL) /*!< Disable broadcast */
+#define IPC_SEND_CNF_CHEN1_Enable (1UL) /*!< Enable broadcast */
 
-/* Bit 0 : Enable broadcasting on channel 0. */
+/* Bit 0 : Enable broadcasting on IPC channel 0 */
 #define IPC_SEND_CNF_CHEN0_Pos (0UL) /*!< Position of CHEN0 field. */
 #define IPC_SEND_CNF_CHEN0_Msk (0x1UL << IPC_SEND_CNF_CHEN0_Pos) /*!< Bit mask of CHEN0 field. */
-#define IPC_SEND_CNF_CHEN0_Disable (0UL) /*!< Disable broadcast. */
-#define IPC_SEND_CNF_CHEN0_Enable (1UL) /*!< Enable broadcast. */
+#define IPC_SEND_CNF_CHEN0_Disable (0UL) /*!< Disable broadcast */
+#define IPC_SEND_CNF_CHEN0_Enable (1UL) /*!< Enable broadcast */
 
 /* Register: IPC_RECEIVE_CNF */
-/* Description: Description collection: Receive event configuration for EVENTS_RECEIVE[n]. */
+/* Description: Description collection: Receive event configuration for EVENTS_RECEIVE[n] */
 
-/* Bit 7 : Enable subscription to channel 7. */
+/* Bit 7 : Enable subscription to IPC channel 7 */
 #define IPC_RECEIVE_CNF_CHEN7_Pos (7UL) /*!< Position of CHEN7 field. */
 #define IPC_RECEIVE_CNF_CHEN7_Msk (0x1UL << IPC_RECEIVE_CNF_CHEN7_Pos) /*!< Bit mask of CHEN7 field. */
-#define IPC_RECEIVE_CNF_CHEN7_Disable (0UL) /*!< Disable events. */
-#define IPC_RECEIVE_CNF_CHEN7_Enable (1UL) /*!< Enable events. */
+#define IPC_RECEIVE_CNF_CHEN7_Disable (0UL) /*!< Disable events */
+#define IPC_RECEIVE_CNF_CHEN7_Enable (1UL) /*!< Enable events */
 
-/* Bit 6 : Enable subscription to channel 6. */
+/* Bit 6 : Enable subscription to IPC channel 6 */
 #define IPC_RECEIVE_CNF_CHEN6_Pos (6UL) /*!< Position of CHEN6 field. */
 #define IPC_RECEIVE_CNF_CHEN6_Msk (0x1UL << IPC_RECEIVE_CNF_CHEN6_Pos) /*!< Bit mask of CHEN6 field. */
-#define IPC_RECEIVE_CNF_CHEN6_Disable (0UL) /*!< Disable events. */
-#define IPC_RECEIVE_CNF_CHEN6_Enable (1UL) /*!< Enable events. */
+#define IPC_RECEIVE_CNF_CHEN6_Disable (0UL) /*!< Disable events */
+#define IPC_RECEIVE_CNF_CHEN6_Enable (1UL) /*!< Enable events */
 
-/* Bit 5 : Enable subscription to channel 5. */
+/* Bit 5 : Enable subscription to IPC channel 5 */
 #define IPC_RECEIVE_CNF_CHEN5_Pos (5UL) /*!< Position of CHEN5 field. */
 #define IPC_RECEIVE_CNF_CHEN5_Msk (0x1UL << IPC_RECEIVE_CNF_CHEN5_Pos) /*!< Bit mask of CHEN5 field. */
-#define IPC_RECEIVE_CNF_CHEN5_Disable (0UL) /*!< Disable events. */
-#define IPC_RECEIVE_CNF_CHEN5_Enable (1UL) /*!< Enable events. */
+#define IPC_RECEIVE_CNF_CHEN5_Disable (0UL) /*!< Disable events */
+#define IPC_RECEIVE_CNF_CHEN5_Enable (1UL) /*!< Enable events */
 
-/* Bit 4 : Enable subscription to channel 4. */
+/* Bit 4 : Enable subscription to IPC channel 4 */
 #define IPC_RECEIVE_CNF_CHEN4_Pos (4UL) /*!< Position of CHEN4 field. */
 #define IPC_RECEIVE_CNF_CHEN4_Msk (0x1UL << IPC_RECEIVE_CNF_CHEN4_Pos) /*!< Bit mask of CHEN4 field. */
-#define IPC_RECEIVE_CNF_CHEN4_Disable (0UL) /*!< Disable events. */
-#define IPC_RECEIVE_CNF_CHEN4_Enable (1UL) /*!< Enable events. */
+#define IPC_RECEIVE_CNF_CHEN4_Disable (0UL) /*!< Disable events */
+#define IPC_RECEIVE_CNF_CHEN4_Enable (1UL) /*!< Enable events */
 
-/* Bit 3 : Enable subscription to channel 3. */
+/* Bit 3 : Enable subscription to IPC channel 3 */
 #define IPC_RECEIVE_CNF_CHEN3_Pos (3UL) /*!< Position of CHEN3 field. */
 #define IPC_RECEIVE_CNF_CHEN3_Msk (0x1UL << IPC_RECEIVE_CNF_CHEN3_Pos) /*!< Bit mask of CHEN3 field. */
-#define IPC_RECEIVE_CNF_CHEN3_Disable (0UL) /*!< Disable events. */
-#define IPC_RECEIVE_CNF_CHEN3_Enable (1UL) /*!< Enable events. */
+#define IPC_RECEIVE_CNF_CHEN3_Disable (0UL) /*!< Disable events */
+#define IPC_RECEIVE_CNF_CHEN3_Enable (1UL) /*!< Enable events */
 
-/* Bit 2 : Enable subscription to channel 2. */
+/* Bit 2 : Enable subscription to IPC channel 2 */
 #define IPC_RECEIVE_CNF_CHEN2_Pos (2UL) /*!< Position of CHEN2 field. */
 #define IPC_RECEIVE_CNF_CHEN2_Msk (0x1UL << IPC_RECEIVE_CNF_CHEN2_Pos) /*!< Bit mask of CHEN2 field. */
-#define IPC_RECEIVE_CNF_CHEN2_Disable (0UL) /*!< Disable events. */
-#define IPC_RECEIVE_CNF_CHEN2_Enable (1UL) /*!< Enable events. */
+#define IPC_RECEIVE_CNF_CHEN2_Disable (0UL) /*!< Disable events */
+#define IPC_RECEIVE_CNF_CHEN2_Enable (1UL) /*!< Enable events */
 
-/* Bit 1 : Enable subscription to channel 1. */
+/* Bit 1 : Enable subscription to IPC channel 1 */
 #define IPC_RECEIVE_CNF_CHEN1_Pos (1UL) /*!< Position of CHEN1 field. */
 #define IPC_RECEIVE_CNF_CHEN1_Msk (0x1UL << IPC_RECEIVE_CNF_CHEN1_Pos) /*!< Bit mask of CHEN1 field. */
-#define IPC_RECEIVE_CNF_CHEN1_Disable (0UL) /*!< Disable events. */
-#define IPC_RECEIVE_CNF_CHEN1_Enable (1UL) /*!< Enable events. */
+#define IPC_RECEIVE_CNF_CHEN1_Disable (0UL) /*!< Disable events */
+#define IPC_RECEIVE_CNF_CHEN1_Enable (1UL) /*!< Enable events */
 
-/* Bit 0 : Enable subscription to channel 0. */
+/* Bit 0 : Enable subscription to IPC channel 0 */
 #define IPC_RECEIVE_CNF_CHEN0_Pos (0UL) /*!< Position of CHEN0 field. */
 #define IPC_RECEIVE_CNF_CHEN0_Msk (0x1UL << IPC_RECEIVE_CNF_CHEN0_Pos) /*!< Bit mask of CHEN0 field. */
-#define IPC_RECEIVE_CNF_CHEN0_Disable (0UL) /*!< Disable events. */
-#define IPC_RECEIVE_CNF_CHEN0_Enable (1UL) /*!< Enable events. */
+#define IPC_RECEIVE_CNF_CHEN0_Disable (0UL) /*!< Disable events */
+#define IPC_RECEIVE_CNF_CHEN0_Enable (1UL) /*!< Enable events */
 
 /* Register: IPC_GPMEM */
-/* Description: Description collection: General purpose memory. */
+/* Description: Description collection: General purpose memory */
 
 /* Bits 31..0 : General purpose memory */
 #define IPC_GPMEM_GPMEM_Pos (0UL) /*!< Position of GPMEM field. */
@@ -2611,7 +2609,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: KMU_SELECTKEYSLOT */
 /* Description: Select key slot to be read over AHB or pushed over secure APB when TASKS_PUSH_KEYSLOT is started */
 
-/* Bits 7..0 : Select key slot ID to be read over AHB, or pushed over secure APB, when TASKS_PUSH_KEYSLOT is started NOTE: ID=0 is not a valid key slot ID. The 0 ID should be used when the KMU is idle or not in use NOTE: Index N in UICR-&gt;KEYSLOT.KEY[N] and UICR-&gt;KEYSLOT.CONFIG[N] corresponds to KMU key slot ID=N+1 */
+/* Bits 7..0 : Select key slot ID to be read over AHB, or pushed over secure APB, when TASKS_PUSH_KEYSLOT is started. NOTE: ID=0 is not a valid key slot ID. The 0 ID should be used when the KMU is idle or not in use. NOTE: Index N in UICR-&gt;KEYSLOT.KEY[N] and UICR-&gt;KEYSLOT.CONFIG[N] corresponds to KMU key slot ID=N+1. */
 #define KMU_SELECTKEYSLOT_ID_Pos (0UL) /*!< Position of ID field. */
 #define KMU_SELECTKEYSLOT_ID_Msk (0xFFUL << KMU_SELECTKEYSLOT_ID_Pos) /*!< Bit mask of ID field. */
 
@@ -4216,193 +4214,193 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: GPIO_LATCH */
 /* Description: Latch register indicating what GPIO pins that have met the criteria set in the PIN_CNF[n].SENSE registers */
 
-/* Bit 31 : Status on whether PIN31 has met criteria set in PIN_CNF31.SENSE register. Write '1' to clear. */
+/* Bit 31 : Status on whether PIN[31] has met criteria set in PIN_CNF[31].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN31_Pos (31UL) /*!< Position of PIN31 field. */
 #define GPIO_LATCH_PIN31_Msk (0x1UL << GPIO_LATCH_PIN31_Pos) /*!< Bit mask of PIN31 field. */
 #define GPIO_LATCH_PIN31_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN31_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 30 : Status on whether PIN30 has met criteria set in PIN_CNF30.SENSE register. Write '1' to clear. */
+/* Bit 30 : Status on whether PIN[30] has met criteria set in PIN_CNF[30].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN30_Pos (30UL) /*!< Position of PIN30 field. */
 #define GPIO_LATCH_PIN30_Msk (0x1UL << GPIO_LATCH_PIN30_Pos) /*!< Bit mask of PIN30 field. */
 #define GPIO_LATCH_PIN30_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN30_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 29 : Status on whether PIN29 has met criteria set in PIN_CNF29.SENSE register. Write '1' to clear. */
+/* Bit 29 : Status on whether PIN[29] has met criteria set in PIN_CNF[29].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN29_Pos (29UL) /*!< Position of PIN29 field. */
 #define GPIO_LATCH_PIN29_Msk (0x1UL << GPIO_LATCH_PIN29_Pos) /*!< Bit mask of PIN29 field. */
 #define GPIO_LATCH_PIN29_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN29_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 28 : Status on whether PIN28 has met criteria set in PIN_CNF28.SENSE register. Write '1' to clear. */
+/* Bit 28 : Status on whether PIN[28] has met criteria set in PIN_CNF[28].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN28_Pos (28UL) /*!< Position of PIN28 field. */
 #define GPIO_LATCH_PIN28_Msk (0x1UL << GPIO_LATCH_PIN28_Pos) /*!< Bit mask of PIN28 field. */
 #define GPIO_LATCH_PIN28_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN28_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 27 : Status on whether PIN27 has met criteria set in PIN_CNF27.SENSE register. Write '1' to clear. */
+/* Bit 27 : Status on whether PIN[27] has met criteria set in PIN_CNF[27].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN27_Pos (27UL) /*!< Position of PIN27 field. */
 #define GPIO_LATCH_PIN27_Msk (0x1UL << GPIO_LATCH_PIN27_Pos) /*!< Bit mask of PIN27 field. */
 #define GPIO_LATCH_PIN27_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN27_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 26 : Status on whether PIN26 has met criteria set in PIN_CNF26.SENSE register. Write '1' to clear. */
+/* Bit 26 : Status on whether PIN[26] has met criteria set in PIN_CNF[26].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN26_Pos (26UL) /*!< Position of PIN26 field. */
 #define GPIO_LATCH_PIN26_Msk (0x1UL << GPIO_LATCH_PIN26_Pos) /*!< Bit mask of PIN26 field. */
 #define GPIO_LATCH_PIN26_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN26_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 25 : Status on whether PIN25 has met criteria set in PIN_CNF25.SENSE register. Write '1' to clear. */
+/* Bit 25 : Status on whether PIN[25] has met criteria set in PIN_CNF[25].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN25_Pos (25UL) /*!< Position of PIN25 field. */
 #define GPIO_LATCH_PIN25_Msk (0x1UL << GPIO_LATCH_PIN25_Pos) /*!< Bit mask of PIN25 field. */
 #define GPIO_LATCH_PIN25_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN25_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 24 : Status on whether PIN24 has met criteria set in PIN_CNF24.SENSE register. Write '1' to clear. */
+/* Bit 24 : Status on whether PIN[24] has met criteria set in PIN_CNF[24].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN24_Pos (24UL) /*!< Position of PIN24 field. */
 #define GPIO_LATCH_PIN24_Msk (0x1UL << GPIO_LATCH_PIN24_Pos) /*!< Bit mask of PIN24 field. */
 #define GPIO_LATCH_PIN24_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN24_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 23 : Status on whether PIN23 has met criteria set in PIN_CNF23.SENSE register. Write '1' to clear. */
+/* Bit 23 : Status on whether PIN[23] has met criteria set in PIN_CNF[23].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN23_Pos (23UL) /*!< Position of PIN23 field. */
 #define GPIO_LATCH_PIN23_Msk (0x1UL << GPIO_LATCH_PIN23_Pos) /*!< Bit mask of PIN23 field. */
 #define GPIO_LATCH_PIN23_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN23_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 22 : Status on whether PIN22 has met criteria set in PIN_CNF22.SENSE register. Write '1' to clear. */
+/* Bit 22 : Status on whether PIN[22] has met criteria set in PIN_CNF[22].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN22_Pos (22UL) /*!< Position of PIN22 field. */
 #define GPIO_LATCH_PIN22_Msk (0x1UL << GPIO_LATCH_PIN22_Pos) /*!< Bit mask of PIN22 field. */
 #define GPIO_LATCH_PIN22_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN22_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 21 : Status on whether PIN21 has met criteria set in PIN_CNF21.SENSE register. Write '1' to clear. */
+/* Bit 21 : Status on whether PIN[21] has met criteria set in PIN_CNF[21].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN21_Pos (21UL) /*!< Position of PIN21 field. */
 #define GPIO_LATCH_PIN21_Msk (0x1UL << GPIO_LATCH_PIN21_Pos) /*!< Bit mask of PIN21 field. */
 #define GPIO_LATCH_PIN21_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN21_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 20 : Status on whether PIN20 has met criteria set in PIN_CNF20.SENSE register. Write '1' to clear. */
+/* Bit 20 : Status on whether PIN[20] has met criteria set in PIN_CNF[20].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN20_Pos (20UL) /*!< Position of PIN20 field. */
 #define GPIO_LATCH_PIN20_Msk (0x1UL << GPIO_LATCH_PIN20_Pos) /*!< Bit mask of PIN20 field. */
 #define GPIO_LATCH_PIN20_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN20_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 19 : Status on whether PIN19 has met criteria set in PIN_CNF19.SENSE register. Write '1' to clear. */
+/* Bit 19 : Status on whether PIN[19] has met criteria set in PIN_CNF[19].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN19_Pos (19UL) /*!< Position of PIN19 field. */
 #define GPIO_LATCH_PIN19_Msk (0x1UL << GPIO_LATCH_PIN19_Pos) /*!< Bit mask of PIN19 field. */
 #define GPIO_LATCH_PIN19_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN19_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 18 : Status on whether PIN18 has met criteria set in PIN_CNF18.SENSE register. Write '1' to clear. */
+/* Bit 18 : Status on whether PIN[18] has met criteria set in PIN_CNF[18].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN18_Pos (18UL) /*!< Position of PIN18 field. */
 #define GPIO_LATCH_PIN18_Msk (0x1UL << GPIO_LATCH_PIN18_Pos) /*!< Bit mask of PIN18 field. */
 #define GPIO_LATCH_PIN18_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN18_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 17 : Status on whether PIN17 has met criteria set in PIN_CNF17.SENSE register. Write '1' to clear. */
+/* Bit 17 : Status on whether PIN[17] has met criteria set in PIN_CNF[17].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN17_Pos (17UL) /*!< Position of PIN17 field. */
 #define GPIO_LATCH_PIN17_Msk (0x1UL << GPIO_LATCH_PIN17_Pos) /*!< Bit mask of PIN17 field. */
 #define GPIO_LATCH_PIN17_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN17_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 16 : Status on whether PIN16 has met criteria set in PIN_CNF16.SENSE register. Write '1' to clear. */
+/* Bit 16 : Status on whether PIN[16] has met criteria set in PIN_CNF[16].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN16_Pos (16UL) /*!< Position of PIN16 field. */
 #define GPIO_LATCH_PIN16_Msk (0x1UL << GPIO_LATCH_PIN16_Pos) /*!< Bit mask of PIN16 field. */
 #define GPIO_LATCH_PIN16_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN16_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 15 : Status on whether PIN15 has met criteria set in PIN_CNF15.SENSE register. Write '1' to clear. */
+/* Bit 15 : Status on whether PIN[15] has met criteria set in PIN_CNF[15].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN15_Pos (15UL) /*!< Position of PIN15 field. */
 #define GPIO_LATCH_PIN15_Msk (0x1UL << GPIO_LATCH_PIN15_Pos) /*!< Bit mask of PIN15 field. */
 #define GPIO_LATCH_PIN15_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN15_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 14 : Status on whether PIN14 has met criteria set in PIN_CNF14.SENSE register. Write '1' to clear. */
+/* Bit 14 : Status on whether PIN[14] has met criteria set in PIN_CNF[14].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN14_Pos (14UL) /*!< Position of PIN14 field. */
 #define GPIO_LATCH_PIN14_Msk (0x1UL << GPIO_LATCH_PIN14_Pos) /*!< Bit mask of PIN14 field. */
 #define GPIO_LATCH_PIN14_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN14_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 13 : Status on whether PIN13 has met criteria set in PIN_CNF13.SENSE register. Write '1' to clear. */
+/* Bit 13 : Status on whether PIN[13] has met criteria set in PIN_CNF[13].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN13_Pos (13UL) /*!< Position of PIN13 field. */
 #define GPIO_LATCH_PIN13_Msk (0x1UL << GPIO_LATCH_PIN13_Pos) /*!< Bit mask of PIN13 field. */
 #define GPIO_LATCH_PIN13_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN13_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 12 : Status on whether PIN12 has met criteria set in PIN_CNF12.SENSE register. Write '1' to clear. */
+/* Bit 12 : Status on whether PIN[12] has met criteria set in PIN_CNF[12].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN12_Pos (12UL) /*!< Position of PIN12 field. */
 #define GPIO_LATCH_PIN12_Msk (0x1UL << GPIO_LATCH_PIN12_Pos) /*!< Bit mask of PIN12 field. */
 #define GPIO_LATCH_PIN12_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN12_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 11 : Status on whether PIN11 has met criteria set in PIN_CNF11.SENSE register. Write '1' to clear. */
+/* Bit 11 : Status on whether PIN[11] has met criteria set in PIN_CNF[11].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN11_Pos (11UL) /*!< Position of PIN11 field. */
 #define GPIO_LATCH_PIN11_Msk (0x1UL << GPIO_LATCH_PIN11_Pos) /*!< Bit mask of PIN11 field. */
 #define GPIO_LATCH_PIN11_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN11_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 10 : Status on whether PIN10 has met criteria set in PIN_CNF10.SENSE register. Write '1' to clear. */
+/* Bit 10 : Status on whether PIN[10] has met criteria set in PIN_CNF[10].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN10_Pos (10UL) /*!< Position of PIN10 field. */
 #define GPIO_LATCH_PIN10_Msk (0x1UL << GPIO_LATCH_PIN10_Pos) /*!< Bit mask of PIN10 field. */
 #define GPIO_LATCH_PIN10_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN10_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 9 : Status on whether PIN9 has met criteria set in PIN_CNF9.SENSE register. Write '1' to clear. */
+/* Bit 9 : Status on whether PIN[9] has met criteria set in PIN_CNF[9].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN9_Pos (9UL) /*!< Position of PIN9 field. */
 #define GPIO_LATCH_PIN9_Msk (0x1UL << GPIO_LATCH_PIN9_Pos) /*!< Bit mask of PIN9 field. */
 #define GPIO_LATCH_PIN9_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN9_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 8 : Status on whether PIN8 has met criteria set in PIN_CNF8.SENSE register. Write '1' to clear. */
+/* Bit 8 : Status on whether PIN[8] has met criteria set in PIN_CNF[8].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN8_Pos (8UL) /*!< Position of PIN8 field. */
 #define GPIO_LATCH_PIN8_Msk (0x1UL << GPIO_LATCH_PIN8_Pos) /*!< Bit mask of PIN8 field. */
 #define GPIO_LATCH_PIN8_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN8_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 7 : Status on whether PIN7 has met criteria set in PIN_CNF7.SENSE register. Write '1' to clear. */
+/* Bit 7 : Status on whether PIN[7] has met criteria set in PIN_CNF[7].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN7_Pos (7UL) /*!< Position of PIN7 field. */
 #define GPIO_LATCH_PIN7_Msk (0x1UL << GPIO_LATCH_PIN7_Pos) /*!< Bit mask of PIN7 field. */
 #define GPIO_LATCH_PIN7_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN7_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 6 : Status on whether PIN6 has met criteria set in PIN_CNF6.SENSE register. Write '1' to clear. */
+/* Bit 6 : Status on whether PIN[6] has met criteria set in PIN_CNF[6].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN6_Pos (6UL) /*!< Position of PIN6 field. */
 #define GPIO_LATCH_PIN6_Msk (0x1UL << GPIO_LATCH_PIN6_Pos) /*!< Bit mask of PIN6 field. */
 #define GPIO_LATCH_PIN6_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN6_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 5 : Status on whether PIN5 has met criteria set in PIN_CNF5.SENSE register. Write '1' to clear. */
+/* Bit 5 : Status on whether PIN[5] has met criteria set in PIN_CNF[5].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN5_Pos (5UL) /*!< Position of PIN5 field. */
 #define GPIO_LATCH_PIN5_Msk (0x1UL << GPIO_LATCH_PIN5_Pos) /*!< Bit mask of PIN5 field. */
 #define GPIO_LATCH_PIN5_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN5_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 4 : Status on whether PIN4 has met criteria set in PIN_CNF4.SENSE register. Write '1' to clear. */
+/* Bit 4 : Status on whether PIN[4] has met criteria set in PIN_CNF[4].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN4_Pos (4UL) /*!< Position of PIN4 field. */
 #define GPIO_LATCH_PIN4_Msk (0x1UL << GPIO_LATCH_PIN4_Pos) /*!< Bit mask of PIN4 field. */
 #define GPIO_LATCH_PIN4_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN4_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 3 : Status on whether PIN3 has met criteria set in PIN_CNF3.SENSE register. Write '1' to clear. */
+/* Bit 3 : Status on whether PIN[3] has met criteria set in PIN_CNF[3].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN3_Pos (3UL) /*!< Position of PIN3 field. */
 #define GPIO_LATCH_PIN3_Msk (0x1UL << GPIO_LATCH_PIN3_Pos) /*!< Bit mask of PIN3 field. */
 #define GPIO_LATCH_PIN3_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN3_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 2 : Status on whether PIN2 has met criteria set in PIN_CNF2.SENSE register. Write '1' to clear. */
+/* Bit 2 : Status on whether PIN[2] has met criteria set in PIN_CNF[2].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN2_Pos (2UL) /*!< Position of PIN2 field. */
 #define GPIO_LATCH_PIN2_Msk (0x1UL << GPIO_LATCH_PIN2_Pos) /*!< Bit mask of PIN2 field. */
 #define GPIO_LATCH_PIN2_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN2_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 1 : Status on whether PIN1 has met criteria set in PIN_CNF1.SENSE register. Write '1' to clear. */
+/* Bit 1 : Status on whether PIN[1] has met criteria set in PIN_CNF[1].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN1_Pos (1UL) /*!< Position of PIN1 field. */
 #define GPIO_LATCH_PIN1_Msk (0x1UL << GPIO_LATCH_PIN1_Pos) /*!< Bit mask of PIN1 field. */
 #define GPIO_LATCH_PIN1_NotLatched (0UL) /*!< Criteria has not been met */
 #define GPIO_LATCH_PIN1_Latched (1UL) /*!< Criteria has been met */
 
-/* Bit 0 : Status on whether PIN0 has met criteria set in PIN_CNF0.SENSE register. Write '1' to clear. */
+/* Bit 0 : Status on whether PIN[0] has met criteria set in PIN_CNF[0].SENSE register. Write '1' to clear. */
 #define GPIO_LATCH_PIN0_Pos (0UL) /*!< Position of PIN0 field. */
 #define GPIO_LATCH_PIN0_Msk (0x1UL << GPIO_LATCH_PIN0_Pos) /*!< Bit mask of PIN0 field. */
 #define GPIO_LATCH_PIN0_NotLatched (0UL) /*!< Criteria has not been met */
@@ -4496,9 +4494,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PDM_SUBSCRIBE_START_EN_Disabled (0UL) /*!< Disable subscription */
 #define PDM_SUBSCRIBE_START_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task START will subscribe to */
+/* Bits 7..0 : DPPI channel that task START will subscribe to */
 #define PDM_SUBSCRIBE_START_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PDM_SUBSCRIBE_START_CHIDX_Msk (0xFUL << PDM_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PDM_SUBSCRIBE_START_CHIDX_Msk (0xFFUL << PDM_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PDM_SUBSCRIBE_STOP */
 /* Description: Subscribe configuration for task STOP */
@@ -4509,9 +4507,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PDM_SUBSCRIBE_STOP_EN_Disabled (0UL) /*!< Disable subscription */
 #define PDM_SUBSCRIBE_STOP_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STOP will subscribe to */
+/* Bits 7..0 : DPPI channel that task STOP will subscribe to */
 #define PDM_SUBSCRIBE_STOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PDM_SUBSCRIBE_STOP_CHIDX_Msk (0xFUL << PDM_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PDM_SUBSCRIBE_STOP_CHIDX_Msk (0xFFUL << PDM_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PDM_EVENTS_STARTED */
 /* Description: PDM transfer has started */
@@ -4549,9 +4547,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PDM_PUBLISH_STARTED_EN_Disabled (0UL) /*!< Disable publishing */
 #define PDM_PUBLISH_STARTED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event STARTED will publish to. */
+/* Bits 7..0 : DPPI channel that event STARTED will publish to */
 #define PDM_PUBLISH_STARTED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PDM_PUBLISH_STARTED_CHIDX_Msk (0xFUL << PDM_PUBLISH_STARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PDM_PUBLISH_STARTED_CHIDX_Msk (0xFFUL << PDM_PUBLISH_STARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PDM_PUBLISH_STOPPED */
 /* Description: Publish configuration for event STOPPED */
@@ -4562,9 +4560,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PDM_PUBLISH_STOPPED_EN_Disabled (0UL) /*!< Disable publishing */
 #define PDM_PUBLISH_STOPPED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event STOPPED will publish to. */
+/* Bits 7..0 : DPPI channel that event STOPPED will publish to */
 #define PDM_PUBLISH_STOPPED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PDM_PUBLISH_STOPPED_CHIDX_Msk (0xFUL << PDM_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PDM_PUBLISH_STOPPED_CHIDX_Msk (0xFFUL << PDM_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PDM_PUBLISH_END */
 /* Description: Publish configuration for event END */
@@ -4575,9 +4573,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PDM_PUBLISH_END_EN_Disabled (0UL) /*!< Disable publishing */
 #define PDM_PUBLISH_END_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event END will publish to. */
+/* Bits 7..0 : DPPI channel that event END will publish to */
 #define PDM_PUBLISH_END_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PDM_PUBLISH_END_CHIDX_Msk (0xFUL << PDM_PUBLISH_END_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PDM_PUBLISH_END_CHIDX_Msk (0xFFUL << PDM_PUBLISH_END_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PDM_INTEN */
 /* Description: Enable or disable interrupt */
@@ -4660,7 +4658,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: PDM_PDMCLKCTRL */
 /* Description: PDM clock generator control */
 
-/* Bits 31..0 : PDM_CLK frequency */
+/* Bits 31..0 : PDM_CLK frequency configuration. */
 #define PDM_PDMCLKCTRL_FREQ_Pos (0UL) /*!< Position of FREQ field. */
 #define PDM_PDMCLKCTRL_FREQ_Msk (0xFFFFFFFFUL << PDM_PDMCLKCTRL_FREQ_Pos) /*!< Bit mask of FREQ field. */
 #define PDM_PDMCLKCTRL_FREQ_1000K (0x08000000UL) /*!< PDM_CLK = 32 MHz / 32 = 1.000 MHz */
@@ -4673,7 +4671,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: PDM_MODE */
 /* Description: Defines the routing of the connected PDM microphones' signals */
 
-/* Bit 1 : Defines on which PDM_CLK edge Left (or mono) is sampled */
+/* Bit 1 : Defines on which PDM_CLK edge left (or mono) is sampled */
 #define PDM_MODE_EDGE_Pos (1UL) /*!< Position of EDGE field. */
 #define PDM_MODE_EDGE_Msk (0x1UL << PDM_MODE_EDGE_Pos) /*!< Bit mask of EDGE field. */
 #define PDM_MODE_EDGE_LeftFalling (0UL) /*!< Left (or mono) is sampled on falling edge of PDM_CLK */
@@ -4682,8 +4680,8 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bit 0 : Mono or stereo operation */
 #define PDM_MODE_OPERATION_Pos (0UL) /*!< Position of OPERATION field. */
 #define PDM_MODE_OPERATION_Msk (0x1UL << PDM_MODE_OPERATION_Pos) /*!< Bit mask of OPERATION field. */
-#define PDM_MODE_OPERATION_Stereo (0UL) /*!< Sample and store one pair (Left + Right) of 16bit samples per RAM word R=[31:16]; L=[15:0] */
-#define PDM_MODE_OPERATION_Mono (1UL) /*!< Sample and store two successive Left samples (16 bit each) per RAM word L1=[31:16]; L0=[15:0] */
+#define PDM_MODE_OPERATION_Stereo (0UL) /*!< Sample and store one pair (left + right) of 16-bit samples per RAM word R=[31:16]; L=[15:0] */
+#define PDM_MODE_OPERATION_Mono (1UL) /*!< Sample and store two successive left samples (16 bits each) per RAM word L1=[31:16]; L0=[15:0] */
 
 /* Register: PDM_GAINL */
 /* Description: Left output gain adjustment */
@@ -4691,9 +4689,9 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 6..0 : Left output gain adjustment, in 0.5 dB steps, around the default module gain (see electrical parameters) 0x00    -20 dB gain adjust 0x01  -19.5 dB gain adjust (...) 0x27   -0.5 dB gain adjust 0x28      0 dB gain adjust 0x29   +0.5 dB gain adjust (...) 0x4F  +19.5 dB gain adjust 0x50    +20 dB gain adjust */
 #define PDM_GAINL_GAINL_Pos (0UL) /*!< Position of GAINL field. */
 #define PDM_GAINL_GAINL_Msk (0x7FUL << PDM_GAINL_GAINL_Pos) /*!< Bit mask of GAINL field. */
-#define PDM_GAINL_GAINL_MinGain (0x00UL) /*!< -20dB gain adjustment (minimum) */
-#define PDM_GAINL_GAINL_DefaultGain (0x28UL) /*!< 0dB gain adjustment */
-#define PDM_GAINL_GAINL_MaxGain (0x50UL) /*!< +20dB gain adjustment (maximum) */
+#define PDM_GAINL_GAINL_MinGain (0x00UL) /*!< -20 dB gain adjustment (minimum) */
+#define PDM_GAINL_GAINL_DefaultGain (0x28UL) /*!< 0 dB gain adjustment */
+#define PDM_GAINL_GAINL_MaxGain (0x50UL) /*!< +20 dB gain adjustment (maximum) */
 
 /* Register: PDM_GAINR */
 /* Description: Right output gain adjustment */
@@ -4701,9 +4699,9 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 6..0 : Right output gain adjustment, in 0.5 dB steps, around the default module gain (see electrical parameters) */
 #define PDM_GAINR_GAINR_Pos (0UL) /*!< Position of GAINR field. */
 #define PDM_GAINR_GAINR_Msk (0x7FUL << PDM_GAINR_GAINR_Pos) /*!< Bit mask of GAINR field. */
-#define PDM_GAINR_GAINR_MinGain (0x00UL) /*!< -20dB gain adjustment (minimum) */
-#define PDM_GAINR_GAINR_DefaultGain (0x28UL) /*!< 0dB gain adjustment */
-#define PDM_GAINR_GAINR_MaxGain (0x50UL) /*!< +20dB gain adjustment (maximum) */
+#define PDM_GAINR_GAINR_MinGain (0x00UL) /*!< -20 dB gain adjustment (minimum) */
+#define PDM_GAINR_GAINR_DefaultGain (0x28UL) /*!< 0 dB gain adjustment */
+#define PDM_GAINR_GAINR_MaxGain (0x50UL) /*!< +20 dB gain adjustment (maximum) */
 
 /* Register: PDM_RATIO */
 /* Description: Selects the ratio between PDM_CLK and output sample rate. Change PDMCLKCTRL accordingly. */
@@ -4783,9 +4781,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define POWER_SUBSCRIBE_CONSTLAT_EN_Disabled (0UL) /*!< Disable subscription */
 #define POWER_SUBSCRIBE_CONSTLAT_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task CONSTLAT will subscribe to */
+/* Bits 7..0 : DPPI channel that task CONSTLAT will subscribe to */
 #define POWER_SUBSCRIBE_CONSTLAT_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define POWER_SUBSCRIBE_CONSTLAT_CHIDX_Msk (0xFUL << POWER_SUBSCRIBE_CONSTLAT_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define POWER_SUBSCRIBE_CONSTLAT_CHIDX_Msk (0xFFUL << POWER_SUBSCRIBE_CONSTLAT_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: POWER_SUBSCRIBE_LOWPWR */
 /* Description: Subscribe configuration for task LOWPWR */
@@ -4796,9 +4794,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define POWER_SUBSCRIBE_LOWPWR_EN_Disabled (0UL) /*!< Disable subscription */
 #define POWER_SUBSCRIBE_LOWPWR_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task LOWPWR will subscribe to */
+/* Bits 7..0 : DPPI channel that task LOWPWR will subscribe to */
 #define POWER_SUBSCRIBE_LOWPWR_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define POWER_SUBSCRIBE_LOWPWR_CHIDX_Msk (0xFUL << POWER_SUBSCRIBE_LOWPWR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define POWER_SUBSCRIBE_LOWPWR_CHIDX_Msk (0xFFUL << POWER_SUBSCRIBE_LOWPWR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: POWER_EVENTS_POFWARN */
 /* Description: Power failure warning */
@@ -4836,9 +4834,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define POWER_PUBLISH_POFWARN_EN_Disabled (0UL) /*!< Disable publishing */
 #define POWER_PUBLISH_POFWARN_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event POFWARN will publish to. */
+/* Bits 7..0 : DPPI channel that event POFWARN will publish to */
 #define POWER_PUBLISH_POFWARN_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define POWER_PUBLISH_POFWARN_CHIDX_Msk (0xFUL << POWER_PUBLISH_POFWARN_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define POWER_PUBLISH_POFWARN_CHIDX_Msk (0xFFUL << POWER_PUBLISH_POFWARN_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: POWER_PUBLISH_SLEEPENTER */
 /* Description: Publish configuration for event SLEEPENTER */
@@ -4849,9 +4847,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define POWER_PUBLISH_SLEEPENTER_EN_Disabled (0UL) /*!< Disable publishing */
 #define POWER_PUBLISH_SLEEPENTER_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event SLEEPENTER will publish to. */
+/* Bits 7..0 : DPPI channel that event SLEEPENTER will publish to */
 #define POWER_PUBLISH_SLEEPENTER_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define POWER_PUBLISH_SLEEPENTER_CHIDX_Msk (0xFUL << POWER_PUBLISH_SLEEPENTER_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define POWER_PUBLISH_SLEEPENTER_CHIDX_Msk (0xFFUL << POWER_PUBLISH_SLEEPENTER_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: POWER_PUBLISH_SLEEPEXIT */
 /* Description: Publish configuration for event SLEEPEXIT */
@@ -4862,9 +4860,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define POWER_PUBLISH_SLEEPEXIT_EN_Disabled (0UL) /*!< Disable publishing */
 #define POWER_PUBLISH_SLEEPEXIT_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event SLEEPEXIT will publish to. */
+/* Bits 7..0 : DPPI channel that event SLEEPEXIT will publish to */
 #define POWER_PUBLISH_SLEEPEXIT_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define POWER_PUBLISH_SLEEPEXIT_CHIDX_Msk (0xFUL << POWER_PUBLISH_SLEEPEXIT_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define POWER_PUBLISH_SLEEPEXIT_CHIDX_Msk (0xFFUL << POWER_PUBLISH_SLEEPEXIT_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: POWER_INTEN */
 /* Description: Enable or disable interrupt */
@@ -4996,6 +4994,24 @@ POSSIBILITY OF SUCH DAMAGE.
 #define POWER_GPREGRET_GPREGRET_Pos (0UL) /*!< Position of GPREGRET field. */
 #define POWER_GPREGRET_GPREGRET_Msk (0xFFUL << POWER_GPREGRET_GPREGRET_Pos) /*!< Bit mask of GPREGRET field. */
 
+/* Register: POWER_LTEMODEM_STARTN */
+/* Description: Start LTE modem */
+
+/* Bit 0 : Start LTE modem */
+#define POWER_LTEMODEM_STARTN_STARTN_Pos (0UL) /*!< Position of STARTN field. */
+#define POWER_LTEMODEM_STARTN_STARTN_Msk (0x1UL << POWER_LTEMODEM_STARTN_STARTN_Pos) /*!< Bit mask of STARTN field. */
+#define POWER_LTEMODEM_STARTN_STARTN_Start (0UL) /*!< Start LTE modem */
+#define POWER_LTEMODEM_STARTN_STARTN_Hold (1UL) /*!< Hold LTE modem disabled */
+
+/* Register: POWER_LTEMODEM_FORCEOFF */
+/* Description: Force off LTE modem */
+
+/* Bit 0 : Force off LTE modem */
+#define POWER_LTEMODEM_FORCEOFF_FORCEOFF_Pos (0UL) /*!< Position of FORCEOFF field. */
+#define POWER_LTEMODEM_FORCEOFF_FORCEOFF_Msk (0x1UL << POWER_LTEMODEM_FORCEOFF_FORCEOFF_Pos) /*!< Bit mask of FORCEOFF field. */
+#define POWER_LTEMODEM_FORCEOFF_FORCEOFF_Release (0UL) /*!< Release force off */
+#define POWER_LTEMODEM_FORCEOFF_FORCEOFF_Hold (1UL) /*!< Hold force off active */
+
 
 /* Peripheral: PWM */
 /* Description: Pulse width modulation unit 0 */
@@ -5033,9 +5049,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PWM_SUBSCRIBE_STOP_EN_Disabled (0UL) /*!< Disable subscription */
 #define PWM_SUBSCRIBE_STOP_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STOP will subscribe to */
+/* Bits 7..0 : DPPI channel that task STOP will subscribe to */
 #define PWM_SUBSCRIBE_STOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PWM_SUBSCRIBE_STOP_CHIDX_Msk (0xFUL << PWM_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PWM_SUBSCRIBE_STOP_CHIDX_Msk (0xFFUL << PWM_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PWM_SUBSCRIBE_SEQSTART */
 /* Description: Description collection: Subscribe configuration for task SEQSTART[n] */
@@ -5046,9 +5062,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PWM_SUBSCRIBE_SEQSTART_EN_Disabled (0UL) /*!< Disable subscription */
 #define PWM_SUBSCRIBE_SEQSTART_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task SEQSTART[n] will subscribe to */
+/* Bits 7..0 : DPPI channel that task SEQSTART[n] will subscribe to */
 #define PWM_SUBSCRIBE_SEQSTART_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PWM_SUBSCRIBE_SEQSTART_CHIDX_Msk (0xFUL << PWM_SUBSCRIBE_SEQSTART_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PWM_SUBSCRIBE_SEQSTART_CHIDX_Msk (0xFFUL << PWM_SUBSCRIBE_SEQSTART_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PWM_SUBSCRIBE_NEXTSTEP */
 /* Description: Subscribe configuration for task NEXTSTEP */
@@ -5059,9 +5075,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PWM_SUBSCRIBE_NEXTSTEP_EN_Disabled (0UL) /*!< Disable subscription */
 #define PWM_SUBSCRIBE_NEXTSTEP_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task NEXTSTEP will subscribe to */
+/* Bits 7..0 : DPPI channel that task NEXTSTEP will subscribe to */
 #define PWM_SUBSCRIBE_NEXTSTEP_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PWM_SUBSCRIBE_NEXTSTEP_CHIDX_Msk (0xFUL << PWM_SUBSCRIBE_NEXTSTEP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PWM_SUBSCRIBE_NEXTSTEP_CHIDX_Msk (0xFFUL << PWM_SUBSCRIBE_NEXTSTEP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PWM_EVENTS_STOPPED */
 /* Description: Response to STOP task, emitted when PWM pulses are no longer generated */
@@ -5117,9 +5133,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PWM_PUBLISH_STOPPED_EN_Disabled (0UL) /*!< Disable publishing */
 #define PWM_PUBLISH_STOPPED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event STOPPED will publish to. */
+/* Bits 7..0 : DPPI channel that event STOPPED will publish to */
 #define PWM_PUBLISH_STOPPED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PWM_PUBLISH_STOPPED_CHIDX_Msk (0xFUL << PWM_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PWM_PUBLISH_STOPPED_CHIDX_Msk (0xFFUL << PWM_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PWM_PUBLISH_SEQSTARTED */
 /* Description: Description collection: Publish configuration for event SEQSTARTED[n] */
@@ -5130,9 +5146,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PWM_PUBLISH_SEQSTARTED_EN_Disabled (0UL) /*!< Disable publishing */
 #define PWM_PUBLISH_SEQSTARTED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event SEQSTARTED[n] will publish to. */
+/* Bits 7..0 : DPPI channel that event SEQSTARTED[n] will publish to */
 #define PWM_PUBLISH_SEQSTARTED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PWM_PUBLISH_SEQSTARTED_CHIDX_Msk (0xFUL << PWM_PUBLISH_SEQSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PWM_PUBLISH_SEQSTARTED_CHIDX_Msk (0xFFUL << PWM_PUBLISH_SEQSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PWM_PUBLISH_SEQEND */
 /* Description: Description collection: Publish configuration for event SEQEND[n] */
@@ -5143,9 +5159,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PWM_PUBLISH_SEQEND_EN_Disabled (0UL) /*!< Disable publishing */
 #define PWM_PUBLISH_SEQEND_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event SEQEND[n] will publish to. */
+/* Bits 7..0 : DPPI channel that event SEQEND[n] will publish to */
 #define PWM_PUBLISH_SEQEND_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PWM_PUBLISH_SEQEND_CHIDX_Msk (0xFUL << PWM_PUBLISH_SEQEND_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PWM_PUBLISH_SEQEND_CHIDX_Msk (0xFFUL << PWM_PUBLISH_SEQEND_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PWM_PUBLISH_PWMPERIODEND */
 /* Description: Publish configuration for event PWMPERIODEND */
@@ -5156,9 +5172,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PWM_PUBLISH_PWMPERIODEND_EN_Disabled (0UL) /*!< Disable publishing */
 #define PWM_PUBLISH_PWMPERIODEND_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event PWMPERIODEND will publish to. */
+/* Bits 7..0 : DPPI channel that event PWMPERIODEND will publish to */
 #define PWM_PUBLISH_PWMPERIODEND_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PWM_PUBLISH_PWMPERIODEND_CHIDX_Msk (0xFUL << PWM_PUBLISH_PWMPERIODEND_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PWM_PUBLISH_PWMPERIODEND_CHIDX_Msk (0xFFUL << PWM_PUBLISH_PWMPERIODEND_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PWM_PUBLISH_LOOPSDONE */
 /* Description: Publish configuration for event LOOPSDONE */
@@ -5169,9 +5185,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PWM_PUBLISH_LOOPSDONE_EN_Disabled (0UL) /*!< Disable publishing */
 #define PWM_PUBLISH_LOOPSDONE_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event LOOPSDONE will publish to. */
+/* Bits 7..0 : DPPI channel that event LOOPSDONE will publish to */
 #define PWM_PUBLISH_LOOPSDONE_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define PWM_PUBLISH_LOOPSDONE_CHIDX_Msk (0xFUL << PWM_PUBLISH_LOOPSDONE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define PWM_PUBLISH_LOOPSDONE_CHIDX_Msk (0xFFUL << PWM_PUBLISH_LOOPSDONE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: PWM_SHORTS */
 /* Description: Shortcuts between local events and tasks */
@@ -5475,6 +5491,15 @@ POSSIBILITY OF SUCH DAMAGE.
 #define REGULATORS_SYSTEMOFF_SYSTEMOFF_Msk (0x1UL << REGULATORS_SYSTEMOFF_SYSTEMOFF_Pos) /*!< Bit mask of SYSTEMOFF field. */
 #define REGULATORS_SYSTEMOFF_SYSTEMOFF_Enable (1UL) /*!< Enable System OFF mode */
 
+/* Register: REGULATORS_EXTPOFCON */
+/* Description: External power failure warning configuration */
+
+/* Bit 0 : Enable or disable external power failure warning */
+#define REGULATORS_EXTPOFCON_POF_Pos (0UL) /*!< Position of POF field. */
+#define REGULATORS_EXTPOFCON_POF_Msk (0x1UL << REGULATORS_EXTPOFCON_POF_Pos) /*!< Bit mask of POF field. */
+#define REGULATORS_EXTPOFCON_POF_Disabled (0UL) /*!< Disable */
+#define REGULATORS_EXTPOFCON_POF_Enabled (1UL) /*!< Enable */
+
 /* Register: REGULATORS_DCDCEN */
 /* Description: Enable DC/DC mode of the main voltage regulator. */
 
@@ -5529,9 +5554,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RTC_SUBSCRIBE_START_EN_Disabled (0UL) /*!< Disable subscription */
 #define RTC_SUBSCRIBE_START_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task START will subscribe to */
+/* Bits 7..0 : DPPI channel that task START will subscribe to */
 #define RTC_SUBSCRIBE_START_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define RTC_SUBSCRIBE_START_CHIDX_Msk (0xFUL << RTC_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define RTC_SUBSCRIBE_START_CHIDX_Msk (0xFFUL << RTC_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: RTC_SUBSCRIBE_STOP */
 /* Description: Subscribe configuration for task STOP */
@@ -5542,9 +5567,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RTC_SUBSCRIBE_STOP_EN_Disabled (0UL) /*!< Disable subscription */
 #define RTC_SUBSCRIBE_STOP_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STOP will subscribe to */
+/* Bits 7..0 : DPPI channel that task STOP will subscribe to */
 #define RTC_SUBSCRIBE_STOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define RTC_SUBSCRIBE_STOP_CHIDX_Msk (0xFUL << RTC_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define RTC_SUBSCRIBE_STOP_CHIDX_Msk (0xFFUL << RTC_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: RTC_SUBSCRIBE_CLEAR */
 /* Description: Subscribe configuration for task CLEAR */
@@ -5555,9 +5580,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RTC_SUBSCRIBE_CLEAR_EN_Disabled (0UL) /*!< Disable subscription */
 #define RTC_SUBSCRIBE_CLEAR_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task CLEAR will subscribe to */
+/* Bits 7..0 : DPPI channel that task CLEAR will subscribe to */
 #define RTC_SUBSCRIBE_CLEAR_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define RTC_SUBSCRIBE_CLEAR_CHIDX_Msk (0xFUL << RTC_SUBSCRIBE_CLEAR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define RTC_SUBSCRIBE_CLEAR_CHIDX_Msk (0xFFUL << RTC_SUBSCRIBE_CLEAR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: RTC_SUBSCRIBE_TRIGOVRFLW */
 /* Description: Subscribe configuration for task TRIGOVRFLW */
@@ -5568,9 +5593,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RTC_SUBSCRIBE_TRIGOVRFLW_EN_Disabled (0UL) /*!< Disable subscription */
 #define RTC_SUBSCRIBE_TRIGOVRFLW_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task TRIGOVRFLW will subscribe to */
+/* Bits 7..0 : DPPI channel that task TRIGOVRFLW will subscribe to */
 #define RTC_SUBSCRIBE_TRIGOVRFLW_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define RTC_SUBSCRIBE_TRIGOVRFLW_CHIDX_Msk (0xFUL << RTC_SUBSCRIBE_TRIGOVRFLW_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define RTC_SUBSCRIBE_TRIGOVRFLW_CHIDX_Msk (0xFFUL << RTC_SUBSCRIBE_TRIGOVRFLW_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: RTC_EVENTS_TICK */
 /* Description: Event on counter increment */
@@ -5608,9 +5633,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RTC_PUBLISH_TICK_EN_Disabled (0UL) /*!< Disable publishing */
 #define RTC_PUBLISH_TICK_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event TICK will publish to. */
+/* Bits 7..0 : DPPI channel that event TICK will publish to */
 #define RTC_PUBLISH_TICK_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define RTC_PUBLISH_TICK_CHIDX_Msk (0xFUL << RTC_PUBLISH_TICK_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define RTC_PUBLISH_TICK_CHIDX_Msk (0xFFUL << RTC_PUBLISH_TICK_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: RTC_PUBLISH_OVRFLW */
 /* Description: Publish configuration for event OVRFLW */
@@ -5621,9 +5646,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RTC_PUBLISH_OVRFLW_EN_Disabled (0UL) /*!< Disable publishing */
 #define RTC_PUBLISH_OVRFLW_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event OVRFLW will publish to. */
+/* Bits 7..0 : DPPI channel that event OVRFLW will publish to */
 #define RTC_PUBLISH_OVRFLW_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define RTC_PUBLISH_OVRFLW_CHIDX_Msk (0xFUL << RTC_PUBLISH_OVRFLW_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define RTC_PUBLISH_OVRFLW_CHIDX_Msk (0xFFUL << RTC_PUBLISH_OVRFLW_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: RTC_PUBLISH_COMPARE */
 /* Description: Description collection: Publish configuration for event COMPARE[n] */
@@ -5634,9 +5659,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RTC_PUBLISH_COMPARE_EN_Disabled (0UL) /*!< Disable publishing */
 #define RTC_PUBLISH_COMPARE_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event COMPARE[n] will publish to. */
+/* Bits 7..0 : DPPI channel that event COMPARE[n] will publish to */
 #define RTC_PUBLISH_COMPARE_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define RTC_PUBLISH_COMPARE_CHIDX_Msk (0xFUL << RTC_PUBLISH_COMPARE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define RTC_PUBLISH_COMPARE_CHIDX_Msk (0xFFUL << RTC_PUBLISH_COMPARE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: RTC_INTENSET */
 /* Description: Enable interrupt */
@@ -5735,37 +5760,37 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RTC_EVTEN_COMPARE3_Pos (19UL) /*!< Position of COMPARE3 field. */
 #define RTC_EVTEN_COMPARE3_Msk (0x1UL << RTC_EVTEN_COMPARE3_Pos) /*!< Bit mask of COMPARE3 field. */
 #define RTC_EVTEN_COMPARE3_Disabled (0UL) /*!< Disable */
-#define RTC_EVTEN_COMPARE3_Enabled (1UL) /*!< Disable */
+#define RTC_EVTEN_COMPARE3_Enabled (1UL) /*!< Enable */
 
 /* Bit 18 : Enable or disable event routing for event COMPARE[2] */
 #define RTC_EVTEN_COMPARE2_Pos (18UL) /*!< Position of COMPARE2 field. */
 #define RTC_EVTEN_COMPARE2_Msk (0x1UL << RTC_EVTEN_COMPARE2_Pos) /*!< Bit mask of COMPARE2 field. */
 #define RTC_EVTEN_COMPARE2_Disabled (0UL) /*!< Disable */
-#define RTC_EVTEN_COMPARE2_Enabled (1UL) /*!< Disable */
+#define RTC_EVTEN_COMPARE2_Enabled (1UL) /*!< Enable */
 
 /* Bit 17 : Enable or disable event routing for event COMPARE[1] */
 #define RTC_EVTEN_COMPARE1_Pos (17UL) /*!< Position of COMPARE1 field. */
 #define RTC_EVTEN_COMPARE1_Msk (0x1UL << RTC_EVTEN_COMPARE1_Pos) /*!< Bit mask of COMPARE1 field. */
 #define RTC_EVTEN_COMPARE1_Disabled (0UL) /*!< Disable */
-#define RTC_EVTEN_COMPARE1_Enabled (1UL) /*!< Disable */
+#define RTC_EVTEN_COMPARE1_Enabled (1UL) /*!< Enable */
 
 /* Bit 16 : Enable or disable event routing for event COMPARE[0] */
 #define RTC_EVTEN_COMPARE0_Pos (16UL) /*!< Position of COMPARE0 field. */
 #define RTC_EVTEN_COMPARE0_Msk (0x1UL << RTC_EVTEN_COMPARE0_Pos) /*!< Bit mask of COMPARE0 field. */
 #define RTC_EVTEN_COMPARE0_Disabled (0UL) /*!< Disable */
-#define RTC_EVTEN_COMPARE0_Enabled (1UL) /*!< Disable */
+#define RTC_EVTEN_COMPARE0_Enabled (1UL) /*!< Enable */
 
 /* Bit 1 : Enable or disable event routing for event OVRFLW */
 #define RTC_EVTEN_OVRFLW_Pos (1UL) /*!< Position of OVRFLW field. */
 #define RTC_EVTEN_OVRFLW_Msk (0x1UL << RTC_EVTEN_OVRFLW_Pos) /*!< Bit mask of OVRFLW field. */
 #define RTC_EVTEN_OVRFLW_Disabled (0UL) /*!< Disable */
-#define RTC_EVTEN_OVRFLW_Enabled (1UL) /*!< Disable */
+#define RTC_EVTEN_OVRFLW_Enabled (1UL) /*!< Enable */
 
 /* Bit 0 : Enable or disable event routing for event TICK */
 #define RTC_EVTEN_TICK_Pos (0UL) /*!< Position of TICK field. */
 #define RTC_EVTEN_TICK_Msk (0x1UL << RTC_EVTEN_TICK_Pos) /*!< Bit mask of TICK field. */
 #define RTC_EVTEN_TICK_Disabled (0UL) /*!< Disable */
-#define RTC_EVTEN_TICK_Enabled (1UL) /*!< Disable */
+#define RTC_EVTEN_TICK_Enabled (1UL) /*!< Enable */
 
 /* Register: RTC_EVTENSET */
 /* Description: Enable event routing */
@@ -5923,9 +5948,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_SUBSCRIBE_START_EN_Disabled (0UL) /*!< Disable subscription */
 #define SAADC_SUBSCRIBE_START_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task START will subscribe to */
+/* Bits 7..0 : DPPI channel that task START will subscribe to */
 #define SAADC_SUBSCRIBE_START_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SAADC_SUBSCRIBE_START_CHIDX_Msk (0xFUL << SAADC_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SAADC_SUBSCRIBE_START_CHIDX_Msk (0xFFUL << SAADC_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SAADC_SUBSCRIBE_SAMPLE */
 /* Description: Subscribe configuration for task SAMPLE */
@@ -5936,9 +5961,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_SUBSCRIBE_SAMPLE_EN_Disabled (0UL) /*!< Disable subscription */
 #define SAADC_SUBSCRIBE_SAMPLE_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task SAMPLE will subscribe to */
+/* Bits 7..0 : DPPI channel that task SAMPLE will subscribe to */
 #define SAADC_SUBSCRIBE_SAMPLE_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SAADC_SUBSCRIBE_SAMPLE_CHIDX_Msk (0xFUL << SAADC_SUBSCRIBE_SAMPLE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SAADC_SUBSCRIBE_SAMPLE_CHIDX_Msk (0xFFUL << SAADC_SUBSCRIBE_SAMPLE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SAADC_SUBSCRIBE_STOP */
 /* Description: Subscribe configuration for task STOP */
@@ -5949,9 +5974,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_SUBSCRIBE_STOP_EN_Disabled (0UL) /*!< Disable subscription */
 #define SAADC_SUBSCRIBE_STOP_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STOP will subscribe to */
+/* Bits 7..0 : DPPI channel that task STOP will subscribe to */
 #define SAADC_SUBSCRIBE_STOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SAADC_SUBSCRIBE_STOP_CHIDX_Msk (0xFUL << SAADC_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SAADC_SUBSCRIBE_STOP_CHIDX_Msk (0xFFUL << SAADC_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SAADC_SUBSCRIBE_CALIBRATEOFFSET */
 /* Description: Subscribe configuration for task CALIBRATEOFFSET */
@@ -5962,9 +5987,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_SUBSCRIBE_CALIBRATEOFFSET_EN_Disabled (0UL) /*!< Disable subscription */
 #define SAADC_SUBSCRIBE_CALIBRATEOFFSET_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task CALIBRATEOFFSET will subscribe to */
+/* Bits 7..0 : DPPI channel that task CALIBRATEOFFSET will subscribe to */
 #define SAADC_SUBSCRIBE_CALIBRATEOFFSET_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SAADC_SUBSCRIBE_CALIBRATEOFFSET_CHIDX_Msk (0xFUL << SAADC_SUBSCRIBE_CALIBRATEOFFSET_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SAADC_SUBSCRIBE_CALIBRATEOFFSET_CHIDX_Msk (0xFFUL << SAADC_SUBSCRIBE_CALIBRATEOFFSET_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SAADC_EVENTS_STARTED */
 /* Description: The ADC has started */
@@ -6047,9 +6072,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_PUBLISH_STARTED_EN_Disabled (0UL) /*!< Disable publishing */
 #define SAADC_PUBLISH_STARTED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event STARTED will publish to. */
+/* Bits 7..0 : DPPI channel that event STARTED will publish to */
 #define SAADC_PUBLISH_STARTED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SAADC_PUBLISH_STARTED_CHIDX_Msk (0xFUL << SAADC_PUBLISH_STARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SAADC_PUBLISH_STARTED_CHIDX_Msk (0xFFUL << SAADC_PUBLISH_STARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SAADC_PUBLISH_END */
 /* Description: Publish configuration for event END */
@@ -6060,9 +6085,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_PUBLISH_END_EN_Disabled (0UL) /*!< Disable publishing */
 #define SAADC_PUBLISH_END_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event END will publish to. */
+/* Bits 7..0 : DPPI channel that event END will publish to */
 #define SAADC_PUBLISH_END_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SAADC_PUBLISH_END_CHIDX_Msk (0xFUL << SAADC_PUBLISH_END_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SAADC_PUBLISH_END_CHIDX_Msk (0xFFUL << SAADC_PUBLISH_END_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SAADC_PUBLISH_DONE */
 /* Description: Publish configuration for event DONE */
@@ -6073,9 +6098,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_PUBLISH_DONE_EN_Disabled (0UL) /*!< Disable publishing */
 #define SAADC_PUBLISH_DONE_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event DONE will publish to. */
+/* Bits 7..0 : DPPI channel that event DONE will publish to */
 #define SAADC_PUBLISH_DONE_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SAADC_PUBLISH_DONE_CHIDX_Msk (0xFUL << SAADC_PUBLISH_DONE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SAADC_PUBLISH_DONE_CHIDX_Msk (0xFFUL << SAADC_PUBLISH_DONE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SAADC_PUBLISH_RESULTDONE */
 /* Description: Publish configuration for event RESULTDONE */
@@ -6086,9 +6111,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_PUBLISH_RESULTDONE_EN_Disabled (0UL) /*!< Disable publishing */
 #define SAADC_PUBLISH_RESULTDONE_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event RESULTDONE will publish to. */
+/* Bits 7..0 : DPPI channel that event RESULTDONE will publish to */
 #define SAADC_PUBLISH_RESULTDONE_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SAADC_PUBLISH_RESULTDONE_CHIDX_Msk (0xFUL << SAADC_PUBLISH_RESULTDONE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SAADC_PUBLISH_RESULTDONE_CHIDX_Msk (0xFFUL << SAADC_PUBLISH_RESULTDONE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SAADC_PUBLISH_CALIBRATEDONE */
 /* Description: Publish configuration for event CALIBRATEDONE */
@@ -6099,9 +6124,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_PUBLISH_CALIBRATEDONE_EN_Disabled (0UL) /*!< Disable publishing */
 #define SAADC_PUBLISH_CALIBRATEDONE_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event CALIBRATEDONE will publish to. */
+/* Bits 7..0 : DPPI channel that event CALIBRATEDONE will publish to */
 #define SAADC_PUBLISH_CALIBRATEDONE_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SAADC_PUBLISH_CALIBRATEDONE_CHIDX_Msk (0xFUL << SAADC_PUBLISH_CALIBRATEDONE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SAADC_PUBLISH_CALIBRATEDONE_CHIDX_Msk (0xFFUL << SAADC_PUBLISH_CALIBRATEDONE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SAADC_PUBLISH_STOPPED */
 /* Description: Publish configuration for event STOPPED */
@@ -6112,9 +6137,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_PUBLISH_STOPPED_EN_Disabled (0UL) /*!< Disable publishing */
 #define SAADC_PUBLISH_STOPPED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event STOPPED will publish to. */
+/* Bits 7..0 : DPPI channel that event STOPPED will publish to */
 #define SAADC_PUBLISH_STOPPED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SAADC_PUBLISH_STOPPED_CHIDX_Msk (0xFUL << SAADC_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SAADC_PUBLISH_STOPPED_CHIDX_Msk (0xFFUL << SAADC_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SAADC_PUBLISH_CH_LIMITH */
 /* Description: Description cluster: Publish configuration for event CH[n].LIMITH */
@@ -6125,9 +6150,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_PUBLISH_CH_LIMITH_EN_Disabled (0UL) /*!< Disable publishing */
 #define SAADC_PUBLISH_CH_LIMITH_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event CH[n].LIMITH will publish to. */
+/* Bits 7..0 : DPPI channel that event CH[n].LIMITH will publish to */
 #define SAADC_PUBLISH_CH_LIMITH_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SAADC_PUBLISH_CH_LIMITH_CHIDX_Msk (0xFUL << SAADC_PUBLISH_CH_LIMITH_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SAADC_PUBLISH_CH_LIMITH_CHIDX_Msk (0xFFUL << SAADC_PUBLISH_CH_LIMITH_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SAADC_PUBLISH_CH_LIMITL */
 /* Description: Description cluster: Publish configuration for event CH[n].LIMITL */
@@ -6138,9 +6163,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_PUBLISH_CH_LIMITL_EN_Disabled (0UL) /*!< Disable publishing */
 #define SAADC_PUBLISH_CH_LIMITL_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event CH[n].LIMITL will publish to. */
+/* Bits 7..0 : DPPI channel that event CH[n].LIMITL will publish to */
 #define SAADC_PUBLISH_CH_LIMITL_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SAADC_PUBLISH_CH_LIMITL_CHIDX_Msk (0xFUL << SAADC_PUBLISH_CH_LIMITL_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SAADC_PUBLISH_CH_LIMITL_CHIDX_Msk (0xFFUL << SAADC_PUBLISH_CH_LIMITL_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SAADC_INTEN */
 /* Description: Enable or disable interrupt */
@@ -6819,9 +6844,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM_SUBSCRIBE_START_EN_Disabled (0UL) /*!< Disable subscription */
 #define SPIM_SUBSCRIBE_START_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task START will subscribe to */
+/* Bits 7..0 : DPPI channel that task START will subscribe to */
 #define SPIM_SUBSCRIBE_START_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIM_SUBSCRIBE_START_CHIDX_Msk (0xFUL << SPIM_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIM_SUBSCRIBE_START_CHIDX_Msk (0xFFUL << SPIM_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIM_SUBSCRIBE_STOP */
 /* Description: Subscribe configuration for task STOP */
@@ -6832,9 +6857,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM_SUBSCRIBE_STOP_EN_Disabled (0UL) /*!< Disable subscription */
 #define SPIM_SUBSCRIBE_STOP_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STOP will subscribe to */
+/* Bits 7..0 : DPPI channel that task STOP will subscribe to */
 #define SPIM_SUBSCRIBE_STOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIM_SUBSCRIBE_STOP_CHIDX_Msk (0xFUL << SPIM_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIM_SUBSCRIBE_STOP_CHIDX_Msk (0xFFUL << SPIM_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIM_SUBSCRIBE_SUSPEND */
 /* Description: Subscribe configuration for task SUSPEND */
@@ -6845,9 +6870,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM_SUBSCRIBE_SUSPEND_EN_Disabled (0UL) /*!< Disable subscription */
 #define SPIM_SUBSCRIBE_SUSPEND_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task SUSPEND will subscribe to */
+/* Bits 7..0 : DPPI channel that task SUSPEND will subscribe to */
 #define SPIM_SUBSCRIBE_SUSPEND_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIM_SUBSCRIBE_SUSPEND_CHIDX_Msk (0xFUL << SPIM_SUBSCRIBE_SUSPEND_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIM_SUBSCRIBE_SUSPEND_CHIDX_Msk (0xFFUL << SPIM_SUBSCRIBE_SUSPEND_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIM_SUBSCRIBE_RESUME */
 /* Description: Subscribe configuration for task RESUME */
@@ -6858,9 +6883,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM_SUBSCRIBE_RESUME_EN_Disabled (0UL) /*!< Disable subscription */
 #define SPIM_SUBSCRIBE_RESUME_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task RESUME will subscribe to */
+/* Bits 7..0 : DPPI channel that task RESUME will subscribe to */
 #define SPIM_SUBSCRIBE_RESUME_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIM_SUBSCRIBE_RESUME_CHIDX_Msk (0xFUL << SPIM_SUBSCRIBE_RESUME_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIM_SUBSCRIBE_RESUME_CHIDX_Msk (0xFFUL << SPIM_SUBSCRIBE_RESUME_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIM_EVENTS_STOPPED */
 /* Description: SPI transaction has stopped */
@@ -6916,9 +6941,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM_PUBLISH_STOPPED_EN_Disabled (0UL) /*!< Disable publishing */
 #define SPIM_PUBLISH_STOPPED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event STOPPED will publish to. */
+/* Bits 7..0 : DPPI channel that event STOPPED will publish to */
 #define SPIM_PUBLISH_STOPPED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIM_PUBLISH_STOPPED_CHIDX_Msk (0xFUL << SPIM_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIM_PUBLISH_STOPPED_CHIDX_Msk (0xFFUL << SPIM_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIM_PUBLISH_ENDRX */
 /* Description: Publish configuration for event ENDRX */
@@ -6929,9 +6954,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM_PUBLISH_ENDRX_EN_Disabled (0UL) /*!< Disable publishing */
 #define SPIM_PUBLISH_ENDRX_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event ENDRX will publish to. */
+/* Bits 7..0 : DPPI channel that event ENDRX will publish to */
 #define SPIM_PUBLISH_ENDRX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIM_PUBLISH_ENDRX_CHIDX_Msk (0xFUL << SPIM_PUBLISH_ENDRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIM_PUBLISH_ENDRX_CHIDX_Msk (0xFFUL << SPIM_PUBLISH_ENDRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIM_PUBLISH_END */
 /* Description: Publish configuration for event END */
@@ -6942,9 +6967,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM_PUBLISH_END_EN_Disabled (0UL) /*!< Disable publishing */
 #define SPIM_PUBLISH_END_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event END will publish to. */
+/* Bits 7..0 : DPPI channel that event END will publish to */
 #define SPIM_PUBLISH_END_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIM_PUBLISH_END_CHIDX_Msk (0xFUL << SPIM_PUBLISH_END_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIM_PUBLISH_END_CHIDX_Msk (0xFFUL << SPIM_PUBLISH_END_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIM_PUBLISH_ENDTX */
 /* Description: Publish configuration for event ENDTX */
@@ -6955,9 +6980,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM_PUBLISH_ENDTX_EN_Disabled (0UL) /*!< Disable publishing */
 #define SPIM_PUBLISH_ENDTX_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event ENDTX will publish to. */
+/* Bits 7..0 : DPPI channel that event ENDTX will publish to */
 #define SPIM_PUBLISH_ENDTX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIM_PUBLISH_ENDTX_CHIDX_Msk (0xFUL << SPIM_PUBLISH_ENDTX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIM_PUBLISH_ENDTX_CHIDX_Msk (0xFFUL << SPIM_PUBLISH_ENDTX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIM_PUBLISH_STARTED */
 /* Description: Publish configuration for event STARTED */
@@ -6968,9 +6993,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM_PUBLISH_STARTED_EN_Disabled (0UL) /*!< Disable publishing */
 #define SPIM_PUBLISH_STARTED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event STARTED will publish to. */
+/* Bits 7..0 : DPPI channel that event STARTED will publish to */
 #define SPIM_PUBLISH_STARTED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIM_PUBLISH_STARTED_CHIDX_Msk (0xFUL << SPIM_PUBLISH_STARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIM_PUBLISH_STARTED_CHIDX_Msk (0xFFUL << SPIM_PUBLISH_STARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIM_SHORTS */
 /* Description: Shortcuts between local events and tasks */
@@ -7236,9 +7261,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIS_SUBSCRIBE_ACQUIRE_EN_Disabled (0UL) /*!< Disable subscription */
 #define SPIS_SUBSCRIBE_ACQUIRE_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task ACQUIRE will subscribe to */
+/* Bits 7..0 : DPPI channel that task ACQUIRE will subscribe to */
 #define SPIS_SUBSCRIBE_ACQUIRE_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIS_SUBSCRIBE_ACQUIRE_CHIDX_Msk (0xFUL << SPIS_SUBSCRIBE_ACQUIRE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIS_SUBSCRIBE_ACQUIRE_CHIDX_Msk (0xFFUL << SPIS_SUBSCRIBE_ACQUIRE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIS_SUBSCRIBE_RELEASE */
 /* Description: Subscribe configuration for task RELEASE */
@@ -7249,9 +7274,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIS_SUBSCRIBE_RELEASE_EN_Disabled (0UL) /*!< Disable subscription */
 #define SPIS_SUBSCRIBE_RELEASE_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task RELEASE will subscribe to */
+/* Bits 7..0 : DPPI channel that task RELEASE will subscribe to */
 #define SPIS_SUBSCRIBE_RELEASE_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIS_SUBSCRIBE_RELEASE_CHIDX_Msk (0xFUL << SPIS_SUBSCRIBE_RELEASE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIS_SUBSCRIBE_RELEASE_CHIDX_Msk (0xFFUL << SPIS_SUBSCRIBE_RELEASE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIS_EVENTS_END */
 /* Description: Granted transaction completed */
@@ -7289,9 +7314,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIS_PUBLISH_END_EN_Disabled (0UL) /*!< Disable publishing */
 #define SPIS_PUBLISH_END_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event END will publish to. */
+/* Bits 7..0 : DPPI channel that event END will publish to */
 #define SPIS_PUBLISH_END_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIS_PUBLISH_END_CHIDX_Msk (0xFUL << SPIS_PUBLISH_END_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIS_PUBLISH_END_CHIDX_Msk (0xFFUL << SPIS_PUBLISH_END_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIS_PUBLISH_ENDRX */
 /* Description: Publish configuration for event ENDRX */
@@ -7302,9 +7327,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIS_PUBLISH_ENDRX_EN_Disabled (0UL) /*!< Disable publishing */
 #define SPIS_PUBLISH_ENDRX_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event ENDRX will publish to. */
+/* Bits 7..0 : DPPI channel that event ENDRX will publish to */
 #define SPIS_PUBLISH_ENDRX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIS_PUBLISH_ENDRX_CHIDX_Msk (0xFUL << SPIS_PUBLISH_ENDRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIS_PUBLISH_ENDRX_CHIDX_Msk (0xFFUL << SPIS_PUBLISH_ENDRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIS_PUBLISH_ACQUIRED */
 /* Description: Publish configuration for event ACQUIRED */
@@ -7315,9 +7340,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIS_PUBLISH_ACQUIRED_EN_Disabled (0UL) /*!< Disable publishing */
 #define SPIS_PUBLISH_ACQUIRED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event ACQUIRED will publish to. */
+/* Bits 7..0 : DPPI channel that event ACQUIRED will publish to */
 #define SPIS_PUBLISH_ACQUIRED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPIS_PUBLISH_ACQUIRED_CHIDX_Msk (0xFUL << SPIS_PUBLISH_ACQUIRED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPIS_PUBLISH_ACQUIRED_CHIDX_Msk (0xFFUL << SPIS_PUBLISH_ACQUIRED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPIS_SHORTS */
 /* Description: Shortcuts between local events and tasks */
@@ -7600,9 +7625,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPU_PUBLISH_RAMACCERR_EN_Disabled (0UL) /*!< Disable publishing */
 #define SPU_PUBLISH_RAMACCERR_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event RAMACCERR will publish to. */
+/* Bits 7..0 : DPPI channel that event RAMACCERR will publish to */
 #define SPU_PUBLISH_RAMACCERR_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPU_PUBLISH_RAMACCERR_CHIDX_Msk (0xFUL << SPU_PUBLISH_RAMACCERR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPU_PUBLISH_RAMACCERR_CHIDX_Msk (0xFFUL << SPU_PUBLISH_RAMACCERR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPU_PUBLISH_FLASHACCERR */
 /* Description: Publish configuration for event FLASHACCERR */
@@ -7613,9 +7638,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPU_PUBLISH_FLASHACCERR_EN_Disabled (0UL) /*!< Disable publishing */
 #define SPU_PUBLISH_FLASHACCERR_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event FLASHACCERR will publish to. */
+/* Bits 7..0 : DPPI channel that event FLASHACCERR will publish to */
 #define SPU_PUBLISH_FLASHACCERR_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPU_PUBLISH_FLASHACCERR_CHIDX_Msk (0xFUL << SPU_PUBLISH_FLASHACCERR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPU_PUBLISH_FLASHACCERR_CHIDX_Msk (0xFFUL << SPU_PUBLISH_FLASHACCERR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPU_PUBLISH_PERIPHACCERR */
 /* Description: Publish configuration for event PERIPHACCERR */
@@ -7626,9 +7651,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPU_PUBLISH_PERIPHACCERR_EN_Disabled (0UL) /*!< Disable publishing */
 #define SPU_PUBLISH_PERIPHACCERR_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event PERIPHACCERR will publish to. */
+/* Bits 7..0 : DPPI channel that event PERIPHACCERR will publish to */
 #define SPU_PUBLISH_PERIPHACCERR_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define SPU_PUBLISH_PERIPHACCERR_CHIDX_Msk (0xFUL << SPU_PUBLISH_PERIPHACCERR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define SPU_PUBLISH_PERIPHACCERR_CHIDX_Msk (0xFFUL << SPU_PUBLISH_PERIPHACCERR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: SPU_INTEN */
 /* Description: Enable or disable interrupt */
@@ -7723,7 +7748,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPU_EXTDOMAIN_PERM_SECATTR_NonSecure (0UL) /*!< Bus accesses from this domain have the non-secure attribute set */
 #define SPU_EXTDOMAIN_PERM_SECATTR_Secure (1UL) /*!< Bus accesses from this domain have secure attribute set */
 
-/* Bits 1..0 : Define configuration capabilities  for TrustZone Cortex-M secure attribute */
+/* Bits 1..0 : Define configuration capabilities for TrustZone Cortex-M secure attribute */
 #define SPU_EXTDOMAIN_PERM_SECUREMAPPING_Pos (0UL) /*!< Position of SECUREMAPPING field. */
 #define SPU_EXTDOMAIN_PERM_SECUREMAPPING_Msk (0x3UL << SPU_EXTDOMAIN_PERM_SECUREMAPPING_Pos) /*!< Bit mask of SECUREMAPPING field. */
 #define SPU_EXTDOMAIN_PERM_SECUREMAPPING_NonSecure (0UL) /*!< The bus access from this external domain always have the non-secure attribute set */
@@ -8086,9 +8111,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPU_RAMNSC_REGION_LOCK_Unlocked (0UL) /*!< This register can be updated */
 #define SPU_RAMNSC_REGION_LOCK_Locked (1UL) /*!< The content of this register can't be changed until the next reset */
 
-/* Bits 3..0 : Region number */
+/* Bits 4..0 : Region number */
 #define SPU_RAMNSC_REGION_REGION_Pos (0UL) /*!< Position of REGION field. */
-#define SPU_RAMNSC_REGION_REGION_Msk (0xFUL << SPU_RAMNSC_REGION_REGION_Pos) /*!< Bit mask of REGION field. */
+#define SPU_RAMNSC_REGION_REGION_Msk (0x1FUL << SPU_RAMNSC_REGION_REGION_Pos) /*!< Bit mask of REGION field. */
 
 /* Register: SPU_RAMNSC_SIZE */
 /* Description: Description cluster: Define the size of the non-secure callable (NSC) region n */
@@ -8224,21 +8249,21 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Peripheral: TAD */
 /* Description: Trace and debug control */
 
-/* Register: TAD_CLOCKSTART */
+/* Register: TAD_TASKS_CLOCKSTART */
 /* Description: Start all trace and debug clocks. */
 
-/* Bit 0 :   */
-#define TAD_CLOCKSTART_START_Pos (0UL) /*!< Position of START field. */
-#define TAD_CLOCKSTART_START_Msk (0x1UL << TAD_CLOCKSTART_START_Pos) /*!< Bit mask of START field. */
-#define TAD_CLOCKSTART_START_Start (1UL) /*!< Start all trace and debug clocks. */
+/* Bit 0 : Start all trace and debug clocks. */
+#define TAD_TASKS_CLOCKSTART_TASKS_CLOCKSTART_Pos (0UL) /*!< Position of TASKS_CLOCKSTART field. */
+#define TAD_TASKS_CLOCKSTART_TASKS_CLOCKSTART_Msk (0x1UL << TAD_TASKS_CLOCKSTART_TASKS_CLOCKSTART_Pos) /*!< Bit mask of TASKS_CLOCKSTART field. */
+#define TAD_TASKS_CLOCKSTART_TASKS_CLOCKSTART_Trigger (1UL) /*!< Trigger task */
 
-/* Register: TAD_CLOCKSTOP */
+/* Register: TAD_TASKS_CLOCKSTOP */
 /* Description: Stop all trace and debug clocks. */
 
-/* Bit 0 :   */
-#define TAD_CLOCKSTOP_STOP_Pos (0UL) /*!< Position of STOP field. */
-#define TAD_CLOCKSTOP_STOP_Msk (0x1UL << TAD_CLOCKSTOP_STOP_Pos) /*!< Bit mask of STOP field. */
-#define TAD_CLOCKSTOP_STOP_Stop (1UL) /*!< Stop all trace and debug clocks. */
+/* Bit 0 : Stop all trace and debug clocks. */
+#define TAD_TASKS_CLOCKSTOP_TASKS_CLOCKSTOP_Pos (0UL) /*!< Position of TASKS_CLOCKSTOP field. */
+#define TAD_TASKS_CLOCKSTOP_TASKS_CLOCKSTOP_Msk (0x1UL << TAD_TASKS_CLOCKSTOP_TASKS_CLOCKSTOP_Pos) /*!< Bit mask of TASKS_CLOCKSTOP field. */
+#define TAD_TASKS_CLOCKSTOP_TASKS_CLOCKSTOP_Trigger (1UL) /*!< Trigger task */
 
 /* Register: TAD_ENABLE */
 /* Description: Enable debug domain and aquire selected GPIOs */
@@ -8250,7 +8275,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TAD_ENABLE_ENABLE_ENABLED (1UL) /*!< Enable debug domain and aquire selected GPIOs */
 
 /* Register: TAD_PSEL_TRACECLK */
-/* Description: Pin number configuration for TRACECLK */
+/* Description: Pin configuration for TRACECLK */
 
 /* Bit 31 : Connection */
 #define TAD_PSEL_TRACECLK_CONNECT_Pos (31UL) /*!< Position of CONNECT field. */
@@ -8261,9 +8286,10 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 4..0 : Pin number */
 #define TAD_PSEL_TRACECLK_PIN_Pos (0UL) /*!< Position of PIN field. */
 #define TAD_PSEL_TRACECLK_PIN_Msk (0x1FUL << TAD_PSEL_TRACECLK_PIN_Pos) /*!< Bit mask of PIN field. */
+#define TAD_PSEL_TRACECLK_PIN_Traceclk (21UL) /*!< TRACECLK pin */
 
 /* Register: TAD_PSEL_TRACEDATA0 */
-/* Description: Pin number configuration for TRACEDATA[0] */
+/* Description: Pin configuration for TRACEDATA[0] */
 
 /* Bit 31 : Connection */
 #define TAD_PSEL_TRACEDATA0_CONNECT_Pos (31UL) /*!< Position of CONNECT field. */
@@ -8274,9 +8300,10 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 4..0 : Pin number */
 #define TAD_PSEL_TRACEDATA0_PIN_Pos (0UL) /*!< Position of PIN field. */
 #define TAD_PSEL_TRACEDATA0_PIN_Msk (0x1FUL << TAD_PSEL_TRACEDATA0_PIN_Pos) /*!< Bit mask of PIN field. */
+#define TAD_PSEL_TRACEDATA0_PIN_Tracedata0 (22UL) /*!< TRACEDATA0 pin */
 
 /* Register: TAD_PSEL_TRACEDATA1 */
-/* Description: Pin number configuration for TRACEDATA[1] */
+/* Description: Pin configuration for TRACEDATA[1] */
 
 /* Bit 31 : Connection */
 #define TAD_PSEL_TRACEDATA1_CONNECT_Pos (31UL) /*!< Position of CONNECT field. */
@@ -8287,9 +8314,10 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 4..0 : Pin number */
 #define TAD_PSEL_TRACEDATA1_PIN_Pos (0UL) /*!< Position of PIN field. */
 #define TAD_PSEL_TRACEDATA1_PIN_Msk (0x1FUL << TAD_PSEL_TRACEDATA1_PIN_Pos) /*!< Bit mask of PIN field. */
+#define TAD_PSEL_TRACEDATA1_PIN_Tracedata1 (23UL) /*!< TRACEDATA1 pin */
 
 /* Register: TAD_PSEL_TRACEDATA2 */
-/* Description: Pin number configuration for TRACEDATA[2] */
+/* Description: Pin configuration for TRACEDATA[2] */
 
 /* Bit 31 : Connection */
 #define TAD_PSEL_TRACEDATA2_CONNECT_Pos (31UL) /*!< Position of CONNECT field. */
@@ -8300,9 +8328,10 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 4..0 : Pin number */
 #define TAD_PSEL_TRACEDATA2_PIN_Pos (0UL) /*!< Position of PIN field. */
 #define TAD_PSEL_TRACEDATA2_PIN_Msk (0x1FUL << TAD_PSEL_TRACEDATA2_PIN_Pos) /*!< Bit mask of PIN field. */
+#define TAD_PSEL_TRACEDATA2_PIN_Tracedata2 (24UL) /*!< TRACEDATA2 pin */
 
 /* Register: TAD_PSEL_TRACEDATA3 */
-/* Description: Pin number configuration for TRACEDATA[3] */
+/* Description: Pin configuration for TRACEDATA[3] */
 
 /* Bit 31 : Connection */
 #define TAD_PSEL_TRACEDATA3_CONNECT_Pos (31UL) /*!< Position of CONNECT field. */
@@ -8313,17 +8342,18 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 4..0 : Pin number */
 #define TAD_PSEL_TRACEDATA3_PIN_Pos (0UL) /*!< Position of PIN field. */
 #define TAD_PSEL_TRACEDATA3_PIN_Msk (0x1FUL << TAD_PSEL_TRACEDATA3_PIN_Pos) /*!< Bit mask of PIN field. */
+#define TAD_PSEL_TRACEDATA3_PIN_Tracedata3 (25UL) /*!< TRACEDATA3 pin */
 
 /* Register: TAD_TRACEPORTSPEED */
-/* Description: Clocking options for the Trace Port debug interface */
+/* Description: Clocking options for the Trace Port debug interface Reset behavior is the same as debug components */
 
-/* Bits 1..0 : Speed of Trace Port clock. Note that the TRACECLK pin will output this clock divided by two. */
+/* Bits 1..0 : Speed of Trace Port clock. Note that the TRACECLK pin output will be divided again by two from the Trace Port clock. */
 #define TAD_TRACEPORTSPEED_TRACEPORTSPEED_Pos (0UL) /*!< Position of TRACEPORTSPEED field. */
 #define TAD_TRACEPORTSPEED_TRACEPORTSPEED_Msk (0x3UL << TAD_TRACEPORTSPEED_TRACEPORTSPEED_Pos) /*!< Bit mask of TRACEPORTSPEED field. */
-#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_32MHz (0UL) /*!< 32 MHz Trace Port clock (TRACECLK = 16 MHz) */
-#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_16MHz (1UL) /*!< 16 MHz Trace Port clock (TRACECLK = 8 MHz) */
-#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_8MHz (2UL) /*!< 8 MHz Trace Port clock (TRACECLK = 4 MHz) */
-#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_4MHz (3UL) /*!< 4 MHz Trace Port clock (TRACECLK = 2 MHz) */
+#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_32MHz (0UL) /*!< Trace Port clock is: 32MHz */
+#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_16MHz (1UL) /*!< Trace Port clock is: 16MHz */
+#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_8MHz (2UL) /*!< Trace Port clock is: 8MHz */
+#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_4MHz (3UL) /*!< Trace Port clock is: 4MHz */
 
 
 /* Peripheral: TIMER */
@@ -8386,9 +8416,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER_SUBSCRIBE_START_EN_Disabled (0UL) /*!< Disable subscription */
 #define TIMER_SUBSCRIBE_START_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task START will subscribe to */
+/* Bits 7..0 : DPPI channel that task START will subscribe to */
 #define TIMER_SUBSCRIBE_START_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TIMER_SUBSCRIBE_START_CHIDX_Msk (0xFUL << TIMER_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TIMER_SUBSCRIBE_START_CHIDX_Msk (0xFFUL << TIMER_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TIMER_SUBSCRIBE_STOP */
 /* Description: Subscribe configuration for task STOP */
@@ -8399,9 +8429,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER_SUBSCRIBE_STOP_EN_Disabled (0UL) /*!< Disable subscription */
 #define TIMER_SUBSCRIBE_STOP_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STOP will subscribe to */
+/* Bits 7..0 : DPPI channel that task STOP will subscribe to */
 #define TIMER_SUBSCRIBE_STOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TIMER_SUBSCRIBE_STOP_CHIDX_Msk (0xFUL << TIMER_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TIMER_SUBSCRIBE_STOP_CHIDX_Msk (0xFFUL << TIMER_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TIMER_SUBSCRIBE_COUNT */
 /* Description: Subscribe configuration for task COUNT */
@@ -8412,9 +8442,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER_SUBSCRIBE_COUNT_EN_Disabled (0UL) /*!< Disable subscription */
 #define TIMER_SUBSCRIBE_COUNT_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task COUNT will subscribe to */
+/* Bits 7..0 : DPPI channel that task COUNT will subscribe to */
 #define TIMER_SUBSCRIBE_COUNT_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TIMER_SUBSCRIBE_COUNT_CHIDX_Msk (0xFUL << TIMER_SUBSCRIBE_COUNT_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TIMER_SUBSCRIBE_COUNT_CHIDX_Msk (0xFFUL << TIMER_SUBSCRIBE_COUNT_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TIMER_SUBSCRIBE_CLEAR */
 /* Description: Subscribe configuration for task CLEAR */
@@ -8425,9 +8455,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER_SUBSCRIBE_CLEAR_EN_Disabled (0UL) /*!< Disable subscription */
 #define TIMER_SUBSCRIBE_CLEAR_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task CLEAR will subscribe to */
+/* Bits 7..0 : DPPI channel that task CLEAR will subscribe to */
 #define TIMER_SUBSCRIBE_CLEAR_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TIMER_SUBSCRIBE_CLEAR_CHIDX_Msk (0xFUL << TIMER_SUBSCRIBE_CLEAR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TIMER_SUBSCRIBE_CLEAR_CHIDX_Msk (0xFFUL << TIMER_SUBSCRIBE_CLEAR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TIMER_SUBSCRIBE_SHUTDOWN */
 /* Description: Deprecated register - Subscribe configuration for task SHUTDOWN */
@@ -8438,9 +8468,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER_SUBSCRIBE_SHUTDOWN_EN_Disabled (0UL) /*!< Disable subscription */
 #define TIMER_SUBSCRIBE_SHUTDOWN_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task SHUTDOWN will subscribe to */
+/* Bits 7..0 : DPPI channel that task SHUTDOWN will subscribe to */
 #define TIMER_SUBSCRIBE_SHUTDOWN_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TIMER_SUBSCRIBE_SHUTDOWN_CHIDX_Msk (0xFUL << TIMER_SUBSCRIBE_SHUTDOWN_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TIMER_SUBSCRIBE_SHUTDOWN_CHIDX_Msk (0xFFUL << TIMER_SUBSCRIBE_SHUTDOWN_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TIMER_SUBSCRIBE_CAPTURE */
 /* Description: Description collection: Subscribe configuration for task CAPTURE[n] */
@@ -8451,9 +8481,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER_SUBSCRIBE_CAPTURE_EN_Disabled (0UL) /*!< Disable subscription */
 #define TIMER_SUBSCRIBE_CAPTURE_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task CAPTURE[n] will subscribe to */
+/* Bits 7..0 : DPPI channel that task CAPTURE[n] will subscribe to */
 #define TIMER_SUBSCRIBE_CAPTURE_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TIMER_SUBSCRIBE_CAPTURE_CHIDX_Msk (0xFUL << TIMER_SUBSCRIBE_CAPTURE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TIMER_SUBSCRIBE_CAPTURE_CHIDX_Msk (0xFFUL << TIMER_SUBSCRIBE_CAPTURE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TIMER_EVENTS_COMPARE */
 /* Description: Description collection: Compare event on CC[n] match */
@@ -8473,9 +8503,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER_PUBLISH_COMPARE_EN_Disabled (0UL) /*!< Disable publishing */
 #define TIMER_PUBLISH_COMPARE_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event COMPARE[n] will publish to. */
+/* Bits 7..0 : DPPI channel that event COMPARE[n] will publish to */
 #define TIMER_PUBLISH_COMPARE_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TIMER_PUBLISH_COMPARE_CHIDX_Msk (0xFUL << TIMER_PUBLISH_COMPARE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TIMER_PUBLISH_COMPARE_CHIDX_Msk (0xFFUL << TIMER_PUBLISH_COMPARE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TIMER_SHORTS */
 /* Description: Shortcuts between local events and tasks */
@@ -8739,9 +8769,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_SUBSCRIBE_STARTRX_EN_Disabled (0UL) /*!< Disable subscription */
 #define TWIM_SUBSCRIBE_STARTRX_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STARTRX will subscribe to */
+/* Bits 7..0 : DPPI channel that task STARTRX will subscribe to */
 #define TWIM_SUBSCRIBE_STARTRX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIM_SUBSCRIBE_STARTRX_CHIDX_Msk (0xFUL << TWIM_SUBSCRIBE_STARTRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIM_SUBSCRIBE_STARTRX_CHIDX_Msk (0xFFUL << TWIM_SUBSCRIBE_STARTRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIM_SUBSCRIBE_STARTTX */
 /* Description: Subscribe configuration for task STARTTX */
@@ -8752,9 +8782,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_SUBSCRIBE_STARTTX_EN_Disabled (0UL) /*!< Disable subscription */
 #define TWIM_SUBSCRIBE_STARTTX_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STARTTX will subscribe to */
+/* Bits 7..0 : DPPI channel that task STARTTX will subscribe to */
 #define TWIM_SUBSCRIBE_STARTTX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIM_SUBSCRIBE_STARTTX_CHIDX_Msk (0xFUL << TWIM_SUBSCRIBE_STARTTX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIM_SUBSCRIBE_STARTTX_CHIDX_Msk (0xFFUL << TWIM_SUBSCRIBE_STARTTX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIM_SUBSCRIBE_STOP */
 /* Description: Subscribe configuration for task STOP */
@@ -8765,9 +8795,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_SUBSCRIBE_STOP_EN_Disabled (0UL) /*!< Disable subscription */
 #define TWIM_SUBSCRIBE_STOP_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STOP will subscribe to */
+/* Bits 7..0 : DPPI channel that task STOP will subscribe to */
 #define TWIM_SUBSCRIBE_STOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIM_SUBSCRIBE_STOP_CHIDX_Msk (0xFUL << TWIM_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIM_SUBSCRIBE_STOP_CHIDX_Msk (0xFFUL << TWIM_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIM_SUBSCRIBE_SUSPEND */
 /* Description: Subscribe configuration for task SUSPEND */
@@ -8778,9 +8808,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_SUBSCRIBE_SUSPEND_EN_Disabled (0UL) /*!< Disable subscription */
 #define TWIM_SUBSCRIBE_SUSPEND_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task SUSPEND will subscribe to */
+/* Bits 7..0 : DPPI channel that task SUSPEND will subscribe to */
 #define TWIM_SUBSCRIBE_SUSPEND_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIM_SUBSCRIBE_SUSPEND_CHIDX_Msk (0xFUL << TWIM_SUBSCRIBE_SUSPEND_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIM_SUBSCRIBE_SUSPEND_CHIDX_Msk (0xFFUL << TWIM_SUBSCRIBE_SUSPEND_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIM_SUBSCRIBE_RESUME */
 /* Description: Subscribe configuration for task RESUME */
@@ -8791,9 +8821,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_SUBSCRIBE_RESUME_EN_Disabled (0UL) /*!< Disable subscription */
 #define TWIM_SUBSCRIBE_RESUME_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task RESUME will subscribe to */
+/* Bits 7..0 : DPPI channel that task RESUME will subscribe to */
 #define TWIM_SUBSCRIBE_RESUME_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIM_SUBSCRIBE_RESUME_CHIDX_Msk (0xFUL << TWIM_SUBSCRIBE_RESUME_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIM_SUBSCRIBE_RESUME_CHIDX_Msk (0xFFUL << TWIM_SUBSCRIBE_RESUME_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIM_EVENTS_STOPPED */
 /* Description: TWI stopped */
@@ -8867,9 +8897,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_PUBLISH_STOPPED_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIM_PUBLISH_STOPPED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event STOPPED will publish to. */
+/* Bits 7..0 : DPPI channel that event STOPPED will publish to */
 #define TWIM_PUBLISH_STOPPED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIM_PUBLISH_STOPPED_CHIDX_Msk (0xFUL << TWIM_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIM_PUBLISH_STOPPED_CHIDX_Msk (0xFFUL << TWIM_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIM_PUBLISH_ERROR */
 /* Description: Publish configuration for event ERROR */
@@ -8880,9 +8910,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_PUBLISH_ERROR_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIM_PUBLISH_ERROR_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event ERROR will publish to. */
+/* Bits 7..0 : DPPI channel that event ERROR will publish to */
 #define TWIM_PUBLISH_ERROR_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIM_PUBLISH_ERROR_CHIDX_Msk (0xFUL << TWIM_PUBLISH_ERROR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIM_PUBLISH_ERROR_CHIDX_Msk (0xFFUL << TWIM_PUBLISH_ERROR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIM_PUBLISH_SUSPENDED */
 /* Description: Publish configuration for event SUSPENDED */
@@ -8893,9 +8923,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_PUBLISH_SUSPENDED_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIM_PUBLISH_SUSPENDED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event SUSPENDED will publish to. */
+/* Bits 7..0 : DPPI channel that event SUSPENDED will publish to */
 #define TWIM_PUBLISH_SUSPENDED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIM_PUBLISH_SUSPENDED_CHIDX_Msk (0xFUL << TWIM_PUBLISH_SUSPENDED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIM_PUBLISH_SUSPENDED_CHIDX_Msk (0xFFUL << TWIM_PUBLISH_SUSPENDED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIM_PUBLISH_RXSTARTED */
 /* Description: Publish configuration for event RXSTARTED */
@@ -8906,9 +8936,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_PUBLISH_RXSTARTED_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIM_PUBLISH_RXSTARTED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event RXSTARTED will publish to. */
+/* Bits 7..0 : DPPI channel that event RXSTARTED will publish to */
 #define TWIM_PUBLISH_RXSTARTED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIM_PUBLISH_RXSTARTED_CHIDX_Msk (0xFUL << TWIM_PUBLISH_RXSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIM_PUBLISH_RXSTARTED_CHIDX_Msk (0xFFUL << TWIM_PUBLISH_RXSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIM_PUBLISH_TXSTARTED */
 /* Description: Publish configuration for event TXSTARTED */
@@ -8919,9 +8949,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_PUBLISH_TXSTARTED_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIM_PUBLISH_TXSTARTED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event TXSTARTED will publish to. */
+/* Bits 7..0 : DPPI channel that event TXSTARTED will publish to */
 #define TWIM_PUBLISH_TXSTARTED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIM_PUBLISH_TXSTARTED_CHIDX_Msk (0xFUL << TWIM_PUBLISH_TXSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIM_PUBLISH_TXSTARTED_CHIDX_Msk (0xFFUL << TWIM_PUBLISH_TXSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIM_PUBLISH_LASTRX */
 /* Description: Publish configuration for event LASTRX */
@@ -8932,9 +8962,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_PUBLISH_LASTRX_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIM_PUBLISH_LASTRX_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event LASTRX will publish to. */
+/* Bits 7..0 : DPPI channel that event LASTRX will publish to */
 #define TWIM_PUBLISH_LASTRX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIM_PUBLISH_LASTRX_CHIDX_Msk (0xFUL << TWIM_PUBLISH_LASTRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIM_PUBLISH_LASTRX_CHIDX_Msk (0xFFUL << TWIM_PUBLISH_LASTRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIM_PUBLISH_LASTTX */
 /* Description: Publish configuration for event LASTTX */
@@ -8945,9 +8975,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_PUBLISH_LASTTX_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIM_PUBLISH_LASTTX_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event LASTTX will publish to. */
+/* Bits 7..0 : DPPI channel that event LASTTX will publish to */
 #define TWIM_PUBLISH_LASTTX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIM_PUBLISH_LASTTX_CHIDX_Msk (0xFUL << TWIM_PUBLISH_LASTTX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIM_PUBLISH_LASTTX_CHIDX_Msk (0xFFUL << TWIM_PUBLISH_LASTTX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIM_SHORTS */
 /* Description: Shortcuts between local events and tasks */
@@ -9323,9 +9353,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS_SUBSCRIBE_STOP_EN_Disabled (0UL) /*!< Disable subscription */
 #define TWIS_SUBSCRIBE_STOP_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STOP will subscribe to */
+/* Bits 7..0 : DPPI channel that task STOP will subscribe to */
 #define TWIS_SUBSCRIBE_STOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIS_SUBSCRIBE_STOP_CHIDX_Msk (0xFUL << TWIS_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIS_SUBSCRIBE_STOP_CHIDX_Msk (0xFFUL << TWIS_SUBSCRIBE_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIS_SUBSCRIBE_SUSPEND */
 /* Description: Subscribe configuration for task SUSPEND */
@@ -9336,9 +9366,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS_SUBSCRIBE_SUSPEND_EN_Disabled (0UL) /*!< Disable subscription */
 #define TWIS_SUBSCRIBE_SUSPEND_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task SUSPEND will subscribe to */
+/* Bits 7..0 : DPPI channel that task SUSPEND will subscribe to */
 #define TWIS_SUBSCRIBE_SUSPEND_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIS_SUBSCRIBE_SUSPEND_CHIDX_Msk (0xFUL << TWIS_SUBSCRIBE_SUSPEND_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIS_SUBSCRIBE_SUSPEND_CHIDX_Msk (0xFFUL << TWIS_SUBSCRIBE_SUSPEND_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIS_SUBSCRIBE_RESUME */
 /* Description: Subscribe configuration for task RESUME */
@@ -9349,9 +9379,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS_SUBSCRIBE_RESUME_EN_Disabled (0UL) /*!< Disable subscription */
 #define TWIS_SUBSCRIBE_RESUME_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task RESUME will subscribe to */
+/* Bits 7..0 : DPPI channel that task RESUME will subscribe to */
 #define TWIS_SUBSCRIBE_RESUME_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIS_SUBSCRIBE_RESUME_CHIDX_Msk (0xFUL << TWIS_SUBSCRIBE_RESUME_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIS_SUBSCRIBE_RESUME_CHIDX_Msk (0xFFUL << TWIS_SUBSCRIBE_RESUME_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIS_SUBSCRIBE_PREPARERX */
 /* Description: Subscribe configuration for task PREPARERX */
@@ -9362,9 +9392,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS_SUBSCRIBE_PREPARERX_EN_Disabled (0UL) /*!< Disable subscription */
 #define TWIS_SUBSCRIBE_PREPARERX_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task PREPARERX will subscribe to */
+/* Bits 7..0 : DPPI channel that task PREPARERX will subscribe to */
 #define TWIS_SUBSCRIBE_PREPARERX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIS_SUBSCRIBE_PREPARERX_CHIDX_Msk (0xFUL << TWIS_SUBSCRIBE_PREPARERX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIS_SUBSCRIBE_PREPARERX_CHIDX_Msk (0xFFUL << TWIS_SUBSCRIBE_PREPARERX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIS_SUBSCRIBE_PREPARETX */
 /* Description: Subscribe configuration for task PREPARETX */
@@ -9375,9 +9405,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS_SUBSCRIBE_PREPARETX_EN_Disabled (0UL) /*!< Disable subscription */
 #define TWIS_SUBSCRIBE_PREPARETX_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task PREPARETX will subscribe to */
+/* Bits 7..0 : DPPI channel that task PREPARETX will subscribe to */
 #define TWIS_SUBSCRIBE_PREPARETX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIS_SUBSCRIBE_PREPARETX_CHIDX_Msk (0xFUL << TWIS_SUBSCRIBE_PREPARETX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIS_SUBSCRIBE_PREPARETX_CHIDX_Msk (0xFFUL << TWIS_SUBSCRIBE_PREPARETX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIS_EVENTS_STOPPED */
 /* Description: TWI stopped */
@@ -9442,9 +9472,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS_PUBLISH_STOPPED_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIS_PUBLISH_STOPPED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event STOPPED will publish to. */
+/* Bits 7..0 : DPPI channel that event STOPPED will publish to */
 #define TWIS_PUBLISH_STOPPED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIS_PUBLISH_STOPPED_CHIDX_Msk (0xFUL << TWIS_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIS_PUBLISH_STOPPED_CHIDX_Msk (0xFFUL << TWIS_PUBLISH_STOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIS_PUBLISH_ERROR */
 /* Description: Publish configuration for event ERROR */
@@ -9455,9 +9485,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS_PUBLISH_ERROR_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIS_PUBLISH_ERROR_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event ERROR will publish to. */
+/* Bits 7..0 : DPPI channel that event ERROR will publish to */
 #define TWIS_PUBLISH_ERROR_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIS_PUBLISH_ERROR_CHIDX_Msk (0xFUL << TWIS_PUBLISH_ERROR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIS_PUBLISH_ERROR_CHIDX_Msk (0xFFUL << TWIS_PUBLISH_ERROR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIS_PUBLISH_RXSTARTED */
 /* Description: Publish configuration for event RXSTARTED */
@@ -9468,9 +9498,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS_PUBLISH_RXSTARTED_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIS_PUBLISH_RXSTARTED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event RXSTARTED will publish to. */
+/* Bits 7..0 : DPPI channel that event RXSTARTED will publish to */
 #define TWIS_PUBLISH_RXSTARTED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIS_PUBLISH_RXSTARTED_CHIDX_Msk (0xFUL << TWIS_PUBLISH_RXSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIS_PUBLISH_RXSTARTED_CHIDX_Msk (0xFFUL << TWIS_PUBLISH_RXSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIS_PUBLISH_TXSTARTED */
 /* Description: Publish configuration for event TXSTARTED */
@@ -9481,9 +9511,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS_PUBLISH_TXSTARTED_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIS_PUBLISH_TXSTARTED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event TXSTARTED will publish to. */
+/* Bits 7..0 : DPPI channel that event TXSTARTED will publish to */
 #define TWIS_PUBLISH_TXSTARTED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIS_PUBLISH_TXSTARTED_CHIDX_Msk (0xFUL << TWIS_PUBLISH_TXSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIS_PUBLISH_TXSTARTED_CHIDX_Msk (0xFFUL << TWIS_PUBLISH_TXSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIS_PUBLISH_WRITE */
 /* Description: Publish configuration for event WRITE */
@@ -9494,9 +9524,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS_PUBLISH_WRITE_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIS_PUBLISH_WRITE_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event WRITE will publish to. */
+/* Bits 7..0 : DPPI channel that event WRITE will publish to */
 #define TWIS_PUBLISH_WRITE_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIS_PUBLISH_WRITE_CHIDX_Msk (0xFUL << TWIS_PUBLISH_WRITE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIS_PUBLISH_WRITE_CHIDX_Msk (0xFFUL << TWIS_PUBLISH_WRITE_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIS_PUBLISH_READ */
 /* Description: Publish configuration for event READ */
@@ -9507,9 +9537,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS_PUBLISH_READ_EN_Disabled (0UL) /*!< Disable publishing */
 #define TWIS_PUBLISH_READ_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event READ will publish to. */
+/* Bits 7..0 : DPPI channel that event READ will publish to */
 #define TWIS_PUBLISH_READ_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define TWIS_PUBLISH_READ_CHIDX_Msk (0xFUL << TWIS_PUBLISH_READ_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define TWIS_PUBLISH_READ_CHIDX_Msk (0xFFUL << TWIS_PUBLISH_READ_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: TWIS_SHORTS */
 /* Description: Shortcuts between local events and tasks */
@@ -9679,7 +9709,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: TWIS_MATCH */
 /* Description: Status register indicating which address had a match */
 
-/* Bit 0 : Which of the addresses in {ADDRESS} matched the incoming address */
+/* Bit 0 : Indication of which address in {ADDRESS} that matched the incoming address */
 #define TWIS_MATCH_MATCH_Pos (0UL) /*!< Position of MATCH field. */
 #define TWIS_MATCH_MATCH_Msk (0x1UL << TWIS_MATCH_MATCH_Pos) /*!< Bit mask of MATCH field. */
 
@@ -9860,9 +9890,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_SUBSCRIBE_STARTRX_EN_Disabled (0UL) /*!< Disable subscription */
 #define UARTE_SUBSCRIBE_STARTRX_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STARTRX will subscribe to */
+/* Bits 7..0 : DPPI channel that task STARTRX will subscribe to */
 #define UARTE_SUBSCRIBE_STARTRX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_SUBSCRIBE_STARTRX_CHIDX_Msk (0xFUL << UARTE_SUBSCRIBE_STARTRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_SUBSCRIBE_STARTRX_CHIDX_Msk (0xFFUL << UARTE_SUBSCRIBE_STARTRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_SUBSCRIBE_STOPRX */
 /* Description: Subscribe configuration for task STOPRX */
@@ -9873,9 +9903,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_SUBSCRIBE_STOPRX_EN_Disabled (0UL) /*!< Disable subscription */
 #define UARTE_SUBSCRIBE_STOPRX_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STOPRX will subscribe to */
+/* Bits 7..0 : DPPI channel that task STOPRX will subscribe to */
 #define UARTE_SUBSCRIBE_STOPRX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_SUBSCRIBE_STOPRX_CHIDX_Msk (0xFUL << UARTE_SUBSCRIBE_STOPRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_SUBSCRIBE_STOPRX_CHIDX_Msk (0xFFUL << UARTE_SUBSCRIBE_STOPRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_SUBSCRIBE_STARTTX */
 /* Description: Subscribe configuration for task STARTTX */
@@ -9886,9 +9916,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_SUBSCRIBE_STARTTX_EN_Disabled (0UL) /*!< Disable subscription */
 #define UARTE_SUBSCRIBE_STARTTX_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STARTTX will subscribe to */
+/* Bits 7..0 : DPPI channel that task STARTTX will subscribe to */
 #define UARTE_SUBSCRIBE_STARTTX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_SUBSCRIBE_STARTTX_CHIDX_Msk (0xFUL << UARTE_SUBSCRIBE_STARTTX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_SUBSCRIBE_STARTTX_CHIDX_Msk (0xFFUL << UARTE_SUBSCRIBE_STARTTX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_SUBSCRIBE_STOPTX */
 /* Description: Subscribe configuration for task STOPTX */
@@ -9899,9 +9929,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_SUBSCRIBE_STOPTX_EN_Disabled (0UL) /*!< Disable subscription */
 #define UARTE_SUBSCRIBE_STOPTX_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task STOPTX will subscribe to */
+/* Bits 7..0 : DPPI channel that task STOPTX will subscribe to */
 #define UARTE_SUBSCRIBE_STOPTX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_SUBSCRIBE_STOPTX_CHIDX_Msk (0xFUL << UARTE_SUBSCRIBE_STOPTX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_SUBSCRIBE_STOPTX_CHIDX_Msk (0xFFUL << UARTE_SUBSCRIBE_STOPTX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_SUBSCRIBE_FLUSHRX */
 /* Description: Subscribe configuration for task FLUSHRX */
@@ -9912,9 +9942,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_SUBSCRIBE_FLUSHRX_EN_Disabled (0UL) /*!< Disable subscription */
 #define UARTE_SUBSCRIBE_FLUSHRX_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task FLUSHRX will subscribe to */
+/* Bits 7..0 : DPPI channel that task FLUSHRX will subscribe to */
 #define UARTE_SUBSCRIBE_FLUSHRX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_SUBSCRIBE_FLUSHRX_CHIDX_Msk (0xFUL << UARTE_SUBSCRIBE_FLUSHRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_SUBSCRIBE_FLUSHRX_CHIDX_Msk (0xFFUL << UARTE_SUBSCRIBE_FLUSHRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_EVENTS_CTS */
 /* Description: CTS is activated (set low). Clear To Send. */
@@ -10024,9 +10054,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_PUBLISH_CTS_EN_Disabled (0UL) /*!< Disable publishing */
 #define UARTE_PUBLISH_CTS_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event CTS will publish to. */
+/* Bits 7..0 : DPPI channel that event CTS will publish to */
 #define UARTE_PUBLISH_CTS_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_PUBLISH_CTS_CHIDX_Msk (0xFUL << UARTE_PUBLISH_CTS_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_PUBLISH_CTS_CHIDX_Msk (0xFFUL << UARTE_PUBLISH_CTS_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_PUBLISH_NCTS */
 /* Description: Publish configuration for event NCTS */
@@ -10037,9 +10067,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_PUBLISH_NCTS_EN_Disabled (0UL) /*!< Disable publishing */
 #define UARTE_PUBLISH_NCTS_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event NCTS will publish to. */
+/* Bits 7..0 : DPPI channel that event NCTS will publish to */
 #define UARTE_PUBLISH_NCTS_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_PUBLISH_NCTS_CHIDX_Msk (0xFUL << UARTE_PUBLISH_NCTS_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_PUBLISH_NCTS_CHIDX_Msk (0xFFUL << UARTE_PUBLISH_NCTS_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_PUBLISH_RXDRDY */
 /* Description: Publish configuration for event RXDRDY */
@@ -10050,9 +10080,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_PUBLISH_RXDRDY_EN_Disabled (0UL) /*!< Disable publishing */
 #define UARTE_PUBLISH_RXDRDY_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event RXDRDY will publish to. */
+/* Bits 7..0 : DPPI channel that event RXDRDY will publish to */
 #define UARTE_PUBLISH_RXDRDY_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_PUBLISH_RXDRDY_CHIDX_Msk (0xFUL << UARTE_PUBLISH_RXDRDY_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_PUBLISH_RXDRDY_CHIDX_Msk (0xFFUL << UARTE_PUBLISH_RXDRDY_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_PUBLISH_ENDRX */
 /* Description: Publish configuration for event ENDRX */
@@ -10063,9 +10093,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_PUBLISH_ENDRX_EN_Disabled (0UL) /*!< Disable publishing */
 #define UARTE_PUBLISH_ENDRX_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event ENDRX will publish to. */
+/* Bits 7..0 : DPPI channel that event ENDRX will publish to */
 #define UARTE_PUBLISH_ENDRX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_PUBLISH_ENDRX_CHIDX_Msk (0xFUL << UARTE_PUBLISH_ENDRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_PUBLISH_ENDRX_CHIDX_Msk (0xFFUL << UARTE_PUBLISH_ENDRX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_PUBLISH_TXDRDY */
 /* Description: Publish configuration for event TXDRDY */
@@ -10076,9 +10106,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_PUBLISH_TXDRDY_EN_Disabled (0UL) /*!< Disable publishing */
 #define UARTE_PUBLISH_TXDRDY_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event TXDRDY will publish to. */
+/* Bits 7..0 : DPPI channel that event TXDRDY will publish to */
 #define UARTE_PUBLISH_TXDRDY_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_PUBLISH_TXDRDY_CHIDX_Msk (0xFUL << UARTE_PUBLISH_TXDRDY_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_PUBLISH_TXDRDY_CHIDX_Msk (0xFFUL << UARTE_PUBLISH_TXDRDY_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_PUBLISH_ENDTX */
 /* Description: Publish configuration for event ENDTX */
@@ -10089,9 +10119,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_PUBLISH_ENDTX_EN_Disabled (0UL) /*!< Disable publishing */
 #define UARTE_PUBLISH_ENDTX_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event ENDTX will publish to. */
+/* Bits 7..0 : DPPI channel that event ENDTX will publish to */
 #define UARTE_PUBLISH_ENDTX_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_PUBLISH_ENDTX_CHIDX_Msk (0xFUL << UARTE_PUBLISH_ENDTX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_PUBLISH_ENDTX_CHIDX_Msk (0xFFUL << UARTE_PUBLISH_ENDTX_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_PUBLISH_ERROR */
 /* Description: Publish configuration for event ERROR */
@@ -10102,9 +10132,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_PUBLISH_ERROR_EN_Disabled (0UL) /*!< Disable publishing */
 #define UARTE_PUBLISH_ERROR_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event ERROR will publish to. */
+/* Bits 7..0 : DPPI channel that event ERROR will publish to */
 #define UARTE_PUBLISH_ERROR_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_PUBLISH_ERROR_CHIDX_Msk (0xFUL << UARTE_PUBLISH_ERROR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_PUBLISH_ERROR_CHIDX_Msk (0xFFUL << UARTE_PUBLISH_ERROR_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_PUBLISH_RXTO */
 /* Description: Publish configuration for event RXTO */
@@ -10115,9 +10145,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_PUBLISH_RXTO_EN_Disabled (0UL) /*!< Disable publishing */
 #define UARTE_PUBLISH_RXTO_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event RXTO will publish to. */
+/* Bits 7..0 : DPPI channel that event RXTO will publish to */
 #define UARTE_PUBLISH_RXTO_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_PUBLISH_RXTO_CHIDX_Msk (0xFUL << UARTE_PUBLISH_RXTO_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_PUBLISH_RXTO_CHIDX_Msk (0xFFUL << UARTE_PUBLISH_RXTO_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_PUBLISH_RXSTARTED */
 /* Description: Publish configuration for event RXSTARTED */
@@ -10128,9 +10158,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_PUBLISH_RXSTARTED_EN_Disabled (0UL) /*!< Disable publishing */
 #define UARTE_PUBLISH_RXSTARTED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event RXSTARTED will publish to. */
+/* Bits 7..0 : DPPI channel that event RXSTARTED will publish to */
 #define UARTE_PUBLISH_RXSTARTED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_PUBLISH_RXSTARTED_CHIDX_Msk (0xFUL << UARTE_PUBLISH_RXSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_PUBLISH_RXSTARTED_CHIDX_Msk (0xFFUL << UARTE_PUBLISH_RXSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_PUBLISH_TXSTARTED */
 /* Description: Publish configuration for event TXSTARTED */
@@ -10141,9 +10171,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_PUBLISH_TXSTARTED_EN_Disabled (0UL) /*!< Disable publishing */
 #define UARTE_PUBLISH_TXSTARTED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event TXSTARTED will publish to. */
+/* Bits 7..0 : DPPI channel that event TXSTARTED will publish to */
 #define UARTE_PUBLISH_TXSTARTED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_PUBLISH_TXSTARTED_CHIDX_Msk (0xFUL << UARTE_PUBLISH_TXSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_PUBLISH_TXSTARTED_CHIDX_Msk (0xFFUL << UARTE_PUBLISH_TXSTARTED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_PUBLISH_TXSTOPPED */
 /* Description: Publish configuration for event TXSTOPPED */
@@ -10154,9 +10184,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_PUBLISH_TXSTOPPED_EN_Disabled (0UL) /*!< Disable publishing */
 #define UARTE_PUBLISH_TXSTOPPED_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event TXSTOPPED will publish to. */
+/* Bits 7..0 : DPPI channel that event TXSTOPPED will publish to */
 #define UARTE_PUBLISH_TXSTOPPED_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define UARTE_PUBLISH_TXSTOPPED_CHIDX_Msk (0xFUL << UARTE_PUBLISH_TXSTOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define UARTE_PUBLISH_TXSTOPPED_CHIDX_Msk (0xFFUL << UARTE_PUBLISH_TXSTOPPED_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: UARTE_SHORTS */
 /* Description: Shortcuts between local events and tasks */
@@ -10403,7 +10433,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_INTENCLR_CTS_Clear (1UL) /*!< Disable */
 
 /* Register: UARTE_ERRORSRC */
-/* Description: Error source Note : this register is read / write one to clear. */
+/* Description: Error source This register is read/write one to clear. */
 
 /* Bit 3 : Break condition */
 #define UARTE_ERRORSRC_BREAK_Pos (3UL) /*!< Position of BREAK field. */
@@ -10513,7 +10543,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE_BAUDRATE_BAUDRATE_Baud250000 (0x04000000UL) /*!< 250000 baud */
 #define UARTE_BAUDRATE_BAUDRATE_Baud460800 (0x07400000UL) /*!< 460800 baud (actual rate: 457143) */
 #define UARTE_BAUDRATE_BAUDRATE_Baud921600 (0x0F000000UL) /*!< 921600 baud (actual rate: 941176) */
-#define UARTE_BAUDRATE_BAUDRATE_Baud1M (0x10000000UL) /*!< 1Mega baud */
+#define UARTE_BAUDRATE_BAUDRATE_Baud1M (0x10000000UL) /*!< 1 megabaud */
 
 /* Register: UARTE_RXD_PTR */
 /* Description: Data pointer */
@@ -10617,6 +10647,15 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UICR_HFXOCNT_HFXOCNT_MinDebounceTime (0UL) /*!< Min debounce time = (0*64 us + 0.5 us) */
 #define UICR_HFXOCNT_HFXOCNT_MaxDebounceTime (255UL) /*!< Max debounce time = (255*64 us + 0.5 us) */
 
+/* Register: UICR_APPNVMCPOFGUARD */
+/* Description: Enable blocking NVM WRITE and aborting NVM ERASE for Application NVM in POFWARN condition . */
+
+/* Bit 0 : Enable blocking NVM WRITE and aborting NVM ERASE in POFWARN condition */
+#define UICR_APPNVMCPOFGUARD_NVMCPOFGUARDEN_Pos (0UL) /*!< Position of NVMCPOFGUARDEN field. */
+#define UICR_APPNVMCPOFGUARD_NVMCPOFGUARDEN_Msk (0x1UL << UICR_APPNVMCPOFGUARD_NVMCPOFGUARDEN_Pos) /*!< Bit mask of NVMCPOFGUARDEN field. */
+#define UICR_APPNVMCPOFGUARD_NVMCPOFGUARDEN_Disabled (0UL) /*!< NVM WRITE and NVM ERASE are not blocked in POFWARN condition */
+#define UICR_APPNVMCPOFGUARD_NVMCPOFGUARDEN_Enabled (1UL) /*!< NVM WRITE and NVM ERASE are blocked in POFWARN condition */
+
 /* Register: UICR_SECUREAPPROTECT */
 /* Description: Secure access port protection */
 
@@ -10649,9 +10688,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* Register: UICR_KEYSLOT_CONFIG_DEST */
 /* Description: Description cluster: Destination address where content of the key value registers (KEYSLOT.KEYn.VALUE[0-3])
-          will be pushed by KMU. Note that this address MUST match that of a peripherals
+          will be pushed by KMU. Note that this address must match that of a peripherals
           APB mapped write-only key registers, else the KMU can push this key value into
-          an address range which the CPU can potentially read! */
+          an address range which the CPU can potentially read. */
 
 /* Bits 31..0 : Secure APB destination address */
 #define UICR_KEYSLOT_CONFIG_DEST_DEST_Pos (0UL) /*!< Position of DEST field. */
@@ -10853,9 +10892,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define WDT_SUBSCRIBE_START_EN_Disabled (0UL) /*!< Disable subscription */
 #define WDT_SUBSCRIBE_START_EN_Enabled (1UL) /*!< Enable subscription */
 
-/* Bits 3..0 : Channel that task START will subscribe to */
+/* Bits 7..0 : DPPI channel that task START will subscribe to */
 #define WDT_SUBSCRIBE_START_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define WDT_SUBSCRIBE_START_CHIDX_Msk (0xFUL << WDT_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define WDT_SUBSCRIBE_START_CHIDX_Msk (0xFFUL << WDT_SUBSCRIBE_START_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: WDT_EVENTS_TIMEOUT */
 /* Description: Watchdog timeout */
@@ -10875,9 +10914,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define WDT_PUBLISH_TIMEOUT_EN_Disabled (0UL) /*!< Disable publishing */
 #define WDT_PUBLISH_TIMEOUT_EN_Enabled (1UL) /*!< Enable publishing */
 
-/* Bits 3..0 : Channel that event TIMEOUT will publish to. */
+/* Bits 7..0 : DPPI channel that event TIMEOUT will publish to */
 #define WDT_PUBLISH_TIMEOUT_CHIDX_Pos (0UL) /*!< Position of CHIDX field. */
-#define WDT_PUBLISH_TIMEOUT_CHIDX_Msk (0xFUL << WDT_PUBLISH_TIMEOUT_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
+#define WDT_PUBLISH_TIMEOUT_CHIDX_Msk (0xFFUL << WDT_PUBLISH_TIMEOUT_CHIDX_Pos) /*!< Bit mask of CHIDX field. */
 
 /* Register: WDT_INTENSET */
 /* Description: Enable interrupt */

@@ -349,6 +349,15 @@ NRFX_STATIC_INLINE nrfx_err_t nrfx_twi_bus_recover(uint32_t scl_pin, uint32_t sd
 }
 #endif
 
+/**
+ * @brief Macro returning TWI interrupt handler.
+ *
+ * param[in] idx TWI index.
+ *
+ * @return Interrupt handler.
+ */
+#define NRFX_TWI_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_twi_, idx, _irq_handler)
+
 /** @} */
 
 

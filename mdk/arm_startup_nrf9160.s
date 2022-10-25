@@ -92,10 +92,10 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     CLOCK_POWER_IRQHandler
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
-                DCD     UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler
-                DCD     UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler
-                DCD     UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler
-                DCD     UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler
+                DCD     SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQHandler
+                DCD     SPIM1_SPIS1_TWIM1_TWIS1_UARTE1_IRQHandler
+                DCD     SPIM2_SPIS2_TWIM2_TWIS2_UARTE2_IRQHandler
+                DCD     SPIM3_SPIS3_TWIM3_TWIS3_UARTE3_IRQHandler
                 DCD     0                         ; Reserved
                 DCD     GPIOTE0_IRQHandler
                 DCD     SAADC_IRQHandler
@@ -399,10 +399,10 @@ Default_Handler PROC
 
                 EXPORT   SPU_IRQHandler [WEAK]
                 EXPORT   CLOCK_POWER_IRQHandler [WEAK]
-                EXPORT   UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler [WEAK]
-                EXPORT   UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler [WEAK]
-                EXPORT   UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler [WEAK]
-                EXPORT   UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler [WEAK]
+                EXPORT   SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQHandler [WEAK]
+                EXPORT   SPIM1_SPIS1_TWIM1_TWIS1_UARTE1_IRQHandler [WEAK]
+                EXPORT   SPIM2_SPIS2_TWIM2_TWIS2_UARTE2_IRQHandler [WEAK]
+                EXPORT   SPIM3_SPIS3_TWIM3_TWIS3_UARTE3_IRQHandler [WEAK]
                 EXPORT   GPIOTE0_IRQHandler [WEAK]
                 EXPORT   SAADC_IRQHandler [WEAK]
                 EXPORT   TIMER0_IRQHandler [WEAK]
@@ -430,10 +430,10 @@ Default_Handler PROC
                 EXPORT   CRYPTOCELL_IRQHandler [WEAK]
 SPU_IRQHandler
 CLOCK_POWER_IRQHandler
-UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler
-UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler
-UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler
-UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler
+SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQHandler
+SPIM1_SPIS1_TWIM1_TWIS1_UARTE1_IRQHandler
+SPIM2_SPIS2_TWIM2_TWIS2_UARTE2_IRQHandler
+SPIM3_SPIS3_TWIM3_TWIS3_UARTE3_IRQHandler
 GPIOTE0_IRQHandler
 SAADC_IRQHandler
 TIMER0_IRQHandler

@@ -230,6 +230,7 @@ static bool nrf52_configuration_255(void) __UNUSED;
 static bool nrf52_configuration_256(void) __UNUSED;
 static bool nrf52_configuration_257(void) __UNUSED;
 static bool nrf52_errata_258(void) __UNUSED;
+static bool nrf52_errata_259(void) __UNUSED;
 static bool nrf52_errata_262(void) __UNUSED;
 
 /* ========= Errata 1 ========= */
@@ -13624,6 +13625,88 @@ static bool nrf52_errata_258(void)
         #endif
         #if defined (NRF52811_XXAA) || defined (DEVELOP_IN_NRF52811)
             if (var1 == 0x0E)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    case 0x01ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF52820_XXAA) || defined (DEVELOP_IN_NRF52820)
+            if (var1 == 0x10)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    case 0x01ul:
+                        return true;
+                    case 0x02ul:
+                        return true;
+                    case 0x03ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        return false;
+    #endif
+}
+
+/* ========= Errata 259 ========= */
+#if    defined (NRF52820_XXAA) || defined (DEVELOP_IN_NRF52820) \
+    || defined (NRF52833_XXAA) || defined (DEVELOP_IN_NRF52833) \
+    || defined (NRF52840_XXAA) || defined (DEVELOP_IN_NRF52840)
+    #define NRF52_ERRATA_259_PRESENT 1
+#else
+    #define NRF52_ERRATA_259_PRESENT 0
+#endif
+
+#ifndef NRF52_ERRATA_259_ENABLE_WORKAROUND
+    #define NRF52_ERRATA_259_ENABLE_WORKAROUND NRF52_ERRATA_259_PRESENT
+#endif
+
+static bool nrf52_errata_259(void)
+{
+    #ifndef NRF52_SERIES
+        return false;
+    #else
+        #if defined (NRF52820_XXAA) || defined (DEVELOP_IN_NRF52820)\
+         || defined (NRF52833_XXAA) || defined (DEVELOP_IN_NRF52833)\
+         || defined (NRF52840_XXAA) || defined (DEVELOP_IN_NRF52840)
+            uint32_t var1 = *(uint32_t *)0x10000130ul;
+            uint32_t var2 = *(uint32_t *)0x10000134ul;
+        #endif
+        #if defined (NRF52840_XXAA) || defined (DEVELOP_IN_NRF52840)
+            if (var1 == 0x08)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    case 0x01ul:
+                        return true;
+                    case 0x02ul:
+                        return true;
+                    case 0x03ul:
+                        return true;
+                    case 0x04ul:
+                        return true;
+                    case 0x05ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF52833_XXAA) || defined (DEVELOP_IN_NRF52833)
+            if (var1 == 0x0D)
             {
                 switch(var2)
                 {

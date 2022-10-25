@@ -253,7 +253,8 @@ void nrfx_clock_calibration_timer_start(uint8_t interval);
 /** @brief Function for stopping the calibration timer. */
 void nrfx_clock_calibration_timer_stop(void);
 
-/**@brief Function for returning a requested task address for the clock driver module.
+/**
+ * @brief Function for returning a requested task address for the clock driver module.
  *
  * @param[in] task One of the peripheral tasks.
  *
@@ -261,7 +262,8 @@ void nrfx_clock_calibration_timer_stop(void);
  */
 NRFX_STATIC_INLINE uint32_t nrfx_clock_ppi_task_addr(nrf_clock_task_t task);
 
-/**@brief Function for returning a requested event address for the clock driver module.
+/**
+ * @brief Function for returning a requested event address for the clock driver module.
  *
  * @param[in] event One of the peripheral events.
  *

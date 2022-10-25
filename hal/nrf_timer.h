@@ -47,6 +47,15 @@ extern "C" {
  * @brief   Hardware access layer for managing the TIMER peripheral.
  */
 
+/**
+ * @brief Macro getting pointer to the structure of registers of the TIMER peripheral.
+ *
+ * @param[in] idx TIMER instance index.
+ *
+ * @return Pointer to the structure of registers of the TIMER peripheral.
+ */
+#define NRF_TIMER_INST_GET(idx) NRFX_CONCAT_2(NRF_TIMER, idx)
+
 #if defined(TIMER_INTENSET_COMPARE4_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether timer has capture/compare channel 4. */
 #define NRF_TIMER_HAS_CC4 1
@@ -88,6 +97,9 @@ extern "C" {
 #else
 #define NRF_TIMER_HAS_ONE_SHOT 0
 #endif
+
+/** @brief Base frequency value 16 MHz for timer. */
+#define NRF_TIMER_BASE_FREQUENCY_16MHZ (16000000UL)
 
 /** @brief Maximum value of PRESCALER register. */
 #define NRF_TIMER_PRESCALER_MAX 9
@@ -153,6 +165,24 @@ extern "C" {
 #else
     #error "Not supported timer count"
 #endif
+
+/**
+ * @brief Macro for getting base frequency value in Hz for the specified timer.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ */
+#define NRF_TIMER_BASE_FREQUENCY_GET(p_reg) NRF_TIMER_BASE_FREQUENCY_16MHZ
+
+/**
+ * @brief Macro for computing prescaler value for given base frequency and desired frequency.
+ *
+ * @warning Not every combination of base frequency and desired frequency is supported.
+ *
+ * @param[in] base_freq Base clock frequency for timer in Hz.
+ * @param[in] frequency Desired frequency value in Hz.
+ */
+#define NRF_TIMER_PRESCALER_CALCULATE(base_freq, frequency) \
+        NRF_CTZ((uint32_t)(base_freq) / (uint32_t)(frequency))
 
 /**
  * @brief Macro for getting the number of capture/compare channels available

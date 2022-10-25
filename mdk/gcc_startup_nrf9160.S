@@ -98,10 +98,10 @@ __isr_vector:
     .long   CLOCK_POWER_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
-    .long   UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler
-    .long   UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler
-    .long   UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler
-    .long   UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler
+    .long   SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQHandler
+    .long   SPIM1_SPIS1_TWIM1_TWIS1_UARTE1_IRQHandler
+    .long   SPIM2_SPIS2_TWIM2_TWIS2_UARTE2_IRQHandler
+    .long   SPIM3_SPIS3_TWIM3_TWIS3_UARTE3_IRQHandler
     .long   0                           /*Reserved */
     .long   GPIOTE0_IRQHandler
     .long   SAADC_IRQHandler
@@ -502,10 +502,10 @@ Default_Handler:
 
     IRQ  SPU_IRQHandler
     IRQ  CLOCK_POWER_IRQHandler
-    IRQ  UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler
-    IRQ  UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler
-    IRQ  UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler
-    IRQ  UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler
+    IRQ  SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQHandler
+    IRQ  SPIM1_SPIS1_TWIM1_TWIS1_UARTE1_IRQHandler
+    IRQ  SPIM2_SPIS2_TWIM2_TWIS2_UARTE2_IRQHandler
+    IRQ  SPIM3_SPIS3_TWIM3_TWIS3_UARTE3_IRQHandler
     IRQ  GPIOTE0_IRQHandler
     IRQ  SAADC_IRQHandler
     IRQ  TIMER0_IRQHandler

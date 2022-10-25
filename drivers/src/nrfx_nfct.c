@@ -136,7 +136,7 @@ typedef enum
     NRFX_NFC_FIELD_STATE_UNKNOWN /**< Both NFCT field events have been set - ambiguous state. */
 } nrfx_nfct_field_state_t;
 
-/**@brief NFCT control block. */
+/** @brief NFCT control block. */
 typedef struct
 {
     nrfx_nfct_config_t config;
@@ -175,7 +175,7 @@ static void nrfx_nfct_frame_delay_max_set(bool default_delay)
     }
 }
 
-/**@brief Function for evaluating and handling the NFC field events.
+/** @brief Function for evaluating and handling the NFC field events.
  *
  * @param[in]  field_state  Current field state.
  */

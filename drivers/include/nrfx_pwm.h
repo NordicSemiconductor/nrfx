@@ -483,6 +483,15 @@ NRFX_STATIC_INLINE uint32_t nrfx_pwm_event_address_get(nrfx_pwm_t const * p_inst
 }
 #endif // NRFX_DECLARE_ONLY
 
+/**
+ * @brief Macro returning PWM interrupt handler.
+ *
+ * param[in] idx PWM index.
+ *
+ * @return Interrupt handler.
+ */
+#define NRFX_PWM_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_pwm_, idx, _irq_handler)
+
 /** @} */
 
 

@@ -10555,7 +10555,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define QSPI_IFCONFIG1_DPMEN_Exit (0UL) /*!< Exit DPM. */
 #define QSPI_IFCONFIG1_DPMEN_Enter (1UL) /*!< Enter DPM. */
 
-/* Bits 7..0 : Minimum amount of time that the CSN pin must stay high before it can go low again. Value is specified in number of 16 MHz periods (62.5 ns). */
+/* Bits 7..0 : Minimum amount of time that the CSN pin must stay high before it can go low again. Value is specified in number of 32 MHz periods (31.25 ns). */
 #define QSPI_IFCONFIG1_SCKDELAY_Pos (0UL) /*!< Position of SCKDELAY field. */
 #define QSPI_IFCONFIG1_SCKDELAY_Msk (0xFFUL << QSPI_IFCONFIG1_SCKDELAY_Pos) /*!< Bit mask of SCKDELAY field. */
 
@@ -10581,11 +10581,11 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: QSPI_DPMDUR */
 /* Description: Set the duration required to enter/exit deep power-down mode (DPM). */
 
-/* Bits 31..16 : Duration needed by external flash to exit DPM. Duration is given as EXIT * 256 * 62.5 ns. */
+/* Bits 31..16 : Duration needed by external flash to exit DPM. Duration is given as EXIT * 256 * 31.25 ns. */
 #define QSPI_DPMDUR_EXIT_Pos (16UL) /*!< Position of EXIT field. */
 #define QSPI_DPMDUR_EXIT_Msk (0xFFFFUL << QSPI_DPMDUR_EXIT_Pos) /*!< Bit mask of EXIT field. */
 
-/* Bits 15..0 : Duration needed by external flash to enter DPM. Duration is given as ENTER * 256 * 62.5 ns. */
+/* Bits 15..0 : Duration needed by external flash to enter DPM. Duration is given as ENTER * 256 * 31.25 ns */
 #define QSPI_DPMDUR_ENTER_Pos (0UL) /*!< Position of ENTER field. */
 #define QSPI_DPMDUR_ENTER_Msk (0xFFFFUL << QSPI_DPMDUR_ENTER_Pos) /*!< Bit mask of ENTER field. */
 

@@ -417,6 +417,15 @@ uint32_t nrfx_spim_end_event_get(nrfx_spim_t const * p_instance);
  */
 void nrfx_spim_abort(nrfx_spim_t const * p_instance);
 
+/**
+ * @brief Macro returning SPIM interrupt handler.
+ *
+ * param[in] idx SPIM index.
+ *
+ * @return Interrupt handler.
+ */
+#define NRFX_SPIM_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_spim_, idx, _irq_handler)
+
 /** @} */
 
 

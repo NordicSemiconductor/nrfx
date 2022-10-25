@@ -384,6 +384,15 @@ NRFX_STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_in
 }
 #endif // NRFX_DECLARE_ONLY
 
+/**
+ * @brief Macro returning UART interrupt handler.
+ *
+ * param[in] idx UART index.
+ *
+ * @return Interrupt handler.
+ */
+#define NRFX_UART_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_uart_, idx, _irq_handler)
+
 /** @} */
 
 

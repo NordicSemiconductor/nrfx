@@ -101,7 +101,7 @@ static void csn_event_handler(nrfx_gpiote_pin_t     pin,
 #endif
 
 
-/**@brief States of the SPI transaction state machine. */
+/** @brief States of the SPI transaction state machine. */
 typedef enum
 {
     SPIS_STATE_INIT,                                 /**< Initialization state. In this state the module waits for a call to @ref spi_slave_buffers_set. */
@@ -110,7 +110,7 @@ typedef enum
     SPIS_XFER_COMPLETED                              /**< State where SPI transaction has been completed. */
 } nrfx_spis_state_t;
 
-/**@brief SPIS control block - driver instance local data. */
+/** @brief SPIS control block - driver instance local data. */
 typedef struct
 {
     volatile uint32_t          tx_buffer_size;  //!< SPI slave TX buffer size in bytes.
@@ -344,7 +344,7 @@ void nrfx_spis_uninit(nrfx_spis_t const * p_instance)
 }
 
 
-/**@brief Function for executing the state entry action. */
+/** @brief Function for executing the state entry action. */
 static void spis_state_entry_action_execute(NRF_SPIS_Type * p_spis,
                                             spis_cb_t     * p_cb)
 {
@@ -383,7 +383,7 @@ static void spis_state_entry_action_execute(NRF_SPIS_Type * p_spis,
     }
 }
 
-/**@brief Function for changing the state of the SPI state machine.
+/** @brief Function for changing the state of the SPI state machine.
  *
  * @param[in] p_spis    SPIS instance register.
  * @param[in] p_cb      SPIS instance control block.

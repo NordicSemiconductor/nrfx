@@ -42,6 +42,10 @@ extern "C" {
 #define NRFX_EVENT_READBACK_ENABLED 1
 #endif
 
+#if !defined(NRFX_CONFIG_API_VER_2_9) && !defined(NRFX_CONFIG_API_VER_2_10)
+#define NRFX_CONFIG_API_VER_2_9 1
+#endif
+
 #if defined(NRFX_CLZ)
 #define NRF_CLZ(value) NRFX_CLZ(value)
 #else

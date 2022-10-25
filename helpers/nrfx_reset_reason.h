@@ -59,46 +59,48 @@ extern "C" {
 typedef enum
 {
 #if !NRF_POWER_HAS_RESETREAS || defined(__NRFX_DOXYGEN__)
-    NRFX_RESET_REASON_RESETPIN_MASK  = RESET_RESETREAS_RESETPIN_Msk,
     /**< Reset from pin-reset detected. */
+    NRFX_RESET_REASON_RESETPIN_MASK  = RESET_RESETREAS_RESETPIN_Msk,
+    /**< Reset from watchdog/application watchdog timer 0 detected. */
     NRFX_RESET_REASON_DOG0_MASK      = RESET_RESETREAS_DOG0_Msk,
     /**< Reset from watchdog/application watchdog timer 0 detected. */
     NRFX_RESET_REASON_DOG_MASK       = NRFX_RESET_REASON_DOG0_MASK,
-    /**< Reset from watchdog/application watchdog timer 0 detected. */
-    NRFX_RESET_REASON_CTRLAP_MASK    = RESET_RESETREAS_CTRLAP_Msk,
     /**< Reset from application CTRL-AP detected. */
+    NRFX_RESET_REASON_CTRLAP_MASK    = RESET_RESETREAS_CTRLAP_Msk,
+    /**< Reset from soft reset/application soft reset detected. Deprecated. */
     NRFX_RESETREAS_SREQ_MASK         = RESET_RESETREAS_SREQ_Msk,
     /**< Reset from soft reset/application soft reset detected. */
-    NRFX_RESET_REASON_LOCKUP_MASK    = RESET_RESETREAS_LOCKUP_Msk,
+    NRFX_RESET_REASON_SREQ_MASK      = RESET_RESETREAS_SREQ_Msk,
     /**< Reset from CPU lockup/application CPU lockup detected. */
-    NRFX_RESET_REASON_OFF_MASK       = RESET_RESETREAS_OFF_Msk,
+    NRFX_RESET_REASON_LOCKUP_MASK    = RESET_RESETREAS_LOCKUP_Msk,
     /**< Reset due to wakeup from System OFF mode when wakeup is triggered by DETECT signal from
      *   GPIO. */
-    NRFX_RESET_REASON_LPCOMP_MASK    = RESET_RESETREAS_LPCOMP_Msk,
+    NRFX_RESET_REASON_OFF_MASK       = RESET_RESETREAS_OFF_Msk,
     /**< Reset due to wakeup from System OFF mode when wakeup is triggered by ANADETECT signal from
      *   LPCOMP. */
-    NRFX_RESET_REASON_DIF_MASK       = RESET_RESETREAS_DIF_Msk,
+    NRFX_RESET_REASON_LPCOMP_MASK    = RESET_RESETREAS_LPCOMP_Msk,
     /**< Reset due to wakeup from System OFF mode when wakeup is triggered by entering the debug
      *   interface mode. */
+    NRFX_RESET_REASON_DIF_MASK       = RESET_RESETREAS_DIF_Msk,
 #if NRF_RESET_HAS_NETWORK
-    NRFX_RESET_REASON_LSREQ_MASK     = RESET_RESETREAS_LSREQ_Msk,
     /**< Reset from network soft reset detected. */
-    NRFX_RESET_REASON_LLOCKUP_MASK   = RESET_RESETREAS_LLOCKUP_Msk,
+    NRFX_RESET_REASON_LSREQ_MASK     = RESET_RESETREAS_LSREQ_Msk,
     /**< Reset from network CPU lockup detected. */
-    NRFX_RESET_REASON_LDOG_MASK      = RESET_RESETREAS_LDOG_Msk,
+    NRFX_RESET_REASON_LLOCKUP_MASK   = RESET_RESETREAS_LLOCKUP_Msk,
     /**< Reset from network watchdog timer detected. */
-    NRFX_RESET_REASON_MFORCEOFF_MASK = RESET_RESETREAS_MFORCEOFF_Msk,
+    NRFX_RESET_REASON_LDOG_MASK      = RESET_RESETREAS_LDOG_Msk,
     /**< Force off reset from application core detected. */
+    NRFX_RESET_REASON_MFORCEOFF_MASK = RESET_RESETREAS_MFORCEOFF_Msk,
 #endif // NRF_RESET_HAS_NETWORK
+    /**< Reset after wakeup from System OFF mode due to NFC field being detected. */
     NRFX_RESET_REASON_NFC_MASK       = RESET_RESETREAS_NFC_Msk,
-    /**< Reset after wakeup from System OFF mode due to NRF field being detected. */
-    NRFX_RESET_REASON_DOG1_MASK      = RESET_RESETREAS_DOG1_Msk,
     /**< Reset from application watchdog timer 1 detected. */
-    NRFX_RESET_REASON_VBUS_MASK      = RESET_RESETREAS_VBUS_Msk,
+    NRFX_RESET_REASON_DOG1_MASK      = RESET_RESETREAS_DOG1_Msk,
     /**< Reset after wakeup from System OFF mode due to VBUS rising into valid range. */
+    NRFX_RESET_REASON_VBUS_MASK      = RESET_RESETREAS_VBUS_Msk,
 #if NRF_RESET_HAS_NETWORK
-    NRFX_RESET_REASON_LCTRLAP_MASK   = RESET_RESETREAS_LCTRLAP_Msk,
     /**< Reset from network CTRL-AP detected. */
+    NRFX_RESET_REASON_LCTRLAP_MASK   = RESET_RESETREAS_LCTRLAP_Msk,
 #endif // NRF_RESET_HAS_NETWORK
 #else
     NRFX_RESET_REASON_RESETPIN_MASK  = POWER_RESETREAS_RESETPIN_Msk,
@@ -106,6 +108,9 @@ typedef enum
     NRFX_RESET_REASON_SREQ_MASK      = POWER_RESETREAS_SREQ_Msk ,
     NRFX_RESET_REASON_LOCKUP_MASK    = POWER_RESETREAS_LOCKUP_Msk,
     NRFX_RESET_REASON_OFF_MASK       = POWER_RESETREAS_OFF_Msk,
+#if defined(POWER_RESETREAS_CTRLAP_Msk)
+    NRFX_RESET_REASON_CTRLAP_MASK    = POWER_RESETREAS_CTRLAP_Msk,
+#endif
 #if defined(POWER_RESETREAS_LPCOMP_Msk)
     NRFX_RESET_REASON_LPCOMP_MASK    = POWER_RESETREAS_LPCOMP_Msk,
 #endif

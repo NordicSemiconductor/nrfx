@@ -361,6 +361,15 @@ NRFX_STATIC_INLINE uint32_t nrfx_rtc_event_address_get(nrfx_rtc_t const * p_inst
 }
 #endif // NRFX_DECLARE_ONLY
 
+/**
+ * @brief Macro returning RTC interrupt handler.
+ *
+ * param[in] idx RTC index.
+ *
+ * @return Interrupt handler.
+ */
+#define NRFX_RTC_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_rtc_, idx, _irq_handler)
+
 /** @} */
 
 

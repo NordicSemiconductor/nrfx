@@ -144,13 +144,13 @@ _vectors:
   EXC_HANDLER   MemoryManagement_Handler
   EXC_HANDLER   BusFault_Handler
   EXC_HANDLER   UsageFault_Handler
-  ISR_RESERVED                           /*Reserved */
-  ISR_RESERVED                           /*Reserved */
-  ISR_RESERVED                           /*Reserved */
-  ISR_RESERVED                           /*Reserved */
+  ISR_RESERVED                           /* Reserved */
+  ISR_RESERVED                           /* Reserved */
+  ISR_RESERVED                           /* Reserved */
+  ISR_RESERVED                           /* Reserved */
   EXC_HANDLER   SVC_Handler
   EXC_HANDLER   DebugMon_Handler
-  ISR_RESERVED                           /*Reserved */
+  ISR_RESERVED                           /* Reserved */
   EXC_HANDLER   PendSV_Handler
   EXC_HANDLER   SysTick_Handler
 
@@ -160,7 +160,7 @@ _vectors:
   ISR_HANDLER   UARTE0_UART0_IRQHandler
   ISR_HANDLER   TWIM0_TWIS0_TWI0_IRQHandler
   ISR_HANDLER   SPIM0_SPIS0_SPI0_IRQHandler
-  ISR_RESERVED_DUMMY                           /*Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_HANDLER   GPIOTE_IRQHandler
   ISR_HANDLER   SAADC_IRQHandler
   ISR_HANDLER   TIMER0_IRQHandler
@@ -174,99 +174,99 @@ _vectors:
   ISR_HANDLER   WDT_IRQHandler
   ISR_HANDLER   RTC1_IRQHandler
   ISR_HANDLER   QDEC_IRQHandler
-  ISR_RESERVED_DUMMY                           /*Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_HANDLER   SWI0_EGU0_IRQHandler
   ISR_HANDLER   SWI1_EGU1_IRQHandler
   ISR_HANDLER   SWI2_IRQHandler
   ISR_HANDLER   SWI3_IRQHandler
   ISR_HANDLER   SWI4_IRQHandler
   ISR_HANDLER   SWI5_IRQHandler
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
 _vectors_end:
 
 #ifdef VECTORS_IN_RAM

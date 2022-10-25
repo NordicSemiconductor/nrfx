@@ -404,6 +404,15 @@ NRFX_STATIC_INLINE size_t nrfx_twis_rx_amount(nrfx_twis_t const * p_instance)
 }
 #endif // NRFX_DECLARE_ONLY
 
+/**
+ * @brief Macro returning TWIS interrupt handler.
+ *
+ * param[in] idx TWIS index.
+ *
+ * @return Interrupt handler.
+ */
+#define NRFX_TWIS_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_twis_, idx, _irq_handler)
+
 /** @} */
 
 

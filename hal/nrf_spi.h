@@ -48,6 +48,15 @@ extern "C" {
  */
 
 /**
+ * @brief Macro getting pointer to the structure of registers of the SPI peripheral.
+ *
+ * @param[in] idx SPI instance index.
+ *
+ * @return Pointer to the structure of registers of the SPI peripheral.
+ */
+#define NRF_SPI_INST_GET(idx) NRFX_CONCAT_2(NRF_SPI, idx)
+
+/**
  * @brief This value can be used as a parameter for the @ref nrf_spi_pins_set
  *        function to specify that a given SPI signal (SCK, MOSI, or MISO)
  *        shall not be connected to a physical pin.

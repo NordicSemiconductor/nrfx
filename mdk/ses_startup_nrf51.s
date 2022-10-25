@@ -155,16 +155,16 @@ _vectors:
   VECTOR        Reset_Handler
   EXC_HANDLER   NMI_Handler
   EXC_HANDLER   HardFault_Handler
-  ISR_RESERVED                           /*Reserved */
-  ISR_RESERVED                           /*Reserved */
-  ISR_RESERVED                           /*Reserved */
-  ISR_RESERVED                           /*Reserved */
-  ISR_RESERVED                           /*Reserved */
-  ISR_RESERVED                           /*Reserved */
-  ISR_RESERVED                           /*Reserved */
+  ISR_RESERVED                           /* Reserved */
+  ISR_RESERVED                           /* Reserved */
+  ISR_RESERVED                           /* Reserved */
+  ISR_RESERVED                           /* Reserved */
+  ISR_RESERVED                           /* Reserved */
+  ISR_RESERVED                           /* Reserved */
+  ISR_RESERVED                           /* Reserved */
   EXC_HANDLER   SVC_Handler
-  ISR_RESERVED                           /*Reserved */
-  ISR_RESERVED                           /*Reserved */
+  ISR_RESERVED                           /* Reserved */
+  ISR_RESERVED                           /* Reserved */
   EXC_HANDLER   PendSV_Handler
   EXC_HANDLER   SysTick_Handler
 
@@ -174,7 +174,7 @@ _vectors:
   ISR_HANDLER   UART0_IRQHandler
   ISR_HANDLER   SPI0_TWI0_IRQHandler
   ISR_HANDLER   SPI1_TWI1_IRQHandler
-  ISR_RESERVED_DUMMY                           /*Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_HANDLER   GPIOTE_IRQHandler
   ISR_HANDLER   ADC_IRQHandler
   ISR_HANDLER   TIMER0_IRQHandler
@@ -195,12 +195,12 @@ _vectors:
   ISR_HANDLER   SWI3_IRQHandler
   ISR_HANDLER   SWI4_IRQHandler
   ISR_HANDLER   SWI5_IRQHandler
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
-  ISR_RESERVED_DUMMY                           /*Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
 _vectors_end:
 
 #ifdef VECTORS_IN_RAM

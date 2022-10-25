@@ -49,6 +49,15 @@ extern "C" {
  * @brief   Hardware access layer for managing the UARTE peripheral.
  */
 
+/**
+ * @brief Macro getting pointer to the structure of registers of the UARTE peripheral.
+ *
+ * @param[in] idx UARTE instance index.
+ *
+ * @return Pointer to the structure of registers of the UARTE peripheral.
+ */
+#define NRF_UARTE_INST_GET(idx) NRFX_CONCAT_2(NRF_UARTE, idx)
+
 /** @brief UARTE tasks. */
 typedef enum
 {

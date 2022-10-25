@@ -47,6 +47,15 @@ extern "C" {
  * @brief   Hardware access layer for managing the TWIM peripheral.
  */
 
+/**
+ * @brief Macro getting pointer to the structure of registers of the TWIM peripheral.
+ *
+ * @param[in] idx TWIM instance index.
+ *
+ * @return Pointer to the structure of registers of the TWIM peripheral.
+ */
+#define NRF_TWIM_INST_GET(idx) NRFX_CONCAT_2(NRF_TWIM, idx)
+
 #if defined(TWIM_FREQUENCY_FREQUENCY_K1000) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether 1000 kHz clock frequency is available. */
 #define NRF_TWIM_HAS_1000_KHZ_FREQ 1
@@ -69,7 +78,7 @@ typedef enum
 {
     NRF_TWIM_EVENT_STOPPED   = offsetof(NRF_TWIM_Type, EVENTS_STOPPED),   ///< TWI stopped.
     NRF_TWIM_EVENT_ERROR     = offsetof(NRF_TWIM_Type, EVENTS_ERROR),     ///< TWI error.
-    NRF_TWIM_EVENT_SUSPENDED = 0x148,                                     ///< TWI suspended.
+    NRF_TWIM_EVENT_SUSPENDED = offsetof(NRF_TWIM_Type, EVENTS_SUSPENDED), ///< TWI suspended.
     NRF_TWIM_EVENT_RXSTARTED = offsetof(NRF_TWIM_Type, EVENTS_RXSTARTED), ///< Receive sequence started.
     NRF_TWIM_EVENT_TXSTARTED = offsetof(NRF_TWIM_Type, EVENTS_TXSTARTED), ///< Transmit sequence started.
     NRF_TWIM_EVENT_LASTRX    = offsetof(NRF_TWIM_Type, EVENTS_LASTRX),    ///< Byte boundary, starting to receive the last byte.

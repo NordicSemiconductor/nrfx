@@ -51,6 +51,15 @@ extern "C" {
  * @brief   Hardware access layer for managing the Watchdog Timer (WDT) peripheral.
  */
 
+/**
+ * @brief Macro getting pointer to the structure of registers of the WDT peripheral.
+ *
+ * @param[in] idx WDT instance index.
+ *
+ * @return Pointer to the structure of registers of the WDT peripheral.
+ */
+#define NRF_WDT_INST_GET(idx) NRFX_CONCAT_2(NRF_WDT, idx)
+
 /** @brief Number of WDT channels. */
 #define NRF_WDT_CHANNEL_NUMBER 0x8UL
 

@@ -49,7 +49,6 @@ static ipc_control_block_t m_ipc_cb;
 
 nrfx_err_t nrfx_ipc_init(uint8_t irq_priority, nrfx_ipc_handler_t handler, void * p_context)
 {
-    NRFX_ASSERT(handler);
     if (m_ipc_cb.state != NRFX_DRV_STATE_UNINITIALIZED)
     {
         return NRFX_ERROR_ALREADY_INITIALIZED;
@@ -147,18 +146,26 @@ void nrfx_ipc_irq_handler(void)
 {
     // Get the information about events that fire this interrupt
     uint32_t events_map = nrf_ipc_int_pending_get(NRF_IPC);
-
     // Clear these events
     uint32_t bitmask = events_map;
+
     while (bitmask)
     {
         uint8_t event_idx = NRF_CTZ(bitmask);
         bitmask &= ~(1UL << event_idx);
         nrf_ipc_event_clear(NRF_IPC, nrf_ipc_receive_event_get(event_idx));
+#if NRFX_CHECK(NRFX_CONFIG_API_VER_2_10)
+        if (m_ipc_cb.handler)
+        {
+            m_ipc_cb.handler(event_idx, m_ipc_cb.p_context);
+        }
+#elif NRFX_CHECK(NRFX_CONFIG_API_VER_2_9)
     }
-
-    // Execute interrupt handler to provide information about events to app
-    m_ipc_cb.handler(events_map, m_ipc_cb.p_context);
+    if (m_ipc_cb.handler)
+    {
+        m_ipc_cb.handler(events_map, m_ipc_cb.p_context);
+#endif
+    }
 }
 
 #endif // NRFX_CHECK(NRFX_IPC_ENABLED)

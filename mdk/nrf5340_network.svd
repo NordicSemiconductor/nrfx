@@ -54,7 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <deviceNumInterrupts>30</deviceNumInterrupts>
     <sauNumRegions>0</sauNumRegions>
   </cpu>
-  <headerSystemFilename>system_nrf5340_network</headerSystemFilename>
+  <headerSystemFilename>system_nrf53</headerSystemFilename>
   <headerDefinitionsPrefix>NRF_</headerDefinitionsPrefix>
   <vendorExtensions>
     <MaxInterrupts>129</MaxInterrupts>

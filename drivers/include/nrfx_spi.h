@@ -271,6 +271,15 @@ nrfx_err_t nrfx_spi_xfer(nrfx_spi_t const *           p_instance,
  */
 void nrfx_spi_abort(nrfx_spi_t const * p_instance);
 
+/**
+ * @brief Macro returning SPI interrupt handler.
+ *
+ * param[in] idx SPI index.
+ *
+ * @return Interrupt handler.
+ */
+#define NRFX_SPI_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_spi_, idx, _irq_handler)
+
 /** @} */
 
 

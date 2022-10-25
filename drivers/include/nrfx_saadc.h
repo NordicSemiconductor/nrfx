@@ -328,8 +328,10 @@ nrfx_err_t nrfx_saadc_simple_mode_set(uint32_t                   channel_mask,
  * @retval NRFX_SUCCESS             Initialization was successful.
  * @retval NRFX_ERROR_BUSY          There is a conversion or calibration ongoing.
  * @retval NRFX_ERROR_INVALID_PARAM Attempt to activate channel that is not configured.
- * @retval NRFX_ERROR_NOT_SUPPORTED Attempt to activate internal timer or oversampling without burst
- *                                  with multiple channels enabled.
+ * @retval NRFX_ERROR_NOT_SUPPORTED Attempt to activate either of the following:
+ *                                  * internal timer in the blocking mode,
+ *                                  * internal timer with multiple channels enabled,
+ *                                  * oversampling without burst with multiple channels enabled.
  */
 nrfx_err_t nrfx_saadc_advanced_mode_set(uint32_t                        channel_mask,
                                         nrf_saadc_resolution_t          resolution,

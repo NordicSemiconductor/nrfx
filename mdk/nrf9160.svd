@@ -6,43 +6,44 @@
   <name>nrf9160</name>
   <series>nrf91</series>
   <version>1</version>
-  <description>nrf9160 reference description for radio MCU with ARM 32-bit Cortex-M33 Microcontroller </description>
+  <description>nrf9160 reference description for radio MCU with ARM 32-bit Cortex-M33 Microcontroller</description>
   <licenseText>
-Copyright (c) 2010 - 2022, Nordic Semiconductor ASA All rights reserved.\n
-\n
-SPDX-License-Identifier: BSD-3-Clause\n
-\n
-Redistribution and use in source and binary forms, with or without\n
-modification, are permitted provided that the following conditions are met:\n
-\n
-1. Redistributions of source code must retain the above copyright notice, this\n
-   list of conditions and the following disclaimer.\n
-\n
-2. Redistributions in binary form must reproduce the above copyright\n
-   notice, this list of conditions and the following disclaimer in the\n
-   documentation and/or other materials provided with the distribution.\n
-\n
-3. Neither the name of Nordic Semiconductor ASA nor the names of its\n
-   contributors may be used to endorse or promote products derived from this\n
-   software without specific prior written permission.\n
-\n
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"\n
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n
-IMPLIED WARRANTIES OF MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE\n
-ARE DISCLAIMED. IN NO EVENT SHALL NORDIC SEMICONDUCTOR ASA OR CONTRIBUTORS BE\n
-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\n
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF\n
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS\n
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN\n
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\n
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE\n
-POSSIBILITY OF SUCH DAMAGE.\n
-        </licenseText>
+Copyright (c) 2010 - 2022, Nordic Semiconductor ASA All rights reserved.
+
+SPDX-License-Identifier: BSD-3-Clause
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+3. Neither the name of Nordic Semiconductor ASA nor the names of its
+   contributors may be used to endorse or promote products derived from this
+   software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL NORDIC SEMICONDUCTOR ASA OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+      </licenseText>
   <addressUnitBits>8</addressUnitBits>
   <width>32</width>
   <size>32</size>
   <resetValue>0x00000000</resetValue>
   <resetMask>0xFFFFFFFF</resetMask>
+  <headerDefinitionsPrefix>NRF_</headerDefinitionsPrefix>
   <cpu>
     <name>CM33</name>
     <revision>r0p4</revision>
@@ -54,8 +55,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
     <deviceNumInterrupts>69</deviceNumInterrupts>
     <sauNumRegions>0</sauNumRegions>
   </cpu>
-  <headerSystemFilename>system_nrf9160</headerSystemFilename>
-  <headerDefinitionsPrefix>NRF_</headerDefinitionsPrefix>
+  <headerSystemFilename>system_nrf91</headerSystemFilename>
   <vendorExtensions>
     <MaxInterrupts>240</MaxInterrupts>
   </vendorExtensions>
@@ -76,6 +76,70 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <size>0x20</size>
       <registers>
         <cluster>
+          <name>SIPINFO</name>
+          <description>SIP-specific device info</description>
+          <headerStructName>FICR_SIPINFO</headerStructName>
+          <access>read-write</access>
+          <addressOffset>0x140</addressOffset>
+          <register>
+            <name>PARTNO</name>
+            <description>SIP part number</description>
+            <addressOffset>0x000</addressOffset>
+            <access>read-only</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <fields>
+              <field>
+                <name>PARTNO</name>
+                <lsb>0</lsb>
+                <msb>31</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>9160</name>
+                    <description>Device is an nRF9160 sip</description>
+                    <value>0x00009160</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <dim>0x4</dim>
+            <dimIncrement>0x1</dimIncrement>
+            <name>HWREVISION[%s]</name>
+            <description>Description collection: SIP hardware revision, encoded in ASCII, ex B0A or B1A</description>
+            <addressOffset>0x004</addressOffset>
+            <access>read-only</access>
+            <resetValue>0x000000FF</resetValue>
+            <dataType>uint8_t</dataType>
+            <size>0x8</size>
+            <fields>
+              <field>
+                <name>HWREVISION</name>
+                <lsb>0</lsb>
+                <msb>7</msb>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <dim>0x4</dim>
+            <dimIncrement>0x1</dimIncrement>
+            <name>VARIANT[%s]</name>
+            <description>Description collection: SIP VARIANT, encoded in ASCII, ex SIAA, SIBA or SICA</description>
+            <addressOffset>0x008</addressOffset>
+            <access>read-only</access>
+            <resetValue>0x000000FF</resetValue>
+            <dataType>uint8_t</dataType>
+            <size>0x8</size>
+            <fields>
+              <field>
+                <name>VARIANT</name>
+                <lsb>0</lsb>
+                <msb>7</msb>
+              </field>
+            </fields>
+          </register>
+        </cluster>
+        <cluster>
           <name>INFO</name>
           <description>Device info</description>
           <headerStructName>FICR_INFO</headerStructName>
@@ -95,77 +159,6 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <description>64 bit unique device identifier</description>
                 <lsb>0</lsb>
                 <msb>31</msb>
-              </field>
-            </fields>
-          </register>
-          <register>
-            <name>PART</name>
-            <description>Part code</description>
-            <addressOffset>0x00C</addressOffset>
-            <access>read-only</access>
-            <resetValue>0x00009160</resetValue>
-            <fields>
-              <field>
-                <name>PART</name>
-                <description>Part code</description>
-                <lsb>0</lsb>
-                <msb>31</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>N9160</name>
-                    <description>nRF9160</description>
-                    <value>0x9160</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-          <register>
-            <name>VARIANT</name>
-            <description>Part Variant, Hardware version and Production configuration</description>
-            <addressOffset>0x010</addressOffset>
-            <access>read-only</access>
-            <resetValue>0x0FFFFFFF</resetValue>
-            <fields>
-              <field>
-                <name>VARIANT</name>
-                <description>Part Variant, Hardware version and Production configuration, encoded as ASCII</description>
-                <lsb>0</lsb>
-                <msb>31</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>AAAA</name>
-                    <description>AAAA</description>
-                    <value>0x41414141</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>AAA0</name>
-                    <description>AAA0</description>
-                    <value>0x41414130</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-          <register>
-            <name>PACKAGE</name>
-            <description>Package option</description>
-            <addressOffset>0x014</addressOffset>
-            <access>read-only</access>
-            <resetValue>0x00002000</resetValue>
-            <fields>
-              <field>
-                <name>PACKAGE</name>
-                <description>Package option</description>
-                <lsb>0</lsb>
-                <msb>31</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>CC</name>
-                    <description>CCxx - 236 ball wlCSP</description>
-                    <value>0x2000</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
             </fields>
           </register>
@@ -371,7 +364,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             <description>Amount of bytes for the startup tests</description>
             <addressOffset>0x00C</addressOffset>
             <access>read-only</access>
-            <resetValue>0x00000210</resetValue>
+            <resetValue>0xFFFFFFFF</resetValue>
             <fields>
               <field>
                 <name>STARTUP</name>
@@ -557,6 +550,33 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </fields>
         </register>
         <register>
+          <name>APPNVMCPOFGUARD</name>
+          <description>Enable blocking NVM WRITE and aborting NVM ERASE for Application NVM in POFWARN condition .</description>
+          <addressOffset>0x024</addressOffset>
+          <access>read-write</access>
+          <resetValue>0xFFFFFFFF</resetValue>
+          <fields>
+            <field>
+              <name>NVMCPOFGUARDEN</name>
+              <description>Enable blocking NVM WRITE and aborting NVM ERASE in POFWARN condition</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>NVM WRITE and NVM ERASE are not blocked in POFWARN condition</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>NVM WRITE and NVM ERASE are blocked in POFWARN condition</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>SECUREAPPROTECT</name>
           <description>Secure access port protection</description>
           <addressOffset>0x02C</addressOffset>
@@ -653,9 +673,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
             <register>
               <name>DEST</name>
               <description>Description cluster: Destination address where content of the key value registers (KEYSLOT.KEYn.VALUE[0-3])
-          will be pushed by KMU. Note that this address MUST match that of a peripherals
+          will be pushed by KMU. Note that this address must match that of a peripherals
           APB mapped write-only key registers, else the KMU can push this key value into
-          an address range which the CPU can potentially read!</description>
+          an address range which the CPU can potentially read.</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0xFFFFFFFF</resetValue>
@@ -795,19 +815,20 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <size>0x20</size>
       <registers>
         <register>
-          <name>CLOCKSTART</name>
+          <name>TASKS_CLOCKSTART</name>
           <description>Start all trace and debug clocks.</description>
           <addressOffset>0x000</addressOffset>
           <access>write-only</access>
           <fields>
             <field>
-              <name>START</name>
+              <name>TASKS_CLOCKSTART</name>
+              <description>Start all trace and debug clocks.</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
                 <enumeratedValue>
-                  <name>Start</name>
-                  <description>Start all trace and debug clocks.</description>
+                  <name>Trigger</name>
+                  <description>Trigger task</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -815,19 +836,20 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </fields>
         </register>
         <register>
-          <name>CLOCKSTOP</name>
+          <name>TASKS_CLOCKSTOP</name>
           <description>Stop all trace and debug clocks.</description>
           <addressOffset>0x004</addressOffset>
           <access>write-only</access>
           <fields>
             <field>
-              <name>STOP</name>
+              <name>TASKS_CLOCKSTOP</name>
+              <description>Stop all trace and debug clocks.</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
                 <enumeratedValue>
-                  <name>Stop</name>
-                  <description>Stop all trace and debug clocks.</description>
+                  <name>Trigger</name>
+                  <description>Trigger task</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -867,7 +889,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <addressOffset>0x504</addressOffset>
           <register>
             <name>TRACECLK</name>
-            <description>Pin number configuration for TRACECLK</description>
+            <description>Pin configuration for TRACECLK</description>
             <addressOffset>0x000</addressOffset>
             <access>read-write</access>
             <resetValue>0xFFFFFFFF</resetValue>
@@ -877,6 +899,13 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <description>Pin number</description>
                 <lsb>0</lsb>
                 <msb>4</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Traceclk</name>
+                    <description>TRACECLK pin</description>
+                    <value>21</value>
+                  </enumeratedValue>
+                </enumeratedValues>
               </field>
               <field>
                 <name>CONNECT</name>
@@ -900,7 +929,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </register>
           <register>
             <name>TRACEDATA0</name>
-            <description>Pin number configuration for TRACEDATA[0]</description>
+            <description>Pin configuration for TRACEDATA[0]</description>
             <addressOffset>0x004</addressOffset>
             <access>read-write</access>
             <resetValue>0xFFFFFFFF</resetValue>
@@ -910,6 +939,13 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <description>Pin number</description>
                 <lsb>0</lsb>
                 <msb>4</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Tracedata0</name>
+                    <description>TRACEDATA0 pin</description>
+                    <value>22</value>
+                  </enumeratedValue>
+                </enumeratedValues>
               </field>
               <field>
                 <name>CONNECT</name>
@@ -933,7 +969,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </register>
           <register>
             <name>TRACEDATA1</name>
-            <description>Pin number configuration for TRACEDATA[1]</description>
+            <description>Pin configuration for TRACEDATA[1]</description>
             <addressOffset>0x008</addressOffset>
             <access>read-write</access>
             <resetValue>0xFFFFFFFF</resetValue>
@@ -943,6 +979,13 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <description>Pin number</description>
                 <lsb>0</lsb>
                 <msb>4</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Tracedata1</name>
+                    <description>TRACEDATA1 pin</description>
+                    <value>23</value>
+                  </enumeratedValue>
+                </enumeratedValues>
               </field>
               <field>
                 <name>CONNECT</name>
@@ -966,7 +1009,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </register>
           <register>
             <name>TRACEDATA2</name>
-            <description>Pin number configuration for TRACEDATA[2]</description>
+            <description>Pin configuration for TRACEDATA[2]</description>
             <addressOffset>0x00C</addressOffset>
             <access>read-write</access>
             <resetValue>0xFFFFFFFF</resetValue>
@@ -976,6 +1019,13 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <description>Pin number</description>
                 <lsb>0</lsb>
                 <msb>4</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Tracedata2</name>
+                    <description>TRACEDATA2 pin</description>
+                    <value>24</value>
+                  </enumeratedValue>
+                </enumeratedValues>
               </field>
               <field>
                 <name>CONNECT</name>
@@ -999,7 +1049,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </register>
           <register>
             <name>TRACEDATA3</name>
-            <description>Pin number configuration for TRACEDATA[3]</description>
+            <description>Pin configuration for TRACEDATA[3]</description>
             <addressOffset>0x010</addressOffset>
             <access>read-write</access>
             <resetValue>0xFFFFFFFF</resetValue>
@@ -1009,6 +1059,13 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <description>Pin number</description>
                 <lsb>0</lsb>
                 <msb>4</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Tracedata3</name>
+                    <description>TRACEDATA3 pin</description>
+                    <value>25</value>
+                  </enumeratedValue>
+                </enumeratedValues>
               </field>
               <field>
                 <name>CONNECT</name>
@@ -1033,35 +1090,35 @@ POSSIBILITY OF SUCH DAMAGE.\n
         </cluster>
         <register>
           <name>TRACEPORTSPEED</name>
-          <description>Clocking options for the Trace Port debug interface</description>
+          <description>Clocking options for the Trace Port debug interface Reset behavior is the same as debug components</description>
           <addressOffset>0x518</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
               <name>TRACEPORTSPEED</name>
-              <description>Speed of Trace Port clock. Note that the TRACECLK pin will output this clock divided by two.</description>
+              <description>Speed of Trace Port clock. Note that the TRACECLK pin output will be divided again by two from the Trace Port clock.</description>
               <lsb>0</lsb>
               <msb>1</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>32MHz</name>
-                  <description>32 MHz Trace Port clock (TRACECLK = 16 MHz)</description>
+                  <description>Trace Port clock is: 32MHz</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>16MHz</name>
-                  <description>16 MHz Trace Port clock (TRACECLK = 8 MHz)</description>
+                  <description>Trace Port clock is: 16MHz</description>
                   <value>1</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>8MHz</name>
-                  <description>8 MHz Trace Port clock (TRACECLK = 4 MHz)</description>
+                  <description>Trace Port clock is: 8MHz</description>
                   <value>2</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>4MHz</name>
-                  <description>4 MHz Trace Port clock (TRACECLK = 2 MHz)</description>
+                  <description>Trace Port clock is: 4MHz</description>
                   <value>3</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -1175,9 +1232,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RAMACCERR will publish to.</description>
+              <description>DPPI channel that event RAMACCERR will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -1206,9 +1263,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event FLASHACCERR will publish to.</description>
+              <description>DPPI channel that event FLASHACCERR will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -1237,9 +1294,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event PERIPHACCERR will publish to.</description>
+              <description>DPPI channel that event PERIPHACCERR will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -1544,9 +1601,10 @@ POSSIBILITY OF SUCH DAMAGE.\n
             <fields>
               <field>
                 <name>SECUREMAPPING</name>
-                <description>Define configuration capabilities  for TrustZone Cortex-M secure attribute</description>
+                <description>Define configuration capabilities for TrustZone Cortex-M secure attribute</description>
                 <lsb>0</lsb>
                 <msb>1</msb>
+                <access>read-only</access>
                 <enumeratedValues>
                   <enumeratedValue>
                     <name>NonSecure</name>
@@ -2694,7 +2752,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <name>REGION</name>
                 <description>Region number</description>
                 <lsb>0</lsb>
-                <msb>3</msb>
+                <msb>4</msb>
               </field>
               <field>
                 <name>LOCK</name>
@@ -3191,6 +3249,32 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </fields>
         </register>
         <register>
+          <name>EXTPOFCON</name>
+          <description>External power failure warning configuration</description>
+          <addressOffset>0x514</addressOffset>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>POF</name>
+              <description>Enable or disable external power failure warning</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>DCDCEN</name>
           <description>Enable DC/DC mode of the main voltage regulator.</description>
           <addressOffset>0x578</addressOffset>
@@ -3336,9 +3420,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task HFCLKSTART will subscribe to</description>
+              <description>DPPI channel that task HFCLKSTART will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -3367,9 +3451,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task HFCLKSTOP will subscribe to</description>
+              <description>DPPI channel that task HFCLKSTOP will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -3398,9 +3482,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task LFCLKSTART will subscribe to</description>
+              <description>DPPI channel that task LFCLKSTART will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -3429,9 +3513,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task LFCLKSTOP will subscribe to</description>
+              <description>DPPI channel that task LFCLKSTOP will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -3512,9 +3596,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event HFCLKSTARTED will publish to.</description>
+              <description>DPPI channel that event HFCLKSTARTED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -3543,9 +3627,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event LFCLKSTARTED will publish to.</description>
+              <description>DPPI channel that event LFCLKSTARTED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -3819,6 +3903,11 @@ POSSIBILITY OF SUCH DAMAGE.\n
               <msb>0</msb>
               <enumeratedValues>
                 <enumeratedValue>
+                  <name>HFINT</name>
+                  <description>HFINT - 64 MHz on-chip oscillator</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
                   <name>HFXO</name>
                   <description>HFXO - 64 MHz clock derived from external 32 MHz crystal oscillator</description>
                   <value>1</value>
@@ -4056,9 +4145,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CONSTLAT will subscribe to</description>
+              <description>DPPI channel that task CONSTLAT will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -4087,9 +4176,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task LOWPWR will subscribe to</description>
+              <description>DPPI channel that task LOWPWR will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -4196,9 +4285,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event POFWARN will publish to.</description>
+              <description>DPPI channel that event POFWARN will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -4227,9 +4316,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SLEEPENTER will publish to.</description>
+              <description>DPPI channel that event SLEEPENTER will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -4258,9 +4347,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SLEEPEXIT will publish to.</description>
+              <description>DPPI channel that event SLEEPEXIT will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -4697,6 +4786,67 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
+        <cluster>
+          <name>LTEMODEM</name>
+          <description>LTE Modem</description>
+          <headerStructName>POWER_LTEMODEM</headerStructName>
+          <access>read-write</access>
+          <addressOffset>0x610</addressOffset>
+          <register>
+            <name>STARTN</name>
+            <description>Start LTE modem</description>
+            <addressOffset>0x000</addressOffset>
+            <access>read-write</access>
+            <resetValue>0x00000001</resetValue>
+            <fields>
+              <field>
+                <name>STARTN</name>
+                <description>Start LTE modem</description>
+                <lsb>0</lsb>
+                <msb>0</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Start</name>
+                    <description>Start LTE modem</description>
+                    <value>0</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Hold</name>
+                    <description>Hold LTE modem disabled</description>
+                    <value>1</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>FORCEOFF</name>
+            <description>Force off LTE modem</description>
+            <addressOffset>0x004</addressOffset>
+            <access>read-write</access>
+            <resetValue>0x00000000</resetValue>
+            <fields>
+              <field>
+                <name>FORCEOFF</name>
+                <description>Force off LTE modem</description>
+                <lsb>0</lsb>
+                <msb>0</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Release</name>
+                    <description>Release force off</description>
+                    <value>0</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Hold</name>
+                    <description>Hold force off active</description>
+                    <value>1</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+        </cluster>
       </registers>
     </peripheral>
     <peripheral derivedFrom="CLOCK_NS">
@@ -4745,7 +4895,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <addressOffset>0x400</addressOffset>
           <register>
             <name>RXDATA</name>
-            <description>Data sent from the debugger to the CPU</description>
+            <description>Data sent from the debugger to the CPU.</description>
             <addressOffset>0x000</addressOffset>
             <access>read-only</access>
             <resetValue>0x00000000</resetValue>
@@ -4760,7 +4910,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </register>
           <register>
             <name>RXSTATUS</name>
-            <description>Status to indicate if data sent from the debugger to the CPU has been read</description>
+            <description>This register shows a status that indicates if data sent from the debugger to the CPU has been read.</description>
             <addressOffset>0x004</addressOffset>
             <access>read-only</access>
             <resetValue>0x00000000</resetValue>
@@ -4787,7 +4937,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </register>
           <register>
             <name>TXDATA</name>
-            <description>Data sent from the CPU to the debugger</description>
+            <description>Data sent from the CPU to the debugger.</description>
             <addressOffset>0x80</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
@@ -4802,7 +4952,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </register>
           <register>
             <name>TXSTATUS</name>
-            <description>Status to indicate if data sent from the CPU to the debugger has been read</description>
+            <description>This register shows a status that indicates if the data sent from the CPU to the debugger has been read.</description>
             <addressOffset>0x84</addressOffset>
             <access>read-only</access>
             <resetValue>0x00000000</resetValue>
@@ -4836,14 +4986,14 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <addressOffset>0x500</addressOffset>
           <register>
             <name>LOCK</name>
-            <description>Lock register ERASEPROTECT.DISABLE from being written until next reset</description>
+            <description>This register locks the ERASEPROTECT.DISABLE register from being written until next reset.</description>
             <addressOffset>0x000</addressOffset>
             <access>read-writeonce</access>
             <resetValue>0x00000000</resetValue>
             <fields>
               <field>
                 <name>LOCK</name>
-                <description>Lock register ERASEPROTECT.DISABLE from being written until next reset</description>
+                <description>Lock ERASEPROTECT.DISABLE register from being written until next reset</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
                 <enumeratedValues>
@@ -4863,14 +5013,14 @@ POSSIBILITY OF SUCH DAMAGE.\n
           </register>
           <register>
             <name>DISABLE</name>
-            <description>Disable ERASEPROTECT and perform ERASEALL</description>
+            <description>This register disables the ERASEPROTECT register and performs an  ERASEALL operation.</description>
             <addressOffset>0x004</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
             <fields>
               <field>
                 <name>KEY</name>
-                <description>The ERASEALL sequence will be initiated if value of KEY fields are non-zero and KEY fields match on both CPU and debugger side</description>
+                <description>The ERASEALL sequence is initiated if the value of the KEY fields are non-zero and the KEY fields match on both the CPU and debugger sides.</description>
                 <lsb>0</lsb>
                 <msb>31</msb>
               </field>
@@ -4892,7 +5042,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
         <usage>registers</usage>
       </addressBlock>
       <interrupt>
-        <name>UARTE0_SPIM0_SPIS0_TWIM0_TWIS0</name>
+        <name>SPIM0_SPIS0_TWIM0_TWIS0_UARTE0</name>
         <value>8</value>
       </interrupt>
       <groupName>SPIM</groupName>
@@ -4990,9 +5140,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -5021,9 +5171,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -5052,9 +5202,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SUSPEND will subscribe to</description>
+              <description>DPPI channel that task SUSPEND will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -5083,9 +5233,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task RESUME will subscribe to</description>
+              <description>DPPI channel that task RESUME will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -5244,9 +5394,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -5275,9 +5425,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDRX will publish to.</description>
+              <description>DPPI channel that event ENDRX will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -5306,9 +5456,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event END will publish to.</description>
+              <description>DPPI channel that event END will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -5337,9 +5487,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDTX will publish to.</description>
+              <description>DPPI channel that event ENDTX will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -5368,9 +5518,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STARTED will publish to.</description>
+              <description>DPPI channel that event STARTED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -6129,7 +6279,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
         <usage>registers</usage>
       </addressBlock>
       <interrupt>
-        <name>UARTE0_SPIM0_SPIS0_TWIM0_TWIS0</name>
+        <name>SPIM0_SPIS0_TWIM0_TWIS0_UARTE0</name>
         <value>8</value>
       </interrupt>
       <groupName>SPIS</groupName>
@@ -6185,9 +6335,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task ACQUIRE will subscribe to</description>
+              <description>DPPI channel that task ACQUIRE will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -6216,9 +6366,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task RELEASE will subscribe to</description>
+              <description>DPPI channel that task RELEASE will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -6325,9 +6475,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event END will publish to.</description>
+              <description>DPPI channel that event END will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -6356,9 +6506,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDRX will publish to.</description>
+              <description>DPPI channel that event ENDRX will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -6387,9 +6537,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ACQUIRED will publish to.</description>
+              <description>DPPI channel that event ACQUIRED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -7134,7 +7284,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
         <usage>registers</usage>
       </addressBlock>
       <interrupt>
-        <name>UARTE0_SPIM0_SPIS0_TWIM0_TWIS0</name>
+        <name>SPIM0_SPIS0_TWIM0_TWIS0_UARTE0</name>
         <value>8</value>
       </interrupt>
       <groupName>TWIM</groupName>
@@ -7253,9 +7403,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTRX will subscribe to</description>
+              <description>DPPI channel that task STARTRX will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -7284,9 +7434,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTTX will subscribe to</description>
+              <description>DPPI channel that task STARTTX will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -7315,9 +7465,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -7346,9 +7496,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SUSPEND will subscribe to</description>
+              <description>DPPI channel that task SUSPEND will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -7377,9 +7527,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task RESUME will subscribe to</description>
+              <description>DPPI channel that task RESUME will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -7590,9 +7740,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -7621,9 +7771,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ERROR will publish to.</description>
+              <description>DPPI channel that event ERROR will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -7652,9 +7802,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SUSPENDED will publish to.</description>
+              <description>DPPI channel that event SUSPENDED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -7683,9 +7833,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXSTARTED will publish to.</description>
+              <description>DPPI channel that event RXSTARTED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -7714,9 +7864,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXSTARTED will publish to.</description>
+              <description>DPPI channel that event TXSTARTED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -7745,9 +7895,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event LASTRX will publish to.</description>
+              <description>DPPI channel that event LASTRX will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -7776,9 +7926,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event LASTTX will publish to.</description>
+              <description>DPPI channel that event LASTTX will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -8817,7 +8967,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
         <usage>registers</usage>
       </addressBlock>
       <interrupt>
-        <name>UARTE0_SPIM0_SPIS0_TWIM0_TWIS0</name>
+        <name>SPIM0_SPIS0_TWIM0_TWIS0_UARTE0</name>
         <value>8</value>
       </interrupt>
       <groupName>TWIS</groupName>
@@ -8936,9 +9086,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -8967,9 +9117,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SUSPEND will subscribe to</description>
+              <description>DPPI channel that task SUSPEND will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -8998,9 +9148,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task RESUME will subscribe to</description>
+              <description>DPPI channel that task RESUME will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -9029,9 +9179,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task PREPARERX will subscribe to</description>
+              <description>DPPI channel that task PREPARERX will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -9060,9 +9210,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task PREPARETX will subscribe to</description>
+              <description>DPPI channel that task PREPARETX will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -9247,9 +9397,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -9278,9 +9428,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ERROR will publish to.</description>
+              <description>DPPI channel that event ERROR will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -9309,9 +9459,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXSTARTED will publish to.</description>
+              <description>DPPI channel that event RXSTARTED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -9340,9 +9490,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXSTARTED will publish to.</description>
+              <description>DPPI channel that event TXSTARTED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -9371,9 +9521,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event WRITE will publish to.</description>
+              <description>DPPI channel that event WRITE will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -9402,9 +9552,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event READ will publish to.</description>
+              <description>DPPI channel that event READ will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -9996,7 +10146,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>MATCH</name>
-              <description>Which of the addresses in {ADDRESS} matched the incoming address</description>
+              <description>Indication of which address in {ADDRESS} that matched the incoming address</description>
               <lsb>0</lsb>
               <msb>0</msb>
             </field>
@@ -10342,7 +10492,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
         <usage>registers</usage>
       </addressBlock>
       <interrupt>
-        <name>UARTE0_SPIM0_SPIS0_TWIM0_TWIS0</name>
+        <name>SPIM0_SPIS0_TWIM0_TWIS0_UARTE0</name>
         <value>8</value>
       </interrupt>
       <groupName>UARTE</groupName>
@@ -10461,9 +10611,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTRX will subscribe to</description>
+              <description>DPPI channel that task STARTRX will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -10492,9 +10642,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOPRX will subscribe to</description>
+              <description>DPPI channel that task STOPRX will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -10523,9 +10673,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STARTTX will subscribe to</description>
+              <description>DPPI channel that task STARTTX will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -10554,9 +10704,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOPTX will subscribe to</description>
+              <description>DPPI channel that task STOPTX will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -10585,9 +10735,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task FLUSHRX will subscribe to</description>
+              <description>DPPI channel that task FLUSHRX will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -10902,9 +11052,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event CTS will publish to.</description>
+              <description>DPPI channel that event CTS will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -10933,9 +11083,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event NCTS will publish to.</description>
+              <description>DPPI channel that event NCTS will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -10964,9 +11114,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXDRDY will publish to.</description>
+              <description>DPPI channel that event RXDRDY will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -10995,9 +11145,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDRX will publish to.</description>
+              <description>DPPI channel that event ENDRX will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -11026,9 +11176,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXDRDY will publish to.</description>
+              <description>DPPI channel that event TXDRDY will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -11057,9 +11207,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ENDTX will publish to.</description>
+              <description>DPPI channel that event ENDTX will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -11088,9 +11238,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event ERROR will publish to.</description>
+              <description>DPPI channel that event ERROR will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -11119,9 +11269,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXTO will publish to.</description>
+              <description>DPPI channel that event RXTO will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -11150,9 +11300,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXSTARTED will publish to.</description>
+              <description>DPPI channel that event RXSTARTED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -11181,9 +11331,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXSTARTED will publish to.</description>
+              <description>DPPI channel that event TXSTARTED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -11212,9 +11362,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXSTOPPED will publish to.</description>
+              <description>DPPI channel that event TXSTOPPED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -12097,7 +12247,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
         </register>
         <register>
           <name>ERRORSRC</name>
-          <description>Error source Note : this register is read / write one to clear.</description>
+          <description>Error source This register is read/write one to clear.</description>
           <addressOffset>0x480</addressOffset>
           <access>read-write</access>
           <modifiedWriteValues>oneToClear</modifiedWriteValues>
@@ -12445,7 +12595,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Baud1M</name>
-                  <description>1Mega baud</description>
+                  <description>1 megabaud</description>
                   <value>0x10000000</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -12621,7 +12771,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE0_SPIM0_SPIS0_TWIM0_TWIS0</name>
+        <name>SPIM0_SPIS0_TWIM0_TWIS0_UARTE0</name>
         <value>8</value>
       </interrupt>
     </peripheral>
@@ -12633,7 +12783,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE0_SPIM0_SPIS0_TWIM0_TWIS0</name>
+        <name>SPIM0_SPIS0_TWIM0_TWIS0_UARTE0</name>
         <value>8</value>
       </interrupt>
     </peripheral>
@@ -12645,7 +12795,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE0_SPIM0_SPIS0_TWIM0_TWIS0</name>
+        <name>SPIM0_SPIS0_TWIM0_TWIS0_UARTE0</name>
         <value>8</value>
       </interrupt>
     </peripheral>
@@ -12657,7 +12807,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE0_SPIM0_SPIS0_TWIM0_TWIS0</name>
+        <name>SPIM0_SPIS0_TWIM0_TWIS0_UARTE0</name>
         <value>8</value>
       </interrupt>
     </peripheral>
@@ -12669,7 +12819,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE0_SPIM0_SPIS0_TWIM0_TWIS0</name>
+        <name>SPIM0_SPIS0_TWIM0_TWIS0_UARTE0</name>
         <value>8</value>
       </interrupt>
     </peripheral>
@@ -12680,7 +12830,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE1_SPIM1_SPIS1_TWIM1_TWIS1</name>
+        <name>SPIM1_SPIS1_TWIM1_TWIS1_UARTE1</name>
         <value>9</value>
       </interrupt>
     </peripheral>
@@ -12692,7 +12842,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE1_SPIM1_SPIS1_TWIM1_TWIS1</name>
+        <name>SPIM1_SPIS1_TWIM1_TWIS1_UARTE1</name>
         <value>9</value>
       </interrupt>
     </peripheral>
@@ -12704,7 +12854,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE1_SPIM1_SPIS1_TWIM1_TWIS1</name>
+        <name>SPIM1_SPIS1_TWIM1_TWIS1_UARTE1</name>
         <value>9</value>
       </interrupt>
     </peripheral>
@@ -12716,7 +12866,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE1_SPIM1_SPIS1_TWIM1_TWIS1</name>
+        <name>SPIM1_SPIS1_TWIM1_TWIS1_UARTE1</name>
         <value>9</value>
       </interrupt>
     </peripheral>
@@ -12728,7 +12878,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE1_SPIM1_SPIS1_TWIM1_TWIS1</name>
+        <name>SPIM1_SPIS1_TWIM1_TWIS1_UARTE1</name>
         <value>9</value>
       </interrupt>
     </peripheral>
@@ -12739,7 +12889,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE1_SPIM1_SPIS1_TWIM1_TWIS1</name>
+        <name>SPIM1_SPIS1_TWIM1_TWIS1_UARTE1</name>
         <value>9</value>
       </interrupt>
     </peripheral>
@@ -12751,7 +12901,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE1_SPIM1_SPIS1_TWIM1_TWIS1</name>
+        <name>SPIM1_SPIS1_TWIM1_TWIS1_UARTE1</name>
         <value>9</value>
       </interrupt>
     </peripheral>
@@ -12763,7 +12913,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE1_SPIM1_SPIS1_TWIM1_TWIS1</name>
+        <name>SPIM1_SPIS1_TWIM1_TWIS1_UARTE1</name>
         <value>9</value>
       </interrupt>
     </peripheral>
@@ -12775,7 +12925,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE1_SPIM1_SPIS1_TWIM1_TWIS1</name>
+        <name>SPIM1_SPIS1_TWIM1_TWIS1_UARTE1</name>
         <value>9</value>
       </interrupt>
     </peripheral>
@@ -12787,7 +12937,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE1_SPIM1_SPIS1_TWIM1_TWIS1</name>
+        <name>SPIM1_SPIS1_TWIM1_TWIS1_UARTE1</name>
         <value>9</value>
       </interrupt>
     </peripheral>
@@ -12798,7 +12948,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE2_SPIM2_SPIS2_TWIM2_TWIS2</name>
+        <name>SPIM2_SPIS2_TWIM2_TWIS2_UARTE2</name>
         <value>10</value>
       </interrupt>
     </peripheral>
@@ -12810,7 +12960,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE2_SPIM2_SPIS2_TWIM2_TWIS2</name>
+        <name>SPIM2_SPIS2_TWIM2_TWIS2_UARTE2</name>
         <value>10</value>
       </interrupt>
     </peripheral>
@@ -12822,7 +12972,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE2_SPIM2_SPIS2_TWIM2_TWIS2</name>
+        <name>SPIM2_SPIS2_TWIM2_TWIS2_UARTE2</name>
         <value>10</value>
       </interrupt>
     </peripheral>
@@ -12834,7 +12984,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE2_SPIM2_SPIS2_TWIM2_TWIS2</name>
+        <name>SPIM2_SPIS2_TWIM2_TWIS2_UARTE2</name>
         <value>10</value>
       </interrupt>
     </peripheral>
@@ -12846,7 +12996,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE2_SPIM2_SPIS2_TWIM2_TWIS2</name>
+        <name>SPIM2_SPIS2_TWIM2_TWIS2_UARTE2</name>
         <value>10</value>
       </interrupt>
     </peripheral>
@@ -12857,7 +13007,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE2_SPIM2_SPIS2_TWIM2_TWIS2</name>
+        <name>SPIM2_SPIS2_TWIM2_TWIS2_UARTE2</name>
         <value>10</value>
       </interrupt>
     </peripheral>
@@ -12869,7 +13019,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE2_SPIM2_SPIS2_TWIM2_TWIS2</name>
+        <name>SPIM2_SPIS2_TWIM2_TWIS2_UARTE2</name>
         <value>10</value>
       </interrupt>
     </peripheral>
@@ -12881,7 +13031,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE2_SPIM2_SPIS2_TWIM2_TWIS2</name>
+        <name>SPIM2_SPIS2_TWIM2_TWIS2_UARTE2</name>
         <value>10</value>
       </interrupt>
     </peripheral>
@@ -12893,7 +13043,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE2_SPIM2_SPIS2_TWIM2_TWIS2</name>
+        <name>SPIM2_SPIS2_TWIM2_TWIS2_UARTE2</name>
         <value>10</value>
       </interrupt>
     </peripheral>
@@ -12905,7 +13055,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE2_SPIM2_SPIS2_TWIM2_TWIS2</name>
+        <name>SPIM2_SPIS2_TWIM2_TWIS2_UARTE2</name>
         <value>10</value>
       </interrupt>
     </peripheral>
@@ -12916,7 +13066,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE3_SPIM3_SPIS3_TWIM3_TWIS3</name>
+        <name>SPIM3_SPIS3_TWIM3_TWIS3_UARTE3</name>
         <value>11</value>
       </interrupt>
     </peripheral>
@@ -12928,7 +13078,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE3_SPIM3_SPIS3_TWIM3_TWIS3</name>
+        <name>SPIM3_SPIS3_TWIM3_TWIS3_UARTE3</name>
         <value>11</value>
       </interrupt>
     </peripheral>
@@ -12940,7 +13090,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE3_SPIM3_SPIS3_TWIM3_TWIS3</name>
+        <name>SPIM3_SPIS3_TWIM3_TWIS3_UARTE3</name>
         <value>11</value>
       </interrupt>
     </peripheral>
@@ -12952,7 +13102,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE3_SPIM3_SPIS3_TWIM3_TWIS3</name>
+        <name>SPIM3_SPIS3_TWIM3_TWIS3_UARTE3</name>
         <value>11</value>
       </interrupt>
     </peripheral>
@@ -12964,7 +13114,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE3_SPIM3_SPIS3_TWIM3_TWIS3</name>
+        <name>SPIM3_SPIS3_TWIM3_TWIS3_UARTE3</name>
         <value>11</value>
       </interrupt>
     </peripheral>
@@ -12975,7 +13125,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE3_SPIM3_SPIS3_TWIM3_TWIS3</name>
+        <name>SPIM3_SPIS3_TWIM3_TWIS3_UARTE3</name>
         <value>11</value>
       </interrupt>
     </peripheral>
@@ -12987,7 +13137,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE3_SPIM3_SPIS3_TWIM3_TWIS3</name>
+        <name>SPIM3_SPIS3_TWIM3_TWIS3_UARTE3</name>
         <value>11</value>
       </interrupt>
     </peripheral>
@@ -12999,7 +13149,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE3_SPIM3_SPIS3_TWIM3_TWIS3</name>
+        <name>SPIM3_SPIS3_TWIM3_TWIS3_UARTE3</name>
         <value>11</value>
       </interrupt>
     </peripheral>
@@ -13011,7 +13161,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE3_SPIM3_SPIS3_TWIM3_TWIS3</name>
+        <name>SPIM3_SPIS3_TWIM3_TWIS3_UARTE3</name>
         <value>11</value>
       </interrupt>
     </peripheral>
@@ -13023,7 +13173,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>UARTE3_SPIM3_SPIS3_TWIM3_TWIS3</name>
+        <name>SPIM3_SPIS3_TWIM3_TWIS3_UARTE3</name>
         <value>11</value>
       </interrupt>
     </peripheral>
@@ -13125,9 +13275,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task OUT[n] will subscribe to</description>
+              <description>DPPI channel that task OUT[n] will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -13158,9 +13308,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SET[n] will subscribe to</description>
+              <description>DPPI channel that task SET[n] will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -13191,9 +13341,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CLR[n] will subscribe to</description>
+              <description>DPPI channel that task CLR[n] will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -13278,9 +13428,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event IN[n] will publish to.</description>
+              <description>DPPI channel that event IN[n] will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -13309,9 +13459,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event PORT will publish to.</description>
+              <description>DPPI channel that event PORT will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -13838,7 +13988,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>CONFIG[%s]</name>
-          <description>Description collection: Configuration for OUT[n], SET[n] and CLR[n] tasks and IN[n] event</description>
+          <description>Description collection: Configuration for OUT[n], SET[n], and CLR[n] tasks and IN[n] event</description>
           <addressOffset>0x510</addressOffset>
           <access>read-write</access>
           <fields>
@@ -13867,7 +14017,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PSEL</name>
-              <description>GPIO number associated with SET[n], CLR[n] and OUT[n] tasks and IN[n] event</description>
+              <description>GPIO number associated with SET[n], CLR[n], and OUT[n] tasks and IN[n] event</description>
               <lsb>8</lsb>
               <msb>12</msb>
             </field>
@@ -14032,9 +14182,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -14063,9 +14213,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SAMPLE will subscribe to</description>
+              <description>DPPI channel that task SAMPLE will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -14094,9 +14244,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -14125,9 +14275,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CALIBRATEOFFSET will subscribe to</description>
+              <description>DPPI channel that task CALIBRATEOFFSET will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -14373,9 +14523,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STARTED will publish to.</description>
+              <description>DPPI channel that event STARTED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -14404,9 +14554,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event END will publish to.</description>
+              <description>DPPI channel that event END will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -14435,9 +14585,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event DONE will publish to.</description>
+              <description>DPPI channel that event DONE will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -14466,9 +14616,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RESULTDONE will publish to.</description>
+              <description>DPPI channel that event RESULTDONE will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -14497,9 +14647,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event CALIBRATEDONE will publish to.</description>
+              <description>DPPI channel that event CALIBRATEDONE will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -14528,9 +14678,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -14567,9 +14717,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
             <fields>
               <field>
                 <name>CHIDX</name>
-                <description>Channel that event CH[n].LIMITH will publish to.</description>
+                <description>DPPI channel that event CH[n].LIMITH will publish to</description>
                 <lsb>0</lsb>
-                <msb>3</msb>
+                <msb>7</msb>
               </field>
               <field>
                 <name>EN</name>
@@ -14598,9 +14748,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
             <fields>
               <field>
                 <name>CHIDX</name>
-                <description>Channel that event CH[n].LIMITL will publish to.</description>
+                <description>DPPI channel that event CH[n].LIMITL will publish to</description>
                 <lsb>0</lsb>
-                <msb>3</msb>
+                <msb>7</msb>
               </field>
               <field>
                 <name>EN</name>
@@ -16998,9 +17148,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -17029,9 +17179,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -17060,9 +17210,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task COUNT will subscribe to</description>
+              <description>DPPI channel that task COUNT will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -17091,9 +17241,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CLEAR will subscribe to</description>
+              <description>DPPI channel that task CLEAR will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -17122,9 +17272,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SHUTDOWN will subscribe to</description>
+              <description>DPPI channel that task SHUTDOWN will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -17155,9 +17305,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CAPTURE[n] will subscribe to</description>
+              <description>DPPI channel that task CAPTURE[n] will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -17216,9 +17366,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event COMPARE[n] will publish to.</description>
+              <description>DPPI channel that event COMPARE[n] will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -18097,9 +18247,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -18128,9 +18278,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -18159,9 +18309,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task CLEAR will subscribe to</description>
+              <description>DPPI channel that task CLEAR will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -18190,9 +18340,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task TRIGOVRFLW will subscribe to</description>
+              <description>DPPI channel that task TRIGOVRFLW will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -18301,9 +18451,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TICK will publish to.</description>
+              <description>DPPI channel that event TICK will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -18332,9 +18482,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event OVRFLW will publish to.</description>
+              <description>DPPI channel that event OVRFLW will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -18365,9 +18515,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event COMPARE[n] will publish to.</description>
+              <description>DPPI channel that event COMPARE[n] will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -18747,7 +18897,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Disable</description>
+                  <description>Enable</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -18765,7 +18915,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Disable</description>
+                  <description>Enable</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -18783,7 +18933,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Disable</description>
+                  <description>Enable</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -18801,7 +18951,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Disable</description>
+                  <description>Enable</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -18819,7 +18969,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Disable</description>
+                  <description>Enable</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -18837,7 +18987,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Disable</description>
+                  <description>Enable</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -19265,7 +19415,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
     </peripheral>
     <peripheral>
       <name>DPPIC_NS</name>
-      <description>Distributed Programmable Peripheral Interconnect Controller 0</description>
+      <description>Distributed programmable peripheral interconnect controller 0</description>
       <baseAddress>0x40017000</baseAddress>
       <headerStructName>DPPIC</headerStructName>
       <!--Security dma=NA-->
@@ -19345,9 +19495,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
             <fields>
               <field>
                 <name>CHIDX</name>
-                <description>Channel that task CHG[n].EN will subscribe to</description>
+                <description>DPPI channel that task CHG[n].EN will subscribe to</description>
                 <lsb>0</lsb>
-                <msb>3</msb>
+                <msb>7</msb>
               </field>
               <field>
                 <name>EN</name>
@@ -19376,9 +19526,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
             <fields>
               <field>
                 <name>CHIDX</name>
-                <description>Channel that task CHG[n].DIS will subscribe to</description>
+                <description>DPPI channel that task CHG[n].DIS will subscribe to</description>
                 <lsb>0</lsb>
-                <msb>3</msb>
+                <msb>7</msb>
               </field>
               <field>
                 <name>EN</name>
@@ -19705,19 +19855,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CH0</name>
-              <description>Channel 0 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 0 enable set register. Writing 0 has no effect.</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -19732,19 +19882,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH1</name>
-              <description>Channel 1 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 1 enable set register. Writing 0 has no effect.</description>
               <lsb>1</lsb>
               <msb>1</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -19759,19 +19909,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH2</name>
-              <description>Channel 2 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 2 enable set register. Writing 0 has no effect.</description>
               <lsb>2</lsb>
               <msb>2</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -19786,19 +19936,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH3</name>
-              <description>Channel 3 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 3 enable set register. Writing 0 has no effect.</description>
               <lsb>3</lsb>
               <msb>3</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -19813,19 +19963,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH4</name>
-              <description>Channel 4 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 4 enable set register. Writing 0 has no effect.</description>
               <lsb>4</lsb>
               <msb>4</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -19840,19 +19990,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH5</name>
-              <description>Channel 5 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 5 enable set register. Writing 0 has no effect.</description>
               <lsb>5</lsb>
               <msb>5</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -19867,19 +20017,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH6</name>
-              <description>Channel 6 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 6 enable set register. Writing 0 has no effect.</description>
               <lsb>6</lsb>
               <msb>6</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -19894,19 +20044,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH7</name>
-              <description>Channel 7 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 7 enable set register. Writing 0 has no effect.</description>
               <lsb>7</lsb>
               <msb>7</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -19921,19 +20071,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH8</name>
-              <description>Channel 8 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 8 enable set register. Writing 0 has no effect.</description>
               <lsb>8</lsb>
               <msb>8</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -19948,19 +20098,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH9</name>
-              <description>Channel 9 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 9 enable set register. Writing 0 has no effect.</description>
               <lsb>9</lsb>
               <msb>9</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -19975,19 +20125,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH10</name>
-              <description>Channel 10 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 10 enable set register. Writing 0 has no effect.</description>
               <lsb>10</lsb>
               <msb>10</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20002,19 +20152,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH11</name>
-              <description>Channel 11 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 11 enable set register. Writing 0 has no effect.</description>
               <lsb>11</lsb>
               <msb>11</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20029,19 +20179,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH12</name>
-              <description>Channel 12 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 12 enable set register. Writing 0 has no effect.</description>
               <lsb>12</lsb>
               <msb>12</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20056,19 +20206,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH13</name>
-              <description>Channel 13 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 13 enable set register. Writing 0 has no effect.</description>
               <lsb>13</lsb>
               <msb>13</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20083,19 +20233,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH14</name>
-              <description>Channel 14 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 14 enable set register. Writing 0 has no effect.</description>
               <lsb>14</lsb>
               <msb>14</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20110,19 +20260,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CH15</name>
-              <description>Channel 15 enable set register.  Writing '0' has no effect</description>
+              <description>Channel 15 enable set register. Writing 0 has no effect.</description>
               <lsb>15</lsb>
               <msb>15</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20146,19 +20296,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CH0</name>
-              <description>Channel 0 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 0 enable clear register.  Writing 0 has no effect.</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20166,26 +20316,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH1</name>
-              <description>Channel 1 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 1 enable clear register.  Writing 0 has no effect.</description>
               <lsb>1</lsb>
               <msb>1</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20193,26 +20343,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH2</name>
-              <description>Channel 2 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 2 enable clear register.  Writing 0 has no effect.</description>
               <lsb>2</lsb>
               <msb>2</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20220,26 +20370,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH3</name>
-              <description>Channel 3 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 3 enable clear register.  Writing 0 has no effect.</description>
               <lsb>3</lsb>
               <msb>3</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20247,26 +20397,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH4</name>
-              <description>Channel 4 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 4 enable clear register.  Writing 0 has no effect.</description>
               <lsb>4</lsb>
               <msb>4</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20274,26 +20424,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH5</name>
-              <description>Channel 5 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 5 enable clear register.  Writing 0 has no effect.</description>
               <lsb>5</lsb>
               <msb>5</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20301,26 +20451,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH6</name>
-              <description>Channel 6 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 6 enable clear register.  Writing 0 has no effect.</description>
               <lsb>6</lsb>
               <msb>6</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20328,26 +20478,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH7</name>
-              <description>Channel 7 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 7 enable clear register.  Writing 0 has no effect.</description>
               <lsb>7</lsb>
               <msb>7</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20355,26 +20505,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH8</name>
-              <description>Channel 8 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 8 enable clear register.  Writing 0 has no effect.</description>
               <lsb>8</lsb>
               <msb>8</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20382,26 +20532,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH9</name>
-              <description>Channel 9 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 9 enable clear register.  Writing 0 has no effect.</description>
               <lsb>9</lsb>
               <msb>9</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20409,26 +20559,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH10</name>
-              <description>Channel 10 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 10 enable clear register.  Writing 0 has no effect.</description>
               <lsb>10</lsb>
               <msb>10</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20436,26 +20586,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH11</name>
-              <description>Channel 11 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 11 enable clear register.  Writing 0 has no effect.</description>
               <lsb>11</lsb>
               <msb>11</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20463,26 +20613,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH12</name>
-              <description>Channel 12 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 12 enable clear register.  Writing 0 has no effect.</description>
               <lsb>12</lsb>
               <msb>12</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20490,26 +20640,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH13</name>
-              <description>Channel 13 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 13 enable clear register.  Writing 0 has no effect.</description>
               <lsb>13</lsb>
               <msb>13</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20517,26 +20667,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH14</name>
-              <description>Channel 14 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 14 enable clear register.  Writing 0 has no effect.</description>
               <lsb>14</lsb>
               <msb>14</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20544,26 +20694,26 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CH15</name>
-              <description>Channel 15 enable clear register.  Writing '0' has no effect</description>
+              <description>Channel 15 enable clear register.  Writing 0 has no effect.</description>
               <lsb>15</lsb>
               <msb>15</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>Disabled</name>
-                  <description>Read: channel disabled</description>
+                  <description>Read: Channel disabled</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enabled</name>
-                  <description>Read: channel enabled</description>
+                  <description>Read: Channel enabled</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20571,7 +20721,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>write</usage>
                 <enumeratedValue>
                   <name>Clear</name>
-                  <description>Write: disable channel</description>
+                  <description>Write: Disable channel</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20582,7 +20732,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <dim>0x6</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>CHG[%s]</name>
-          <description>Description collection: Channel group n Note: Writes to this register is ignored if either SUBSCRIBE_CHG[n].EN/DIS are enabled.</description>
+          <description>Description collection: Channel group n Note: Writes to this register are ignored if either SUBSCRIBE_CHG[n].EN or SUBSCRIBE_CHG[n].DIS is enabled</description>
           <addressOffset>0x800</addressOffset>
           <access>read-write</access>
           <fields>
@@ -20880,7 +21030,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
     </peripheral>
     <peripheral derivedFrom="DPPIC_NS">
       <name>DPPIC_S</name>
-      <description>Distributed Programmable Peripheral Interconnect Controller 1</description>
+      <description>Distributed programmable peripheral interconnect controller 1</description>
       <baseAddress>0x50017000</baseAddress>
       <!--Security dma=NA-->
       <!--Security securemapping=SPLIT-->
@@ -20933,9 +21083,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -20990,9 +21140,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TIMEOUT will publish to.</description>
+              <description>DPPI channel that event TIMEOUT will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -21563,9 +21713,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task TRIGGER[n] will subscribe to</description>
+              <description>DPPI channel that task TRIGGER[n] will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -21624,9 +21774,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TRIGGERED[n] will publish to.</description>
+              <description>DPPI channel that event TRIGGERED[n] will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -23038,9 +23188,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -23071,9 +23221,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SEQSTART[n] will subscribe to</description>
+              <description>DPPI channel that task SEQSTART[n] will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -23102,9 +23252,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task NEXTSTEP will subscribe to</description>
+              <description>DPPI channel that task NEXTSTEP will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -23267,9 +23417,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -23300,9 +23450,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SEQSTARTED[n] will publish to.</description>
+              <description>DPPI channel that event SEQSTARTED[n] will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -23333,9 +23483,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event SEQEND[n] will publish to.</description>
+              <description>DPPI channel that event SEQEND[n] will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -23364,9 +23514,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event PWMPERIODEND will publish to.</description>
+              <description>DPPI channel that event PWMPERIODEND will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -23395,9 +23545,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event LOOPSDONE will publish to.</description>
+              <description>DPPI channel that event LOOPSDONE will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -24520,9 +24670,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -24551,9 +24701,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -24660,9 +24810,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STARTED will publish to.</description>
+              <description>DPPI channel that event STARTED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -24691,9 +24841,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -24722,9 +24872,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event END will publish to.</description>
+              <description>DPPI channel that event END will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -25021,7 +25171,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>FREQ</name>
-              <description>PDM_CLK frequency</description>
+              <description>PDM_CLK frequency configuration.</description>
               <lsb>0</lsb>
               <msb>31</msb>
               <enumeratedValues>
@@ -25074,19 +25224,19 @@ POSSIBILITY OF SUCH DAMAGE.\n
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Stereo</name>
-                  <description>Sample and store one pair (Left + Right) of 16bit samples per RAM word R=[31:16]; L=[15:0]</description>
+                  <description>Sample and store one pair (left + right) of 16-bit samples per RAM word R=[31:16]; L=[15:0]</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Mono</name>
-                  <description>Sample and store two successive Left samples (16 bit each) per RAM word L1=[31:16]; L0=[15:0]</description>
+                  <description>Sample and store two successive left samples (16 bits each) per RAM word L1=[31:16]; L0=[15:0]</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>EDGE</name>
-              <description>Defines on which PDM_CLK edge Left (or mono) is sampled</description>
+              <description>Defines on which PDM_CLK edge left (or mono) is sampled</description>
               <lsb>1</lsb>
               <msb>1</msb>
               <enumeratedValues>
@@ -25119,17 +25269,17 @@ POSSIBILITY OF SUCH DAMAGE.\n
               <enumeratedValues>
                 <enumeratedValue>
                   <name>MinGain</name>
-                  <description>-20dB gain adjustment (minimum)</description>
+                  <description>-20 dB gain adjustment (minimum)</description>
                   <value>0x00</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>DefaultGain</name>
-                  <description>0dB gain adjustment</description>
+                  <description>0 dB gain adjustment</description>
                   <value>0x28</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>MaxGain</name>
-                  <description>+20dB gain adjustment (maximum)</description>
+                  <description>+20 dB gain adjustment (maximum)</description>
                   <value>0x50</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -25151,17 +25301,17 @@ POSSIBILITY OF SUCH DAMAGE.\n
               <enumeratedValues>
                 <enumeratedValue>
                   <name>MinGain</name>
-                  <description>-20dB gain adjustment (minimum)</description>
+                  <description>-20 dB gain adjustment (minimum)</description>
                   <value>0x00</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>DefaultGain</name>
-                  <description>0dB gain adjustment</description>
+                  <description>0 dB gain adjustment</description>
                   <value>0x28</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>MaxGain</name>
-                  <description>+20dB gain adjustment (maximum)</description>
+                  <description>+20 dB gain adjustment (maximum)</description>
                   <value>0x50</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -25385,9 +25535,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task START will subscribe to</description>
+              <description>DPPI channel that task START will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -25416,9 +25566,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task STOP will subscribe to</description>
+              <description>DPPI channel that task STOP will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -25529,9 +25679,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RXPTRUPD will publish to.</description>
+              <description>DPPI channel that event RXPTRUPD will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -25560,9 +25710,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event STOPPED will publish to.</description>
+              <description>DPPI channel that event STOPPED will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -25591,9 +25741,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event TXPTRUPD will publish to.</description>
+              <description>DPPI channel that event TXPTRUPD will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -26511,7 +26661,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
     </peripheral>
     <peripheral>
       <name>IPC_NS</name>
-      <description>Inter Processor Communication 0</description>
+      <description>Interprocessor communication 0</description>
       <baseAddress>0x4002A000</baseAddress>
       <headerStructName>IPC</headerStructName>
       <!--Security dma=NA-->
@@ -26532,13 +26682,13 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>TASKS_SEND[%s]</name>
-          <description>Description collection: Trigger events on channel enabled in SEND_CNF[n].</description>
+          <description>Description collection: Trigger events on IPC channel enabled in SEND_CNF[n]</description>
           <addressOffset>0x000</addressOffset>
           <access>write-only</access>
           <fields>
             <field>
               <name>TASKS_SEND</name>
-              <description>Trigger events on channel enabled in SEND_CNF[n].</description>
+              <description>Trigger events on IPC channel enabled in SEND_CNF[n]</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -26561,9 +26711,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that task SEND[n] will subscribe to</description>
+              <description>DPPI channel that task SEND[n] will subscribe to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -26588,13 +26738,13 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>EVENTS_RECEIVE[%s]</name>
-          <description>Description collection: Event received on one or more of the enabled channels in RECEIVE_CNF[n].</description>
+          <description>Description collection: Event received on one or more of the enabled IPC channels in RECEIVE_CNF[n]</description>
           <addressOffset>0x100</addressOffset>
           <access>read-write</access>
           <fields>
             <field>
               <name>EVENTS_RECEIVE</name>
-              <description>Event received on one or more of the enabled channels in RECEIVE_CNF[n].</description>
+              <description>Event received on one or more of the enabled IPC channels in RECEIVE_CNF[n]</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -26622,9 +26772,9 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>CHIDX</name>
-              <description>Channel that event RECEIVE[n] will publish to.</description>
+              <description>DPPI channel that event RECEIVE[n] will publish to</description>
               <lsb>0</lsb>
-              <msb>3</msb>
+              <msb>7</msb>
             </field>
             <field>
               <name>EN</name>
@@ -27409,151 +27559,151 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>SEND_CNF[%s]</name>
-          <description>Description collection: Send event configuration for TASKS_SEND[n].</description>
+          <description>Description collection: Send event configuration for TASKS_SEND[n]</description>
           <addressOffset>0x510</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
               <name>CHEN0</name>
-              <description>Enable broadcasting on channel 0.</description>
+              <description>Enable broadcasting on IPC channel 0</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable broadcast.</description>
+                  <description>Disable broadcast</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable broadcast.</description>
+                  <description>Enable broadcast</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN1</name>
-              <description>Enable broadcasting on channel 1.</description>
+              <description>Enable broadcasting on IPC channel 1</description>
               <lsb>1</lsb>
               <msb>1</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable broadcast.</description>
+                  <description>Disable broadcast</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable broadcast.</description>
+                  <description>Enable broadcast</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN2</name>
-              <description>Enable broadcasting on channel 2.</description>
+              <description>Enable broadcasting on IPC channel 2</description>
               <lsb>2</lsb>
               <msb>2</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable broadcast.</description>
+                  <description>Disable broadcast</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable broadcast.</description>
+                  <description>Enable broadcast</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN3</name>
-              <description>Enable broadcasting on channel 3.</description>
+              <description>Enable broadcasting on IPC channel 3</description>
               <lsb>3</lsb>
               <msb>3</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable broadcast.</description>
+                  <description>Disable broadcast</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable broadcast.</description>
+                  <description>Enable broadcast</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN4</name>
-              <description>Enable broadcasting on channel 4.</description>
+              <description>Enable broadcasting on IPC channel 4</description>
               <lsb>4</lsb>
               <msb>4</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable broadcast.</description>
+                  <description>Disable broadcast</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable broadcast.</description>
+                  <description>Enable broadcast</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN5</name>
-              <description>Enable broadcasting on channel 5.</description>
+              <description>Enable broadcasting on IPC channel 5</description>
               <lsb>5</lsb>
               <msb>5</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable broadcast.</description>
+                  <description>Disable broadcast</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable broadcast.</description>
+                  <description>Enable broadcast</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN6</name>
-              <description>Enable broadcasting on channel 6.</description>
+              <description>Enable broadcasting on IPC channel 6</description>
               <lsb>6</lsb>
               <msb>6</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable broadcast.</description>
+                  <description>Disable broadcast</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable broadcast.</description>
+                  <description>Enable broadcast</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN7</name>
-              <description>Enable broadcasting on channel 7.</description>
+              <description>Enable broadcasting on IPC channel 7</description>
               <lsb>7</lsb>
               <msb>7</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable broadcast.</description>
+                  <description>Disable broadcast</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable broadcast.</description>
+                  <description>Enable broadcast</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -27564,151 +27714,151 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>RECEIVE_CNF[%s]</name>
-          <description>Description collection: Receive event configuration for EVENTS_RECEIVE[n].</description>
+          <description>Description collection: Receive event configuration for EVENTS_RECEIVE[n]</description>
           <addressOffset>0x590</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
               <name>CHEN0</name>
-              <description>Enable subscription to channel 0.</description>
+              <description>Enable subscription to IPC channel 0</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable events.</description>
+                  <description>Disable events</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable events.</description>
+                  <description>Enable events</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN1</name>
-              <description>Enable subscription to channel 1.</description>
+              <description>Enable subscription to IPC channel 1</description>
               <lsb>1</lsb>
               <msb>1</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable events.</description>
+                  <description>Disable events</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable events.</description>
+                  <description>Enable events</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN2</name>
-              <description>Enable subscription to channel 2.</description>
+              <description>Enable subscription to IPC channel 2</description>
               <lsb>2</lsb>
               <msb>2</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable events.</description>
+                  <description>Disable events</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable events.</description>
+                  <description>Enable events</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN3</name>
-              <description>Enable subscription to channel 3.</description>
+              <description>Enable subscription to IPC channel 3</description>
               <lsb>3</lsb>
               <msb>3</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable events.</description>
+                  <description>Disable events</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable events.</description>
+                  <description>Enable events</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN4</name>
-              <description>Enable subscription to channel 4.</description>
+              <description>Enable subscription to IPC channel 4</description>
               <lsb>4</lsb>
               <msb>4</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable events.</description>
+                  <description>Disable events</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable events.</description>
+                  <description>Enable events</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN5</name>
-              <description>Enable subscription to channel 5.</description>
+              <description>Enable subscription to IPC channel 5</description>
               <lsb>5</lsb>
               <msb>5</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable events.</description>
+                  <description>Disable events</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable events.</description>
+                  <description>Enable events</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN6</name>
-              <description>Enable subscription to channel 6.</description>
+              <description>Enable subscription to IPC channel 6</description>
               <lsb>6</lsb>
               <msb>6</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable events.</description>
+                  <description>Disable events</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable events.</description>
+                  <description>Enable events</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
               <name>CHEN7</name>
-              <description>Enable subscription to channel 7.</description>
+              <description>Enable subscription to IPC channel 7</description>
               <lsb>7</lsb>
               <msb>7</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable events.</description>
+                  <description>Disable events</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Enable</name>
-                  <description>Enable events.</description>
+                  <description>Enable events</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -27719,7 +27869,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <dim>0x4</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>GPMEM[%s]</name>
-          <description>Description collection: General purpose memory.</description>
+          <description>Description collection: General purpose memory</description>
           <addressOffset>0x610</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -27736,7 +27886,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
     </peripheral>
     <peripheral derivedFrom="IPC_NS">
       <name>IPC_S</name>
-      <description>Inter Processor Communication 1</description>
+      <description>Interprocessor communication 1</description>
       <baseAddress>0x5002A000</baseAddress>
       <!--Security dma=NA-->
       <!--Security securemapping=US-->
@@ -28272,7 +28422,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>ID</name>
-              <description>Select key slot ID to be read over AHB, or pushed over secure APB, when TASKS_PUSH_KEYSLOT is started NOTE: ID=0 is not a valid key slot ID. The 0 ID should be used when the KMU is idle or not in use NOTE: Index N in UICR-&amp;gt;KEYSLOT.KEY[N] and UICR-&amp;gt;KEYSLOT.CONFIG[N] corresponds to KMU key slot ID=N+1</description>
+              <description>Select key slot ID to be read over AHB, or pushed over secure APB, when TASKS_PUSH_KEYSLOT is started. NOTE: ID=0 is not a valid key slot ID. The 0 ID should be used when the KMU is idle or not in use. NOTE: Index N in UICR-&amp;gt;KEYSLOT.KEY[N] and UICR-&amp;gt;KEYSLOT.CONFIG[N] corresponds to KMU key slot ID=N+1.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -28302,7 +28452,6 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <addressOffset>0x400</addressOffset>
           <access>read-only</access>
           <resetValue>0x00000001</resetValue>
-          <!--Security securemapping=NS-->
           <fields>
             <field>
               <name>READY</name>
@@ -28330,7 +28479,6 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <addressOffset>0x408</addressOffset>
           <access>read-only</access>
           <resetValue>0x00000001</resetValue>
-          <!--Security securemapping=NS-->
           <fields>
             <field>
               <name>READYNEXT</name>
@@ -28513,7 +28661,6 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Unspecified</description>
           <addressOffset>0x584</addressOffset>
           <access>read-write</access>
-          <!--Security securemapping=NS-->
           <fields>
             <field>
               <name>WEN</name>
@@ -28545,7 +28692,6 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Non-secure APPROTECT enable register</description>
           <addressOffset>0x588</addressOffset>
           <access>write-only</access>
-          <!--Security securemapping=NS-->
           <fields>
             <field>
               <name>SET</name>
@@ -34505,7 +34651,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <fields>
             <field>
               <name>PIN0</name>
-              <description>Status on whether PIN0 has met criteria set in PIN_CNF0.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[0] has met criteria set in PIN_CNF[0].SENSE register. Write '1' to clear.</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -34523,7 +34669,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN1</name>
-              <description>Status on whether PIN1 has met criteria set in PIN_CNF1.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[1] has met criteria set in PIN_CNF[1].SENSE register. Write '1' to clear.</description>
               <lsb>1</lsb>
               <msb>1</msb>
               <enumeratedValues>
@@ -34541,7 +34687,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN2</name>
-              <description>Status on whether PIN2 has met criteria set in PIN_CNF2.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[2] has met criteria set in PIN_CNF[2].SENSE register. Write '1' to clear.</description>
               <lsb>2</lsb>
               <msb>2</msb>
               <enumeratedValues>
@@ -34559,7 +34705,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN3</name>
-              <description>Status on whether PIN3 has met criteria set in PIN_CNF3.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[3] has met criteria set in PIN_CNF[3].SENSE register. Write '1' to clear.</description>
               <lsb>3</lsb>
               <msb>3</msb>
               <enumeratedValues>
@@ -34577,7 +34723,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN4</name>
-              <description>Status on whether PIN4 has met criteria set in PIN_CNF4.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[4] has met criteria set in PIN_CNF[4].SENSE register. Write '1' to clear.</description>
               <lsb>4</lsb>
               <msb>4</msb>
               <enumeratedValues>
@@ -34595,7 +34741,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN5</name>
-              <description>Status on whether PIN5 has met criteria set in PIN_CNF5.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[5] has met criteria set in PIN_CNF[5].SENSE register. Write '1' to clear.</description>
               <lsb>5</lsb>
               <msb>5</msb>
               <enumeratedValues>
@@ -34613,7 +34759,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN6</name>
-              <description>Status on whether PIN6 has met criteria set in PIN_CNF6.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[6] has met criteria set in PIN_CNF[6].SENSE register. Write '1' to clear.</description>
               <lsb>6</lsb>
               <msb>6</msb>
               <enumeratedValues>
@@ -34631,7 +34777,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN7</name>
-              <description>Status on whether PIN7 has met criteria set in PIN_CNF7.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[7] has met criteria set in PIN_CNF[7].SENSE register. Write '1' to clear.</description>
               <lsb>7</lsb>
               <msb>7</msb>
               <enumeratedValues>
@@ -34649,7 +34795,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN8</name>
-              <description>Status on whether PIN8 has met criteria set in PIN_CNF8.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[8] has met criteria set in PIN_CNF[8].SENSE register. Write '1' to clear.</description>
               <lsb>8</lsb>
               <msb>8</msb>
               <enumeratedValues>
@@ -34667,7 +34813,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN9</name>
-              <description>Status on whether PIN9 has met criteria set in PIN_CNF9.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[9] has met criteria set in PIN_CNF[9].SENSE register. Write '1' to clear.</description>
               <lsb>9</lsb>
               <msb>9</msb>
               <enumeratedValues>
@@ -34685,7 +34831,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN10</name>
-              <description>Status on whether PIN10 has met criteria set in PIN_CNF10.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[10] has met criteria set in PIN_CNF[10].SENSE register. Write '1' to clear.</description>
               <lsb>10</lsb>
               <msb>10</msb>
               <enumeratedValues>
@@ -34703,7 +34849,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN11</name>
-              <description>Status on whether PIN11 has met criteria set in PIN_CNF11.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[11] has met criteria set in PIN_CNF[11].SENSE register. Write '1' to clear.</description>
               <lsb>11</lsb>
               <msb>11</msb>
               <enumeratedValues>
@@ -34721,7 +34867,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN12</name>
-              <description>Status on whether PIN12 has met criteria set in PIN_CNF12.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[12] has met criteria set in PIN_CNF[12].SENSE register. Write '1' to clear.</description>
               <lsb>12</lsb>
               <msb>12</msb>
               <enumeratedValues>
@@ -34739,7 +34885,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN13</name>
-              <description>Status on whether PIN13 has met criteria set in PIN_CNF13.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[13] has met criteria set in PIN_CNF[13].SENSE register. Write '1' to clear.</description>
               <lsb>13</lsb>
               <msb>13</msb>
               <enumeratedValues>
@@ -34757,7 +34903,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN14</name>
-              <description>Status on whether PIN14 has met criteria set in PIN_CNF14.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[14] has met criteria set in PIN_CNF[14].SENSE register. Write '1' to clear.</description>
               <lsb>14</lsb>
               <msb>14</msb>
               <enumeratedValues>
@@ -34775,7 +34921,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN15</name>
-              <description>Status on whether PIN15 has met criteria set in PIN_CNF15.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[15] has met criteria set in PIN_CNF[15].SENSE register. Write '1' to clear.</description>
               <lsb>15</lsb>
               <msb>15</msb>
               <enumeratedValues>
@@ -34793,7 +34939,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN16</name>
-              <description>Status on whether PIN16 has met criteria set in PIN_CNF16.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[16] has met criteria set in PIN_CNF[16].SENSE register. Write '1' to clear.</description>
               <lsb>16</lsb>
               <msb>16</msb>
               <enumeratedValues>
@@ -34811,7 +34957,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN17</name>
-              <description>Status on whether PIN17 has met criteria set in PIN_CNF17.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[17] has met criteria set in PIN_CNF[17].SENSE register. Write '1' to clear.</description>
               <lsb>17</lsb>
               <msb>17</msb>
               <enumeratedValues>
@@ -34829,7 +34975,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN18</name>
-              <description>Status on whether PIN18 has met criteria set in PIN_CNF18.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[18] has met criteria set in PIN_CNF[18].SENSE register. Write '1' to clear.</description>
               <lsb>18</lsb>
               <msb>18</msb>
               <enumeratedValues>
@@ -34847,7 +34993,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN19</name>
-              <description>Status on whether PIN19 has met criteria set in PIN_CNF19.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[19] has met criteria set in PIN_CNF[19].SENSE register. Write '1' to clear.</description>
               <lsb>19</lsb>
               <msb>19</msb>
               <enumeratedValues>
@@ -34865,7 +35011,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN20</name>
-              <description>Status on whether PIN20 has met criteria set in PIN_CNF20.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[20] has met criteria set in PIN_CNF[20].SENSE register. Write '1' to clear.</description>
               <lsb>20</lsb>
               <msb>20</msb>
               <enumeratedValues>
@@ -34883,7 +35029,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN21</name>
-              <description>Status on whether PIN21 has met criteria set in PIN_CNF21.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[21] has met criteria set in PIN_CNF[21].SENSE register. Write '1' to clear.</description>
               <lsb>21</lsb>
               <msb>21</msb>
               <enumeratedValues>
@@ -34901,7 +35047,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN22</name>
-              <description>Status on whether PIN22 has met criteria set in PIN_CNF22.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[22] has met criteria set in PIN_CNF[22].SENSE register. Write '1' to clear.</description>
               <lsb>22</lsb>
               <msb>22</msb>
               <enumeratedValues>
@@ -34919,7 +35065,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN23</name>
-              <description>Status on whether PIN23 has met criteria set in PIN_CNF23.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[23] has met criteria set in PIN_CNF[23].SENSE register. Write '1' to clear.</description>
               <lsb>23</lsb>
               <msb>23</msb>
               <enumeratedValues>
@@ -34937,7 +35083,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN24</name>
-              <description>Status on whether PIN24 has met criteria set in PIN_CNF24.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[24] has met criteria set in PIN_CNF[24].SENSE register. Write '1' to clear.</description>
               <lsb>24</lsb>
               <msb>24</msb>
               <enumeratedValues>
@@ -34955,7 +35101,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN25</name>
-              <description>Status on whether PIN25 has met criteria set in PIN_CNF25.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[25] has met criteria set in PIN_CNF[25].SENSE register. Write '1' to clear.</description>
               <lsb>25</lsb>
               <msb>25</msb>
               <enumeratedValues>
@@ -34973,7 +35119,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN26</name>
-              <description>Status on whether PIN26 has met criteria set in PIN_CNF26.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[26] has met criteria set in PIN_CNF[26].SENSE register. Write '1' to clear.</description>
               <lsb>26</lsb>
               <msb>26</msb>
               <enumeratedValues>
@@ -34991,7 +35137,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN27</name>
-              <description>Status on whether PIN27 has met criteria set in PIN_CNF27.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[27] has met criteria set in PIN_CNF[27].SENSE register. Write '1' to clear.</description>
               <lsb>27</lsb>
               <msb>27</msb>
               <enumeratedValues>
@@ -35009,7 +35155,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN28</name>
-              <description>Status on whether PIN28 has met criteria set in PIN_CNF28.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[28] has met criteria set in PIN_CNF[28].SENSE register. Write '1' to clear.</description>
               <lsb>28</lsb>
               <msb>28</msb>
               <enumeratedValues>
@@ -35027,7 +35173,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN29</name>
-              <description>Status on whether PIN29 has met criteria set in PIN_CNF29.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[29] has met criteria set in PIN_CNF[29].SENSE register. Write '1' to clear.</description>
               <lsb>29</lsb>
               <msb>29</msb>
               <enumeratedValues>
@@ -35045,7 +35191,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN30</name>
-              <description>Status on whether PIN30 has met criteria set in PIN_CNF30.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[30] has met criteria set in PIN_CNF[30].SENSE register. Write '1' to clear.</description>
               <lsb>30</lsb>
               <msb>30</msb>
               <enumeratedValues>
@@ -35063,7 +35209,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>PIN31</name>
-              <description>Status on whether PIN31 has met criteria set in PIN_CNF31.SENSE register. Write '1' to clear.</description>
+              <description>Status on whether PIN[31] has met criteria set in PIN_CNF[31].SENSE register. Write '1' to clear.</description>
               <lsb>31</lsb>
               <msb>31</msb>
               <enumeratedValues>

@@ -127,7 +127,7 @@ typedef enum
 } nrfx_clock_cal_state_t;
 #endif
 
-/**@brief CLOCK control block. */
+/** @brief CLOCK control block. */
 typedef struct
 {
     nrfx_clock_event_handler_t      event_handler;

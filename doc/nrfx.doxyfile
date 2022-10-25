@@ -40,7 +40,7 @@ PROJECT_NAME           = "nrfx"
 
 ### EDIT THIS ###
 
-PROJECT_NUMBER         = "2.9"
+PROJECT_NUMBER         = "2.10"
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -2077,15 +2077,7 @@ INCLUDE_FILE_PATTERNS  =
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
 PREDEFINED             = SUPPRESS_INLINE_IMPLEMENTATION \
-                         __NRFX_DOXYGEN__ \
-                         CONFIG_PURGE_ENABLED=1 \
-                         CONFIG_DISASSOCIATE_ENABLED=1 \
-                         CONFIG_GTS_ENABLED=1 \
-                         CONFIG_ORPHAN_ENABLED=1 \
-                         CONFIG_RXE_ENABLED=1 \
-                         CONFIG_START_ENABLED=1 \
-                         CONFIG_SYNC_ENABLED=1 \
-                         CONFIG_PANID_CONFLICT_ENABLED=1
+                         __NRFX_DOXYGEN__
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The

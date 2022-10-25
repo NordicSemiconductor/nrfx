@@ -48,6 +48,15 @@ extern "C" {
  */
 
 /**
+ * @brief Macro getting pointer to the structure of registers of the PWM peripheral.
+ *
+ * @param[in] idx PWM instance index.
+ *
+ * @return Pointer to the structure of registers of the PWM peripheral.
+ */
+ #define NRF_PWM_INST_GET(idx) NRFX_CONCAT_2(NRF_PWM, idx)
+
+/**
  * @brief This value can be provided as a parameter for the @ref nrf_pwm_pins_set
  *        function call to specify that a given output channel shall not be
  *        connected to a physical pin.

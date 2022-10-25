@@ -62,7 +62,7 @@
 #define NRFX_LOG_MODULE TIMER
 #include <nrfx_log.h>
 
-/**@brief Timer control block. */
+/** @brief Timer control block. */
 typedef struct
 {
     nrfx_timer_event_handler_t handler;
@@ -81,7 +81,6 @@ nrfx_err_t nrfx_timer_init(nrfx_timer_t const *        p_instance,
     NRFX_ASSERT(p_instance->p_reg != NRF_TIMER0);
 #endif
     NRFX_ASSERT(p_config);
-    NRFX_ASSERT(timer_event_handler);
 
     nrfx_err_t err_code;
 
@@ -112,7 +111,8 @@ nrfx_err_t nrfx_timer_init(nrfx_timer_t const *        p_instance,
 
     nrf_timer_mode_set(p_instance->p_reg, p_config->mode);
     nrf_timer_bit_width_set(p_instance->p_reg, p_config->bit_width);
-    nrf_timer_frequency_set(p_instance->p_reg, p_config->frequency);
+    // nrf_timer_frequency_t is mapped to prescaler for 16MHz base clock frequency timers
+    nrf_timer_prescaler_set(p_instance->p_reg, (uint32_t)p_config->frequency);
 
     p_cb->state = NRFX_DRV_STATE_INITIALIZED;
 
@@ -282,7 +282,10 @@ static void irq_handler(NRF_TIMER_Type        * p_reg,
         {
             nrf_timer_event_clear(p_reg, event);
             NRFX_LOG_DEBUG("Compare event, channel: %d.", i);
-            p_cb->handler(event, p_cb->context);
+            if (p_cb->handler)
+            {
+                p_cb->handler(event, p_cb->context);
+            }
         }
     }
 }

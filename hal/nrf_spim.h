@@ -47,6 +47,15 @@ extern "C" {
  * @brief   Hardware access layer for managing the SPIM peripheral.
  */
 
+/**
+ * @brief Macro getting pointer to the structure of registers of the SPIM peripheral.
+ *
+ * @param[in] idx SPIM instance index.
+ *
+ * @return Pointer to the structure of registers of the SPIM peripheral.
+ */
+#define NRF_SPIM_INST_GET(idx) NRFX_CONCAT_2(NRF_SPIM, idx)
+
 #if defined(SPIM_FREQUENCY_FREQUENCY_M32) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether 32 MHz clock frequency is available. */
 #define NRF_SPIM_HAS_32_MHZ_FREQ 1

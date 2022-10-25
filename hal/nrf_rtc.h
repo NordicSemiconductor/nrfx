@@ -47,6 +47,15 @@ extern "C" {
  * @brief   Hardware access layer for managing the Real Time Counter (RTC) peripheral.
  */
 
+/**
+ * @brief Macro getting pointer to the structure of registers of the RTC peripheral.
+ *
+ * @param[in] idx RTC instance index.
+ *
+ * @return Pointer to the structure of registers of the RTC peripheral.
+ */
+#define NRF_RTC_INST_GET(idx) NRFX_CONCAT_2(NRF_RTC, idx)
+
 /** @brief Macro for getting the number of compare channels available in a given RTC instance. */
 #define NRF_RTC_CC_CHANNEL_COUNT(id)  NRFX_CONCAT_3(RTC, id, _CC_NUM)
 

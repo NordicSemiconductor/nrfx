@@ -399,6 +399,15 @@ NRFX_STATIC_INLINE uint32_t nrfx_uarte_event_address_get(nrfx_uarte_t const * p_
 }
 #endif // NRFX_DECLARE_ONLY
 
+/**
+ * @brief Macro returning UARTE interrupt handler.
+ *
+ * param[in] idx UARTE index.
+ *
+ * @return Interrupt handler.
+ */
+#define NRFX_UARTE_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_uarte_, idx, _irq_handler)
+
 /** @} */
 
 

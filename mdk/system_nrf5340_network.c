@@ -27,7 +27,7 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include <stdbool.h>
 #include "nrf.h"
 #include "nrf53_erratas.h"
-#include "system_nrf5340_network.h"
+#include "system_nrf53.h"
 #include "system_nrf53_approtect.h"
 
 /*lint ++flb "Enter library region" */

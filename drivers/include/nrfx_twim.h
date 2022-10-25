@@ -389,6 +389,15 @@ NRFX_STATIC_INLINE nrfx_err_t nrfx_twim_bus_recover(uint32_t scl_pin, uint32_t s
 }
 #endif
 
+/**
+ * @brief Macro returning TWIM interrupt handler.
+ *
+ * param[in] idx TWIM index.
+ *
+ * @return Interrupt handler.
+ */
+#define NRFX_TWIM_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_twim_, idx, _irq_handler)
+
 /** @} */
 
 void nrfx_twim_0_irq_handler(void);

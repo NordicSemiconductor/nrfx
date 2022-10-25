@@ -54,7 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <deviceNumInterrupts>69</deviceNumInterrupts>
     <sauNumRegions>0</sauNumRegions>
   </cpu>
-  <headerSystemFilename>system_nrf5340_application</headerSystemFilename>
+  <headerSystemFilename>system_nrf53</headerSystemFilename>
   <headerDefinitionsPrefix>NRF_</headerDefinitionsPrefix>
   <vendorExtensions>
     <MaxInterrupts>240</MaxInterrupts>
@@ -40335,7 +40335,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>SCKDELAY</name>
-              <description>Minimum amount of time that the CSN pin must stay high before it can go low again. Value is specified in number of 16 MHz periods (62.5 ns).</description>
+              <description>Minimum amount of time that the CSN pin must stay high before it can go low again. Value is specified in number of 32 MHz periods (31.25 ns).</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -40442,13 +40442,13 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>ENTER</name>
-              <description>Duration needed by external flash to enter DPM. Duration is given as ENTER * 256 * 62.5 ns.</description>
+              <description>Duration needed by external flash to enter DPM. Duration is given as ENTER * 256 * 31.25 ns</description>
               <lsb>0</lsb>
               <msb>15</msb>
             </field>
             <field>
               <name>EXIT</name>
-              <description>Duration needed by external flash to exit DPM. Duration is given as EXIT * 256 * 62.5 ns.</description>
+              <description>Duration needed by external flash to exit DPM. Duration is given as EXIT * 256 * 31.25 ns.</description>
               <lsb>16</lsb>
               <msb>31</msb>
             </field>

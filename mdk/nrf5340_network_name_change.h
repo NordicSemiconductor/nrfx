@@ -46,6 +46,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQHandler          SERIAL0_IRQHandler
 #define SPIM0_SPIS0_TWIM0_TWIS0_UARTE0_IRQn                SERIAL0_IRQn
  
+ /* DPPI */
+#define DPPI_PRESENT   DPPIC_PRESENT
+#define DPPI_COUNT     DPPIC_COUNT
+#define DPPI_CH_NUM    DPPIC_CH_NUM
+#define DPPI_GROUP_NUM DPPIC_GROUP_NUM
+ 
  /*lint --flb "Leave library region" */
 
 #endif /* NRF5340_NETWORK_NAME_CHANGE_H */

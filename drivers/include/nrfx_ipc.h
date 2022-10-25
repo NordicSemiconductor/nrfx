@@ -47,13 +47,25 @@ extern "C" {
  * @brief   Interprocessor Communication (IPC) peripheral driver.
  */
 
+#if NRFX_CHECK(NRFX_CONFIG_API_VER_2_10) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief IPC driver handler type.
+ *
+ * @param[in] event_idx IPC event index.
+ * @param[in] p_context Context passed to the interrupt handler, set on initialization.
+ */
+typedef void (*nrfx_ipc_handler_t)(uint8_t event_idx, void * p_context);
+#elif NRFX_CHECK(NRFX_CONFIG_API_VER_2_9)
+/**
+ * @brief IPC driver handler type.
+ *
+ * @note This function is deprecated. Use @ref NRFX_CONFIG_API_VER_2_10 variant instead.
  *
  * @param[in] event_mask Bitmask with events that triggered the interrupt.
  * @param[in] p_context  Context passed to the interrupt handler, set on initialization.
  */
 typedef void (*nrfx_ipc_handler_t)(uint32_t event_mask, void * p_context);
+#endif
 
 /** @brief IPC configuration structure. */
 typedef struct
@@ -67,7 +79,7 @@ typedef struct
  * @brief Function for initializing the IPC driver.
  *
  * @param irq_priority Interrupt priority.
- * @param handler      Event handler provided by the user. Cannot be NULL.
+ * @param handler      Event handler provided by the user.
  * @param p_context    Context passed to event handler.
  *
  * @retval NRFX_SUCCESS             Initialization was successful.
@@ -93,21 +105,34 @@ void nrfx_ipc_config_load(nrfx_ipc_config_t const * p_config);
 NRFX_STATIC_INLINE void nrfx_ipc_signal(uint8_t send_index);
 
 /**
- * @brief Function for storing data in GPMEM register in the IPC peripheral.
+ * @brief Function for storing data in the general purpose memory register.
  *
  * @param mem_index Index of the memory cell.
  * @param data      Data to be saved.
  */
 NRFX_STATIC_INLINE void nrfx_ipc_gpmem_set(uint8_t mem_index, uint32_t data);
 
+#if NRFX_CHECK(NRFX_CONFIG_API_VER_2_10) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for getting data from the general purpose memory register.
+ *
+ * @param mem_index Index of the memory cell.
+ *
+ * @return Saved data.
+ */
+NRFX_STATIC_INLINE uint32_t nrfx_ipc_gpmem_get(uint8_t mem_index);
+#elif NRFX_CHECK(NRFX_CONFIG_API_VER_2_9)
 /**
  * @brief Function for getting data from the GPMEM register in the IPC peripheral.
+ *
+ * @note This function is deprecated. Use @ref nrfx_ipc_gpmem_get instead.
  *
  * @param mem_index Index of the memory cell.
  *
  * @return Saved data.
  */
 NRFX_STATIC_INLINE uint32_t nrfx_ipc_mem_get(uint8_t mem_index);
+#endif
 
 /** @brief Function for uninitializing the IPC module. */
 void nrfx_ipc_uninit(void);
@@ -183,7 +208,11 @@ NRFX_STATIC_INLINE void nrfx_ipc_gpmem_set(uint8_t mem_index, uint32_t data)
     nrf_ipc_gpmem_set(NRF_IPC, mem_index, data);
 }
 
+#if NRFX_CHECK(NRFX_CONFIG_API_VER_2_10)
+NRFX_STATIC_INLINE uint32_t nrfx_ipc_gpmem_get(uint8_t mem_index)
+#elif NRFX_CHECK(NRFX_CONFIG_API_VER_2_9)
 NRFX_STATIC_INLINE uint32_t nrfx_ipc_mem_get(uint8_t mem_index)
+#endif
 {
     NRFX_ASSERT(mem_index < NRFX_ARRAY_SIZE(NRF_IPC->GPMEM));
     return nrf_ipc_gpmem_get(NRF_IPC, mem_index);

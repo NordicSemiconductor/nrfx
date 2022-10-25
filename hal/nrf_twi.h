@@ -47,6 +47,15 @@ extern "C" {
  * @brief   Hardware access layer for managing the TWI peripheral.
  */
 
+/**
+ * @brief Macro getting pointer to the structure of registers of the TWI peripheral.
+ *
+ * @param[in] idx TWI instance index.
+ *
+ * @return Pointer to the structure of registers of the TWI peripheral.
+ */
+#define NRF_TWI_INST_GET(idx) NRFX_CONCAT_2(NRF_TWI, idx)
+
 /** @brief TWI tasks. */
 typedef enum
 {
