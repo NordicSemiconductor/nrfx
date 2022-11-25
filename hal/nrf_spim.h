@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -44,6 +46,13 @@ extern "C" {
  * @ingroup nrf_spim
  * @brief   Hardware access layer for managing the SPIM peripheral.
  */
+
+#if defined(SPIM_FREQUENCY_FREQUENCY_M32) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether 32 MHz clock frequency is available. */
+#define NRF_SPIM_HAS_32_MHZ_FREQ 1
+#else
+#define NRF_SPIM_HAS_32_MHZ_FREQ 0
+#endif
 
 /**
  * @brief This value can be used as a parameter for the @ref nrf_spim_pins_set
@@ -359,6 +368,33 @@ NRF_STATIC_INLINE void nrf_spim_pins_set(NRF_SPIM_Type * p_reg,
                                          uint32_t        mosi_pin,
                                          uint32_t        miso_pin);
 
+/**
+ * @brief Function for getting the SCK pin selection.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return SCK pin selection.
+ */
+NRF_STATIC_INLINE uint32_t nrf_spim_sck_pin_get(NRF_SPIM_Type const * p_reg);
+
+/**
+ * @brief Function for getting the MOSI pin selection.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return MOSI pin selection.
+ */
+NRF_STATIC_INLINE uint32_t nrf_spim_mosi_pin_get(NRF_SPIM_Type const * p_reg);
+
+/**
+ * @brief Function for getting the MISO pin selection.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return MISO pin selection.
+ */
+NRF_STATIC_INLINE uint32_t nrf_spim_miso_pin_get(NRF_SPIM_Type const * p_reg);
+
 #if (NRF_SPIM_HW_CSN_PRESENT) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for configuring the SPIM hardware CSN pin.
@@ -391,6 +427,15 @@ NRF_STATIC_INLINE void nrf_spim_csn_configure(NRF_SPIM_Type *    p_reg,
  */
 NRF_STATIC_INLINE void nrf_spim_dcx_pin_set(NRF_SPIM_Type * p_reg,
                                             uint32_t        dcx_pin);
+
+/**
+ * @brief Function for getting the DCX pin selection.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return DCX pin selection.
+ */
+NRF_STATIC_INLINE uint32_t nrf_spim_dcx_pin_get(NRF_SPIM_Type const * p_reg);
 
 /**
  * @brief Function for configuring the number of command bytes.
@@ -554,10 +599,7 @@ NRF_STATIC_INLINE void nrf_spim_event_clear(NRF_SPIM_Type *  p_reg,
                                             nrf_spim_event_t event)
 {
     *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event)) = 0x0UL;
-#if __CORTEX_M == 0x04
-    volatile uint32_t dummy = *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event));
-    (void)dummy;
-#endif
+    nrf_event_readback((uint8_t *)p_reg + (uint32_t)event);
 }
 
 NRF_STATIC_INLINE bool nrf_spim_event_check(NRF_SPIM_Type const * p_reg,
@@ -656,6 +698,21 @@ NRF_STATIC_INLINE void nrf_spim_pins_set(NRF_SPIM_Type * p_reg,
     p_reg->PSEL.MISO = miso_pin;
 }
 
+NRF_STATIC_INLINE uint32_t nrf_spim_sck_pin_get(NRF_SPIM_Type const * p_reg)
+{
+    return p_reg->PSEL.SCK;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_spim_mosi_pin_get(NRF_SPIM_Type const * p_reg)
+{
+    return p_reg->PSEL.MOSI;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_spim_miso_pin_get(NRF_SPIM_Type const * p_reg)
+{
+    return p_reg->PSEL.MISO;
+}
+
 #if NRF_SPIM_HW_CSN_PRESENT
 NRF_STATIC_INLINE void nrf_spim_csn_configure(NRF_SPIM_Type *    p_reg,
                                               uint32_t           pin,
@@ -673,6 +730,11 @@ NRF_STATIC_INLINE void nrf_spim_dcx_pin_set(NRF_SPIM_Type * p_reg,
                                             uint32_t        dcx_pin)
 {
     p_reg->PSELDCX = dcx_pin;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_spim_dcx_pin_get(NRF_SPIM_Type const * p_reg)
+{
+    return p_reg->PSELDCX;
 }
 
 NRF_STATIC_INLINE void nrf_spim_dcx_cnt_set(NRF_SPIM_Type * p_reg,

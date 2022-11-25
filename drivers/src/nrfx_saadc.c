@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -49,6 +51,9 @@
     // Make sure that SAADC calibration samples do not affect next conversions.
     #define INTERCEPT_SAADC_CALIBRATION_SAMPLES 1
 #endif
+
+/** @brief Bitmask of all available SAADC channels. */
+#define SAADC_ALL_CHANNELS_MASK ((1UL << SAADC_CH_NUM) - 1UL)
 
 /** @brief SAADC driver states.*/
 typedef enum
@@ -142,6 +147,30 @@ static nrfx_err_t saadc_channel_count_get(uint32_t  ch_to_activate_mask,
 
     *p_active_ch_count = active_ch_count;
     return NRFX_SUCCESS;
+}
+
+static void saadc_channel_config(nrfx_saadc_channel_t const * p_channel)
+{
+    NRFX_ASSERT(p_channel->pin_p != NRF_SAADC_INPUT_DISABLED);
+
+    nrf_saadc_channel_init(NRF_SAADC, p_channel->channel_index, &p_channel->channel_config);
+    m_cb.channels_pselp[p_channel->channel_index] = p_channel->pin_p;
+    m_cb.channels_pseln[p_channel->channel_index] = p_channel->pin_n;
+    m_cb.channels_configured |= 1U << p_channel->channel_index;
+}
+
+static void saadc_channels_deconfig(uint32_t channel_mask)
+{
+    while (channel_mask)
+    {
+        uint8_t channel = __CLZ(__RBIT(channel_mask));
+
+        channel_mask             &= ~(1 << channel);
+        m_cb.channels_configured &= ~(1 << channel);
+
+        m_cb.channels_pselp[channel] = NRF_SAADC_INPUT_DISABLED;
+        m_cb.channels_pseln[channel] = NRF_SAADC_INPUT_DISABLED;
+    }
 }
 
 static bool saadc_busy_check(void)
@@ -238,6 +267,7 @@ nrfx_err_t nrfx_saadc_init(uint8_t interrupt_priority)
     nrf_saadc_event_clear(NRF_SAADC, NRF_SAADC_EVENT_STOPPED);
     nrf_saadc_event_clear(NRF_SAADC, NRF_SAADC_EVENT_END);
     nrf_saadc_int_set(NRF_SAADC, 0);
+    saadc_channels_deconfig(SAADC_ALL_CHANNELS_MASK);
     NRFX_IRQ_ENABLE(SAADC_IRQn);
     NRFX_IRQ_PRIORITY_SET(SAADC_IRQn, interrupt_priority);
 
@@ -259,6 +289,7 @@ nrfx_err_t nrfx_saadc_channels_config(nrfx_saadc_channel_t const * p_channels,
                                       uint32_t                     channel_count)
 {
     NRFX_ASSERT(m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED);
+    NRFX_ASSERT(p_channels);
     NRFX_ASSERT(channel_count <= SAADC_CH_NUM);
 
     if (saadc_busy_check())
@@ -266,31 +297,46 @@ nrfx_err_t nrfx_saadc_channels_config(nrfx_saadc_channel_t const * p_channels,
         return NRFX_ERROR_BUSY;
     }
 
-    m_cb.channels_configured = 0;
-    uint8_t i = 0;
-
-    for (; i < SAADC_CH_NUM; i++)
-    {
-        m_cb.channels_pselp[i] = NRF_SAADC_INPUT_DISABLED;
-        m_cb.channels_pseln[i] = NRF_SAADC_INPUT_DISABLED;
-    }
-
-    for (i = 0; i < channel_count; i++)
+    saadc_channels_deconfig(SAADC_ALL_CHANNELS_MASK);
+    for (uint8_t i = 0; i < channel_count; i++)
     {
         if (m_cb.channels_configured & (1 << p_channels[i].channel_index))
         {
             // This channel is already configured!
             return NRFX_ERROR_INVALID_PARAM;
         }
-        nrf_saadc_channel_init(NRF_SAADC,
-                               p_channels[i].channel_index,
-                               &p_channels[i].channel_config);
 
-        NRFX_ASSERT(p_channels[i].pin_p);
-        m_cb.channels_pselp[p_channels[i].channel_index] = p_channels[i].pin_p;
-        m_cb.channels_pseln[p_channels[i].channel_index] = p_channels[i].pin_n;
-        m_cb.channels_configured |= 1U << p_channels[i].channel_index;
+        saadc_channel_config(&p_channels[i]);
     }
+
+    return NRFX_SUCCESS;
+}
+
+nrfx_err_t nrfx_saadc_channel_config(nrfx_saadc_channel_t const * p_channel)
+{
+    NRFX_ASSERT(m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED);
+    NRFX_ASSERT(p_channel);
+
+    if (saadc_busy_check())
+    {
+        return NRFX_ERROR_BUSY;
+    }
+
+    saadc_channel_config(p_channel);
+
+    return NRFX_SUCCESS;
+}
+
+nrfx_err_t nrfx_saadc_channels_deconfig(uint32_t channel_mask)
+{
+    NRFX_ASSERT(m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED);
+
+    if (saadc_busy_check())
+    {
+        return NRFX_ERROR_BUSY;
+    }
+
+    saadc_channels_deconfig(channel_mask);
 
     return NRFX_SUCCESS;
 }
@@ -435,10 +481,10 @@ nrfx_err_t nrfx_saadc_buffer_set(nrf_saadc_value_t * p_buffer, uint16_t size)
 
         case NRF_SAADC_STATE_ADV_MODE_SAMPLE_STARTED:
             nrf_saadc_buffer_init(NRF_SAADC, p_buffer, size);
-            /* fall-through */
+            /* FALLTHROUGH */
 
         case NRF_SAADC_STATE_ADV_MODE:
-            /* fall-through */
+            /* FALLTHROUGH */
 
         case NRF_SAADC_STATE_ADV_MODE_SAMPLE:
             if (m_cb.p_buffer_primary)
@@ -595,7 +641,7 @@ void nrfx_saadc_abort(void)
 nrfx_err_t nrfx_saadc_limits_set(uint8_t channel, int16_t limit_low, int16_t limit_high)
 {
     NRFX_ASSERT(m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED);
-    NRFX_ASSERT(limit_high <= limit_low);
+    NRFX_ASSERT(limit_high >= limit_low);
 
     if (!m_cb.event_handler)
     {
@@ -720,7 +766,7 @@ static void saadc_event_started_handle(void)
                                       m_cb.p_buffer_secondary,
                                       m_cb.size_secondary);
             }
-            /* fall-through */
+            /* FALLTHROUGH */
 
         case NRF_SAADC_STATE_ADV_MODE_SAMPLE_STARTED:
             if (!m_cb.p_buffer_secondary)

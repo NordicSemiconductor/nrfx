@@ -1,5 +1,9 @@
 /**
-@page nrf52832_drivers nRF52832 Drivers
+@page nrf52832_drivers nRF52832 drivers
+
+This page lists nrfx driver components supported by the nRF52832 SoC.
+For a complete overview, see @ref nrfx_drv_supp_matrix.
+
 @{
 
 @ref nrf_aar

@@ -1,5 +1,9 @@
 /**
-@page nrf51_series_drivers nRF51 Series Drivers
+@page nrf51_series_drivers nRF51 Series drivers
+
+This page lists nrfx driver components supported by the nRF51 Series SoCs.
+For a complete overview, see @ref nrfx_drv_supp_matrix.
+
 @{
 
 @ref nrf_aar

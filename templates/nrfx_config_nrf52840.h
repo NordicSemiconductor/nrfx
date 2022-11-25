@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2017 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,6 +34,10 @@
 #ifndef NRFX_CONFIG_NRF52840_H__
 #define NRFX_CONFIG_NRF52840_H__
 
+#ifndef NRFX_CONFIG_H__
+#error "This file should not be included directly. Include nrfx_config.h instead."
+#endif
+
 // <<< Use Configuration Wizard in Context Menu >>>\n
 
 // <h> nRF_Drivers
@@ -57,6 +63,17 @@
 
 #ifndef NRFX_CLOCK_CONFIG_LF_CAL_ENABLED
 #define NRFX_CLOCK_CONFIG_LF_CAL_ENABLED 0
+#endif
+
+// <q> NRFX_CLOCK_CONFIG_LFXO_TWO_STAGE_ENABLED - Enables two-stage LFXO start procedure
+
+// <i> If set to a non-zero value, LFRC will be started before LFXO and corresponding
+// <i> event will be generated. It means that CPU will be woken up when LFRC
+// <i> oscillator starts, but user callback will be invoked only after LFXO
+// <i> finally starts.
+
+#ifndef NRFX_CLOCK_CONFIG_LFXO_TWO_STAGE_ENABLED
+#define NRFX_CLOCK_CONFIG_LFXO_TWO_STAGE_ENABLED 0
 #endif
 
 // <o> NRFX_CLOCK_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority

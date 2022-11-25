@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2014 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -119,15 +121,18 @@ typedef enum
 /** @brief Available report periods. */
 typedef enum
 {
-    NRF_QDEC_REPORTPER_10  = QDEC_REPORTPER_REPORTPER_10Smpl,  /**< QDEC report period 10 samples.  */
-    NRF_QDEC_REPORTPER_40  = QDEC_REPORTPER_REPORTPER_40Smpl,  /**< QDEC report period 40 samples.  */
-    NRF_QDEC_REPORTPER_80  = QDEC_REPORTPER_REPORTPER_80Smpl,  /**< QDEC report period 80 samples.  */
-    NRF_QDEC_REPORTPER_120 = QDEC_REPORTPER_REPORTPER_120Smpl, /**< QDEC report period 120 samples. */
-    NRF_QDEC_REPORTPER_160 = QDEC_REPORTPER_REPORTPER_160Smpl, /**< QDEC report period 160 samples. */
-    NRF_QDEC_REPORTPER_200 = QDEC_REPORTPER_REPORTPER_200Smpl, /**< QDEC report period 200 samples. */
-    NRF_QDEC_REPORTPER_240 = QDEC_REPORTPER_REPORTPER_240Smpl, /**< QDEC report period 240 samples. */
-    NRF_QDEC_REPORTPER_280 = QDEC_REPORTPER_REPORTPER_280Smpl, /**< QDEC report period 280 samples. */
-    NRF_QDEC_REPORTPER_DISABLED                                /**< QDEC reporting disabled.        */
+#if defined(QDEC_REPORTPER_REPORTPER_1Smpl) || defined(__NRFX_DOXYGEN__)
+    NRF_QDEC_REPORTPER_1        = QDEC_REPORTPER_REPORTPER_1Smpl,                                    /**< QDEC report period 1 sample. */
+#endif
+    NRF_QDEC_REPORTPER_10       = QDEC_REPORTPER_REPORTPER_10Smpl,                                   /**< QDEC report period 10 samples. */
+    NRF_QDEC_REPORTPER_40       = QDEC_REPORTPER_REPORTPER_40Smpl,                                   /**< QDEC report period 40 samples. */
+    NRF_QDEC_REPORTPER_80       = QDEC_REPORTPER_REPORTPER_80Smpl,                                   /**< QDEC report period 80 samples. */
+    NRF_QDEC_REPORTPER_120      = QDEC_REPORTPER_REPORTPER_120Smpl,                                  /**< QDEC report period 120 samples. */
+    NRF_QDEC_REPORTPER_160      = QDEC_REPORTPER_REPORTPER_160Smpl,                                  /**< QDEC report period 160 samples. */
+    NRF_QDEC_REPORTPER_200      = QDEC_REPORTPER_REPORTPER_200Smpl,                                  /**< QDEC report period 200 samples. */
+    NRF_QDEC_REPORTPER_240      = QDEC_REPORTPER_REPORTPER_240Smpl,                                  /**< QDEC report period 240 samples. */
+    NRF_QDEC_REPORTPER_280      = QDEC_REPORTPER_REPORTPER_280Smpl,                                  /**< QDEC report period 280 samples. */
+    NRF_QDEC_REPORTPER_DISABLED = (QDEC_REPORTPER_REPORTPER_Msk >> QDEC_REPORTPER_REPORTPER_Pos) + 1 /**< QDEC reporting disabled. Deprecated. */
 } nrf_qdec_reportper_t;
 
 /**
@@ -204,7 +209,22 @@ NRF_STATIC_INLINE void nrf_qdec_dbfen_disable(NRF_QDEC_Type * p_reg);
 NRF_STATIC_INLINE uint32_t nrf_qdec_dbfen_get(NRF_QDEC_Type const * p_reg);
 
 /**
+ * @brief Function for configuring QDEC pins.
+ *
+ * @param[in] p_reg       Pointer to the structure of registers of the peripheral.
+ * @param[in] phase_a_pin Phase A pin number.
+ * @param[in] phase_b_pin Phase B pin number.
+ * @param[in] led_pin     LED pin number.
+ */
+NRF_STATIC_INLINE void nrf_qdec_pins_set(NRF_QDEC_Type * p_reg,
+                                         uint32_t        phase_a_pin,
+                                         uint32_t        phase_b_pin,
+                                         uint32_t        led_pin);
+
+/**
  * @brief Function for assigning QDEC pins.
+ *
+ * @note This function is deprecated. Use @ref nrf_qdec_pins_set instead.
  *
  * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
  * @param[in] psela   Pin number.
@@ -215,6 +235,33 @@ NRF_STATIC_INLINE void nrf_qdec_pio_assign(NRF_QDEC_Type * p_reg,
                                            uint32_t        psela,
                                            uint32_t        pselb,
                                            uint32_t        pselled);
+
+/**
+ * @brief Function for getting the Phase A pin selection.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Phase A pin selection.
+ */
+NRF_STATIC_INLINE uint32_t nrf_qdec_phase_a_pin_get(NRF_QDEC_Type const * p_reg);
+
+/**
+ * @brief Function for getting the Phase B pin selection.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Phase B pin selection.
+ */
+NRF_STATIC_INLINE uint32_t nrf_qdec_phase_b_pin_get(NRF_QDEC_Type const * p_reg);
+
+/**
+ * @brief Function for getting the LED pin selection.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return LED pin selection.
+ */
+NRF_STATIC_INLINE uint32_t nrf_qdec_led_pin_get(NRF_QDEC_Type const * p_reg);
 
 /**
  * @brief Function for setting the specified QDEC task.
@@ -463,27 +510,62 @@ NRF_STATIC_INLINE uint32_t nrf_qdec_dbfen_get(NRF_QDEC_Type const * p_reg)
     return p_reg->DBFEN;
 }
 
+NRF_STATIC_INLINE void nrf_qdec_pins_set(NRF_QDEC_Type * p_reg,
+                                         uint32_t        phase_a_pin,
+                                         uint32_t        phase_b_pin,
+                                         uint32_t        led_pin)
+{
+#if defined(QDEC_PSEL_A_CONNECT_Pos)
+    p_reg->PSEL.A = phase_a_pin;
+#else
+    p_reg->PSELA = phase_a_pin;
+#endif
+
+#if defined(QDEC_PSEL_B_CONNECT_Pos)
+    p_reg->PSEL.B = phase_b_pin;
+#else
+    p_reg->PSELB = phase_b_pin;
+#endif
+
+#if defined(QDEC_PSEL_LED_CONNECT_Pos)
+    p_reg->PSEL.LED = led_pin;
+#else
+    p_reg->PSELLED = led_pin;
+#endif
+}
+
 NRF_STATIC_INLINE void nrf_qdec_pio_assign(NRF_QDEC_Type * p_reg,
                                            uint32_t        psela,
                                            uint32_t        pselb,
                                            uint32_t        pselled)
 {
+    nrf_qdec_pins_set(p_reg, psela, pselb, pselled);
+}
+
+NRF_STATIC_INLINE uint32_t nrf_qdec_phase_a_pin_get(NRF_QDEC_Type const * p_reg)
+{
 #if defined(QDEC_PSEL_A_CONNECT_Pos)
-    p_reg->PSEL.A = psela;
+    return p_reg->PSEL.A;
 #else
-    p_reg->PSELA = psela;
+    return p_reg->PSELA;
 #endif
+}
 
+NRF_STATIC_INLINE uint32_t nrf_qdec_phase_b_pin_get(NRF_QDEC_Type const * p_reg)
+{
 #if defined(QDEC_PSEL_B_CONNECT_Pos)
-    p_reg->PSEL.B = pselb;
+    return p_reg->PSEL.B;
 #else
-    p_reg->PSELB = pselb;
+    return p_reg->PSELB;
 #endif
+}
 
+NRF_STATIC_INLINE uint32_t nrf_qdec_led_pin_get(NRF_QDEC_Type const * p_reg)
+{
 #if defined(QDEC_PSEL_LED_CONNECT_Pos)
-    p_reg->PSEL.LED = pselled;
+    return p_reg->PSEL.LED;
 #else
-    p_reg->PSELLED = pselled;
+    return p_reg->PSELLED;
 #endif
 }
 
@@ -501,10 +583,7 @@ NRF_STATIC_INLINE uint32_t nrf_qdec_task_address_get(NRF_QDEC_Type const * p_reg
 NRF_STATIC_INLINE void nrf_qdec_event_clear(NRF_QDEC_Type * p_reg, nrf_qdec_event_t event)
 {
     *( (volatile uint32_t *)( (uint8_t *)p_reg + (uint32_t)event) ) = 0;
-#if __CORTEX_M == 0x04
-    volatile uint32_t dummy = *((volatile uint32_t *)((uint8_t *)p_reg + event));
-    (void)dummy;
-#endif
+    nrf_event_readback((uint8_t *)p_reg + (uint32_t)event);
 }
 
 NRF_STATIC_INLINE bool nrf_qdec_event_check(NRF_QDEC_Type const * p_reg, nrf_qdec_event_t event)

@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -50,6 +52,10 @@ extern "C" {
 #define GPIO_REG_LIST  {NRF_P0, NRF_P1}
 #else
 #error "Not supported."
+#endif
+
+#if defined(NRF52820_XXAA)
+#include <nrf_erratas.h>
 #endif
 
 /**
@@ -139,9 +145,10 @@ typedef enum
 /** @brief Enumerator used for selecting the MCU/Subsystem to control the specified pin. */
 typedef enum
 {
-    NRF_GPIO_PIN_MCUSEL_APP     = GPIO_PIN_CNF_MCUSEL_AppMCU,     ///< Pin controlled by Application MCU.
-    NRF_GPIO_PIN_MCUSEL_NETWORK = GPIO_PIN_CNF_MCUSEL_NetworkMCU, ///< Pin controlled by Network MCU.
-    NRF_GPIO_PIN_MCUSEL_TND     = GPIO_PIN_CNF_MCUSEL_TND,        ///< Pin controlled by Trace and Debug Subsystem.
+    NRF_GPIO_PIN_MCUSEL_APP        = GPIO_PIN_CNF_MCUSEL_AppMCU,     ///< Pin controlled by Application MCU.
+    NRF_GPIO_PIN_MCUSEL_NETWORK    = GPIO_PIN_CNF_MCUSEL_NetworkMCU, ///< Pin controlled by Network MCU.
+    NRF_GPIO_PIN_MCUSEL_PERIPHERAL = GPIO_PIN_CNF_MCUSEL_Peripheral, ///< Pin controlled by dedicated peripheral.
+    NRF_GPIO_PIN_MCUSEL_TND        = GPIO_PIN_CNF_MCUSEL_TND,        ///< Pin controlled by Trace and Debug Subsystem.
 } nrf_gpio_pin_mcusel_t;
 #endif
 
@@ -269,16 +276,12 @@ NRF_STATIC_INLINE void nrf_gpio_pin_dir_set(uint32_t pin_number, nrf_gpio_pin_di
 /**
  * @brief Function for setting a GPIO pin.
  *
- * For this function to have any effect, the pin must be configured as an output.
- *
  * @param pin_number Specifies the pin number to be set.
  */
 NRF_STATIC_INLINE void nrf_gpio_pin_set(uint32_t pin_number);
 
 /**
  * @brief Function for clearing a GPIO pin.
- *
- * For this function to have any effect, the pin must be configured as an output.
  *
  * @param pin_number Specifies the pin number to clear.
  */
@@ -287,16 +290,12 @@ NRF_STATIC_INLINE void nrf_gpio_pin_clear(uint32_t pin_number);
 /**
  * @brief Function for toggling a GPIO pin.
  *
- * For this function to have any effect, the pin must be configured as an output.
- *
  * @param pin_number Specifies the pin number to toggle.
  */
 NRF_STATIC_INLINE void nrf_gpio_pin_toggle(uint32_t pin_number);
 
 /**
  * @brief Function for writing a value to a GPIO pin.
- *
- * For this function to have any effect, the pin must be configured as an output.
  *
  * @param pin_number Specifies the pin number to write.
  * @param value      Specifies the value to be written to the pin.
@@ -497,37 +496,59 @@ NRF_STATIC_INLINE void nrf_gpio_pin_latch_clear(uint32_t pin_number);
 NRF_STATIC_INLINE void nrf_gpio_pin_mcu_select(uint32_t pin_number, nrf_gpio_pin_mcusel_t mcu);
 #endif
 
+/**
+ * @brief Function for checking if provided pin is present on the MCU.
+ *
+ * @param[in] pin_number Number of the pin to be checked.
+ *
+ * @retval true  Pin is present.
+ * @retval false Pin is not present.
+ */
+NRF_STATIC_INLINE bool nrf_gpio_pin_present_check(uint32_t pin_number);
+
+/**
+ * @brief Function for extracting port number and the relative pin number
+ *        from the absolute pin number.
+ *
+ * @param[in,out] p_pin Pointer to the absolute pin number overridden by the pin number
+ *                      that is relative to the port.
+ *
+ * @return Port number.
+*/
+NRF_STATIC_INLINE uint32_t nrf_gpio_pin_port_number_extract(uint32_t * p_pin);
+
 #ifndef NRF_DECLARE_ONLY
 
 /**
  * @brief Function for extracting port and the relative pin number from the absolute pin number.
  *
- * @param[in,out] p_pin Pointer to the absolute pin number overriden by the pin number that is relative to the port.
+ * @param[in,out] p_pin Pointer to the absolute pin number overridden by the pin number
+ *                      that is relative to the port.
  *
  * @return Pointer to port register set.
  */
 NRF_STATIC_INLINE NRF_GPIO_Type * nrf_gpio_pin_port_decode(uint32_t * p_pin)
 {
-    NRFX_ASSERT(*p_pin < NUMBER_OF_PINS);
-#if (GPIO_COUNT == 1)
-    return NRF_P0;
-#else
-    if (*p_pin < P0_PIN_NUM)
+    NRFX_ASSERT(nrf_gpio_pin_present_check(*p_pin));
+
+    switch (nrf_gpio_pin_port_number_extract(p_pin))
     {
-        return NRF_P0;
-    }
-    else
-    {
-        *p_pin = *p_pin & (P0_PIN_NUM - 1);
-        return NRF_P1;
-    }
+        default:
+            NRFX_ASSERT(0);
+#if defined(P0_FEATURE_PINS_PRESENT)
+        /* FALLTHROUGH */
+        case 0: return NRF_P0;
 #endif
+#if defined(P1_FEATURE_PINS_PRESENT)
+        /* FALLTHROUGH */
+        case 1: return NRF_P1;
+#endif
+    }
 }
 
 
 NRF_STATIC_INLINE void nrf_gpio_range_cfg_output(uint32_t pin_range_start, uint32_t pin_range_end)
 {
-    /*lint -e{845} // A zero has been given as right argument to operator '|'" */
     for (; pin_range_start <= pin_range_end; pin_range_start++)
     {
         nrf_gpio_cfg_output(pin_range_start);
@@ -539,7 +560,6 @@ NRF_STATIC_INLINE void nrf_gpio_range_cfg_input(uint32_t            pin_range_st
                                                 uint32_t            pin_range_end,
                                                 nrf_gpio_pin_pull_t pull_config)
 {
-    /*lint -e{845} // A zero has been given as right argument to operator '|'" */
     for (; pin_range_start <= pin_range_end; pin_range_start++)
     {
         nrf_gpio_cfg_input(pin_range_start, pull_config);
@@ -557,11 +577,19 @@ NRF_STATIC_INLINE void nrf_gpio_cfg(
 {
     NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
 
-    reg->PIN_CNF[pin_number] = ((uint32_t)dir << GPIO_PIN_CNF_DIR_Pos)
-                               | ((uint32_t)input << GPIO_PIN_CNF_INPUT_Pos)
-                               | ((uint32_t)pull << GPIO_PIN_CNF_PULL_Pos)
-                               | ((uint32_t)drive << GPIO_PIN_CNF_DRIVE_Pos)
-                               | ((uint32_t)sense << GPIO_PIN_CNF_SENSE_Pos);
+#if defined(GPIO_PIN_CNF_MCUSEL_Msk)
+    /* Preserve MCUSEL setting. */
+    uint32_t cnf = reg->PIN_CNF[pin_number] & GPIO_PIN_CNF_MCUSEL_Msk;
+#else
+    uint32_t cnf = 0;
+#endif
+    cnf |= ((uint32_t)dir << GPIO_PIN_CNF_DIR_Pos)     |
+           ((uint32_t)input << GPIO_PIN_CNF_INPUT_Pos) |
+           ((uint32_t)pull << GPIO_PIN_CNF_PULL_Pos)   |
+           ((uint32_t)drive << GPIO_PIN_CNF_DRIVE_Pos) |
+           ((uint32_t)sense << GPIO_PIN_CNF_SENSE_Pos);
+
+    reg->PIN_CNF[pin_number] = cnf;
 }
 
 
@@ -604,7 +632,6 @@ NRF_STATIC_INLINE void nrf_gpio_cfg_default(uint32_t pin_number)
 NRF_STATIC_INLINE void nrf_gpio_cfg_watcher(uint32_t pin_number)
 {
     NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
-    /*lint -e{845} // A zero has been given as right argument to operator '|'" */
     uint32_t cnf = reg->PIN_CNF[pin_number] & ~GPIO_PIN_CNF_INPUT_Msk;
 
     reg->PIN_CNF[pin_number] = cnf | (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos);
@@ -614,7 +641,6 @@ NRF_STATIC_INLINE void nrf_gpio_cfg_watcher(uint32_t pin_number)
 NRF_STATIC_INLINE void nrf_gpio_input_disconnect(uint32_t pin_number)
 {
     NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
-    /*lint -e{845} // A zero has been given as right argument to operator '|'" */
     uint32_t cnf = reg->PIN_CNF[pin_number] & ~GPIO_PIN_CNF_INPUT_Msk;
 
     reg->PIN_CNF[pin_number] = cnf | (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos);
@@ -639,7 +665,6 @@ NRF_STATIC_INLINE void nrf_gpio_cfg_sense_set(uint32_t             pin_number,
                                               nrf_gpio_pin_sense_t sense_config)
 {
     NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
-    /*lint -e{845} // A zero has been given as right argument to operator '|'" */
     uint32_t cnf = reg->PIN_CNF[pin_number] & ~GPIO_PIN_CNF_SENSE_Msk;
 
     reg->PIN_CNF[pin_number] = cnf | (sense_config << GPIO_PIN_CNF_SENSE_Pos);
@@ -883,6 +908,49 @@ NRF_STATIC_INLINE void nrf_gpio_pin_mcu_select(uint32_t pin_number, nrf_gpio_pin
     reg->PIN_CNF[pin_number] = cnf | (mcu << GPIO_PIN_CNF_MCUSEL_Pos);
 }
 #endif
+
+NRF_STATIC_INLINE bool nrf_gpio_pin_present_check(uint32_t pin_number)
+{
+    uint32_t port = pin_number >> 5;
+    uint32_t mask = 0;
+
+    switch (port)
+    {
+#ifdef P0_FEATURE_PINS_PRESENT
+        case 0:
+            mask = P0_FEATURE_PINS_PRESENT;
+#if defined(NRF52820_XXAA) && defined(DEVELOP_IN_NRF52833)
+            /* Allow use of the following additional GPIOs that are connected to LEDs and buttons
+             * on the nRF52833 DK:
+             * - P0.11 - Button 1
+             * - P0.12 - Button 2
+             * - P0.13 - LED 1
+             * - P0.24 - Button 3
+             * - P0.25 - Button 4
+             */
+            mask |= 0x03003800;
+#endif // defined(NRF52820_XXAA) && defined(DEVELOP_IN_NRF52833)
+            break;
+#endif
+#ifdef P1_FEATURE_PINS_PRESENT
+        case 1:
+            mask = P1_FEATURE_PINS_PRESENT;
+            break;
+#endif
+    }
+
+    pin_number &= 0x1F;
+
+    return (mask & (1UL << pin_number)) ? true : false;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_gpio_pin_port_number_extract(uint32_t * p_pin)
+{
+    uint32_t pin_number = *p_pin;
+    *p_pin = pin_number & 0x1F;
+
+    return pin_number >> 5;
+}
 
 #endif // NRF_DECLARE_ONLY
 

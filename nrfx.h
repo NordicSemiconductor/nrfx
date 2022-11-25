@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2017 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,6 +37,7 @@
 #include <nrfx_config.h>
 #include <drivers/nrfx_common.h>
 #include <nrfx_glue.h>
+#include <hal/nrf_common.h>
 #include <drivers/nrfx_errors.h>
 
 #endif // NRFX_H__

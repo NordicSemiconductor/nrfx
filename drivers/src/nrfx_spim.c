@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -162,9 +164,14 @@
      SPIM3_SUPPORTED_FREQ_VALIDATE(drv_inst_idx, freq) || \
      SPIM4_SUPPORTED_FREQ_VALIDATE(drv_inst_idx, freq))
 
-#if defined(NRF52840_XXAA) && (NRFX_CHECK(NRFX_SPIM3_ENABLED))
+// Requested pin can either match dedicated pin or be not connected at all.
+#define SPIM_DEDICATED_PIN_VALIDATE(requested_pin, supported_pin) \
+    (((requested_pin) == NRFX_SPIM_PIN_NOT_USED) || ((requested_pin) == (supported_pin)))
+
+#if !defined(USE_WORKAROUND_FOR_ANOMALY_195) && \
+    defined(NRF52840_XXAA) && NRFX_CHECK(NRFX_SPIM3_ENABLED)
 // Enable workaround for nRF52840 anomaly 195 (SPIM3 continues to draw current after disable).
-#define USE_WORKAROUND_FOR_ANOMALY_195
+#define USE_WORKAROUND_FOR_ANOMALY_195 1
 #endif
 
 
@@ -185,7 +192,6 @@ typedef struct
     //  are not concurrently used in IRQ handlers and main line code]
     bool            ss_active_high;
     uint8_t         ss_pin;
-    uint8_t         miso_pin;
     uint8_t         orc;
 
 #if NRFX_CHECK(NRFX_SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED)
@@ -236,6 +242,18 @@ static void anomaly_198_disable(void)
 }
 #endif // NRFX_CHECK(NRFX_SPIM3_NRF52840_ANOMALY_198_WORKAROUND_ENABLED)
 
+static void spim_abort(NRF_SPIM_Type * p_spim, spim_control_block_t * p_cb)
+{
+    nrf_spim_task_trigger(p_spim, NRF_SPIM_TASK_STOP);
+    bool stopped;
+    NRFX_WAIT_FOR(nrf_spim_event_check(p_spim, NRF_SPIM_EVENT_STOPPED), 100, 1, stopped);
+    if (!stopped)
+    {
+        NRFX_LOG_ERROR("Failed to stop instance with base address: %p.", (void *)p_spim);
+    }
+    p_cb->transfer_in_progress = false;
+}
+
 nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
                           nrfx_spim_config_t const * p_config,
                           nrfx_spim_evt_handler_t    handler,
@@ -273,6 +291,35 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
 #endif
 
     NRF_SPIM_Type * p_spim = (NRF_SPIM_Type *)p_instance->p_reg;
+
+#if NRF_SPIM_HAS_32_MHZ_FREQ && defined(NRF5340_XXAA_APPLICATION)
+    // Check if dedicated SPIM pins are used.
+    if ((p_spim == NRF_SPIM4) && (p_config->frequency == NRF_SPIM_FREQ_32M))
+    {
+        enum {
+            SPIM_SCK_DEDICATED  = NRF_GPIO_PIN_MAP(0, 8),
+            SPIM_MOSI_DEDICATED = NRF_GPIO_PIN_MAP(0, 9),
+            SPIM_MISO_DEDICATED = NRF_GPIO_PIN_MAP(0, 10),
+            SPIM_CSN_DEDICATED  = NRF_GPIO_PIN_MAP(0, 11),
+            SPIM_DCX_DEDICATED  = NRF_GPIO_PIN_MAP(0, 12),
+        };
+
+        if (!SPIM_DEDICATED_PIN_VALIDATE(p_config->sck_pin, SPIM_SCK_DEDICATED) ||
+            !SPIM_DEDICATED_PIN_VALIDATE(p_config->ss_pin,  SPIM_CSN_DEDICATED) ||
+#if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED)
+            !SPIM_DEDICATED_PIN_VALIDATE(p_config->dcx_pin, SPIM_DCX_DEDICATED) ||
+#endif
+            !SPIM_DEDICATED_PIN_VALIDATE(p_config->mosi_pin, SPIM_MOSI_DEDICATED) ||
+            !SPIM_DEDICATED_PIN_VALIDATE(p_config->miso_pin, SPIM_MISO_DEDICATED))
+        {
+            err_code = NRFX_ERROR_INVALID_PARAM;
+            NRFX_LOG_WARNING("Function: %s, error code: %s.",
+                             __func__,
+                             NRFX_LOG_ERROR_STRING_GET(err_code));
+            return err_code;
+        }
+    }
+#endif
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
     static nrfx_irq_handler_t const irq_handlers[NRFX_SPIM_ENABLED_COUNT] = {
@@ -321,18 +368,32 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
     {
         nrf_gpio_pin_set(p_config->sck_pin);
     }
+
+    nrf_gpio_pin_drive_t pin_drive;
+    // Configure pin drive - high drive for 32 MHz clock frequency.
+#if NRF_SPIM_HAS_32_MHZ_FREQ
+    pin_drive = (p_config->frequency == NRF_SPIM_FREQ_32M) ? NRF_GPIO_PIN_H0H1 : NRF_GPIO_PIN_S0S1;
+#else
+    pin_drive = NRF_GPIO_PIN_S0S1;
+#endif
+
     nrf_gpio_cfg(p_config->sck_pin,
                  NRF_GPIO_PIN_DIR_OUTPUT,
                  NRF_GPIO_PIN_INPUT_CONNECT,
                  NRF_GPIO_PIN_NOPULL,
-                 NRF_GPIO_PIN_S0S1,
+                 pin_drive,
                  NRF_GPIO_PIN_NOSENSE);
     // - MOSI (optional) - output with initial value 0,
     if (p_config->mosi_pin != NRFX_SPIM_PIN_NOT_USED)
     {
         mosi_pin = p_config->mosi_pin;
         nrf_gpio_pin_clear(mosi_pin);
-        nrf_gpio_cfg_output(mosi_pin);
+        nrf_gpio_cfg(mosi_pin,
+                     NRF_GPIO_PIN_DIR_OUTPUT,
+                     NRF_GPIO_PIN_INPUT_DISCONNECT,
+                     NRF_GPIO_PIN_NOPULL,
+                     pin_drive,
+                     NRF_GPIO_PIN_NOSENSE);
     }
     else
     {
@@ -342,13 +403,17 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
     if (p_config->miso_pin != NRFX_SPIM_PIN_NOT_USED)
     {
         miso_pin = p_config->miso_pin;
-        nrf_gpio_cfg_input(miso_pin, p_config->miso_pull);
+        nrf_gpio_cfg(miso_pin,
+                     NRF_GPIO_PIN_DIR_INPUT,
+                     NRF_GPIO_PIN_INPUT_CONNECT,
+                     p_config->miso_pull,
+                     pin_drive,
+                     NRF_GPIO_PIN_NOSENSE);
     }
     else
     {
         miso_pin = NRF_SPIM_PIN_NOT_CONNECTED;
     }
-    p_cb->miso_pin = p_config->miso_pin;
     // - Slave Select (optional) - output with initial value 1 (inactive).
 
     // 'p_cb->ss_pin' variable is used during transfers to check if SS pin should be toggled,
@@ -365,7 +430,12 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
         {
             nrf_gpio_pin_set(p_config->ss_pin);
         }
-        nrf_gpio_cfg_output(p_config->ss_pin);
+        nrf_gpio_cfg(p_config->ss_pin,
+                     NRF_GPIO_PIN_DIR_OUTPUT,
+                     NRF_GPIO_PIN_INPUT_DISCONNECT,
+                     NRF_GPIO_PIN_NOPULL,
+                     pin_drive,
+                     NRF_GPIO_PIN_NOSENSE);
 #if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED)
         if (p_config->use_hw_ss)
         {
@@ -385,7 +455,12 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
     if (p_config->dcx_pin != NRFX_SPIM_PIN_NOT_USED)
     {
         nrf_gpio_pin_set(p_config->dcx_pin);
-        nrf_gpio_cfg_output(p_config->dcx_pin);
+        nrf_gpio_cfg(p_config->dcx_pin,
+                     NRF_GPIO_PIN_DIR_OUTPUT,
+                     NRF_GPIO_PIN_INPUT_DISCONNECT,
+                     NRF_GPIO_PIN_NOPULL,
+                     pin_drive,
+                     NRF_GPIO_PIN_NOSENSE);
         nrf_spim_dcx_pin_set(p_spim, p_config->dcx_pin);
     }
 
@@ -393,17 +468,11 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
     nrf_spim_iftiming_set(p_spim, p_config->rx_delay);
 #endif
 
-
     nrf_spim_pins_set(p_spim, p_config->sck_pin, mosi_pin, miso_pin);
     nrf_spim_frequency_set(p_spim, p_config->frequency);
     nrf_spim_configure(p_spim, p_config->mode, p_config->bit_order);
 
     nrf_spim_orc_set(p_spim, p_config->orc);
-
-    if (p_cb->handler)
-    {
-        nrf_spim_int_enable(p_spim, NRF_SPIM_INT_END_MASK);
-    }
 
     nrf_spim_enable(p_spim);
 
@@ -422,37 +491,50 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
     return err_code;
 }
 
+static void spim_pin_uninit(uint32_t pin)
+{
+    if (pin == NRF_SPIM_PIN_NOT_CONNECTED)
+    {
+        return;
+    }
+
+    nrf_gpio_cfg_default(pin);
+}
+
 void nrfx_spim_uninit(nrfx_spim_t const * p_instance)
 {
     spim_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+    NRF_SPIM_Type * p_spim = p_instance->p_reg;
 
     if (p_cb->handler)
     {
         NRFX_IRQ_DISABLE(nrfx_get_irq_number(p_instance->p_reg));
-    }
-
-    NRF_SPIM_Type * p_spim = (NRF_SPIM_Type *)p_instance->p_reg;
-    if (p_cb->handler)
-    {
         nrf_spim_int_disable(p_spim, NRF_SPIM_ALL_INTS_MASK);
         if (p_cb->transfer_in_progress)
         {
             // Ensure that SPI is not performing any transfer.
-            nrf_spim_task_trigger(p_spim, NRF_SPIM_TASK_STOP);
-            while (!nrf_spim_event_check(p_spim, NRF_SPIM_EVENT_STOPPED))
-            {}
-            p_cb->transfer_in_progress = false;
+            spim_abort(p_spim, p_cb);
         }
     }
 
-    if (p_cb->miso_pin != NRFX_SPIM_PIN_NOT_USED)
-    {
-        nrf_gpio_cfg_default(p_cb->miso_pin);
-    }
     nrf_spim_disable(p_spim);
 
-#ifdef USE_WORKAROUND_FOR_ANOMALY_195
+    spim_pin_uninit(nrf_spim_sck_pin_get(p_spim));
+    spim_pin_uninit(nrf_spim_miso_pin_get(p_spim));
+    spim_pin_uninit(nrf_spim_mosi_pin_get(p_spim));
+#if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED)
+    if (SPIM_DCX_PRESENT_VALIDATE(p_instance->drv_inst_idx))
+    {
+        spim_pin_uninit(nrf_spim_dcx_pin_get(p_spim));
+    }
+#endif
+    if (p_cb->ss_pin != NRFX_SPIM_PIN_NOT_USED)
+    {
+        nrf_gpio_cfg_default(p_cb->ss_pin);
+    }
+
+#if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_195)
     if (p_spim == NRF_SPIM3)
     {
         *(volatile uint32_t *)0x4002F004 = 1;
@@ -472,6 +554,8 @@ nrfx_err_t nrfx_spim_xfer_dcx(nrfx_spim_t const *           p_instance,
                               uint32_t                      flags,
                               uint8_t                       cmd_length)
 {
+    (void)flags;
+
     NRFX_ASSERT(cmd_length <= NRF_SPIM_DCX_CNT_ALL_CMD);
     nrf_spim_dcx_cnt_set((NRF_SPIM_Type *)p_instance->p_reg, cmd_length);
     return nrfx_spim_xfer(p_instance, p_xfer_desc, 0);
@@ -595,7 +679,11 @@ static nrfx_err_t spim_xfer(NRF_SPIM_Type               * p_spim,
 
     if (!p_cb->handler)
     {
-        while (!nrf_spim_event_check(p_spim, NRF_SPIM_EVENT_END)){}
+        if (!(flags & NRFX_SPIM_FLAG_HOLD_XFER))
+        {
+            while (!nrf_spim_event_check(p_spim, NRF_SPIM_EVENT_END))
+            {}
+        }
 
 #if NRFX_CHECK(NRFX_SPIM3_NRF52840_ANOMALY_198_WORKAROUND_ENABLED)
         if (p_spim == NRF_SPIM3)
@@ -640,6 +728,8 @@ nrfx_err_t nrfx_spim_xfer(nrfx_spim_t const *           p_instance,
     NRFX_ASSERT(SPIM_LENGTH_VALIDATE(p_instance->drv_inst_idx,
                                      p_xfer_desc->rx_length,
                                      p_xfer_desc->tx_length));
+    NRFX_ASSERT(!(flags & NRFX_SPIM_FLAG_HOLD_XFER) ||
+                (p_cb->ss_pin == NRFX_SPIM_PIN_NOT_USED));
 
     nrfx_err_t err_code = NRFX_SUCCESS;
 
@@ -687,10 +777,7 @@ void nrfx_spim_abort(nrfx_spim_t const * p_instance)
     spim_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
-    nrf_spim_task_trigger(p_instance->p_reg, NRF_SPIM_TASK_STOP);
-    while (!nrf_spim_event_check(p_instance->p_reg, NRF_SPIM_EVENT_STOPPED))
-    {}
-    p_cb->transfer_in_progress = false;
+    spim_abort(p_instance->p_reg, p_cb);
 }
 
 uint32_t nrfx_spim_start_task_get(nrfx_spim_t const * p_instance)

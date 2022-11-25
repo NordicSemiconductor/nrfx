@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -57,7 +59,6 @@ typedef struct
     // [no need for 'volatile' attribute for the following members, as they
     //  are not concurrently used in IRQ handlers and main line code]
     uint8_t     ss_pin;
-    uint8_t     miso_pin;
     uint8_t     orc;
     size_t      bytes_transferred;
 
@@ -152,7 +153,6 @@ nrfx_err_t nrfx_spi_init(nrfx_spi_t const *        p_instance,
     {
         miso_pin = NRF_SPI_PIN_NOT_CONNECTED;
     }
-    m_cb[p_instance->drv_inst_idx].miso_pin = p_config->miso_pin;
     // - Slave Select (optional) - output with initial value 1 (inactive).
     if (p_config->ss_pin != NRFX_SPI_PIN_NOT_USED)
     {
@@ -167,11 +167,6 @@ nrfx_err_t nrfx_spi_init(nrfx_spi_t const *        p_instance,
     nrf_spi_configure(p_spi, p_config->mode, p_config->bit_order);
 
     m_cb[p_instance->drv_inst_idx].orc = p_config->orc;
-
-    if (p_cb->handler)
-    {
-        nrf_spi_int_enable(p_spi, NRF_SPI_INT_READY_MASK);
-    }
 
     nrf_spi_enable(p_spi);
 
@@ -194,23 +189,34 @@ void nrfx_spi_uninit(nrfx_spi_t const * p_instance)
 {
     spi_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+    NRF_SPI_Type * p_spi = p_instance->p_reg;
 
     if (p_cb->handler)
     {
         NRFX_IRQ_DISABLE(nrfx_get_irq_number(p_instance->p_reg));
-    }
-
-    NRF_SPI_Type * p_spi = p_instance->p_reg;
-    if (p_cb->handler)
-    {
         nrf_spi_int_disable(p_spi, NRF_SPI_ALL_INTS_MASK);
     }
 
-    if (p_cb->miso_pin != NRFX_SPI_PIN_NOT_USED)
-    {
-        nrf_gpio_cfg_default(p_cb->miso_pin);
-    }
     nrf_spi_disable(p_spi);
+
+    nrf_gpio_cfg_default(nrf_spi_sck_pin_get(p_spi));
+
+    uint32_t miso_pin = nrf_spi_miso_pin_get(p_spi);
+    if (miso_pin != NRF_SPI_PIN_NOT_CONNECTED)
+    {
+        nrf_gpio_cfg_default(miso_pin);
+    }
+
+    uint32_t mosi_pin = nrf_spi_mosi_pin_get(p_spi);
+    if (mosi_pin != NRF_SPI_PIN_NOT_CONNECTED)
+    {
+        nrf_gpio_cfg_default(mosi_pin);
+    }
+
+    if (p_cb->ss_pin != NRFX_SPI_PIN_NOT_USED)
+    {
+        nrf_gpio_cfg_default(p_cb->ss_pin);
+    }
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
     nrfx_prs_release(p_instance->p_reg);

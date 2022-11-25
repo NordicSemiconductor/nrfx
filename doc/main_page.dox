@@ -1,7 +1,7 @@
 /**
-@mainpage Introduction
+@mainpage Introduction and configuration
 
-@em nrfx is a standalone set of drivers for peripherals present in Nordic
+nrfx is a standalone set of drivers for peripherals present in Nordic
 Semiconductor's SoCs. It originated as an extract from the nRF5 SDK.
 The intention was to provide drivers that can be used in various environments
 without the necessity to integrate other parts of the SDK into them.
@@ -14,7 +14,7 @@ for a given SoC.
 
 @section nrfx_integration Integration
 
-The purpose of @em nrfx is to make it possible to use the same set of peripheral
+The purpose of nrfx is to make it possible to use the same set of peripheral
 drivers in various environments, from RTOSes to bare metal applications.
 Hence, for a given host environment, a light integration layer must be provided
 that implements certain specific routines, like interrupt management, critical
@@ -30,12 +30,17 @@ versions can be placed in any location within the host environment that the
 used compiler can access via include paths.
 
 In addition, the following locations should be specified as include paths
-([nrfx] stands for the @em nrfx root folder location):
+([nrfx] stands for the nrfx root folder location):
 @code
 [nrfx]/
 [nrfx]/drivers/include
 [nrfx]/mdk
 @endcode
+
+@note Unless otherwise stated, nrfx API functions do not provide thread safety
+      themselves. Users are responsible for providing the proper synchronization
+      of the nrfx function calls in a given environment if those are to be used
+      from different contexts.
 
 @section nrfx_irq_handlers IRQ handlers
 
@@ -80,7 +85,7 @@ driver for more information regarding configuration options available for it.
 @section nrfx_additional_reqs Additional requirements
 
 Nordic SoCs are based on ARM® Cortex™-M series processors. Before you can
-start developing with @em nrfx, you must add the CMSIS header files to include
+start developing with nrfx, you must add the CMSIS header files to include
 paths during the compilation process. Download these files from the following
 website:
 

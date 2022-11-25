@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2018 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -407,11 +409,11 @@ NRF_STATIC_INLINE void nrf_nfct_int_disable(NRF_NFCT_Type * p_reg, uint32_t mask
 NRF_STATIC_INLINE void nrf_nfct_mod_ctrl_pin_set(NRF_NFCT_Type * p_reg, uint32_t mod_ctrl_pin);
 
 /**
- * @brief Function for getting the modulation control pin.
+ * @brief Function for getting the modulation control pin selection.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  *
- * @return Modulation control pin number.
+ * @return Modulation control pin selection.
  */
 NRF_STATIC_INLINE uint32_t nrf_nfct_mod_ctrl_pin_get(NRF_NFCT_Type const * p_reg);
 #endif // defined(NFCT_MODULATIONPSEL_PIN_Msk) || defined(__NRFX_DOXYGEN__)

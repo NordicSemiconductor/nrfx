@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2013 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2013 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -302,6 +304,21 @@ void nrfx_spis_uninit(nrfx_spis_t const * p_instance)
     NRFX_IRQ_DISABLE(nrfx_get_irq_number(p_instance->p_reg));
     nrf_spis_int_disable(p_spis, DISABLE_ALL);
     #undef  DISABLE_ALL
+
+    nrf_gpio_cfg_default(nrf_spis_sck_pin_get(p_spis));
+    nrf_gpio_cfg_default(nrf_spis_csn_pin_get(p_spis));
+
+    uint32_t miso_pin = nrf_spis_miso_pin_get(p_spis);
+    if (miso_pin != NRF_SPIS_PIN_NOT_CONNECTED)
+    {
+        nrf_gpio_cfg_default(miso_pin);
+    }
+
+    uint32_t mosi_pin = nrf_spis_mosi_pin_get(p_spis);
+    if (mosi_pin != NRF_SPIS_PIN_NOT_CONNECTED)
+    {
+        nrf_gpio_cfg_default(mosi_pin);
+    }
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
     nrfx_prs_release(p_spis);

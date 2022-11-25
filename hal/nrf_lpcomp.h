@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2014 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -117,6 +119,15 @@ typedef enum
     NRF_LPCOMP_EVENT_UP    = offsetof(NRF_LPCOMP_Type, EVENTS_UP),    /**< Input voltage crossed the threshold going up. */
     NRF_LPCOMP_EVENT_CROSS = offsetof(NRF_LPCOMP_Type, EVENTS_CROSS)  /**< Input voltage crossed the threshold in any direction. */
 } nrf_lpcomp_event_t;
+
+/** @brief LPCOMP interrupts. */
+typedef enum
+{
+    NRF_LPCOMP_INT_READY_MASK = LPCOMP_INTENSET_READY_Msk, /**< Interrupt on READY event. */
+    NRF_LPCOMP_INT_DOWN_MASK  = LPCOMP_INTENSET_DOWN_Msk,  /**< Interrupt on DOWN event. */
+    NRF_LPCOMP_INT_UP_MASK    = LPCOMP_INTENSET_UP_Msk,    /**< Interrupt on UP event. */
+    NRF_LPCOMP_INT_CROSS_MASK = LPCOMP_INTENSET_CROSS_Msk  /**< Interrupt on CROSS event. */
+} nrf_lpcomp_int_mask_t;
 
 /** @brief LPCOMP shortcut masks. */
 typedef enum
@@ -406,10 +417,7 @@ NRF_STATIC_INLINE void nrf_lpcomp_task_trigger(NRF_LPCOMP_Type * p_reg, nrf_lpco
 NRF_STATIC_INLINE void nrf_lpcomp_event_clear(NRF_LPCOMP_Type * p_reg, nrf_lpcomp_event_t event)
 {
     *( (volatile uint32_t *)( (uint8_t *)p_reg + (uint32_t)event) ) = 0;
-#if __CORTEX_M == 0x04
-    volatile uint32_t dummy = *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event));
-    (void)dummy;
-#endif
+    nrf_event_readback((uint8_t *)p_reg + (uint32_t)event);
 }
 
 NRF_STATIC_INLINE bool nrf_lpcomp_event_check(NRF_LPCOMP_Type const * p_reg,

@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -506,7 +508,7 @@ nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
     nrfx_twis_config_pin(p_config->scl, p_config->scl_pull);
     nrfx_twis_config_pin(p_config->sda, p_config->sda_pull);
 
-    nrf_twis_config_addr_mask_t addr_mask = (nrf_twis_config_addr_mask_t)0;
+    uint32_t addr_mask = 0;
     if (0 == (p_config->addr[0] | p_config->addr[1]))
     {
         addr_mask = NRF_TWIS_CONFIG_ADDRESS0_MASK;
@@ -534,7 +536,7 @@ nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
     nrf_twis_pins_set          (p_reg, p_config->scl, p_config->sda);
     nrf_twis_address_set       (p_reg, 0, p_config->addr[0]);
     nrf_twis_address_set       (p_reg, 1, p_config->addr[1]);
-    nrf_twis_config_address_set(p_reg, addr_mask);
+    nrf_twis_config_address_set(p_reg, (nrf_twis_config_addr_mask_t)addr_mask);
 
     /* Clear semaphore */
     if (!NRFX_TWIS_NO_SYNC_MODE)
@@ -557,19 +559,13 @@ void nrfx_twis_uninit(nrfx_twis_t const * p_instance)
     twis_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
-    TWIS_PSEL_Type psel = p_reg->PSEL;
+    uint32_t scl_pin = nrf_twis_scl_pin_get(p_reg);
+    uint32_t sda_pin = nrf_twis_sda_pin_get(p_reg);
 
     nrfx_twis_swreset(p_reg);
 
-    /* Clear pins state if */
-    if (!(TWIS_PSEL_SCL_CONNECT_Msk & psel.SCL))
-    {
-        nrf_gpio_cfg_default(psel.SCL);
-    }
-    if (!(TWIS_PSEL_SDA_CONNECT_Msk & psel.SDA))
-    {
-        nrf_gpio_cfg_default(psel.SDA);
-    }
+    nrf_gpio_cfg_default(scl_pin);
+    nrf_gpio_cfg_default(sda_pin);
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
     nrfx_prs_release(p_reg);
@@ -622,7 +618,6 @@ void nrfx_twis_disable(nrfx_twis_t const * p_instance)
  *
  * This is the reason for the function below to be implemented in assembly.
  */
-//lint -save -e578
 #if defined (__CC_ARM )
 static __ASM uint32_t nrfx_twis_error_get_and_clear_internal(uint32_t volatile * perror)
 {
@@ -681,7 +676,6 @@ static uint32_t nrfx_twis_error_get_and_clear_internal(uint32_t volatile * perro
 #else
     #error Unknown compiler
 #endif
-//lint -restore
 
 uint32_t nrfx_twis_error_get_and_clear(nrfx_twis_t const * p_instance)
 {

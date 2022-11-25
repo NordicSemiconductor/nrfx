@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2014 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2021, Nordic Semiconductor ASA
  * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -189,6 +191,52 @@ NRF_STATIC_INLINE void nrf_rng_error_correction_enable(NRF_RNG_Type * p_reg);
  */
 NRF_STATIC_INLINE void nrf_rng_error_correction_disable(NRF_RNG_Type * p_reg);
 
+#if defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for setting the subscribe configuration for a given
+ *        RNG task.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] task    Task for which to set the configuration.
+ * @param[in] channel Channel through which to subscribe events.
+ */
+NRF_STATIC_INLINE void nrf_rng_subscribe_set(NRF_RNG_Type * p_reg,
+                                             nrf_rng_task_t task,
+                                             uint8_t        channel);
+
+/**
+ * @brief Function for clearing the subscribe configuration for a given
+ *        RNG task.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] task  Task for which to clear the configuration.
+ */
+NRF_STATIC_INLINE void nrf_rng_subscribe_clear(NRF_RNG_Type * p_reg,
+                                               nrf_rng_task_t task);
+
+/**
+ * @brief Function for setting the publish configuration for a given
+ *        RNG event.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] event   Event for which to set the configuration.
+ * @param[in] channel Channel through which to publish the event.
+ */
+NRF_STATIC_INLINE void nrf_rng_publish_set(NRF_RNG_Type *  p_reg,
+                                           nrf_rng_event_t event,
+                                           uint8_t         channel);
+
+/**
+ * @brief Function for clearing the publish configuration for a given
+ *        RNG event.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] event Event for which to clear the configuration.
+ */
+NRF_STATIC_INLINE void nrf_rng_publish_clear(NRF_RNG_Type *  p_reg,
+                                             nrf_rng_event_t event);
+#endif // defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
+
 
 #ifndef NRF_DECLARE_ONLY
 
@@ -227,10 +275,7 @@ NRF_STATIC_INLINE uint32_t nrf_rng_event_address_get(NRF_RNG_Type const * p_reg,
 NRF_STATIC_INLINE void nrf_rng_event_clear(NRF_RNG_Type * p_reg, nrf_rng_event_t rng_event)
 {
     *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)rng_event)) = 0x0UL;
-#if __CORTEX_M == 0x04
-    volatile uint32_t dummy = *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)rng_event));
-    (void)dummy;
-#endif
+    nrf_event_readback((uint8_t *)p_reg + (uint32_t)rng_event);
 }
 
 NRF_STATIC_INLINE bool nrf_rng_event_check(NRF_RNG_Type const * p_reg, nrf_rng_event_t rng_event)
@@ -262,6 +307,36 @@ NRF_STATIC_INLINE void nrf_rng_error_correction_disable(NRF_RNG_Type * p_reg)
 {
     p_reg->CONFIG &= ~RNG_CONFIG_DERCEN_Msk;
 }
+
+#if defined(DPPI_PRESENT)
+NRF_STATIC_INLINE void nrf_rng_subscribe_set(NRF_RNG_Type * p_reg,
+                                             nrf_rng_task_t task,
+                                             uint8_t        channel)
+{
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
+            ((uint32_t)channel | RNG_SUBSCRIBE_START_EN_Msk);
+}
+
+NRF_STATIC_INLINE void nrf_rng_subscribe_clear(NRF_RNG_Type * p_reg,
+                                               nrf_rng_task_t task)
+{
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
+}
+
+NRF_STATIC_INLINE void nrf_rng_publish_set(NRF_RNG_Type *  p_reg,
+                                           nrf_rng_event_t event,
+                                           uint8_t         channel)
+{
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
+            ((uint32_t)channel | RNG_PUBLISH_VALRDY_EN_Msk);
+}
+
+NRF_STATIC_INLINE void nrf_rng_publish_clear(NRF_RNG_Type *  p_reg,
+                                             nrf_rng_event_t event)
+{
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) = 0;
+}
+#endif // defined(DPPI_PRESENT)
 
 #endif // NRF_DECLARE_ONLY
 
