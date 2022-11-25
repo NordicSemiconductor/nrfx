@@ -73,6 +73,25 @@ jobs:
         run: |
           source ~/.env/env.sh
           scons --pyconfig-silent -C bsp/$RTT_BSP
+          #ADC
+          sed -i "s/# CONFIG_BSP_USING_SAADC is not set/CONFIG_BSP_USING_SAADC=y/g" bsp/$RTT_BSP/.config
           cat bsp/$RTT_BSP/.config
           pushd bsp/$RTT_BSP && pkgs --update && popd
           scons -C bsp/$RTT_BSP
+          #I2C
+          git reset --hard
+          scons --pyconfig-silent -C bsp/$RTT_BSP
+          sed -i "s/# CONFIG_BSP_USING_I2C is not set/CONFIG_BSP_USING_I2C=y/g" bsp/$RTT_BSP/.config
+          scons -C bsp/$RTT_BSP
+          #PWM
+          git reset --hard
+          scons --pyconfig-silent -C bsp/$RTT_BSP
+          sed -i "s/# CONFIG_BSP_USING_PWM is not set/CONFIG_BSP_USING_PWM=y/g" bsp/$RTT_BSP/.config
+          scons -C bsp/$RTT_BSP
+          #WDT
+          git reset --hard
+          scons --pyconfig-silent -C bsp/$RTT_BSP
+          sed -i "s/# CONFIG_BSP_USING_WDT is not set/CONFIG_BSP_USING_WDT=y/g" bsp/$RTT_BSP/.config
+          scons -C bsp/$RTT_BSP
+
+          
