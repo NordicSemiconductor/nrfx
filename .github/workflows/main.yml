@@ -23,7 +23,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: supperthomas/rtthread
     name: ${{ matrix.legs.RTT_BSP }}
     strategy:
       fail-fast: false
