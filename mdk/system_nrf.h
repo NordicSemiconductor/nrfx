@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2009-2022 ARM Limited. All rights reserved.
+Copyright (c) 2009-2023 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -29,28 +29,26 @@ extern "C" {
 
 #include <stdint.h>
 
-
-extern uint32_t SystemCoreClock;    /*!< System Clock Frequency (Core Clock)  */
+/**
+  \brief Exception / Interrupt Handler Function Prototype
+*/
+typedef void(*VECTOR_TABLE_Type)(void);
 
 /**
- * Initialize the system
- *
- * @param  none
- * @return none
- *
- * @brief  Setup the microcontroller system.
- *         Initialize the System and update the SystemCoreClock variable.
+  \brief System Clock Frequency (Core Clock)
+*/
+extern uint32_t SystemCoreClock;
+
+/**
+  \brief Setup the microcontroller system.
+   Initialize the System and update the SystemCoreClock variable.
  */
 extern void SystemInit (void);
 
+
 /**
- * Update SystemCoreClock variable
- *
- * @param  none
- * @return none
- *
- * @brief  Updates the SystemCoreClock with current core Clock 
- *         retrieved from cpu registers.
+  \brief  Update SystemCoreClock variable.
+   Updates the SystemCoreClock with current core Clock retrieved from cpu registers.
  */
 extern void SystemCoreClockUpdate (void);
 

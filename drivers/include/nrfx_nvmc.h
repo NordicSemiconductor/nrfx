@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2022, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2023, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -85,7 +85,7 @@ nrfx_err_t nrfx_nvmc_uicr_erase(void);
  */
 void nrfx_nvmc_all_erase(void);
 
-#if defined(NRF_NVMC_PARTIAL_ERASE_PRESENT)
+#if defined(NRF_NVMC_PARTIAL_ERASE_PRESENT) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for initiating a complete page erase split into parts (also known as partial erase).
  *
@@ -124,7 +124,7 @@ nrfx_err_t nrfx_nvmc_page_partial_erase_init(uint32_t address, uint32_t duration
  */
 bool nrfx_nvmc_page_partial_erase_continue(void);
 
-#endif // defined(NRF_NVMC_PARTIAL_ERASE_PRESENT)
+#endif // defined(NRF_NVMC_PARTIAL_ERASE_PRESENT) || defined(__NRFX_DOXYGEN__)
 
 /**
  * @brief Function for checking whether a byte is writable at the specified address.
@@ -306,7 +306,7 @@ uint32_t nrfx_nvmc_flash_page_count_get(void);
  */
 NRFX_STATIC_INLINE bool nrfx_nvmc_write_done_check(void);
 
-#if defined(NVMC_FEATURE_CACHE_PRESENT)
+#if defined(NVMC_FEATURE_CACHE_PRESENT) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for enabling the Instruction Cache (ICache).
  *
@@ -318,7 +318,7 @@ NRFX_STATIC_INLINE void nrfx_nvmc_icache_enable(void);
 /** @brief Function for disabling ICache. */
 NRFX_STATIC_INLINE void nrfx_nvmc_icache_disable(void);
 
-#endif // defined(NVMC_FEATURE_CACHE_PRESENT)
+#endif
 
 #ifndef NRFX_DECLARE_ONLY
 NRFX_STATIC_INLINE bool nrfx_nvmc_write_done_check(void)

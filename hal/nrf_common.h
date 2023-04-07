@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 - 2022, Nordic Semiconductor ASA
+ * Copyright (c) 2020 - 2023, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -42,7 +42,9 @@ extern "C" {
 #define NRFX_EVENT_READBACK_ENABLED 1
 #endif
 
-#if !defined(NRFX_CONFIG_API_VER_2_9) && !defined(NRFX_CONFIG_API_VER_2_10)
+#if !defined(NRFX_CONFIG_API_VER_2_9)  && \
+    !defined(NRFX_CONFIG_API_VER_2_10) && \
+    !defined(NRFX_CONFIG_API_VER_2_11)
 #define NRFX_CONFIG_API_VER_2_9 1
 #endif
 

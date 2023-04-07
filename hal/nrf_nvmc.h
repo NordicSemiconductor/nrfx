@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 - 2022, Nordic Semiconductor ASA
+ * Copyright (c) 2012 - 2023, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -302,7 +302,7 @@ NRF_STATIC_INLINE void nrf_nvmc_page_erase_start(NRF_NVMC_Type * p_reg,
     }
 #elif defined(NRF52_SERIES)
     p_reg->ERASEPAGE = page_addr;
-#elif defined(NRF9160_XXAA) || defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK)
+#elif defined(NRF53_SERIES) || defined(NRF91_SERIES)
     *(volatile uint32_t *)page_addr = 0xFFFFFFFF;
     (void)p_reg;
 #else
@@ -339,7 +339,7 @@ NRF_STATIC_INLINE void nrf_nvmc_page_partial_erase_start(NRF_NVMC_Type * p_reg,
 {
 #if defined(NVMC_ERASEPAGEPARTIAL_ERASEPAGEPARTIAL_Msk)
     p_reg->ERASEPAGEPARTIAL = page_addr;
-#elif defined(NRF9160_XXAA) || defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK)
+#elif defined(NRF53_SERIES) || defined(NRF91_SERIES)
     nrf_nvmc_page_erase_start(p_reg, page_addr);
 #else
     #error "Unknown device."
@@ -351,10 +351,10 @@ NRF_STATIC_INLINE void nrf_nvmc_page_partial_erase_start(NRF_NVMC_Type * p_reg,
 NRF_STATIC_INLINE void nrf_nvmc_icache_config_set(NRF_NVMC_Type *          p_reg,
                                                   nrf_nvmc_icache_config_t config)
 {
-#if defined(NRF5340_XXAA_NETWORK) || defined(NRF9160_XXAA)
+#if defined(NRF5340_XXAA_NETWORK) || defined(NRF91_SERIES)
     // Apply workaround for the anomalies:
-    // - 6 for the nRF5340.
-    // - 21 for the nRF9160.
+    // - 6 for the nRF53.
+    // - 21 for the nRF91.
     if (config == NRF_NVMC_ICACHE_DISABLE)
     {
         NRFX_CRITICAL_SECTION_ENTER();

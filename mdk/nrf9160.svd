@@ -8,7 +8,7 @@
   <version>1</version>
   <description>nrf9160 reference description for radio MCU with ARM 32-bit Cortex-M33 Microcontroller</description>
   <licenseText>
-Copyright (c) 2010 - 2022, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -163,6 +163,92 @@ POSSIBILITY OF SUCH DAMAGE.
             </fields>
           </register>
           <register>
+            <name>PART</name>
+            <description>Part code</description>
+            <addressOffset>0x00C</addressOffset>
+            <access>read-only</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <fields>
+              <field>
+                <name>PART</name>
+                <description>Part code</description>
+                <lsb>0</lsb>
+                <msb>31</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>N9160</name>
+                    <description>nRF9160</description>
+                    <value>0x9160</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>N9120</name>
+                    <description>nRF9120</description>
+                    <value>0x9120</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>VARIANT</name>
+            <description>Part Variant, Hardware version and Production configuration</description>
+            <addressOffset>0x010</addressOffset>
+            <access>read-only</access>
+            <resetValue>0x0FFFFFFF</resetValue>
+            <fields>
+              <field>
+                <name>VARIANT</name>
+                <description>Part Variant, Hardware version and Production configuration, encoded as ASCII</description>
+                <lsb>0</lsb>
+                <msb>31</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>AAAA</name>
+                    <description>AAAA</description>
+                    <value>0x41414141</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>AAA0</name>
+                    <description>AAA0</description>
+                    <value>0x41414130</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>AAB0</name>
+                    <description>AAB0</description>
+                    <value>0x41414230</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>AAC0</name>
+                    <description>AAC0</description>
+                    <value>0x41414330</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>PACKAGE</name>
+            <description>Package option</description>
+            <addressOffset>0x014</addressOffset>
+            <access>read-only</access>
+            <resetValue>0x00002000</resetValue>
+            <fields>
+              <field>
+                <name>PACKAGE</name>
+                <description>Package option</description>
+                <lsb>0</lsb>
+                <msb>31</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>CF</name>
+                    <description>CFxx - 236 ball wlCSP</description>
+                    <value>0x2002</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+          <register>
             <name>RAM</name>
             <description>RAM variant</description>
             <addressOffset>0x018</addressOffset>
@@ -223,6 +309,13 @@ POSSIBILITY OF SUCH DAMAGE.
                 <description>Code memory page size</description>
                 <lsb>0</lsb>
                 <msb>31</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>K4096</name>
+                    <description>4  kByte</description>
+                    <value>0x1000</value>
+                  </enumeratedValue>
+                </enumeratedValues>
               </field>
             </fields>
           </register>
@@ -235,9 +328,16 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>CODESIZE</name>
-                <description>Code memory size in number of pages</description>
+                <description>Code memory size in number of pages Total code space is: CODEPAGESIZE * CODESIZE</description>
                 <lsb>0</lsb>
                 <msb>31</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>P256</name>
+                    <description>256 pages</description>
+                    <value>256</value>
+                  </enumeratedValue>
+                </enumeratedValues>
               </field>
             </fields>
           </register>

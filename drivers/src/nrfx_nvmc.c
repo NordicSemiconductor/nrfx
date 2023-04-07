@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2022, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2023, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -58,7 +58,7 @@
  * This symbol is needed to determine NVM page count for chips that cannot
  * always access FICR for this information.
  */
-#if defined(NRF9160_XXAA) || defined(NRF5340_XXAA_APPLICATION)
+#if defined(NRF5340_XXAA_APPLICATION) || defined(NRF9120_XXAA) || defined(NRF9160_XXAA)
     #define NVMC_FLASH_PAGE_COUNT  256
 #elif defined(NRF5340_XXAA_NETWORK)
     #define NVMC_FLASH_PAGE_COUNT  128
@@ -70,7 +70,7 @@
  * This symbol is needed to determine NVM page size for chips that cannot
  * always access FICR for this information.
  */
-#if defined(NRF9160_XXAA) || defined(NRF5340_XXAA_APPLICATION)
+#if defined(NRF5340_XXAA_APPLICATION) || defined(NRF9120_XXAA) || defined(NRF9160_XXAA)
     #define NVMC_FLASH_PAGE_SIZE  0x1000 ///< 4 kB
 #elif defined(NRF5340_XXAA_NETWORK)
     #define NVMC_FLASH_PAGE_SIZE  0x800  ///< 2 kB
@@ -85,8 +85,9 @@
 #if defined(NRF52805_XXAA) || defined(NRF52810_XXAA) || \
     defined(NRF52811_XXAA) || defined(NRF52840_XXAA)
     #define NVMC_PAGE_ERASE_DURATION_MS  85
-#elif defined(NRF52820_XXAA) || defined(NRF52833_XXAA) || defined(NRF9160_XXAA) || \
-      defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK)
+#elif defined(NRF52820_XXAA) || defined(NRF52833_XXAA) || \
+      defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK) || \
+      defined(NRF9120_XXAA) || defined(NRF9160_XXAA)
     #define NVMC_PAGE_ERASE_DURATION_MS  87
 #else
     #error "Page partial erase present but could not determine its total duration for given SoC"
@@ -237,7 +238,7 @@ static void nvmc_erase_mode_set(void)
 
 static void nvmc_word_write(uint32_t addr, uint32_t value)
 {
-#if defined(NRF9160_XXAA)
+#if defined(NRF91_SERIES)
     while (!nrf_nvmc_write_ready_check(NRF_NVMC))
     {}
 #else

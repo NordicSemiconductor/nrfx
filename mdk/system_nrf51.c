@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2009-2022 ARM Limited. All rights reserved.
+Copyright (c) 2009-2023 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -32,19 +32,19 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 /*lint ++flb "Enter library region" */
 
 
-#define __SYSTEM_CLOCK      (16000000UL)     /*!< nRF51 devices use a fixed System Clock Frequency of 16MHz */
+#define __SYSTEM_CLOCK_DEFAULT      (16000000UL)     /*!< nRF51 devices use a fixed System Clock Frequency of 16MHz */
 
 #if defined ( __CC_ARM )
-    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK;
+    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_DEFAULT;
 #elif defined ( __ICCARM__ )
-    __root uint32_t SystemCoreClock = __SYSTEM_CLOCK;
+    __root uint32_t SystemCoreClock = __SYSTEM_CLOCK_DEFAULT;
 #elif defined   ( __GNUC__ )
-    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK;
+    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_DEFAULT;
 #endif
 
 void SystemCoreClockUpdate(void)
 {
-    SystemCoreClock = __SYSTEM_CLOCK;
+    SystemCoreClock = __SYSTEM_CLOCK_DEFAULT;
 }
 
 void SystemInit(void)
@@ -82,8 +82,6 @@ void SystemInit(void)
         }
         *(uint32_t volatile *)0x4006EC14 = 0xC0;
     }
-
-    SystemCoreClockUpdate();
 }
 
 /*lint --flb "Leave library region" */

@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2009-2022 ARM Limited. All rights reserved.
+Copyright (c) 2009-2023 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -33,19 +33,17 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 /*lint ++flb "Enter library region" */
 
 
-#define __SYSTEM_CLOCK      (64000000UL)     /*!< NRF5340 network core uses a fixed System Clock Frequency of 64MHz */
+#define __SYSTEM_CLOCK_DEFAULT      (64000000UL)     /*!< NRF5340 network core uses a fixed System Clock Frequency of 64MHz */
 
-#if defined ( __CC_ARM )
-    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK;  
+#if defined ( __CC_ARM ) || defined ( __GNUC__ )
+    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_DEFAULT;
 #elif defined ( __ICCARM__ )
-    __root uint32_t SystemCoreClock = __SYSTEM_CLOCK;
-#elif defined   ( __GNUC__ )
-    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK;
+    __root uint32_t SystemCoreClock = __SYSTEM_CLOCK_DEFAULT;
 #endif
 
 void SystemCoreClockUpdate(void)
 {
-    SystemCoreClock = __SYSTEM_CLOCK;
+    SystemCoreClock = __SYSTEM_CLOCK_DEFAULT;
 }
 
 void SystemInit(void)
@@ -53,7 +51,7 @@ void SystemInit(void)
     /* Trimming of the device. Copy all the trimming values from FICR into the target addresses. Trim
      until one ADDR is not initialized. */
     uint32_t index = 0;
-    for (index = 0; index < 32ul && NRF_FICR_NS->TRIMCNF[index].ADDR != (uint32_t *)0xFFFFFFFFul; index++){
+    for (index = 0; index < 32ul && NRF_FICR_NS->TRIMCNF[index].ADDR != 0xFFFFFFFFul; index++){
         #if defined ( __ICCARM__ )
             /* IAR will complain about the order of volatile pointer accesses. */
             #pragma diag_suppress=Pa082
@@ -84,10 +82,18 @@ void SystemInit(void)
         }
     }
 
+    if (nrf53_errata_160())
+    {
+        *((volatile uint32_t *)0x41002118) = 0x7Ful;
+        *((volatile uint32_t *)0x41080E04) = 0x0ul;
+        *((volatile uint32_t *)0x41080E08) = 0x0ul;
+        *((volatile uint32_t *)0x41002124) = 0x0ul;
+        *((volatile uint32_t *)0x4100212C) = 0x0ul;
+        *((volatile uint32_t *)0x41101110) = 0x0ul;
+    }
+
     /* Handle fw-branch APPROTECT setup. */
     nrf53_handle_approtect();
-
-    SystemCoreClockUpdate();
 }
 
 /*lint --flb "Leave library region" */

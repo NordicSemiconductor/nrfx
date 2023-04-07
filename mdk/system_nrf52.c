@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2009-2022 ARM Limited. All rights reserved.
+Copyright (c) 2009-2023 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -31,37 +31,74 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include "system_nrf52.h"
 #include "system_nrf52_approtect.h"
 
-#define __SYSTEM_CLOCK_64M      (64000000UL)
+#define __SYSTEM_CLOCK_DEFAULT      (64000000UL)
 
 
-#if defined ( __CC_ARM )
-    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_64M;
+#if defined ( __CC_ARM ) || defined ( __GNUC__ )
+    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_DEFAULT;
 #elif defined ( __ICCARM__ )
-    __root uint32_t SystemCoreClock = __SYSTEM_CLOCK_64M;
-#elif defined ( __GNUC__ )
-    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_64M;
+    __root uint32_t SystemCoreClock = __SYSTEM_CLOCK_DEFAULT;
+#endif
+
+/* Simplify later device detection macros. Check DEVELOP_IN first, as they take precedence. */
+#if   defined (DEVELOP_IN_NRF52805)
+    #define IS_NRF52805 1
+#elif defined (DEVELOP_IN_NRF52810)
+    #define IS_NRF52810 1
+#elif defined (DEVELOP_IN_NRF52811)
+    #define IS_NRF52811 1
+#elif defined (DEVELOP_IN_NRF52820)
+    #define IS_NRF52820 1
+#elif defined (DEVELOP_IN_NRF52832)
+    #define IS_NRF52832 1
+#elif defined (DEVELOP_IN_NRF52833)
+    #define IS_NRF52833 1
+#elif defined (DEVELOP_IN_NRF52840)
+    #define IS_NRF52840 1
+#elif defined (NRF52805_XXAA)
+    #define IS_NRF52805 1
+#elif defined (NRF52810_XXAA)
+    #define IS_NRF52810 1
+#elif defined (NRF52811_XXAA)
+    #define IS_NRF52811 1
+#elif defined (NRF52820_XXAA)
+    #define IS_NRF52820 1
+#elif defined (NRF52832_XXAA) || defined (NRF52832_XXAB)
+    #define IS_NRF52832 1
+#elif defined (NRF52833_XXAA)
+    #define IS_NRF52833 1
+#elif defined (NRF52840_XXAA)
+    #define IS_NRF52840 1
+#else
+    #error "A supported device macro must be defined."
+#endif
+
+/* Trace configuration */
+#define TRACE_PIN_CONFIG ((GPIO_PIN_CNF_DRIVE_H0H1 << GPIO_PIN_CNF_DRIVE_Pos) \
+                        | (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) \
+                        | (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos))
+
+#if IS_NRF52832
+    #define TRACECLK_PIN_CNF NRF_P0->PIN_CNF[20]
+    #define TRACEDATA0_PIN_CNF NRF_P0->PIN_CNF[18]
+    #define TRACEDATA1_PIN_CNF NRF_P0->PIN_CNF[16]
+    #define TRACEDATA2_PIN_CNF NRF_P0->PIN_CNF[15]
+    #define TRACEDATA3_PIN_CNF NRF_P0->PIN_CNF[14]
+#elif  IS_NRF52833 || IS_NRF52840
+    #define TRACECLK_PIN_CNF NRF_P0->PIN_CNF[7]
+    #define TRACEDATA0_PIN_CNF NRF_P1->PIN_CNF[0]
+    #define TRACEDATA1_PIN_CNF NRF_P0->PIN_CNF[12]
+    #define TRACEDATA2_PIN_CNF NRF_P0->PIN_CNF[11]
+    #define TRACEDATA3_PIN_CNF NRF_P1->PIN_CNF[9]
+#else
+    /* No trace supported */
 #endif
 
 /* Select correct reset pin */
 /* Handle DEVELOP_IN-targets first as they take precedence over the later macros */
-#if    defined (DEVELOP_IN_NRF52805) \
-    || defined (DEVELOP_IN_NRF52810) \
-    || defined (DEVELOP_IN_NRF52811) \
-    || defined (DEVELOP_IN_NRF52832)
+#if    IS_NRF52805 || IS_NRF52810 || IS_NRF52811 || IS_NRF52832
     #define RESET_PIN 21
-#elif  defined (DEVELOP_IN_NRF52820) \
-    || defined (DEVELOP_IN_NRF52833) \
-    || defined (DEVELOP_IN_NRF52840)
-    #define RESET_PIN 18
-#elif  defined (NRF52805_XXAA) \
-    || defined (NRF52810_XXAA) \
-    || defined (NRF52811_XXAA) \
-    || defined (NRF52832_XXAA) \
-    || defined (NRF52832_XXAB)
-    #define RESET_PIN 21
-#elif  defined (NRF52820_XXAA) \
-    || defined (NRF52833_XXAA) \
-    || defined (NRF52840_XXAA)
+#elif  IS_NRF52820 || IS_NRF52833 || IS_NRF52840
     #define RESET_PIN 18
 #else
     #error "A supported device macro must be defined."
@@ -84,7 +121,7 @@ void nvmc_config(uint32_t mode)
 
 void SystemCoreClockUpdate(void)
 {
-    SystemCoreClock = __SYSTEM_CLOCK_64M;
+    SystemCoreClock = __SYSTEM_CLOCK_DEFAULT;
 }
 
 void SystemInit(void)
@@ -94,7 +131,7 @@ void SystemInit(void)
     #if defined (ENABLE_SWO) && defined(CLOCK_TRACECONFIG_TRACEMUX_Pos)
         CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
         NRF_CLOCK->TRACECONFIG |= CLOCK_TRACECONFIG_TRACEMUX_Serial << CLOCK_TRACECONFIG_TRACEMUX_Pos;
-        NRF_P0->PIN_CNF[18] = (GPIO_PIN_CNF_DRIVE_H0H1 << GPIO_PIN_CNF_DRIVE_Pos) | (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) | (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos);
+        TRACEDATA0_PIN_CNF = TRACE_PIN_CONFIG;
     #endif
 
     /* Enable Trace functionality. If ENABLE_TRACE is not defined, TRACE pins will be used as GPIOs (see Product
@@ -102,11 +139,11 @@ void SystemInit(void)
     #if defined (ENABLE_TRACE) && defined(CLOCK_TRACECONFIG_TRACEMUX_Pos)
         CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
         NRF_CLOCK->TRACECONFIG |= CLOCK_TRACECONFIG_TRACEMUX_Parallel << CLOCK_TRACECONFIG_TRACEMUX_Pos;
-        NRF_P0->PIN_CNF[14] = (GPIO_PIN_CNF_DRIVE_H0H1 << GPIO_PIN_CNF_DRIVE_Pos) | (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) | (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos);
-        NRF_P0->PIN_CNF[15] = (GPIO_PIN_CNF_DRIVE_H0H1 << GPIO_PIN_CNF_DRIVE_Pos) | (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) | (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos);
-        NRF_P0->PIN_CNF[16] = (GPIO_PIN_CNF_DRIVE_H0H1 << GPIO_PIN_CNF_DRIVE_Pos) | (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) | (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos);
-        NRF_P0->PIN_CNF[18] = (GPIO_PIN_CNF_DRIVE_H0H1 << GPIO_PIN_CNF_DRIVE_Pos) | (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) | (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos);
-        NRF_P0->PIN_CNF[20] = (GPIO_PIN_CNF_DRIVE_H0H1 << GPIO_PIN_CNF_DRIVE_Pos) | (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) | (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos);
+        TRACECLK_PIN_CNF =   TRACE_PIN_CONFIG;
+        TRACEDATA0_PIN_CNF = TRACE_PIN_CONFIG;
+        TRACEDATA1_PIN_CNF = TRACE_PIN_CONFIG;
+        TRACEDATA2_PIN_CNF = TRACE_PIN_CONFIG;
+        TRACEDATA3_PIN_CNF = TRACE_PIN_CONFIG;
     #endif
 
     #if NRF52_ERRATA_12_ENABLE_WORKAROUND
@@ -324,6 +361,4 @@ void SystemInit(void)
             NVIC_SystemReset();
         }
     #endif
-
-    SystemCoreClockUpdate();
 }

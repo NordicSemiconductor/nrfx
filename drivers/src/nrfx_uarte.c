@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2022, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -221,10 +221,10 @@ static void pins_to_default(nrfx_uarte_t const * p_instance)
 
 static void apply_workaround_for_enable_anomaly(nrfx_uarte_t const * p_instance)
 {
-#if defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK) || defined(NRF9160_XXAA)
+#if defined(NRF53_SERIES) || defined(NRF91_SERIES)
     // Apply workaround for anomalies:
-    // - nRF9160 - anomaly 23
-    // - nRF5340 - anomaly 44
+    // - nRF91 - anomaly 23
+    // - nRF53 - anomaly 44
     volatile uint32_t const * rxenable_reg =
         (volatile uint32_t *)(((uint32_t)p_instance->p_reg) + 0x564);
     volatile uint32_t const * txenable_reg =
@@ -256,7 +256,7 @@ static void apply_workaround_for_enable_anomaly(nrfx_uarte_t const * p_instance)
     }
 #else
     (void)(p_instance);
-#endif // defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK) || defined(NRF9160_XXAA)
+#endif // defined(NRF53_SERIES) || defined(NRF91_SERIES)
 }
 
 nrfx_err_t nrfx_uarte_init(nrfx_uarte_t const *        p_instance,

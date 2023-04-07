@@ -1,0 +1,21 @@
+LOAD 0x00000000 0x00100000
+{
+    FLASH 0x00000000 0x00100000
+    {
+    
+        .ANY (+RO)
+        .ANY (+XO)
+    }
+    EXT_FLASH 0x12000000 0x08000000
+    {
+    .ANY (ext_flash) ; Data or code allocated to external memory 
+    }
+    RAM 0x20000000 0x00040000
+    {
+    .ANY(+RW, +ZI) ; RW data and ZI data
+    }
+    CODE_RAM 0x00800000 0x00040000
+    {
+    .ANY (code_ram) ; Code allocated to RAM blocks
+    }
+}

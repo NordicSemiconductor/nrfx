@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2022, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -1315,6 +1315,34 @@ POSSIBILITY OF SUCH DAMAGE.
 #define FICR_INFO_DEVICEID_DEVICEID_Pos (0UL) /*!< Position of DEVICEID field. */
 #define FICR_INFO_DEVICEID_DEVICEID_Msk (0xFFFFFFFFUL << FICR_INFO_DEVICEID_DEVICEID_Pos) /*!< Bit mask of DEVICEID field. */
 
+/* Register: FICR_INFO_PART */
+/* Description: Part code */
+
+/* Bits 31..0 : Part code */
+#define FICR_INFO_PART_PART_Pos (0UL) /*!< Position of PART field. */
+#define FICR_INFO_PART_PART_Msk (0xFFFFFFFFUL << FICR_INFO_PART_PART_Pos) /*!< Bit mask of PART field. */
+#define FICR_INFO_PART_PART_N9120 (0x9120UL) /*!< nRF9120 */
+#define FICR_INFO_PART_PART_N9160 (0x9160UL) /*!< nRF9160 */
+
+/* Register: FICR_INFO_VARIANT */
+/* Description: Part Variant, Hardware version and Production configuration */
+
+/* Bits 31..0 : Part Variant, Hardware version and Production configuration, encoded as ASCII */
+#define FICR_INFO_VARIANT_VARIANT_Pos (0UL) /*!< Position of VARIANT field. */
+#define FICR_INFO_VARIANT_VARIANT_Msk (0xFFFFFFFFUL << FICR_INFO_VARIANT_VARIANT_Pos) /*!< Bit mask of VARIANT field. */
+#define FICR_INFO_VARIANT_VARIANT_AAA0 (0x41414130UL) /*!< AAA0 */
+#define FICR_INFO_VARIANT_VARIANT_AAAA (0x41414141UL) /*!< AAAA */
+#define FICR_INFO_VARIANT_VARIANT_AAB0 (0x41414230UL) /*!< AAB0 */
+#define FICR_INFO_VARIANT_VARIANT_AAC0 (0x41414330UL) /*!< AAC0 */
+
+/* Register: FICR_INFO_PACKAGE */
+/* Description: Package option */
+
+/* Bits 31..0 : Package option */
+#define FICR_INFO_PACKAGE_PACKAGE_Pos (0UL) /*!< Position of PACKAGE field. */
+#define FICR_INFO_PACKAGE_PACKAGE_Msk (0xFFFFFFFFUL << FICR_INFO_PACKAGE_PACKAGE_Pos) /*!< Bit mask of PACKAGE field. */
+#define FICR_INFO_PACKAGE_PACKAGE_CF (0x2002UL) /*!< CFxx - 236 ball wlCSP */
+
 /* Register: FICR_INFO_RAM */
 /* Description: RAM variant */
 
@@ -1338,13 +1366,15 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 31..0 : Code memory page size */
 #define FICR_INFO_CODEPAGESIZE_CODEPAGESIZE_Pos (0UL) /*!< Position of CODEPAGESIZE field. */
 #define FICR_INFO_CODEPAGESIZE_CODEPAGESIZE_Msk (0xFFFFFFFFUL << FICR_INFO_CODEPAGESIZE_CODEPAGESIZE_Pos) /*!< Bit mask of CODEPAGESIZE field. */
+#define FICR_INFO_CODEPAGESIZE_CODEPAGESIZE_K4096 (0x1000UL) /*!< 4  kByte */
 
 /* Register: FICR_INFO_CODESIZE */
 /* Description: Code memory size */
 
-/* Bits 31..0 : Code memory size in number of pages */
+/* Bits 31..0 : Code memory size in number of pages Total code space is: CODEPAGESIZE * CODESIZE */
 #define FICR_INFO_CODESIZE_CODESIZE_Pos (0UL) /*!< Position of CODESIZE field. */
 #define FICR_INFO_CODESIZE_CODESIZE_Msk (0xFFFFFFFFUL << FICR_INFO_CODESIZE_CODESIZE_Pos) /*!< Bit mask of CODESIZE field. */
+#define FICR_INFO_CODESIZE_CODESIZE_P256 (256UL) /*!< 256 pages */
 
 /* Register: FICR_INFO_DEVICETYPE */
 /* Description: Device type */

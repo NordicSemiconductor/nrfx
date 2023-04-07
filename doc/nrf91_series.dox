@@ -1,7 +1,7 @@
 /**
-@page nrf9160_drivers nRF9160 drivers
+@page nrf91_series_drivers nRF91 Series drivers
 
-This page lists nrfx driver components supported by the nRF9160 SoC.
+This page lists nrfx driver components supported by the nRF91 Series SoCs.
 For a complete overview, see @ref nrfx_drv_supp_matrix.
 
 @{

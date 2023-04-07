@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2022, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2023, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -1865,8 +1865,6 @@ bool nrfx_usbd_suspend(void)
     NRFX_CRITICAL_SECTION_ENTER();
     if (m_bus_suspend)
     {
-        usbd_ep_abort_all();
-
         if (!(nrf_usbd_eventcause_get(NRF_USBD) & NRF_USBD_EVENTCAUSE_RESUME_MASK))
         {
             nrf_usbd_lowpower_enable(NRF_USBD);

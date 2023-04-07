@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [2.11.0] - 2023-04-07
+### Added
+- Added support for the nRF9161 and nRF9131 SiPs. Use `NRF9120_XXAA` as the compilation symbol.
+- Implemented a workaround for the anomaly 161 on the nRF5340 SoC in the RESET HAL.
+
+### Changed
+- Updated MDK to version 8.53.1.
+
+### Fixed
+- Removed a spurious function call causing aborting of endpoints in the SUSPEND event for the USBD driver.
+
 ## [2.10.0] - 2022-10-25
 ### Added
 - Added NRFX_CONFIG_API_VER_2_9 and NRFX_CONFIG_API_VER_2_10 symbols that guard API-breaking changes. Deprecated API is used by default.

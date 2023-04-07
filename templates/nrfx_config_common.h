@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Nordic Semiconductor ASA
+ * Copyright (c) 2022 - 2023, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -39,7 +39,7 @@
 #endif
 
 
-// <i> NRFX API version 2.9 flag. When the flag is set NRFX API is compatible with the previous NRFX release.
+// <i> NRFX API version 2.9 flag.
 #define NRFX_CONFIG_API_VER_2_9 1
 
 // <i> NRFX API version 2.10 flag.
@@ -50,5 +50,8 @@
  *  - Rename function **nrfx_ipc_mem_get** to **nrfx_ipc_gpmem_get**.
  */
 #define NRFX_CONFIG_API_VER_2_10 0
+
+// <i> NRFX API version 2.11 flag.
+#define NRFX_CONFIG_API_VER_2_11 0
 
 #endif /* NRFX_CONFIG_COMMON_H__ */

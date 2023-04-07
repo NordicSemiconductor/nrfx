@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2022, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2023, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -55,8 +55,8 @@
     #include <nrfx_config_nrf5340_application.h>
 #elif defined(NRF5340_XXAA_NETWORK)
     #include <nrfx_config_nrf5340_network.h>
-#elif defined(NRF9160_XXAA)
-    #include <nrfx_config_nrf9160.h>
+#elif defined(NRF9120_XXAA) || defined(NRF9160_XXAA)
+    #include <nrfx_config_nrf91.h>
 #else
     #error "Unknown device."
 #endif

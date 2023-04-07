@@ -3,14 +3,14 @@
 ## Overview
 
 nrfx is a standalone set of drivers for peripherals present in Nordic
-Semiconductor's SoCs. It originated as an extract from the nRF5 SDK.
+Semiconductor's SoCs and SiPs. It originated as an extract from the nRF5 SDK.
 The intention was to provide drivers that can be used in various environments
 without the necessity to integrate other parts of the SDK into them.
 For the user's convenience, the drivers come with the MDK package. This package
 contains definitions of register structures and bitfields for all supported
 SoCs, as well as startup and initialization files for them.
 
-## Supported SoCs
+## Supported SoCs and SiPs
 
 * nRF51 Series
 * nRF52805
@@ -21,7 +21,9 @@ SoCs, as well as startup and initialization files for them.
 * nRF52833
 * nRF52840
 * nRF5340
+* nRF9131
 * nRF9160
+* nRF9161
 
 ## Directories
 

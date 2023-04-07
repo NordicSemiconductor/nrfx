@@ -12,7 +12,7 @@ Driver support overview
    nrf52833
    nrf52840
    nrf5340
-   nrf9160
+   nrf91_series
 
 .. role:: red
 .. role:: green

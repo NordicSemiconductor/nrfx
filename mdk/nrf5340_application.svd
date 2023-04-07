@@ -8,7 +8,7 @@
   <version>1</version>
   <description>nRF53 reference description for system-on-chip with dual ARM 32-bit Cortex-M33 microcontrollers</description>
   <licenseText>
-Copyright (c) 2010 - 2022, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -560,7 +560,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <addressOffset>0x000</addressOffset>
             <access>read-only</access>
             <resetValue>0xFFFFFFFF</resetValue>
-            <dataType>uint32_t *</dataType>
+            <dataType>uint32_t</dataType>
             <fields>
               <field>
                 <name>Address</name>

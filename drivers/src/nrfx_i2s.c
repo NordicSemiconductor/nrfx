@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2022, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -48,7 +48,7 @@
                                        "UNKNOWN EVENT")))
 
 #if !defined(USE_WORKAROUND_FOR_I2S_STOP_ANOMALY) && \
-    (defined(NRF52_SERIES) || defined(NRF9160_XXAA))
+    (defined(NRF52_SERIES) || defined(NRF91_SERIES))
 // Enable workaround for nRF52 Series anomaly 194 / nRF9160 anomaly 1
 // (STOP task does not switch off all resources).
 #define USE_WORKAROUND_FOR_I2S_STOP_ANOMALY 1

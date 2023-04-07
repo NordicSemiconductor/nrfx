@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2009-2022 ARM Limited. All rights reserved.
+Copyright (c) 2009-2023 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -37,7 +37,7 @@ void SystemStoreFICRNS();
 
 /* NRF5340 application core uses a variable System Clock Frequency that starts at 64MHz */
 #define __SYSTEM_CLOCK_MAX      (128000000UL)
-#define __SYSTEM_CLOCK_INITIAL  ( 64000000UL)
+#define __SYSTEM_CLOCK_DEFAULT  ( 64000000UL)
 
 #define TRACE_PIN_CNF_VALUE (   (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) | \
                                 (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) | \
@@ -52,12 +52,10 @@ void SystemStoreFICRNS();
 #define TRACE_TRACEDATA2_PIN TAD_PSEL_TRACEDATA2_PIN_Tracedata2
 #define TRACE_TRACEDATA3_PIN TAD_PSEL_TRACEDATA3_PIN_Tracedata3
 
-#if defined ( __CC_ARM )
-    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_INITIAL;  
+#if defined ( __CC_ARM ) || defined ( __GNUC__ )
+    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_DEFAULT;
 #elif defined ( __ICCARM__ )
-    __root uint32_t SystemCoreClock = __SYSTEM_CLOCK_INITIAL;
-#elif defined   ( __GNUC__ )
-    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_INITIAL;
+    __root uint32_t SystemCoreClock = __SYSTEM_CLOCK_DEFAULT;
 #endif
 
 void SystemCoreClockUpdate(void)
@@ -95,7 +93,7 @@ void SystemInit(void)
         /* Trimming of the device. Copy all the trimming values from FICR into the target addresses. Trim
          until one ADDR is not initialized. */
         uint32_t index = 0;
-        for (index = 0; index < 32ul && NRF_FICR_S->TRIMCNF[index].ADDR != (uint32_t *)0xFFFFFFFFul; index++){
+        for (index = 0; index < 32ul && NRF_FICR_S->TRIMCNF[index].ADDR != 0xFFFFFFFFul; index++){
             #if defined ( __ICCARM__ )
                 /* IAR will complain about the order of volatile pointer accesses. */
                 #pragma diag_suppress=Pa082
@@ -169,6 +167,19 @@ void SystemInit(void)
                 NRF_CLOCK_S->TASKS_LFCLKSTOP = 1;
                 NRF_CLOCK_S->LFCLKSRC = CLOCK_LFCLKSRC_SRC_LFRC;
             }
+        }
+
+        if (nrf53_errata_160())
+        {
+            *((volatile uint32_t *)0x5000470C) = 0x7Eul;
+            *((volatile uint32_t *)0x5000493C) = 0x7Eul;
+            *((volatile uint32_t *)0x50002118) = 0x7Ful;
+            *((volatile uint32_t *)0x50039E04) = 0x0ul;
+            *((volatile uint32_t *)0x50039E08) = 0x0ul;
+            *((volatile uint32_t *)0x50101110) = 0x0ul;
+            *((volatile uint32_t *)0x50002124) = 0x0ul;
+            *((volatile uint32_t *)0x5000212C) = 0x0ul;
+            *((volatile uint32_t *)0x502012A0) = 0x0ul;
         }
 
         #if !defined(NRF_SKIP_FICR_NS_COPY_TO_RAM)
@@ -263,8 +274,6 @@ void SystemInit(void)
         __DSB();
         __ISB();
     #endif
-
-    SystemCoreClockUpdate();
 }
 
 /* Workaround to allow NS code to access FICR. Override NRF_FICR_NS to move FICR_NS buffer. */

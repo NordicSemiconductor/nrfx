@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2022, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2023, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -31,8 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef NRFX_IRQS_NRF9160_H__
-#define NRFX_IRQS_NRF9160_H__
+#ifndef NRFX_IRQS_NRF91_H__
+#define NRFX_IRQS_NRF91_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -160,4 +160,4 @@ extern "C" {
 }
 #endif
 
-#endif // NRFX_IRQS_NRF9160_H__
+#endif // NRFX_IRQS_NRF91_H__
