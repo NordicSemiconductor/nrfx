@@ -49,34 +49,32 @@ static inline void nrf91_handle_approtect(void)
         return;
     }
     #if defined (NRF91_ERRATA_36_PRESENT) && NRF91_ERRATA_36_PRESENT
-        #if defined (NRF_APPLICATION)
-            #if defined (ENABLE_APPROTECT)
-                /* Prevent processor from unlocking APPROTECT soft branch after this point. */
-                NRF_APPROTECT_S->APPROTECT.FORCEPROTECT = APPROTECT_APPROTECT_FORCEPROTECT_FORCEPROTECT_Force;
+        #if defined (ENABLE_APPROTECT)
+            /* Prevent processor from unlocking APPROTECT soft branch after this point. */
+            NRF_APPROTECT_S->APPROTECT.FORCEPROTECT = (APPROTECT_APPROTECT_FORCEPROTECT_FORCEPROTECT_Force << APPROTECT_APPROTECT_FORCEPROTECT_FORCEPROTECT_Pos);
 
-            #elif defined (ENABLE_APPROTECT_USER_HANDLING)
-                    /* Do nothing, allow user code to handle APPROTECT. Use this if you want to enable authenticated debug. */
+        #elif defined (ENABLE_APPROTECT_USER_HANDLING)
+                /* Do nothing, allow user code to handle APPROTECT. Use this if you want to enable authenticated debug. */
 
-            #else
-                /* Load APPROTECT soft branch from UICR.
-                    If UICR->APPROTECT is disabled, APPROTECT->APPROTECT will be disabled. */
-                NRF_APPROTECT_S->APPROTECT.DISABLE = NRF_UICR_S->APPROTECT;
-            #endif
+        #else
+            /* Load APPROTECT soft branch from UICR.
+                If UICR->APPROTECT is disabled, APPROTECT->APPROTECT will be disabled. */
+            NRF_APPROTECT_S->APPROTECT.DISABLE = NRF_UICR_S->APPROTECT == UICR_APPROTECT_PALL_HwUnprotected ? APPROTECT_APPROTECT_DISABLE_DISABLE_SwUnprotected : 0ul;
+        #endif
 
-            /* Secure APPROTECT is only available for Application core. */
-            #if defined (ENABLE_SECURE_APPROTECT)
-                /* Prevent processor from unlocking SECURE APPROTECT soft branch after this point. */
-                NRF_APPROTECT_S->SECUREAPPROTECT.FORCEPROTECT = APPROTECT_SECUREAPPROTECT_FORCEPROTECT_FORCEPROTECT_Force;
+        /* Secure APPROTECT is only available for Application core. */
+        #if defined (ENABLE_SECURE_APPROTECT)
+            /* Prevent processor from unlocking SECURE APPROTECT soft branch after this point. */
+            NRF_APPROTECT_S->SECUREAPPROTECT.FORCEPROTECT = (APPROTECT_SECUREAPPROTECT_FORCEPROTECT_FORCEPROTECT_Force << APPROTECT_SECUREAPPROTECT_FORCEPROTECT_FORCEPROTECT_Pos);
 
-            #elif defined (ENABLE_SECURE_APPROTECT_USER_HANDLING)
-                    /* Do nothing, allow user code to handle SECURE APPROTECT. Use this if you want to enable authenticated debug. */
+        #elif defined (ENABLE_SECURE_APPROTECT_USER_HANDLING)
+                /* Do nothing, allow user code to handle SECURE APPROTECT. Use this if you want to enable authenticated debug. */
 
-            #else
-                /* Load SECURE APPROTECT soft branch from UICR.
-                    If UICR->SECUREAPPROTECT is disabled, APPROTECT->SECUREAPPROTECT will be disabled. */
-                NRF_APPROTECT_S->SECUREAPPROTECT.DISABLE = NRF_UICR_S->SECUREAPPROTECT;
-            #endif
-            #endif
+        #else
+            /* Load SECURE APPROTECT soft branch from UICR.
+                If UICR->SECUREAPPROTECT is disabled, APPROTECT->SECUREAPPROTECT will be disabled. */
+            NRF_APPROTECT_S->SECUREAPPROTECT.DISABLE = NRF_UICR_S->SECUREAPPROTECT == UICR_SECUREAPPROTECT_PALL_HwUnprotected ? APPROTECT_SECUREAPPROTECT_DISABLE_DISABLE_SwUnprotected : 0ul;
+        #endif
     #endif
 }
 
@@ -84,4 +82,4 @@ static inline void nrf91_handle_approtect(void)
 }
 #endif
 
-#endif /* SYSTEM_NRF5_APPROTECT_H */
+#endif /* SYSTEM_NRF91_APPROTECT_H */
