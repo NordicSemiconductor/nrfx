@@ -129,9 +129,15 @@ typedef enum
     NRF_POWER_EVENT_SLEEPEXIT    = offsetof(NRF_POWER_Type, EVENTS_SLEEPEXIT  ), /**< CPU exited WFI/WFE sleep. */
 #endif
 #if NRF_POWER_HAS_USBREG
+#if defined(NRF5340_XXAA_APPLICATION)
+    NRF_POWER_EVENT_USBDETECTED  = offsetof(NRF_USBREG_Type, EVENTS_USBDETECTED), /**< Voltage supply detected on VBUS. */
+    NRF_POWER_EVENT_USBREMOVED   = offsetof(NRF_USBREG_Type, EVENTS_USBREMOVED ), /**< Voltage supply removed from VBUS. */
+    NRF_POWER_EVENT_USBPWRRDY    = offsetof(NRF_USBREG_Type, EVENTS_USBPWRRDY  ), /**< USB 3.3&nbsp;V supply ready. */
+#else
     NRF_POWER_EVENT_USBDETECTED  = offsetof(NRF_POWER_Type, EVENTS_USBDETECTED), /**< Voltage supply detected on VBUS. */
     NRF_POWER_EVENT_USBREMOVED   = offsetof(NRF_POWER_Type, EVENTS_USBREMOVED ), /**< Voltage supply removed from VBUS. */
     NRF_POWER_EVENT_USBPWRRDY    = offsetof(NRF_POWER_Type, EVENTS_USBPWRRDY  ), /**< USB 3.3&nbsp;V supply ready. */
+#endif
 #endif
 } nrf_power_event_t;
 
@@ -833,8 +839,11 @@ nrf_power_mainregstatus_t nrf_power_mainregstatus_get(NRF_POWER_Type const * p_r
  * @sa nrf_power_usbregstatus_vbusdet_get
  * @sa nrf_power_usbregstatus_outrdy_get
  */
+#if defined(NRF5340_XXAA_APPLICATION)
+NRF_STATIC_INLINE uint32_t nrf_power_usbregstatus_get(NRF_USBREG_Type const * p_reg);
+#else
 NRF_STATIC_INLINE uint32_t nrf_power_usbregstatus_get(NRF_POWER_Type const * p_reg);
-
+#endif
 /**
  * @brief Function for getting the VBUS input detection status.
  *
@@ -847,8 +856,12 @@ NRF_STATIC_INLINE uint32_t nrf_power_usbregstatus_get(NRF_POWER_Type const * p_r
  *
  * @sa nrf_power_usbregstatus_get
  */
-NRF_STATIC_INLINE bool nrf_power_usbregstatus_vbusdet_get(NRF_POWER_Type const * p_reg);
 
+#if defined(NRF5340_XXAA_APPLICATION)
+NRF_STATIC_INLINE bool nrf_power_usbregstatus_vbusdet_get(NRF_USBREG_Type const * p_reg);
+#else
+NRF_STATIC_INLINE bool nrf_power_usbregstatus_vbusdet_get(NRF_POWER_Type const * p_reg);
+#endif
 /**
  * @brief Function for getting the state of the elapsed time for the USB supply output settling.
  *
@@ -860,7 +873,11 @@ NRF_STATIC_INLINE bool nrf_power_usbregstatus_vbusdet_get(NRF_POWER_Type const *
  *
  * @sa nrf_power_usbregstatus_get
  */
+#if defined(NRF5340_XXAA_APPLICATION)
+NRF_STATIC_INLINE bool nrf_power_usbregstatus_outrdy_get(NRF_USBREG_Type const * p_reg);
+#else
 NRF_STATIC_INLINE bool nrf_power_usbregstatus_outrdy_get(NRF_POWER_Type const * p_reg);
+#endif
 #endif // NRF_POWER_HAS_USBREG
 
 #ifndef NRF_DECLARE_ONLY
@@ -1177,17 +1194,30 @@ nrf_power_mainregstatus_t nrf_power_mainregstatus_get(NRF_POWER_Type const * p_r
 #endif // NRF_POWER_HAS_MAINREGSTATUS
 
 #if NRF_POWER_HAS_USBREG
+
+#if defined(NRF5340_XXAA_APPLICATION)
+NRF_STATIC_INLINE uint32_t nrf_power_usbregstatus_get(NRF_USBREG_Type const * p_reg)
+#else
 NRF_STATIC_INLINE uint32_t nrf_power_usbregstatus_get(NRF_POWER_Type const * p_reg)
+#endif
 {
     return p_reg->USBREGSTATUS;
 }
 
+#if defined(NRF5340_XXAA_APPLICATION)
+NRF_STATIC_INLINE bool nrf_power_usbregstatus_vbusdet_get(NRF_USBREG_Type const * p_reg)
+#else
 NRF_STATIC_INLINE bool nrf_power_usbregstatus_vbusdet_get(NRF_POWER_Type const * p_reg)
+#endif
 {
     return (nrf_power_usbregstatus_get(p_reg) & NRF_POWER_USBREGSTATUS_VBUSDETECT_MASK) != 0;
 }
 
+#if defined(NRF5340_XXAA_APPLICATION)
+NRF_STATIC_INLINE bool nrf_power_usbregstatus_outrdy_get(NRF_USBREG_Type const * p_reg)
+#else
 NRF_STATIC_INLINE bool nrf_power_usbregstatus_outrdy_get(NRF_POWER_Type const * p_reg)
+#endif
 {
     return (nrf_power_usbregstatus_get(p_reg) & NRF_POWER_USBREGSTATUS_OUTPUTRDY_MASK) != 0;
 }
