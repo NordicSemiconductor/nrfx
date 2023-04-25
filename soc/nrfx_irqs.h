@@ -57,7 +57,7 @@
 #elif defined(NRF91_SERIES)
     #include <soc/nrfx_irqs_nrf91.h>
 #else
-    #error "Unknown device."
+    #include <soc/nrfx_irqs_ext.h>
 #endif
 
 #endif // NRFX_IRQS_H__

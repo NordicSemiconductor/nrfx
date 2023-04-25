@@ -163,7 +163,7 @@ extern "C" {
 #define nrfx_pdm_irq_handler        PDM0_IRQHandler
 
 // I2S0_IRQn
-#define nrfx_i2s_irq_handler        I2S0_IRQHandler
+#define nrfx_i2s_0_irq_handler      I2S0_IRQHandler
 
 // IPC_IRQn
 #define nrfx_ipc_irq_handler        IPC_IRQHandler
@@ -177,9 +177,10 @@ extern "C" {
 // GPIOTE1_IRQn
 
 // QDEC0_IRQn
-#define nrfx_qdec_irq_handler       QDEC_IRQHandler
+#define nrfx_qdec_0_irq_handler     QDEC0_IRQHandler
 
 // QDEC1_IRQn
+#define nrfx_qdec_1_irq_handler     QDEC1_IRQHandler
 
 // USBD_IRQn
 #define nrfx_usbd_irq_handler       USBD_IRQHandler

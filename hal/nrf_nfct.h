@@ -58,6 +58,13 @@ extern "C" {
  */
 #define NRF_NFCT_MOD_CTRL_PIN_NOT_CONNECTED  0xFFFFFFFF
 
+#if defined(NFCT_NFCID1_THIRDLAST_S_Pos) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether NFCID1 register uses new layout. */
+#define NRF_NFCID1_HAS_NEW_LAYOUT 1
+#else
+#define NRF_NFCID1_HAS_NEW_LAYOUT 0
+#endif
+
 /** @brief NFCT tasks. */
 typedef enum
 {
@@ -910,7 +917,7 @@ NRF_STATIC_INLINE uint32_t nrf_nfct_task_address_get(NRF_NFCT_Type const * p_reg
 NRF_STATIC_INLINE void nrf_nfct_event_clear(NRF_NFCT_Type * p_reg, nrf_nfct_event_t event)
 {
     *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event)) = 0UL;
-    __DSB();
+    nrf_event_readback((uint8_t *)p_reg + (uint32_t)event);
 }
 
 NRF_STATIC_INLINE bool nrf_nfct_event_check(NRF_NFCT_Type const * p_reg, nrf_nfct_event_t event)
@@ -1126,24 +1133,36 @@ NRF_STATIC_INLINE uint16_t nrf_nfct_rx_bits_get(NRF_NFCT_Type const * p_reg, boo
 {
     uint16_t rx_bits = p_reg->RXD.AMOUNT & (NFCT_RXD_AMOUNT_RXDATABITS_Msk |
                                             NFCT_RXD_AMOUNT_RXDATABYTES_Msk);
-    return rx_bits - (crc_excluded ? (8u * NRF_NFCT_CRC_SIZE) : 0);
+    return (uint16_t)(rx_bits - (crc_excluded ? (8u * NRF_NFCT_CRC_SIZE) : 0));
 }
 
 NRF_STATIC_INLINE
 nrf_nfct_sensres_nfcid1_size_t nrf_nfct_nfcid1_get(NRF_NFCT_Type const * p_reg,
                                                    uint8_t *             p_nfcid1_buf)
 {
+#if NRF_NFCID1_HAS_NEW_LAYOUT
+    uint32_t nfcid1_last = p_reg->NFCID1.LAST;
+#else
     uint32_t nfcid1_last = p_reg->NFCID1_LAST;
+#endif
     nrf_nfct_sensres_nfcid1_size_t size =
         (nrf_nfct_sensres_nfcid1_size_t)(p_reg->SENSRES & NFCT_SENSRES_NFCIDSIZE_Msk);
 
     if (size != NRF_NFCT_SENSRES_NFCID1_SIZE_SINGLE)
     {
+#if NRF_NFCID1_HAS_NEW_LAYOUT
+        uint32_t nfcid1_2nd_last = p_reg->NFCID1.SECONDLAST;
+#else
         uint32_t nfcid1_2nd_last = p_reg->NFCID1_2ND_LAST;
+#endif
 
         if (size == NRF_NFCT_SENSRES_NFCID1_SIZE_TRIPLE)
         {
+#if NRF_NFCID1_HAS_NEW_LAYOUT
+            uint32_t nfcid1_3rd_last = p_reg->NFCID1.THIRDLAST;
+#else
             uint32_t nfcid1_3rd_last = p_reg->NFCID1_3RD_LAST;
+#endif
 
             *p_nfcid1_buf++ = (uint8_t)(nfcid1_3rd_last >> 16UL);
             *p_nfcid1_buf++ = (uint8_t)(nfcid1_3rd_last >> 8UL);
@@ -1174,18 +1193,33 @@ NRF_STATIC_INLINE void nrf_nfct_nfcid1_set(NRF_NFCT_Type *                p_reg,
     {
         if (size == NRF_NFCT_SENSRES_NFCID1_SIZE_TRIPLE)
         {
-            p_reg->NFCID1_3RD_LAST = ((uint32_t)p_nfcid1_buf[0] << 16UL) |
+#if NRF_NFCID1_HAS_NEW_LAYOUT
+            p_reg->NFCID1.THIRDLAST =
+#else
+            p_reg->NFCID1_3RD_LAST =
+#endif
+                                        ((uint32_t)p_nfcid1_buf[0] << 16UL) |
                                         ((uint32_t)p_nfcid1_buf[1] << 8UL)  |
                                         ((uint32_t)p_nfcid1_buf[2] << 0UL);
             p_nfcid1_buf += 3UL;
         }
-        p_reg->NFCID1_2ND_LAST = ((uint32_t)p_nfcid1_buf[0] << 16UL) |
+#if NRF_NFCID1_HAS_NEW_LAYOUT
+        p_reg->NFCID1.SECONDLAST =
+#else
+        p_reg->NFCID1_2ND_LAST =
+#endif
+                                    ((uint32_t)p_nfcid1_buf[0] << 16UL) |
                                     ((uint32_t)p_nfcid1_buf[1] << 8UL)  |
                                     ((uint32_t)p_nfcid1_buf[2] << 0UL);
         p_nfcid1_buf += 3UL;
     }
 
-    p_reg->NFCID1_LAST = ((uint32_t)p_nfcid1_buf[0] << 24UL) |
+#if NRF_NFCID1_HAS_NEW_LAYOUT
+    p_reg->NFCID1.LAST =
+#else
+    p_reg->NFCID1_LAST =
+#endif
+                            ((uint32_t)p_nfcid1_buf[0] << 24UL) |
                             ((uint32_t)p_nfcid1_buf[1] << 16UL) |
                             ((uint32_t)p_nfcid1_buf[2] << 8UL)  |
                             ((uint32_t)p_nfcid1_buf[3] << 0UL);

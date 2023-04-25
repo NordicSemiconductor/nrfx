@@ -109,7 +109,7 @@ extern "C" {
     #define NRFX_PRS_BOX_2_ADDR     NRF_UARTE2
     // UARTE3, SPIM3, SPIS3, TWIM3, TWIS3
     #define NRFX_PRS_BOX_3_ADDR     NRF_UARTE3
-#else
+#elif !defined(NRF_PRS_BOX_EXT)
     #error "Unknown device."
 #endif
 
@@ -153,6 +153,10 @@ void nrfx_prs_box_1_irq_handler(void);
 void nrfx_prs_box_2_irq_handler(void);
 void nrfx_prs_box_3_irq_handler(void);
 void nrfx_prs_box_4_irq_handler(void);
+void nrfx_prs_box_5_irq_handler(void);
+void nrfx_prs_box_6_irq_handler(void);
+void nrfx_prs_box_7_irq_handler(void);
+void nrfx_prs_box_8_irq_handler(void);
 
 
 #ifdef __cplusplus

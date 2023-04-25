@@ -65,7 +65,7 @@
  *
  * See @ref nrfx_systick_delay_ms source code for details.
  */
-#define NRFX_SYSTICK_MS_STEP (64U)
+#define NRFX_SYSTICK_MS_STEP (NRFX_SYSTICK_TICKS_MAX / (SystemCoreClock / NRFX_SYSTICK_MS))
 
 /**
  * @brief Checks if the given time is in correct range

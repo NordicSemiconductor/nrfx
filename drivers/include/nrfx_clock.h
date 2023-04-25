@@ -54,6 +54,7 @@ typedef enum
 {
     NRFX_CLOCK_EVT_HFCLK_STARTED,      ///< HFCLK has been started.
     NRFX_CLOCK_EVT_LFCLK_STARTED,      ///< LFCLK has been started.
+    NRFX_CLOCK_EVT_PLL_STARTED,        ///< PLL has been started.
     NRFX_CLOCK_EVT_CTTO,               ///< Calibration timeout.
     NRFX_CLOCK_EVT_CAL_DONE,           ///< Calibration has been done.
     NRFX_CLOCK_EVT_HFCLKAUDIO_STARTED, ///< HFCLKAUDIO has been started.
@@ -261,7 +262,7 @@ void nrfx_clock_calibration_timer_stop(void);
  *
  * @return Task address.
  */
-NRFX_STATIC_INLINE uint32_t nrfx_clock_ppi_task_addr(nrf_clock_task_t task);
+NRFX_STATIC_INLINE uint32_t nrfx_clock_task_address_get(nrf_clock_task_t task);
 
 /**
  * @brief Function for returning a requested event address for the clock driver module.
@@ -270,7 +271,7 @@ NRFX_STATIC_INLINE uint32_t nrfx_clock_ppi_task_addr(nrf_clock_task_t task);
  *
  * @return Event address.
  */
-NRFX_STATIC_INLINE uint32_t nrfx_clock_ppi_event_addr(nrf_clock_event_t event);
+NRFX_STATIC_INLINE uint32_t nrfx_clock_event_address_get(nrf_clock_event_t event);
 
 #ifndef NRFX_DECLARE_ONLY
 
@@ -314,12 +315,12 @@ NRFX_STATIC_INLINE void nrfx_clock_hfclk_stop(void)
     nrfx_clock_stop(NRF_CLOCK_DOMAIN_HFCLK);
 }
 
-NRFX_STATIC_INLINE uint32_t nrfx_clock_ppi_task_addr(nrf_clock_task_t task)
+NRFX_STATIC_INLINE uint32_t nrfx_clock_task_address_get(nrf_clock_task_t task)
 {
     return nrf_clock_task_address_get(NRF_CLOCK, task);
 }
 
-NRFX_STATIC_INLINE uint32_t nrfx_clock_ppi_event_addr(nrf_clock_event_t event)
+NRFX_STATIC_INLINE uint32_t nrfx_clock_event_address_get(nrf_clock_event_t event)
 {
     return nrf_clock_event_address_get(NRF_CLOCK, event);
 }

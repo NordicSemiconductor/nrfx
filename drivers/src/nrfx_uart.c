@@ -35,7 +35,7 @@
 
 #if NRFX_CHECK(NRFX_UART_ENABLED)
 
-#if !NRFX_CHECK(NRFX_UART0_ENABLED)
+#if !NRFX_FEATURE_PRESENT(NRFX_UART, _ENABLED)
 #error "No enabled UART instances. Check <nrfx_config.h>."
 #endif
 
@@ -73,8 +73,29 @@ typedef struct
 } uart_control_block_t;
 static uart_control_block_t m_cb[NRFX_UART_ENABLED_COUNT];
 
-static void apply_config(nrfx_uart_t        const * p_instance,
-                         nrfx_uart_config_t const * p_config)
+static void interrupts_enable(nrfx_uart_t const * p_instance,
+                              uint8_t             interrupt_priority)
+{
+    nrf_uart_event_clear(p_instance->p_reg, NRF_UART_EVENT_TXDRDY);
+    nrf_uart_event_clear(p_instance->p_reg, NRF_UART_EVENT_RXTO);
+    nrf_uart_int_enable(p_instance->p_reg, NRF_UART_INT_MASK_TXDRDY |
+                                           NRF_UART_INT_MASK_RXTO);
+    NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number((void *)p_instance->p_reg),
+                          interrupt_priority);
+    NRFX_IRQ_ENABLE(nrfx_get_irq_number((void *)p_instance->p_reg));
+}
+
+static void interrupts_disable(nrfx_uart_t const * p_instance)
+{
+    nrf_uart_int_disable(p_instance->p_reg, NRF_UART_INT_MASK_RXDRDY |
+                                            NRF_UART_INT_MASK_TXDRDY |
+                                            NRF_UART_INT_MASK_ERROR  |
+                                            NRF_UART_INT_MASK_RXTO);
+    NRFX_IRQ_DISABLE(nrfx_get_irq_number((void *)p_instance->p_reg));
+}
+
+static void uart_configure(nrfx_uart_t        const * p_instance,
+                           nrfx_uart_config_t const * p_config)
 {
     nrf_uart_baudrate_set(p_instance->p_reg, p_config->baudrate);
     nrf_uart_configure(p_instance->p_reg, &p_config->hal_cfg);
@@ -117,27 +138,11 @@ static void apply_config(nrfx_uart_t        const * p_instance,
                                    p_config->pselrts, p_config->pselcts);
         }
     }
-}
 
-static void interrupts_enable(nrfx_uart_t const * p_instance,
-                              uint8_t             interrupt_priority)
-{
-    nrf_uart_event_clear(p_instance->p_reg, NRF_UART_EVENT_TXDRDY);
-    nrf_uart_event_clear(p_instance->p_reg, NRF_UART_EVENT_RXTO);
-    nrf_uart_int_enable(p_instance->p_reg, NRF_UART_INT_MASK_TXDRDY |
-                                           NRF_UART_INT_MASK_RXTO);
-    NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number((void *)p_instance->p_reg),
-                          interrupt_priority);
-    NRFX_IRQ_ENABLE(nrfx_get_irq_number((void *)p_instance->p_reg));
-}
-
-static void interrupts_disable(nrfx_uart_t const * p_instance)
-{
-    nrf_uart_int_disable(p_instance->p_reg, NRF_UART_INT_MASK_RXDRDY |
-                                            NRF_UART_INT_MASK_TXDRDY |
-                                            NRF_UART_INT_MASK_ERROR  |
-                                            NRF_UART_INT_MASK_RXTO);
-    NRFX_IRQ_DISABLE(nrfx_get_irq_number((void *)p_instance->p_reg));
+    if (m_cb[p_instance->drv_inst_idx].handler)
+    {
+        interrupts_enable(p_instance, p_config->interrupt_priority);
+    }
 }
 
 static void pins_to_default(nrfx_uart_t const * p_instance)
@@ -201,9 +206,7 @@ nrfx_err_t nrfx_uart_init(nrfx_uart_t const *        p_instance,
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
     static nrfx_irq_handler_t const irq_handlers[NRFX_UART_ENABLED_COUNT] = {
-        #if NRFX_CHECK(NRFX_UART0_ENABLED)
-        nrfx_uart_0_irq_handler,
-        #endif
+        NRFX_INSTANCE_IRQ_HANDLERS_LIST(UART, uart)
     };
     if (nrfx_prs_acquire(p_instance->p_reg,
             irq_handlers[p_instance->drv_inst_idx]) != NRFX_SUCCESS)
@@ -215,18 +218,14 @@ nrfx_err_t nrfx_uart_init(nrfx_uart_t const *        p_instance,
         return err_code;
     }
 #endif // NRFX_CHECK(NRFX_PRS_ENABLED)
+    p_cb->handler = event_handler;
 
-    p_cb->skip_gpio_cfg = p_config->skip_gpio_cfg;
-    p_cb->skip_psel_cfg = p_config->skip_psel_cfg;
-
-    apply_config(p_instance, p_config);
-
-    p_cb->handler   = event_handler;
-    p_cb->p_context = p_config->p_context;
-
-    if (p_cb->handler)
+    if (p_config)
     {
-        interrupts_enable(p_instance, p_config->interrupt_priority);
+        p_cb->p_context = p_config->p_context;
+        p_cb->skip_gpio_cfg = p_config->skip_gpio_cfg;
+        p_cb->skip_psel_cfg = p_config->skip_psel_cfg;
+        uart_configure(p_instance, p_config);
     }
 
     nrf_uart_enable(p_instance->p_reg);
@@ -239,6 +238,30 @@ nrfx_err_t nrfx_uart_init(nrfx_uart_t const *        p_instance,
                   __func__,
                   NRFX_LOG_ERROR_STRING_GET(err_code));
     return err_code;
+}
+
+nrfx_err_t nrfx_uart_reconfigure(nrfx_uart_t const *        p_instance,
+                                 nrfx_uart_config_t const * p_config)
+{
+    NRFX_ASSERT(p_config);
+    uart_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return NRFX_ERROR_INVALID_STATE;
+    }
+    if (nrfx_uart_tx_in_progress(p_instance))
+    {
+        return NRFX_ERROR_BUSY;
+    }
+    nrf_uart_disable(p_instance->p_reg);
+    if (p_cb->handler)
+    {
+       p_cb->p_context = p_config->p_context;
+    }
+    uart_configure(p_instance, p_config);
+    nrf_uart_enable(p_instance->p_reg);
+    return NRFX_SUCCESS;
 }
 
 void nrfx_uart_uninit(nrfx_uart_t const * p_instance)
@@ -571,8 +594,7 @@ void nrfx_uart_rx_abort(nrfx_uart_t const * p_instance)
     NRFX_LOG_INFO("RX transaction aborted.");
 }
 
-static void uart_irq_handler(NRF_UART_Type *        p_uart,
-                             uart_control_block_t * p_cb)
+static void irq_handler(NRF_UART_Type * p_uart, uart_control_block_t * p_cb)
 {
     if (nrf_uart_int_enable_check(p_uart, NRF_UART_INT_MASK_ERROR) &&
         nrf_uart_event_check(p_uart, NRF_UART_EVENT_ERROR))
@@ -665,11 +687,6 @@ static void uart_irq_handler(NRF_UART_Type *        p_uart,
     }
 }
 
-#if NRFX_CHECK(NRFX_UART0_ENABLED)
-void nrfx_uart_0_irq_handler(void)
-{
-    uart_irq_handler(NRF_UART0, &m_cb[NRFX_UART0_INST_IDX]);
-}
-#endif
+NRFX_INSTANCE_IRQ_HANDLERS(UART, uart)
 
 #endif // NRFX_CHECK(NRFX_UART_ENABLED)

@@ -226,16 +226,16 @@ typedef enum
 /** @brief Pin configuration. */
 typedef struct
 {
-    uint8_t sck_pin; /**< SCK pin number. */
-    uint8_t csn_pin; /**< Chip select pin number. */
-    uint8_t io0_pin; /**< IO0/MOSI pin number. */
-    uint8_t io1_pin; /**< IO1/MISO pin number. */
-    uint8_t io2_pin; /**< IO2 pin number (optional).
-                      *   Set to @ref NRF_QSPI_PIN_NOT_CONNECTED if this signal is not needed.
-                      */
-    uint8_t io3_pin; /**< IO3 pin number (optional).
-                      *   Set to @ref NRF_QSPI_PIN_NOT_CONNECTED if this signal is not needed.
-                      */
+    uint32_t sck_pin; /**< SCK pin number. */
+    uint32_t csn_pin; /**< Chip select pin number. */
+    uint32_t io0_pin; /**< IO0/MOSI pin number. */
+    uint32_t io1_pin; /**< IO1/MISO pin number. */
+    uint32_t io2_pin; /**< IO2 pin number (optional).
+                       *   Set to @ref NRF_QSPI_PIN_NOT_CONNECTED if this signal is not needed.
+                       */
+    uint32_t io3_pin; /**< IO3 pin number (optional).
+                       *   Set to @ref NRF_QSPI_PIN_NOT_CONNECTED if this signal is not needed.
+                       */
 } nrf_qspi_pins_t;
 
 /** @brief Custom instruction configuration. */

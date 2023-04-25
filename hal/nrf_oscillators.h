@@ -54,6 +54,9 @@ typedef enum
     NRF_OSCILLATORS_LFXO_CAP_6PF      = OSCILLATORS_XOSC32KI_INTCAP_INTCAP_C6PF,     ///< Use 6 pF internal capacitors.
     NRF_OSCILLATORS_LFXO_CAP_7PF      = OSCILLATORS_XOSC32KI_INTCAP_INTCAP_C7PF,     ///< Use 7 pF internal capacitors.
     NRF_OSCILLATORS_LFXO_CAP_9PF      = OSCILLATORS_XOSC32KI_INTCAP_INTCAP_C9PF,     ///< Use 9 pF internal capacitors.
+#if defined(OSCILLATORS_XOSC32KI_INTCAP_INTCAP_C11PF) || defined(__NRFX_DOXYGEN__)
+    NRF_OSCILLATORS_LFXO_CAP_11PF     = OSCILLATORS_XOSC32KI_INTCAP_INTCAP_C11PF,    ///< Use 11 pF internal capacitors.
+#endif
 } nrf_oscillators_lfxo_cap_t;
 
 /**

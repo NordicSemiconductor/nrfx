@@ -45,11 +45,12 @@ typedef struct
     void *             p_context;
 } ipc_control_block_t;
 
-static ipc_control_block_t m_ipc_cb;
+static ipc_control_block_t m_cb;
 
 nrfx_err_t nrfx_ipc_init(uint8_t irq_priority, nrfx_ipc_handler_t handler, void * p_context)
 {
-    if (m_ipc_cb.state != NRFX_DRV_STATE_UNINITIALIZED)
+    NRFX_ASSERT(handler);
+    if (m_cb.state != NRFX_DRV_STATE_UNINITIALIZED)
     {
         return NRFX_ERROR_ALREADY_INITIALIZED;
     }
@@ -57,9 +58,9 @@ nrfx_err_t nrfx_ipc_init(uint8_t irq_priority, nrfx_ipc_handler_t handler, void 
     NRFX_IRQ_PRIORITY_SET(IPC_IRQn, irq_priority);
     NRFX_IRQ_ENABLE(IPC_IRQn);
 
-    m_ipc_cb.state = NRFX_DRV_STATE_INITIALIZED;
-    m_ipc_cb.handler = handler;
-    m_ipc_cb.p_context = p_context;
+    m_cb.state = NRFX_DRV_STATE_INITIALIZED;
+    m_cb.handler = handler;
+    m_cb.p_context = p_context;
 
     return NRFX_SUCCESS;
 }
@@ -67,7 +68,7 @@ nrfx_err_t nrfx_ipc_init(uint8_t irq_priority, nrfx_ipc_handler_t handler, void 
 void nrfx_ipc_config_load(const nrfx_ipc_config_t * p_config)
 {
     NRFX_ASSERT(p_config);
-    NRFX_ASSERT(m_ipc_cb.state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
 
     uint32_t i;
     for (i = 0; i < IPC_CONF_NUM; ++i)
@@ -85,7 +86,7 @@ void nrfx_ipc_config_load(const nrfx_ipc_config_t * p_config)
 
 void nrfx_ipc_uninit(void)
 {
-    NRFX_ASSERT(m_ipc_cb.state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
 
     uint32_t i;
     for (i = 0; i < IPC_CONF_NUM; ++i)
@@ -99,30 +100,30 @@ void nrfx_ipc_uninit(void)
     }
 
     nrf_ipc_int_disable(NRF_IPC, 0xFFFFFFFF);
-    m_ipc_cb.state = NRFX_DRV_STATE_UNINITIALIZED;
+    m_cb.state = NRFX_DRV_STATE_UNINITIALIZED;
 }
 
 void nrfx_ipc_receive_event_enable(uint8_t event_index)
 {
-    NRFX_ASSERT(m_ipc_cb.state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
     nrf_ipc_int_enable(NRF_IPC, (1UL << event_index));
 }
 
 void nrfx_ipc_receive_event_disable(uint8_t event_index)
 {
-    NRFX_ASSERT(m_ipc_cb.state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
     nrf_ipc_int_disable(NRF_IPC, (1UL << event_index));
 }
 
 void nrfx_ipc_receive_event_group_enable(uint32_t event_bitmask)
 {
-    NRFX_ASSERT(m_ipc_cb.state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
     nrf_ipc_int_enable(NRF_IPC, event_bitmask);
 }
 
 void nrfx_ipc_receive_event_group_disable(uint32_t event_bitmask)
 {
-    NRFX_ASSERT(m_ipc_cb.state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
     nrf_ipc_int_disable(NRF_IPC, event_bitmask);
 }
 
@@ -154,17 +155,10 @@ void nrfx_ipc_irq_handler(void)
         uint8_t event_idx = NRF_CTZ(bitmask);
         bitmask &= ~(1UL << event_idx);
         nrf_ipc_event_clear(NRF_IPC, nrf_ipc_receive_event_get(event_idx));
-#if NRFX_CHECK(NRFX_CONFIG_API_VER_2_10)
-        if (m_ipc_cb.handler)
+        if (m_cb.handler)
         {
-            m_ipc_cb.handler(event_idx, m_ipc_cb.p_context);
+            m_cb.handler(event_idx, m_cb.p_context);
         }
-#elif NRFX_CHECK(NRFX_CONFIG_API_VER_2_9)
-    }
-    if (m_ipc_cb.handler)
-    {
-        m_ipc_cb.handler(events_map, m_ipc_cb.p_context);
-#endif
     }
 }
 

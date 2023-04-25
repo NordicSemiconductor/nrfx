@@ -36,7 +36,7 @@
 #if NRFX_CHECK(NRFX_I2S_ENABLED)
 
 #include <nrfx_i2s.h>
-#include <hal/nrf_gpio.h>
+#include <haly/nrfy_gpio.h>
 
 #define NRFX_LOG_MODULE I2S
 #include <nrfx_log.h>
@@ -85,9 +85,9 @@ typedef struct
     uint16_t            buffer_size;
     nrfx_i2s_buffers_t  next_buffers;
     nrfx_i2s_buffers_t  current_buffers;
-} i2s_control_block_t;
-static i2s_control_block_t m_cb;
+} nrfx_i2s_cb_t;
 
+static nrfx_i2s_cb_t m_cb[NRFX_I2S_ENABLED_COUNT];
 
 static void configure_pins(nrfx_i2s_config_t const * p_config)
 {
@@ -100,64 +100,42 @@ static void configure_pins(nrfx_i2s_config_t const * p_config)
         //   mode).
         if (p_config->mode == NRF_I2S_MODE_MASTER)
         {
-            nrf_gpio_cfg_output(p_config->sck_pin);
-            nrf_gpio_cfg_output(p_config->lrck_pin);
+            nrfy_gpio_cfg_output(p_config->sck_pin);
+            nrfy_gpio_cfg_output(p_config->lrck_pin);
         }
         else
         {
-            nrf_gpio_cfg_input(p_config->sck_pin,  NRF_GPIO_PIN_NOPULL);
-            nrf_gpio_cfg_input(p_config->lrck_pin, NRF_GPIO_PIN_NOPULL);
+            nrfy_gpio_cfg_input(p_config->sck_pin,  NRF_GPIO_PIN_NOPULL);
+            nrfy_gpio_cfg_input(p_config->lrck_pin, NRF_GPIO_PIN_NOPULL);
         }
         // - MCK (optional) - always output,
-        if (p_config->mck_pin != NRFX_I2S_PIN_NOT_USED)
+        if (p_config->mck_pin != NRF_I2S_PIN_NOT_CONNECTED)
         {
-            nrf_gpio_cfg_output(p_config->mck_pin);
+            nrfy_gpio_cfg_output(p_config->mck_pin);
         }
         // - SDOUT (optional) - always output,
-        if (p_config->sdout_pin != NRFX_I2S_PIN_NOT_USED)
+        if (p_config->sdout_pin != NRF_I2S_PIN_NOT_CONNECTED)
         {
-            nrf_gpio_cfg_output(p_config->sdout_pin);
+            nrfy_gpio_cfg_output(p_config->sdout_pin);
         }
         // - SDIN (optional) - always input.
-        if (p_config->sdin_pin != NRFX_I2S_PIN_NOT_USED)
+        if (p_config->sdin_pin != NRF_I2S_PIN_NOT_CONNECTED)
         {
-            nrf_gpio_cfg_input(p_config->sdin_pin, NRF_GPIO_PIN_NOPULL);
+            nrfy_gpio_cfg_input(p_config->sdin_pin, NRF_GPIO_PIN_NOPULL);
         }
-    }
-
-    if (!p_config->skip_psel_cfg)
-    {
-        uint32_t mck_pin = (p_config->mck_pin != NRFX_I2S_PIN_NOT_USED)
-                           ? p_config->mck_pin
-                           : NRF_I2S_PIN_NOT_CONNECTED;
-        uint32_t sdout_pin = (p_config->sdout_pin != NRFX_I2S_PIN_NOT_USED)
-                             ? p_config->sdout_pin
-                             : NRF_I2S_PIN_NOT_CONNECTED;
-        uint32_t sdin_pin = (p_config->sdin_pin != NRFX_I2S_PIN_NOT_USED)
-                            ? p_config->sdin_pin
-                            : NRF_I2S_PIN_NOT_CONNECTED;
-
-        nrf_i2s_pins_set(NRF_I2S0,
-                         p_config->sck_pin,
-                         p_config->lrck_pin,
-                         mck_pin,
-                         sdout_pin,
-                         sdin_pin);
     }
 }
 
-static void deconfigure_pins(void)
+static void deconfigure_pins(nrfx_i2s_t const * p_instance)
 {
-    uint32_t sck_pin   = nrf_i2s_sck_pin_get(NRF_I2S0);
-    uint32_t lrck_pin  = nrf_i2s_lrck_pin_get(NRF_I2S0);
-    uint32_t mck_pin   = nrf_i2s_mck_pin_get(NRF_I2S0);
-    uint32_t sdout_pin = nrf_i2s_sdout_pin_get(NRF_I2S0);
-    uint32_t sdin_pin  = nrf_i2s_sdin_pin_get(NRF_I2S0);
+    nrf_i2s_pins_t pins;
+
+    nrfy_i2s_pins_get(p_instance->p_reg, &pins);
 
 #if USE_WORKAROUND_FOR_ANOMALY_170
     // Create bitmask for extracting pin number from PSEL register.
     uint32_t pin_mask = I2S_PSEL_SCK_PIN_Msk;
-#if defined(I2S_PSEL_SCK_PORT_Msk)
+#if NRF_I2S_HAS_GPIO_PORT_SELECTION
     // If device supports more than one GPIO port, take port number into account as well.
     pin_mask |= I2S_PSEL_SCK_PORT_Msk;
 #endif
@@ -165,34 +143,80 @@ static void deconfigure_pins(void)
     uint32_t pin_mask = 0xFFFFFFFF;
 #endif // USE_WORKAROUND_FOR_ANOMALY_170
 
-    nrf_gpio_cfg_default(sck_pin & pin_mask);
-    nrf_gpio_cfg_default(lrck_pin & pin_mask);
+    nrfy_gpio_cfg_default(pins.sck_pin & pin_mask);
+    nrfy_gpio_cfg_default(pins.lrck_pin & pin_mask);
 
-    if (mck_pin != NRF_I2S_PIN_NOT_CONNECTED)
+    if (pins.mck_pin != NRF_I2S_PIN_NOT_CONNECTED)
     {
-        nrf_gpio_cfg_default(mck_pin & pin_mask);
+        nrfy_gpio_cfg_default(pins.mck_pin & pin_mask);
     }
 
-    if (sdout_pin != NRF_I2S_PIN_NOT_CONNECTED)
+    if (pins.sdout_pin != NRF_I2S_PIN_NOT_CONNECTED)
     {
-        nrf_gpio_cfg_default(sdout_pin & pin_mask);
+        nrfy_gpio_cfg_default(pins.sdout_pin & pin_mask);
     }
 
-    if (sdin_pin != NRF_I2S_PIN_NOT_CONNECTED)
+    if (pins.sdin_pin != NRF_I2S_PIN_NOT_CONNECTED)
     {
-        nrf_gpio_cfg_default(sdin_pin & pin_mask);
+        nrfy_gpio_cfg_default(pins.sdin_pin & pin_mask);
     }
 }
 
-nrfx_err_t nrfx_i2s_init(nrfx_i2s_config_t const * p_config,
+static inline bool validate_config(nrf_i2s_mode_t   mode,
+                                   nrf_i2s_ratio_t  ratio,
+                                   nrf_i2s_swidth_t swidth)
+{
+    // The MCK/LRCK ratio has to be a multiple of 2 * sample width.
+    if (mode == NRF_I2S_MODE_MASTER)
+    {
+        if (swidth == NRF_I2S_SWIDTH_16BIT)
+        {
+            if (ratio == NRF_I2S_RATIO_48X)
+            {
+                return false;
+            }
+        }
+
+        if (swidth == NRF_I2S_SWIDTH_24BIT)
+        {
+            if ((ratio == NRF_I2S_RATIO_32X)  ||
+                (ratio == NRF_I2S_RATIO_64X)  ||
+                (ratio == NRF_I2S_RATIO_128X) ||
+                (ratio == NRF_I2S_RATIO_256X) ||
+                (ratio == NRF_I2S_RATIO_512X))
+            {
+                return false;
+            }
+        }
+
+#if NRF_I2S_HAS_SWIDTH_32BIT
+        if (swidth == NRF_I2S_SWIDTH_32BIT)
+        {
+            if ((ratio == NRF_I2S_RATIO_32X) ||
+                (ratio == NRF_I2S_RATIO_48X) ||
+                (ratio == NRF_I2S_RATIO_96X))
+            {
+                return false;
+            }
+        }
+#endif
+
+    }
+
+    return true;
+}
+
+nrfx_err_t nrfx_i2s_init(nrfx_i2s_t const *        p_instance,
+                         nrfx_i2s_config_t const * p_config,
                          nrfx_i2s_data_handler_t   handler)
 {
     NRFX_ASSERT(p_config);
     NRFX_ASSERT(handler);
 
     nrfx_err_t err_code;
+    nrfx_i2s_cb_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
-    if (m_cb.state != NRFX_DRV_STATE_UNINITIALIZED)
+    if (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED)
     {
         err_code = NRFX_ERROR_INVALID_STATE;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -201,14 +225,10 @@ nrfx_err_t nrfx_i2s_init(nrfx_i2s_config_t const * p_config,
         return err_code;
     }
 
-    if (!nrf_i2s_configure(NRF_I2S0,
-                           p_config->mode,
-                           p_config->format,
-                           p_config->alignment,
-                           p_config->sample_width,
-                           p_config->channels,
-                           p_config->mck_setup,
-                           p_config->ratio))
+
+    if (!validate_config(p_config->mode,
+                         p_config->ratio,
+                         p_config->sample_width))
     {
         err_code = NRFX_ERROR_INVALID_PARAM;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -217,61 +237,90 @@ nrfx_err_t nrfx_i2s_init(nrfx_i2s_config_t const * p_config,
         return err_code;
     }
 
-#if NRF_I2S_HAS_CLKCONFIG
-    nrf_i2s_clk_configure(NRF_I2S0, p_config->clksrc, p_config->enable_bypass);
-#endif
-
     configure_pins(p_config);
 
-    m_cb.skip_gpio_cfg = p_config->skip_gpio_cfg;
-    m_cb.skip_psel_cfg = p_config->skip_psel_cfg;
-    m_cb.handler = handler;
+    nrfy_i2s_config_t nrfy_config =
+    {
+        .config = {
+            .mode         = p_config->mode,
+            .format       = p_config->format,
+            .alignment    = p_config->alignment,
+            .sample_width = p_config->sample_width,
+            .channels     = p_config->channels,
+            .mck_setup    = p_config->mck_setup,
+            .ratio        = p_config->ratio,
+        },
+        .pins = {
+            .sck_pin      = p_config->sck_pin,
+            .lrck_pin     = p_config->lrck_pin,
+            .mck_pin      = p_config->mck_pin,
+            .sdout_pin    = p_config->sdout_pin,
+            .sdin_pin     = p_config->sdin_pin,
+        },
+#if NRF_I2S_HAS_CLKCONFIG
+        .clksrc        = p_config->clksrc,
+        .enable_bypass = p_config->enable_bypass,
+#endif
+        .skip_psel_cfg = p_config->skip_psel_cfg
+    };
 
-    NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number(NRF_I2S0), p_config->irq_priority);
-    NRFX_IRQ_ENABLE(nrfx_get_irq_number(NRF_I2S0));
+    nrfy_i2s_periph_configure(p_instance->p_reg, &nrfy_config);
 
-    m_cb.state = NRFX_DRV_STATE_INITIALIZED;
+    p_cb->handler = handler;
+    p_cb->skip_gpio_cfg = p_config->skip_gpio_cfg;
+    p_cb->skip_psel_cfg = p_config->skip_psel_cfg;
+
+    nrfy_i2s_int_init(p_instance->p_reg,
+                      NRF_I2S_INT_RXPTRUPD_MASK |
+                      NRF_I2S_INT_TXPTRUPD_MASK |
+                      NRF_I2S_INT_STOPPED_MASK,
+                      p_config->irq_priority,
+                      false);
+
+    p_cb->state = NRFX_DRV_STATE_INITIALIZED;
 
     NRFX_LOG_INFO("Initialized.");
     return NRFX_SUCCESS;
 }
 
-
-void nrfx_i2s_uninit(void)
+void nrfx_i2s_uninit(nrfx_i2s_t const * p_instance)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    nrfx_i2s_cb_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
-    nrfx_i2s_stop();
+    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
-    NRFX_IRQ_DISABLE(nrfx_get_irq_number(NRF_I2S0));
+    nrfx_i2s_stop(p_instance);
 
-    nrf_i2s_disable(NRF_I2S0);
+    nrfy_i2s_int_uninit(p_instance->p_reg);
+    nrfy_i2s_disable(p_instance->p_reg);
 
-    if (!m_cb.skip_gpio_cfg)
+    if (!p_cb->skip_gpio_cfg)
     {
-        deconfigure_pins();
+        deconfigure_pins(p_instance);
     }
 
 #if USE_WORKAROUND_FOR_ANOMALY_196
-    if (!m_cb.skip_psel_cfg)
+    if (!p_cb->skip_psel_cfg)
     {
-        // Disabling I2S is insufficient to release pins acquired
-        // by the peripheral. Explicit disconnect is needed.
-        nrf_i2s_pins_set(NRF_I2S0,
-                         NRF_I2S_PIN_NOT_CONNECTED,
-                         NRF_I2S_PIN_NOT_CONNECTED,
-                         NRF_I2S_PIN_NOT_CONNECTED,
-                         NRF_I2S_PIN_NOT_CONNECTED,
-                         NRF_I2S_PIN_NOT_CONNECTED);
+        // Disabling I2S is insufficient to release pins acquired by the peripheral.
+        // Explicit disconnect is needed.
+        nrf_i2s_pins_t pins = {
+            .sck_pin   = NRF_I2S_PIN_NOT_CONNECTED,
+            .lrck_pin  = NRF_I2S_PIN_NOT_CONNECTED,
+            .mck_pin   = NRF_I2S_PIN_NOT_CONNECTED,
+            .sdout_pin = NRF_I2S_PIN_NOT_CONNECTED,
+            .sdin_pin  = NRF_I2S_PIN_NOT_CONNECTED,
+        };
+        nrfy_i2s_pins_set(p_instance->p_reg, &pins);
     }
 #endif
 
-    m_cb.state = NRFX_DRV_STATE_UNINITIALIZED;
+    p_cb->state = NRFX_DRV_STATE_UNINITIALIZED;
     NRFX_LOG_INFO("Uninitialized.");
 }
 
-
-nrfx_err_t nrfx_i2s_start(nrfx_i2s_buffers_t const * p_initial_buffers,
+nrfx_err_t nrfx_i2s_start(nrfx_i2s_t const *         p_instance,
+                          nrfx_i2s_buffers_t const * p_initial_buffers,
                           uint16_t                   buffer_size,
                           uint8_t                    flags)
 {
@@ -288,8 +337,9 @@ nrfx_err_t nrfx_i2s_start(nrfx_i2s_buffers_t const * p_initial_buffers,
     (void)(flags);
 
     nrfx_err_t err_code;
+    nrfx_i2s_cb_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
-    if (m_cb.state != NRFX_DRV_STATE_INITIALIZED)
+    if (p_cb->state != NRFX_DRV_STATE_INITIALIZED)
     {
         err_code = NRFX_ERROR_INVALID_STATE;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -311,45 +361,49 @@ nrfx_err_t nrfx_i2s_start(nrfx_i2s_buffers_t const * p_initial_buffers,
         return err_code;
     }
 
-    m_cb.use_rx         = (p_initial_buffers->p_rx_buffer != NULL);
-    m_cb.use_tx         = (p_initial_buffers->p_tx_buffer != NULL);
-    m_cb.rx_ready       = false;
-    m_cb.tx_ready       = false;
-    m_cb.buffers_needed = false;
-    m_cb.buffer_size    = buffer_size;
+    p_cb->use_rx         = (p_initial_buffers->p_rx_buffer != NULL);
+    p_cb->use_tx         = (p_initial_buffers->p_tx_buffer != NULL);
+    p_cb->rx_ready       = false;
+    p_cb->tx_ready       = false;
+    p_cb->buffers_needed = false;
+    p_cb->buffer_size    = buffer_size;
 
     // Set the provided initial buffers as next, they will become the current
     // ones after the IRQ handler is called for the first time, what will occur
     // right after the START task is triggered.
-    m_cb.next_buffers = *p_initial_buffers;
-    m_cb.current_buffers.p_rx_buffer = NULL;
-    m_cb.current_buffers.p_tx_buffer = NULL;
+    p_cb->next_buffers = *p_initial_buffers;
+    p_cb->current_buffers.p_rx_buffer = NULL;
+    p_cb->current_buffers.p_tx_buffer = NULL;
 
-    nrf_i2s_transfer_set(NRF_I2S0,
-                         m_cb.buffer_size,
-                         m_cb.next_buffers.p_rx_buffer,
-                         m_cb.next_buffers.p_tx_buffer);
 
-    nrf_i2s_enable(NRF_I2S0);
+    nrfy_i2s_enable(p_instance->p_reg);
 
-    m_cb.state = NRFX_DRV_STATE_POWERED_ON;
+    p_cb->state = NRFX_DRV_STATE_POWERED_ON;
 
-    nrf_i2s_event_clear(NRF_I2S0, NRF_I2S_EVENT_RXPTRUPD);
-    nrf_i2s_event_clear(NRF_I2S0, NRF_I2S_EVENT_TXPTRUPD);
-    nrf_i2s_event_clear(NRF_I2S0, NRF_I2S_EVENT_STOPPED);
-    nrf_i2s_int_enable(NRF_I2S0, (m_cb.use_rx ? NRF_I2S_INT_RXPTRUPD_MASK : 0) |
-                                 (m_cb.use_tx ? NRF_I2S_INT_TXPTRUPD_MASK : 0) |
-                                 NRF_I2S_INT_STOPPED_MASK);
-    nrf_i2s_task_trigger(NRF_I2S0, NRF_I2S_TASK_START);
+    nrfy_i2s_int_enable(p_instance->p_reg,
+                        (p_cb->use_rx ? NRF_I2S_INT_RXPTRUPD_MASK : 0) |
+                        (p_cb->use_tx ? NRF_I2S_INT_TXPTRUPD_MASK : 0) |
+                        NRF_I2S_INT_STOPPED_MASK);
+
+    const nrfy_i2s_xfer_desc_t xfer = {
+        .p_buffers   = &p_cb->next_buffers,
+        .buffer_size = p_cb->buffer_size,
+    };
+
+    nrfy_i2s_buffers_set(p_instance->p_reg, &xfer);
+    nrfy_i2s_xfer_start(p_instance->p_reg, NULL);
 
     NRFX_LOG_INFO("Started.");
     return NRFX_SUCCESS;
 }
 
-
-nrfx_err_t nrfx_i2s_next_buffers_set(nrfx_i2s_buffers_t const * p_buffers)
+nrfx_err_t nrfx_i2s_next_buffers_set(nrfx_i2s_t const *         p_instance,
+                                     nrfx_i2s_buffers_t const * p_buffers)
 {
-    NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_POWERED_ON);
+    nrfx_err_t err_code;
+    nrfx_i2s_cb_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
     NRFX_ASSERT(p_buffers);
     NRFX_ASSERT((p_buffers->p_rx_buffer == NULL) ||
                 (nrfx_is_in_ram(p_buffers->p_rx_buffer) &&
@@ -358,9 +412,7 @@ nrfx_err_t nrfx_i2s_next_buffers_set(nrfx_i2s_buffers_t const * p_buffers)
                 (nrfx_is_in_ram(p_buffers->p_tx_buffer) &&
                  nrfx_is_word_aligned(p_buffers->p_tx_buffer)));
 
-    nrfx_err_t err_code;
-
-    if (!m_cb.buffers_needed)
+    if (!p_cb->buffers_needed)
     {
         err_code = NRFX_ERROR_INVALID_STATE;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -382,113 +434,128 @@ nrfx_err_t nrfx_i2s_next_buffers_set(nrfx_i2s_buffers_t const * p_buffers)
         return err_code;
     }
 
-    if (m_cb.use_tx)
+    if (p_cb->use_tx)
     {
         NRFX_ASSERT(p_buffers->p_tx_buffer != NULL);
-        nrf_i2s_tx_buffer_set(NRF_I2S0, p_buffers->p_tx_buffer);
     }
-    if (m_cb.use_rx)
+    if (p_cb->use_rx)
     {
         NRFX_ASSERT(p_buffers->p_rx_buffer != NULL);
-        nrf_i2s_rx_buffer_set(NRF_I2S0, p_buffers->p_rx_buffer);
     }
 
-    m_cb.next_buffers   = *p_buffers;
-    m_cb.buffers_needed = false;
+    nrfy_i2s_xfer_desc_t xfer = {
+        .p_buffers   = p_buffers,
+        .buffer_size = p_cb->buffer_size,
+    };
+
+    nrfy_i2s_buffers_set(p_instance->p_reg, &xfer);
+
+    p_cb->next_buffers   = *p_buffers;
+    p_cb->buffers_needed = false;
 
     return NRFX_SUCCESS;
 }
 
-
-void nrfx_i2s_stop(void)
+void nrfx_i2s_stop(nrfx_i2s_t const * p_instance)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    nrfx_i2s_cb_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
-    m_cb.buffers_needed = false;
+    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+
+    p_cb->buffers_needed = false;
 
     // First disable interrupts, then trigger the STOP task, so no spurious
     // RXPTRUPD and TXPTRUPD events (see nRF52 anomaly 55) are processed.
-    nrf_i2s_int_disable(NRF_I2S0, NRF_I2S_INT_RXPTRUPD_MASK |
-                                  NRF_I2S_INT_TXPTRUPD_MASK);
-    nrf_i2s_task_trigger(NRF_I2S0, NRF_I2S_TASK_STOP);
+    nrfy_i2s_int_disable(p_instance->p_reg, NRF_I2S_INT_RXPTRUPD_MASK |
+                                            NRF_I2S_INT_TXPTRUPD_MASK);
+
+    nrfy_i2s_abort(p_instance->p_reg, NULL);
 
 #if NRFX_CHECK(USE_WORKAROUND_FOR_I2S_STOP_ANOMALY)
-    *((volatile uint32_t *)(((uint32_t)NRF_I2S0) + 0x38)) = 1;
-    *((volatile uint32_t *)(((uint32_t)NRF_I2S0) + 0x3C)) = 1;
+    *((volatile uint32_t *)(((uint32_t)p_instance->p_reg) + 0x38)) = 1;
+    *((volatile uint32_t *)(((uint32_t)p_instance->p_reg) + 0x3C)) = 1;
 #endif
 }
 
-
-void nrfx_i2s_irq_handler(void)
+static void irq_handler(NRF_I2S_Type * p_reg, nrfx_i2s_cb_t * p_cb)
 {
-    if (nrf_i2s_event_check(NRF_I2S0, NRF_I2S_EVENT_TXPTRUPD))
+    uint32_t event_mask;
+    nrfy_i2s_xfer_desc_t xfer = {
+        .p_buffers   = &p_cb->current_buffers,
+        .buffer_size = p_cb->buffer_size,
+    };
+
+    event_mask = nrfy_i2s_events_process(p_reg,
+                                         NRFY_EVENT_TO_INT_BITMASK(NRF_I2S_EVENT_TXPTRUPD) |
+                                         NRFY_EVENT_TO_INT_BITMASK(NRF_I2S_EVENT_RXPTRUPD) |
+                                         NRFY_EVENT_TO_INT_BITMASK(NRF_I2S_EVENT_STOPPED),
+                                         &xfer);
+
+    if (event_mask & NRFY_EVENT_TO_INT_BITMASK(NRF_I2S_EVENT_TXPTRUPD))
     {
-        nrf_i2s_event_clear(NRF_I2S0, NRF_I2S_EVENT_TXPTRUPD);
-        m_cb.tx_ready = true;
-        if (m_cb.use_tx && m_cb.buffers_needed)
+        p_cb->tx_ready = true;
+        if (p_cb->use_tx && p_cb->buffers_needed)
         {
-            m_cb.buffers_reused = true;
+            p_cb->buffers_reused = true;
         }
     }
-    if (nrf_i2s_event_check(NRF_I2S0, NRF_I2S_EVENT_RXPTRUPD))
+    if (event_mask & NRFY_EVENT_TO_INT_BITMASK(NRF_I2S_EVENT_RXPTRUPD))
     {
-        nrf_i2s_event_clear(NRF_I2S0, NRF_I2S_EVENT_RXPTRUPD);
-        m_cb.rx_ready = true;
-        if (m_cb.use_rx && m_cb.buffers_needed)
+        p_cb->rx_ready = true;
+        if (p_cb->use_rx && p_cb->buffers_needed)
         {
-            m_cb.buffers_reused = true;
+            p_cb->buffers_reused = true;
         }
     }
 
-    if (nrf_i2s_event_check(NRF_I2S0, NRF_I2S_EVENT_STOPPED))
+    if (event_mask & NRFY_EVENT_TO_INT_BITMASK(NRF_I2S_EVENT_STOPPED))
     {
-        nrf_i2s_event_clear(NRF_I2S0, NRF_I2S_EVENT_STOPPED);
-        nrf_i2s_int_disable(NRF_I2S0, NRF_I2S_INT_STOPPED_MASK);
-        nrf_i2s_disable(NRF_I2S0);
+        nrfy_i2s_int_disable(p_reg, NRF_I2S_INT_STOPPED_MASK);
+        nrfy_i2s_disable(p_reg);
 
         // When stopped, release all buffers, including these scheduled for
         // the next part of the transfer, and signal that the transfer has
         // finished.
 
-        m_cb.handler(&m_cb.current_buffers, 0);
+        p_cb->handler(&p_cb->current_buffers, 0);
 
         // Change the state of the driver before calling the handler with
         // the flag signaling that the transfer has finished, so that it is
         // possible to start a new transfer directly from the handler function.
-        m_cb.state = NRFX_DRV_STATE_INITIALIZED;
+        p_cb->state = NRFX_DRV_STATE_INITIALIZED;
         NRFX_LOG_INFO("Stopped.");
 
-        m_cb.handler(&m_cb.next_buffers, NRFX_I2S_STATUS_TRANSFER_STOPPED);
+        p_cb->handler(&p_cb->next_buffers, NRFX_I2S_STATUS_TRANSFER_STOPPED);
     }
     else
     {
         // Check if the requested transfer has been completed:
         // - full-duplex mode
-        if ((m_cb.use_tx && m_cb.use_rx && m_cb.tx_ready && m_cb.rx_ready) ||
+        if ((p_cb->use_tx && p_cb->use_rx &&
+             p_cb->tx_ready && p_cb->rx_ready) ||
             // - TX only mode
-            (!m_cb.use_rx && m_cb.tx_ready) ||
+            (!p_cb->use_rx && p_cb->tx_ready) ||
             // - RX only mode
-            (!m_cb.use_tx && m_cb.rx_ready))
+            (!p_cb->use_tx && p_cb->rx_ready))
         {
-            m_cb.tx_ready = false;
-            m_cb.rx_ready = false;
+            p_cb->tx_ready = false;
+            p_cb->rx_ready = false;
 
             // If the application did not supply the buffers for the next
             // part of the transfer until this moment, the current buffers
             // cannot be released, since the I2S peripheral already started
             // using them. Signal this situation to the application by
             // passing NULL instead of the structure with released buffers.
-            if (m_cb.buffers_reused)
+            if (p_cb->buffers_reused)
             {
-                m_cb.buffers_reused = false;
+                p_cb->buffers_reused = false;
                 // This will most likely be set at this point. However, there is
                 // a small time window between TXPTRUPD and RXPTRUPD events,
                 // and it is theoretically possible that next buffers will be
                 // set in this window, so to be sure this flag is set to true,
                 // set it explicitly.
-                m_cb.buffers_needed = true;
-                m_cb.handler(NULL,
-                             NRFX_I2S_STATUS_NEXT_BUFFERS_NEEDED);
+                p_cb->buffers_needed = true;
+                p_cb->handler(NULL, NRFX_I2S_STATUS_NEXT_BUFFERS_NEEDED);
             }
             else
             {
@@ -496,17 +563,18 @@ void nrfx_i2s_irq_handler(void)
                 // are now released and will be returned to the application,
                 // and the ones scheduled to be used as next become the current
                 // ones.
-                nrfx_i2s_buffers_t released_buffers = m_cb.current_buffers;
-                m_cb.current_buffers = m_cb.next_buffers;
-                m_cb.next_buffers.p_rx_buffer = NULL;
-                m_cb.next_buffers.p_tx_buffer = NULL;
-                m_cb.buffers_needed = true;
-                m_cb.handler(&released_buffers,
-                             NRFX_I2S_STATUS_NEXT_BUFFERS_NEEDED);
+                nrfx_i2s_buffers_t released_buffers = p_cb->current_buffers;
+                p_cb->current_buffers = p_cb->next_buffers;
+                p_cb->next_buffers.p_rx_buffer = NULL;
+                p_cb->next_buffers.p_tx_buffer = NULL;
+                p_cb->buffers_needed = true;
+                p_cb->handler(&released_buffers, NRFX_I2S_STATUS_NEXT_BUFFERS_NEEDED);
             }
 
         }
     }
 }
+
+NRFX_INSTANCE_IRQ_HANDLERS(I2S, i2s)
 
 #endif // NRFX_CHECK(NRFX_I2S_ENABLED)

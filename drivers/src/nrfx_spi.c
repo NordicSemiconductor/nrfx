@@ -35,8 +35,7 @@
 
 #if NRFX_CHECK(NRFX_SPI_ENABLED)
 
-#if !(NRFX_CHECK(NRFX_SPI0_ENABLED) || NRFX_CHECK(NRFX_SPI1_ENABLED) || \
-      NRFX_CHECK(NRFX_SPI2_ENABLED))
+#if !NRFX_FEATURE_PRESENT(NRFX_SPI, _ENABLED)
 #error "No enabled SPI instances. Check <nrfx_config.h>."
 #endif
 
@@ -64,55 +63,74 @@ typedef struct
 } spi_control_block_t;
 static spi_control_block_t m_cb[NRFX_SPI_ENABLED_COUNT];
 
-
-static void configure_pins(NRF_SPI_Type *            p_spi,
-                           nrfx_spi_config_t const * p_config)
+static void pins_configure(nrfx_spi_config_t const * p_config)
 {
     if (!p_config->skip_gpio_cfg)
     {
         // Configure pins used by the peripheral:
-        // - SCK - output with initial value corresponding with the SPI mode
-        //   used: 0 - for modes 0 and 1 (CPOL = 0), 1 - for modes 2 and 3
-        //   (CPOL = 1);
-        //   according to the reference manual guidelines, this pin and its
-        //   input buffer must always be connected for the SPI to work
-        nrf_gpio_pin_write(p_config->sck_pin,
-                           p_config->mode <= NRF_SPI_MODE_1 ? 0 : 1);
+        // - SCK - output with initial value corresponding with the SPI mode used:
+        //   0 - for modes 0 and 1 (CPOL = 0), 1 - for modes 2 and 3 (CPOL = 1);
+        //   according to the reference manual guidelines this pin and its input
+        //   buffer must always be connected for the SPI to work.
+        if (p_config->mode <= NRF_SPI_MODE_1)
+        {
+            nrf_gpio_pin_clear(p_config->sck_pin);
+        }
+        else
+        {
+            nrf_gpio_pin_set(p_config->sck_pin);
+        }
         nrf_gpio_cfg(p_config->sck_pin,
                      NRF_GPIO_PIN_DIR_OUTPUT,
                      NRF_GPIO_PIN_INPUT_CONNECT,
                      NRF_GPIO_PIN_NOPULL,
                      NRF_GPIO_PIN_S0S1,
                      NRF_GPIO_PIN_NOSENSE);
-        // - MOSI (optional) - output with initial value 0
+        // - MOSI (optional) - output with initial value 0,
         if (p_config->mosi_pin != NRFX_SPI_PIN_NOT_USED)
         {
-            nrf_gpio_pin_write(p_config->mosi_pin, 0);
+            nrf_gpio_pin_clear(p_config->mosi_pin);
             nrf_gpio_cfg_output(p_config->mosi_pin);
         }
-        // - MISO (optional) - input
+        // - MISO (optional) - input,
         if (p_config->miso_pin != NRFX_SPI_PIN_NOT_USED)
         {
             nrf_gpio_cfg_input(p_config->miso_pin, p_config->miso_pull);
         }
-        // - Slave Select (optional) - output with initial value 1 (inactive)
+        // - Slave Select (optional) - output with initial value 1 (inactive).
         if (p_config->ss_pin != NRFX_SPI_PIN_NOT_USED)
         {
-            nrf_gpio_pin_write(p_config->ss_pin, 1);
+            nrf_gpio_pin_set(p_config->ss_pin);
             nrf_gpio_cfg_output(p_config->ss_pin);
         }
     }
+}
+
+static void spi_configure(nrfx_spi_t const *        p_instance,
+                          nrfx_spi_config_t const * p_config)
+{
+    pins_configure(p_config);
+    m_cb[p_instance->drv_inst_idx].ss_pin = p_config->ss_pin;
 
     if (!p_config->skip_psel_cfg)
     {
-        uint32_t mosi_pin = (p_config->mosi_pin != NRFX_SPI_PIN_NOT_USED)
-                            ? p_config->mosi_pin
-                            : NRF_SPI_PIN_NOT_CONNECTED;
-        uint32_t miso_pin = (p_config->miso_pin != NRFX_SPI_PIN_NOT_USED)
-                            ? p_config->miso_pin
-                            : NRF_SPI_PIN_NOT_CONNECTED;
+        uint32_t mosi_pin = p_config->mosi_pin != NRFX_SPI_PIN_NOT_USED ?
+                            p_config->mosi_pin : NRF_SPI_PIN_NOT_CONNECTED;
+        uint32_t miso_pin = p_config->miso_pin != NRFX_SPI_PIN_NOT_USED ?
+                            p_config->miso_pin : NRF_SPI_PIN_NOT_CONNECTED;
 
-        nrf_spi_pins_set(p_spi, p_config->sck_pin, mosi_pin, miso_pin);
+        nrf_spi_pins_set(p_instance->p_reg, p_config->sck_pin, mosi_pin, miso_pin);
+    }
+    nrf_spi_frequency_set(p_instance->p_reg, p_config->frequency);
+    nrf_spi_configure(p_instance->p_reg, p_config->mode, p_config->bit_order);
+
+    m_cb[p_instance->drv_inst_idx].orc = p_config->orc;
+
+    if (m_cb[p_instance->drv_inst_idx].handler)
+    {
+        NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number(p_instance->p_reg),
+            p_config->irq_priority);
+        NRFX_IRQ_ENABLE(nrfx_get_irq_number(p_instance->p_reg));
     }
 }
 
@@ -123,7 +141,6 @@ nrfx_err_t nrfx_spi_init(nrfx_spi_t const *        p_instance,
 {
     NRFX_ASSERT(p_config);
     spi_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
-    NRF_SPI_Type * p_spi = p_instance->p_reg;
     nrfx_err_t err_code;
 
     if (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED)
@@ -137,15 +154,7 @@ nrfx_err_t nrfx_spi_init(nrfx_spi_t const *        p_instance,
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
     static nrfx_irq_handler_t const irq_handlers[NRFX_SPI_ENABLED_COUNT] = {
-        #if NRFX_CHECK(NRFX_SPI0_ENABLED)
-        nrfx_spi_0_irq_handler,
-        #endif
-        #if NRFX_CHECK(NRFX_SPI1_ENABLED)
-        nrfx_spi_1_irq_handler,
-        #endif
-        #if NRFX_CHECK(NRFX_SPI2_ENABLED)
-        nrfx_spi_2_irq_handler,
-        #endif
+        NRFX_INSTANCE_IRQ_HANDLERS_LIST(SPI, spi)
     };
     if (nrfx_prs_acquire(p_instance->p_reg,
             irq_handlers[p_instance->drv_inst_idx]) != NRFX_SUCCESS)
@@ -161,23 +170,15 @@ nrfx_err_t nrfx_spi_init(nrfx_spi_t const *        p_instance,
     p_cb->handler = handler;
     p_cb->p_context = p_context;
 
-    p_cb->skip_gpio_cfg = p_config->skip_gpio_cfg;
-    p_cb->ss_pin = p_config->ss_pin;
-    p_cb->orc = p_config->orc;
-
-    configure_pins(p_spi, p_config);
-
-    nrf_spi_frequency_set(p_spi, p_config->frequency);
-    nrf_spi_configure(p_spi, p_config->mode, p_config->bit_order);
-
-    nrf_spi_enable(p_spi);
-
-    if (p_cb->handler)
+    if (p_config)
     {
-        NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number(p_instance->p_reg),
-            p_config->irq_priority);
-        NRFX_IRQ_ENABLE(nrfx_get_irq_number(p_instance->p_reg));
+        p_cb->skip_gpio_cfg = p_config->skip_gpio_cfg;
+        p_cb->ss_pin = p_config->ss_pin;
+        p_cb->orc = p_config->orc;
+
+        spi_configure(p_instance, p_config);
     }
+    nrf_spi_enable(p_instance->p_reg);
 
     p_cb->transfer_in_progress = false;
     p_cb->state = NRFX_DRV_STATE_INITIALIZED;
@@ -185,6 +186,26 @@ nrfx_err_t nrfx_spi_init(nrfx_spi_t const *        p_instance,
     err_code = NRFX_SUCCESS;
     NRFX_LOG_INFO("Function: %s, error code: %s.", __func__, NRFX_LOG_ERROR_STRING_GET(err_code));
     return err_code;
+}
+
+nrfx_err_t nrfx_spi_reconfigure(nrfx_spi_t const *        p_instance,
+                                nrfx_spi_config_t const * p_config)
+{
+    NRFX_ASSERT(p_config);
+    spi_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return NRFX_ERROR_INVALID_STATE;
+    }
+    if (p_cb->transfer_in_progress)
+    {
+        return NRFX_ERROR_BUSY;
+    }
+    nrf_spi_disable(p_instance->p_reg);
+    spi_configure(p_instance, p_config);
+    nrf_spi_enable(p_instance->p_reg);
+    return NRFX_SUCCESS;
 }
 
 void nrfx_spi_uninit(nrfx_spi_t const * p_instance)
@@ -419,25 +440,6 @@ static void irq_handler(NRF_SPI_Type * p_spi, spi_control_block_t * p_cb)
     }
 }
 
-#if NRFX_CHECK(NRFX_SPI0_ENABLED)
-void nrfx_spi_0_irq_handler(void)
-{
-    irq_handler(NRF_SPI0, &m_cb[NRFX_SPI0_INST_IDX]);
-}
-#endif
-
-#if NRFX_CHECK(NRFX_SPI1_ENABLED)
-void nrfx_spi_1_irq_handler(void)
-{
-    irq_handler(NRF_SPI1, &m_cb[NRFX_SPI1_INST_IDX]);
-}
-#endif
-
-#if NRFX_CHECK(NRFX_SPI2_ENABLED)
-void nrfx_spi_2_irq_handler(void)
-{
-    irq_handler(NRF_SPI2, &m_cb[NRFX_SPI2_INST_IDX]);
-}
-#endif
+NRFX_INSTANCE_IRQ_HANDLERS(SPI, spi)
 
 #endif // NRFX_CHECK(NRFX_SPI_ENABLED)

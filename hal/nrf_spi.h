@@ -369,7 +369,7 @@ NRF_STATIC_INLINE void nrf_spi_txd_set(NRF_SPI_Type * p_reg, uint8_t data)
 
 NRF_STATIC_INLINE uint8_t nrf_spi_rxd_get(NRF_SPI_Type const * p_reg)
 {
-    return p_reg->RXD;
+    return (uint8_t)p_reg->RXD;
 }
 
 NRF_STATIC_INLINE void nrf_spi_frequency_set(NRF_SPI_Type *      p_reg,

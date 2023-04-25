@@ -40,6 +40,18 @@
 extern "C" {
 #endif
 
+/*
+ * Macro for generating if statement code blocks that allow extracting
+ * the number of channels associated with the specific EGU instance.
+ */
+#define NRF_INTERNAL_EGU_CHAN_NUM_EXTRACT(chan_num, p_reg)                                      \
+    if (0) {}                                                                                   \
+    NRFX_FOREACH_PRESENT(EGU, NRF_INTERNAL_ELSE_IF_EXTRACT_1, (), (), chan_num, _CH_NUM, p_reg) \
+    else                                                                                        \
+    {                                                                                           \
+        chan_num = 0;                                                                           \
+    }
+
 /**
 * @defgroup nrf_egu_hal EGU HAL
 * @{
@@ -282,29 +294,10 @@ NRF_STATIC_INLINE void nrf_egu_publish_clear(NRF_EGU_Type *  p_reg,
 
 NRF_STATIC_INLINE uint32_t nrf_egu_channel_count(NRF_EGU_Type const * p_reg)
 {
-    if (p_reg == NRF_EGU0){
-        return EGU0_CH_NUM;
-    }
-#if EGU_COUNT > 1
-    if (p_reg == NRF_EGU1){
-        return EGU1_CH_NUM;
-    }
-#endif
-#if EGU_COUNT > 2
-    if (p_reg == NRF_EGU2){
-        return EGU2_CH_NUM;
-    }
-    if (p_reg == NRF_EGU3){
-        return EGU3_CH_NUM;
-    }
-    if (p_reg == NRF_EGU4){
-        return EGU4_CH_NUM;
-    }
-    if (p_reg == NRF_EGU5){
-        return EGU5_CH_NUM;
-    }
-#endif
-    return 0;
+    uint8_t chan_num = 0;
+    NRF_INTERNAL_EGU_CHAN_NUM_EXTRACT(chan_num, p_reg);
+
+    return chan_num;
 }
 
 NRF_STATIC_INLINE void nrf_egu_task_trigger(NRF_EGU_Type * p_reg, nrf_egu_task_t egu_task)
@@ -378,13 +371,15 @@ NRF_STATIC_INLINE void nrf_egu_subscribe_set(NRF_EGU_Type * p_reg,
                                              nrf_egu_task_t task,
                                              uint8_t        channel)
 {
+    NRFX_ASSERT(p_reg);
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
-            ((uint32_t)channel | EGU_SUBSCRIBE_TRIGGER_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_egu_subscribe_clear(NRF_EGU_Type * p_reg,
                                                nrf_egu_task_t task)
 {
+    NRFX_ASSERT(p_reg);
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
 }
 
@@ -392,13 +387,15 @@ NRF_STATIC_INLINE void nrf_egu_publish_set(NRF_EGU_Type *  p_reg,
                                            nrf_egu_event_t event,
                                            uint8_t         channel)
 {
+    NRFX_ASSERT(p_reg);
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
-            ((uint32_t)channel | EGU_PUBLISH_TRIGGERED_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_egu_publish_clear(NRF_EGU_Type *  p_reg,
                                              nrf_egu_event_t event)
 {
+    NRFX_ASSERT(p_reg);
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) = 0;
 }
 #endif // defined(DPPI_PRESENT)

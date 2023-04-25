@@ -35,7 +35,7 @@
 #define NRFX_UARTE_H__
 
 #include <nrfx.h>
-#include <hal/nrf_uarte.h>
+#include <haly/nrfy_uarte.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,18 +57,8 @@ typedef struct
 
 #ifndef __NRFX_DOXYGEN__
 enum {
-#if NRFX_CHECK(NRFX_UARTE0_ENABLED)
-    NRFX_UARTE0_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_UARTE1_ENABLED)
-    NRFX_UARTE1_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_UARTE2_ENABLED)
-    NRFX_UARTE2_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_UARTE3_ENABLED)
-    NRFX_UARTE3_INST_IDX,
-#endif
+    /* List all enabled driver instances (in the format NRFX_\<instance_name\>_INST_IDX). */
+    NRFX_INSTANCE_ENUM_LIST(UARTE)
     NRFX_UARTE_ENABLED_COUNT
 };
 #endif
@@ -91,14 +81,14 @@ typedef enum
 /** @brief Structure for the UARTE configuration. */
 typedef struct
 {
-    uint32_t             pseltxd;            ///< TXD pin number.
-    uint32_t             pselrxd;            ///< RXD pin number.
-    uint32_t             pselcts;            ///< CTS pin number.
-    uint32_t             pselrts;            ///< RTS pin number.
+    uint32_t             txd_pin;            ///< TXD pin number.
+    uint32_t             rxd_pin;            ///< RXD pin number.
+    uint32_t             rts_pin;            ///< RTS pin number.
+    uint32_t             cts_pin;            ///< CTS pin number.
     void *               p_context;          ///< Context passed to interrupt handler.
     nrf_uarte_baudrate_t baudrate;           ///< Baud rate.
     uint8_t              interrupt_priority; ///< Interrupt priority.
-    nrf_uarte_config_t   hal_cfg;            ///< Parity, flow control and stop bits settings.
+    nrf_uarte_config_t   config;             ///< Peripheral configuration.
     bool                 skip_gpio_cfg;      ///< Skip GPIO configuration of pins.
                                              /**< When set to true, the driver does not modify
                                               *   any GPIO parameters of the used pins. Those
@@ -115,22 +105,6 @@ typedef struct
                                               *   as they are ignored anyway. */
 } nrfx_uarte_config_t;
 
-#if defined(UARTE_CONFIG_STOP_Msk) || defined(__NRFX_DOXYGEN__)
-    /** @brief UARTE additional stop bits configuration. */
-    #define NRFX_UARTE_DEFAULT_EXTENDED_STOP_CONFIG   \
-        .stop = (nrf_uarte_stop_t)NRF_UARTE_STOP_ONE,
-#else
-    #define NRFX_UARTE_DEFAULT_EXTENDED_STOP_CONFIG
-#endif
-
-#if defined(UARTE_CONFIG_PARITYTYPE_Msk) || defined(__NRFX_DOXYGEN__)
-    /** @brief UARTE additional parity type configuration. */
-    #define NRFX_UARTE_DEFAULT_EXTENDED_PARITYTYPE_CONFIG   \
-        .paritytype = NRF_UARTE_PARITYTYPE_EVEN,
-#else
-    #define NRFX_UARTE_DEFAULT_EXTENDED_PARITYTYPE_CONFIG
-#endif
-
 /**
  * @brief UARTE driver default configuration.
  *
@@ -143,21 +117,24 @@ typedef struct
  * @param[in] _pin_tx TX pin.
  * @param[in] _pin_rx RX pin.
  */
-#define NRFX_UARTE_DEFAULT_CONFIG(_pin_tx, _pin_rx)                                 \
-{                                                                                   \
-    .pseltxd            = _pin_tx,                                                  \
-    .pselrxd            = _pin_rx,                                                  \
-    .pselcts            = NRF_UARTE_PSEL_DISCONNECTED,                              \
-    .pselrts            = NRF_UARTE_PSEL_DISCONNECTED,                              \
-    .p_context          = NULL,                                                     \
-    .baudrate           = NRF_UARTE_BAUDRATE_115200,                                \
-    .interrupt_priority = NRFX_UARTE_DEFAULT_CONFIG_IRQ_PRIORITY,                   \
-    .hal_cfg            = {                                                         \
-        .hwfc           = NRF_UARTE_HWFC_DISABLED,                                  \
-        .parity         = NRF_UARTE_PARITY_EXCLUDED,                                \
-        NRFX_UARTE_DEFAULT_EXTENDED_STOP_CONFIG                                     \
-        NRFX_UARTE_DEFAULT_EXTENDED_PARITYTYPE_CONFIG                               \
-    }                                                                               \
+#define NRFX_UARTE_DEFAULT_CONFIG(_pin_tx, _pin_rx)                             \
+{                                                                               \
+    .txd_pin            = _pin_tx,                                              \
+    .rxd_pin            = _pin_rx,                                              \
+    .rts_pin            = NRF_UARTE_PSEL_DISCONNECTED,                          \
+    .cts_pin            = NRF_UARTE_PSEL_DISCONNECTED,                          \
+    .p_context          = NULL,                                                 \
+    .baudrate           = NRF_UARTE_BAUDRATE_115200,                            \
+    .interrupt_priority = NRFX_UARTE_DEFAULT_CONFIG_IRQ_PRIORITY,               \
+    .config             =                                                       \
+    {                                                                           \
+        .hwfc           = NRF_UARTE_HWFC_DISABLED,                              \
+        .parity         = NRF_UARTE_PARITY_EXCLUDED,                            \
+        NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(UARTE_CONFIG_STOP_Msk),       \
+                (.stop = (nrf_uarte_stop_t)NRF_UARTE_STOP_ONE,), ())            \
+        NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(UARTE_CONFIG_PARITYTYPE_Msk), \
+                (.paritytype = NRF_UARTE_PARITYTYPE_EVEN,), ())                 \
+    },                                                                          \
 }
 
 /** @brief Structure for the UARTE transfer completion event. */
@@ -170,7 +147,7 @@ typedef struct
 /** @brief Structure for UARTE error event. */
 typedef struct
 {
-    nrfx_uarte_xfer_evt_t rxtx;       ///< Transfer details, including number of bytes transferred.
+    nrfx_uarte_xfer_evt_t rx;         ///< Transfer details, including number of bytes received.
     uint32_t              error_mask; ///< Mask of error flags that generated the event.
 } nrfx_uarte_error_evt_t;
 
@@ -180,7 +157,8 @@ typedef struct
     nrfx_uarte_evt_type_t type; ///< Event type.
     union
     {
-        nrfx_uarte_xfer_evt_t  rxtx;  ///< Data provided for transfer completion events.
+        nrfx_uarte_xfer_evt_t  rx;    ///< Data provided for RX completion events.
+        nrfx_uarte_xfer_evt_t  tx;    ///< Data provided for TX completion events.
         nrfx_uarte_error_evt_t error; ///< Data provided for error event.
     } data;                           ///< Union to store event data.
 } nrfx_uarte_event_t;
@@ -215,6 +193,19 @@ typedef void (*nrfx_uarte_event_handler_t)(nrfx_uarte_event_t const * p_event,
 nrfx_err_t nrfx_uarte_init(nrfx_uarte_t const *        p_instance,
                            nrfx_uarte_config_t const * p_config,
                            nrfx_uarte_event_handler_t  event_handler);
+
+/**
+ * @brief Function for reconfiguring the UARTE driver.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] p_config   Pointer to the structure with the configuration.
+ *
+ * @retval NRFX_SUCCESS             Reconfiguration was successful.
+ * @retval NRFX_ERROR_BUSY          The driver is during transfer.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is uninitialized.
+ */
+nrfx_err_t nrfx_uarte_reconfigure(nrfx_uarte_t const *        p_instance,
+                                  nrfx_uarte_config_t const * p_config);
 
 /**
  * @brief Function for uninitializing the UARTE driver.
@@ -264,6 +255,7 @@ NRFX_STATIC_INLINE uint32_t nrfx_uarte_event_address_get(nrfx_uarte_t const * p_
  *                       dependent on the used SoC (see the MAXCNT register
  *                       description in the Product Specification). The driver
  *                       checks it with assertion.
+ * @param[in] flags      Transfer options (0 for default settings).
  *
  * @retval NRFX_SUCCESS            Initialization was successful.
  * @retval NRFX_ERROR_BUSY         Driver is already transferring.
@@ -273,7 +265,8 @@ NRFX_STATIC_INLINE uint32_t nrfx_uarte_event_address_get(nrfx_uarte_t const * p_
  */
 nrfx_err_t nrfx_uarte_tx(nrfx_uarte_t const * p_instance,
                          uint8_t const *      p_data,
-                         size_t               length);
+                         size_t               length,
+                         uint32_t             flags);
 
 /**
  * @brief Function for checking if UARTE is currently transmitting.
@@ -292,8 +285,11 @@ bool nrfx_uarte_tx_in_progress(nrfx_uarte_t const * p_instance);
  *       handler will be called from the UARTE interrupt context.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] sync       For future use.
+ *
+ * @retval NRFX_SUCCESS Successfully initiated abort.
  */
-void nrfx_uarte_tx_abort(nrfx_uarte_t const * p_instance);
+nrfx_err_t nrfx_uarte_tx_abort(nrfx_uarte_t const * p_instance, bool sync);
 
 /**
  * @brief Function for receiving data over UARTE.
@@ -346,12 +342,13 @@ nrfx_err_t nrfx_uarte_rx(nrfx_uarte_t const * p_instance,
 /**
  * @brief Function for testing the receiver state in blocking mode.
  *
- * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in]  p_instance  Pointer to the driver instance structure.
+ * @param[out] p_rx_amount For future use.
  *
- * @retval true  The receiver has at least one byte of data to get.
- * @retval false The receiver is empty.
+ * @retval NRFX_SUCCESS    The receiving operation is completed.
+ * @retval NRFX_ERROR_BUSY The receiver did not complete the operation.
  */
-bool nrfx_uarte_rx_ready(nrfx_uarte_t const * p_instance);
+nrfx_err_t nrfx_uarte_rx_ready(nrfx_uarte_t const * p_instance, size_t * p_rx_amount);
 
 /**
  * @brief Function for aborting any ongoing reception.
@@ -369,9 +366,13 @@ bool nrfx_uarte_rx_ready(nrfx_uarte_t const * p_instance);
  *          To prevent this from happening, keep the UARTE interrupt latency low
  *          or use large enough reception buffers.
  *
- * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] p_instance  Pointer to the driver instance structure.
+ * @param[in] disable_all For future use.
+ * @param[in] sync        For future use.
+ *
+ * @retval NRFX_SUCCESS Successfully initiated abort.
  */
-void nrfx_uarte_rx_abort(nrfx_uarte_t const * p_instance);
+nrfx_err_t nrfx_uarte_rx_abort(nrfx_uarte_t const * p_instance, bool disable_all, bool sync);
 
 /**
  * @brief Function for reading error source mask. Mask contains values from @ref nrf_uarte_error_mask_t.
@@ -389,13 +390,13 @@ uint32_t nrfx_uarte_errorsrc_get(nrfx_uarte_t const * p_instance);
 NRFX_STATIC_INLINE uint32_t nrfx_uarte_task_address_get(nrfx_uarte_t const * p_instance,
                                                         nrf_uarte_task_t     task)
 {
-    return nrf_uarte_task_address_get(p_instance->p_reg, task);
+    return nrfy_uarte_task_address_get(p_instance->p_reg, task);
 }
 
 NRFX_STATIC_INLINE uint32_t nrfx_uarte_event_address_get(nrfx_uarte_t const * p_instance,
                                                          nrf_uarte_event_t    event)
 {
-    return nrf_uarte_event_address_get(p_instance->p_reg, event);
+    return nrfy_uarte_event_address_get(p_instance->p_reg, event);
 }
 #endif // NRFX_DECLARE_ONLY
 
@@ -410,12 +411,20 @@ NRFX_STATIC_INLINE uint32_t nrfx_uarte_event_address_get(nrfx_uarte_t const * p_
 
 /** @} */
 
-
-void nrfx_uarte_0_irq_handler(void);
-void nrfx_uarte_1_irq_handler(void);
-void nrfx_uarte_2_irq_handler(void);
-void nrfx_uarte_3_irq_handler(void);
-
+/*
+ * Declare interrupt handlers for all enabled driver instances in the following format:
+ * nrfx_\<periph_name\>_\<idx\>_irq_handler (for example, nrfx_uarte_0_irq_handler).
+ *
+ * A specific interrupt handler for the driver instance can be retrieved by using
+ * the NRFX_UARTE_INST_HANDLER_GET macro.
+ *
+ * Here is a sample of using the NRFX_UARTE_INST_HANDLER_GET macro to directly map
+ * an interrupt handler in a Zephyr application:
+ *
+ * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_UARTE_INST_GET(\<instance_index\>)), \<priority\>,
+ *                    NRFX_UARTE_INST_HANDLER_GET(\<instance_index\>), 0);
+ */
+NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(UARTE, uarte)
 
 #ifdef __cplusplus
 }

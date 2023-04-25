@@ -201,7 +201,7 @@ typedef void (*nrfx_qspi_handler_t)(nrfx_qspi_evt_t event, void * p_context);
  *                      will be performed in blocking mode.
  * @param[in] p_context Pointer to context. Use in the interrupt handler.
  *
- * @warning On nRF5340, only the dedicated pins with @ref NRF_GPIO_PIN_MCUSEL_PERIPHERAL configuration
+ * @warning On nRF5340, only the dedicated pins with @ref NRF_GPIO_PIN_SEL_PERIPHERAL configuration
  *          are supported. See the chapter <a href=@nRF5340pinAssignmentsURL>Pin assignments</a>
  *          in the Product Specification.
  *
@@ -213,6 +213,19 @@ typedef void (*nrfx_qspi_handler_t)(nrfx_qspi_evt_t event, void * p_context);
 nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
                           nrfx_qspi_handler_t        handler,
                           void *                     p_context);
+
+/**
+ * @brief Function for reconfiguring the QSPI driver instance.
+ *
+ * @param[in] p_config Pointer to the structure with the configuration.
+ *
+ * @retval NRFX_SUCCESS             Reconfiguration was successful.
+ * @retval NRFX_ERROR_BUSY          The driver is during transaction.
+ * @retval NRFX_ERROR_TIMEOUT       External memory is busy or there are connection issues.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is uninitialized.
+ * @retval NRFX_ERROR_INVALID_PARAM The pin configuration was incorrect.
+ */
+nrfx_err_t nrfx_qspi_reconfigure(nrfx_qspi_config_t const * p_config);
 
 /** @brief Function for uninitializing the QSPI driver instance. */
 void nrfx_qspi_uninit(void);

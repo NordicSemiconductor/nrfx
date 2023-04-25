@@ -62,11 +62,12 @@ nrfx_err_t nrfx_flag32_alloc(nrfx_atomic_t * p_mask, uint8_t *p_flag)
 
     do {
         prev_mask = *p_mask;
-        idx = 31 - NRF_CLZ(prev_mask);
-        if (idx < 0) {
+        if (prev_mask == 0)
+        {
             return NRFX_ERROR_NO_MEM;
         }
 
+        idx = 31 - NRF_CLZ(prev_mask);
         new_mask = prev_mask & ~NRFX_BIT(idx);
     } while (!NRFX_ATOMIC_CAS(p_mask, prev_mask, new_mask));
 

@@ -98,8 +98,8 @@ extern "C" {
 // RTC1_IRQn
 #define nrfx_rtc_1_irq_handler      RTC1_IRQHandler
 
-// QDEC_IRQn
-#define nrfx_qdec_irq_handler       QDEC_IRQHandler
+// QDEC0_IRQn
+#define nrfx_qdec_0_irq_handler     QDEC_IRQHandler
 
 // LPCOMP_IRQn
 #define nrfx_lpcomp_irq_handler     LPCOMP_IRQHandler

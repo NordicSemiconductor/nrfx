@@ -35,7 +35,7 @@
 #define NRFX_COMP_H__
 
 #include <nrfx.h>
-#include <hal/nrf_comp.h>
+#include <haly/nrfy_comp.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,7 +56,7 @@ extern "C" {
  *                must not be smaller than reference voltage divided by 64.
  * @param[in] ref Reference voltage.
  */
-#define NRFX_VOLTAGE_THRESHOLD_TO_INT(vol, ref) \
+#define NRFX_COMP_VOLTAGE_THRESHOLD_TO_INT(vol, ref) \
     (uint8_t)(((vol) > ((ref) / 64)) ? (NRFX_ROUNDED_DIV((vol) * 64,(ref)) - 1) : 0)
 
 /**
@@ -70,40 +70,40 @@ typedef void (* nrfx_comp_event_handler_t)(nrf_comp_event_t event);
 typedef enum
 {
     NRFX_COMP_SHORT_STOP_AFTER_CROSS_EVT = COMP_SHORTS_CROSS_STOP_Msk, /*!< Shortcut between the CROSS event and the STOP task. */
-    NRFX_COMP_SHORT_STOP_AFTER_UP_EVT = COMP_SHORTS_UP_STOP_Msk,       /*!< Shortcut between the UP event and the STOP task. */
-    NRFX_COMP_SHORT_STOP_AFTER_DOWN_EVT = COMP_SHORTS_DOWN_STOP_Msk    /*!< Shortcut between the DOWN event and the STOP task. */
+    NRFX_COMP_SHORT_STOP_AFTER_UP_EVT    = COMP_SHORTS_UP_STOP_Msk,    /*!< Shortcut between the UP event and the STOP task. */
+    NRFX_COMP_SHORT_STOP_AFTER_DOWN_EVT  = COMP_SHORTS_DOWN_STOP_Msk   /*!< Shortcut between the DOWN event and the STOP task. */
 } nrfx_comp_short_mask_t;
 
 /** @brief COMP events masks. */
 typedef enum
 {
     NRFX_COMP_EVT_EN_CROSS_MASK = COMP_INTENSET_CROSS_Msk, /*!< CROSS event (generated after VIN+ == VIN-). */
-    NRFX_COMP_EVT_EN_UP_MASK = COMP_INTENSET_UP_Msk,       /*!< UP event (generated when VIN+ crosses VIN- while increasing). */
-    NRFX_COMP_EVT_EN_DOWN_MASK = COMP_INTENSET_DOWN_Msk,   /*!< DOWN event (generated when VIN+ crosses VIN- while decreasing). */
+    NRFX_COMP_EVT_EN_UP_MASK    = COMP_INTENSET_UP_Msk,    /*!< UP event (generated when VIN+ crosses VIN- while increasing). */
+    NRFX_COMP_EVT_EN_DOWN_MASK  = COMP_INTENSET_DOWN_Msk,  /*!< DOWN event (generated when VIN+ crosses VIN- while decreasing). */
     NRFX_COMP_EVT_EN_READY_MASK = COMP_INTENSET_READY_Msk  /*!< READY event (generated when the module is ready). */
 } nrfx_comp_evt_en_mask_t;
 
 /** @brief COMP configuration. */
 typedef struct
 {
-    nrf_comp_ref_t          reference;          /**< Reference selection. */
-    nrf_comp_ext_ref_t      ext_ref;            /**< External analog reference selection. */
-    nrf_comp_main_mode_t    main_mode;          /**< Main operation mode. */
-    nrf_comp_th_t           threshold;          /**< Structure holding THDOWN and THUP values needed by the COMP_TH register. */
-    nrf_comp_sp_mode_t      speed_mode;         /**< Speed and power mode. */
-    nrf_comp_hyst_t         hyst;               /**< Comparator hysteresis. */
-#if defined (COMP_ISOURCE_ISOURCE_Msk) || defined (__NRFX_DOXYGEN__)
-    nrf_isource_t           isource;            /**< Current source selected on analog input. */
+    nrf_comp_ref_t       reference;          ///< Reference selection.
+    nrf_comp_ext_ref_t   ext_ref;            ///< External analog reference selection.
+    nrf_comp_main_mode_t main_mode;          ///< Main operation mode.
+    nrf_comp_th_t        threshold;          ///< Structure holding THDOWN and THUP values needed by the COMP_TH register.
+    nrf_comp_sp_mode_t   speed_mode;         ///< Speed and power mode.
+    nrf_comp_hyst_t      hyst;               ///< Comparator hysteresis.
+#if NRF_COMP_HAS_ISOURCE
+    nrf_isource_t        isource;            ///< Current source selected on analog input.
 #endif
-    nrf_comp_input_t        input;              /**< Input to be monitored. */
-    uint8_t                 interrupt_priority; /**< Interrupt priority. */
+    nrf_comp_input_t     input;              ///< Input to be monitored.
+    uint8_t              interrupt_priority; ///< Interrupt priority.
 } nrfx_comp_config_t;
 
 /** @brief COMP threshold default configuration. */
-#define NRFX_COMP_CONFIG_TH                             \
-{                                                       \
-    .th_down = NRFX_VOLTAGE_THRESHOLD_TO_INT(0.5, 1.8), \
-    .th_up   = NRFX_VOLTAGE_THRESHOLD_TO_INT(1.5, 1.8)  \
+#define NRFX_COMP_CONFIG_TH                                  \
+{                                                            \
+    .th_down = NRFX_COMP_VOLTAGE_THRESHOLD_TO_INT(0.5, 1.8), \
+    .th_up   = NRFX_COMP_VOLTAGE_THRESHOLD_TO_INT(1.5, 1.8)  \
 }
 
 /**
@@ -120,30 +120,17 @@ typedef struct
  *
  * @param[in] _input Analog input.
  */
-#if defined (COMP_ISOURCE_ISOURCE_Msk) || defined (__NRFX_DOXYGEN__)
-#define NRFX_COMP_DEFAULT_CONFIG(_input)                         \
-{                                                                \
-    .reference          = NRF_COMP_REF_Int1V8,                   \
-    .main_mode          = NRF_COMP_MAIN_MODE_SE,                 \
-    .threshold          = NRFX_COMP_CONFIG_TH,                   \
-    .speed_mode         = NRF_COMP_SP_MODE_High,                 \
-    .hyst               = NRF_COMP_HYST_NoHyst,                  \
-    .isource            = NRF_COMP_ISOURCE_Off,                  \
-    .input              = (nrf_comp_input_t)_input,              \
-    .interrupt_priority = NRFX_COMP_DEFAULT_CONFIG_IRQ_PRIORITY  \
+#define NRFX_COMP_DEFAULT_CONFIG(_input)                                           \
+{                                                                                  \
+    .reference          = NRF_COMP_REF_INT_1V8,                                    \
+    .main_mode          = NRF_COMP_MAIN_MODE_SE,                                   \
+    .threshold          = NRFX_COMP_CONFIG_TH,                                     \
+    .speed_mode         = NRF_COMP_SP_MODE_HIGH,                                   \
+    .hyst               = NRF_COMP_HYST_NO_HYST,                                   \
+    NRFX_COND_CODE_1(NRF_COMP_HAS_ISOURCE, (.isource = NRF_COMP_ISOURCE_OFF,), ()) \
+    .input              = (nrf_comp_input_t)_input,                                \
+    .interrupt_priority = NRFX_COMP_DEFAULT_CONFIG_IRQ_PRIORITY                    \
 }
-#else
-#define NRFX_COMP_DEFAULT_CONFIG(_input)                         \
-{                                                                \
-    .reference          = NRF_COMP_REF_Int1V8,                   \
-    .main_mode          = NRF_COMP_MAIN_MODE_SE,                 \
-    .threshold          = NRFX_COMP_CONFIG_TH,                   \
-    .speed_mode         = NRF_COMP_SP_MODE_High,                 \
-    .hyst               = NRF_COMP_HYST_NoHyst,                  \
-    .input              = (nrf_comp_input_t)_input,              \
-    .interrupt_priority = NRFX_COMP_DEFAULT_CONFIG_IRQ_PRIORITY  \
-}
-#endif
 
 /**
  * @brief Function for initializing the COMP driver.
@@ -163,6 +150,17 @@ typedef struct
  */
 nrfx_err_t nrfx_comp_init(nrfx_comp_config_t const * p_config,
                           nrfx_comp_event_handler_t  event_handler);
+
+/**
+ * @brief Function for reconfiguring the COMP driver.
+ *
+ * @param[in] p_config Pointer to the structure with the configuration.
+ *
+ * @retval NRFX_SUCCESS             Reconfiguration was successful.
+ * @retval NRFX_ERROR_BUSY          The driver is running and cannot be reconfigured.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is uninitialized.
+ */
+nrfx_err_t nrfx_comp_reconfigure(nrfx_comp_config_t const * p_config);
 
 /**
  * @brief Function for uninitializing the COMP driver.
@@ -236,12 +234,12 @@ NRFX_STATIC_INLINE uint32_t nrfx_comp_event_address_get(nrf_comp_event_t event);
 #ifndef NRFX_DECLARE_ONLY
 NRFX_STATIC_INLINE uint32_t nrfx_comp_task_address_get(nrf_comp_task_t task)
 {
-    return nrf_comp_task_address_get(NRF_COMP, task);
+    return nrfy_comp_task_address_get(NRF_COMP, task);
 }
 
 NRFX_STATIC_INLINE uint32_t nrfx_comp_event_address_get(nrf_comp_event_t event)
 {
-    return nrf_comp_event_address_get(NRF_COMP, event);
+    return nrfy_comp_event_address_get(NRF_COMP, event);
 }
 #endif // NRFX_DECLARE_ONLY
 

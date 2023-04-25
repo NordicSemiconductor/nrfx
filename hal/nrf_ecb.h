@@ -35,6 +35,9 @@
 #define NRF_ECB_H__
 
 #include <nrfx.h>
+#ifdef EASYVDMA_PRESENT
+#include <helpers/nrf_vdma.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,25 +50,158 @@ extern "C" {
  * @brief   Hardware access layer (HAL) for managing the Advanced Encryption Standard (AES) Electronic Codebook (ECB) peripheral.
  */
 
+#if defined(NRF51) || defined(NRF52832_XXAA) || \
+    defined(ECB_TASKS_STARTECB_TASKS_STARTECB_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the STARTECB task. */
+#define NRF_ECB_HAS_TASK_STARTECB 1
+#else
+#define NRF_ECB_HAS_TASK_STARTECB 0
+#endif
+
+#if defined(ECB_TASKS_START_TASKS_START_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the START task. */
+#define NRF_ECB_HAS_TASK_START 1
+#else
+#define NRF_ECB_HAS_TASK_START 0
+#endif
+
+#if defined(NRF51) || defined(NRF52832_XXAA) || \
+    defined(ECB_TASKS_STOPECB_TASKS_STOPECB_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the STOPECB task. */
+#define NRF_ECB_HAS_TASK_STOPECB 1
+#else
+#define NRF_ECB_HAS_TASK_STOPECB 0
+#endif
+
+#if defined(ECB_TASKS_STOP_TASKS_STOP_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the STOP task. */
+#define NRF_ECB_HAS_TASK_STOP 1
+#else
+#define NRF_ECB_HAS_TASK_STOP 0
+#endif
+
+#if defined(NRF51) || defined(NRF52832_XXAA) || \
+    defined(ECB_EVENTS_ENDECB_EVENTS_ENDECB_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the ENDECB event. */
+#define NRF_ECB_HAS_EVENT_ENDECB 1
+#else
+#define NRF_ECB_HAS_EVENT_ENDECB 0
+#endif
+
+#if defined(ECB_EVENTS_END_EVENTS_END_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the END event. */
+#define NRF_ECB_HAS_EVENT_END 1
+#else
+#define NRF_ECB_HAS_EVENT_END 0
+#endif
+
+#if defined(NRF51) || defined(NRF52832_XXAA) || \
+    defined(ECB_EVENTS_ERRORECB_EVENTS_ERRORECB_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the ERRORECB event. */
+#define NRF_ECB_HAS_EVENT_ERRORECB 1
+#else
+#define NRF_ECB_HAS_EVENT_ERRORECB 0
+#endif
+
+#if defined(ECB_EVENTS_ERROR_EVENTS_ERROR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the ERROR event. */
+#define NRF_ECB_HAS_EVENT_ERROR 1
+#else
+#define NRF_ECB_HAS_EVENT_ERROR 0
+#endif
+
+#if defined(ECB_KEY_VALUE_VALUE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the KEY register. */
+#define NRF_ECB_HAS_KEY 1
+#else
+#define NRF_ECB_HAS_KEY 0
+#endif
+
+#if defined(ECB_IN_PTR_PTR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the IN.PTR register. */
+#define NRF_ECB_HAS_IN_PTR 1
+#else
+#define NRF_ECB_HAS_IN_PTR 0
+#endif
+
+#if defined(ECB_IN_AMOUNT_AMOUNT_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the IN.AMOUNT register. */
+#define NRF_ECB_HAS_IN_AMOUNT 1
+#else
+#define NRF_ECB_HAS_IN_AMOUNT 0
+#endif
+
+#if defined(ECB_OUT_PTR_PTR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the OUT.PTR register. */
+#define NRF_ECB_HAS_OUT_PTR 1
+#else
+#define NRF_ECB_HAS_OUT_PTR 0
+#endif
+
+#if defined(ECB_OUT_AMOUNT_AMOUNT_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the OUT.AMOUNT register. */
+#define NRF_ECB_HAS_OUT_AMOUNT 1
+#else
+#define NRF_ECB_HAS_OUT_AMOUNT 0
+#endif
+
+#if defined(NRF51) || defined(NRF52832_XXAA) || \
+    defined(ECB_ECBDATAPTR_ECBDATAPTR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the  ECBDATAPTR register. */
+#define NRF_ECB_HAS_ECBDATAPTR 1
+#else
+#define NRF_ECB_HAS_ECBDATAPTR 0
+#endif
+
 /** @brief ECB tasks. */
 typedef enum
 {
+#if NRF_ECB_HAS_TASK_STARTECB
     NRF_ECB_TASK_STARTECB = offsetof(NRF_ECB_Type, TASKS_STARTECB), /**< Task for starting the ECB block encryption. */
+#endif
+#if NRF_ECB_HAS_TASK_START
+    NRF_ECB_TASK_START    = offsetof(NRF_ECB_Type, TASKS_START),    /**< Task for starting the ECB block encryption. */
+#endif
+#if NRF_ECB_HAS_TASK_STOPECB
     NRF_ECB_TASK_STOPECB  = offsetof(NRF_ECB_Type, TASKS_STOPECB),  /**< Task for stopping the ECB block encryption. */
+#endif
+#if NRF_ECB_HAS_TASK_STOP
+    NRF_ECB_TASK_STOP     = offsetof(NRF_ECB_Type, TASKS_STOP),     /**< Task for stopping the ECB block encryption. */
+#endif
 } nrf_ecb_task_t;
 
 /** @brief ECB events. */
 typedef enum
 {
+#if NRF_ECB_HAS_EVENT_ENDECB
     NRF_ECB_EVENT_ENDECB   = offsetof(NRF_ECB_Type, EVENTS_ENDECB),   /**< ECB block encrypt complete. */
+#endif
+#if NRF_ECB_HAS_EVENT_ERRORECB
     NRF_ECB_EVENT_ERRORECB = offsetof(NRF_ECB_Type, EVENTS_ERRORECB), /**< ECB block encrypt aborted because of a STOPECB task or due to an error. */
+#endif
+#if NRF_ECB_HAS_EVENT_END
+    NRF_ECB_EVENT_END      = offsetof(NRF_ECB_Type, EVENTS_END),      /**< ECB block encrypt complete. */
+#endif
+#if NRF_ECB_HAS_EVENT_ERROR
+    NRF_ECB_EVENT_ERROR    = offsetof(NRF_ECB_Type, EVENTS_ERROR),    /**< ECB block encrypt aborted because of a STOPECB task or due to an error. */
+#endif
 } nrf_ecb_event_t;
 
 /** @brief ECB interrupts. */
 typedef enum
 {
+#if NRF_ECB_HAS_EVENT_ENDECB
     NRF_ECB_INT_ENDECB_MASK   = ECB_INTENSET_ENDECB_Msk,   ///< Interrupt on ENDECB event.
+#endif
+#if NRF_ECB_HAS_EVENT_ERRORECB
     NRF_ECB_INT_ERRORECB_MASK = ECB_INTENSET_ERRORECB_Msk, ///< Interrupt on ERRORECB event.
+#endif
+#if NRF_ECB_HAS_EVENT_END
+    NRF_ECB_INT_END_MASK      = ECB_INTENSET_END_Msk,      ///< Interrupt on END event.
+#endif
+#if NRF_ECB_HAS_EVENT_ERROR
+    NRF_ECB_INT_ERROR_MASK    = ECB_INTENSET_ERROR_Msk,    ///< Interrupt on ERROR event.
+#endif
 } nrf_ecb_int_mask_t;
 
 
@@ -144,6 +280,7 @@ NRF_STATIC_INLINE void nrf_ecb_int_disable(NRF_ECB_Type * p_reg, uint32_t mask);
  */
 NRF_STATIC_INLINE uint32_t nrf_ecb_int_enable_check(NRF_ECB_Type const * p_reg, uint32_t mask);
 
+#if NRF_ECB_HAS_ECBDATAPTR
 /**
  * @brief Function for setting the pointer to the ECB data buffer.
  *
@@ -163,6 +300,91 @@ NRF_STATIC_INLINE void nrf_ecb_data_pointer_set(NRF_ECB_Type * p_reg, void const
  * @return Pointer to the ECB data buffer.
  */
 NRF_STATIC_INLINE void * nrf_ecb_data_pointer_get(NRF_ECB_Type const * p_reg);
+#endif // NRF_ECB_HAS_ECBDATAPTR
+
+#if NRF_ECB_HAS_KEY
+/**
+ * @brief Function for setting the AES key.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] p_key Pointer to the AES 128-bit key value. The key shall be stored
+ *                  in big endian byte order.
+ */
+NRF_STATIC_INLINE void nrf_ecb_key_set(NRF_ECB_Type   * p_reg,
+                                       uint32_t const * p_key);
+#endif // NRF_ECB_HAS_KEY
+
+#if NRF_ECB_HAS_IN_PTR
+/**
+ * @brief Function for setting the pointer to a job list containing unencrypted
+ *        ECB data structure in Encryption mode or encrypted ECB data structure
+ *        in Decryption mode.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] p_job Pointer to a job list.
+ */
+NRF_STATIC_INLINE void nrf_ecb_in_ptr_set(NRF_ECB_Type *         p_reg,
+                                          nrf_vdma_job_t const * p_job);
+
+/**
+ * @brief Function for getting the pointer to job list containing unencrypted
+ *        ECB data structure in Encryption mode or encrypted ECB data structure
+ *        in Decryption mode.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Pointer to a job list.
+ */
+NRF_STATIC_INLINE nrf_vdma_job_t * nrf_ecb_in_ptr_get(NRF_ECB_Type const * p_reg);
+#endif // NRF_ECB_HAS_IN_PTR
+
+#if NRF_ECB_HAS_IN_AMOUNT
+/**
+ * @brief Function for getting number of bytes read from the input data,
+ *        not including the job list structure.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Number of bytes read from the input data.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ecb_in_amount_get(NRF_ECB_Type const * p_reg);
+#endif // NRF_ECB_HAS_IN_AMOUNT
+
+#if NRF_ECB_HAS_OUT_PTR
+/**
+ * @brief Function for setting the pointer to a job list containing encrypted
+ *        ECB data structure in Encryption mode or decrypted ECB data structure
+ *        in Decryption mode.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] p_job Pointer to a job list.
+ */
+NRF_STATIC_INLINE void nrf_ecb_out_ptr_set(NRF_ECB_Type *         p_reg,
+                                           nrf_vdma_job_t const * p_job);
+
+/**
+ * @brief Function for getting the pointer to a job list containing encrypted
+ *        ECB data structure in Encryption mode or decrypted ECB data structure
+ *        in Decryption mode.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Pointer to the job list.
+ */
+NRF_STATIC_INLINE nrf_vdma_job_t * nrf_ecb_out_ptr_get(NRF_ECB_Type const * p_reg);
+#endif // NRF_ECB_HAS_OUT_PTR
+
+#if NRF_ECB_HAS_OUT_AMOUNT
+/**
+ * @brief Function for getting number of bytes available in the output data,
+ *        not including the job list structure.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Number of bytes available in the output data.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ecb_out_amount_get(NRF_ECB_Type const * p_reg);
+#endif // NRF_ECB_HAS_OUT_AMOUNT
 
 #if defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 /**
@@ -255,6 +477,7 @@ NRF_STATIC_INLINE uint32_t nrf_ecb_int_enable_check(NRF_ECB_Type const * p_reg, 
     return p_reg->INTENSET & mask;
 }
 
+#if NRF_ECB_HAS_ECBDATAPTR
 NRF_STATIC_INLINE void nrf_ecb_data_pointer_set(NRF_ECB_Type * p_reg, void const * p_buffer)
 {
     p_reg->ECBDATAPTR = (uint32_t)p_buffer;
@@ -264,6 +487,58 @@ NRF_STATIC_INLINE void * nrf_ecb_data_pointer_get(NRF_ECB_Type const * p_reg)
 {
     return (void *)(p_reg->ECBDATAPTR);
 }
+#endif // NRF_ECB_HAS_ECBDATAPTR
+
+#if NRF_ECB_HAS_KEY
+NRF_STATIC_INLINE void nrf_ecb_key_set(NRF_ECB_Type   * p_reg,
+                                       uint32_t const * p_key)
+{
+    for (uint8_t i = 0; i < ECB_KEY_VALUE_MaxCount; i++)
+    {
+        p_reg->KEY.VALUE[i] = p_key[i];
+    }
+}
+#endif // NRF_ECB_HAS_KEY
+
+#if NRF_ECB_HAS_IN_PTR
+NRF_STATIC_INLINE void nrf_ecb_in_ptr_set(NRF_ECB_Type *         p_reg,
+                                          nrf_vdma_job_t const * p_job)
+{
+    p_reg->IN.PTR = (uint32_t)p_job;
+}
+
+NRF_STATIC_INLINE nrf_vdma_job_t * nrf_ecb_in_ptr_get(NRF_ECB_Type const * p_reg)
+{
+    return (nrf_vdma_job_t *)(p_reg->IN.PTR);
+}
+#endif // NRF_ECB_HAS_IN_PTR
+
+#if NRF_ECB_HAS_IN_AMOUNT
+NRF_STATIC_INLINE uint32_t nrf_ecb_in_amount_get(NRF_ECB_Type const * p_reg)
+{
+    return p_reg->IN.AMOUNT;
+}
+#endif // NRF_ECB_HAS_IN_AMOUNT
+
+#if NRF_ECB_HAS_OUT_PTR
+NRF_STATIC_INLINE void nrf_ecb_out_ptr_set(NRF_ECB_Type *         p_reg,
+                                           nrf_vdma_job_t const * p_job)
+{
+    p_reg->OUT.PTR = (uint32_t)p_job;
+}
+
+NRF_STATIC_INLINE nrf_vdma_job_t * nrf_ecb_out_ptr_get(NRF_ECB_Type const * p_reg)
+{
+    return (nrf_vdma_job_t *)(p_reg->OUT.PTR);
+}
+#endif // NRF_ECB_HAS_OUT_PTR
+
+#if NRF_ECB_HAS_OUT_AMOUNT
+NRF_STATIC_INLINE uint32_t nrf_ecb_out_amount_get(NRF_ECB_Type const * p_reg)
+{
+    return p_reg->OUT.AMOUNT;
+}
+#endif // NRF_ECB_HAS_OUT_AMOUNT
 
 #if defined(DPPI_PRESENT)
 NRF_STATIC_INLINE void nrf_ecb_subscribe_set(NRF_ECB_Type * p_reg,
@@ -271,7 +546,7 @@ NRF_STATIC_INLINE void nrf_ecb_subscribe_set(NRF_ECB_Type * p_reg,
                                              uint8_t        channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
-            ((uint32_t)channel | ECB_SUBSCRIBE_STARTECB_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_ecb_subscribe_clear(NRF_ECB_Type * p_reg,
@@ -285,7 +560,7 @@ NRF_STATIC_INLINE void nrf_ecb_publish_set(NRF_ECB_Type *  p_reg,
                                            uint8_t         channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
-            ((uint32_t)channel | ECB_PUBLISH_ENDECB_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_ecb_publish_clear(NRF_ECB_Type *  p_reg,

@@ -35,12 +35,7 @@
 
 #if NRFX_CHECK(NRFX_EGU_ENABLED)
 
-#if !(NRFX_CHECK(NRFX_EGU0_ENABLED) || \
-      NRFX_CHECK(NRFX_EGU1_ENABLED) || \
-      NRFX_CHECK(NRFX_EGU2_ENABLED) || \
-      NRFX_CHECK(NRFX_EGU3_ENABLED) || \
-      NRFX_CHECK(NRFX_EGU4_ENABLED) || \
-      NRFX_CHECK(NRFX_EGU5_ENABLED))
+#if !NRFX_FEATURE_PRESENT(NRFX_EGU, _ENABLED)
 #error "No enabled EGU instances. Check <nrfx_config.h>."
 #endif
 
@@ -74,6 +69,16 @@ typedef struct
 
 static egu_control_block_t m_cb[NRFX_EGU_ENABLED_COUNT];
 
+/*
+ * `-Warray-bounds` warning is disabled for the `egu_event_mask_get_and_clear`
+ * function because GCC 12 and above may report a false positive due to accessing
+ * event registers.
+ */
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
+
 static uint32_t egu_event_mask_get_and_clear(NRF_EGU_Type * p_reg, uint32_t int_mask)
 {
     uint32_t event_mask = 0;
@@ -91,6 +96,10 @@ static uint32_t egu_event_mask_get_and_clear(NRF_EGU_Type * p_reg, uint32_t int_
     }
     return event_mask;
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
 nrfx_err_t nrfx_egu_init(nrfx_egu_t const *       p_instance,
                          uint8_t                  interrupt_priority,
@@ -157,7 +166,7 @@ void nrfx_egu_uninit(nrfx_egu_t const * p_instance)
     p_cb->state = NRFX_DRV_STATE_UNINITIALIZED;
 }
 
-static void egu_irq_handler(NRF_EGU_Type * p_reg, egu_control_block_t * p_cb)
+static void irq_handler(NRF_EGU_Type * p_reg, egu_control_block_t * p_cb)
 {
     uint32_t int_mask = nrf_egu_int_enable_check(p_reg, ~0uL);
 
@@ -172,46 +181,6 @@ static void egu_irq_handler(NRF_EGU_Type * p_reg, egu_control_block_t * p_cb)
     }
 }
 
-#if NRFX_CHECK(NRFX_EGU0_ENABLED)
-void nrfx_egu_0_irq_handler(void)
-{
-    egu_irq_handler(NRF_EGU0, &m_cb[NRFX_EGU0_INST_IDX]);
-}
-#endif
-
-#if NRFX_CHECK(NRFX_EGU1_ENABLED)
-void nrfx_egu_1_irq_handler(void)
-{
-    egu_irq_handler(NRF_EGU1, &m_cb[NRFX_EGU1_INST_IDX]);
-}
-#endif
-
-#if NRFX_CHECK(NRFX_EGU2_ENABLED)
-void nrfx_egu_2_irq_handler(void)
-{
-    egu_irq_handler(NRF_EGU2, &m_cb[NRFX_EGU2_INST_IDX]);
-}
-#endif
-
-#if NRFX_CHECK(NRFX_EGU3_ENABLED)
-void nrfx_egu_3_irq_handler(void)
-{
-    egu_irq_handler(NRF_EGU3, &m_cb[NRFX_EGU3_INST_IDX]);
-}
-#endif
-
-#if NRFX_CHECK(NRFX_EGU4_ENABLED)
-void nrfx_egu_4_irq_handler(void)
-{
-    egu_irq_handler(NRF_EGU4, &m_cb[NRFX_EGU4_INST_IDX]);
-}
-#endif
-
-#if NRFX_CHECK(NRFX_EGU5_ENABLED)
-void nrfx_egu_5_irq_handler(void)
-{
-    egu_irq_handler(NRF_EGU5, &m_cb[NRFX_EGU5_INST_IDX]);
-}
-#endif
+NRFX_INSTANCE_IRQ_HANDLERS(EGU, egu)
 
 #endif // NRFX_CHECK(NRFX_EGU_ENABLED)

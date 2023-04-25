@@ -38,20 +38,19 @@
 #error "This file should not be included directly. Include nrfx_config.h instead."
 #endif
 
+/** @brief Symbol specifying major version of the nrfx API to be used. */
+#ifndef NRFX_CONFIG_API_VER_MAJOR
+#define NRFX_CONFIG_API_VER_MAJOR 3
+#endif
 
-// <i> NRFX API version 2.9 flag.
-#define NRFX_CONFIG_API_VER_2_9 1
+/** @brief Symbol specifying minor version of the nrfx API to be used. */
+#ifndef NRFX_CONFIG_API_VER_MINOR
+#define NRFX_CONFIG_API_VER_MINOR 0
+#endif
 
-// <i> NRFX API version 2.10 flag.
-/* When this flag is set the following changes to the nrfx API will be introduced:
- *
- * 1. IPC driver:
- *  - Change input parameters for @ref nrfx_ipc_handler_t
- *  - Rename function **nrfx_ipc_mem_get** to **nrfx_ipc_gpmem_get**.
- */
-#define NRFX_CONFIG_API_VER_2_10 0
-
-// <i> NRFX API version 2.11 flag.
-#define NRFX_CONFIG_API_VER_2_11 0
+/** @brief Symbol specifying micro version of the nrfx API to be used. */
+#ifndef NRFX_CONFIG_API_VER_MICRO
+#define NRFX_CONFIG_API_VER_MICRO 0
+#endif
 
 #endif /* NRFX_CONFIG_COMMON_H__ */

@@ -46,7 +46,7 @@ The following matrix provides a comparative overview of which drivers are suppor
 | @ref nrf_dppi    |@tagRedCross  |@tagRedCross  |@tagRedCross          |@tagRedCross  |@tagRedCross  |@tagRedCross  |@tagRedCross  |@tagGreenTick |@tagGreenTick |
 | @ref nrf_ecb     |@tagGreenTick |@tagGreenTick |@tagGreenTick         |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagRedCross  |
 | @ref nrf_egu     |@tagRedCross  |@tagGreenTick |@tagGreenTick         |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |
-| @ref nrf_ficr    |@tagGreenTick |@tagGreenTick |@tagGreenTick         |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |
+| @ref nrf_icr     |@tagGreenTick |@tagGreenTick |@tagGreenTick         |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |
 | @ref nrf_fpu     |@tagRedCross  |@tagRedCross  |@tagRedCross          |@tagRedCross  |@tagRedCross  |@tagRedCross  |@tagRedCross  |@tagGreenTick |@tagRedCross  |
 | @ref nrf_gpio    |@tagGreenTick |@tagGreenTick |@tagGreenTick         |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |
 | @ref nrf_gpiote  |@tagGreenTick |@tagGreenTick |@tagGreenTick         |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |@tagGreenTick |

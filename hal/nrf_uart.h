@@ -496,7 +496,7 @@ NRF_STATIC_INLINE void nrf_uart_hwfc_pins_disconnect(NRF_UART_Type * p_reg)
 
 NRF_STATIC_INLINE uint8_t nrf_uart_rxd_get(NRF_UART_Type const * p_reg)
 {
-    return p_reg->RXD;
+    return (uint8_t)p_reg->RXD;
 }
 
 NRF_STATIC_INLINE void nrf_uart_txd_set(NRF_UART_Type * p_reg, uint8_t txd)

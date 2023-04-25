@@ -40,7 +40,7 @@
 extern "C" {
 #endif
 
-#ifndef NRF_I2S0
+#if !defined(NRF_I2S0) && defined(NRF_I2S)
 #define NRF_I2S0 NRF_I2S
 #endif
 
@@ -56,6 +56,27 @@ extern "C" {
 #define NRF_I2S_HAS_CLKCONFIG 1
 #else
 #define NRF_I2S_HAS_CLKCONFIG 0
+#endif
+
+#if defined(I2S_INTENSET_FRAMESTART_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether frame start event is available. */
+#define NRF_I2S_HAS_FRAMESTART 1
+#else
+#define NRF_I2S_HAS_FRAMESTART 0
+#endif
+
+#if defined(I2S_PSEL_SCK_PORT_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether GPIO port selection for pins is available. */
+#define NRF_I2S_HAS_GPIO_PORT_SELECTION 1
+#else
+#define NRF_I2S_HAS_GPIO_PORT_SELECTION 0
+#endif
+
+#if defined(I2S_CONFIG_SWIDTH_SWIDTH_32Bit) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether 32-bit sample width is available. */
+#define NRF_I2S_HAS_SWIDTH_32BIT 1
+#else
+#define NRF_I2S_HAS_SWIDTH_32BIT 0
 #endif
 
 /**
@@ -79,7 +100,7 @@ typedef enum
     NRF_I2S_EVENT_RXPTRUPD   = offsetof(NRF_I2S_Type, EVENTS_RXPTRUPD),  ///< The RXD.PTR register has been copied to internal double buffers.
     NRF_I2S_EVENT_TXPTRUPD   = offsetof(NRF_I2S_Type, EVENTS_TXPTRUPD),  ///< The TXD.PTR register has been copied to internal double buffers.
     NRF_I2S_EVENT_STOPPED    = offsetof(NRF_I2S_Type, EVENTS_STOPPED),   ///< I2S transfer stopped.
-#if defined(I2S_INTENSET_FRAMESTART_Msk) || defined(__NRFX_DOXYGEN_)
+#if NRF_I2S_HAS_FRAMESTART
     NRF_I2S_EVENT_FRAMESTART = offsetof(NRF_I2S_Type, EVENTS_FRAMESTART) ///< Frame start event, generated on the active edge of LRCK.
 #endif
 } nrf_i2s_event_t;
@@ -90,7 +111,7 @@ typedef enum
     NRF_I2S_INT_RXPTRUPD_MASK   = I2S_INTENSET_RXPTRUPD_Msk,  ///< Interrupt on RXPTRUPD event.
     NRF_I2S_INT_TXPTRUPD_MASK   = I2S_INTENSET_TXPTRUPD_Msk,  ///< Interrupt on TXPTRUPD event.
     NRF_I2S_INT_STOPPED_MASK    = I2S_INTENSET_STOPPED_Msk,   ///< Interrupt on STOPPED event.
-#if defined(I2S_INTENSET_FRAMESTART_Msk) || defined(__NRFX_DOXYGEN_)
+#if NRF_I2S_HAS_FRAMESTART
     NRF_I2S_INT_FRAMESTART_MASK = I2S_INTENCLR_FRAMESTART_Msk ///< Interrupt on FRAMESTART event.
 #endif
 } nrf_i2s_int_mask_t;
@@ -158,7 +179,7 @@ typedef enum
     NRF_I2S_SWIDTH_8BIT          = I2S_CONFIG_SWIDTH_SWIDTH_8Bit,      ///< 8 bit.
     NRF_I2S_SWIDTH_16BIT         = I2S_CONFIG_SWIDTH_SWIDTH_16Bit,     ///< 16 bit.
     NRF_I2S_SWIDTH_24BIT         = I2S_CONFIG_SWIDTH_SWIDTH_24Bit,     ///< 24 bit.
-#if defined(I2S_CONFIG_SWIDTH_SWIDTH_32Bit) || defined(__NRFX_DOXYGEN__)
+#if NRF_I2S_HAS_SWIDTH_32BIT
     NRF_I2S_SWIDTH_32BIT         = I2S_CONFIG_SWIDTH_SWIDTH_32Bit,     ///< 32 bit.
 #endif
 #if defined(I2S_CONFIG_SWIDTH_SWIDTH_8BitIn16) || defined(__NRFX_DOXYGEN__)
@@ -205,6 +226,34 @@ typedef enum
     NRF_I2S_CLKSRC_ACLK    = I2S_CONFIG_CLKCONFIG_CLKSRC_ACLK     ///< Audio PLL clock.
 } nrf_i2s_clksrc_t;
 #endif
+
+/** @brief I2S configuration. */
+typedef struct
+{
+    nrf_i2s_mode_t     mode;         /**< Mode of operation (master or slave). */
+    nrf_i2s_format_t   format;       /**< I2S frame format. */
+    nrf_i2s_align_t    alignment;    /**< Alignment of sample within a frame. */
+    nrf_i2s_swidth_t   sample_width; /**< Sample width. */
+    nrf_i2s_channels_t channels;     /**< Enabled channels. */
+    nrf_i2s_mck_t      mck_setup;    /**< Master clock generator setup. */
+    nrf_i2s_ratio_t    ratio;        /**< MCK/LRCK ratio. */
+} nrf_i2s_config_t;
+
+/** @brief I2S pins. */
+typedef struct
+{
+    uint32_t sck_pin;   ///< SCK pin number.
+    uint32_t lrck_pin;  ///< LRCK pin number.
+    uint32_t mck_pin;   ///< MCK pin number.
+                        /**< Optional. Use @ref NRF_I2S_PIN_NOT_CONNECTED
+                         *   if this signal is not needed. */
+    uint32_t sdout_pin; ///< SDOUT pin number.
+                        /**< Optional. Use @ref NRF_I2S_PIN_NOT_CONNECTED
+                         *   if this signal is not needed. */
+    uint32_t sdin_pin;  ///< SDIN pin number.
+                        /**< Optional. Use @ref NRF_I2S_PIN_NOT_CONNECTED
+                         *   if this signal is not needed. */
+} nrf_i2s_pins_t;
 
 /**
  * @brief Function for activating the specified I2S task.
@@ -351,19 +400,10 @@ NRF_STATIC_INLINE void nrf_i2s_publish_clear(NRF_I2S_Type *  p_reg,
  * If a given signal is not needed, pass the @ref NRF_I2S_PIN_NOT_CONNECTED
  * value instead of its pin number.
  *
- * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
- * @param[in] sck_pin   SCK pin number.
- * @param[in] lrck_pin  LRCK pin number.
- * @param[in] mck_pin   MCK pin number.
- * @param[in] sdout_pin SDOUT pin number.
- * @param[in] sdin_pin  SDIN pin number.
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] p_pins Pointer to the structure with pins selection.
  */
-NRF_STATIC_INLINE void nrf_i2s_pins_set(NRF_I2S_Type * p_reg,
-                                        uint32_t       sck_pin,
-                                        uint32_t       lrck_pin,
-                                        uint32_t       mck_pin,
-                                        uint32_t       sdout_pin,
-                                        uint32_t       sdin_pin);
+NRF_STATIC_INLINE void nrf_i2s_pins_set(NRF_I2S_Type * p_reg, nrf_i2s_pins_t const * p_pins);
 
 /**
  * @brief Function for getting the SCK pin selection.
@@ -413,26 +453,10 @@ NRF_STATIC_INLINE uint32_t nrf_i2s_sdin_pin_get(NRF_I2S_Type const * p_reg);
 /**
  * @brief Function for setting the I2S peripheral configuration.
  *
- * @param[in] p_reg        Pointer to the structure of registers of the peripheral.
- * @param[in] mode         Mode of operation (master or slave).
- * @param[in] format       I2S frame format.
- * @param[in] alignment    Alignment of sample within a frame.
- * @param[in] sample_width Sample width.
- * @param[in] channels     Enabled channels.
- * @param[in] mck_setup    Master clock generator setup.
- * @param[in] ratio        MCK/LRCK ratio.
- *
- * @retval true  The configuration has been set successfully.
- * @retval false The specified configuration is not allowed.
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] p_config Pointer to the structure with configuration.
  */
-NRF_STATIC_INLINE bool nrf_i2s_configure(NRF_I2S_Type *     p_reg,
-                                         nrf_i2s_mode_t     mode,
-                                         nrf_i2s_format_t   format,
-                                         nrf_i2s_align_t    alignment,
-                                         nrf_i2s_swidth_t   sample_width,
-                                         nrf_i2s_channels_t channels,
-                                         nrf_i2s_mck_t      mck_setup,
-                                         nrf_i2s_ratio_t    ratio);
+NRF_STATIC_INLINE void nrf_i2s_configure(NRF_I2S_Type * p_reg, nrf_i2s_config_t const * p_config);
 
 /**
  * @brief Function for setting up the I2S transfer.
@@ -573,7 +597,7 @@ NRF_STATIC_INLINE void nrf_i2s_subscribe_set(NRF_I2S_Type * p_reg,
                                              uint8_t        channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
-            ((uint32_t)channel | I2S_SUBSCRIBE_START_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_i2s_subscribe_clear(NRF_I2S_Type * p_reg,
@@ -587,7 +611,7 @@ NRF_STATIC_INLINE void nrf_i2s_publish_set(NRF_I2S_Type *  p_reg,
                                            uint8_t         channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
-            ((uint32_t)channel | I2S_PUBLISH_STOPPED_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_i2s_publish_clear(NRF_I2S_Type *  p_reg,
@@ -597,18 +621,13 @@ NRF_STATIC_INLINE void nrf_i2s_publish_clear(NRF_I2S_Type *  p_reg,
 }
 #endif // defined(DPPI_PRESENT)
 
-NRF_STATIC_INLINE void nrf_i2s_pins_set(NRF_I2S_Type * p_reg,
-                                        uint32_t       sck_pin,
-                                        uint32_t       lrck_pin,
-                                        uint32_t       mck_pin,
-                                        uint32_t       sdout_pin,
-                                        uint32_t       sdin_pin)
+NRF_STATIC_INLINE void nrf_i2s_pins_set(NRF_I2S_Type * p_reg, nrf_i2s_pins_t const * p_pins)
 {
-    p_reg->PSEL.SCK   = sck_pin;
-    p_reg->PSEL.LRCK  = lrck_pin;
-    p_reg->PSEL.MCK   = mck_pin;
-    p_reg->PSEL.SDOUT = sdout_pin;
-    p_reg->PSEL.SDIN  = sdin_pin;
+    p_reg->PSEL.SCK   = p_pins->sck_pin;
+    p_reg->PSEL.LRCK  = p_pins->lrck_pin;
+    p_reg->PSEL.MCK   = p_pins->mck_pin;
+    p_reg->PSEL.SDOUT = p_pins->sdout_pin;
+    p_reg->PSEL.SDIN  = p_pins->sdin_pin;
 }
 
 NRF_STATIC_INLINE uint32_t nrf_i2s_sck_pin_get(NRF_I2S_Type const * p_reg)
@@ -636,52 +655,26 @@ NRF_STATIC_INLINE uint32_t nrf_i2s_sdin_pin_get(NRF_I2S_Type const * p_reg)
     return p_reg->PSEL.SDIN;
 }
 
-NRF_STATIC_INLINE bool nrf_i2s_configure(NRF_I2S_Type *     p_reg,
-                                         nrf_i2s_mode_t     mode,
-                                         nrf_i2s_format_t   format,
-                                         nrf_i2s_align_t    alignment,
-                                         nrf_i2s_swidth_t   sample_width,
-                                         nrf_i2s_channels_t channels,
-                                         nrf_i2s_mck_t      mck_setup,
-                                         nrf_i2s_ratio_t    ratio)
+NRF_STATIC_INLINE void nrf_i2s_configure(NRF_I2S_Type * p_reg, nrf_i2s_config_t const * p_config)
 {
-    if (mode == NRF_I2S_MODE_MASTER)
-    {
-        // The MCK/LRCK ratio must be a multiple of 2 * sample width.
-        if (((sample_width == NRF_I2S_SWIDTH_16BIT) &&
-                 (ratio == NRF_I2S_RATIO_48X))
-            ||
-            ((sample_width == NRF_I2S_SWIDTH_24BIT) &&
-                ((ratio == NRF_I2S_RATIO_32X)  ||
-                 (ratio == NRF_I2S_RATIO_64X)  ||
-                 (ratio == NRF_I2S_RATIO_128X) ||
-                 (ratio == NRF_I2S_RATIO_256X) ||
-                 (ratio == NRF_I2S_RATIO_512X))))
-        {
-            return false;
-        }
-    }
+    p_reg->CONFIG.MODE     = p_config->mode;
+    p_reg->CONFIG.FORMAT   = p_config->format;
+    p_reg->CONFIG.ALIGN    = p_config->alignment;
+    p_reg->CONFIG.SWIDTH   = p_config->sample_width;
+    p_reg->CONFIG.CHANNELS = p_config->channels;
+    p_reg->CONFIG.RATIO    = p_config->ratio;
 
-    p_reg->CONFIG.MODE     = mode;
-    p_reg->CONFIG.FORMAT   = format;
-    p_reg->CONFIG.ALIGN    = alignment;
-    p_reg->CONFIG.SWIDTH   = sample_width;
-    p_reg->CONFIG.CHANNELS = channels;
-    p_reg->CONFIG.RATIO    = ratio;
-
-    if (mck_setup == NRF_I2S_MCK_DISABLED)
+    if (p_config->mck_setup == NRF_I2S_MCK_DISABLED)
     {
         p_reg->CONFIG.MCKEN =
             (I2S_CONFIG_MCKEN_MCKEN_Disabled << I2S_CONFIG_MCKEN_MCKEN_Pos);
     }
     else
     {
-        p_reg->CONFIG.MCKFREQ = mck_setup;
+        p_reg->CONFIG.MCKFREQ = p_config->mck_setup;
         p_reg->CONFIG.MCKEN =
             (I2S_CONFIG_MCKEN_MCKEN_Enabled << I2S_CONFIG_MCKEN_MCKEN_Pos);
     }
-
-    return true;
 }
 
 NRF_STATIC_INLINE void nrf_i2s_transfer_set(NRF_I2S_Type *   p_reg,

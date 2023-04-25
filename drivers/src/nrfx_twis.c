@@ -35,10 +35,7 @@
 
 #if NRFX_CHECK(NRFX_TWIS_ENABLED)
 
-#if !(NRFX_CHECK(NRFX_TWIS0_ENABLED) || \
-      NRFX_CHECK(NRFX_TWIS1_ENABLED) || \
-      NRFX_CHECK(NRFX_TWIS2_ENABLED) || \
-      NRFX_CHECK(NRFX_TWIS3_ENABLED))
+#if !NRFX_FEATURE_PRESENT(NRFX_TWIS, _ENABLED)
 #error "No enabled TWIS instances. Check <nrfx_config.h>."
 #endif
 
@@ -246,8 +243,7 @@ static inline void nrfx_twis_process_error(twis_control_block_t * p_cb,
     call_event_handler(p_cb, &evdata);
 }
 
-static void nrfx_twis_state_machine(NRF_TWIS_Type *        p_reg,
-                                    twis_control_block_t * p_cb)
+static void irq_handler(NRF_TWIS_Type * p_reg, twis_control_block_t * p_cb)
 {
     if (!NRFX_TWIS_NO_SYNC_MODE)
     {
@@ -440,11 +436,49 @@ static inline void nrfx_twis_preprocess_status(nrfx_twis_t const * p_instance)
         twis_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
         if (NULL == p_cb->ev_handler)
         {
-            nrfx_twis_state_machine(p_reg, p_cb);
+            irq_handler(p_reg, p_cb);
         }
     }
 }
 
+static void twis_configure(nrfx_twis_t const *        p_instance,
+                           nrfx_twis_config_t const * p_config)
+{
+    uint32_t addr_mask = 0;
+    if (0 == (p_config->addr[0] | p_config->addr[1]))
+    {
+        addr_mask = NRF_TWIS_CONFIG_ADDRESS0_MASK;
+    }
+    else
+    {
+        if (0 != p_config->addr[0])
+        {
+            addr_mask |= NRF_TWIS_CONFIG_ADDRESS0_MASK;
+        }
+        if (0 != p_config->addr[1])
+        {
+            addr_mask |= NRF_TWIS_CONFIG_ADDRESS1_MASK;
+        }
+    }
+
+    if (!p_config->skip_psel_cfg)
+    {
+        nrf_twis_pins_set(p_instance->p_reg, p_config->scl_pin, p_config->sda_pin);
+    }
+    nrf_twis_address_set(p_instance->p_reg, 0, p_config->addr[0]);
+    nrf_twis_address_set(p_instance->p_reg, 1, p_config->addr[1]);
+    nrf_twis_config_address_set(p_instance->p_reg, (nrf_twis_config_addr_mask_t)addr_mask);
+
+    if (m_cb[p_instance->drv_inst_idx].ev_handler)
+    {
+        /* Peripheral interrupt configure
+        * (note - interrupts still needs to be configured in INTEN register.
+        * This is done in enable function) */
+        NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number(p_instance->p_reg),
+                              p_config->interrupt_priority);
+        NRFX_IRQ_ENABLE(nrfx_get_irq_number(p_instance->p_reg));
+    }
+}
 
 /* -------------------------------------------------------------------------
  * Implementation of interface functions
@@ -473,18 +507,7 @@ nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
     static nrfx_irq_handler_t const irq_handlers[NRFX_TWIS_ENABLED_COUNT] = {
-        #if NRFX_CHECK(NRFX_TWIS0_ENABLED)
-        nrfx_twis_0_irq_handler,
-        #endif
-        #if NRFX_CHECK(NRFX_TWIS1_ENABLED)
-        nrfx_twis_1_irq_handler,
-        #endif
-        #if NRFX_CHECK(NRFX_TWIS2_ENABLED)
-        nrfx_twis_2_irq_handler,
-        #endif
-        #if NRFX_CHECK(NRFX_TWIS3_ENABLED)
-        nrfx_twis_3_irq_handler,
-        #endif
+        NRFX_INSTANCE_IRQ_HANDLERS_LIST(TWIS, twis)
     };
     if (nrfx_prs_acquire(p_reg,
             irq_handlers[p_instance->drv_inst_idx]) != NRFX_SUCCESS)
@@ -502,47 +525,21 @@ nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
         nrfx_twis_swreset(p_reg);
     }
 
-    p_cb->skip_gpio_cfg = p_config->skip_gpio_cfg;
-
-    if (!p_config->skip_gpio_cfg)
+    p_cb->ev_handler = event_handler;
+    if (p_config)
     {
-        nrfx_twis_config_pin(p_config->scl, p_config->scl_pull);
-        nrfx_twis_config_pin(p_config->sda, p_config->sda_pull);
-    }
-
-    if (!p_config->skip_psel_cfg)
-    {
-        nrf_twis_pins_set(p_reg, p_config->scl, p_config->sda);
-    }
-
-    uint32_t addr_mask = 0;
-    if (0 == (p_config->addr[0] | p_config->addr[1]))
-    {
-        addr_mask = NRF_TWIS_CONFIG_ADDRESS0_MASK;
-    }
-    else
-    {
-        if (0 != p_config->addr[0])
+        p_cb->skip_gpio_cfg = p_config->skip_gpio_cfg;
+        if (!p_config->skip_gpio_cfg)
         {
-            addr_mask |= NRF_TWIS_CONFIG_ADDRESS0_MASK;
+            NRFX_ASSERT(p_config->scl_pin != p_config->sda_pin);
+            nrfx_twis_config_pin(p_config->scl_pin, p_config->scl_pull);
+            nrfx_twis_config_pin(p_config->sda_pin, p_config->sda_pull);
+#if NRF_GPIO_HAS_CLOCKPIN
+            nrf_gpio_pin_clock_set(p_config->scl_pin, true);
+#endif
         }
-        if (0 != p_config->addr[1])
-        {
-            addr_mask |= NRF_TWIS_CONFIG_ADDRESS1_MASK;
-        }
+        twis_configure(p_instance, p_config);
     }
-
-    /* Peripheral interrupt configure
-     * (note - interrupts still needs to be configured in INTEN register.
-     * This is done in enable function) */
-    NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number(p_reg),
-                          p_config->interrupt_priority);
-    NRFX_IRQ_ENABLE(nrfx_get_irq_number(p_reg));
-
-    /* Configure */
-    nrf_twis_address_set       (p_reg, 0, p_config->addr[0]);
-    nrf_twis_address_set       (p_reg, 1, p_config->addr[1]);
-    nrf_twis_config_address_set(p_reg, (nrf_twis_config_addr_mask_t)addr_mask);
 
     /* Clear semaphore */
     if (!NRFX_TWIS_NO_SYNC_MODE)
@@ -551,13 +548,29 @@ nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
     }
     /* Set internal instance variables */
     p_cb->substate   = NRFX_TWIS_SUBSTATE_IDLE;
-    p_cb->ev_handler = event_handler;
     p_cb->state      = NRFX_DRV_STATE_INITIALIZED;
     err_code = NRFX_SUCCESS;
     NRFX_LOG_INFO("Function: %s, error code: %s.", __func__, NRFX_LOG_ERROR_STRING_GET(err_code));
     return err_code;
 }
 
+nrfx_err_t nrfx_twis_reconfigure(nrfx_twis_t const *        p_instance,
+                                 nrfx_twis_config_t const * p_config)
+{
+    NRFX_ASSERT(p_config);
+    if (m_cb[p_instance->drv_inst_idx].state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return NRFX_ERROR_INVALID_STATE;
+    }
+    if (nrfx_twis_is_busy(p_instance))
+    {
+        return NRFX_ERROR_BUSY;
+    }
+    nrf_twis_disable(p_instance->p_reg);
+    twis_configure(p_instance, p_config);
+    nrf_twis_enable(p_instance->p_reg);
+    return NRFX_SUCCESS;
+}
 
 void nrfx_twis_uninit(nrfx_twis_t const * p_instance)
 {
@@ -636,7 +649,7 @@ nrfx_twis_error_get_and_clear_internal_try
     bne   nrfx_twis_error_get_and_clear_internal_try /* no - try again          */
     bx    lr
 }
-#elif defined ( __GNUC__ )
+#elif defined ( __GNUC__ ) && defined(ISA_ARM)
 static uint32_t nrfx_twis_error_get_and_clear_internal(uint32_t volatile * perror)
 {
     uint32_t ret;
@@ -657,6 +670,13 @@ static uint32_t nrfx_twis_error_get_and_clear_internal(uint32_t volatile * perro
     );
     (void)temp;
     return ret;
+}
+#elif defined ( __GNUC__ ) && defined(ISA_RISCV)
+static uint32_t nrfx_twis_error_get_and_clear_internal(uint32_t volatile * perror)
+{
+    uint32_t error = *perror;
+    *perror = 0;
+    return error;
 }
 #elif defined ( __ICCARM__ )
 static uint32_t nrfx_twis_error_get_and_clear_internal(uint32_t volatile * perror)
@@ -719,7 +739,12 @@ nrfx_err_t nrfx_twis_tx_prepare(nrfx_twis_t const * p_instance,
         return err_code;
     }
     /* Check data size */
-    if ((size & TWIS_TXD_MAXCNT_MAXCNT_Msk) != size)
+#if NRF_TWIS_HAS_DMA_REG
+    size_t maxsize = TWIS_DMA_TX_MAXCNT_MAXCNT_Msk;
+#else
+    size_t maxsize = TWIS_TXD_MAXCNT_MAXCNT_Msk;
+#endif
+    if ((size & maxsize) != size)
     {
         err_code = NRFX_ERROR_INVALID_LENGTH;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -763,7 +788,12 @@ nrfx_err_t nrfx_twis_rx_prepare(nrfx_twis_t const * p_instance,
         return err_code;
     }
     /* Check data size */
-    if ((size & TWIS_RXD_MAXCNT_MAXCNT_Msk) != size)
+#if NRF_TWIS_HAS_DMA_REG
+    size_t maxsize = TWIS_DMA_RX_MAXCNT_MAXCNT_Msk;
+#else
+    size_t maxsize = TWIS_RXD_MAXCNT_MAXCNT_Msk;
+#endif
+    if ((size & maxsize) != size)
     {
         err_code = NRFX_ERROR_INVALID_LENGTH;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -816,33 +846,6 @@ bool nrfx_twis_is_pending_rx(nrfx_twis_t const * p_instance)
     return NRFX_TWIS_SUBSTATE_WRITE_PENDING == p_cb->substate;
 }
 
-
-#if NRFX_CHECK(NRFX_TWIS0_ENABLED)
-void nrfx_twis_0_irq_handler(void)
-{
-    nrfx_twis_state_machine(NRF_TWIS0, &m_cb[NRFX_TWIS0_INST_IDX]);
-}
-#endif
-
-#if NRFX_CHECK(NRFX_TWIS1_ENABLED)
-void nrfx_twis_1_irq_handler(void)
-{
-    nrfx_twis_state_machine(NRF_TWIS1, &m_cb[NRFX_TWIS1_INST_IDX]);
-}
-#endif
-
-#if NRFX_CHECK(NRFX_TWIS2_ENABLED)
-void nrfx_twis_2_irq_handler(void)
-{
-    nrfx_twis_state_machine(NRF_TWIS2, &m_cb[NRFX_TWIS2_INST_IDX]);
-}
-#endif
-
-#if NRFX_CHECK(NRFX_TWIS3_ENABLED)
-void nrfx_twis_3_irq_handler(void)
-{
-    nrfx_twis_state_machine(NRF_TWIS3, &m_cb[NRFX_TWIS3_INST_IDX]);
-}
-#endif
+NRFX_INSTANCE_IRQ_HANDLERS(TWIS, twis)
 
 #endif // NRFX_CHECK(NRFX_TWIS_ENABLED)

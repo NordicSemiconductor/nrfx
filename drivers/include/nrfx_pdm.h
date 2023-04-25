@@ -35,7 +35,7 @@
 #define NRFX_PDM_H__
 
 #include <nrfx.h>
-#include <hal/nrf_pdm.h>
+#include <haly/nrfy_pdm.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -71,16 +71,16 @@ typedef struct
 {
     nrf_pdm_mode_t    mode;               ///< Interface operation mode.
     nrf_pdm_edge_t    edge;               ///< Sampling mode.
-    uint8_t           pin_clk;            ///< CLK pin.
-    uint8_t           pin_din;            ///< DIN pin.
+    uint32_t          clk_pin;            ///< CLK pin number.
+    uint32_t          din_pin;            ///< DIN pin number.
     nrf_pdm_freq_t    clock_freq;         ///< Clock frequency.
     nrf_pdm_gain_t    gain_l;             ///< Left channel gain.
     nrf_pdm_gain_t    gain_r;             ///< Right channel gain.
     uint8_t           interrupt_priority; ///< Interrupt priority.
-#if NRF_PDM_HAS_RATIO_CONFIG || defined(__NRFX_DOXYGEN__)
+#if NRF_PDM_HAS_RATIO_CONFIG
     nrf_pdm_ratio_t   ratio;              ///< Ratio between PDM_CLK and output sample rate.
 #endif
-#if NRF_PDM_HAS_MCLKCONFIG || defined(__NRFX_DOXYGEN__)
+#if NRF_PDM_HAS_MCLKCONFIG
     nrf_pdm_mclksrc_t mclksrc;            ///< Master clock source selection.
 #endif
     bool              skip_gpio_cfg;      ///< Skip GPIO configuration of pins.
@@ -99,23 +99,6 @@ typedef struct
                                            *   as they are ignored anyway. */
 } nrfx_pdm_config_t;
 
-
-#if NRF_PDM_HAS_RATIO_CONFIG || defined(__NRFX_DOXYGEN__)
-    /** @brief PDM additional ratio configuration. */
-    #define NRFX_PDM_DEFAULT_EXTENDED_RATIO_CONFIG \
-        .ratio = NRF_PDM_RATIO_64X,
-#else
-    #define NRFX_PDM_DEFAULT_EXTENDED_RATIO_CONFIG
-#endif
-
-#if NRF_PDM_HAS_MCLKCONFIG || defined(__NRFX_DOXYGEN__)
-    /** @brief PDM additional master clock source configuration. */
-    #define NRFX_PDM_DEFAULT_EXTENDED_MCLKSRC_CONFIG \
-        .mclksrc = NRF_PDM_MCLKSRC_PCLK32M,
-#else
-    #define NRFX_PDM_DEFAULT_EXTENDED_MCLKSRC_CONFIG
-#endif
-
 /**
  * @brief PDM driver default configuration.
  *
@@ -132,14 +115,16 @@ typedef struct
 {                                                               \
     .mode               = NRF_PDM_MODE_MONO,                    \
     .edge               = NRF_PDM_EDGE_LEFTFALLING,             \
-    .pin_clk            = _pin_clk,                             \
-    .pin_din            = _pin_din,                             \
+    .clk_pin            = _pin_clk,                             \
+    .din_pin            = _pin_din,                             \
     .clock_freq         = NRF_PDM_FREQ_1032K,                   \
     .gain_l             = NRF_PDM_GAIN_DEFAULT,                 \
     .gain_r             = NRF_PDM_GAIN_DEFAULT,                 \
     .interrupt_priority = NRFX_PDM_DEFAULT_CONFIG_IRQ_PRIORITY, \
-    NRFX_PDM_DEFAULT_EXTENDED_RATIO_CONFIG                      \
-    NRFX_PDM_DEFAULT_EXTENDED_MCLKSRC_CONFIG                    \
+    NRFX_COND_CODE_1(NRF_PDM_HAS_RATIO_CONFIG,                  \
+                     (.ratio = NRF_PDM_RATIO_64X,), ())         \
+    NRFX_COND_CODE_1(NRF_PDM_HAS_MCLKCONFIG,                    \
+                     (.mclksrc = NRF_PDM_MCLKSRC_PCLK32M,), ()) \
 }
 
 /**
@@ -165,6 +150,18 @@ typedef void (*nrfx_pdm_event_handler_t)(nrfx_pdm_evt_t const * p_evt);
  */
 nrfx_err_t nrfx_pdm_init(nrfx_pdm_config_t const * p_config,
                          nrfx_pdm_event_handler_t  event_handler);
+
+/**
+ * @brief Function for reconfiguring the PDM interface.
+ *
+ * @param[in] p_config Pointer to the structure with the configuration.
+ *
+ * @retval NRFX_SUCCESS             Reconfiguration was successful.
+ * @retval NRFX_ERROR_BUSY          There is ongoing sampling and driver cannot be reconfigured.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is not initialized.
+ * @retval NRFX_ERROR_INVALID_PARAM Invalid configuration was specified.
+ */
+nrfx_err_t nrfx_pdm_reconfigure(nrfx_pdm_config_t const * p_config);
 
 /**
  * @brief Function for uninitializing the PDM interface.

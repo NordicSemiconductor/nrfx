@@ -58,24 +58,8 @@ typedef struct
 
 #ifndef __NRFX_DOXYGEN__
 enum {
-#if NRFX_CHECK(NRFX_EGU0_ENABLED)
-    NRFX_EGU0_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_EGU1_ENABLED)
-    NRFX_EGU1_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_EGU2_ENABLED)
-    NRFX_EGU2_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_EGU3_ENABLED)
-    NRFX_EGU3_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_EGU4_ENABLED)
-    NRFX_EGU4_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_EGU5_ENABLED)
-    NRFX_EGU5_INST_IDX,
-#endif
+    /* List all enabled driver instances (in the format NRFX_\<instance_name\>_INST_IDX). */
+    NRFX_INSTANCE_ENUM_LIST(EGU)
     NRFX_EGU_ENABLED_COUNT
 };
 #endif
@@ -121,6 +105,28 @@ nrfx_err_t nrfx_egu_init(nrfx_egu_t const *       p_instance,
 void nrfx_egu_int_enable(nrfx_egu_t const * p_instance, uint32_t mask);
 
 /**
+ * @brief Function for getting the address of the specified EGU task.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] task       EGU task.
+ *
+ * @return Task address.
+ */
+NRFX_STATIC_INLINE uint32_t nrfx_egu_task_address_get(nrfx_egu_t const * p_instance,
+                                                      nrf_egu_task_t     task);
+
+/**
+ * @brief Function for getting the address of the specified EGU event.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] event      EGU event.
+ *
+ * @return Event address.
+ */
+NRFX_STATIC_INLINE uint32_t nrfx_egu_event_address_get(nrfx_egu_t const * p_instance,
+                                                       nrf_egu_event_t    event);
+
+/**
  * @brief Function for disabling interrupts on specified events of a given EGU driver instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
@@ -152,14 +158,36 @@ void nrfx_egu_uninit(nrfx_egu_t const * p_instance);
  */
 #define NRFX_EGU_INST_HANDLER_GET(idx) NRFX_CONCAT_3(nrfx_egu_, idx, _irq_handler)
 
+#ifndef NRFX_DECLARE_ONLY
+NRFX_STATIC_INLINE uint32_t nrfx_egu_task_address_get(nrfx_egu_t const * p_instance,
+                                                      nrf_egu_task_t     task)
+{
+    return nrf_egu_task_address_get(p_instance->p_reg, task);
+}
+
+NRFX_STATIC_INLINE uint32_t nrfx_egu_event_address_get(nrfx_egu_t const * p_instance,
+                                                       nrf_egu_event_t    event)
+{
+    return nrf_egu_event_address_get(p_instance->p_reg, event);
+}
+#endif // NRFX_DECLARE_ONLY
+
 /** @} */
 
-void nrfx_egu_0_irq_handler(void);
-void nrfx_egu_1_irq_handler(void);
-void nrfx_egu_2_irq_handler(void);
-void nrfx_egu_3_irq_handler(void);
-void nrfx_egu_4_irq_handler(void);
-void nrfx_egu_5_irq_handler(void);
+/*
+ * Declare interrupt handlers for all enabled driver instances in the following format:
+ * nrfx_\<periph_name\>_\<idx\>_irq_handler (for example, nrfx_egu_0_irq_handler).
+ *
+ * A specific interrupt handler for the driver instance can be retrieved by using
+ * the NRFX_EGU_INST_HANDLER_GET macro.
+ *
+ * Here is a sample of using the NRFX_EGU_INST_HANDLER_GET macro to directly map
+ * an interrupt handler in a Zephyr application:
+ *
+ * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_EGU_INST_GET(\<instance_index\>)), \<priority\>,
+ *                    NRFX_EGU_INST_HANDLER_GET(\<instance_index\>), 0);
+ */
+NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(EGU, egu)
 
 #ifdef __cplusplus
 }

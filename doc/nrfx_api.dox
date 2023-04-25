@@ -29,8 +29,6 @@
 
 @defgroup nrf_egu EGU
 
-@defgroup nrf_ficr FICR
-
 @defgroup nrf_fpu FPU
 
 @defgroup nrf_gpio GPIO
@@ -38,6 +36,8 @@
 @defgroup nrf_gpiote GPIOTE
 
 @defgroup nrf_i2s I2S
+
+@defgroup nrf_icr ICR
 
 @defgroup nrf_ipc IPC
 
@@ -102,6 +102,7 @@
 @defgroup nrf_vmc VMC
 
 @defgroup nrf_wdt WDT
+
 @}
 
 @defgroup nrfx nrfx API

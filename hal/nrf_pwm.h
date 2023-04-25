@@ -47,6 +47,28 @@ extern "C" {
  * @brief   Hardware access layer for managing the Pulse Width Modulation (PWM) peripheral.
  */
 
+#if defined(PWM_DMA_SEQ_PTR_PTR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether dedicated DMA register is present. */
+#define NRF_PWM_HAS_DMA_REG 1
+#else
+#define NRF_PWM_HAS_DMA_REG 0
+#endif
+
+#if defined(PWM_SHORTS_LOOPSDONE_SEQSTART0_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether shorting SEQSTART task with LOOPSDONE event is available. */
+#define NRF_PWM_HAS_SHORT_LOOPSDONE_SEQSTART 1
+#else
+#define NRF_PWM_HAS_SHORT_LOOPSDONE_SEQSTART 0
+#endif
+
+#if (defined(PWM_TASKS_DMA_SEQ_START_START_Msk) && defined(PWM_EVENTS_DMA_SEQ_END_END_Msk)) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether PWM DMA tasks and events are present. */
+#define NRF_PWM_HAS_DMA_TASKS_EVENTS 1
+#else
+#define NRF_PWM_HAS_DMA_TASKS_EVENTS 0
+#endif
+
 /**
  * @brief Macro getting pointer to the structure of registers of the PWM peripheral.
  *
@@ -76,10 +98,15 @@ extern "C" {
 /** @brief PWM tasks. */
 typedef enum
 {
-    NRF_PWM_TASK_STOP      = offsetof(NRF_PWM_Type, TASKS_STOP),        ///< Stops PWM pulse generation on all channels at the end of the current PWM period, and stops the sequence playback.
-    NRF_PWM_TASK_SEQSTART0 = offsetof(NRF_PWM_Type, TASKS_SEQSTART[0]), ///< Starts playback of sequence 0.
-    NRF_PWM_TASK_SEQSTART1 = offsetof(NRF_PWM_Type, TASKS_SEQSTART[1]), ///< Starts playback of sequence 1.
-    NRF_PWM_TASK_NEXTSTEP  = offsetof(NRF_PWM_Type, TASKS_NEXTSTEP)     ///< Steps by one value in the current sequence if the decoder is set to @ref NRF_PWM_STEP_TRIGGERED mode.
+    NRF_PWM_TASK_STOP      = offsetof(NRF_PWM_Type, TASKS_STOP),             ///< Stops PWM pulse generation on all channels at the end of the current PWM period, and stops the sequence playback.
+#if NRF_PWM_HAS_DMA_TASKS_EVENTS
+    NRF_PWM_TASK_SEQSTART0 = offsetof(NRF_PWM_Type, TASKS_DMA.SEQ[0].START), ///< Starts playback of sequence 0.
+    NRF_PWM_TASK_SEQSTART1 = offsetof(NRF_PWM_Type, TASKS_DMA.SEQ[1].START), ///< Starts playback of sequence 1.
+#else
+    NRF_PWM_TASK_SEQSTART0 = offsetof(NRF_PWM_Type, TASKS_SEQSTART[0]),      ///< Starts playback of sequence 0.
+    NRF_PWM_TASK_SEQSTART1 = offsetof(NRF_PWM_Type, TASKS_SEQSTART[1]),      ///< Starts playback of sequence 1.
+#endif
+    NRF_PWM_TASK_NEXTSTEP  = offsetof(NRF_PWM_Type, TASKS_NEXTSTEP)          ///< Steps by one value in the current sequence if the decoder is set to @ref NRF_PWM_STEP_TRIGGERED mode.
 } nrf_pwm_task_t;
 
 /** @brief PWM events. */
@@ -111,8 +138,10 @@ typedef enum
 {
     NRF_PWM_SHORT_SEQEND0_STOP_MASK        = PWM_SHORTS_SEQEND0_STOP_Msk,        ///< Shortcut between SEQEND[0] event and STOP task.
     NRF_PWM_SHORT_SEQEND1_STOP_MASK        = PWM_SHORTS_SEQEND1_STOP_Msk,        ///< Shortcut between SEQEND[1] event and STOP task.
+#if NRF_PWM_HAS_SHORT_LOOPSDONE_SEQSTART
     NRF_PWM_SHORT_LOOPSDONE_SEQSTART0_MASK = PWM_SHORTS_LOOPSDONE_SEQSTART0_Msk, ///< Shortcut between LOOPSDONE event and SEQSTART[0] task.
     NRF_PWM_SHORT_LOOPSDONE_SEQSTART1_MASK = PWM_SHORTS_LOOPSDONE_SEQSTART1_Msk, ///< Shortcut between LOOPSDONE event and SEQSTART[1] task.
+#endif
     NRF_PWM_SHORT_LOOPSDONE_STOP_MASK      = PWM_SHORTS_LOOPSDONE_STOP_Msk       ///< Shortcut between LOOPSDONE event and STOP task.
 } nrf_pwm_short_mask_t;
 
@@ -436,7 +465,7 @@ NRF_STATIC_INLINE void nrf_pwm_disable(NRF_PWM_Type * p_reg);
  * @param[in] out_pins Array with pin numbers for individual PWM output channels.
  */
 NRF_STATIC_INLINE void nrf_pwm_pins_set(NRF_PWM_Type * p_reg,
-                                        uint32_t       out_pins[NRF_PWM_CHANNEL_COUNT]);
+                                        uint32_t const out_pins[NRF_PWM_CHANNEL_COUNT]);
 
 /**
  * @brief Function for getting pin selection associated with specified PWM output channel.
@@ -544,6 +573,24 @@ NRF_STATIC_INLINE void nrf_pwm_decoder_set(NRF_PWM_Type *     p_reg,
  */
 NRF_STATIC_INLINE void nrf_pwm_loop_set(NRF_PWM_Type * p_reg, uint16_t loop_count);
 
+/**
+ * @brief Function for getting the specified PWM SEQSTART task.
+ *
+ * @param[in] seq_id Sequence index.
+ *
+ * @return The specified PWM SEQSTART task.
+ */
+NRF_STATIC_INLINE nrf_pwm_task_t nrf_pwm_seqstart_task_get(uint8_t seq_id);
+
+/**
+ * @brief Function for getting the specified PWM SEQEND event.
+ *
+ * @param[in] seq_id Sequence index.
+ *
+ * @return The specified PWM SEQEND event.
+ */
+NRF_STATIC_INLINE nrf_pwm_event_t nrf_pwm_seqend_event_get(uint8_t seq_id);
+
 
 #ifndef NRF_DECLARE_ONLY
 
@@ -619,7 +666,7 @@ NRF_STATIC_INLINE void nrf_pwm_subscribe_set(NRF_PWM_Type * p_reg,
                                              uint8_t        channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
-            ((uint32_t)channel | PWM_SUBSCRIBE_STOP_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_pwm_subscribe_clear(NRF_PWM_Type * p_reg,
@@ -633,7 +680,7 @@ NRF_STATIC_INLINE void nrf_pwm_publish_set(NRF_PWM_Type *  p_reg,
                                            uint8_t         channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
-            ((uint32_t)channel | PWM_PUBLISH_STOPPED_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_pwm_publish_clear(NRF_PWM_Type *  p_reg,
@@ -654,7 +701,7 @@ NRF_STATIC_INLINE void nrf_pwm_disable(NRF_PWM_Type * p_reg)
 }
 
 NRF_STATIC_INLINE void nrf_pwm_pins_set(NRF_PWM_Type * p_reg,
-                                        uint32_t       out_pins[NRF_PWM_CHANNEL_COUNT])
+                                        uint32_t const out_pins[NRF_PWM_CHANNEL_COUNT])
 {
     uint8_t i;
     for (i = 0; i < NRF_PWM_CHANNEL_COUNT; ++i)
@@ -699,7 +746,11 @@ NRF_STATIC_INLINE void nrf_pwm_seq_ptr_set(NRF_PWM_Type *   p_reg,
 {
     NRFX_ASSERT(seq_id <= 1);
     NRFX_ASSERT(p_values != NULL);
+#if NRF_PWM_HAS_DMA_REG
+    p_reg->DMA.SEQ[seq_id].PTR = (uint32_t)p_values;
+#else
     p_reg->SEQ[seq_id].PTR = (uint32_t)p_values;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_pwm_seq_cnt_set(NRF_PWM_Type * p_reg,
@@ -742,6 +793,26 @@ NRF_STATIC_INLINE void nrf_pwm_loop_set(NRF_PWM_Type * p_reg,
                                         uint16_t       loop_count)
 {
     p_reg->LOOP = loop_count;
+}
+
+NRF_STATIC_INLINE nrf_pwm_task_t nrf_pwm_seqstart_task_get(uint8_t seq_id)
+{
+    NRFX_ASSERT(seq_id <= 1);
+#if NRF_PWM_HAS_DMA_TASKS_EVENTS
+    return (nrf_pwm_task_t)NRFX_OFFSETOF(NRF_PWM_Type, TASKS_DMA.SEQ[seq_id].START);
+#else
+    return (nrf_pwm_task_t)NRFX_OFFSETOF(NRF_PWM_Type, TASKS_SEQSTART[seq_id]);
+#endif
+}
+
+NRF_STATIC_INLINE nrf_pwm_event_t nrf_pwm_seqend_event_get(uint8_t seq_id)
+{
+    NRFX_ASSERT(seq_id <= 1);
+#if NRF_PWM_HAS_DMA_TASKS_EVENTS
+    return (nrf_pwm_event_t)NRFX_OFFSETOF(NRF_PWM_Type, EVENTS_DMA.SEQ[seq_id].END);
+#else
+    return (nrf_pwm_event_t)NRFX_OFFSETOF(NRF_PWM_Type, EVENTS_SEQEND[seq_id]);
+#endif
 }
 
 #endif // NRF_DECLARE_ONLY

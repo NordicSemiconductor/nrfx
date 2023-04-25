@@ -35,7 +35,7 @@
 #define NRFX_TEMP_H__
 
 #include <nrfx.h>
-#include <hal/nrf_temp.h>
+#include <haly/nrfy_temp.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -138,7 +138,7 @@ nrfx_err_t nrfx_temp_measure(void);
 #ifndef NRFX_DECLARE_ONLY
 NRFX_STATIC_INLINE int32_t nrfx_temp_result_get(void)
 {
-    return nrf_temp_result_get(NRF_TEMP);
+    return nrfy_temp_result_get(NRF_TEMP);
 }
 #endif // NRFX_DECLARE_ONLY
 

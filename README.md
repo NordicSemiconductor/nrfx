@@ -34,6 +34,7 @@ SoCs, as well as startup and initialization files for them.
  │   ├── include     # nrfx driver headers
  │   └── src         # nrfx driver sources
  ├── hal             # Hardware Access Layer files
+ ├── haly            # Extended Hardware Access Layer files
  ├── helpers         # nrfx driver helper files
  ├── mdk             # nRF MDK files
  ├── soc             # SoC specific files

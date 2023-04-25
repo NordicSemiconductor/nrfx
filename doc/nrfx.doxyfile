@@ -50,7 +50,7 @@ PROJECT_NAME           = "nrfx"
 
 ### EDIT THIS ###
 
-PROJECT_NUMBER         = "2.11"
+PROJECT_NUMBER         = "3.0"
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -281,7 +281,8 @@ TAB_SIZE               = 4
 
 ALIASES                = "tagGreenTick=\htmlonly<CENTER><font color=\"green\">✔</font></CENTER>\endhtmlonly \xmlonly<verbatim>embed:rst:inline :green:`✔`</verbatim>\endxmlonly" \
                          "tagRedCross=\htmlonly<CENTER><font color=\"red\">✖</font></CENTER>\endhtmlonly \xmlonly<verbatim>embed:rst:inline :red:`✖`</verbatim>\endxmlonly" \
-                         "nRF5340pinAssignmentsURL=\"https://infocenter.nordicsemi.com/index.jsp?topic=%2Fps_nrf5340%2Fchapters%2Fpin.html\""
+                         "nRF5340pinAssignmentsURL=\"https://infocenter.nordicsemi.com/index.jsp?topic=%2Fps_nrf5340%2Fchapters%2Fpin.html\"" \
+                         "refhal{1}=\sa \1 \copydoc \1"
 
 # Set the OPTIMIZE_OUTPUT_FOR_C tag to YES if your project consists of C sources
 # only. Doxygen will then generate output that is more tailored for C. For
@@ -917,14 +918,15 @@ WARN_LOGFILE           = warnings_nrfx.txt
 
 ### EDIT THIS ###
 
-INPUT                  = ../helpers \
+INPUT                  = config_dox \
+                         ../helpers \
                          ../drivers \
                          ../hal \
+                         ../haly \
                          ../soc \
                          ../templates/nrfx_glue.h \
                          ../templates/nrfx_log.h \
                          ../CHANGELOG.md \
-                         config_dox \
                          .
 
 # This tag can be used to specify the character encoding of the source files
@@ -2297,7 +2299,8 @@ INCLUDE_FILE_PATTERNS  =
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
 PREDEFINED             = SUPPRESS_INLINE_IMPLEMENTATION \
-                         __NRFX_DOXYGEN__
+                         __NRFX_DOXYGEN__ \
+                         __PACKED=
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The

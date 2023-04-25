@@ -41,11 +41,11 @@ breathe_separate_member_pages = True
 
 c_id_attributes = [
     "NRF_STATIC_INLINE",
+    "NRFY_STATIC_INLINE",
     "NRFX_STATIC_INLINE",
     "__STATIC_INLINE",
 ]
 cpp_id_attributes = c_id_attributes
-
 
 def setup(app):
     app.add_css_file("css/nrfx.css")

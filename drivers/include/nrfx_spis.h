@@ -36,7 +36,7 @@
 
 #include <nrfx.h>
 #include <hal/nrf_spis.h>
-#include <hal/nrf_gpio.h>
+#include <haly/nrfy_gpio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,18 +58,8 @@ typedef struct
 
 #ifndef __NRFX_DOXYGEN__
 enum {
-#if NRFX_CHECK(NRFX_SPIS0_ENABLED)
-    NRFX_SPIS0_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_SPIS1_ENABLED)
-    NRFX_SPIS1_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_SPIS2_ENABLED)
-    NRFX_SPIS2_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_SPIS3_ENABLED)
-    NRFX_SPIS3_INST_IDX,
-#endif
+    /* List all enabled driver instances (in the format NRFX_\<instance_name\>_INST_IDX). */
+    NRFX_INSTANCE_ENUM_LIST(SPIS)
     NRFX_SPIS_ENABLED_COUNT
 };
 #endif
@@ -80,13 +70,6 @@ enum {
     .p_reg        = NRFX_CONCAT_2(NRF_SPIS, id),             \
     .drv_inst_idx = NRFX_CONCAT_3(NRFX_SPIS, id, _INST_IDX), \
 }
-
-/**
- * @brief This value can be provided instead of a pin number for the signals MOSI
- *        and MISO to specify that the given signal is not used and therefore
- *        does not need to be connected to a pin.
- */
-#define NRFX_SPIS_PIN_NOT_USED  0xFF
 
 /** @brief SPI slave driver event types. */
 typedef enum
@@ -120,29 +103,31 @@ typedef struct
  * @param[in] _pin_miso MISO pin.
  * @param[in] _pin_csn  CSN pin.
  */
-#define NRFX_SPIS_DEFAULT_CONFIG(_pin_sck, _pin_mosi, _pin_miso, _pin_csn)  \
-{                                                                           \
-    .miso_pin     = _pin_miso,                                              \
-    .mosi_pin     = _pin_mosi,                                              \
-    .sck_pin      = _pin_sck,                                               \
-    .csn_pin      = _pin_csn,                                               \
-    .mode         = NRF_SPIS_MODE_0,                                        \
-    .bit_order    = NRF_SPIS_BIT_ORDER_MSB_FIRST,                           \
-    .csn_pullup   = NRF_GPIO_PIN_NOPULL,                                    \
-    .miso_drive   = NRF_GPIO_PIN_S0S1,                                      \
-    .def          = 0xFF,                                                   \
-    .orc          = 0xFE,                                                   \
-    .irq_priority = NRFX_SPIS_DEFAULT_CONFIG_IRQ_PRIORITY,                  \
+#define NRFX_SPIS_DEFAULT_CONFIG(_pin_sck, _pin_mosi, _pin_miso, _pin_csn)   \
+{                                                                            \
+    .miso_pin      = _pin_miso,                                              \
+    .mosi_pin      = _pin_mosi,                                              \
+    .sck_pin       = _pin_sck,                                               \
+    .csn_pin       = _pin_csn,                                               \
+    .mode          = NRF_SPIS_MODE_0,                                        \
+    .bit_order     = NRF_SPIS_BIT_ORDER_MSB_FIRST,                           \
+    .csn_pullup    = NRF_GPIO_PIN_NOPULL,                                    \
+    .miso_drive    = NRF_GPIO_PIN_S0S1,                                      \
+    .def           = 0xFF,                                                   \
+    .orc           = 0xFE,                                                   \
+    .irq_priority  = NRFX_SPIS_DEFAULT_CONFIG_IRQ_PRIORITY,                  \
+    .skip_gpio_cfg = false,                                                  \
+    .skip_psel_cfg = false,                                                  \
 }
 
 /** @brief SPI peripheral device configuration data. */
 typedef struct
 {
     uint32_t             miso_pin;      ///< SPI MISO pin (optional).
-                                        /**< Set @ref NRFX_SPIS_PIN_NOT_USED
+                                        /**< Set @ref NRF_SPIS_PIN_NOT_CONNECTED
                                          *   if this signal is not needed. */
     uint32_t             mosi_pin;      ///< SPI MOSI pin (optional).
-                                        /**< Set @ref NRFX_SPIS_PIN_NOT_USED
+                                        /**< Set @ref NRF_SPIS_PIN_NOT_CONNECTED
                                          *   if this signal is not needed. */
     uint32_t             sck_pin;       ///< SPI SCK pin.
     uint32_t             csn_pin;       ///< SPI CSN pin.
@@ -211,6 +196,19 @@ nrfx_err_t nrfx_spis_init(nrfx_spis_t const *        p_instance,
                           void *                     p_context);
 
 /**
+ * @brief Function for reconfiguring the SPI slave driver instance.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] p_config   Pointer to the structure with the configuration.
+ *
+ * @retval NRFX_SUCCESS             Reconfiguration was successful.
+ * @retval NRFX_ERROR_BUSY          The driver is during transfer.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is uninitialized.
+ */
+nrfx_err_t nrfx_spis_reconfigure(nrfx_spis_t const *        p_instance,
+                                 nrfx_spis_config_t const * p_config);
+
+/**
  * @brief Function for uninitializing the SPI slave driver instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
@@ -267,12 +265,20 @@ nrfx_err_t nrfx_spis_buffers_set(nrfx_spis_t const * p_instance,
 
 /** @} */
 
-
-void nrfx_spis_0_irq_handler(void);
-void nrfx_spis_1_irq_handler(void);
-void nrfx_spis_2_irq_handler(void);
-void nrfx_spis_3_irq_handler(void);
-
+/*
+ * Declare interrupt handlers for all enabled driver instances in the following format:
+ * nrfx_\<periph_name\>_\<idx\>_irq_handler (for example, nrfx_spis_0_irq_handler).
+ *
+ * A specific interrupt handler for the driver instance can be retrieved by using
+ * the NRFX_SPIS_INST_HANDLER_GET macro.
+ *
+ * Here is a sample of using the NRFX_SPIS_INST_HANDLER_GET macro to directly map
+ * an interrupt handler in a Zephyr application:
+ *
+ * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_SPIS_INST_GET(\<instance_index\>)), \<priority\>,
+ *                    NRFX_SPIS_INST_HANDLER_GET(\<instance_index\>), 0);
+ */
+NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(SPIS, spis)
 
 #ifdef __cplusplus
 }

@@ -37,6 +37,7 @@
 
 #include <nrfx_qspi.h>
 #include <hal/nrf_gpio.h>
+#include <nrf_erratas.h>
 
 /** @brief Command byte used to read status register. */
 #define QSPI_STD_CMD_RDSR 0x05
@@ -47,8 +48,16 @@
 /** @brief Default time used in timeout function. */
 #define QSPI_DEF_WAIT_TIME_US 10
 
-/** @brief Default number of tries in timeout function. */
-#define QSPI_DEF_WAIT_ATTEMPTS 100
+/**
+ * @brief Default number of tries in timeout function.
+ *
+ * When the flash memory is busy with some operation, waiting for the READY
+ * event even when only the ACTIVATE task is triggered may take significant
+ * amount of time. The below default number of attempts gives the maximum
+ * waiting time of 500 ms what should cover most cases, including erasing
+ * of sectors in most flash chips.
+ */
+#define QSPI_DEF_WAIT_ATTEMPTS 50000
 
 /**
  * @brief Macro for initializing a QSPI pin.
@@ -265,19 +274,27 @@ static nrfx_err_t qspi_ready_wait(void)
     return NRFX_SUCCESS;
 }
 
-nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
-                          nrfx_qspi_handler_t        handler,
-                          void *                     p_context)
+static nrfx_err_t qspi_configure(nrfx_qspi_config_t const * p_config)
 {
-    NRFX_ASSERT(p_config);
-    if (m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED)
-    {
-        return NRFX_ERROR_INVALID_STATE;
-    }
-
     if (!qspi_pins_configure(p_config))
     {
         return NRFX_ERROR_INVALID_PARAM;
+    }
+
+    m_cb.skip_gpio_cfg = p_config->skip_gpio_cfg;
+
+    /* The code below accesses the IFTIMING and IFCONFIG1 registers what
+     * may trigger anomaly 215 on nRF52840 or anomaly 43 on nRF5340. Use
+     * the proper workaround then.
+     */
+    if (NRF52_ERRATA_215_ENABLE_WORKAROUND || NRF53_ERRATA_43_ENABLE_WORKAROUND)
+    {
+        nrf_qspi_event_clear(NRF_QSPI, NRF_QSPI_EVENT_READY);
+        nrf_qspi_task_trigger(NRF_QSPI, NRF_QSPI_TASK_ACTIVATE);
+        if (qspi_ready_wait() == NRFX_ERROR_TIMEOUT)
+        {
+            return NRFX_ERROR_TIMEOUT;
+        }
     }
 
     nrf_qspi_xip_offset_set(NRF_QSPI, p_config->xip_offset);
@@ -299,18 +316,39 @@ nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
 #endif
     nrf_qspi_ifconfig1_set(NRF_QSPI, &p_config->phy_if);
 
+    if (m_cb.handler)
+    {
+        NRFX_IRQ_PRIORITY_SET(QSPI_IRQn, p_config->irq_priority);
+        NRFX_IRQ_ENABLE(QSPI_IRQn);
+    }
+
+    return NRFX_SUCCESS;
+}
+
+nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
+                          nrfx_qspi_handler_t        handler,
+                          void *                     p_context)
+{
+    NRFX_ASSERT(p_config);
+    if (m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED)
+    {
+        return NRFX_ERROR_INVALID_STATE;
+    }
+
     m_cb.handler = handler;
     m_cb.p_context = p_context;
-    m_cb.skip_gpio_cfg = p_config->skip_gpio_cfg;
 
     /* QSPI interrupt is disabled because the device should be enabled in polling mode
       (wait for activate task event ready) */
     nrf_qspi_int_disable(NRF_QSPI, NRF_QSPI_INT_READY_MASK);
 
-    if (handler)
+    if (p_config)
     {
-        NRFX_IRQ_PRIORITY_SET(QSPI_IRQn, p_config->irq_priority);
-        NRFX_IRQ_ENABLE(QSPI_IRQn);
+        nrfx_err_t result = qspi_configure(p_config);
+        if (result != NRFX_SUCCESS)
+        {
+            return result;
+        }
     }
 
     m_cb.p_buffer_primary = NULL;
@@ -327,6 +365,32 @@ nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
     return qspi_ready_wait();
 }
 
+nrfx_err_t nrfx_qspi_reconfigure(nrfx_qspi_config_t const * p_config)
+{
+    NRFX_ASSERT(p_config);
+    nrfx_err_t err_code = NRFX_SUCCESS;
+    if (m_cb.state == NRFX_QSPI_STATE_UNINITIALIZED)
+    {
+        return NRFX_ERROR_INVALID_STATE;
+    }
+    if (m_cb.state != NRFX_QSPI_STATE_IDLE)
+    {
+        return NRFX_ERROR_BUSY;
+    }
+
+    /* The interrupt is disabled because of the anomaly handling performed
+     * in qspi_configure(). It will be reenabled if needed before the next
+     * QSPI operation.
+     */
+    nrf_qspi_int_disable(NRF_QSPI, NRF_QSPI_INT_READY_MASK);
+
+    nrf_qspi_disable(NRF_QSPI);
+    err_code = qspi_configure(p_config);
+    nrf_qspi_enable(NRF_QSPI);
+
+    return err_code;
+}
+
 nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
                                  void const *                   p_tx_buffer,
                                  void *                         p_rx_buffer)
@@ -338,7 +402,6 @@ nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
         return NRFX_ERROR_BUSY;
     }
 
-    nrf_qspi_event_clear(NRF_QSPI, NRF_QSPI_EVENT_READY);
     /* In some cases, only opcode should be sent. To prevent execution, set function code is
      * surrounded by an if.
      */
@@ -353,6 +416,21 @@ nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
      */
     nrf_qspi_int_disable(NRF_QSPI, NRF_QSPI_INT_READY_MASK);
 
+    /* The code below accesses the CINSTRCONF register what may trigger
+     * anomaly 215 on nRF52840 or anomaly 43 on nRF5340. Use the proper
+     * workaround then.
+     */
+    if (NRF52_ERRATA_215_ENABLE_WORKAROUND || NRF53_ERRATA_43_ENABLE_WORKAROUND)
+    {
+        nrf_qspi_event_clear(NRF_QSPI, NRF_QSPI_EVENT_READY);
+        nrf_qspi_task_trigger(NRF_QSPI, NRF_QSPI_TASK_ACTIVATE);
+        if (qspi_ready_wait() == NRFX_ERROR_TIMEOUT)
+        {
+            return NRFX_ERROR_TIMEOUT;
+        }
+    }
+
+    nrf_qspi_event_clear(NRF_QSPI, NRF_QSPI_EVENT_READY);
     nrf_qspi_cinstr_transfer_start(NRF_QSPI, p_config);
 
     if (qspi_ready_wait() == NRFX_ERROR_TIMEOUT)
@@ -385,7 +463,6 @@ nrfx_err_t nrfx_qspi_cinstr_quick_send(uint8_t               opcode,
 nrfx_err_t nrfx_qspi_lfm_start(nrf_qspi_cinstr_conf_t const * p_config)
 {
     NRFX_ASSERT(m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED);
-    NRFX_ASSERT(!(nrf_qspi_cinstr_long_transfer_is_ongoing(NRF_QSPI)));
     NRFX_ASSERT(p_config->length == NRF_QSPI_CINSTR_LEN_1B);
 
     if (m_cb.state != NRFX_QSPI_STATE_IDLE)
@@ -399,6 +476,23 @@ nrfx_err_t nrfx_qspi_lfm_start(nrf_qspi_cinstr_conf_t const * p_config)
      */
     nrf_qspi_int_disable(NRF_QSPI, NRF_QSPI_INT_READY_MASK);
 
+    /* The code below accesses the CINSTRCONF register what may trigger
+     * anomaly 215 on nRF52840 or anomaly 43 on nRF5340. Use the proper
+     * workaround then.
+     */
+    if (NRF52_ERRATA_215_ENABLE_WORKAROUND || NRF53_ERRATA_43_ENABLE_WORKAROUND)
+    {
+        nrf_qspi_event_clear(NRF_QSPI, NRF_QSPI_EVENT_READY);
+        nrf_qspi_task_trigger(NRF_QSPI, NRF_QSPI_TASK_ACTIVATE);
+        if (qspi_ready_wait() == NRFX_ERROR_TIMEOUT)
+        {
+            return NRFX_ERROR_TIMEOUT;
+        }
+    }
+
+    NRFX_ASSERT(!(nrf_qspi_cinstr_long_transfer_is_ongoing(NRF_QSPI)));
+
+    nrf_qspi_event_clear(NRF_QSPI, NRF_QSPI_EVENT_READY);
     nrf_qspi_cinstr_long_transfer_start(NRF_QSPI, p_config);
 
     if (qspi_ready_wait() == NRFX_ERROR_TIMEOUT)

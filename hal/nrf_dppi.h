@@ -40,6 +40,34 @@
 extern "C" {
 #endif
 
+/*
+ * Macro for generating if statement code blocks that allow extracting
+ * the number of channels associated with the specific DPPIC instance.
+ */
+#define NRF_INTERNAL_DPPI_CHAN_NUM_EXTRACT(chan_num, p_reg)                                       \
+    if (0) {}                                                                                     \
+    NRFX_FOREACH_PRESENT(DPPIC, NRF_INTERNAL_ELSE_IF_EXTRACT_1, (), (), chan_num, _CH_NUM, p_reg) \
+    else                                                                                          \
+    {                                                                                             \
+        chan_num = 0;                                                                             \
+    }
+
+/*
+ * Macro for generating if statement code blocks that allow extracting
+ * the number of groups associated with the specific DPPIC instance.
+ */
+#define NRF_INTERNAL_DPPI_GROUP_NUM_EXTRACT(group_num, p_reg)                                         \
+    if (0) {}                                                                                         \
+    NRFX_FOREACH_PRESENT(DPPIC, NRF_INTERNAL_ELSE_IF_EXTRACT_1, (), (), group_num, _GROUP_NUM, p_reg) \
+    else                                                                                              \
+    {                                                                                                 \
+        group_num = 0;                                                                                \
+    }
+
+/* Symbol specifying the maximal number of channels associated with the DPPIC instances. */
+#define NRF_DPPI_CH_NUM_MAX \
+    NRFX_MAX_N(NRFX_FOREACH_PRESENT(DPPIC, NRFX_INTERNAL_CHAN_NUM, (), (), _) 0)
+
 /**
  * @defgroup nrf_dppi_hal DPPI Controller HAL
  * @{
@@ -48,15 +76,37 @@ extern "C" {
  *          Interconnect Controller (DPPIC).
  */
 
+/**
+ * @brief Macro for setting publish/subscribe register corresponding to specified event/task.
+ *
+ * @param[in] task_or_event Address of the event or task for which publish/subscribe
+ *                          register is to be set.
+ * @param[in] dppi_chan     DPPIC channel number.
+ */
+#define NRF_DPPI_ENDPOINT_SETUP(task_or_event, dppi_chan)   \
+        (*((volatile uint32_t *)(task_or_event + 0x80uL)) = \
+        ((uint32_t)dppi_chan | NRF_SUBSCRIBE_PUBLISH_ENABLE))
+
+/**
+ * @brief Macro for clearing publish/subscribe register corresponding to specified event/task.
+ *
+ * @param[in] task_or_event Address of the event or task for which publish/subscribe
+ *                          register is to be cleared.
+ */
+#define NRF_DPPI_ENDPOINT_CLEAR(task_or_event) \
+        (*((volatile uint32_t *)(task_or_event + 0x80uL)) = 0)
+
 /** @brief DPPI channel groups. */
 typedef enum
 {
     NRF_DPPI_CHANNEL_GROUP0 = 0, /**< Channel group 0. */
     NRF_DPPI_CHANNEL_GROUP1 = 1, /**< Channel group 1. */
+#if DPPI_GROUP_NUM > 2 || defined(__NRFX_DOXYGEN__)
     NRF_DPPI_CHANNEL_GROUP2 = 2, /**< Channel group 2. */
     NRF_DPPI_CHANNEL_GROUP3 = 3, /**< Channel group 3. */
     NRF_DPPI_CHANNEL_GROUP4 = 4, /**< Channel group 4. */
     NRF_DPPI_CHANNEL_GROUP5 = 5  /**< Channel group 5. */
+#endif
 } nrf_dppi_channel_group_t;
 
 /** @brief DPPI tasks. */
@@ -66,6 +116,7 @@ typedef enum
     NRF_DPPI_TASK_CHG0_DIS = offsetof(NRF_DPPIC_Type, TASKS_CHG[0].DIS), /**< Disable channel group 0. */
     NRF_DPPI_TASK_CHG1_EN  = offsetof(NRF_DPPIC_Type, TASKS_CHG[1].EN),  /**< Enable channel group 1. */
     NRF_DPPI_TASK_CHG1_DIS = offsetof(NRF_DPPIC_Type, TASKS_CHG[1].DIS), /**< Disable channel group 1. */
+#if DPPI_GROUP_NUM > 2 || defined(__NRFX_DOXYGEN__)
     NRF_DPPI_TASK_CHG2_EN  = offsetof(NRF_DPPIC_Type, TASKS_CHG[2].EN),  /**< Enable channel group 2. */
     NRF_DPPI_TASK_CHG2_DIS = offsetof(NRF_DPPIC_Type, TASKS_CHG[2].DIS), /**< Disable channel group 2. */
     NRF_DPPI_TASK_CHG3_EN  = offsetof(NRF_DPPIC_Type, TASKS_CHG[3].EN),  /**< Enable channel group 3. */
@@ -74,7 +125,26 @@ typedef enum
     NRF_DPPI_TASK_CHG4_DIS = offsetof(NRF_DPPIC_Type, TASKS_CHG[4].DIS), /**< Disable channel group 4. */
     NRF_DPPI_TASK_CHG5_EN  = offsetof(NRF_DPPIC_Type, TASKS_CHG[5].EN),  /**< Enable channel group 5. */
     NRF_DPPI_TASK_CHG5_DIS = offsetof(NRF_DPPIC_Type, TASKS_CHG[5].DIS)  /**< Disable channel group 5. */
+#endif
 } nrf_dppi_task_t;
+
+/**
+ * @brief Function for getting the total number of available channels for the given DPPIC instance.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Number of available channels.
+ */
+NRF_STATIC_INLINE uint8_t nrf_dppi_channel_number_get(NRF_DPPIC_Type const * p_reg);
+
+/**
+ * @brief Function for getting the total number of available groups for the given DPPIC instance.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Number of available groups.
+ */
+NRF_STATIC_INLINE uint8_t nrf_dppi_group_number_get(NRF_DPPIC_Type const * p_reg);
 
 /**
  * @brief Function for activating a DPPI task.
@@ -245,6 +315,33 @@ NRF_STATIC_INLINE nrf_dppi_task_t nrf_dppi_group_disable_task_get(uint8_t index)
 
 #ifndef NRF_DECLARE_ONLY
 
+NRF_STATIC_INLINE uint8_t nrf_dppi_channel_number_get(NRF_DPPIC_Type const * p_reg)
+{
+#if defined(DPPI_CH_NUM)
+    (void)p_reg;
+    return DPPI_CH_NUM;
+#else
+    uint8_t chan_num = 0;
+    NRF_INTERNAL_DPPI_CHAN_NUM_EXTRACT(chan_num, p_reg);
+
+    return chan_num;
+#endif // defined(DPPI_CH_NUM)
+}
+
+NRF_STATIC_INLINE uint8_t nrf_dppi_group_number_get(NRF_DPPIC_Type const * p_reg)
+{
+#if defined(DPPI_GROUP_NUM)
+    (void)p_reg;
+    return DPPI_GROUP_NUM;
+#else
+    uint8_t group_num = 0;
+    NRF_INTERNAL_DPPI_GROUP_NUM_EXTRACT(group_num, p_reg);
+
+    return group_num;
+#endif // defined(DPPI_GROUP_NUM)
+    return 0;
+}
+
 NRF_STATIC_INLINE void nrf_dppi_task_trigger(NRF_DPPIC_Type * p_reg, nrf_dppi_task_t dppi_task)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) dppi_task)) = 1;
@@ -258,7 +355,7 @@ NRF_STATIC_INLINE uint32_t nrf_dppi_task_address_get(NRF_DPPIC_Type const * p_re
 
 NRF_STATIC_INLINE bool nrf_dppi_channel_check(NRF_DPPIC_Type const * p_reg, uint8_t channel)
 {
-    NRFX_ASSERT(channel < DPPI_CH_NUM);
+    NRFX_ASSERT(channel < nrf_dppi_channel_number_get(p_reg));
     return ((p_reg->CHEN & (DPPIC_CHEN_CH0_Enabled << (DPPIC_CHEN_CH0_Pos + channel))) != 0);
 }
 
@@ -281,9 +378,9 @@ NRF_STATIC_INLINE void nrf_dppi_subscribe_set(NRF_DPPIC_Type * p_reg,
                                               nrf_dppi_task_t  task,
                                               uint8_t          channel)
 {
-    NRFX_ASSERT(channel < DPPI_CH_NUM);
+    NRFX_ASSERT(channel < nrf_dppi_channel_number_get(p_reg));
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
-            ((uint32_t)channel | DPPIC_SUBSCRIBE_CHG_EN_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_dppi_subscribe_clear(NRF_DPPIC_Type * p_reg, nrf_dppi_task_t task)
@@ -326,13 +423,11 @@ NRF_STATIC_INLINE void nrf_dppi_group_disable(NRF_DPPIC_Type *         p_reg,
 
 NRF_STATIC_INLINE nrf_dppi_task_t nrf_dppi_group_enable_task_get(uint8_t index)
 {
-    NRFX_ASSERT(index < DPPI_GROUP_NUM);
     return (nrf_dppi_task_t)NRFX_OFFSETOF(NRF_DPPIC_Type, TASKS_CHG[index].EN);
 }
 
 NRF_STATIC_INLINE nrf_dppi_task_t nrf_dppi_group_disable_task_get(uint8_t index)
 {
-    NRFX_ASSERT(index < DPPI_GROUP_NUM);
     return (nrf_dppi_task_t)NRFX_OFFSETOF(NRF_DPPIC_Type, TASKS_CHG[index].DIS);
 }
 

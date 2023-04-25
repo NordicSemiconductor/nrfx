@@ -111,6 +111,13 @@ extern "C" {
 #define NRF_POWER_HAS_MAINREGSTATUS 0
 #endif
 
+#if (!defined(POWER_GPREGRET2_GPREGRET_Msk) && !defined(NRF51)) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether GPREGRET register is treated as an array. */
+#define NRF_POWER_HAS_GPREGRET_ARRAY 1
+#else
+#define NRF_POWER_HAS_GPREGRET_ARRAY 0
+#endif
+
 /** @brief POWER tasks. */
 typedef enum
 {
@@ -930,7 +937,7 @@ NRF_STATIC_INLINE void nrf_power_subscribe_set(NRF_POWER_Type * p_reg,
                                                uint8_t          channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
-            ((uint32_t)channel | POWER_SUBSCRIBE_CONSTLAT_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_power_subscribe_clear(NRF_POWER_Type * p_reg, nrf_power_task_t task)
@@ -943,7 +950,7 @@ NRF_STATIC_INLINE void nrf_power_publish_set(NRF_POWER_Type *  p_reg,
                                              uint8_t           channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
-            ((uint32_t)channel | POWER_PUBLISH_SLEEPENTER_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_power_publish_clear(NRF_POWER_Type * p_reg, nrf_power_event_t event)
@@ -1073,14 +1080,14 @@ NRF_STATIC_INLINE uint8_t nrf_power_gpregret_get(NRF_POWER_Type const * p_reg)
     {
         p_gpregret = &((volatile uint32_t *)&p_reg->GPREGRET)[0];
     }
-    return *p_gpregret;
+    return (uint8_t)*p_gpregret;
 }
 
 NRF_STATIC_INLINE void nrf_power_gpregret_ext_set(NRF_POWER_Type * p_reg,
                                                   uint8_t          reg_num,
                                                   uint8_t          val)
 {
-#if defined(NRF91_SERIES) || defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK)
+#if NRF_POWER_HAS_GPREGRET_ARRAY
     p_reg->GPREGRET[reg_num] = val;
 #else
     NRFX_ASSERT(reg_num < 1);
@@ -1090,11 +1097,11 @@ NRF_STATIC_INLINE void nrf_power_gpregret_ext_set(NRF_POWER_Type * p_reg,
 
 NRF_STATIC_INLINE uint8_t nrf_power_gpregret_ext_get(NRF_POWER_Type const * p_reg, uint8_t reg_num)
 {
-#if defined(NRF91_SERIES) || defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK)
+#if NRF_POWER_HAS_GPREGRET_ARRAY
     return p_reg->GPREGRET[reg_num];
 #else
     NRFX_ASSERT(reg_num < 1);
-    return p_reg->GPREGRET;
+    return (uint8_t)p_reg->GPREGRET;
 #endif
 }
 
@@ -1106,7 +1113,7 @@ NRF_STATIC_INLINE void nrf_power_gpregret2_set(NRF_POWER_Type * p_reg, uint8_t v
 
 NRF_STATIC_INLINE uint8_t nrf_power_gpregret2_get(NRF_POWER_Type const * p_reg)
 {
-    return p_reg->GPREGRET2;
+    return (uint8_t)p_reg->GPREGRET2;
 }
 #endif
 

@@ -57,6 +57,22 @@ extern "C" {
  */
 #define NRF_TWIS_INST_GET(idx) NRFX_CONCAT_2(NRF_TWIS, idx)
 
+#if defined(TWIS_DMA_RX_PTR_PTR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether dedicated DMA register is present. */
+#define NRF_TWIS_HAS_DMA_REG 1
+#else
+#define NRF_TWIS_HAS_DMA_REG 0
+#endif
+
+#if (defined(TWIS_TASKS_DMA_RX_ENABLEMATCH_ENABLEMATCH_Msk) && \
+     defined(TWIS_EVENTS_DMA_RX_END_END_Msk)) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether TWIS DMA tasks and events are present. */
+#define NRF_TWIS_HAS_DMA_TASKS_EVENTS 1
+#else
+#define NRF_TWIS_HAS_DMA_TASKS_EVENTS 0
+#endif
+
 /** @brief TWIS tasks. */
 typedef enum
 {
@@ -70,12 +86,17 @@ typedef enum
 /** @brief TWIS events. */
 typedef enum
 {
-    NRF_TWIS_EVENT_STOPPED   = offsetof(NRF_TWIS_Type, EVENTS_STOPPED),   /**< TWIS stopped. */
-    NRF_TWIS_EVENT_ERROR     = offsetof(NRF_TWIS_Type, EVENTS_ERROR),     /**< TWIS error. */
-    NRF_TWIS_EVENT_RXSTARTED = offsetof(NRF_TWIS_Type, EVENTS_RXSTARTED), /**< Receive sequence started. */
-    NRF_TWIS_EVENT_TXSTARTED = offsetof(NRF_TWIS_Type, EVENTS_TXSTARTED), /**< Transmit sequence started. */
-    NRF_TWIS_EVENT_WRITE     = offsetof(NRF_TWIS_Type, EVENTS_WRITE),     /**< Write command received. */
-    NRF_TWIS_EVENT_READ      = offsetof(NRF_TWIS_Type, EVENTS_READ)       /**< Read command received. */
+    NRF_TWIS_EVENT_STOPPED   = offsetof(NRF_TWIS_Type, EVENTS_STOPPED),      /**< TWIS stopped. */
+    NRF_TWIS_EVENT_ERROR     = offsetof(NRF_TWIS_Type, EVENTS_ERROR),        /**< TWIS error. */
+#if NRF_TWIS_HAS_DMA_TASKS_EVENTS
+    NRF_TWIS_EVENT_RXSTARTED = offsetof(NRF_TWIS_Type, EVENTS_DMA.RX.READY), /**< Receive sequence started. */
+    NRF_TWIS_EVENT_TXSTARTED = offsetof(NRF_TWIS_Type, EVENTS_DMA.TX.READY), /**< Transmit sequence started. */
+#else
+    NRF_TWIS_EVENT_RXSTARTED = offsetof(NRF_TWIS_Type, EVENTS_RXSTARTED),    /**< Receive sequence started. */
+    NRF_TWIS_EVENT_TXSTARTED = offsetof(NRF_TWIS_Type, EVENTS_TXSTARTED),    /**< Transmit sequence started. */
+#endif
+    NRF_TWIS_EVENT_WRITE     = offsetof(NRF_TWIS_Type, EVENTS_WRITE),        /**< Write command received. */
+    NRF_TWIS_EVENT_READ      = offsetof(NRF_TWIS_Type, EVENTS_READ)          /**< Read command received. */
 } nrf_twis_event_t;
 
 /** @brief TWIS shortcuts. */
@@ -88,12 +109,17 @@ typedef enum
 /** @brief TWIS interrupts. */
 typedef enum
 {
-    NRF_TWIS_INT_STOPPED_MASK   = TWIS_INTEN_STOPPED_Msk,   /**< Interrupt on STOPPED event. */
-    NRF_TWIS_INT_ERROR_MASK     = TWIS_INTEN_ERROR_Msk,     /**< Interrupt on ERROR event. */
-    NRF_TWIS_INT_RXSTARTED_MASK = TWIS_INTEN_RXSTARTED_Msk, /**< Interrupt on RXSTARTED event. */
-    NRF_TWIS_INT_TXSTARTED_MASK = TWIS_INTEN_TXSTARTED_Msk, /**< Interrupt on TXSTARTED event. */
-    NRF_TWIS_INT_WRITE_MASK     = TWIS_INTEN_WRITE_Msk,     /**< Interrupt on WRITE event. */
-    NRF_TWIS_INT_READ_MASK      = TWIS_INTEN_READ_Msk,      /**< Interrupt on READ event. */
+    NRF_TWIS_INT_STOPPED_MASK   = TWIS_INTEN_STOPPED_Msk,    /**< Interrupt on STOPPED event. */
+    NRF_TWIS_INT_ERROR_MASK     = TWIS_INTEN_ERROR_Msk,      /**< Interrupt on ERROR event. */
+#if NRF_TWIS_HAS_DMA_TASKS_EVENTS
+    NRF_TWIS_INT_RXSTARTED_MASK = TWIS_INTEN_DMARXREADY_Msk, /**< Interrupt on RXSTARTED event. */
+    NRF_TWIS_INT_TXSTARTED_MASK = TWIS_INTEN_DMATXREADY_Msk, /**< Interrupt on TXSTARTED event. */
+#else
+    NRF_TWIS_INT_RXSTARTED_MASK = TWIS_INTEN_RXSTARTED_Msk,  /**< Interrupt on RXSTARTED event. */
+    NRF_TWIS_INT_TXSTARTED_MASK = TWIS_INTEN_TXSTARTED_Msk,  /**< Interrupt on TXSTARTED event. */
+#endif
+    NRF_TWIS_INT_WRITE_MASK     = TWIS_INTEN_WRITE_Msk,      /**< Interrupt on WRITE event. */
+    NRF_TWIS_INT_READ_MASK      = TWIS_INTEN_READ_Msk,       /**< Interrupt on READ event. */
 } nrf_twis_int_mask_t;
 
 /** @brief TWIS error source. */
@@ -644,7 +670,7 @@ NRF_STATIC_INLINE void nrf_twis_subscribe_set(NRF_TWIS_Type * p_reg,
                                               uint8_t         channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
-            ((uint32_t)channel | TWIS_SUBSCRIBE_STOP_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_twis_subscribe_clear(NRF_TWIS_Type * p_reg,
@@ -658,7 +684,7 @@ NRF_STATIC_INLINE void nrf_twis_publish_set(NRF_TWIS_Type *  p_reg,
                                             uint8_t          channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
-            ((uint32_t)channel | TWIS_PUBLISH_STOPPED_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_twis_publish_clear(NRF_TWIS_Type *  p_reg,
@@ -710,8 +736,13 @@ NRF_STATIC_INLINE void nrf_twis_rx_buffer_set(NRF_TWIS_Type * p_reg,
                                               uint8_t *       p_buf,
                                               size_t          length)
 {
+#if NRF_TWIS_HAS_DMA_REG
+    p_reg->DMA.RX.PTR    = (uint32_t)p_buf;
+    p_reg->DMA.RX.MAXCNT = (uint32_t)length;
+#else
     p_reg->RXD.PTR    = (uint32_t)p_buf;
     p_reg->RXD.MAXCNT = length;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_twis_rx_prepare(NRF_TWIS_Type *   p_reg,
@@ -724,15 +755,24 @@ NRF_STATIC_INLINE void nrf_twis_rx_prepare(NRF_TWIS_Type *   p_reg,
 
 NRF_STATIC_INLINE size_t nrf_twis_rx_amount_get(NRF_TWIS_Type const * p_reg)
 {
+#if NRF_TWIS_HAS_DMA_REG
+    return p_reg->DMA.RX.AMOUNT;
+#else
     return p_reg->RXD.AMOUNT;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_twis_tx_buffer_set(NRF_TWIS_Type * p_reg,
                                               uint8_t const * p_buf,
                                               size_t          length)
 {
+#if NRF_TWIS_HAS_DMA_REG
+    p_reg->DMA.TX.PTR    = (uint32_t)p_buf;
+    p_reg->DMA.TX.MAXCNT = (uint32_t)length;
+#else
     p_reg->TXD.PTR    = (uint32_t)p_buf;
     p_reg->TXD.MAXCNT = length;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_twis_tx_prepare(NRF_TWIS_Type * p_reg,
@@ -745,7 +785,11 @@ NRF_STATIC_INLINE void nrf_twis_tx_prepare(NRF_TWIS_Type * p_reg,
 
 NRF_STATIC_INLINE size_t nrf_twis_tx_amount_get(NRF_TWIS_Type const * p_reg)
 {
+#if NRF_TWIS_HAS_DMA_REG
+    return p_reg->DMA.TX.AMOUNT;
+#else
     return p_reg->TXD.AMOUNT;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_twis_address_set(NRF_TWIS_Type *    p_reg,

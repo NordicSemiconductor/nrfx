@@ -67,12 +67,8 @@ typedef struct
 
 #ifndef __NRFX_DOXYGEN__
 enum {
-#if NRFX_CHECK(NRFX_TWI0_ENABLED)
-    NRFX_TWI0_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_TWI1_ENABLED)
-    NRFX_TWI1_INST_IDX,
-#endif
+    /* List all enabled driver instances (in the format NRFX_\<instance_name\>_INST_IDX). */
+    NRFX_INSTANCE_ENUM_LIST(TWI)
     NRFX_TWI_ENABLED_COUNT
 };
 #endif
@@ -234,6 +230,19 @@ nrfx_err_t nrfx_twi_init(nrfx_twi_t const *        p_instance,
                          void *                    p_context);
 
 /**
+ * @brief Function for reconfiguring the TWI instance.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] p_config   Pointer to the structure with the configuration.
+ *
+ * @retval NRFX_SUCCESS             Reconfiguration was successful.
+ * @retval NRFX_ERROR_BUSY          The driver is during transaction.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is uninitialized.
+ */
+nrfx_err_t nrfx_twi_reconfigure(nrfx_twi_t const *        p_instance,
+                                nrfx_twi_config_t const * p_config);
+
+/**
  * @brief Function for uninitializing the TWI instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
@@ -360,10 +369,20 @@ NRFX_STATIC_INLINE nrfx_err_t nrfx_twi_bus_recover(uint32_t scl_pin, uint32_t sd
 
 /** @} */
 
-
-void nrfx_twi_0_irq_handler(void);
-void nrfx_twi_1_irq_handler(void);
-
+/*
+ * Declare interrupt handlers for all enabled driver instances in the following format:
+ * nrfx_\<periph_name\>_\<idx\>_irq_handler (for example, nrfx_twi_0_irq_handler).
+ *
+ * A specific interrupt handler for the driver instance can be retrieved by using
+ * the NRFX_TWI_INST_HANDLER_GET macro.
+ *
+ * Here is a sample of using the NRFX_TWI_INST_HANDLER_GET macro to directly map
+ * an interrupt handler in a Zephyr application:
+ *
+ * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_TWI_INST_GET(\<instance_index\>)), \<priority\>,
+ *                    NRFX_TWI_INST_HANDLER_GET(\<instance_index\>), 0);
+ */
+NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(TWI, twi)
 
 #ifdef __cplusplus
 }

@@ -36,7 +36,8 @@
 #if NRFX_CHECK(NRFX_PDM_ENABLED)
 
 #include <nrfx_pdm.h>
-#include <hal/nrf_gpio.h>
+#include <haly/nrfy_pdm.h>
+#include <haly/nrfy_gpio.h>
 
 #define NRFX_LOG_MODULE PDM
 #include <nrfx_log.h>
@@ -73,102 +74,45 @@ typedef struct
 
 static nrfx_pdm_cb_t m_cb;
 
-
-void nrfx_pdm_irq_handler(void)
+static void pdm_configure(nrfx_pdm_config_t const * p_config)
 {
-    if (nrf_pdm_event_check(NRF_PDM0, NRF_PDM_EVENT_STARTED))
+    if (!p_config->skip_gpio_cfg)
     {
-        nrf_pdm_event_clear(NRF_PDM0, NRF_PDM_EVENT_STARTED);
-        NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_PDM_EVENT_STARTED));
-
-        uint8_t finished_buffer = m_cb.active_buffer;
-
-        // Check if the next buffer was set before.
-        uint8_t next_buffer = (~m_cb.active_buffer) & 0x01;
-        if (m_cb.buff_address[next_buffer] ||
-            m_cb.op_state == NRFX_PDM_STATE_STARTING)
-        {
-            nrfx_pdm_evt_t evt;
-            evt.error = NRFX_PDM_NO_ERROR;
-            m_cb.error = 0;
-
-            // Release the full buffer if ready and request the next one.
-            if (m_cb.op_state == NRFX_PDM_STATE_STARTING)
-            {
-                evt.buffer_released = 0;
-                m_cb.op_state = NRFX_PDM_STATE_RUNNING;
-            }
-            else
-            {
-                evt.buffer_released = m_cb.buff_address[finished_buffer];
-                m_cb.buff_address[finished_buffer] = 0;
-                m_cb.active_buffer = next_buffer;
-            }
-            evt.buffer_requested = true;
-            m_cb.event_handler(&evt);
-        }
-        else
-        {
-            // No next buffer available. Report an error.
-            // Do not request the new buffer as it was already done.
-            if (m_cb.error == 0)
-            {
-                nrfx_pdm_evt_t const evt = {
-                    .buffer_requested = false,
-                    .buffer_released  = NULL,
-                    .error = NRFX_PDM_ERROR_OVERFLOW
-                };
-                m_cb.error = 1;
-                m_cb.event_handler(&evt);
-            }
-        }
-
-        if (m_cb.op_state == NRFX_PDM_STATE_STARTING)
-        {
-            m_cb.op_state = NRFX_PDM_STATE_RUNNING;
-        }
+        nrfy_gpio_pin_clear(p_config->clk_pin);
+        nrfy_gpio_cfg_output(p_config->clk_pin);
+        nrfy_gpio_cfg_input(p_config->din_pin, NRF_GPIO_PIN_NOPULL);
     }
-    else if (nrf_pdm_event_check(NRF_PDM0, NRF_PDM_EVENT_STOPPED))
+    if (!p_config->skip_psel_cfg)
     {
-        nrf_pdm_event_clear(NRF_PDM0, NRF_PDM_EVENT_STOPPED);
-        NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_PDM_EVENT_STOPPED));
-        nrf_pdm_disable(NRF_PDM0);
-        m_cb.op_state = NRFX_PDM_STATE_IDLE;
-
-        // Release the buffers.
-        nrfx_pdm_evt_t evt;
-        evt.error = NRFX_PDM_NO_ERROR;
-        evt.buffer_requested = false;
-        if (m_cb.buff_address[m_cb.active_buffer])
-        {
-            evt.buffer_released = m_cb.buff_address[m_cb.active_buffer];
-            m_cb.buff_address[m_cb.active_buffer] = 0;
-            m_cb.event_handler(&evt);
-        }
-
-        uint8_t second_buffer = (~m_cb.active_buffer) & 0x01;
-        if (m_cb.buff_address[second_buffer])
-        {
-            evt.buffer_released = m_cb.buff_address[second_buffer];
-            m_cb.buff_address[second_buffer] = 0;
-            m_cb.event_handler(&evt);
-        }
-        m_cb.active_buffer = 0;
+        nrf_pdm_psel_connect(NRF_PDM0,
+                             p_config->clk_pin,
+                             p_config->din_pin);
     }
 
-    if (m_cb.irq_buff_request)
+    nrfy_pdm_config_t nrfy_config =
     {
-        nrfx_pdm_evt_t const evt =
+        .mode        = p_config->mode,
+        .edge        = p_config->edge,
+        .pins =
         {
-            .buffer_requested = true,
-            .buffer_released  = NULL,
-            .error = NRFX_PDM_NO_ERROR,
-        };
-        m_cb.irq_buff_request = 0;
-        m_cb.event_handler(&evt);
-    }
+            .clk_pin = p_config->clk_pin,
+            .din_pin = p_config->din_pin,
+        },
+        .clock_freq  = p_config->clock_freq,
+        .gain_l      = p_config->gain_l,
+        .gain_r      = p_config->gain_r,
+        NRFX_COND_CODE_1(NRF_PDM_HAS_RATIO_CONFIG, (.ratio = p_config->ratio,), ())
+        NRFX_COND_CODE_1(NRF_PDM_HAS_MCLKCONFIG, (.mclksrc = p_config->mclksrc,), ())
+        .skip_psel_cfg = p_config->skip_psel_cfg
+    };
+
+    nrfy_pdm_periph_configure(NRF_PDM0, &nrfy_config);
+
+    nrfy_pdm_int_init(NRF_PDM0,
+                      NRF_PDM_INT_STARTED | NRF_PDM_INT_STOPPED,
+                      p_config->interrupt_priority,
+                      true);
 }
-
 
 nrfx_err_t nrfx_pdm_init(nrfx_pdm_config_t const * p_config,
                          nrfx_pdm_event_handler_t  event_handler)
@@ -186,52 +130,29 @@ nrfx_err_t nrfx_pdm_init(nrfx_pdm_config_t const * p_config,
         return err_code;
     }
 
-    if (p_config->gain_l > NRF_PDM_GAIN_MAXIMUM ||
-        p_config->gain_r > NRF_PDM_GAIN_MAXIMUM)
-    {
-        err_code = NRFX_ERROR_INVALID_PARAM;
-        NRFX_LOG_WARNING("Function: %s, error code: %s.",
-                         __func__,
-                         NRFX_LOG_ERROR_STRING_GET(err_code));
-        return err_code;
-    }
-
     m_cb.buff_address[0] = 0;
     m_cb.buff_address[1] = 0;
     m_cb.active_buffer = 0;
     m_cb.error = 0;
     m_cb.event_handler = event_handler;
     m_cb.op_state = NRFX_PDM_STATE_IDLE;
-    m_cb.skip_gpio_cfg = p_config->skip_gpio_cfg;
 
-#if NRF_PDM_HAS_RATIO_CONFIG
-    nrf_pdm_ratio_set(NRF_PDM0, p_config->ratio);
-#endif
-
-#if NRF_PDM_HAS_MCLKCONFIG
-    nrf_pdm_mclksrc_configure(NRF_PDM0, p_config->mclksrc);
-#endif
-    nrf_pdm_clock_set(NRF_PDM0, p_config->clock_freq);
-    nrf_pdm_mode_set(NRF_PDM0, p_config->mode, p_config->edge);
-    nrf_pdm_gain_set(NRF_PDM0, p_config->gain_l, p_config->gain_r);
-
-    if (!p_config->skip_gpio_cfg)
+    if (p_config)
     {
-        nrf_gpio_pin_clear(p_config->pin_clk);
-        nrf_gpio_cfg_output(p_config->pin_clk);
-        nrf_gpio_cfg_input(p_config->pin_din, NRF_GPIO_PIN_NOPULL);
-    }
-    if (!p_config->skip_psel_cfg)
-    {
-        nrf_pdm_psel_connect(NRF_PDM0, p_config->pin_clk, p_config->pin_din);
+        m_cb.skip_gpio_cfg = p_config->skip_gpio_cfg;
+
+        if (p_config->gain_l > NRF_PDM_GAIN_MAXIMUM ||
+            p_config->gain_r > NRF_PDM_GAIN_MAXIMUM)
+        {
+            err_code = NRFX_ERROR_INVALID_PARAM;
+            NRFX_LOG_WARNING("Function: %s, error code: %s.",
+                             __func__,
+                             NRFX_LOG_ERROR_STRING_GET(err_code));
+            return err_code;
+        }
+        pdm_configure(p_config);
     }
 
-    nrf_pdm_event_clear(NRF_PDM0, NRF_PDM_EVENT_STARTED);
-    nrf_pdm_event_clear(NRF_PDM0, NRF_PDM_EVENT_END);
-    nrf_pdm_event_clear(NRF_PDM0, NRF_PDM_EVENT_STOPPED);
-    nrf_pdm_int_enable(NRF_PDM0, NRF_PDM_INT_STARTED | NRF_PDM_INT_STOPPED);
-    NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number(NRF_PDM0), p_config->interrupt_priority);
-    NRFX_IRQ_ENABLE(nrfx_get_irq_number(NRF_PDM0));
     m_cb.drv_state = NRFX_DRV_STATE_INITIALIZED;
 
     err_code = NRFX_SUCCESS;
@@ -241,14 +162,41 @@ nrfx_err_t nrfx_pdm_init(nrfx_pdm_config_t const * p_config,
     return err_code;
 }
 
+nrfx_err_t nrfx_pdm_reconfigure(nrfx_pdm_config_t const * p_config)
+{
+    NRFX_ASSERT(p_config);
+    if (m_cb.drv_state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return NRFX_ERROR_INVALID_STATE;
+    }
+
+    if (p_config->gain_l > NRF_PDM_GAIN_MAXIMUM ||
+        p_config->gain_r > NRF_PDM_GAIN_MAXIMUM)
+    {
+        return NRFX_ERROR_INVALID_PARAM;
+    }
+
+    if (m_cb.op_state != NRFX_PDM_STATE_IDLE)
+    {
+        return NRFX_ERROR_BUSY;
+    }
+    nrfy_pdm_disable(NRF_PDM0);
+    pdm_configure(p_config);
+    nrfy_pdm_enable(NRF_PDM0);
+    return NRFX_SUCCESS;
+}
+
 void nrfx_pdm_uninit(void)
 {
-    nrf_pdm_disable(NRF_PDM0);
+    nrfy_pdm_int_uninit(NRF_PDM0);
+    nrfy_pdm_disable(NRF_PDM0);
 
     if (!m_cb.skip_gpio_cfg)
     {
-        nrf_gpio_cfg_default(nrf_pdm_clk_pin_get(NRF_PDM0));
-        nrf_gpio_cfg_default(nrf_pdm_din_pin_get(NRF_PDM0));
+        nrfy_pdm_pins_t pins;
+        nrfy_pdm_pins_get(NRF_PDM0, &pins);
+        nrfy_gpio_cfg_default(pins.clk_pin);
+        nrfy_gpio_cfg_default(pins.din_pin);
     }
 
     m_cb.drv_state = NRFX_DRV_STATE_UNINITIALIZED;
@@ -258,15 +206,14 @@ void nrfx_pdm_uninit(void)
 static void pdm_start()
 {
     m_cb.drv_state = NRFX_DRV_STATE_POWERED_ON;
-    nrf_pdm_enable(NRF_PDM0);
-    nrf_pdm_event_clear(NRF_PDM0, NRF_PDM_EVENT_STARTED);
-    nrf_pdm_task_trigger(NRF_PDM0, NRF_PDM_TASK_START);
+    nrfy_pdm_enable(NRF_PDM0);
+    nrfy_pdm_start(NRF_PDM0, NULL);
 }
 
 static void pdm_buf_request()
 {
     m_cb.irq_buff_request = 1;
-    NRFX_IRQ_PENDING_SET(nrfx_get_irq_number(NRF_PDM0));
+    NRFY_IRQ_PENDING_SET(nrfx_get_irq_number(NRF_PDM0));
 }
 
 nrfx_err_t nrfx_pdm_start(void)
@@ -319,7 +266,7 @@ nrfx_err_t nrfx_pdm_buffer_set(int16_t * buffer, uint16_t buffer_length)
     nrfx_err_t err_code = NRFX_SUCCESS;
 
     // Enter the PDM critical section.
-    NRFX_IRQ_DISABLE(nrfx_get_irq_number(NRF_PDM0));
+    NRFY_IRQ_DISABLE(nrfx_get_irq_number(NRF_PDM0));
 
     uint8_t next_buffer = (~m_cb.active_buffer) & 0x01;
     if (m_cb.op_state == NRFX_PDM_STATE_STARTING)
@@ -336,7 +283,13 @@ nrfx_err_t nrfx_pdm_buffer_set(int16_t * buffer, uint16_t buffer_length)
     {
         m_cb.buff_address[next_buffer] = buffer;
         m_cb.buff_length[next_buffer] = buffer_length;
-        nrf_pdm_buffer_set(NRF_PDM0, (uint32_t *)buffer, buffer_length);
+
+        nrfy_pdm_buffer_t nrfy_buffer =
+        {
+            .p_buff = buffer,
+            .length = buffer_length,
+        };
+        nrfy_pdm_buffer_set(NRF_PDM0, &nrfy_buffer);
 
         if (m_cb.drv_state != NRFX_DRV_STATE_POWERED_ON)
         {
@@ -344,7 +297,7 @@ nrfx_err_t nrfx_pdm_buffer_set(int16_t * buffer, uint16_t buffer_length)
         }
     }
 
-    NRFX_IRQ_ENABLE(nrfx_get_irq_number(NRF_PDM0));
+    NRFY_IRQ_ENABLE(nrfx_get_irq_number(NRF_PDM0));
     return err_code;
 }
 
@@ -358,7 +311,7 @@ nrfx_err_t nrfx_pdm_stop(void)
         if (m_cb.op_state == NRFX_PDM_STATE_IDLE ||
             m_cb.op_state == NRFX_PDM_STATE_STARTING)
         {
-            nrf_pdm_disable(NRF_PDM0);
+            nrfy_pdm_disable(NRF_PDM0);
             m_cb.op_state = NRFX_PDM_STATE_IDLE;
             err_code = NRFX_SUCCESS;
             NRFX_LOG_INFO("Function: %s, error code: %s.",
@@ -375,10 +328,114 @@ nrfx_err_t nrfx_pdm_stop(void)
     m_cb.drv_state = NRFX_DRV_STATE_INITIALIZED;
     m_cb.op_state = NRFX_PDM_STATE_STOPPING;
 
-    nrf_pdm_task_trigger(NRF_PDM0, NRF_PDM_TASK_STOP);
+    nrfy_pdm_abort(NRF_PDM0, NULL);
     err_code = NRFX_SUCCESS;
     NRFX_LOG_INFO("Function: %s, error code: %s.", __func__, NRFX_LOG_ERROR_STRING_GET(err_code));
     return err_code;
+}
+
+void nrfx_pdm_irq_handler(void)
+{
+    nrfy_pdm_buffer_t buffer =
+    {
+        .p_buff = m_cb.buff_address[m_cb.active_buffer],
+        .length = m_cb.buff_length[m_cb.active_buffer],
+    };
+
+    uint32_t evt_mask = nrfy_pdm_events_process(NRF_PDM0,
+                                                NRFY_EVENT_TO_INT_BITMASK(NRF_PDM_EVENT_STARTED) |
+                                                NRFY_EVENT_TO_INT_BITMASK(NRF_PDM_EVENT_STOPPED),
+                                                &buffer);
+
+    if (evt_mask & NRFY_EVENT_TO_INT_BITMASK(NRF_PDM_EVENT_STARTED))
+    {
+        NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_PDM_EVENT_STARTED));
+
+        uint8_t finished_buffer = m_cb.active_buffer;
+
+        // Check if the next buffer was set before.
+        uint8_t next_buffer = (~m_cb.active_buffer) & 0x01;
+        if (m_cb.buff_address[next_buffer] ||
+            m_cb.op_state == NRFX_PDM_STATE_STARTING)
+        {
+            nrfx_pdm_evt_t evt;
+            evt.error = NRFX_PDM_NO_ERROR;
+            m_cb.error = 0;
+
+            // Release the full buffer if ready and request the next one.
+            if (m_cb.op_state == NRFX_PDM_STATE_STARTING)
+            {
+                evt.buffer_released = 0;
+                m_cb.op_state = NRFX_PDM_STATE_RUNNING;
+            }
+            else
+            {
+                evt.buffer_released = m_cb.buff_address[finished_buffer];
+                m_cb.buff_address[finished_buffer] = 0;
+                m_cb.active_buffer = next_buffer;
+            }
+            evt.buffer_requested = true;
+            m_cb.event_handler(&evt);
+        }
+        else
+        {
+            // No next buffer available. Report an error.
+            // Do not request the new buffer as it was already done.
+            if (m_cb.error == 0)
+            {
+                nrfx_pdm_evt_t const evt = {
+                    .buffer_requested = false,
+                    .buffer_released  = NULL,
+                    .error = NRFX_PDM_ERROR_OVERFLOW
+                };
+                m_cb.error = 1;
+                m_cb.event_handler(&evt);
+            }
+        }
+
+        if (m_cb.op_state == NRFX_PDM_STATE_STARTING)
+        {
+            m_cb.op_state = NRFX_PDM_STATE_RUNNING;
+        }
+    }
+    else if (evt_mask & NRFY_EVENT_TO_INT_BITMASK(NRF_PDM_EVENT_STOPPED))
+    {
+        NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_PDM_EVENT_STOPPED));
+        nrfy_pdm_disable(NRF_PDM0);
+        m_cb.op_state = NRFX_PDM_STATE_IDLE;
+
+        // Release the buffers.
+        nrfx_pdm_evt_t evt;
+        evt.error = NRFX_PDM_NO_ERROR;
+        evt.buffer_requested = false;
+        if (m_cb.buff_address[m_cb.active_buffer])
+        {
+            evt.buffer_released = m_cb.buff_address[m_cb.active_buffer];
+            m_cb.buff_address[m_cb.active_buffer] = 0;
+            m_cb.event_handler(&evt);
+        }
+
+        uint8_t second_buffer = (~m_cb.active_buffer) & 0x01;
+        if (m_cb.buff_address[second_buffer])
+        {
+            evt.buffer_released = m_cb.buff_address[second_buffer];
+            m_cb.buff_address[second_buffer] = 0;
+            m_cb.event_handler(&evt);
+        }
+        m_cb.active_buffer = 0;
+    }
+
+    if (m_cb.irq_buff_request)
+    {
+        nrfx_pdm_evt_t const evt =
+        {
+            .buffer_requested = true,
+            .buffer_released  = NULL,
+            .error = NRFX_PDM_NO_ERROR,
+        };
+        m_cb.irq_buff_request = 0;
+        m_cb.event_handler(&evt);
+    }
 }
 
 #endif // NRFX_CHECK(NRFX_PDM_ENABLED)

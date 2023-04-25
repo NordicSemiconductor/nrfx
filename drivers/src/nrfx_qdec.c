@@ -36,7 +36,12 @@
 #if NRFX_CHECK(NRFX_QDEC_ENABLED)
 
 #include <nrfx_qdec.h>
-#include <hal/nrf_gpio.h>
+
+#if !NRFX_FEATURE_PRESENT(NRFX_QDEC, _ENABLED)
+#error "No enabled QDEC instances. Check <nrfx_config.h>."
+#endif
+
+#include <haly/nrfy_gpio.h>
 
 #define NRFX_LOG_MODULE QDEC
 #include <nrfx_log.h>
@@ -47,58 +52,75 @@
     (event == NRF_QDEC_EVENT_ACCOF     ? "NRF_QDEC_EVENT_ACCOF"     : \
                                          "UNKNOWN EVENT")))
 
-
-static nrfx_qdec_event_handler_t m_qdec_event_handler = NULL;
-static nrfx_drv_state_t m_state = NRFX_DRV_STATE_UNINITIALIZED;
-static bool m_skip_gpio_cfg;
-
-void nrfx_qdec_irq_handler(void)
+// Control block - driver instance local data.
+typedef struct
 {
-    nrfx_qdec_event_t event;
-    if ( nrf_qdec_event_check(NRF_QDEC, NRF_QDEC_EVENT_SAMPLERDY) &&
-         nrf_qdec_int_enable_check(NRF_QDEC, NRF_QDEC_INT_SAMPLERDY_MASK) )
-    {
-        nrf_qdec_event_clear(NRF_QDEC, NRF_QDEC_EVENT_SAMPLERDY);
-        NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_QDEC_EVENT_SAMPLERDY));
+    nrfx_drv_state_t          state;
+    bool                      skip_gpio_cfg;
+    nrfx_qdec_event_handler_t handler;
+    void *                    p_context;
+} qdec_control_block_t;
 
-        event.type = NRF_QDEC_EVENT_SAMPLERDY;
-        event.data.sample.value = (int8_t)nrf_qdec_sample_get(NRF_QDEC);
-        m_qdec_event_handler(event);
+static qdec_control_block_t m_cb[NRFX_QDEC_ENABLED_COUNT];
+
+static void qdec_configure(nrfx_qdec_t const *        p_instance,
+                           nrfx_qdec_config_t const * p_config)
+{
+    if (!p_config->skip_gpio_cfg)
+    {
+        nrfy_gpio_cfg_input(p_config->psela, NRF_GPIO_PIN_NOPULL);
+        nrfy_gpio_cfg_input(p_config->pselb, NRF_GPIO_PIN_NOPULL);
+        if (p_config->pselled != NRF_QDEC_PIN_NOT_CONNECTED)
+        {
+            nrfy_gpio_cfg_input(p_config->pselled, NRF_GPIO_PIN_NOPULL);
+        }
     }
 
-    if ( nrf_qdec_event_check(NRF_QDEC, NRF_QDEC_EVENT_REPORTRDY) &&
-         nrf_qdec_int_enable_check(NRF_QDEC, NRF_QDEC_INT_REPORTRDY_MASK) )
+    nrfy_qdec_config_t nrfy_config =
     {
-        nrf_qdec_event_clear(NRF_QDEC, NRF_QDEC_EVENT_REPORTRDY);
-        NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_QDEC_EVENT_REPORTRDY));
+        .reportper = p_config->reportper,
+        .sampleper = p_config->sampleper,
+        .pins = {
+            .a_pin   = p_config->psela,
+            .b_pin   = p_config->pselb,
+            .led_pin = p_config->pselled
+        },
+        .ledpre    = p_config->ledpre,
+        .ledpol    = p_config->ledpol,
+        .dbfen     = p_config->dbfen,
+        .skip_psel_cfg = p_config->skip_psel_cfg
+    };
 
-        event.type = NRF_QDEC_EVENT_REPORTRDY;
+    nrfy_qdec_periph_configure(p_instance->p_reg, &nrfy_config);
+    nrfy_qdec_shorts_enable(p_instance->p_reg, NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK);
 
-        event.data.report.acc    = (int16_t)nrf_qdec_accread_get(NRF_QDEC);
-        event.data.report.accdbl = (uint16_t)nrf_qdec_accdblread_get(NRF_QDEC);
-        m_qdec_event_handler(event);
-    }
+    uint32_t int_mask = NRF_QDEC_INT_ACCOF_MASK;
 
-    if ( nrf_qdec_event_check(NRF_QDEC, NRF_QDEC_EVENT_ACCOF) &&
-         nrf_qdec_int_enable_check(NRF_QDEC, NRF_QDEC_INT_ACCOF_MASK) )
+    if (p_config->reportper_inten)
     {
-        nrf_qdec_event_clear(NRF_QDEC, NRF_QDEC_EVENT_ACCOF);
-        NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_QDEC_EVENT_ACCOF));
-
-        event.type = NRF_QDEC_EVENT_ACCOF;
-        m_qdec_event_handler(event);
+        int_mask |= NRF_QDEC_INT_REPORTRDY_MASK;
     }
+    if (p_config->sample_inten)
+    {
+        int_mask |= NRF_QDEC_INT_SAMPLERDY_MASK;
+    }
+    nrfy_qdec_int_init(p_instance->p_reg, int_mask, p_config->interrupt_priority, true);
 }
 
-
-nrfx_err_t nrfx_qdec_init(nrfx_qdec_config_t const * p_config,
-                          nrfx_qdec_event_handler_t  event_handler)
+nrfx_err_t nrfx_qdec_init(nrfx_qdec_t const *        p_instance,
+                          nrfx_qdec_config_t const * p_config,
+                          nrfx_qdec_event_handler_t  handler,
+                          void *                     p_context)
 {
+    NRFX_ASSERT(p_instance);
     NRFX_ASSERT(p_config);
-    NRFX_ASSERT(event_handler);
+    NRFX_ASSERT(handler);
+
+    qdec_control_block_t * const p_cb = &m_cb[p_instance->drv_inst_idx];
+
     nrfx_err_t err_code;
 
-    if (m_state != NRFX_DRV_STATE_UNINITIALIZED)
+    if (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED)
     {
         err_code = NRFX_ERROR_INVALID_STATE;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -107,120 +129,154 @@ nrfx_err_t nrfx_qdec_init(nrfx_qdec_config_t const * p_config,
         return err_code;
     }
 
-    m_qdec_event_handler = event_handler;
-    m_skip_gpio_cfg = p_config->skip_gpio_cfg;
+    p_cb->handler = handler;
+    p_cb->p_context = p_context;
 
-    if (!p_config->skip_gpio_cfg)
+    if (p_config)
     {
-        nrf_gpio_cfg_input(p_config->psela, NRF_GPIO_PIN_NOPULL);
-        nrf_gpio_cfg_input(p_config->pselb, NRF_GPIO_PIN_NOPULL);
-        if (p_config->pselled != NRF_QDEC_LED_NOT_CONNECTED)
-        {
-            nrf_gpio_cfg_input(p_config->pselled, NRF_GPIO_PIN_NOPULL);
-        }
-    }
-    if (!p_config->skip_psel_cfg)
-    {
-        nrf_qdec_pins_set(NRF_QDEC, p_config->psela, p_config->pselb, p_config->pselled);
+        p_cb->skip_gpio_cfg = p_config->skip_gpio_cfg;
+        qdec_configure(p_instance, p_config);
     }
 
-    nrf_qdec_sampleper_set(NRF_QDEC, p_config->sampleper);
-    // Change the period and polarity of the LED only when it is used,
-    // otherwise the ledpre field might have an invalid value.
-    if (nrf_qdec_led_pin_get(NRF_QDEC) != NRF_QDEC_LED_NOT_CONNECTED)
-    {
-        nrf_qdec_ledpre_set(NRF_QDEC, p_config->ledpre);
-        nrf_qdec_ledpol_set(NRF_QDEC, p_config->ledpol);
-    }
-
-    if (p_config->dbfen)
-    {
-        nrf_qdec_dbfen_enable(NRF_QDEC);
-    }
-    else
-    {
-        nrf_qdec_dbfen_disable(NRF_QDEC);
-    }
-
-    uint32_t int_mask = NRF_QDEC_INT_ACCOF_MASK;
-
-    if (p_config->reportper != NRF_QDEC_REPORTPER_DISABLED)
-    {
-        nrf_qdec_shorts_enable(NRF_QDEC, NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK);
-        nrf_qdec_reportper_set(NRF_QDEC, p_config->reportper);
-        int_mask |= NRF_QDEC_INT_REPORTRDY_MASK;
-    }
-
-    if (p_config->sample_inten)
-    {
-        int_mask |= NRF_QDEC_INT_SAMPLERDY_MASK;
-    }
-
-    nrf_qdec_int_enable(NRF_QDEC, int_mask);
-    NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number(NRF_QDEC), p_config->interrupt_priority);
-    NRFX_IRQ_ENABLE(nrfx_get_irq_number(NRF_QDEC));
-
-    m_state = NRFX_DRV_STATE_INITIALIZED;
+    p_cb->state = NRFX_DRV_STATE_INITIALIZED;
 
     err_code = NRFX_SUCCESS;
     NRFX_LOG_INFO("Function: %s, error code: %s.", __func__, NRFX_LOG_ERROR_STRING_GET(err_code));
     return err_code;
 }
 
-void nrfx_qdec_uninit(void)
+nrfx_err_t nrfx_qdec_reconfigure(nrfx_qdec_t const *        p_instance,
+                                 nrfx_qdec_config_t const * p_config)
 {
-    NRFX_ASSERT(m_state != NRFX_DRV_STATE_UNINITIALIZED);
-    nrfx_qdec_disable();
-    NRFX_IRQ_DISABLE(nrfx_get_irq_number(NRF_QDEC));
+    NRFX_ASSERT(p_config);
+    qdec_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
-    nrf_qdec_shorts_disable(NRF_QDEC, NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK);
-
-    if (!m_skip_gpio_cfg)
+    if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
     {
-        nrf_gpio_cfg_default(nrf_qdec_phase_a_pin_get(NRF_QDEC));
-        nrf_gpio_cfg_default(nrf_qdec_phase_b_pin_get(NRF_QDEC));
+        return NRFX_ERROR_INVALID_STATE;
+    }
+    if (p_cb->state == NRFX_DRV_STATE_POWERED_ON)
+    {
+        return NRFX_ERROR_BUSY;
+    }
+    qdec_configure(p_instance, p_config);
+    nrfy_qdec_enable(p_instance->p_reg);
+    return NRFX_SUCCESS;
+}
 
-        uint32_t led_pin = nrf_qdec_led_pin_get(NRF_QDEC);
-        if (led_pin != NRF_QDEC_LED_NOT_CONNECTED)
+void nrfx_qdec_uninit(nrfx_qdec_t const * p_instance)
+{
+    NRFX_ASSERT(p_instance);
+    qdec_control_block_t * const p_cb = &m_cb[p_instance->drv_inst_idx];
+    nrfy_qdec_pins_t pins;
+
+    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+
+    nrfy_qdec_disable(p_instance->p_reg);
+    nrfy_qdec_int_uninit(p_instance->p_reg);
+
+    nrfy_qdec_shorts_disable(p_instance->p_reg, NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK);
+    if (!p_cb->skip_gpio_cfg)
+    {
+        nrfy_qdec_pins_get(p_instance->p_reg, &pins);
+        nrfy_gpio_cfg_default(pins.a_pin);
+        nrfy_gpio_cfg_default(pins.b_pin);
+
+        uint32_t led_pin = nrfy_qdec_led_pin_get(p_instance->p_reg);
+        if (led_pin != NRF_QDEC_PIN_NOT_CONNECTED)
         {
-            nrf_gpio_cfg_default(led_pin);
+            nrfy_gpio_cfg_default(led_pin);
         }
     }
 
-    m_state = NRFX_DRV_STATE_UNINITIALIZED;
+    p_cb->state = NRFX_DRV_STATE_UNINITIALIZED;
     NRFX_LOG_INFO("Uninitialized.");
 }
 
-void nrfx_qdec_enable(void)
+void nrfx_qdec_enable(nrfx_qdec_t const * p_instance)
 {
-    NRFX_ASSERT(m_state == NRFX_DRV_STATE_INITIALIZED);
-    nrf_qdec_enable(NRF_QDEC);
-    nrf_qdec_task_trigger(NRF_QDEC, NRF_QDEC_TASK_START);
-    m_state = NRFX_DRV_STATE_POWERED_ON;
+    NRFX_ASSERT(p_instance);
+
+    qdec_control_block_t * const p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
+
+    nrfy_qdec_enable(p_instance->p_reg);
+    nrfy_qdec_task_trigger(p_instance->p_reg, NRF_QDEC_TASK_START);
+    p_cb->state = NRFX_DRV_STATE_POWERED_ON;
     NRFX_LOG_INFO("Enabled.");
 }
 
-void nrfx_qdec_disable(void)
+void nrfx_qdec_disable(nrfx_qdec_t const * p_instance)
 {
-    NRFX_ASSERT(m_state == NRFX_DRV_STATE_POWERED_ON);
-    nrf_qdec_task_trigger(NRF_QDEC, NRF_QDEC_TASK_STOP);
-    nrf_qdec_disable(NRF_QDEC);
-    m_state = NRFX_DRV_STATE_INITIALIZED;
+    NRFX_ASSERT(p_instance);
+
+    qdec_control_block_t * const p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
+    nrfy_qdec_task_trigger(p_instance->p_reg, NRF_QDEC_TASK_STOP);
+    nrfy_qdec_disable(p_instance->p_reg);
+    p_cb->state = NRFX_DRV_STATE_INITIALIZED;
     NRFX_LOG_INFO("Disabled.");
 }
 
-void nrfx_qdec_accumulators_read(int16_t * p_acc, int16_t * p_accdbl)
+void nrfx_qdec_accumulators_read(nrfx_qdec_t const * p_instance,
+                                 int32_t *           p_acc,
+                                 uint32_t *          p_accdbl)
 {
-    NRFX_ASSERT(m_state == NRFX_DRV_STATE_POWERED_ON);
-    nrf_qdec_task_trigger(NRF_QDEC, NRF_QDEC_TASK_READCLRACC);
+    NRFX_ASSERT(p_instance);
+    NRFX_ASSERT(p_accdbl);
+    NRFX_ASSERT(p_acc);
+    NRFX_ASSERT(m_cb[p_instance->drv_inst_idx].state == NRFX_DRV_STATE_POWERED_ON);
 
-    *p_acc    = (int16_t)nrf_qdec_accread_get(NRF_QDEC);
-    *p_accdbl = (int16_t)nrf_qdec_accdblread_get(NRF_QDEC);
+    nrfy_qdec_task_trigger(p_instance->p_reg, NRF_QDEC_TASK_READCLRACC);
+    nrfy_qdec_accumulators_read(p_instance->p_reg, p_acc, p_accdbl);
 
     NRFX_LOG_DEBUG("Accumulators data, ACC register:");
     NRFX_LOG_HEXDUMP_DEBUG((uint8_t *)p_acc, sizeof(p_acc[0]));
     NRFX_LOG_DEBUG("Accumulators data, ACCDBL register:");
     NRFX_LOG_HEXDUMP_DEBUG((uint8_t *)p_accdbl, sizeof(p_accdbl[0]));
 }
+
+static void irq_handler(NRF_QDEC_Type * p_qdec, qdec_control_block_t * p_cb)
+{
+    uint32_t evt_to_process;
+    nrfx_qdec_event_t event;
+    uint32_t evt_mask;
+
+    evt_to_process = NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_SAMPLERDY) |
+                     NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_REPORTRDY) |
+                     NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_ACCOF);
+
+    evt_mask = nrfy_qdec_events_process(p_qdec, evt_to_process);
+
+    if (evt_mask & NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_SAMPLERDY))
+    {
+        NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_QDEC_EVENT_SAMPLERDY));
+
+        event.type = NRF_QDEC_EVENT_SAMPLERDY;
+        event.data.sample.value = (int8_t)nrfy_qdec_sample_get(p_qdec);
+        p_cb->handler(event, p_cb->p_context);
+    }
+
+    if (evt_mask & NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_REPORTRDY))
+    {
+        NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_QDEC_EVENT_REPORTRDY));
+
+        event.type = NRF_QDEC_EVENT_REPORTRDY;
+        nrfy_qdec_accumulators_read(p_qdec, &event.data.report.acc, &event.data.report.accdbl);
+        p_cb->handler(event, p_cb->p_context);
+    }
+
+    if (evt_mask & NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_ACCOF))
+    {
+        NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_QDEC_EVENT_ACCOF));
+
+        event.type = NRF_QDEC_EVENT_ACCOF;
+        p_cb->handler(event, p_cb->p_context);
+    }
+}
+
+NRFX_INSTANCE_IRQ_HANDLERS(QDEC, qdec)
 
 #endif // NRFX_CHECK(NRFX_QDEC_ENABLED)

@@ -37,12 +37,27 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <limits.h>
 
 #include <nrf.h>
+#include "nrfx_utils.h"
 #include <nrf_peripherals.h>
+#include "nrfx_ext.h"
 
 #ifdef __cplusplus
 extern "C" {
+#endif
+
+#if defined(__CORTEX_M) || defined(__NRFX_DOXYGEN__)
+#define ISA_ARM     1
+#elif defined(__VPR_REV)
+#define ISA_RISCV   1
+#else
+#define ISA_UNKNOWN 1
+#endif
+
+#if defined(ISA_RISCV)
+#define __STATIC_INLINE static inline
 #endif
 
 #ifndef NRFX_STATIC_INLINE
@@ -52,6 +67,8 @@ extern "C" {
 #define NRFX_STATIC_INLINE __STATIC_INLINE
 #endif
 #endif // NRFX_STATIC_INLINE
+
+#define NRFY_STATIC_INLINE __STATIC_INLINE
 
 #ifndef NRF_STATIC_INLINE
 #ifdef NRF_DECLARE_ONLY
@@ -78,7 +95,28 @@ extern "C" {
  * such warnings only in places where this macro is used for evaluation, not in
  * the whole analyzed code.
  */
-#define NRFX_CHECK(module_enabled)  (module_enabled)
+#define NRFX_CHECK(module_enabled) (module_enabled)
+
+/**
+ * @brief Macro for checking if the configured API version is greater than or equal
+ *        to the specified API version.
+ *
+ * @note API version to be used is configured using following symbols:
+ *       - @ref NRFX_CONFIG_API_VER_MAJOR
+ *       - @ref NRFX_CONFIG_API_VER_MINOR
+ *       - @ref NRFX_CONFIG_API_VER_MICRO
+ *
+ * @param[in] major Major API version.
+ * @param[in] minor Minor API version.
+ * @param[in] micro Micro API version.
+ *
+ * @retval true  Configured API version is greater than or equal to the specified API version.
+ * @retval false Configured API version is smaller than the specified API version.
+ */
+#define NRFX_API_VER_AT_LEAST(major, minor, micro) \
+    ((NRFX_CONFIG_API_VER_MAJOR >= (major)) &&     \
+     (NRFX_CONFIG_API_VER_MINOR >= (minor)) &&     \
+     (NRFX_CONFIG_API_VER_MICRO >= (micro)))
 
 /**
  * @brief Macro for creating unsigned integer with bit position @p x set.
@@ -96,7 +134,16 @@ extern "C" {
  *
  * @return Bit mask.
  */
-#define NRFX_BIT_MASK(x) (NRFX_BIT(x) - 1UL)
+#define NRFX_BIT_MASK(x) (((x) == 32) ? UINT32_MAX : ((1UL << x) - 1))
+
+/**
+ * @brief Macro for returning size in bits for given size in bytes.
+ *
+ * @param[in] x Size in bytes.
+ *
+ * @return Size in bits.
+ */
+#define NRFX_BIT_SIZE(x) ((x) << 3)
 
 /**
  * @brief Macro for concatenating two tokens in macro expansion.
@@ -113,10 +160,10 @@ extern "C" {
  *
  * @sa NRFX_CONCAT_3
  */
-#define NRFX_CONCAT_2(p1, p2)       NRFX_CONCAT_2_(p1, p2)
+#define NRFX_CONCAT_2(p1, p2) NRFX_CONCAT_2_(p1, p2)
 
 /** @brief Internal macro used by @ref NRFX_CONCAT_2 to perform the expansion in two steps. */
-#define NRFX_CONCAT_2_(p1, p2)      p1 ## p2
+#define NRFX_CONCAT_2_(p1, p2) p1 ## p2
 
 /**
  * @brief Macro for concatenating three tokens in macro expansion.
@@ -134,10 +181,10 @@ extern "C" {
  *
  * @sa NRFX_CONCAT_2
  */
-#define NRFX_CONCAT_3(p1, p2, p3)   NRFX_CONCAT_3_(p1, p2, p3)
+#define NRFX_CONCAT_3(p1, p2, p3) NRFX_CONCAT_3_(p1, p2, p3)
 
 /** @brief Internal macro used by @ref NRFX_CONCAT_3 to perform the expansion in two steps. */
-#define NRFX_CONCAT_3_(p1, p2, p3)  p1 ## p2 ## p3
+#define NRFX_CONCAT_3_(p1, p2, p3) p1 ## p2 ## p3
 
 /**
  * @brief Macro for computing the absolute value of an integer number.
@@ -147,6 +194,196 @@ extern "C" {
  * @return Absolute value.
  */
 #define NRFX_ABS(a) ((a) < (0) ? -(a) : (a))
+
+/**
+ * @brief Macro for checking whether any of the instance of the specified peripheral supports a given feature.
+ *
+ * Macro checks flags set in \<device\>_peripherals.h file.
+ *
+ * Macro supports check on instances with following names:
+ * - \<periph_name\>0 - \<periph_name\>255 - e.g. SPIM0, SPIM255
+ * - \<periph_name\>00 - \<periph_name\>099 - e.g. SPIM00, SPIM099
+ * - \<periph_name\>000 - \<periph_name\>009 - e.g. SPIM000, SPIM009
+ *
+ * @param[in] periph_name  Peripheral name, e.g. SPIM.
+ * @param[in] feature_name Feature flag name suffix following an instance name, e.g.
+ *                         _FEATURE_HARDWARE_CSN_PRESENT.
+ *
+ * @retval 1 At least one instance on current device supports a given feature.
+ * @retval 0 None of peripheral instances supports a given feature.
+ */
+#define NRFX_FEATURE_PRESENT(periph_name, feature_name)                                            \
+        NRFX_COND_CODE_0(NRFX_CONCAT(0,                                                            \
+                            _NRFX_FEATURE_PRESENT(periph_name, feature_name, 256),                 \
+                            _NRFX_FEATURE_PRESENT(NRFX_CONCAT(periph_name, 0), feature_name, 100), \
+                            _NRFX_FEATURE_PRESENT(NRFX_CONCAT(periph_name, 00), feature_name, 10)  \
+                         ),                                                                        \
+                        (0), (1))
+
+/**
+ * @brief Macro for resolving provided user macro for enabled instances of a driver.
+ *
+ * Macro checks if driver instances are enabled for all potential instaces of a
+ * peripheral. It takes peripheral name and checks whether NRFX_\<peripheral\>\<id\>_ENABLED
+ * is set to 1 and if yes then provided macro is evaluated for given instance.
+ *
+ * Macro supports check on instances with following names:
+ * - \<periph_name\>0 - \<periph_name\>255 - e.g. SPIM0, SPIM255
+ * - \<periph_name\>00 - \<periph_name\>099 - e.g. SPIM00, SPIM099
+ * - \<periph_name\>000 - \<periph_name\>009 - e.g. SPIM000, SPIM009
+ *
+ * @param[in] periph_name Peripheral name, e.g. SPIM.
+ * @param[in] macro       Macro which is resolved if driver instance is enabled. Macro has following
+ *                        arguments: macro(periph_name, prefix, i, ...).
+ * @param[in] sep         Separator added between all evaluations, in parentheses.
+ * @param[in] off_code    Code injected for disabled instances, in parentheses.
+ */
+#define NRFX_FOREACH_ENABLED(periph_name, macro, sep, off_code, ...)                  \
+        NRFX_LISTIFY(256, _NRFX_EVAL_IF_ENABLED, sep,                                 \
+                     off_code, periph_name, , macro, __VA_ARGS__) NRFX_DEBRACKET sep  \
+        NRFX_LISTIFY(100, _NRFX_EVAL_IF_ENABLED, sep,                                 \
+                     off_code, periph_name, 0, macro, __VA_ARGS__) NRFX_DEBRACKET sep \
+        NRFX_LISTIFY(10, _NRFX_EVAL_IF_ENABLED, sep,                                  \
+                     off_code, periph_name, 00, macro, __VA_ARGS__)
+
+/**
+ * @brief Macro for resolving provided user macro for present instances of a peripheral.
+ *
+ * Macro checks if peripheral instances are present by checking if there is
+ * \<peripheral\>\<id\>_PRESENT define set to 1.
+ *
+ * Macro supports check on instances with following names:
+ * - \<periph_name\>0 - \<periph_name\>255 - e.g. SPIM0, SPIM255
+ * - \<periph_name\>00 - \<periph_name\>099 - e.g. SPIM00, SPIM099
+ * - \<periph_name\>000 - \<periph_name\>009 - e.g. SPIM000, SPIM009
+ * - \<periph_name\> - e.g. SPIM
+ *
+ * @param[in] periph_name Peripheral name, e.g. SPIM.
+ * @param[in] macro       Macro which is resolved if peripheral instance is present.
+ *                        Macro has following arguments: macro(periph_name, prefix, i, ...).
+ * @param[in] sep         Separator added between all evaluations, in parentheses.
+ * @param[in] off_code    Code injected for disabled instances, in parentheses.
+ */
+#define NRFX_FOREACH_PRESENT(periph_name, macro, sep, off_code, ...)                   \
+        NRFX_LISTIFY(256, _NRFX_EVAL_IF_PRESENT, sep,                                  \
+                     off_code, periph_name, , macro, __VA_ARGS__) NRFX_DEBRACKET sep   \
+        NRFX_LISTIFY(100, _NRFX_EVAL_IF_PRESENT, sep,                                  \
+                     off_code, periph_name, 0, macro, __VA_ARGS__) NRFX_DEBRACKET sep  \
+        NRFX_LISTIFY(10, _NRFX_EVAL_IF_PRESENT, sep,                                   \
+                     off_code, periph_name, 00, macro, __VA_ARGS__) NRFX_DEBRACKET sep \
+        _NRFX_EVAL_IF_PRESENT(, off_code, periph_name, , macro, __VA_ARGS__)
+
+/**
+ * @brief Macro for resolving provided user macro on concatenated peripheral name
+ *        and instance index.
+ *
+ * Execute provided macro with single argument <instance\>
+ * that is the concatenation of @p periph_name, @p prefix and @p i.
+ *
+ * @param[in] i           Instance index.
+ * @param[in] periph_name Peripheral name, e.g. SPIM.
+ * @param[in] prefix      Prefix added before instance index, e.g. some device has
+ *                        instances named like SPIM00. First 0 is passed here as prefix.
+ * @param[in] macro       Macro which is executed.
+ * @param[in] ...         Variable length arguments passed to the @p macro. Macro has following
+ *                        arguments: macro(instance, ...).
+ */
+#define NRFX_INSTANCE_CONCAT(periph_name, prefix, i, macro, ...) \
+      macro(NRFX_CONCAT(periph_name, prefix, i), __VA_ARGS__)
+
+/**
+ * @brief Macro for creating a content for enum which is listing enabled driver instances.
+ *
+ * It creates comma separated list of entries like NRFX_\<instance_name\>_INST_IDX,
+ * e.g. (NRFX_SPIM0_INST_IDX) for all enabled instances (NRFX_\<instance_name\>_ENABLED
+ * is set to 1). It should be called within enum declaration. Created enum is used
+ * by the driver to index all enabled instances of the driver.
+ *
+ * @param[in] periph_name Peripheral name (e.g. SPIM).
+ */
+#define NRFX_INSTANCE_ENUM_LIST(periph_name) \
+        NRFX_FOREACH_ENABLED(periph_name, _NRFX_INST_ENUM, (), ())
+
+/**
+ * @brief Macro for creating an interrupt handler for all enabled driver instances.
+ *
+ * Macro creates a set of functions which calls generic @p irq_handler function with two parameters:
+ * - peripheral instance register pointer
+ * - pointer to a control block structure associated with the given instance
+ *
+ * Generic interrupt handler function with above mentioned parameters named @p irq_handler
+ * must be implemented in the driver.
+ *
+ * @note Handlers are using enum which should be generated using @ref NRFX_INSTANCE_ENUM_LIST.
+ *
+ * @param[in] periph_name       Peripheral name, e.g. SPIM.
+ * @param[in] periph_name_small Peripheral name written with small letters, e.g. spim.
+ */
+#define NRFX_INSTANCE_IRQ_HANDLERS(periph_name, periph_name_small) \
+    NRFX_FOREACH_ENABLED(periph_name, _NRFX_IRQ_HANDLER, (), (), periph_name_small)
+
+/**
+ * @brief Macro for creating an interrupt handler for all enabled driver instances
+ *        with the specified extra parameter.
+ *
+ * Macro creates set of function which calls generic @p irq_handler function with three parameters:
+ * - peripheral instance register pointer
+ * - pointer to a control block structure associated with the given instance
+ * - provided @p ext_macro called with peripheral name suffix (e.g. 01 for TIMER01)
+ *
+ * Generic interrupt handler function with above mentioned parameters named @p irq_handler
+ * must be implemented in the driver.
+ *
+ * @note Handlers are using enum which should be generated using @ref NRFX_INSTANCE_ENUM_LIST.
+ *
+ * @param[in] periph_name       Peripheral name, e.g. SPIM.
+ * @param[in] periph_name_small Peripheral name written with small letters, e.g. rtc.
+ * @param[in] ext_macro         External macro to be executed for each instance.
+ */
+#define NRFX_INSTANCE_IRQ_HANDLERS_EXT(periph_name, periph_name_small, ext_macro) \
+    NRFX_FOREACH_ENABLED(periph_name, _NRFX_IRQ_HANDLER_EXT, (), (), periph_name_small, ext_macro)
+
+/**
+ * @brief Macro for declaring an interrupt handler for all enabled driver instances.
+ *
+ * Macro creates set of function declarations. It is intended to be used in the driver header.
+ *
+ * @param[in] periph_name       Peripheral name, e.g. SPIM.
+ * @param[in] periph_name_small Peripheral name written with small letters, e.g. spim.
+ */
+#define NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(periph_name, periph_name_small) \
+    NRFX_FOREACH_ENABLED(periph_name, _NRFX_IRQ_HANDLER_DECLARE, (), (), periph_name_small)
+
+/**
+ * @brief Macro for generating comma-separated list of interrupt handlers for all
+ *        enabled driver instances.
+ *
+ * Interrupt handlers are generated using @ref NRFX_INSTANCE_IRQ_HANDLERS.
+ * It is intended to be used to create a list which is used for passing an interrupt
+ * handler function to the PRS driver.
+ *
+ * @param[in] periph_name       Peripheral name, e.g. SPIM.
+ * @param[in] periph_name_small Peripheral name written with small letters, e.g. spim.
+ */
+#define NRFX_INSTANCE_IRQ_HANDLERS_LIST(periph_name, periph_name_small) \
+    NRFX_FOREACH_ENABLED(periph_name, _NRFX_IRQ_HANDLER_LIST, (), (), periph_name_small)
+
+/**
+ * @brief Macro for checking if given peripheral instance is present on the target.
+ *
+ * Macro utilizes the fact that for each existing instance a define is created which points to
+ * the memory mapped register set casted to a register set structure. It is wrapped in parenthesis
+ * and existance of parethesis wrapping is used to determine if instance exists. It if does not
+ * exist then token (e.g. NRF_SPIM10) is undefined so it does not have parenthesis wrapping.
+ *
+ * Since macro returns literal 1 it can be used by other macros.
+ *
+ * @param[in] _inst Instance, .e.g SPIM10.
+ *
+ * @retval 1 If instance is present.
+ * @retval 0 If instance is not present.
+ */
+#define NRFX_INSTANCE_PRESENT(_inst) NRFX_ARG_HAS_PARENTHESIS(NRFX_CONCAT(NRF_, _inst))
 
 /**
  * @brief Macro for getting the smaller value between two arguments.
@@ -191,7 +428,7 @@ extern "C" {
  *
  * @return Integer result of dividing @c a by @c b, rounded up.
  */
-#define NRFX_CEIL_DIV(a, b)  ((((a) - 1) / (b)) + 1)
+#define NRFX_CEIL_DIV(a, b) ((((a) - 1) / (b)) + 1)
 
 /**
  * @brief Macro for getting the number of elements in an array.
@@ -211,7 +448,27 @@ extern "C" {
  *
  * @return Member offset in bytes.
  */
-#define NRFX_OFFSETOF(type, member)  ((size_t)&(((type *)0)->member))
+#define NRFX_OFFSETOF(type, member) ((size_t) & (((type *)0)->member))
+
+/**
+ * @brief Macro for checking whether given number is power of 2.
+ *
+ * @param[in] val Tested value.
+ *
+ * @retval true  The value is power of 2.
+ * @retval false The value is not power of 2.
+ */
+#define NRFX_IS_POWER_OF_TWO(val) (((val) != 0) && ((val) & ((val) - 1)) == 0)
+
+/**
+ * @brief Macro for checking whether a given number is even.
+ *
+ * @param[in] val Tested value.
+ *
+ * @retval true  The value is even.
+ * @retval false The value is odd.
+ */
+#define NRFX_IS_EVEN(val) (((val) % 2)  == 0)
 
 /**
  * @brief Macro for checking if given lengths of EasyDMA transfers do not exceed
@@ -262,7 +519,7 @@ do {                                                         \
  *
  * @return ID number associated with the specified peripheral.
  */
-#define NRFX_PERIPHERAL_ID_GET(base_addr)  (uint8_t)((uint32_t)(base_addr) >> 12)
+#define NRFX_PERIPHERAL_ID_GET(base_addr) (uint16_t)(((uint32_t)(base_addr) >> 12) & 0x000001FF)
 
 /**
  * @brief Macro for getting the interrupt number assigned to a specific
@@ -276,7 +533,25 @@ do {                                                         \
  *
  * @return Interrupt number associated with the specified peripheral.
  */
-#define NRFX_IRQ_NUMBER_GET(base_addr)  NRFX_PERIPHERAL_ID_GET(base_addr)
+#define NRFX_IRQ_NUMBER_GET(base_addr) NRFX_PERIPHERAL_ID_GET(base_addr)
+
+/**
+ * @brief Macro for converting frequency in kHz to Hz.
+ *
+ * @param[in] freq Frequency value in kHz.
+ *
+ * @return Number of Hz in @p freq kHz.
+ */
+#define NRFX_KHZ_TO_HZ(freq) ((freq) * 1000)
+
+/**
+ * @brief Macro for converting frequency in MHz to Hz.
+ *
+ * @param[in] freq Frequency value in MHz.
+ *
+ * @return Number of Hz in @p freq MHz.
+ */
+#define NRFX_MHZ_TO_HZ(freq) ((freq) * 1000 * 1000)
 
 /** @brief IRQ handler type. */
 typedef void (* nrfx_irq_handler_t)(void);
@@ -288,7 +563,6 @@ typedef enum
     NRFX_DRV_STATE_INITIALIZED,   ///< Initialized but powered off.
     NRFX_DRV_STATE_POWERED_ON,    ///< Initialized and powered on.
 } nrfx_drv_state_t;
-
 
 /**
  * @brief Function for checking if an object is placed in the Data RAM region.
@@ -358,7 +632,6 @@ NRF_STATIC_INLINE uint32_t nrfx_bitpos_to_event(uint32_t bit);
  * @sa nrfx_bitpos_to_event
  */
 NRF_STATIC_INLINE uint32_t nrfx_event_to_bitpos(uint32_t event);
-
 
 #ifndef NRF_DECLARE_ONLY
 

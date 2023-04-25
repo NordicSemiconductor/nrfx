@@ -113,8 +113,8 @@ extern "C" {
 // RTC1_IRQn
 #define nrfx_rtc_1_irq_handler      RTC1_IRQHandler
 
-// QDEC_IRQn
-#define nrfx_qdec_irq_handler       QDEC_IRQHandler
+// QDEC0_IRQn
+#define nrfx_qdec_0_irq_handler     QDEC_IRQHandler
 
 // COMP_LPCOMP_IRQn
 #if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_3_ENABLED)
@@ -175,7 +175,7 @@ extern "C" {
 #define nrfx_rtc_2_irq_handler      RTC2_IRQHandler
 
 // I2S_IRQn
-#define nrfx_i2s_irq_handler        I2S_IRQHandler
+#define nrfx_i2s_0_irq_handler      I2S_IRQHandler
 
 // FPU_IRQn
 

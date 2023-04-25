@@ -47,22 +47,104 @@ extern "C" {
  * @brief   Hardware access layer for managing the System Protection Unit (SPU) peripheral.
  */
 
+#if defined(SPU_PERIPH_PERM_OWNERPROG_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of ownership feature. */
+#define NRF_SPU_HAS_OWNERSHIP 1
+#else
+#define NRF_SPU_HAS_OWNERSHIP 0
+#endif
+
+#if defined(SPU_FLASHREGION_PERM_EXECUTE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of memory feature. */
+#define NRF_SPU_HAS_MEMORY 1
+#else
+#define NRF_SPU_HAS_MEMORY 0
+#endif
+
+#if defined(SPU_FEATURE_BELLS_DOMAIN_MaxCount) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SPU uses DOMAIN register name. */
+#define NRF_SPU_HAS_DOMAIN 1
+#else
+#define NRF_SPU_HAS_DOMAIN 0
+#endif
+
+#if NRF_SPU_HAS_OWNERSHIP
+
+/** @brief Number of peripherals. */
+#define NRF_SPU_PERIPH_COUNT                     SPU_PERIPH_MaxCount
+
+/** @brief Number of IPCT channels. */
+#define NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT       SPU_FEATURE_IPCT_CH_MaxCount
+
+/** @brief Number of IPCT interrupts. */
+#define NRF_SPU_FEATURE_IPCT_INTERRUPT_COUNT     SPU_FEATURE_IPCT_INTERRUPT_MaxCount
+
+/** @brief Number of DPPI channels. */
+#define NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT       SPU_FEATURE_DPPIC_CH_MaxCount
+
+/** @brief Number of DPPI channel groups. */
+#define NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP_COUNT SPU_FEATURE_DPPIC_CHG_MaxCount
+
+/** @brief Number of GPIOTEs. */
+#define NRF_SPU_FEATURE_GPIOTE_COUNT             SPU_FEATURE_GPIOTE_MaxCount
+
+/** @brief Number of GPIOTE channels. */
+#define NRF_SPU_FEATURE_GPIOTE_CHANNEL_COUNT     SPU_FEATURE_GPIOTE_CH_MaxCount
+
+/** @brief Number of GPIOTE interrupts. */
+#define NRF_SPU_FEATURE_GPIOTE_INTERRUPT_COUNT   SPU_FEATURE_GPIOTE_INTERRUPT_MaxCount
+
+/** @brief Number of GPIOs. */
+#define NRF_SPU_FEATURE_GPIO_COUNT               SPU_FEATURE_GPIO_MaxCount
+
+/** @brief Number of GPIO pins. */
+#define NRF_SPU_FEATURE_GPIO_PIN_COUNT           SPU_FEATURE_GPIO_PIN_MaxCount
+
+/** @brief Number of GRTC compare channels. */
+#define NRF_SPU_FEATURE_GRTC_CC_COUNT            SPU_FEATURE_GRTC_CC_MaxCount
+
+/** @brief Number of GRTC interrupts.. */
+#define NRF_SPU_FEATURE_GRTC_INTERRUPT_COUNT     SPU_FEATURE_GRTC_INTERRUPT_MaxCount
+
+/** @brief Number of BELL domains. */
+#if NRF_SPU_HAS_DOMAIN
+#define NRF_SPU_FEATURE_BELL_DOMAIN_COUNT        SPU_FEATURE_BELLS_DOMAIN_MaxCount
+#else
+#define NRF_SPU_FEATURE_BELLS_PROCESSOR_COUNT    SPU_FEATURE_BELLS_PROCESSOR_MaxCount
+#endif
+
+/** @brief Number of BELL Domain/Processor features. */
+#if NRF_SPU_HAS_DOMAIN
+#define NRF_SPU_FEATURE_BELL_BELL_COUNT          SPU_FEATURE_BELLS_DOMAIN_BELL_MaxCount
+#else
+#define NRF_SPU_FEATURE_BELLS_TASKS_COUNT        SPU_FEATURE_BELLS_PROCESSOR_TASKS_MaxCount
+#define NRF_SPU_FEATURE_BELLS_EVENTS_COUNT       SPU_FEATURE_BELLS_PROCESSOR_EVENTS_MaxCount
+#define NRF_SPU_FEATURE_BELLS_INTERRUPT_COUNT    SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_MaxCount
+#endif
+
+#endif
+
 /** @brief SPU events. */
 typedef enum
 {
-    NRF_SPU_EVENT_RAMACCERR    = offsetof(NRF_SPU_Type, EVENTS_RAMACCERR),   ///< A security violation has been detected for the RAM memory space.
-    NRF_SPU_EVENT_FLASHACCERR  = offsetof(NRF_SPU_Type, EVENTS_FLASHACCERR), ///< A security violation has been detected for the Flash memory space.
-    NRF_SPU_EVENT_PERIPHACCERR = offsetof(NRF_SPU_Type, EVENTS_PERIPHACCERR) ///< A security violation has been detected on one or several peripherals.
+#if NRF_SPU_HAS_MEMORY
+    NRF_SPU_EVENT_RAMACCERR    = offsetof(NRF_SPU_Type, EVENTS_RAMACCERR),    ///< A security violation has been detected for the RAM memory space.
+    NRF_SPU_EVENT_FLASHACCERR  = offsetof(NRF_SPU_Type, EVENTS_FLASHACCERR),  ///< A security violation has been detected for the Flash memory space.
+#endif
+    NRF_SPU_EVENT_PERIPHACCERR = offsetof(NRF_SPU_Type, EVENTS_PERIPHACCERR), ///< A security violation has been detected on one or several peripherals.
 } nrf_spu_event_t;
 
 /** @brief SPU interrupts. */
 typedef enum
 {
+#if NRF_SPU_HAS_MEMORY
     NRF_SPU_INT_RAMACCERR_MASK     = SPU_INTENSET_RAMACCERR_Msk,   ///< Interrupt on RAMACCERR event.
     NRF_SPU_INT_FLASHACCERR_MASK   = SPU_INTENSET_FLASHACCERR_Msk, ///< Interrupt on FLASHACCERR event.
+#endif
     NRF_SPU_INT_PERIPHACCERR_MASK  = SPU_INTENSET_PERIPHACCERR_Msk ///< Interrupt on PERIPHACCERR event.
 } nrf_spu_int_mask_t;
 
+#if NRF_SPU_HAS_MEMORY
 /** @brief SPU Non-Secure Callable (NSC) region size. */
 typedef enum
 {
@@ -84,6 +166,49 @@ typedef enum
     NRF_SPU_MEM_PERM_WRITE   = SPU_FLASHREGION_PERM_WRITE_Msk,   ///< Allow write operation on particular memory region.
     NRF_SPU_MEM_PERM_READ    = SPU_FLASHREGION_PERM_READ_Msk     ///< Allow read operation from particular memory region.
 } nrf_spu_mem_perm_t;
+#endif
+
+#if NRF_SPU_HAS_OWNERSHIP
+/** @brief SPU read capabilities for TrustZone Cortex-M secure attribute. */
+typedef enum
+{
+    NRF_SPU_SECUREMAPPING_NONSECURE      = SPU_PERIPH_PERM_SECUREMAPPING_NonSecure,      /**< Peripheral is always accessible as non-secure. */
+    NRF_SPU_SECUREMAPPING_SECURE         = SPU_PERIPH_PERM_SECUREMAPPING_Secure,         /**< Peripheral is always accessible as secure. */
+    NRF_SPU_SECUREMAPPING_USERSELECTABLE = SPU_PERIPH_PERM_SECUREMAPPING_UserSelectable, /**< Non-secure or secure attribute for this peripheral is defined by the PERIPH[n].PERM register. */
+    NRF_SPU_SECUREMAPPING_SPLIT          = SPU_PERIPH_PERM_SECUREMAPPING_Split,          /**< Peripheral implements the split security mechanism. */
+} nrf_spu_securemapping_t;
+
+/** @brief SPU DMA capabilities. */
+typedef enum
+{
+    NRF_SPU_DMA_NODMA               = SPU_PERIPH_PERM_DMA_NoDMA,               /**< Peripheral has no DMA capability. */
+    NRF_SPU_DMA_NOSEPARATEATTRIBUTE = SPU_PERIPH_PERM_DMA_NoSeparateAttribute, /**< DMA transfers always have the same security attribute as assigned to the peripheral. */
+    NRF_SPU_DMA_SEPARATEATTRIBUTE   = SPU_PERIPH_PERM_DMA_SeparateAttribute,   /**< DMA transfers can have a different security attribute than the one assigned to the peripheral. */
+} nrf_spu_dma_t;
+
+/** @brief SPU features. */
+typedef enum
+{
+    NRF_SPU_FEATURE_IPCT_CHANNEL,       /**< IPCT channel. */
+    NRF_SPU_FEATURE_IPCT_INTERRUPT,     /**< IPCT interrupt. */
+    NRF_SPU_FEATURE_DPPI_CHANNEL,       /**< DPPI channel. */
+    NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP, /**< DPPI channel group. */
+    NRF_SPU_FEATURE_GPIOTE_CHANNEL,     /**< GPIOTE channel. */
+    NRF_SPU_FEATURE_GPIOTE_INTERRUPT,   /**< GPIOTE interrupt. */
+    NRF_SPU_FEATURE_GPIO_PIN,           /**< GPIO pin. */
+    NRF_SPU_FEATURE_GRTC_CC,            /**< GRTC compare channel. */
+    NRF_SPU_FEATURE_GRTC_SYSCOUNTER,    /**< GRTC SYSCOUNTER. */
+    NRF_SPU_FEATURE_GRTC_INTERRUPT,     /**< GRTC interrupt. */
+#if NRF_SPU_HAS_DOMAIN
+    NRF_SPU_FEATURE_BELLS_BELL,         /**< BELLS bell pair. */
+#else
+    NRF_SPU_FEATURE_BELLS_TASKS,        /**< BELLS tasks pair. */
+    NRF_SPU_FEATURE_BELLS_EVENTS,       /**< BELLS events pair. */
+    NRF_SPU_FEATURE_BELLS_INTERRUPT,    /**< BELLS interrupt pair. */
+#endif
+} nrf_spu_feature_t;
+
+#endif
 
 /**
  * @brief Function for clearing a specific SPU event.
@@ -134,6 +259,7 @@ NRF_STATIC_INLINE void nrf_spu_int_disable(NRF_SPU_Type * p_reg,
  */
 NRF_STATIC_INLINE uint32_t nrf_spu_int_enable_check(NRF_SPU_Type const * p_reg, uint32_t mask);
 
+#if NRF_SPU_HAS_MEMORY
 /**
  * @brief Function for setting up publication configuration of a given SPU event.
  *
@@ -287,6 +413,339 @@ NRF_STATIC_INLINE void nrf_spu_extdomain_set(NRF_SPU_Type * p_reg,
                                              uint32_t       domain_id,
                                              bool           secure_attr,
                                              bool           lock_conf);
+#endif
+
+#if NRF_SPU_HAS_OWNERSHIP
+
+/**
+ * @brief Function for getting the address of the security violation.
+ *
+ * @note The event PERIPHACCERR must be cleared to clear this register.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Address of the transaction that caused first error.
+ */
+NRF_STATIC_INLINE uint32_t nrf_spu_periphaccerr_address_get(NRF_SPU_Type const * p_reg);
+
+/**
+ * @brief Function for getting the owner ID of the security violation.
+ *
+ * @note The event PERIPHACCERR must be cleared to clear this register.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Owner ID of the transaction that caused first error.
+ */
+NRF_STATIC_INLINE nrf_owner_t nrf_spu_periphaccerr_ownerid_get(NRF_SPU_Type const * p_reg);
+
+/**
+ * @brief Function for getting the capabilities for TrustZone Cortex-M secure attribute
+ *        of the specified slave.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] index Peripheral slave index.
+ *
+ * @return TrustZone capabilities.
+ */
+NRF_STATIC_INLINE
+nrf_spu_securemapping_t nrf_spu_periph_perm_securemapping_get(NRF_SPU_Type const * p_reg,
+                                                              uint8_t              index);
+
+/**
+ * @brief Function for getting the DMA capabilities of the specified slave.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] index Peripheral slave index.
+ *
+ * @return DMA capabilities.
+ */
+NRF_STATIC_INLINE nrf_spu_dma_t nrf_spu_periph_perm_dma_get(NRF_SPU_Type const * p_reg,
+                                                            uint8_t              index);
+
+/**
+ * @brief Function for getting the security mapping of the specified slave.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] index Peripheral slave index.
+ *
+ * @retval true  Peripheral is mapped in secure peripheral address space.
+ * @retval false If TrustZone capabilities are @ref NRF_SPU_SECUREMAPPING_USERSELECTABLE,
+ *               then peripheral is mapped in non-secure peripheral address space.
+ *               If TrustZone capabilities are @ref NRF_SPU_SECUREMAPPING_SPLIT,
+ *               then peripheral is mapped in non-secure and secure peripheral address space.
+ */
+NRF_STATIC_INLINE bool nrf_spu_periph_perm_secattr_get(NRF_SPU_Type const * p_reg,
+                                                       uint8_t              index);
+
+/**
+ * @brief Function for setting the security mapping of the specified slave.
+ *
+ * @note This bit has effect only if TrustZone capabilities are either
+ *       @ref NRF_SPU_SECUREMAPPING_USERSELECTABLE or @ref NRF_SPU_SECUREMAPPING_SPLIT.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] index  Peripheral slave index.
+ * @param[in] enable True if security mapping is to be set, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_spu_periph_perm_secattr_set(NRF_SPU_Type * p_reg,
+                                                       uint8_t        index,
+                                                       bool           enable);
+
+/**
+ * @brief Function for getting the security attribution for the DMA transfer
+ *        of the specified slave.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] index Peripheral slave index.
+ *
+ * @return True if DMA transfers initiated by this peripheral have the secure attribute set,
+ *         false otherwise.
+ */
+NRF_STATIC_INLINE bool nrf_spu_periph_perm_dmasec_get(NRF_SPU_Type const * p_reg,
+                                                      uint8_t              index);
+
+/**
+ * @brief Function for setting the security attribution for the DMA transfer
+ *        of the specified slave.
+ *
+ * @note This bit has effect only if peripheral security mapping is enabled.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] index  Peripheral slave index.
+ * @param[in] enable True if secure attribute for the DMA transfer is to be set, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_spu_periph_perm_dmasec_set(NRF_SPU_Type * p_reg,
+                                                      uint8_t        index,
+                                                      bool           enable);
+
+/**
+ * @brief Function for getting the status of the peripheral access lock of the specified slave.
+ *
+ * @note When peripheral access lock is enabled, reading or modifying the registers of the peripheral
+ *       is blocked.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] index Peripheral slave index.
+ *
+ * @return True if the peripheral access is locked, false otherwise.
+ */
+NRF_STATIC_INLINE bool nrf_spu_periph_perm_block_get(NRF_SPU_Type const * p_reg,
+                                                     uint8_t              index);
+
+/**
+ * @brief Function for enabling the peripheral access lock of the specified slave.
+ *
+ * @note When peripheral access lock is enabled, reading or modifying the registers of the peripheral
+ *       is blocked.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] index  Peripheral slave index.
+ */
+NRF_STATIC_INLINE void nrf_spu_periph_perm_block_enable(NRF_SPU_Type * p_reg,
+                                                        uint8_t        index);
+
+/**
+ * @brief Function for getting the status of the peripheral management lock of the specified slave.
+ *
+ * @note When peripheral management lock is enabled, modifying the SPU configuration associated
+ *       with specified peripheral is not possible.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] index Peripheral slave index.
+ *
+ * @return True if the peripheral management is locked, false otherwise.
+ */
+NRF_STATIC_INLINE bool nrf_spu_periph_perm_lock_get(NRF_SPU_Type const * p_reg,
+                                                    uint8_t              index);
+
+/**
+ * @brief Function for enabling the peripheral management lock of the specified slave.
+ *
+ * @note When peripheral management lock is enabled, modifying the SPU configuration associated
+ *       with specified peripheral is not possible.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] index  Peripheral slave index.
+ */
+NRF_STATIC_INLINE void nrf_spu_periph_perm_lock_enable(NRF_SPU_Type * p_reg,
+                                                       uint8_t        index);
+
+/**
+ * @brief Function for getting the peripheral owner ID of the specified slave.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] index Peripheral slave index.
+ *
+ * @return Owner ID.
+ */
+NRF_STATIC_INLINE nrf_owner_t nrf_spu_periph_perm_ownerid_get(NRF_SPU_Type const * p_reg,
+                                                              uint8_t              index);
+
+/**
+ * @brief Function for setting the peripheral owner ID of the specified slave.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] index    Peripheral slave index.
+ * @param[in] owner_id Owner ID to be set.
+ */
+NRF_STATIC_INLINE void nrf_spu_periph_perm_ownerid_set(NRF_SPU_Type * p_reg,
+                                                       uint8_t        index,
+                                                       nrf_owner_t    owner_id);
+
+/**
+ * @brief Function for getting the indication if owner ID of the specified slave
+ *        is programmable or not.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] index Peripheral slave index.
+ *
+ * @return True if owner ID is programmable, false otherwise.
+ */
+NRF_STATIC_INLINE bool nrf_spu_periph_perm_ownerprog_get(NRF_SPU_Type const * p_reg,
+                                                         uint8_t              index);
+
+/**
+ * @brief Function for getting the indication if peripheral with
+ *        the specified slave index is present.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] index Peripheral slave index.
+ *
+ * @return True if peripheral is present, false otherwise.
+ */
+NRF_STATIC_INLINE bool nrf_spu_periph_perm_present_get(NRF_SPU_Type const * p_reg,
+                                                       uint8_t              index);
+
+/**
+ * @brief Function for getting the security mapping of the specified feature.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] feature  Feature to be accessed.
+ * @param[in] index    Feature index.
+ * @param[in] subindex Feature subindex. Only used for applicable features, otherwise skipped.
+ *
+ * @retval true  Feature is available for secure usage.
+ * @retval false Feature is available for non-secure usage.
+ */
+NRF_STATIC_INLINE bool nrf_spu_feature_secattr_get(NRF_SPU_Type const * p_reg,
+                                                   nrf_spu_feature_t    feature,
+                                                   uint8_t              index,
+                                                   uint8_t              subindex);
+
+/**
+ * @brief Function for setting the security mapping of the specified feature.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] feature  Feature to be accessed.
+ * @param[in] index    Feature index.
+ * @param[in] subindex Feature subindex. Only used for applicable features, otherwise skipped.
+ * @param[in] enable   True if security mapping is to be set, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_spu_feature_secattr_set(NRF_SPU_Type *    p_reg,
+                                                   nrf_spu_feature_t feature,
+                                                   uint8_t           index,
+                                                   uint8_t           subindex,
+                                                   bool              enable);
+
+/**
+ * @brief Function for getting the status of the management lock of the specified feature.
+ *
+ * @note When feature management lock is enabled, modifying the SPU configuration associated
+ *       with specified feature is not possible.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] feature  Feature to be accessed.
+ * @param[in] index    Feature index.
+ * @param[in] subindex Feature subindex. Only used for applicable features, otherwise skipped.
+ *
+ * @return True if feature management is locked, false otherwise.
+ */
+NRF_STATIC_INLINE bool nrf_spu_feature_lock_get(NRF_SPU_Type const * p_reg,
+                                                nrf_spu_feature_t    feature,
+                                                uint8_t              index,
+                                                uint8_t              subindex);
+
+/**
+ * @brief Function for enabling the management lock of the specified feature.
+ *
+ * @note When feature management lock is enabled, modifying the SPU configuration associated
+ *       with specified feature is not possible.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] feature  Feature to be accessed.
+ * @param[in] index    Feature index.
+ * @param[in] subindex Feature subindex. Only used for applicable features, otherwise skipped.
+ */
+NRF_STATIC_INLINE void nrf_spu_feature_lock_enable(NRF_SPU_Type *    p_reg,
+                                                   nrf_spu_feature_t feature,
+                                                   uint8_t           index,
+                                                   uint8_t           subindex);
+
+/**
+ * @brief Function for getting status of the access lock of the specified feature.
+ *
+ * @note When feature access lock is enabled, reading or modifying the registers of the feature
+ *       is blocked.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] feature  Feature to be accessed.
+ * @param[in] index    Feature index.
+ * @param[in] subindex Feature subindex. Only used for applicable features, otherwise skipped.
+ *
+ * @return True if the feature access is locked, false otherwise.
+ */
+NRF_STATIC_INLINE bool nrf_spu_feature_block_get(NRF_SPU_Type const * p_reg,
+                                                 nrf_spu_feature_t    feature,
+                                                 uint8_t              index,
+                                                 uint8_t              subindex);
+
+/**
+ * @brief Function for enabling the feature block of the specified feature.
+ *
+ * @note When feature access lock is enabled, reading or modifying the registers of the feature
+ *       is blocked.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] feature  Feature to be accessed.
+ * @param[in] index    Feature index.
+ * @param[in] subindex Feature subindex. Only used for applicable features, otherwise skipped.
+ */
+NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
+                                                    nrf_spu_feature_t feature,
+                                                    uint8_t           index,
+                                                    uint8_t           subindex);
+
+/**
+ * @brief Function for getting the feature owner ID of the specified feature.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] feature  Feature to be accessed.
+ * @param[in] index    Feature index.
+ * @param[in] subindex Feature subindex. Only used for applicable features, otherwise skipped.
+ *
+ * @return Owner ID.
+ */
+NRF_STATIC_INLINE nrf_owner_t nrf_spu_feature_ownerid_get(NRF_SPU_Type const * p_reg,
+                                                          nrf_spu_feature_t    feature,
+                                                          uint8_t              index,
+                                                          uint8_t              subindex);
+
+/**
+ * @brief Function for setting the feature owner ID of the specified feature.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] feature  Feature to be accessed.
+ * @param[in] index    Feature index.
+ * @param[in] subindex Feature subindex. Only used for applicable features, otherwise skipped.
+ * @param[in] owner_id Owner ID to be set.
+ */
+NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
+                                                   nrf_spu_feature_t feature,
+                                                   uint8_t           index,
+                                                   uint8_t           subindex,
+                                                   nrf_owner_t       owner_id);
+#endif
 
 #ifndef NRF_DECLARE_ONLY
 
@@ -320,12 +779,13 @@ NRF_STATIC_INLINE uint32_t nrf_spu_int_enable_check(NRF_SPU_Type const * p_reg, 
     return p_reg->INTENSET & mask;
 }
 
+#if NRF_SPU_HAS_MEMORY
 NRF_STATIC_INLINE void nrf_spu_publish_set(NRF_SPU_Type *  p_reg,
                                            nrf_spu_event_t event,
                                            uint32_t        channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
-        (channel | (SPU_PUBLISH_RAMACCERR_EN_Msk));
+        (channel | (NRF_SUBSCRIBE_PUBLISH_ENABLE));
 }
 
 NRF_STATIC_INLINE void nrf_spu_publish_clear(NRF_SPU_Type *  p_reg,
@@ -451,6 +911,1165 @@ NRF_STATIC_INLINE void nrf_spu_extdomain_set(NRF_SPU_Type * p_reg,
         (secure_attr ? SPU_EXTDOMAIN_PERM_SECATTR_Msk : 0) |
         (lock_conf   ? SPU_EXTDOMAIN_PERM_LOCK_Msk    : 0);
 }
+#endif
+
+#if NRF_SPU_HAS_OWNERSHIP
+NRF_STATIC_INLINE uint32_t nrf_spu_periphaccerr_address_get(NRF_SPU_Type const * p_reg)
+{
+    return p_reg->PERIPHACCERR.ADDRESS;
+}
+
+NRF_STATIC_INLINE nrf_owner_t nrf_spu_periphaccerr_ownerid_get(NRF_SPU_Type const * p_reg)
+{
+    return (nrf_owner_t)p_reg->PERIPHACCERR.INFO;
+}
+
+NRF_STATIC_INLINE bool nrf_spu_periph_perm_present_get(NRF_SPU_Type const * p_reg,
+                                                       uint8_t              index)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+    return (p_reg->PERIPH[index].PERM & SPU_PERIPH_PERM_PRESENT_Msk) >>
+           SPU_PERIPH_PERM_PRESENT_Pos;
+}
+
+NRF_STATIC_INLINE bool nrf_spu_periph_perm_ownerprog_get(NRF_SPU_Type const * p_reg,
+                                                         uint8_t              index)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+    return (p_reg->PERIPH[index].PERM & SPU_PERIPH_PERM_OWNERPROG_Msk) >>
+           SPU_PERIPH_PERM_OWNERPROG_Pos;
+}
+
+NRF_STATIC_INLINE bool nrf_spu_periph_perm_lock_get(NRF_SPU_Type const * p_reg,
+                                                    uint8_t              index)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+    return (p_reg->PERIPH[index].PERM & SPU_PERIPH_PERM_LOCK_Msk) >>
+           SPU_PERIPH_PERM_LOCK_Pos;
+}
+
+NRF_STATIC_INLINE bool nrf_spu_periph_perm_block_get(NRF_SPU_Type const * p_reg,
+                                                     uint8_t              index)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+    return (p_reg->PERIPH[index].PERM & SPU_PERIPH_PERM_BLOCK_Msk) >>
+           SPU_PERIPH_PERM_BLOCK_Pos;
+}
+
+NRF_STATIC_INLINE bool nrf_spu_periph_perm_dmasec_get(NRF_SPU_Type const * p_reg,
+                                                      uint8_t              index)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+    return (p_reg->PERIPH[index].PERM & SPU_PERIPH_PERM_DMASEC_Msk) >>
+           SPU_PERIPH_PERM_DMASEC_Pos;
+}
+
+NRF_STATIC_INLINE bool nrf_spu_periph_perm_secattr_get(NRF_SPU_Type const * p_reg,
+                                                       uint8_t              index)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+    return (p_reg->PERIPH[index].PERM & SPU_PERIPH_PERM_SECATTR_Msk) >>
+           SPU_PERIPH_PERM_SECATTR_Pos;
+}
+
+NRF_STATIC_INLINE void nrf_spu_periph_perm_lock_enable(NRF_SPU_Type * p_reg,
+                                                       uint8_t        index)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+    p_reg->PERIPH[index].PERM = ((p_reg->PERIPH[index].PERM & ~SPU_PERIPH_PERM_LOCK_Msk)
+                                 | (SPU_PERIPH_PERM_LOCK_Locked <<
+                                    SPU_PERIPH_PERM_LOCK_Pos));
+}
+
+NRF_STATIC_INLINE void nrf_spu_periph_perm_block_enable(NRF_SPU_Type * p_reg,
+                                                        uint8_t        index)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+    p_reg->PERIPH[index].PERM = ((p_reg->PERIPH[index].PERM & ~SPU_PERIPH_PERM_BLOCK_Msk)
+                                 | (SPU_PERIPH_PERM_BLOCK_Blocked <<
+                                    SPU_PERIPH_PERM_BLOCK_Pos));
+}
+
+NRF_STATIC_INLINE void nrf_spu_periph_perm_dmasec_set(NRF_SPU_Type * p_reg,
+                                                      uint8_t        index,
+                                                      bool           enable)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+    p_reg->PERIPH[index].PERM = ((p_reg->PERIPH[index].PERM & ~SPU_PERIPH_PERM_DMASEC_Msk)
+                                 | ((enable ? SPU_PERIPH_PERM_DMASEC_Secure :
+                                     SPU_PERIPH_PERM_DMASEC_NonSecure) <<
+                                    SPU_PERIPH_PERM_DMASEC_Pos));
+}
+
+NRF_STATIC_INLINE void nrf_spu_periph_perm_secattr_set(NRF_SPU_Type * p_reg,
+                                                       uint8_t        index,
+                                                       bool           enable)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+    p_reg->PERIPH[index].PERM = ((p_reg->PERIPH[index].PERM & ~SPU_PERIPH_PERM_SECATTR_Msk)
+                                 | ((enable ? SPU_PERIPH_PERM_SECATTR_Secure :
+                                     SPU_PERIPH_PERM_SECATTR_NonSecure) <<
+                                    SPU_PERIPH_PERM_SECATTR_Pos));
+}
+
+NRF_STATIC_INLINE
+nrf_spu_securemapping_t nrf_spu_periph_perm_securemapping_get(NRF_SPU_Type const * p_reg,
+                                                              uint8_t              index)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+
+    return (nrf_spu_securemapping_t)((p_reg->PERIPH[index].PERM
+                                      & SPU_PERIPH_PERM_SECUREMAPPING_Msk) >>
+                                     SPU_PERIPH_PERM_SECUREMAPPING_Pos);
+}
+
+NRF_STATIC_INLINE nrf_spu_dma_t nrf_spu_periph_perm_dma_get(NRF_SPU_Type const * p_reg,
+                                                            uint8_t              index)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+
+    return (nrf_spu_dma_t)((p_reg->PERIPH[index].PERM & SPU_PERIPH_PERM_DMA_Msk) >>
+                           SPU_PERIPH_PERM_DMA_Pos);
+}
+
+NRF_STATIC_INLINE nrf_owner_t nrf_spu_periph_perm_ownerid_get(NRF_SPU_Type const * p_reg,
+                                                              uint8_t              index)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+
+    return (nrf_owner_t)((p_reg->PERIPH[index].PERM & SPU_PERIPH_PERM_OWNERID_Msk) >>
+                         SPU_PERIPH_PERM_OWNERID_Pos);
+}
+
+NRF_STATIC_INLINE void nrf_spu_periph_perm_ownerid_set(NRF_SPU_Type * p_reg,
+                                                       uint8_t        index,
+                                                       nrf_owner_t    owner_id)
+{
+    NRFX_ASSERT(index < NRF_SPU_PERIPH_COUNT);
+
+    p_reg->PERIPH[index].PERM = ((p_reg->PERIPH[index].PERM & ~SPU_PERIPH_PERM_OWNERID_Msk) |
+                                 ((owner_id << SPU_PERIPH_PERM_OWNERID_Pos)
+                                  & SPU_PERIPH_PERM_OWNERID_Msk));
+}
+
+NRF_STATIC_INLINE bool nrf_spu_feature_secattr_get(NRF_SPU_Type const * p_reg,
+                                                   nrf_spu_feature_t    feature,
+                                                   uint8_t              index,
+                                                   uint8_t              subindex)
+{
+    switch (feature)
+    {
+        case NRF_SPU_FEATURE_IPCT_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
+            return (p_reg->FEATURE.IPCT.CH[index]
+                    & SPU_FEATURE_IPCT_CH_SECATTR_Msk)
+                   >> SPU_FEATURE_IPCT_CH_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_IPCT_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_INTERRUPT_COUNT);
+            return (p_reg->FEATURE.IPCT.INTERRUPT[index]
+                    & SPU_FEATURE_IPCT_INTERRUPT_SECATTR_Msk)
+                   >> SPU_FEATURE_IPCT_INTERRUPT_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
+            return (p_reg->FEATURE.DPPIC.CH[index]
+                    & SPU_FEATURE_DPPIC_CH_SECATTR_Msk)
+                   >> SPU_FEATURE_DPPIC_CH_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP_COUNT);
+            return (p_reg->FEATURE.DPPIC.CHG[index]
+                    & SPU_FEATURE_DPPIC_CHG_SECATTR_Msk)
+                   >> SPU_FEATURE_DPPIC_CHG_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_GPIOTE_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_CHANNEL_COUNT);
+            return (p_reg->FEATURE.GPIOTE[index].CH[subindex]
+                    & SPU_FEATURE_GPIOTE_CH_SECATTR_Msk)
+                   >> SPU_FEATURE_GPIOTE_CH_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_GPIOTE_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_INTERRUPT_COUNT);
+            return (p_reg->FEATURE.GPIOTE[index].INTERRUPT[subindex]
+                    & SPU_FEATURE_GPIOTE_INTERRUPT_SECATTR_Msk)
+                   >> SPU_FEATURE_GPIOTE_INTERRUPT_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_GPIO_PIN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIO_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIO_PIN_COUNT);
+            return (p_reg->FEATURE.GPIO[index].PIN[subindex]
+                    & SPU_FEATURE_GPIO_PIN_SECATTR_Msk)
+                   >> SPU_FEATURE_GPIO_PIN_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_GRTC_CC:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_CC_COUNT);
+            return (p_reg->FEATURE.GRTC.CC[index]
+                    & SPU_FEATURE_GRTC_CC_SECATTR_Msk)
+                   >> SPU_FEATURE_GRTC_CC_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_GRTC_SYSCOUNTER:
+            return (p_reg->FEATURE.GRTC.SYSCOUNTER
+                    & SPU_FEATURE_GRTC_SYSCOUNTER_SECATTR_Msk)
+                   >> SPU_FEATURE_GRTC_SYSCOUNTER_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_GRTC_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_INTERRUPT_COUNT);
+            return (p_reg->FEATURE.GRTC.INTERRUPT[index]
+                    & SPU_FEATURE_GRTC_INTERRUPT_SECATTR_Msk)
+                   >> SPU_FEATURE_GRTC_INTERRUPT_SECATTR_Pos;
+
+#if NRF_SPU_HAS_DOMAIN
+        case NRF_SPU_FEATURE_BELLS_BELL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
+            return (p_reg->FEATURE.BELLS.DOMAIN[index].BELL[subindex]
+                    & SPU_FEATURE_BELLS_DOMAIN_BELL_SECATTR_Msk)
+                   >> SPU_FEATURE_BELLS_DOMAIN_BELL_SECATTR_Pos;
+#else
+        case NRF_SPU_FEATURE_BELLS_TASKS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_TASKS_COUNT);
+            return (p_reg->FEATURE.BELLS.PROCESSOR[index].TASKS[subindex]
+                    & SPU_FEATURE_BELLS_PROCESSOR_TASKS_SECATTR_Msk)
+                   >> SPU_FEATURE_BELLS_PROCESSOR_TASKS_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_BELLS_EVENTS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_EVENTS_COUNT);
+            return (p_reg->FEATURE.BELLS.PROCESSOR[index].EVENTS[subindex]
+                    & SPU_FEATURE_BELLS_PROCESSOR_EVENTS_SECATTR_Msk)
+                   >> SPU_FEATURE_BELLS_PROCESSOR_EVENTS_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_BELLS_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_INTERRUPT_COUNT);
+            return (p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex]
+                    & SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_SECATTR_Msk)
+                   >> SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_SECATTR_Pos;
+#endif
+
+        default:
+            NRFX_ASSERT(0);
+            return false;
+    }
+}
+
+NRF_STATIC_INLINE bool nrf_spu_feature_lock_get(NRF_SPU_Type const * p_reg,
+                                                nrf_spu_feature_t    feature,
+                                                uint8_t              index,
+                                                uint8_t              subindex)
+{
+    switch (feature)
+    {
+        case NRF_SPU_FEATURE_IPCT_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
+            return (p_reg->FEATURE.IPCT.CH[index]
+                    & SPU_FEATURE_IPCT_CH_LOCK_Msk)
+                   >> SPU_FEATURE_IPCT_CH_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_IPCT_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_INTERRUPT_COUNT);
+            return (p_reg->FEATURE.IPCT.INTERRUPT[index]
+                    & SPU_FEATURE_IPCT_INTERRUPT_LOCK_Msk)
+                   >> SPU_FEATURE_IPCT_INTERRUPT_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
+            return (p_reg->FEATURE.DPPIC.CH[index]
+                    & SPU_FEATURE_DPPIC_CH_LOCK_Msk)
+                   >> SPU_FEATURE_DPPIC_CH_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP_COUNT);
+            return (p_reg->FEATURE.DPPIC.CHG[index]
+                    & SPU_FEATURE_DPPIC_CHG_LOCK_Msk)
+                   >> SPU_FEATURE_DPPIC_CHG_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_GPIOTE_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_CHANNEL_COUNT);
+            return (p_reg->FEATURE.GPIOTE[index].CH[subindex]
+                    & SPU_FEATURE_GPIOTE_CH_LOCK_Msk)
+                   >> SPU_FEATURE_GPIOTE_CH_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_GPIOTE_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_INTERRUPT_COUNT);
+            return (p_reg->FEATURE.GPIOTE[index].INTERRUPT[subindex]
+                    & SPU_FEATURE_GPIOTE_INTERRUPT_LOCK_Msk)
+                   >> SPU_FEATURE_GPIOTE_INTERRUPT_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_GPIO_PIN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIO_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIO_PIN_COUNT);
+            return (p_reg->FEATURE.GPIO[index].PIN[subindex]
+                    & SPU_FEATURE_GPIO_PIN_LOCK_Msk)
+                   >> SPU_FEATURE_GPIO_PIN_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_GRTC_CC:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_CC_COUNT);
+            return (p_reg->FEATURE.GRTC.CC[index]
+                    & SPU_FEATURE_GRTC_CC_LOCK_Msk)
+                   >> SPU_FEATURE_GRTC_CC_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_GRTC_SYSCOUNTER:
+            return (p_reg->FEATURE.GRTC.SYSCOUNTER
+                    & SPU_FEATURE_GRTC_SYSCOUNTER_LOCK_Msk)
+                   >> SPU_FEATURE_GRTC_SYSCOUNTER_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_GRTC_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_INTERRUPT_COUNT);
+            return (p_reg->FEATURE.GRTC.INTERRUPT[index]
+                    & SPU_FEATURE_GRTC_INTERRUPT_LOCK_Msk)
+                   >> SPU_FEATURE_GRTC_INTERRUPT_LOCK_Pos;
+
+#if NRF_SPU_HAS_DOMAIN
+        case NRF_SPU_FEATURE_BELLS_BELL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
+            return (p_reg->FEATURE.BELLS.DOMAIN[index].BELL[subindex]
+                    & SPU_FEATURE_BELLS_DOMAIN_BELL_LOCK_Msk)
+                   >> SPU_FEATURE_BELLS_DOMAIN_BELL_LOCK_Pos;
+#else
+        case NRF_SPU_FEATURE_BELLS_TASKS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_TASKS_COUNT);
+            return (p_reg->FEATURE.BELLS.PROCESSOR[index].TASKS[subindex]
+                    & SPU_FEATURE_BELLS_PROCESSOR_TASKS_LOCK_Msk)
+                   >> SPU_FEATURE_BELLS_PROCESSOR_TASKS_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_BELLS_EVENTS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_EVENTS_COUNT);
+            return (p_reg->FEATURE.BELLS.PROCESSOR[index].EVENTS[subindex]
+                    & SPU_FEATURE_BELLS_PROCESSOR_EVENTS_LOCK_Msk)
+                   >> SPU_FEATURE_BELLS_PROCESSOR_EVENTS_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_BELLS_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_INTERRUPT_COUNT);
+            return (p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex]
+                    & SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_LOCK_Msk)
+                   >> SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_LOCK_Pos;
+#endif
+        default:
+            NRFX_ASSERT(0);
+            return false;
+    }
+}
+
+NRF_STATIC_INLINE bool nrf_spu_feature_block_get(NRF_SPU_Type const * p_reg,
+                                                 nrf_spu_feature_t    feature,
+                                                 uint8_t              index,
+                                                 uint8_t              subindex)
+{
+    switch (feature)
+    {
+        case NRF_SPU_FEATURE_IPCT_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
+            return (p_reg->FEATURE.IPCT.CH[index]
+                    & SPU_FEATURE_IPCT_CH_BLOCK_Msk)
+                   >> SPU_FEATURE_IPCT_CH_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_IPCT_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_INTERRUPT_COUNT);
+            return (p_reg->FEATURE.IPCT.INTERRUPT[index]
+                    & SPU_FEATURE_IPCT_INTERRUPT_BLOCK_Msk)
+                   >> SPU_FEATURE_IPCT_INTERRUPT_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
+            return (p_reg->FEATURE.DPPIC.CH[index]
+                    & SPU_FEATURE_DPPIC_CH_BLOCK_Msk)
+                   >> SPU_FEATURE_DPPIC_CH_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP_COUNT);
+            return (p_reg->FEATURE.DPPIC.CHG[index]
+                    & SPU_FEATURE_DPPIC_CHG_BLOCK_Msk)
+                   >> SPU_FEATURE_DPPIC_CHG_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_GPIOTE_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_CHANNEL_COUNT);
+            return (p_reg->FEATURE.GPIOTE[index].CH[subindex]
+                    & SPU_FEATURE_GPIOTE_CH_BLOCK_Msk)
+                   >> SPU_FEATURE_GPIOTE_CH_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_GPIOTE_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_INTERRUPT_COUNT);
+            return (p_reg->FEATURE.GPIOTE[index].INTERRUPT[subindex]
+                    & SPU_FEATURE_GPIOTE_INTERRUPT_BLOCK_Msk)
+                   >> SPU_FEATURE_GPIOTE_INTERRUPT_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_GPIO_PIN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIO_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIO_PIN_COUNT);
+            return (p_reg->FEATURE.GPIO[index].PIN[subindex]
+                    & SPU_FEATURE_GPIO_PIN_BLOCK_Msk)
+                   >> SPU_FEATURE_GPIO_PIN_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_GRTC_CC:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_CC_COUNT);
+            return (p_reg->FEATURE.GRTC.CC[index]
+                    & SPU_FEATURE_GRTC_CC_BLOCK_Msk)
+                   >> SPU_FEATURE_GRTC_CC_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_GRTC_SYSCOUNTER:
+            return (p_reg->FEATURE.GRTC.SYSCOUNTER
+                    & SPU_FEATURE_GRTC_SYSCOUNTER_BLOCK_Msk)
+                   >> SPU_FEATURE_GRTC_SYSCOUNTER_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_GRTC_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_INTERRUPT_COUNT);
+            return (p_reg->FEATURE.GRTC.INTERRUPT[index]
+                    & SPU_FEATURE_GRTC_INTERRUPT_BLOCK_Msk)
+                   >> SPU_FEATURE_GRTC_INTERRUPT_BLOCK_Pos;
+
+#if NRF_SPU_HAS_DOMAIN
+        case NRF_SPU_FEATURE_BELLS_BELL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
+            return (p_reg->FEATURE.BELLS.DOMAIN[index].BELL[subindex]
+                    & SPU_FEATURE_BELLS_DOMAIN_BELL_BLOCK_Msk)
+                   >> SPU_FEATURE_BELLS_DOMAIN_BELL_BLOCK_Pos;
+#else
+        case NRF_SPU_FEATURE_BELLS_TASKS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_TASKS_COUNT);
+            return (p_reg->FEATURE.BELLS.PROCESSOR[index].TASKS[subindex]
+                    & SPU_FEATURE_BELLS_PROCESSOR_TASKS_BLOCK_Msk)
+                   >> SPU_FEATURE_BELLS_PROCESSOR_TASKS_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_BELLS_EVENTS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_EVENTS_COUNT);
+            return (p_reg->FEATURE.BELLS.PROCESSOR[index].EVENTS[subindex]
+                    & SPU_FEATURE_BELLS_PROCESSOR_EVENTS_BLOCK_Msk)
+                   >> SPU_FEATURE_BELLS_PROCESSOR_EVENTS_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_BELLS_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_INTERRUPT_COUNT);
+            return (p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex]
+                    & SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_BLOCK_Msk)
+                   >> SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_BLOCK_Pos;
+#endif
+        default:
+            NRFX_ASSERT(0);
+            return false;
+    }
+}
+
+NRF_STATIC_INLINE nrf_owner_t nrf_spu_feature_ownerid_get(NRF_SPU_Type const * p_reg,
+                                                          nrf_spu_feature_t    feature,
+                                                          uint8_t              index,
+                                                          uint8_t              subindex)
+{
+    switch (feature)
+    {
+        case NRF_SPU_FEATURE_IPCT_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.IPCT.CH[index]
+                                  & SPU_FEATURE_IPCT_CH_OWNERID_Msk)
+                                 >> SPU_FEATURE_IPCT_CH_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_IPCT_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_INTERRUPT_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.IPCT.INTERRUPT[index]
+                                  & SPU_FEATURE_IPCT_INTERRUPT_OWNERID_Msk)
+                                 >> SPU_FEATURE_IPCT_INTERRUPT_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.DPPIC.CH[index]
+                                  & SPU_FEATURE_DPPIC_CH_OWNERID_Msk)
+                                 >> SPU_FEATURE_DPPIC_CH_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.DPPIC.CHG[index]
+                                  & SPU_FEATURE_DPPIC_CHG_OWNERID_Msk)
+                                 >> SPU_FEATURE_DPPIC_CHG_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_GPIOTE_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_CHANNEL_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.GPIOTE[index].CH[subindex]
+                                  & SPU_FEATURE_GPIOTE_CH_OWNERID_Msk)
+                                 >> SPU_FEATURE_GPIOTE_CH_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_GPIOTE_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_INTERRUPT_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.GPIOTE[index].INTERRUPT[subindex]
+                                  & SPU_FEATURE_GPIOTE_INTERRUPT_OWNERID_Msk)
+                                 >> SPU_FEATURE_GPIOTE_INTERRUPT_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_GPIO_PIN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIO_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIO_PIN_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.GPIO[index].PIN[subindex]
+                                  & SPU_FEATURE_GPIO_PIN_OWNERID_Msk)
+                                 >> SPU_FEATURE_GPIO_PIN_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_GRTC_CC:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_CC_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.GRTC.CC[index]
+                                  & SPU_FEATURE_GRTC_CC_OWNERID_Msk)
+                                 >> SPU_FEATURE_GRTC_CC_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_GRTC_SYSCOUNTER:
+            return (nrf_owner_t)((p_reg->FEATURE.GRTC.SYSCOUNTER
+                                  & SPU_FEATURE_GRTC_SYSCOUNTER_OWNERID_Msk)
+                                 >> SPU_FEATURE_GRTC_SYSCOUNTER_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_GRTC_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_INTERRUPT_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.GRTC.INTERRUPT[index]
+                                  & SPU_FEATURE_GRTC_INTERRUPT_OWNERID_Msk)
+                                 >> SPU_FEATURE_GRTC_INTERRUPT_OWNERID_Pos);
+
+#if NRF_SPU_HAS_DOMAIN
+        case NRF_SPU_FEATURE_BELLS_BELL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.BELLS.DOMAIN[index].BELL[subindex]
+                    & SPU_FEATURE_BELLS_DOMAIN_BELL_OWNERID_Msk)
+                   >> SPU_FEATURE_BELLS_DOMAIN_BELL_OWNERID_Pos);
+#else
+        case NRF_SPU_FEATURE_BELLS_TASKS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_TASKS_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.BELLS.PROCESSOR[index].TASKS[subindex]
+                    & SPU_FEATURE_BELLS_PROCESSOR_TASKS_OWNERID_Msk)
+                   >> SPU_FEATURE_BELLS_PROCESSOR_TASKS_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_BELLS_EVENTS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_EVENTS_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.BELLS.PROCESSOR[index].EVENTS[subindex]
+                    & SPU_FEATURE_BELLS_PROCESSOR_EVENTS_OWNERID_Msk)
+                   >> SPU_FEATURE_BELLS_PROCESSOR_EVENTS_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_BELLS_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_INTERRUPT_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex]
+                    & SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_OWNERID_Msk)
+                   >> SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_OWNERID_Pos);
+#endif
+        default:
+            NRFX_ASSERT(0);
+            return (nrf_owner_t)0;
+    }
+}
+
+NRF_STATIC_INLINE void nrf_spu_feature_secattr_set(NRF_SPU_Type *    p_reg,
+                                                   nrf_spu_feature_t feature,
+                                                   uint8_t           index,
+                                                   uint8_t           subindex,
+                                                   bool              enable)
+{
+    switch (feature)
+    {
+        case NRF_SPU_FEATURE_IPCT_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
+            p_reg->FEATURE.IPCT.CH[index] =
+                ((p_reg->FEATURE.IPCT.CH[index] &
+                  ~SPU_FEATURE_IPCT_CH_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_IPCT_CH_SECATTR_Secure :
+                   SPU_FEATURE_IPCT_CH_SECATTR_NonSecure)
+                  << SPU_FEATURE_IPCT_CH_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_IPCT_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_INTERRUPT_COUNT);
+            p_reg->FEATURE.IPCT.INTERRUPT[index] =
+                ((p_reg->FEATURE.IPCT.INTERRUPT[index] &
+                  ~SPU_FEATURE_IPCT_INTERRUPT_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_IPCT_INTERRUPT_SECATTR_Secure :
+                   SPU_FEATURE_IPCT_INTERRUPT_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_IPCT_INTERRUPT_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
+            p_reg->FEATURE.DPPIC.CH[index] =
+                ((p_reg->FEATURE.DPPIC.CH[index] &
+                  ~SPU_FEATURE_DPPIC_CH_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_DPPIC_CH_SECATTR_Secure :
+                   SPU_FEATURE_DPPIC_CH_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_DPPIC_CH_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP_COUNT);
+            p_reg->FEATURE.DPPIC.CHG[index] =
+                ((p_reg->FEATURE.DPPIC.CHG[index] &
+                  ~SPU_FEATURE_DPPIC_CHG_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_DPPIC_CHG_SECATTR_Secure :
+                   SPU_FEATURE_DPPIC_CHG_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_DPPIC_CHG_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GPIOTE_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_CHANNEL_COUNT);
+            p_reg->FEATURE.GPIOTE[index].CH[subindex] =
+                ((p_reg->FEATURE.GPIOTE[index].CH[subindex] &
+                  ~SPU_FEATURE_GPIOTE_CH_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_GPIOTE_CH_SECATTR_Secure :
+                   SPU_FEATURE_GPIOTE_CH_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_GPIOTE_CH_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GPIOTE_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_INTERRUPT_COUNT);
+            p_reg->FEATURE.GPIOTE[index].INTERRUPT[subindex] =
+                ((p_reg->FEATURE.GPIOTE[index].INTERRUPT[subindex] &
+                  ~SPU_FEATURE_GPIOTE_INTERRUPT_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_GPIOTE_INTERRUPT_SECATTR_Secure :
+                   SPU_FEATURE_GPIOTE_INTERRUPT_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_GPIOTE_INTERRUPT_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GPIO_PIN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIO_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIO_PIN_COUNT);
+            p_reg->FEATURE.GPIO[index].PIN[subindex] =
+                ((p_reg->FEATURE.GPIO[index].PIN[subindex] &
+                  ~SPU_FEATURE_GPIO_PIN_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_GPIO_PIN_SECATTR_Secure :
+                   SPU_FEATURE_GPIO_PIN_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_GPIO_PIN_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GRTC_CC:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_CC_COUNT);
+            p_reg->FEATURE.GRTC.CC[index] =
+                ((p_reg->FEATURE.GRTC.CC[index] &
+                  ~SPU_FEATURE_GRTC_CC_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_GRTC_CC_SECATTR_Secure :
+                   SPU_FEATURE_GRTC_CC_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_GRTC_CC_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GRTC_SYSCOUNTER:
+            p_reg->FEATURE.GRTC.SYSCOUNTER =
+                ((p_reg->FEATURE.GRTC.SYSCOUNTER &
+                  ~SPU_FEATURE_GRTC_SYSCOUNTER_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_GRTC_SYSCOUNTER_SECATTR_Secure :
+                   SPU_FEATURE_GRTC_SYSCOUNTER_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_GRTC_SYSCOUNTER_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GRTC_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_INTERRUPT_COUNT);
+            p_reg->FEATURE.GRTC.INTERRUPT[index] =
+                ((p_reg->FEATURE.GRTC.INTERRUPT[index] &
+                  ~SPU_FEATURE_GRTC_INTERRUPT_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_GRTC_INTERRUPT_SECATTR_Secure :
+                   SPU_FEATURE_GRTC_INTERRUPT_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_GRTC_INTERRUPT_SECATTR_Pos));
+            break;
+
+#if NRF_SPU_HAS_DOMAIN
+        case NRF_SPU_FEATURE_BELLS_BELL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
+            p_reg->FEATURE.BELLS.DOMAIN[index].BELL[subindex] =
+                ((p_reg->FEATURE.BELLS.DOMAIN[index].BELL[subindex] &
+                  ~SPU_FEATURE_BELLS_DOMAIN_BELL_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_BELLS_DOMAIN_BELL_SECATTR_Secure :
+                   SPU_FEATURE_BELLS_DOMAIN_BELL_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_BELLS_DOMAIN_BELL_SECATTR_Pos));
+            break;
+#else
+        case NRF_SPU_FEATURE_BELLS_TASKS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_TASKS_COUNT);
+            p_reg->FEATURE.BELLS.PROCESSOR[index].TASKS[subindex] =
+                ((p_reg->FEATURE.BELLS.PROCESSOR[index].TASKS[subindex] &
+                  ~SPU_FEATURE_BELLS_PROCESSOR_TASKS_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_BELLS_PROCESSOR_TASKS_SECATTR_Secure :
+                   SPU_FEATURE_BELLS_PROCESSOR_TASKS_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_BELLS_PROCESSOR_TASKS_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_BELLS_EVENTS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_EVENTS_COUNT);
+            p_reg->FEATURE.BELLS.PROCESSOR[index].EVENTS[subindex] =
+                ((p_reg->FEATURE.BELLS.PROCESSOR[index].EVENTS[subindex] &
+                  ~SPU_FEATURE_BELLS_PROCESSOR_EVENTS_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_BELLS_PROCESSOR_EVENTS_SECATTR_Secure :
+                   SPU_FEATURE_BELLS_PROCESSOR_EVENTS_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_BELLS_PROCESSOR_EVENTS_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_BELLS_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_INTERRUPT_COUNT);
+            p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex] =
+                ((p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex] &
+                  ~SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_SECATTR_Secure :
+                   SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_SECATTR_NonSecure)
+                  <<  SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_SECATTR_Pos));
+            break;
+#endif
+
+        default:
+            NRFX_ASSERT(0);
+            break;
+    }
+}
+
+NRF_STATIC_INLINE void nrf_spu_feature_lock_enable(NRF_SPU_Type *    p_reg,
+                                                   nrf_spu_feature_t feature,
+                                                   uint8_t           index,
+                                                   uint8_t           subindex)
+{
+    switch (feature)
+    {
+        case NRF_SPU_FEATURE_IPCT_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
+            p_reg->FEATURE.IPCT.CH[index] =
+                ((p_reg->FEATURE.IPCT.CH[index] &
+                  ~SPU_FEATURE_IPCT_CH_LOCK_Msk) |
+                 (SPU_FEATURE_IPCT_CH_LOCK_Locked
+                  << SPU_FEATURE_IPCT_CH_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_IPCT_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_INTERRUPT_COUNT);
+            p_reg->FEATURE.IPCT.INTERRUPT[index] =
+                ((p_reg->FEATURE.IPCT.INTERRUPT[index] &
+                  ~SPU_FEATURE_IPCT_INTERRUPT_LOCK_Msk) |
+                 (SPU_FEATURE_IPCT_INTERRUPT_LOCK_Locked
+                  << SPU_FEATURE_IPCT_INTERRUPT_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
+            p_reg->FEATURE.DPPIC.CH[index] =
+                ((p_reg->FEATURE.DPPIC.CH[index] &
+                  ~SPU_FEATURE_DPPIC_CH_LOCK_Msk) |
+                 (SPU_FEATURE_DPPIC_CH_LOCK_Locked
+                  << SPU_FEATURE_DPPIC_CH_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP_COUNT);
+            p_reg->FEATURE.DPPIC.CHG[index] =
+                ((p_reg->FEATURE.DPPIC.CHG[index] &
+                  ~SPU_FEATURE_DPPIC_CHG_LOCK_Msk) |
+                 (SPU_FEATURE_DPPIC_CHG_LOCK_Locked
+                  << SPU_FEATURE_DPPIC_CHG_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GPIOTE_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_CHANNEL_COUNT);
+            p_reg->FEATURE.GPIOTE[index].CH[subindex] =
+                ((p_reg->FEATURE.GPIOTE[index].CH[subindex] &
+                  ~SPU_FEATURE_GPIOTE_CH_LOCK_Msk) |
+                 (SPU_FEATURE_GPIOTE_CH_LOCK_Locked
+                  << SPU_FEATURE_GPIOTE_CH_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GPIOTE_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_INTERRUPT_COUNT);
+            p_reg->FEATURE.GPIOTE[index].INTERRUPT[subindex] =
+                ((p_reg->FEATURE.GPIOTE[index].INTERRUPT[subindex] &
+                  ~SPU_FEATURE_GPIOTE_INTERRUPT_LOCK_Msk) |
+                 (SPU_FEATURE_GPIOTE_INTERRUPT_LOCK_Locked
+                  << SPU_FEATURE_GPIOTE_INTERRUPT_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GPIO_PIN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIO_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIO_PIN_COUNT);
+            p_reg->FEATURE.GPIO[index].PIN[subindex] =
+                ((p_reg->FEATURE.GPIO[index].PIN[subindex] &
+                  ~SPU_FEATURE_GPIO_PIN_LOCK_Msk) |
+                 (SPU_FEATURE_GPIO_PIN_LOCK_Locked
+                  << SPU_FEATURE_GPIO_PIN_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GRTC_CC:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_CC_COUNT);
+            p_reg->FEATURE.GRTC.CC[index] =
+                ((p_reg->FEATURE.GRTC.CC[index] &
+                  ~SPU_FEATURE_GRTC_CC_LOCK_Msk) |
+                 (SPU_FEATURE_GRTC_CC_LOCK_Locked
+                  << SPU_FEATURE_GRTC_CC_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GRTC_SYSCOUNTER:
+            p_reg->FEATURE.GRTC.SYSCOUNTER =
+                ((p_reg->FEATURE.GRTC.SYSCOUNTER &
+                  ~SPU_FEATURE_GRTC_SYSCOUNTER_LOCK_Msk) |
+                 (SPU_FEATURE_GRTC_SYSCOUNTER_LOCK_Locked
+                  << SPU_FEATURE_GRTC_SYSCOUNTER_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GRTC_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_INTERRUPT_COUNT);
+            p_reg->FEATURE.GRTC.INTERRUPT[index] =
+                ((p_reg->FEATURE.GRTC.INTERRUPT[index] &
+                  ~SPU_FEATURE_GRTC_INTERRUPT_LOCK_Msk) |
+                 (SPU_FEATURE_GRTC_INTERRUPT_LOCK_Locked
+                  << SPU_FEATURE_GRTC_INTERRUPT_LOCK_Pos));
+            break;
+
+#if NRF_SPU_HAS_DOMAIN
+        case NRF_SPU_FEATURE_BELLS_BELL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
+            p_reg->FEATURE.BELLS.DOMAIN[index].BELL[subindex] =
+                ((p_reg->FEATURE.BELLS.DOMAIN[index].BELL[subindex] &
+                  ~SPU_FEATURE_BELLS_DOMAIN_BELL_LOCK_Msk) |
+                 (SPU_FEATURE_BELLS_DOMAIN_BELL_LOCK_Locked
+                  << SPU_FEATURE_BELLS_DOMAIN_BELL_LOCK_Pos));
+            break;
+#else
+        case NRF_SPU_FEATURE_BELLS_TASKS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_TASKS_COUNT);
+            p_reg->FEATURE.BELLS.PROCESSOR[index].TASKS[subindex] =
+                ((p_reg->FEATURE.BELLS.PROCESSOR[index].TASKS[subindex] &
+                  ~SPU_FEATURE_BELLS_PROCESSOR_TASKS_LOCK_Msk) |
+                 (SPU_FEATURE_BELLS_PROCESSOR_TASKS_LOCK_Locked
+                  << SPU_FEATURE_BELLS_PROCESSOR_TASKS_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_BELLS_EVENTS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_EVENTS_COUNT);
+            p_reg->FEATURE.BELLS.PROCESSOR[index].EVENTS[subindex] =
+                ((p_reg->FEATURE.BELLS.PROCESSOR[index].EVENTS[subindex] &
+                  ~SPU_FEATURE_BELLS_PROCESSOR_EVENTS_LOCK_Msk) |
+                 (SPU_FEATURE_BELLS_PROCESSOR_EVENTS_LOCK_Locked
+                  << SPU_FEATURE_BELLS_PROCESSOR_EVENTS_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_BELLS_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_INTERRUPT_COUNT);
+            p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex] =
+                ((p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex] &
+                  ~SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_LOCK_Msk) |
+                 (SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_LOCK_Locked
+                  << SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_LOCK_Pos));
+            break;
+#endif
+
+        default:
+            NRFX_ASSERT(0);
+            break;
+    }
+}
+
+NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
+                                                    nrf_spu_feature_t feature,
+                                                    uint8_t           index,
+                                                    uint8_t           subindex)
+{
+    switch (feature)
+    {
+        case NRF_SPU_FEATURE_IPCT_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
+            p_reg->FEATURE.IPCT.CH[index] =
+                ((p_reg->FEATURE.IPCT.CH[index] &
+                  ~SPU_FEATURE_IPCT_CH_BLOCK_Msk) |
+                 (SPU_FEATURE_IPCT_CH_BLOCK_Blocked
+                  << SPU_FEATURE_IPCT_CH_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_IPCT_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_INTERRUPT_COUNT);
+            p_reg->FEATURE.IPCT.INTERRUPT[index] =
+                ((p_reg->FEATURE.IPCT.INTERRUPT[index] &
+                  ~SPU_FEATURE_IPCT_INTERRUPT_BLOCK_Msk) |
+                 (SPU_FEATURE_IPCT_INTERRUPT_BLOCK_Blocked
+                  << SPU_FEATURE_IPCT_INTERRUPT_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
+            p_reg->FEATURE.DPPIC.CH[index] =
+                ((p_reg->FEATURE.DPPIC.CH[index] &
+                  ~SPU_FEATURE_DPPIC_CH_BLOCK_Msk) |
+                 (SPU_FEATURE_DPPIC_CH_BLOCK_Blocked
+                  << SPU_FEATURE_DPPIC_CH_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP_COUNT);
+            p_reg->FEATURE.DPPIC.CHG[index] =
+                ((p_reg->FEATURE.DPPIC.CHG[index] &
+                  ~SPU_FEATURE_DPPIC_CHG_BLOCK_Msk) |
+                 (SPU_FEATURE_DPPIC_CHG_BLOCK_Blocked
+                  << SPU_FEATURE_DPPIC_CHG_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GPIOTE_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_CHANNEL_COUNT);
+            p_reg->FEATURE.GPIOTE[index].CH[subindex] =
+                ((p_reg->FEATURE.GPIOTE[index].CH[subindex] &
+                  ~SPU_FEATURE_GPIOTE_CH_BLOCK_Msk) |
+                 (SPU_FEATURE_GPIOTE_CH_BLOCK_Blocked
+                  << SPU_FEATURE_GPIOTE_CH_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GPIOTE_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_INTERRUPT_COUNT);
+            p_reg->FEATURE.GPIOTE[index].INTERRUPT[subindex] =
+                ((p_reg->FEATURE.GPIOTE[index].INTERRUPT[subindex] &
+                  ~SPU_FEATURE_GPIOTE_INTERRUPT_BLOCK_Msk) |
+                 (SPU_FEATURE_GPIOTE_INTERRUPT_BLOCK_Blocked
+                  << SPU_FEATURE_GPIOTE_INTERRUPT_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GPIO_PIN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIO_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIO_PIN_COUNT);
+            p_reg->FEATURE.GPIO[index].PIN[subindex] =
+                ((p_reg->FEATURE.GPIO[index].PIN[subindex] &
+                  ~SPU_FEATURE_GPIO_PIN_BLOCK_Msk) |
+                 (SPU_FEATURE_GPIO_PIN_BLOCK_Blocked
+                  << SPU_FEATURE_GPIO_PIN_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GRTC_CC:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_CC_COUNT);
+            p_reg->FEATURE.GRTC.CC[index] =
+                ((p_reg->FEATURE.GRTC.CC[index] &
+                  ~SPU_FEATURE_GRTC_CC_BLOCK_Msk) |
+                 (SPU_FEATURE_GRTC_CC_BLOCK_Blocked
+                  << SPU_FEATURE_GRTC_CC_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GRTC_SYSCOUNTER:
+            p_reg->FEATURE.GRTC.SYSCOUNTER =
+                ((p_reg->FEATURE.GRTC.SYSCOUNTER &
+                  ~SPU_FEATURE_GRTC_SYSCOUNTER_BLOCK_Msk) |
+                 (SPU_FEATURE_GRTC_SYSCOUNTER_BLOCK_Blocked
+                  << SPU_FEATURE_GRTC_SYSCOUNTER_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_GRTC_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_INTERRUPT_COUNT);
+            p_reg->FEATURE.GRTC.INTERRUPT[index] =
+                ((p_reg->FEATURE.GRTC.INTERRUPT[index] &
+                  ~SPU_FEATURE_GRTC_INTERRUPT_BLOCK_Msk) |
+                 (SPU_FEATURE_GRTC_INTERRUPT_BLOCK_Blocked
+                  << SPU_FEATURE_GRTC_INTERRUPT_BLOCK_Pos));
+            break;
+
+#if NRF_SPU_HAS_DOMAIN
+        case NRF_SPU_FEATURE_BELLS_BELL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
+            p_reg->FEATURE.BELLS.DOMAIN[index].BELL[subindex] =
+                ((p_reg->FEATURE.BELLS.DOMAIN[index].BELL[subindex] &
+                  ~SPU_FEATURE_BELLS_DOMAIN_BELL_BLOCK_Msk) |
+                 (SPU_FEATURE_BELLS_DOMAIN_BELL_BLOCK_Blocked
+                  << SPU_FEATURE_BELLS_DOMAIN_BELL_BLOCK_Pos));
+            break;
+#else
+        case NRF_SPU_FEATURE_BELLS_TASKS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_TASKS_COUNT);
+            p_reg->FEATURE.BELLS.PROCESSOR[index].TASKS[subindex] =
+                ((p_reg->FEATURE.BELLS.PROCESSOR[index].TASKS[subindex] &
+                  ~SPU_FEATURE_BELLS_PROCESSOR_TASKS_BLOCK_Msk) |
+                 (SPU_FEATURE_BELLS_PROCESSOR_TASKS_BLOCK_Blocked
+                  << SPU_FEATURE_BELLS_PROCESSOR_TASKS_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_BELLS_EVENTS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_EVENTS_COUNT);
+            p_reg->FEATURE.BELLS.PROCESSOR[index].EVENTS[subindex] =
+                ((p_reg->FEATURE.BELLS.PROCESSOR[index].EVENTS[subindex] &
+                  ~SPU_FEATURE_BELLS_PROCESSOR_EVENTS_BLOCK_Msk) |
+                 (SPU_FEATURE_BELLS_PROCESSOR_EVENTS_BLOCK_Blocked
+                  << SPU_FEATURE_BELLS_PROCESSOR_EVENTS_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_BELLS_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_INTERRUPT_COUNT);
+            p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex] =
+                ((p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex] &
+                  ~SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_BLOCK_Msk) |
+                 (SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_BLOCK_Blocked
+                  << SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_BLOCK_Pos));
+            break;
+#endif
+
+        default:
+            NRFX_ASSERT(0);
+            break;
+    }
+}
+
+NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
+                                                   nrf_spu_feature_t feature,
+                                                   uint8_t           index,
+                                                   uint8_t           subindex,
+                                                   nrf_owner_t       owner_id)
+{
+    switch (feature)
+    {
+        case NRF_SPU_FEATURE_IPCT_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
+            p_reg->FEATURE.IPCT.CH[index] =
+                ((p_reg->FEATURE.IPCT.CH[index] &
+                  ~SPU_FEATURE_IPCT_CH_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_IPCT_CH_OWNERID_Pos) &
+                  SPU_FEATURE_IPCT_CH_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_IPCT_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_INTERRUPT_COUNT);
+            p_reg->FEATURE.IPCT.INTERRUPT[index] =
+                ((p_reg->FEATURE.IPCT.INTERRUPT[index] &
+                  ~SPU_FEATURE_IPCT_INTERRUPT_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_IPCT_INTERRUPT_OWNERID_Pos) &
+                  SPU_FEATURE_IPCT_INTERRUPT_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
+            p_reg->FEATURE.DPPIC.CH[index] =
+                ((p_reg->FEATURE.DPPIC.CH[index] &
+                  ~SPU_FEATURE_DPPIC_CH_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_DPPIC_CH_OWNERID_Pos) &
+                  SPU_FEATURE_DPPIC_CH_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP_COUNT);
+            p_reg->FEATURE.DPPIC.CHG[index] =
+                ((p_reg->FEATURE.DPPIC.CHG[index] &
+                  ~SPU_FEATURE_DPPIC_CHG_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_DPPIC_CHG_OWNERID_Pos) &
+                  SPU_FEATURE_DPPIC_CHG_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_GPIOTE_CHANNEL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_CHANNEL_COUNT);
+            p_reg->FEATURE.GPIOTE[index].CH[subindex] =
+                ((p_reg->FEATURE.GPIOTE[index].CH[subindex] &
+                  ~SPU_FEATURE_GPIOTE_CH_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_GPIOTE_CH_OWNERID_Pos) &
+                  SPU_FEATURE_GPIOTE_CH_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_GPIOTE_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIOTE_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIOTE_INTERRUPT_COUNT);
+            p_reg->FEATURE.GPIOTE[index].INTERRUPT[subindex] =
+                ((p_reg->FEATURE.GPIOTE[index].INTERRUPT[subindex] &
+                  ~SPU_FEATURE_GPIOTE_INTERRUPT_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_GPIOTE_INTERRUPT_OWNERID_Pos) &
+                  SPU_FEATURE_GPIOTE_INTERRUPT_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_GPIO_PIN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GPIO_COUNT);
+            NRFX_ASSERT(subindex < NRF_SPU_FEATURE_GPIO_PIN_COUNT);
+            p_reg->FEATURE.GPIO[index].PIN[subindex] =
+                ((p_reg->FEATURE.GPIO[index].PIN[subindex] &
+                  ~SPU_FEATURE_GPIO_PIN_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_GPIO_PIN_OWNERID_Pos) &
+                  SPU_FEATURE_GPIO_PIN_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_GRTC_CC:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_CC_COUNT);
+            p_reg->FEATURE.GRTC.CC[index] =
+                ((p_reg->FEATURE.GRTC.CC[index] &
+                  ~SPU_FEATURE_GRTC_CC_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_GRTC_CC_OWNERID_Pos) &
+                  SPU_FEATURE_GRTC_CC_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_GRTC_SYSCOUNTER:
+            p_reg->FEATURE.GRTC.SYSCOUNTER =
+                ((p_reg->FEATURE.GRTC.SYSCOUNTER &
+                  ~SPU_FEATURE_GRTC_SYSCOUNTER_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_GRTC_SYSCOUNTER_OWNERID_Pos) &
+                  SPU_FEATURE_GRTC_SYSCOUNTER_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_GRTC_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_GRTC_INTERRUPT_COUNT);
+            p_reg->FEATURE.GRTC.INTERRUPT[index] =
+                ((p_reg->FEATURE.GRTC.INTERRUPT[index] &
+                  ~SPU_FEATURE_GRTC_INTERRUPT_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_GRTC_INTERRUPT_OWNERID_Pos) &
+                  SPU_FEATURE_GRTC_INTERRUPT_OWNERID_Msk));
+            break;
+
+#if NRF_SPU_HAS_DOMAIN
+        case NRF_SPU_FEATURE_BELLS_BELL:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
+            p_reg->FEATURE.BELLS.DOMAIN[index].BELL[subindex] =
+                ((p_reg->FEATURE.BELLS.DOMAIN[index].BELL[subindex] &
+                  ~SPU_FEATURE_BELLS_DOMAIN_BELL_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_BELLS_DOMAIN_BELL_OWNERID_Pos) &
+                  SPU_FEATURE_BELLS_DOMAIN_BELL_OWNERID_Msk));
+            break;
+#else
+        case NRF_SPU_FEATURE_BELLS_TASKS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_TASKS_COUNT);
+            p_reg->FEATURE.BELLS.PROCESSOR[index].TASKS[subindex] =
+                ((p_reg->FEATURE.BELLS.PROCESSOR[index].TASKS[subindex] &
+                  ~SPU_FEATURE_BELLS_PROCESSOR_TASKS_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_BELLS_PROCESSOR_TASKS_OWNERID_Pos) &
+                  SPU_FEATURE_BELLS_PROCESSOR_TASKS_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_BELLS_EVENTS:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_EVENTS_COUNT);
+            p_reg->FEATURE.BELLS.PROCESSOR[index].EVENTS[subindex] =
+                ((p_reg->FEATURE.BELLS.PROCESSOR[index].EVENTS[subindex] &
+                  ~SPU_FEATURE_BELLS_PROCESSOR_EVENTS_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_BELLS_PROCESSOR_EVENTS_OWNERID_Pos) &
+                  SPU_FEATURE_BELLS_PROCESSOR_EVENTS_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_BELLS_INTERRUPT:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_BELLS_INTERRUPT_COUNT);
+            p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex] =
+                ((p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex] &
+                  ~SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_OWNERID_Pos) &
+                  SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_OWNERID_Msk));
+            break;
+#endif
+
+        default:
+            NRFX_ASSERT(0);
+            break;
+    }
+}
+
+#endif
 
 #endif // NRF_DECLARE_ONLY
 

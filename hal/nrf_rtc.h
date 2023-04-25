@@ -59,24 +59,31 @@ extern "C" {
 /** @brief Macro for getting the number of compare channels available in a given RTC instance. */
 #define NRF_RTC_CC_CHANNEL_COUNT(id)  NRFX_CONCAT_3(RTC, id, _CC_NUM)
 
+/** @brief Symbol specifying maximum number of available compare channels. */
+#define NRF_RTC_CC_COUNT_MAX NRFX_ARRAY_SIZE(((NRF_RTC_Type*)0)->EVENTS_COMPARE)
+
 /** @brief Maximum value of the RTC counter. */
 #define NRF_RTC_COUNTER_MAX RTC_COUNTER_COUNTER_Msk
 
 /** @brief Input frequency of the RTC instance. */
-#define RTC_INPUT_FREQ 32768
+#define NRF_RTC_INPUT_FREQ 32768
 
 /** @brief Macro for converting expected frequency to prescaler setting. */
-#define RTC_FREQ_TO_PRESCALER(FREQ) (uint16_t)(((RTC_INPUT_FREQ) / (FREQ)) - 1)
+#define NRF_RTC_FREQ_TO_PRESCALER(FREQ) (uint16_t)(((NRF_RTC_INPUT_FREQ) / (FREQ)) - 1)
 
 /** @brief Macro for trimming values to the RTC bit width. */
-#define RTC_WRAP(val) ((val) & RTC_COUNTER_COUNTER_Msk)
+#define NRF_RTC_WRAP(val) ((val) & RTC_COUNTER_COUNTER_Msk)
 
 /** @brief Macro for creating the interrupt bitmask for the specified compare channel. */
-#define RTC_CHANNEL_INT_MASK(ch)    ((uint32_t)(NRF_RTC_INT_COMPARE0_MASK) << (ch))
+#define NRF_RTC_CHANNEL_INT_MASK(ch)    ((uint32_t)(NRF_RTC_INT_COMPARE0_MASK) << (ch))
+
+/** @brief Macro for creating the interrupt bitmask for all compare channels */
+#define NRF_RTC_ALL_CHANNELS_INT_MASK \
+    ((uint32_t)(((1 << NRF_RTC_CC_COUNT_MAX) - 1) << RTC_INTENSET_COMPARE0_Pos))
 
 /** @brief Macro for obtaining the compare event for the specified channel. */
-#define RTC_CHANNEL_EVENT_ADDR(ch)  (nrf_rtc_event_t)((NRF_RTC_EVENT_COMPARE_0) + (ch) * sizeof(uint32_t))
-
+#define NRF_RTC_CHANNEL_EVENT_ADDR(ch) \
+    (nrf_rtc_event_t)((NRF_RTC_EVENT_COMPARE_0) + (ch) * sizeof(uint32_t))
 
 /** @brief RTC tasks. */
 typedef enum
@@ -115,7 +122,6 @@ typedef enum
     NRF_RTC_INT_COMPARE3_MASK = RTC_INTENSET_COMPARE3_Msk  /**< RTC interrupt from compare event on channel 3. */
 } nrf_rtc_int_t;
 
-
 /**
  * @brief Function for setting a compare value for a channel.
  *
@@ -123,7 +129,7 @@ typedef enum
  * @param[in] ch     Channel.
  * @param[in] cc_val Compare value to be set.
  */
-NRF_STATIC_INLINE  void nrf_rtc_cc_set(NRF_RTC_Type * p_reg, uint32_t ch, uint32_t cc_val);
+NRF_STATIC_INLINE void nrf_rtc_cc_set(NRF_RTC_Type * p_reg, uint32_t ch, uint32_t cc_val);
 
 /**
  * @brief Function for returning the compare value for a channel.
@@ -133,7 +139,7 @@ NRF_STATIC_INLINE  void nrf_rtc_cc_set(NRF_RTC_Type * p_reg, uint32_t ch, uint32
  *
  * @return COMPARE[ch] value.
  */
-NRF_STATIC_INLINE  uint32_t nrf_rtc_cc_get(NRF_RTC_Type const * p_reg, uint32_t ch);
+NRF_STATIC_INLINE uint32_t nrf_rtc_cc_get(NRF_RTC_Type const * p_reg, uint32_t ch);
 
 /**
  * @brief Function for enabling interrupts.
@@ -274,6 +280,17 @@ NRF_STATIC_INLINE uint32_t nrf_rtc_event_address_get(NRF_RTC_Type const * p_reg,
 NRF_STATIC_INLINE uint32_t nrf_rtc_task_address_get(NRF_RTC_Type const * p_reg,
                                                     nrf_rtc_task_t       task);
 
+#if defined(RTC_TASKS_CAPTURE_TASKS_CAPTURE_Msk) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for getting the CAPTURE task associated with the specified capture channel.
+ *
+ * @param[in] index Capture channel index.
+ *
+ * @return Requested CAPTURE task.
+ */
+NRF_STATIC_INLINE nrf_rtc_task_t nrf_rtc_capture_task_get(uint8_t index);
+#endif
+
 /**
  * @brief Function for starting a task.
  *
@@ -294,9 +311,9 @@ NRF_STATIC_INLINE void nrf_rtc_event_enable(NRF_RTC_Type * p_reg, uint32_t mask)
  * @brief Function for disabling an event.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] event Requested event.
+ * @param[in] mask  Mask of event flags to be disabled.
  */
-NRF_STATIC_INLINE void nrf_rtc_event_disable(NRF_RTC_Type * p_reg, uint32_t event);
+NRF_STATIC_INLINE void nrf_rtc_event_disable(NRF_RTC_Type * p_reg, uint32_t mask);
 
 /**
  * @brief Function for getting the COMPARE event associated with the specified compare channel.
@@ -340,7 +357,7 @@ NRF_STATIC_INLINE void nrf_rtc_subscribe_set(NRF_RTC_Type * p_reg,
                                              uint8_t        channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
-            ((uint32_t)channel | RTC_SUBSCRIBE_START_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_rtc_subscribe_clear(NRF_RTC_Type * p_reg,
@@ -354,7 +371,7 @@ NRF_STATIC_INLINE void nrf_rtc_publish_set(NRF_RTC_Type *  p_reg,
                                            uint8_t         channel)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
-            ((uint32_t)channel | RTC_PUBLISH_TICK_EN_Msk);
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
 NRF_STATIC_INLINE void nrf_rtc_publish_clear(NRF_RTC_Type *  p_reg,
@@ -402,6 +419,13 @@ NRF_STATIC_INLINE uint32_t nrf_rtc_task_address_get(NRF_RTC_Type const * p_reg,
 {
     return (uint32_t)p_reg + task;
 }
+
+#if defined(RTC_TASKS_CAPTURE_TASKS_CAPTURE_Msk)
+NRF_STATIC_INLINE nrf_rtc_task_t nrf_rtc_capture_task_get(uint8_t index)
+{
+    return (nrf_rtc_task_t)NRFX_OFFSETOF(NRF_RTC_Type, TASKS_CAPTURE[index]);
+}
+#endif
 
 NRF_STATIC_INLINE void nrf_rtc_task_trigger(NRF_RTC_Type * p_reg, nrf_rtc_task_t task)
 {

@@ -47,20 +47,112 @@ extern "C" {
  * @brief   Hardware access layer for managing the Key Management Unit (KMU) peripheral.
  */
 
+#if defined(KMU_INTEN_KEYSLOT_ERROR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether INTEN register is available. */
+#define NRF_KMU_HAS_INTEN 1
+#else
+#define NRF_KMU_HAS_INTEN 0
+#endif
+
+#if defined(KMU_TASKS_PROVISION_TASKS_PROVISION_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether KMU has PROVISION registers. */
+#define NRF_KMU_HAS_PROVISION 1
+#else
+#define NRF_KMU_HAS_PROVISION 0
+#endif
+
+#if defined(KMU_TASKS_REVOKE_TASKS_REVOKE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether KMU has REVOKE registers. */
+#define NRF_KMU_HAS_REVOKE 1
+#else
+#define NRF_KMU_HAS_REVOKE 0
+#endif
+
+#if defined(KMU_TASKS_READMETADATA_TASKS_READMETADATA_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether KMU has READMETADATA registers. */
+#define NRF_KMU_HAS_READ_METADATA 1
+#else
+#define NRF_KMU_HAS_READ_METADATA 0
+#endif
+
+#if defined(KMU_TASKS_PUSHBLOCK_TASKS_PUSHBLOCK_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether KMU has PUSHBLOCK registers. */
+#define NRF_KMU_HAS_PUSH_BLOCK 1
+#else
+#define NRF_KMU_HAS_PUSH_BLOCK 0
+#endif
+
+#if defined(KMU_SRC_SRC_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether KMU has SRC registers. */
+#define NRF_KMU_HAS_SRC 1
+#else
+#define NRF_KMU_HAS_SRC 0
+#endif
+
+#if defined(KMU_METADATA_METADATA_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether KMU has METADATA registers. */
+#define NRF_KMU_HAS_METADATA 1
+#else
+#define NRF_KMU_HAS_METADATA 0
+#endif
+
 /** @brief KMU tasks. */
 typedef enum
 {
-    NRF_KMU_TASK_PUSH_KEYSLOT = offsetof(NRF_KMU_Type, TASKS_PUSH_KEYSLOT), ///< Push a key slot over secure APB.
+#if NRF_KMU_HAS_PROVISION
+    NRF_KMU_TASK_PROVISION_KEYSLOT = offsetof(NRF_KMU_Type, TASKS_PROVISION),    ///< Provision key slot.
+#endif
+#if defined(KMU_TASKS_PUSH_KEYSLOT_TASKS_PUSH_KEYSLOT_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_KMU_TASK_PUSH_KEYSLOT      = offsetof(NRF_KMU_Type, TASKS_PUSH_KEYSLOT), ///< Push a key slot over secure APB.
+#else
+    NRF_KMU_TASK_PUSH_KEYSLOT      = offsetof(NRF_KMU_Type, TASKS_PUSH),         ///< Push key slot.
+#endif
+#if NRF_KMU_HAS_REVOKE
+    NRF_KMU_TASK_REVOKE_KEYSLOT    = offsetof(NRF_KMU_Type, TASKS_PROVISION),    ///< Revoke key slot.
+#endif
+#if NRF_KMU_HAS_READ_METADATA
+    NRF_KMU_TASK_READ_METADATA     = offsetof(NRF_KMU_Type, TASKS_READMETADATA), ///< Read key slot metedata into METADATA register.
+#endif
+#if NRF_KMU_HAS_PUSH_BLOCK
+    NRF_KMU_TASK_PUSH_BLOCK        = offsetof(NRF_KMU_Type, TASKS_PUSHBLOCK),    ///< Block the PUSH operation of key slot, preventing the key slot being PUSH until next reset.
+#endif
 } nrf_kmu_task_t;
 
 /** @brief KMU events. */
 typedef enum
 {
-    NRF_KMU_EVENT_KEYSLOT_PUSHED  = offsetof(NRF_KMU_Type, EVENTS_KEYSLOT_PUSHED),  ///< Key successfully pushed over secure APB.
-    NRF_KMU_EVENT_KEYSLOT_REVOKED = offsetof(NRF_KMU_Type, EVENTS_KEYSLOT_REVOKED), ///< Key has been revoked and cannot be tasked for selection.
-    NRF_KMU_EVENT_KEYSLOT_ERROR   = offsetof(NRF_KMU_Type, EVENTS_KEYSLOT_ERROR)    ///< No key slot selected or no destination address defined or error during push mechanism.
+#if NRF_KMU_HAS_PROVISION
+    NRF_KMU_EVENT_EVENTS_PROVISIONED          = offsetof(NRF_KMU_Type, EVENTS_PROVISIONED),     ///< Key slot successfully provisioned.
+#endif
+
+#if defined(KMU_EVENTS_KEYSLOT_PUSHED_EVENTS_KEYSLOT_PUSHED_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_KMU_EVENT_KEYSLOT_PUSHED              = offsetof(NRF_KMU_Type, EVENTS_KEYSLOT_PUSHED),  ///< Key successfully pushed over secure APB.
+#else
+    NRF_KMU_EVENT_KEYSLOT_PUSHED              = offsetof(NRF_KMU_Type, EVENTS_PUSHED),          ///< Key successfully pushed over secure APB.
+#endif
+
+#if defined(KMU_EVENTS_KEYSLOT_REVOKED_EVENTS_KEYSLOT_REVOKED_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_KMU_EVENT_KEYSLOT_REVOKED             = offsetof(NRF_KMU_Type, EVENTS_KEYSLOT_REVOKED), ///< Key has been revoked and cannot be tasked for selection.
+#else
+    NRF_KMU_EVENT_KEYSLOT_REVOKED             = offsetof(NRF_KMU_Type, EVENTS_REVOKED),         ///< Key has been revoked and cannot be tasked for selection.
+#endif
+
+#if defined(KMU_EVENTS_KEYSLOT_ERROR_EVENTS_KEYSLOT_ERROR_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_KMU_EVENT_KEYSLOT_ERROR               = offsetof(NRF_KMU_Type, EVENTS_KEYSLOT_ERROR),   ///< No key slot selected or no destination address defined or error during push mechanism.
+#else
+    NRF_KMU_EVENT_KEYSLOT_ERROR               = offsetof(NRF_KMU_Type, EVENTS_ERROR),           ///< No key slot selected or no destination address defined or error during push mechanism.
+#endif
+
+#if NRF_KMU_HAS_READ_METADATA
+    NRF_KMU_EVENT_EVENTS_EVENTS_METADATA_READ = offsetof(NRF_KMU_Type, EVENTS_METADATAREAD),    ///< Key slot metedata has been read into METADATA register.
+#endif
+
+#if NRF_KMU_HAS_PUSH_BLOCK
+    NRF_KMU_EVENT_EVENTS_EVENTS_PUSHBLOCKED   = offsetof(NRF_KMU_Type, EVENTS_PUSHBLOCKED),     ///< The PUSHBLOCK operation was succesful.
+#endif
 } nrf_kmu_event_t;
 
+#if NRF_KMU_HAS_INTEN
 /** @brief KMU interrupts. */
 typedef enum
 {
@@ -68,14 +160,22 @@ typedef enum
     NRF_KMU_INT_REVOKED_MASK = KMU_INTEN_KEYSLOT_REVOKED_Msk, ///< Interrupt on KEYSLOT_REVOKED event.
     NRF_KMU_INT_ERROR_MASK   = KMU_INTEN_KEYSLOT_ERROR_Msk    ///< Interrupt on KEYSLOT_ERROR event.
 } nrf_kmu_int_mask_t;
+#endif
 
 /** @brief KMU operation status. */
 typedef enum
 {
+#if defined(KMU_STATUS_BLOCKED_Msk) || defined(__NRFX_DOXYGEN__)
     NRF_KMU_STATUS_BLOCKED_MASK  = KMU_STATUS_BLOCKED_Msk,  ///< Access violation detected and blocked.
-    NRF_KMU_STATUS_SELECTED_MASK = KMU_STATUS_SELECTED_Msk, ///< Key slot ID successfully selected by KMU
+#endif
+#if defined(KMU_STATUS_SELECTED_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_KMU_STATUS_SELECTED_MASK = KMU_STATUS_SELECTED_Msk, ///< Key slot ID successfully selected by KMU.
+#endif
+#if defined(KMU_STATUS_STATUS_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_KMU_STATUS_READY         = KMU_STATUS_STATUS_Ready, ///< KMU is ready for a new operation.
+    NRF_KMU_STATUS_BUSY          = KMU_STATUS_STATUS_Busy,  ///< KMU is busy, an operation is in progress.
+#endif
 } nrf_kmu_status_t;
-
 
 /**
  * @brief Function for activating a specific KMU task.
@@ -126,6 +226,7 @@ NRF_STATIC_INLINE bool nrf_kmu_event_check(NRF_KMU_Type const * p_reg, nrf_kmu_e
 NRF_STATIC_INLINE uint32_t nrf_kmu_event_address_get(NRF_KMU_Type const * p_reg,
                                                      nrf_kmu_event_t      event);
 
+#if NRF_KMU_HAS_INTEN
 /**
  * @brief Function for enabling specified interrupts.
  *
@@ -162,15 +263,16 @@ NRF_STATIC_INLINE uint32_t nrf_kmu_int_enable_check(NRF_KMU_Type const * p_reg, 
  * @return Bitmask with pending interrupts bits.
  */
 NRF_STATIC_INLINE uint32_t nrf_kmu_intpend_get(NRF_KMU_Type const * p_reg);
+#endif // NRF_KMU_HAS_INTEN
 
 /**
  * @brief Function for getting status bits of the KMU operation.
  *
- * Function returns bitmask. Please use @ref nrf_kmu_status_t to check operations status.
+ * Please use @ref nrf_kmu_status_t to check operations status.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  *
- * @return Bitmask with operation status bits.
+ * @return Operation status.
  */
 NRF_STATIC_INLINE uint32_t nrf_kmu_status_get(NRF_KMU_Type const * p_reg);
 
@@ -192,6 +294,43 @@ NRF_STATIC_INLINE void nrf_kmu_keyslot_set(NRF_KMU_Type * p_reg, uint8_t keyslot
  */
 NRF_STATIC_INLINE uint8_t nrf_kmu_keyslot_get(NRF_KMU_Type const * p_reg);
 
+#if NRF_KMU_HAS_SRC
+/**
+ * @brief Function for setting the source address for provisioning.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] src   Source address to be set.
+ */
+NRF_STATIC_INLINE void nrf_kmu_src_set(NRF_KMU_Type * p_reg, uint32_t src);
+
+/**
+ * @brief Function for getting the source address for provisioning.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Source address.
+ */
+NRF_STATIC_INLINE uint32_t nrf_kmu_src_get(NRF_KMU_Type const * p_reg);
+#endif // NRF_KMU_HAS_SRC
+
+#if NRF_KMU_HAS_METADATA
+/**
+ * @brief Function for setting the key slot metadata.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] metdata Key slot metadata.
+ */
+NRF_STATIC_INLINE void nrf_kmu_metadata_set(NRF_KMU_Type * p_reg, uint32_t metdata);
+
+/**
+ * @brief Function for getting the key slot metadata.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Key slot metadata.
+ */
+NRF_STATIC_INLINE uint32_t nrf_kmu_metadata_get(NRF_KMU_Type const * p_reg);
+#endif // NRF_KMU_HAS_METADATA
 
 #ifndef NRF_DECLARE_ONLY
 
@@ -223,6 +362,7 @@ NRF_STATIC_INLINE uint32_t nrf_kmu_event_address_get(NRF_KMU_Type const * p_reg,
     return ((uint32_t)p_reg + (uint32_t)event);
 }
 
+#if NRF_KMU_HAS_INTEN
 NRF_STATIC_INLINE void nrf_kmu_int_enable(NRF_KMU_Type * p_reg, uint32_t mask)
 {
     p_reg->INTENSET = mask;
@@ -242,6 +382,7 @@ NRF_STATIC_INLINE uint32_t nrf_kmu_intpend_get(NRF_KMU_Type const * p_reg)
 {
     return p_reg->INTPEND;
 }
+#endif // NRF_KMU_HAS_INTEN
 
 NRF_STATIC_INLINE uint32_t nrf_kmu_status_get(NRF_KMU_Type const * p_reg)
 {
@@ -250,13 +391,49 @@ NRF_STATIC_INLINE uint32_t nrf_kmu_status_get(NRF_KMU_Type const * p_reg)
 
 NRF_STATIC_INLINE void nrf_kmu_keyslot_set(NRF_KMU_Type * p_reg, uint8_t keyslot_id)
 {
-    p_reg->SELECTKEYSLOT = (uint32_t) keyslot_id;
+#if defined(KMU_SELECTKEYSLOT_ID_Msk)
+    p_reg->SELECTKEYSLOT = (uint32_t)keyslot_id;
+#elif defined(KMU_KEYSLOT_ID_Msk)
+    p_reg->KEYSLOT = (uint32_t)keyslot_id;
+#else
+    #error "Unsupported"
+#endif
 }
 
 NRF_STATIC_INLINE uint8_t nrf_kmu_keyslot_get(NRF_KMU_Type const * p_reg)
 {
-    return (uint8_t) p_reg->SELECTKEYSLOT;
+#if defined(KMU_SELECTKEYSLOT_ID_Msk)
+    return (uint8_t)p_reg->SELECTKEYSLOT;
+#elif defined(KMU_KEYSLOT_ID_Msk)
+    return (uint8_t)p_reg->KEYSLOT;
+#else
+    #error "Unsupported"
+#endif
 }
+
+#if NRF_KMU_HAS_SRC
+NRF_STATIC_INLINE void nrf_kmu_src_set(NRF_KMU_Type * p_reg, uint32_t src)
+{
+    p_reg->SRC = src;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_kmu_src_get(NRF_KMU_Type const * p_reg)
+{
+    return p_reg->SRC;
+}
+#endif // NRF_KMU_HAS_SRC
+
+#if NRF_KMU_HAS_METADATA
+NRF_STATIC_INLINE void nrf_kmu_metadata_set(NRF_KMU_Type * p_reg, uint32_t metdata)
+{
+    p_reg->METADATA = metdata;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_kmu_metadata_get(NRF_KMU_Type const * p_reg)
+{
+    return p_reg->METADATA;
+}
+#endif // NRF_KMU_HAS_METADATA
 
 #endif // NRF_DECLARE_ONLY
 

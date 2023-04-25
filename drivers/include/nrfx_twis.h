@@ -58,18 +58,8 @@ typedef struct
 
 #ifndef __NRFX_DOXYGEN__
 enum {
-#if NRFX_CHECK(NRFX_TWIS0_ENABLED)
-    NRFX_TWIS0_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_TWIS1_ENABLED)
-    NRFX_TWIS1_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_TWIS2_ENABLED)
-    NRFX_TWIS2_INST_IDX,
-#endif
-#if NRFX_CHECK(NRFX_TWIS3_ENABLED)
-    NRFX_TWIS3_INST_IDX,
-#endif
+    /* List all enabled driver instances (in the format NRFX_\<instance_name\>_INST_IDX). */
+    NRFX_INSTANCE_ENUM_LIST(TWIS)
     NRFX_TWIS_ENABLED_COUNT
 };
 #endif
@@ -140,8 +130,8 @@ typedef void (*nrfx_twis_event_handler_t)(nrfx_twis_evt_t const * p_event);
 typedef struct
 {
     uint32_t            addr[2];            ///< Set addresses that this slave should respond. Set 0 to disable.
-    uint32_t            scl;                ///< SCL pin number.
-    uint32_t            sda;                ///< SDA pin number.
+    uint32_t            scl_pin;            ///< SCL pin number.
+    uint32_t            sda_pin;            ///< SDA pin number.
     nrf_gpio_pin_pull_t scl_pull;           ///< SCL pin pull.
     nrf_gpio_pin_pull_t sda_pull;           ///< SDA pin pull.
     uint8_t             interrupt_priority; ///< The priority of interrupt for the module to be set.
@@ -176,8 +166,8 @@ typedef struct
 #define NRFX_TWIS_DEFAULT_CONFIG(_pin_scl, _pin_sda, _addr)      \
 {                                                                \
     .addr               = { _addr, 0x00 },                       \
-    .scl                = _pin_scl,                              \
-    .sda                = _pin_sda,                              \
+    .scl_pin            = _pin_scl,                              \
+    .sda_pin            = _pin_sda,                              \
     .scl_pull           = NRF_GPIO_PIN_NOPULL,                   \
     .sda_pull           = NRF_GPIO_PIN_NOPULL,                   \
     .interrupt_priority = NRFX_TWIS_DEFAULT_CONFIG_IRQ_PRIORITY  \
@@ -206,6 +196,19 @@ typedef struct
 nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
                           nrfx_twis_config_t const * p_config,
                           nrfx_twis_event_handler_t  event_handler);
+
+/**
+ * @brief Function for reconfiguring the TWIS driver instance.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] p_config   Pointer to the structure with the configuration.
+ *
+ * @retval NRFX_SUCCESS             Reconfiguration was successful.
+ * @retval NRFX_ERROR_BUSY          The driver is during transaction.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is uninitialized.
+ */
+nrfx_err_t nrfx_twis_reconfigure(nrfx_twis_t const *        p_instance,
+                                 nrfx_twis_config_t const * p_config);
 
 /**
  * @brief Function for uninitializing the TWIS driver instance.
@@ -415,11 +418,20 @@ NRFX_STATIC_INLINE size_t nrfx_twis_rx_amount(nrfx_twis_t const * p_instance)
 
 /** @} */
 
-
-void nrfx_twis_0_irq_handler(void);
-void nrfx_twis_1_irq_handler(void);
-void nrfx_twis_2_irq_handler(void);
-void nrfx_twis_3_irq_handler(void);
+/*
+ * Declare interrupt handlers for all enabled driver instances in the following format:
+ * nrfx_\<periph_name\>_\<idx\>_irq_handler (for example, nrfx_twis_0_irq_handler).
+ *
+ * A specific interrupt handler for the driver instance can be retrieved by using
+ * the NRFX_TWIS_INST_HANDLER_GET macro.
+ *
+ * Here is a sample of using the NRFX_TWIS_INST_HANDLER_GET macro to directly map
+ * an interrupt handler in a Zephyr application:
+ *
+ * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_TWIS_INST_GET(\<instance_index\>)), \<priority\>,
+ *                    NRFX_TWIS_INST_HANDLER_GET(\<instance_index\>), 0);
+ */
+NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(TWIS, twis)
 
 
 #ifdef __cplusplus

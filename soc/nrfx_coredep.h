@@ -34,6 +34,8 @@
 #ifndef NRFX_COREDEP_H__
 #define NRFX_COREDEP_H__
 
+#include <nrfx.h>
+
 /**
  * @defgroup nrfx_coredep Core-dependent functionality
  * @{
@@ -73,9 +75,13 @@
 #elif defined(NRF5340_XXAA_NETWORK)
     #define NRFX_DELAY_CPU_FREQ_MHZ 64
     #define NRFX_DELAY_DWT_PRESENT  1
-#else
-    #define NRFX_DELAY_CPU_FREQ_MHZ (SystemCoreClock / 1000000)
-    #define NRFX_DELAY_DWT_PRESENT  0
+#elif !defined(NRFX_DELAY_CPU_FREQ_MHZ) || !defined(NRFX_DELAY_DWT_PRESENT)
+    #error "Unknown device"
+#endif
+
+#if ISA_RISCV
+/** @brief Slowdown for RISCV cores. */
+#define NRFX_DELAY_RISCV_SLOWDOWN 110
 #endif
 
 /**
@@ -138,6 +144,7 @@ NRF_STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
         return;
     }
 
+#if ISA_ARM
     // Allow overriding the number of cycles per loop iteration, in case it is
     // needed to adjust this number externally (for example, when the SoC is
     // emulated).
@@ -170,6 +177,12 @@ NRF_STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
         (delay_func_t)((((uint32_t)delay_machine_code) | 1));
     uint32_t cycles = time_us * NRFX_DELAY_CPU_FREQ_MHZ;
     delay_cycles(cycles);
+#elif ISA_RISCV
+    for (volatile uint32_t i = 0;
+         i < ((NRFX_DELAY_CPU_FREQ_MHZ * time_us) / NRFX_DELAY_RISCV_SLOWDOWN);
+         i++)
+    {}
+#endif
 }
 
 #endif // !NRFX_CHECK(NRFX_DELAY_DWT_BASED_DELAY)

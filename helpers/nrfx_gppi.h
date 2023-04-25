@@ -36,14 +36,6 @@
 
 #include <nrfx.h>
 
-#if NRFX_CHECK(NRFX_DPPI_ENABLED)
-#include <nrfx_dppi.h>
-#endif
-
-#if NRFX_CHECK(NRFX_PPI_ENABLED)
-#include <nrfx_ppi.h>
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -80,7 +72,13 @@ extern "C" {
  */
 
 #if defined(PPI_PRESENT)
-#include <hal/nrf_ppi.h>
+#include <nrfx_ppi.h>
+
+#define NRFX_GPPI_GROUP_NUM              PPI_GROUP_NUM
+#define NRFX_GPPI_GROUPS_USED            NRFX_PPI_GROUPS_USED
+#define NRFX_GPPI_ALL_APP_GROUPS_MASK    (((1uL << PPI_GROUP_NUM) - 1) & ~(NRFX_PPI_GROUPS_USED))
+#define NRFX_GPPI_ALL_APP_CHANNELS_MASK  NRFX_PPI_ALL_APP_CHANNELS_MASK
+#define NRFX_GPPI_PROG_APP_CHANNELS_MASK NRFX_PPI_PROG_APP_CHANNELS_MASK
 
 typedef enum
 {
@@ -113,16 +111,26 @@ typedef enum
 } nrfx_gppi_task_t;
 
 #elif defined(DPPI_PRESENT)
-#include <hal/nrf_dppi.h>
+#include <haly/nrfy_dppi.h>
+
+#define NRFX_GPPI_GROUP_NUM              DPPI_GROUP_NUM
+#define NRFX_GPPI_GROUPS_USED            NRFX_DPPI_GROUPS_USED
+#define NRFX_GPPI_ALL_APP_GROUPS_MASK    (NRFX_BIT_MASK(DPPI_GROUP_NUM) & ~NRFX_DPPI_GROUPS_USED)
+#define NRFX_GPPI_ALL_APP_CHANNELS_MASK  (NRFX_BIT_MASK(DPPI_CH_NUM) & ~NRFX_DPPI_CHANNELS_USED)
+#if !defined(NRFX_GPPI_PROG_APP_CHANNELS_MASK)
+#define NRFX_GPPI_PROG_APP_CHANNELS_MASK NRFX_GPPI_ALL_APP_CHANNELS_MASK
+#endif
 
 typedef enum
 {
     NRFX_GPPI_CHANNEL_GROUP0 = NRF_DPPI_CHANNEL_GROUP0,
     NRFX_GPPI_CHANNEL_GROUP1 = NRF_DPPI_CHANNEL_GROUP1,
+#if DPPI_GROUP_NUM > 2
     NRFX_GPPI_CHANNEL_GROUP2 = NRF_DPPI_CHANNEL_GROUP2,
     NRFX_GPPI_CHANNEL_GROUP3 = NRF_DPPI_CHANNEL_GROUP3,
     NRFX_GPPI_CHANNEL_GROUP4 = NRF_DPPI_CHANNEL_GROUP4,
     NRFX_GPPI_CHANNEL_GROUP5 = NRF_DPPI_CHANNEL_GROUP5,
+#endif
 } nrfx_gppi_channel_group_t;
 
 typedef enum
@@ -131,6 +139,7 @@ typedef enum
     NRFX_GPPI_TASK_CHG0_DIS = NRF_DPPI_TASK_CHG0_DIS,
     NRFX_GPPI_TASK_CHG1_EN  = NRF_DPPI_TASK_CHG1_EN,
     NRFX_GPPI_TASK_CHG1_DIS = NRF_DPPI_TASK_CHG1_DIS,
+#if DPPI_GROUP_NUM > 2
     NRFX_GPPI_TASK_CHG2_EN  = NRF_DPPI_TASK_CHG2_EN,
     NRFX_GPPI_TASK_CHG2_DIS = NRF_DPPI_TASK_CHG2_DIS,
     NRFX_GPPI_TASK_CHG3_EN  = NRF_DPPI_TASK_CHG3_EN,
@@ -139,6 +148,7 @@ typedef enum
     NRFX_GPPI_TASK_CHG4_DIS = NRF_DPPI_TASK_CHG4_DIS,
     NRFX_GPPI_TASK_CHG5_EN  = NRF_DPPI_TASK_CHG5_EN,
     NRFX_GPPI_TASK_CHG5_DIS = NRF_DPPI_TASK_CHG5_DIS
+#endif
 } nrfx_gppi_task_t;
 
 #elif defined(__NRFX_DOXYGEN__)
@@ -148,10 +158,12 @@ typedef enum
 {
     NRFX_GPPI_CHANNEL_GROUP0, /**< Channel group 0.*/
     NRFX_GPPI_CHANNEL_GROUP1, /**< Channel group 1.*/
+#if NRFX_GPPI_GROUP_NUM > 2 || defined(__NRFX_DOXYGEN__)
     NRFX_GPPI_CHANNEL_GROUP2, /**< Channel group 2.*/
     NRFX_GPPI_CHANNEL_GROUP3, /**< Channel group 3.*/
     NRFX_GPPI_CHANNEL_GROUP4, /**< Channel group 4.*/
     NRFX_GPPI_CHANNEL_GROUP5, /**< Channel group 5.*/
+#endif
 } nrfx_gppi_channel_group_t;
 
 /** @brief Generic PPI tasks. */
@@ -161,6 +173,7 @@ typedef enum
     NRFX_GPPI_TASK_CHG0_DIS, /**< Task for disabling channel group 0 */
     NRFX_GPPI_TASK_CHG1_EN,  /**< Task for enabling channel group 1 */
     NRFX_GPPI_TASK_CHG1_DIS, /**< Task for disabling channel group 1 */
+#if NRFX_GPPI_GROUP_NUM > 2 || defined(__NRFX_DOXYGEN__)
     NRFX_GPPI_TASK_CHG2_EN,  /**< Task for enabling channel group 2 */
     NRFX_GPPI_TASK_CHG2_DIS, /**< Task for disabling channel group 2 */
     NRFX_GPPI_TASK_CHG3_EN,  /**< Task for enabling channel group 3 */
@@ -169,6 +182,7 @@ typedef enum
     NRFX_GPPI_TASK_CHG4_DIS, /**< Task for disabling channel group 4 */
     NRFX_GPPI_TASK_CHG5_EN,  /**< Task for enabling channel group 5 */
     NRFX_GPPI_TASK_CHG5_DIS, /**< Task for disabling channel group 5 */
+#endif
 } nrfx_gppi_task_t;
 #endif // defined(__NRFX_DOXYGEN__)
 
@@ -180,10 +194,10 @@ typedef enum
  * @retval true  The channel is enabled.
  * @retval false The channel is not enabled.
  */
-__STATIC_INLINE bool nrfx_gppi_channel_check(uint8_t channel);
+bool nrfx_gppi_channel_check(uint8_t channel);
 
 /** @brief Function for disabling all channels. */
-__STATIC_INLINE void nrfx_gppi_channels_disable_all(void);
+void nrfx_gppi_channels_disable_all(void);
 
 /**
  * @brief Function for enabling multiple channels.
@@ -193,7 +207,7 @@ __STATIC_INLINE void nrfx_gppi_channels_disable_all(void);
  *
  * @param[in] mask Channel mask.
  */
-__STATIC_INLINE void nrfx_gppi_channels_enable(uint32_t mask);
+void nrfx_gppi_channels_enable(uint32_t mask);
 
 /**
  * @brief Function for disabling multiple channels.
@@ -203,7 +217,7 @@ __STATIC_INLINE void nrfx_gppi_channels_enable(uint32_t mask);
  *
  * @param[in] mask Channel mask.
  */
-__STATIC_INLINE void nrfx_gppi_channels_disable(uint32_t mask);
+void nrfx_gppi_channels_disable(uint32_t mask);
 
 /**
  * @brief Function for associating a given channel with the specified event register.
@@ -214,7 +228,7 @@ __STATIC_INLINE void nrfx_gppi_channels_disable(uint32_t mask);
  * @param[in] channel Channel to which to assign the event.
  * @param[in] eep     Address of the event register.
  */
-__STATIC_INLINE void nrfx_gppi_event_endpoint_setup(uint8_t channel, uint32_t eep);
+void nrfx_gppi_event_endpoint_setup(uint8_t channel, uint32_t eep);
 
 /**
  * @brief Function for associating a given channel with the specified task register.
@@ -225,7 +239,7 @@ __STATIC_INLINE void nrfx_gppi_event_endpoint_setup(uint8_t channel, uint32_t ee
  * @param[in] channel Channel to which to assign the task.
  * @param[in] tep     Address of the task register.
  */
-__STATIC_INLINE void nrfx_gppi_task_endpoint_setup(uint8_t channel, uint32_t tep);
+void nrfx_gppi_task_endpoint_setup(uint8_t channel, uint32_t tep);
 
 /**
  * @brief Function for setting up the event and task endpoints for a given channel.
@@ -234,9 +248,16 @@ __STATIC_INLINE void nrfx_gppi_task_endpoint_setup(uint8_t channel, uint32_t tep
  * @param[in] eep     Address of the event register.
  * @param[in] tep     Address of the task register.
  */
-__STATIC_INLINE void nrfx_gppi_channel_endpoints_setup(uint8_t  channel,
-                                                       uint32_t eep,
-                                                       uint32_t tep);
+void nrfx_gppi_channel_endpoints_setup(uint8_t channel, uint32_t eep, uint32_t tep);
+
+/**
+ * @brief Function for clearing the event and task endpoints for a given channel.
+ *
+ * @param[in] channel Channel to which the given endpoints are assigned.
+ * @param[in] eep     Address of the event register.
+ * @param[in] tep     Address of the task register.
+ */
+void nrfx_gppi_channel_endpoints_clear(uint8_t  channel, uint32_t eep, uint32_t tep);
 
 /**
  * @brief Function for clearing the DPPI publish configuration for a given event
@@ -245,7 +266,7 @@ __STATIC_INLINE void nrfx_gppi_channel_endpoints_setup(uint8_t  channel,
  * @param[in] channel Channel for which to clear the event endpoint. Not used in DPPI.
  * @param[in] eep     Address of the event register. Not used in PPI.
  */
-__STATIC_INLINE void nrfx_gppi_event_endpoint_clear(uint8_t channel, uint32_t eep);
+void nrfx_gppi_event_endpoint_clear(uint8_t channel, uint32_t eep);
 
 /**
  * @brief Function for clearing the DPPI subscribe configuration for a given task
@@ -254,8 +275,7 @@ __STATIC_INLINE void nrfx_gppi_event_endpoint_clear(uint8_t channel, uint32_t ee
  * @param[in] channel Channel from which to disconnect the task enpoint. Not used in DPPI.
  * @param[in] tep     Address of the task register. Not used in PPI.
  */
-__STATIC_INLINE void nrfx_gppi_task_endpoint_clear(uint8_t channel, uint32_t tep);
-
+void nrfx_gppi_task_endpoint_clear(uint8_t channel, uint32_t tep);
 
 #if defined(PPI_FEATURE_FORKS_PRESENT) || defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 /**
@@ -265,7 +285,7 @@ __STATIC_INLINE void nrfx_gppi_task_endpoint_clear(uint8_t channel, uint32_t tep
  * @param[in] channel  Channel to which the given fork endpoint is assigned.
  * @param[in] fork_tep Address of the task register.
  */
-__STATIC_INLINE void nrfx_gppi_fork_endpoint_setup(uint8_t channel, uint32_t fork_tep);
+void nrfx_gppi_fork_endpoint_setup(uint8_t channel, uint32_t fork_tep);
 
 /**
  * @brief Function for clearing the task endpoint for a given PPI fork or for clearing
@@ -274,7 +294,7 @@ __STATIC_INLINE void nrfx_gppi_fork_endpoint_setup(uint8_t channel, uint32_t for
  * @param[in] channel  Channel for which to clear the fork endpoint. Not used in DPPI.
  * @param[in] fork_tep Address of the task register. Not used in PPI.
  */
-__STATIC_INLINE void nrfx_gppi_fork_endpoint_clear(uint8_t channel, uint32_t fork_tep);
+void nrfx_gppi_fork_endpoint_clear(uint8_t channel, uint32_t fork_tep);
 #endif // defined(PPI_FEATURE_FORKS_PRESENT) || defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 
 /**
@@ -283,8 +303,8 @@ __STATIC_INLINE void nrfx_gppi_fork_endpoint_clear(uint8_t channel, uint32_t for
  * @param[in] channel_mask  Channels to be included in the group.
  * @param[in] channel_group Channel group.
  */
-__STATIC_INLINE void nrfx_gppi_channels_include_in_group(uint32_t                  channel_mask,
-                                                         nrfx_gppi_channel_group_t channel_group);
+void nrfx_gppi_channels_include_in_group(uint32_t                  channel_mask,
+                                         nrfx_gppi_channel_group_t channel_group);
 
 /**
  * @brief Function for removing multiple channels from a channel group.
@@ -292,36 +312,36 @@ __STATIC_INLINE void nrfx_gppi_channels_include_in_group(uint32_t               
  * @param[in] channel_mask  Channels to be removed from the group.
  * @param[in] channel_group Channel group.
  */
-__STATIC_INLINE void nrfx_gppi_channels_remove_from_group(uint32_t                  channel_mask,
-                                                          nrfx_gppi_channel_group_t channel_group);
+void nrfx_gppi_channels_remove_from_group(uint32_t                  channel_mask,
+                                          nrfx_gppi_channel_group_t channel_group);
 
 /**
  * @brief Function for removing all channels from a channel group.
  *
  * @param[in] channel_group Channel group.
  */
-__STATIC_INLINE void nrfx_gppi_group_clear(nrfx_gppi_channel_group_t channel_group);
+void nrfx_gppi_group_clear(nrfx_gppi_channel_group_t channel_group);
 
 /**
  * @brief Function for enabling a channel group.
  *
  * @param[in] channel_group Channel group.
  */
-__STATIC_INLINE void nrfx_gppi_group_enable(nrfx_gppi_channel_group_t channel_group);
+void nrfx_gppi_group_enable(nrfx_gppi_channel_group_t channel_group);
 
 /**
  * @brief Function for disabling a group.
  *
  * @param[in] channel_group Channel group.
  */
-__STATIC_INLINE void nrfx_gppi_group_disable(nrfx_gppi_channel_group_t channel_group);
+void nrfx_gppi_group_disable(nrfx_gppi_channel_group_t channel_group);
 
 /**
  * @brief Function for activating a task.
  *
  * @param[in] task Task to be activated.
  */
-__STATIC_INLINE void nrfx_gppi_task_trigger(nrfx_gppi_task_t task);
+void nrfx_gppi_task_trigger(nrfx_gppi_task_t task);
 
 /**
  * @brief Function for returning the address of a specific task register.
@@ -330,7 +350,7 @@ __STATIC_INLINE void nrfx_gppi_task_trigger(nrfx_gppi_task_t task);
  *
  * @return Address of the requested task register.
  */
-__STATIC_INLINE uint32_t nrfx_gppi_task_address_get(nrfx_gppi_task_t task);
+uint32_t nrfx_gppi_task_address_get(nrfx_gppi_task_t task);
 
 /**
  * @brief Function for returning the address of a channel group disable task.
@@ -339,7 +359,7 @@ __STATIC_INLINE uint32_t nrfx_gppi_task_address_get(nrfx_gppi_task_t task);
  *
  * @return Disable task address of the specified group.
  */
-__STATIC_INLINE nrfx_gppi_task_t nrfx_gppi_group_disable_task_get(nrfx_gppi_channel_group_t group);
+nrfx_gppi_task_t nrfx_gppi_group_disable_task_get(nrfx_gppi_channel_group_t group);
 
 /**
  * @brief Function for returning the address of a channel group enable task.
@@ -348,7 +368,7 @@ __STATIC_INLINE nrfx_gppi_task_t nrfx_gppi_group_disable_task_get(nrfx_gppi_chan
  *
  * @return Enable task address of the specified group.
  */
-__STATIC_INLINE nrfx_gppi_task_t nrfx_gppi_group_enable_task_get(nrfx_gppi_channel_group_t group);
+nrfx_gppi_task_t nrfx_gppi_group_enable_task_get(nrfx_gppi_channel_group_t group);
 
 /**
  * @brief Function for allocating a channel.
@@ -359,7 +379,7 @@ __STATIC_INLINE nrfx_gppi_task_t nrfx_gppi_group_enable_task_get(nrfx_gppi_chann
  * @retval NRFX_ERROR_NO_MEM        There is no available channel to be used.
  * @retval NRFX_ERROR_NOT_SUPPORTED Driver is not enabled.
  */
-__STATIC_INLINE nrfx_err_t nrfx_gppi_channel_alloc(uint8_t * p_channel);
+nrfx_err_t nrfx_gppi_channel_alloc(uint8_t * p_channel);
 
 /**
  * @brief Function for freeing a channel.
@@ -371,7 +391,7 @@ __STATIC_INLINE nrfx_err_t nrfx_gppi_channel_alloc(uint8_t * p_channel);
  *                                  is not user-configurable.
  * @retval NRFX_ERROR_NOT_SUPPORTED Driver is not enabled.
  */
-__STATIC_INLINE nrfx_err_t nrfx_gppi_channel_free(uint8_t channel);
+nrfx_err_t nrfx_gppi_channel_free(uint8_t channel);
 
 /**
  * @brief Function for allocating a channel group.
@@ -382,7 +402,7 @@ __STATIC_INLINE nrfx_err_t nrfx_gppi_channel_free(uint8_t channel);
  * @retval NRFX_ERROR_NO_MEM        There is no available channel group to be used.
  * @retval NRFX_ERROR_NOT_SUPPORTED Driver is not enabled.
  */
-__STATIC_INLINE nrfx_err_t nrfx_gppi_group_alloc(nrfx_gppi_channel_group_t * p_group);
+nrfx_err_t nrfx_gppi_group_alloc(nrfx_gppi_channel_group_t * p_group);
 
 /**
  * @brief Function for freeing a channel group.
@@ -394,323 +414,8 @@ __STATIC_INLINE nrfx_err_t nrfx_gppi_group_alloc(nrfx_gppi_channel_group_t * p_g
  *                                  is not user-configurable.
  * @retval NRFX_ERROR_NOT_SUPPORTED Driver is not enabled.
  */
-__STATIC_INLINE nrfx_err_t nrfx_gppi_group_free(nrfx_gppi_channel_group_t group);
+nrfx_err_t nrfx_gppi_group_free(nrfx_gppi_channel_group_t group);
 /** @} */
-
-#if defined(PPI_PRESENT)
-
-__STATIC_INLINE bool nrfx_gppi_channel_check(uint8_t channel)
-{
-    return (nrf_ppi_channel_enable_get(NRF_PPI, (nrf_ppi_channel_t)channel) ==
-            NRF_PPI_CHANNEL_ENABLED);
-}
-
-__STATIC_INLINE void nrfx_gppi_channels_disable_all(void)
-{
-    nrf_ppi_channels_disable_all(NRF_PPI);
-}
-
-__STATIC_INLINE void nrfx_gppi_channels_enable(uint32_t mask)
-{
-    nrf_ppi_channels_enable(NRF_PPI, mask);
-}
-
-__STATIC_INLINE void nrfx_gppi_channels_disable(uint32_t mask)
-{
-    nrf_ppi_channels_disable(NRF_PPI, mask);
-}
-
-__STATIC_INLINE void nrfx_gppi_event_endpoint_setup(uint8_t channel, uint32_t eep)
-{
-    nrf_ppi_event_endpoint_setup(NRF_PPI, (nrf_ppi_channel_t)channel, eep);
-}
-
-__STATIC_INLINE void nrfx_gppi_task_endpoint_setup(uint8_t channel, uint32_t tep)
-{
-    nrf_ppi_task_endpoint_setup(NRF_PPI, (nrf_ppi_channel_t)channel, tep);
-}
-
-__STATIC_INLINE void nrfx_gppi_channel_endpoints_setup(uint8_t  channel,
-                                                       uint32_t eep,
-                                                       uint32_t tep)
-{
-    nrf_ppi_channel_endpoint_setup(NRF_PPI, (nrf_ppi_channel_t)channel, eep, tep);
-}
-
-__STATIC_INLINE void nrfx_gppi_event_endpoint_clear(uint8_t channel, uint32_t eep)
-{
-    (void)eep;
-     nrf_ppi_event_endpoint_setup(NRF_PPI, (nrf_ppi_channel_t)channel, 0);
-}
-
-__STATIC_INLINE void nrfx_gppi_task_endpoint_clear(uint8_t channel, uint32_t tep)
-{
-    (void)tep;
-    nrf_ppi_task_endpoint_setup(NRF_PPI, (nrf_ppi_channel_t)channel, 0);
-}
-
-#if defined(PPI_FEATURE_FORKS_PRESENT)
-__STATIC_INLINE void nrfx_gppi_fork_endpoint_setup(uint8_t channel, uint32_t fork_tep)
-{
-    nrf_ppi_fork_endpoint_setup(NRF_PPI, (nrf_ppi_channel_t)channel, fork_tep);
-}
-
-__STATIC_INLINE void nrfx_gppi_fork_endpoint_clear(uint8_t channel, uint32_t fork_tep)
-{
-    (void)fork_tep;
-    nrf_ppi_fork_endpoint_setup(NRF_PPI, (nrf_ppi_channel_t)channel, 0);
-}
-#endif
-
-__STATIC_INLINE void nrfx_gppi_channels_include_in_group(uint32_t                  channel_mask,
-                                                         nrfx_gppi_channel_group_t channel_group)
-{
-    nrf_ppi_channels_include_in_group(NRF_PPI,
-                                      channel_mask,
-                                      (nrf_ppi_channel_group_t)channel_group);
-}
-
-__STATIC_INLINE void nrfx_gppi_channels_remove_from_group(uint32_t                  channel_mask,
-                                                          nrfx_gppi_channel_group_t channel_group)
-{
-    nrf_ppi_channels_remove_from_group(NRF_PPI,
-                                       channel_mask,
-                                       (nrf_ppi_channel_group_t)channel_group);
-}
-
-__STATIC_INLINE void nrfx_gppi_group_clear(nrfx_gppi_channel_group_t channel_group)
-{
-    nrf_ppi_group_clear(NRF_PPI, (nrf_ppi_channel_group_t)channel_group);
-}
-
-__STATIC_INLINE void nrfx_gppi_group_enable(nrfx_gppi_channel_group_t channel_group)
-{
-    nrf_ppi_group_enable(NRF_PPI, (nrf_ppi_channel_group_t)channel_group);
-}
-
-__STATIC_INLINE void nrfx_gppi_group_disable(nrfx_gppi_channel_group_t channel_group)
-{
-    nrf_ppi_group_disable(NRF_PPI, (nrf_ppi_channel_group_t)channel_group);
-}
-
-__STATIC_INLINE void nrfx_gppi_task_trigger(nrfx_gppi_task_t task)
-{
-    nrf_ppi_task_trigger(NRF_PPI, (nrf_ppi_task_t)task);
-}
-
-__STATIC_INLINE uint32_t nrfx_gppi_task_address_get(nrfx_gppi_task_t task)
-{
-    return (uint32_t)nrf_ppi_task_address_get(NRF_PPI, (nrf_ppi_task_t)task);
-}
-
-__STATIC_INLINE nrfx_gppi_task_t nrfx_gppi_group_disable_task_get(nrfx_gppi_channel_group_t group)
-{
-    return (nrfx_gppi_task_t)nrf_ppi_group_disable_task_get(NRF_PPI, (uint8_t)group);
-}
-
-__STATIC_INLINE nrfx_gppi_task_t nrfx_gppi_group_enable_task_get(nrfx_gppi_channel_group_t group)
-{
-    return (nrfx_gppi_task_t)nrf_ppi_group_enable_task_get(NRF_PPI, (uint8_t)group);
-}
-
-__STATIC_INLINE nrfx_err_t nrfx_gppi_channel_alloc(uint8_t * p_channel)
-{
-#if NRFX_CHECK(NRFX_PPI_ENABLED)
-    return nrfx_ppi_channel_alloc((nrf_ppi_channel_t *)p_channel);
-#else
-    (void)p_channel;
-    return NRFX_ERROR_NOT_SUPPORTED;
-#endif
-}
-
-__STATIC_INLINE nrfx_err_t nrfx_gppi_channel_free(uint8_t channel)
-{
-#if NRFX_CHECK(NRFX_PPI_ENABLED)
-    return nrfx_ppi_channel_free((nrf_ppi_channel_t)channel);
-#else
-    (void)channel;
-    return NRFX_ERROR_NOT_SUPPORTED;
-#endif
-}
-
-__STATIC_INLINE nrfx_err_t nrfx_gppi_group_alloc(nrfx_gppi_channel_group_t * p_group)
-{
-#if NRFX_CHECK(NRFX_PPI_ENABLED)
-    return nrfx_ppi_group_alloc((nrf_ppi_channel_group_t *)p_group);
-#else
-    (void)p_group;
-    return NRFX_ERROR_NOT_SUPPORTED;
-#endif
-}
-
-__STATIC_INLINE nrfx_err_t nrfx_gppi_group_free(nrfx_gppi_channel_group_t group)
-{
-#if NRFX_CHECK(NRFX_PPI_ENABLED)
-    return nrfx_ppi_group_free((nrf_ppi_channel_group_t)group);
-#else
-    (void)group;
-    return NRFX_ERROR_NOT_SUPPORTED;
-#endif
-}
-#elif defined(DPPI_PRESENT)
-
-__STATIC_INLINE bool nrfx_gppi_channel_check(uint8_t channel)
-{
-    return nrf_dppi_channel_check(NRF_DPPIC, channel);
-}
-
-__STATIC_INLINE void nrfx_gppi_channels_disable_all(void)
-{
-    nrf_dppi_channels_disable_all(NRF_DPPIC);
-}
-
-__STATIC_INLINE void nrfx_gppi_channels_enable(uint32_t mask)
-{
-    nrf_dppi_channels_enable(NRF_DPPIC, mask);
-}
-
-__STATIC_INLINE void nrfx_gppi_channels_disable(uint32_t mask)
-{
-    nrf_dppi_channels_disable(NRF_DPPIC, mask);
-}
-
-__STATIC_INLINE void nrfx_gppi_task_trigger(nrfx_gppi_task_t task)
-{
-    nrf_dppi_task_trigger(NRF_DPPIC, (nrf_dppi_task_t)task);
-}
-
-__STATIC_INLINE void nrfx_gppi_event_endpoint_setup(uint8_t channel, uint32_t eep)
-{
-    NRFX_ASSERT(eep);
-    *((volatile uint32_t *)(eep + 0x80uL)) = ((uint32_t)channel | DPPIC_SUBSCRIBE_CHG_EN_EN_Msk);
-}
-
-__STATIC_INLINE void nrfx_gppi_task_endpoint_setup(uint8_t channel, uint32_t tep)
-{
-    NRFX_ASSERT(tep);
-    *((volatile uint32_t *)(tep + 0x80uL)) = ((uint32_t)channel | DPPIC_SUBSCRIBE_CHG_EN_EN_Msk);
-}
-
-__STATIC_INLINE void nrfx_gppi_channel_endpoints_setup(uint8_t  channel,
-                                                       uint32_t eep,
-                                                       uint32_t tep)
-{
-    nrfx_gppi_event_endpoint_setup(channel, eep);
-    nrfx_gppi_task_endpoint_setup(channel, tep);
-}
-
-__STATIC_INLINE void nrfx_gppi_event_endpoint_clear(uint8_t channel, uint32_t eep)
-{
-    NRFX_ASSERT(eep);
-    (void)channel;
-    *((volatile uint32_t *)(eep + 0x80uL)) = 0;
-}
-
-__STATIC_INLINE void nrfx_gppi_task_endpoint_clear(uint8_t channel, uint32_t tep)
-{
-    NRFX_ASSERT(tep);
-    (void)channel;
-    *((volatile uint32_t *)(tep + 0x80uL)) = 0;
-}
-
-__STATIC_INLINE void nrfx_gppi_fork_endpoint_setup(uint8_t channel, uint32_t fork_tep)
-{
-    nrfx_gppi_task_endpoint_setup(channel, fork_tep);
-}
-
-__STATIC_INLINE void nrfx_gppi_fork_endpoint_clear(uint8_t channel, uint32_t fork_tep)
-{
-    nrfx_gppi_task_endpoint_clear(channel, fork_tep);
-}
-
-__STATIC_INLINE void nrfx_gppi_channels_include_in_group(uint32_t                  channel_mask,
-                                                         nrfx_gppi_channel_group_t channel_group)
-{
-    nrf_dppi_channels_include_in_group(NRF_DPPIC,
-                                       channel_mask,
-                                       (nrf_dppi_channel_group_t)channel_group);
-}
-
-__STATIC_INLINE void nrfx_gppi_channels_remove_from_group(uint32_t                  channel_mask,
-                                                          nrfx_gppi_channel_group_t channel_group)
-{
-    nrf_dppi_channels_remove_from_group(NRF_DPPIC,
-                                        channel_mask,
-                                        (nrf_dppi_channel_group_t)channel_group);
-}
-
-__STATIC_INLINE void nrfx_gppi_group_clear(nrfx_gppi_channel_group_t channel_group)
-{
-    nrf_dppi_group_clear(NRF_DPPIC, (nrf_dppi_channel_group_t)channel_group);
-}
-
-__STATIC_INLINE void nrfx_gppi_group_enable(nrfx_gppi_channel_group_t channel_group)
-{
-    nrf_dppi_group_enable(NRF_DPPIC, (nrf_dppi_channel_group_t)channel_group);
-}
-
-__STATIC_INLINE void nrfx_gppi_group_disable(nrfx_gppi_channel_group_t channel_group)
-{
-    nrf_dppi_group_disable(NRF_DPPIC, (nrf_dppi_channel_group_t)channel_group);
-}
-
-__STATIC_INLINE uint32_t nrfx_gppi_task_address_get(nrfx_gppi_task_t gppi_task)
-{
-    return nrf_dppi_task_address_get(NRF_DPPIC, (nrf_dppi_task_t)gppi_task);
-}
-
-__STATIC_INLINE nrfx_gppi_task_t nrfx_gppi_group_disable_task_get(nrfx_gppi_channel_group_t group)
-{
-    return (nrfx_gppi_task_t) nrf_dppi_group_disable_task_get((uint8_t)group);
-}
-
-__STATIC_INLINE nrfx_gppi_task_t nrfx_gppi_group_enable_task_get(nrfx_gppi_channel_group_t group)
-{
-    return (nrfx_gppi_task_t) nrf_dppi_group_enable_task_get((uint8_t)group);
-}
-
-__STATIC_INLINE nrfx_err_t nrfx_gppi_channel_alloc(uint8_t * p_channel)
-{
-#if NRFX_CHECK(NRFX_DPPI_ENABLED)
-    return nrfx_dppi_channel_alloc(p_channel);
-#else
-    (void)p_channel;
-    return NRFX_ERROR_NOT_SUPPORTED;
-#endif
-}
-
-__STATIC_INLINE nrfx_err_t nrfx_gppi_channel_free(uint8_t channel)
-{
-#if NRFX_CHECK(NRFX_DPPI_ENABLED)
-    return nrfx_dppi_channel_free(channel);
-#else
-    (void)channel;
-    return NRFX_ERROR_NOT_SUPPORTED;
-#endif
-}
-
-__STATIC_INLINE nrfx_err_t nrfx_gppi_group_alloc(nrfx_gppi_channel_group_t * p_group)
-{
-#if NRFX_CHECK(NRFX_DPPI_ENABLED)
-    return nrfx_dppi_group_alloc((nrf_dppi_channel_group_t *)p_group);
-#else
-    (void)p_group;
-    return NRFX_ERROR_NOT_SUPPORTED;
-#endif
-}
-
-__STATIC_INLINE nrfx_err_t nrfx_gppi_group_free(nrfx_gppi_channel_group_t group)
-{
-#if NRFX_CHECK(NRFX_DPPI_ENABLED)
-    return nrfx_dppi_group_free((nrf_dppi_channel_group_t)group);
-#else
-    (void)group;
-    return NRFX_ERROR_NOT_SUPPORTED;
-#endif
-}
-#else
-#error "Neither PPI nor DPPI is present in the SoC currently in use."
-#endif
 
 #ifdef __cplusplus
 }
