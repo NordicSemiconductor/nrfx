@@ -134,6 +134,79 @@ NRF_STATIC_INLINE void nrf_nvmc_nonsecure_mode_set(NRF_NVMC_Type *    p_reg,
 #endif
 
 /**
+ * @brief Function for writing a 32-bit word to flash.
+ *
+ * @note Before calling this function, the caller must ensure that:
+ *     - the @p address is word-aligned,
+ *     - write mode is enabled, using @ref nrf_nvmc_mode_set,
+ *     - the NVMC is ready to accept another write, using
+ *       @ref nrf_nvmc_ready_check or @ref nrf_nvmc_write_ready_check,
+ *     - read-only mode is enabled as soon as writing is no longer needed,
+ *       using @ref nrf_nvmc_mode_set.
+ *
+ * @warning It is recommended to use @ref nrfx_nvmc_word_write function instead.
+ *
+ * Using this function when accessing the flash gives the possibility
+ * to run the code in an environment where the flash is simulated.
+ *
+ * @param[in] address  Address of the word to write.
+ * @param[in] value    Value to write.
+ */
+NRF_STATIC_INLINE void nrf_nvmc_word_write(uint32_t address,
+                                           uint32_t value);
+
+/**
+ * @brief Function for reading a byte from the flash.
+ *
+ * Using this function when accessing the flash gives the possibility
+ * to run the code in an environment where the flash is simulated.
+ *
+ * @param[in] address Address of the byte to read.
+ *
+ * @return Value read from flash.
+ */
+NRF_STATIC_INLINE uint8_t nrf_nvmc_byte_read(uint32_t address);
+
+/**
+ * @brief Function for reading a 16-bit halfword from the flash.
+ *
+ * Using this function when accessing the flash gives the possibility
+ * to run the code in an environment where the flash is simulated.
+ *
+ * @param[in] address Address of the halfword to read.
+ *
+ * @return Value read from flash.
+ */
+NRF_STATIC_INLINE uint16_t nrf_nvmc_halfword_read(uint32_t address);
+
+/**
+ * @brief Function for reading a 32-bit word from the flash.
+ *
+ * Using this function when accessing the flash gives the possibility
+ * to run the code in an environment where the flash is simulated.
+ *
+ * @param[in] address Address of the word to read.
+ *
+ * @return Value read from flash.
+ */
+NRF_STATIC_INLINE uint32_t nrf_nvmc_word_read(uint32_t address);
+
+/**
+ * @brief Function for reading a given number of bytes from the flash into the specified buffer.
+ *
+ * Using this function when accessing the flash gives the possibility
+ * to run the code in an environment where the flash is simulated.
+ *
+ * @param[in] dst       Pointer to the buffer to store the data.
+ * @param[in] address   Address of the first byte to read.
+ * @param[in] num_bytes Number of bytes to read.
+ *
+ */
+NRF_STATIC_INLINE void nrf_nvmc_buffer_read(void *   dst,
+                                            uint32_t address,
+                                            uint32_t num_bytes);
+
+/**
  * @brief Function for starting a single page erase in the Flash memory.
  *
  * The NVMC mode must be correctly configured with @ref nrf_nvmc_mode_set
@@ -281,6 +354,34 @@ NRF_STATIC_INLINE void nrf_nvmc_nonsecure_mode_set(NRF_NVMC_Type *    p_reg,
     p_reg->CONFIGNS = (uint32_t)mode;
 }
 #endif
+
+NRF_STATIC_INLINE void nrf_nvmc_word_write(uint32_t address,
+                                           uint32_t value)
+{
+    *(volatile uint32_t *)address = value;
+}
+
+NRF_STATIC_INLINE uint8_t nrf_nvmc_byte_read(uint32_t address)
+{
+    return *(volatile uint8_t *)address;
+}
+
+NRF_STATIC_INLINE uint16_t nrf_nvmc_halfword_read(uint32_t address)
+{
+    return *(volatile uint16_t *)address;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_nvmc_word_read(uint32_t address)
+{
+    return *(volatile uint32_t *)address;
+}
+
+NRF_STATIC_INLINE void nrf_nvmc_buffer_read(void *   dst,
+                                            uint32_t address,
+                                            uint32_t num_bytes)
+{
+    memcpy(dst, (void *)address, num_bytes);
+}
 
 NRF_STATIC_INLINE void nrf_nvmc_page_erase_start(NRF_NVMC_Type * p_reg,
                                                  uint32_t        page_addr)
