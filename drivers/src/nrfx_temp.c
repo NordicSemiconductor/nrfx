@@ -68,6 +68,10 @@ nrfx_err_t nrfx_temp_init(nrfx_temp_config_t const * p_config, nrfx_temp_data_ha
     *(uint32_t volatile *)0x4000C504 = 0;
 #endif
 
+#if NRFY_TEMP_HAS_CALIBRATION && defined(FICR_TRIM_GLOBAL_TEMP_CALIB_VALUE_Msk)
+    nrfy_temp_calibration_coeff_set(NRF_TEMP, NRF_FICR->TRIM.GLOBAL.TEMP.CALIB);
+#endif
+
     m_data_handler = handler;
 
     if (m_data_handler)

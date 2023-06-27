@@ -44,13 +44,13 @@ extern "C" {
 #define NRF_P0 NRF_GPIO
 #endif
 
-#if (GPIO_COUNT == 1)
-#define NUMBER_OF_PINS (P0_PIN_NUM)
-#define GPIO_REG_LIST  {NRF_P0}
-#elif (GPIO_COUNT == 2)
-#define NUMBER_OF_PINS (P0_PIN_NUM + P1_PIN_NUM)
-#define GPIO_REG_LIST  {NRF_P0, NRF_P1}
-#endif
+#define GPIO_PORT_NUM(periph_name, prefix, i, _)    i,
+#define GPIO_REG(periph_name, prefix, i, _)         NRFX_CONCAT(NRF_, periph_name, prefix, i),
+#define GPIO_NUM_OF_PINS(periph_name, prefix, i, _) NRFX_CONCAT(periph_name, prefix, i, _PIN_NUM)
+
+#define GPIO_PORT_NUM_LIST {NRFX_FOREACH_PRESENT(P, GPIO_PORT_NUM, (), (), _)}
+#define GPIO_REG_LIST      {NRFX_FOREACH_PRESENT(P, GPIO_REG, (), (), _)}
+#define NUMBER_OF_PINS     {NRFX_FOREACH_PRESENT(P, GPIO_NUM_OF_PINS, (+), (0), _)}
 
 #if !defined(GPIO_REG_LIST)
 #error "Not supported."
@@ -141,7 +141,7 @@ extern "C" {
 #define NRF_GPIO_HAS_PORT_IMPEDANCE 0
 #endif
 
-#if defined(GPIO_RETAIN_APPLICAION_Msk) || defined(__NRFX_DOXYGEN__)
+#if defined(GPIO_RETAIN_ResetValue) || defined(__NRFX_DOXYGEN__)
 /** @brief Presence of register retention. */
 #define NRF_GPIO_HAS_RETENTION 1
 #else
@@ -1299,7 +1299,7 @@ NRF_STATIC_INLINE bool nrf_gpio_pin_present_check(uint32_t pin_number)
         NRF_INTERNAL_GPIO_PORT_MASK_SET(mask);
 
         default:
-            NRFX_ASSERT(0);
+            return false;
     }
 
 #ifdef P0_FEATURE_PINS_PRESENT

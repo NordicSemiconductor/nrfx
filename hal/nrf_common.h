@@ -58,9 +58,24 @@ extern "C" {
 #define RISCV_FENCE(p, s) __asm__ __volatile__ ("fence " #p "," #s : : : "memory")
 #endif
 
+#if defined(DPPI_PRESENT)
 #ifndef NRF_SUBSCRIBE_PUBLISH_ENABLE
 #define NRF_SUBSCRIBE_PUBLISH_ENABLE (0x01UL << 31UL)
 #endif
+#if defined(NRF_RADIO)
+#define NRF_SUBSCRIBE_PUBLISH_OFFSET_RADIO \
+    (NRFX_OFFSETOF(NRF_RADIO_Type, SUBSCRIBE_TXEN) - NRFX_OFFSETOF(NRF_RADIO_Type, TASKS_TXEN))
+#define NRF_SUBSCRIBE_PUBLISH_OFFSET(task_or_event)                              \
+    ((NRFX_IN_RANGE(task_or_event, (uint32_t)NRF_RADIO,                          \
+                    (uint32_t)NRF_RADIO + NRF_SUBSCRIBE_PUBLISH_OFFSET_RADIO)) ? \
+     (NRF_SUBSCRIBE_PUBLISH_OFFSET_RADIO) :                                      \
+     (0x80uL))
+#else
+#define NRF_SUBSCRIBE_PUBLISH_OFFSET(task_or_event) 0x80uL
+#endif // defined(NRF_RADIO)
+#endif // defined(DPPI_PRESENT)
+
+
 
 #if defined(NRFX_CLZ)
 #define NRF_CLZ(value) NRFX_CLZ(value)

@@ -373,11 +373,7 @@ void nrfx_clock_start(nrf_clock_domain_t domain)
                 else if (nrf_clock_start_task_check(NRF_CLOCK, NRF_CLOCK_DOMAIN_LFCLK))
                 {
                     // LF clock is not active yet but was started already. Inspect its source.
-#if NRF_CLOCK_HAS_XO
-                    lfclksrc = nrf_clock_lf_actv_src_get(NRF_CLOCK);
-#else
                     lfclksrc = nrf_clock_lf_srccopy_get(NRF_CLOCK);
-#endif
                     if (clock_lfclksrc_tweak(&lfclksrc))
                     {
                         // LF clock was started already and the configured source

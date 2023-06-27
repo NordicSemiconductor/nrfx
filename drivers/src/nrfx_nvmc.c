@@ -246,7 +246,7 @@ static void nvmc_word_write(uint32_t addr, uint32_t value)
     {}
 #endif
 
-    *(volatile uint32_t *)addr = value;
+    nrf_nvmc_word_write(addr, value);
     __DMB();
 }
 
@@ -350,7 +350,7 @@ bool nrfx_nvmc_byte_writable_check(uint32_t addr, uint8_t val_to_check)
 {
     NRFX_ASSERT(is_valid_address(addr, true));
 
-    uint8_t val_on_addr = *(uint8_t const *)addr;
+    uint8_t val_on_addr = nrf_nvmc_byte_read(addr);
     return (val_to_check & val_on_addr) == val_to_check;
 }
 
@@ -363,7 +363,7 @@ bool nrfx_nvmc_halfword_writable_check(uint32_t addr, uint16_t val_to_check)
 
     if ((addr - NVMC_FLASH_BASE_ADDRESS) < flash_total_size_get())
     {
-        val_on_addr = *(uint16_t const *)addr;
+        val_on_addr = nrf_nvmc_halfword_read(addr);
     }
     else
     {
@@ -377,7 +377,7 @@ bool nrfx_nvmc_word_writable_check(uint32_t addr, uint32_t val_to_check)
     NRFX_ASSERT(is_valid_address(addr, true));
     NRFX_ASSERT(nrfx_is_word_aligned((void const *)addr));
 
-    uint32_t val_on_addr = *(uint32_t const *)addr;
+    uint32_t val_on_addr = nrf_nvmc_word_read(addr);
     return (val_to_check & val_on_addr) == val_to_check;
 }
 
@@ -492,7 +492,7 @@ uint16_t nrfx_nvmc_otp_halfword_read(uint32_t addr)
     NRFX_ASSERT(is_halfword_aligned(addr));
 
     uint32_t aligned_addr = addr & ~(0x03UL);
-    uint32_t val32 = *(const uint32_t *)aligned_addr;
+    uint32_t val32 = nrf_nvmc_word_read(aligned_addr);
 
     return (nrfx_is_word_aligned((void const *)addr) ? (uint16_t)(val32)
                                                      : (uint16_t)(val32 >> 16));

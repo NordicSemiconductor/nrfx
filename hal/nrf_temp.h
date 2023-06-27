@@ -47,6 +47,13 @@ extern "C" {
 * @brief   Hardware access layer for managing the Temperature sensor (TEMP).
 */
 
+#if defined(TEMP_CALIB_CALIB_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the calibration of temperature measurement is present. */
+#define NRF_TEMP_HAS_CALIBRATION 1
+#else
+#define NRF_TEMP_HAS_CALIBRATION 0
+#endif
+
 /** @brief TEMP tasks. */
 typedef enum
 {
@@ -152,6 +159,25 @@ NRF_STATIC_INLINE bool nrf_temp_event_check(NRF_TEMP_Type const * p_reg, nrf_tem
  */
 NRF_STATIC_INLINE int32_t nrf_temp_result_get(NRF_TEMP_Type const * p_reg);
 
+#if NRF_TEMP_HAS_CALIBRATION
+/**
+ * @brief Function for setting the calibration coefficient for the temperature measurement.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] coeff Calibration coefficient.
+ */
+NRF_STATIC_INLINE void nrf_temp_calibration_coeff_set(NRF_TEMP_Type * p_reg, uint32_t coeff);
+
+/**
+ * @brief Function for getting the calibration coefficient for the temperature measurement.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Calibration coefficient.
+ */
+NRF_STATIC_INLINE uint32_t nrf_temp_calibration_coeff_get(NRF_TEMP_Type const * p_reg);
+#endif
+
 #ifndef NRF_DECLARE_ONLY
 
 NRF_STATIC_INLINE void nrf_temp_int_enable(NRF_TEMP_Type * p_reg, uint32_t mask)
@@ -211,6 +237,18 @@ NRF_STATIC_INLINE int32_t nrf_temp_result_get(NRF_TEMP_Type const * p_reg)
 
     return raw_measurement;
 }
+
+#if NRF_TEMP_HAS_CALIBRATION
+NRF_STATIC_INLINE void nrf_temp_calibration_coeff_set(NRF_TEMP_Type * p_reg, uint32_t coeff)
+{
+    p_reg->CALIB = coeff;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_temp_calibration_coeff_get(NRF_TEMP_Type const * p_reg)
+{
+    return p_reg->CALIB;
+}
+#endif
 
 #endif // NRF_DECLARE_ONLY
 

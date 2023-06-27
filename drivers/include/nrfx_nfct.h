@@ -35,7 +35,7 @@
 #define NRFX_NFCT_H__
 
 #include <nrfx.h>
-#include <hal/nrf_nfct.h>
+#include <haly/nrfy_nfct.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -179,6 +179,7 @@ typedef struct
 {
     uint32_t            rxtx_int_mask; ///< Mask for enabling RX/TX events. Indicate which events must be forwarded to the upper layer by using @ref nrfx_nfct_evt_id_t. By default, no events are enabled. */
     nrfx_nfct_handler_t cb;            ///< Callback.
+    uint8_t             irq_priority;  ///< Interrupt priority.
 } nrfx_nfct_config_t;
 
 /**
@@ -188,6 +189,7 @@ typedef struct
  *
  * @retval NRFX_SUCCESS             The NFCT driver was initialized successfully.
  * @retval NRFX_ERROR_INVALID_STATE The NFCT driver is already initialized.
+ * @retval NRFX_ERROR_FORBIDDEN     The NFCT antenna pads are not configured as antenna pins.
  */
 nrfx_err_t nrfx_nfct_init(nrfx_nfct_config_t const * p_config);
 
@@ -225,8 +227,11 @@ bool nrfx_nfct_field_check(void);
  * @brief Function for preparing the NFCT driver for receiving an NFC frame.
  *
  * @param[in] p_rx_data  Pointer to the RX buffer.
+ *
+ * @retval NRFX_SUCCESS            The operation was successful.
+ * @retval NRFX_ERROR_INVALID_ADDR Data buffer does not point to memory region reachable by EasyDMA.
  */
-void nrfx_nfct_rx(nrfx_nfct_data_desc_t const * p_rx_data);
+nrfx_err_t nrfx_nfct_rx(nrfx_nfct_data_desc_t const * p_rx_data);
 
 /**
  * @brief Function for transmitting an NFC frame.
@@ -237,6 +242,8 @@ void nrfx_nfct_rx(nrfx_nfct_data_desc_t const * p_rx_data);
  * @retval NRFX_SUCCESS              The operation was successful.
  * @retval NRFX_ERROR_INVALID_LENGTH The TX buffer size is invalid.
  * @retval NRFX_ERROR_BUSY           Driver is already transferring.
+ * @retval NRFX_ERROR_INVALID_ADDR   Data buffer does not point to memory region reachable by
+ *                                   EasyDMA.
  */
 nrfx_err_t nrfx_nfct_tx(nrfx_nfct_data_desc_t const * p_tx_data,
                         nrf_nfct_frame_delay_mode_t   delay_mode);
@@ -251,6 +258,8 @@ nrfx_err_t nrfx_nfct_tx(nrfx_nfct_data_desc_t const * p_tx_data,
  * @retval NRFX_SUCCESS              The operation was successful.
  * @retval NRFX_ERROR_INVALID_LENGTH The TX buffer size is invalid.
  * @retval NRFX_ERROR_BUSY           Driver is already transferring.
+ * @retval NRFX_ERROR_INVALID_ADDR   Data buffer does not point to memory region reachable by
+ *                                   EasyDMA.
  */
 nrfx_err_t nrfx_nfct_bits_tx(nrfx_nfct_data_desc_t const * p_tx_data,
                              nrf_nfct_frame_delay_mode_t   delay_mode);

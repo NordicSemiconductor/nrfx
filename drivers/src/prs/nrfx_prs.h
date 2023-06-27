@@ -148,16 +148,20 @@ void nrfx_prs_release(void const * p_base_addr);
 
 /** @} */
 
-void nrfx_prs_box_0_irq_handler(void);
-void nrfx_prs_box_1_irq_handler(void);
-void nrfx_prs_box_2_irq_handler(void);
-void nrfx_prs_box_3_irq_handler(void);
-void nrfx_prs_box_4_irq_handler(void);
-void nrfx_prs_box_5_irq_handler(void);
-void nrfx_prs_box_6_irq_handler(void);
-void nrfx_prs_box_7_irq_handler(void);
-void nrfx_prs_box_8_irq_handler(void);
-
+/*
+ * Declare interrupt handlers for all enabled driver instances in the following format:
+ * nrfx_\<periph_name\>_\<idx\>_irq_handler (for example, nrfx_prs_box_0_irq_handler).
+ *
+ * A specific interrupt handler for the driver instance can be retrieved by using
+ * the NRFX_PRS_BOX_INST_HANDLER_GET macro.
+ *
+ * Here is a sample of using the NRFX_PRS_BOX_INST_HANDLER_GET macro to directly map
+ * an interrupt handler in a Zephyr application:
+ *
+ * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_PRS_BOX_INST_GET(\<instance_index\>)), \<priority\>,
+ *                    NRFX_PRS_BOX_INST_HANDLER_GET(\<instance_index\>), 0);
+ */
+NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(PRS_BOX_, prs_box)
 
 #ifdef __cplusplus
 }

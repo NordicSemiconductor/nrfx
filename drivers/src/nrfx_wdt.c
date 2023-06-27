@@ -123,7 +123,7 @@ nrfx_err_t nrfx_wdt_reconfigure(nrfx_wdt_t const *        p_instance,
     NRFX_ASSERT(p_config);
     wdt_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
-    if (p_cb->state == NRFX_DRV_STATE_INITIALIZED)
+    if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
     {
         return NRFX_ERROR_INVALID_STATE;
     }

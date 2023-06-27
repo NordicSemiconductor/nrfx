@@ -94,11 +94,19 @@ extern "C" {
 #define NRF_CLOCK_HAS_HFCLK_DIV 0
 #endif
 
-#if defined(CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether the ALWAYSRUN register is present. */
-#define NRF_CLOCK_HAS_ALWAYSRUN 1
+#if defined(CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Msk) || defined(CLOCK_LFCLK_ALWAYSRUN_ALWAYSRUN_Msk) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the ALWAYSRUN register is present for LFCLK. */
+#define NRF_CLOCK_HAS_LFCLK_ALWAYSRUN 1
 #else
-#define NRF_CLOCK_HAS_ALWAYSRUN 0
+#define NRF_CLOCK_HAS_LFCLK_ALWAYSRUN 0
+#endif
+
+#if defined(CLOCK_HFCLKALWAYSRUN_ALWAYSRUN_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the ALWAYSRUN register is present for HFCLK. */
+#define NRF_CLOCK_HAS_HFCLK_ALWAYSRUN 1
+#else
+#define NRF_CLOCK_HAS_HFCLK_ALWAYSRUN 0
 #endif
 
 #if defined(CLOCK_HFCLKSRC_SRC_Msk) || defined(__NRFX_DOXYGEN__)
@@ -129,39 +137,48 @@ extern "C" {
 #define NRF_CLOCK_HAS_LFCLK_TYPE 0
 #endif
 
-#if defined(CLOCK_LFCLKSRCCOPY_SRC_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether the CLOCK has LFCLKSRCCOPY register. */
-#define NRF_CLOCK_HAS_LFCLKSRCCOPY 1
-#else
-#define NRF_CLOCK_HAS_LFCLKSRCCOPY 0
-#endif
-
 #if NRF_CLOCK_HAS_LFCLK_TYPE
 #define NRF_CLOCK_LFCLKRUN_STATUS_NotTriggered CLOCK_LFCLK_RUN_STATUS_NotTriggered /**< Task LFCLKSTART/HFCLKSTART has not been triggered definiton. */
 #define NRF_CLOCK_LFCLKRUN_STATUS_Triggered    CLOCK_LFCLK_RUN_STATUS_Triggered    /**< Task LFCLKSTART/HFCLKSTART has been triggered. */
 #define NRF_CLOCK_INTENSET_LFCLKSTARTED_Msk    CLOCK_INTENSET_LFCLKSTARTED_Msk     /**< Interrupt on LFCLKSTARTED event mask definition. */
+#define NRF_LFCLKSRCCOPY                       LFCLK.SRCCOPY                       /**< LF clock SRCCOPY register definition. */
 #define NRF_LFCLKRUN                           LFCLK.RUN                           /**< LF clock RUN register definition. */
 #define NRF_LFCLKSTAT                          LFCLK.STAT                          /**< LF clock STAT register definition. */
 #define NRF_LFCLKSRC                           LFCLK.SRC                           /**< LF clock SRC register definition. */
+#define NRF_LFCLKALWAYSRUN                     LFCLK.ALWAYSRUN                     /**< LF clock ALWAYSRUN register definition. */
+#define NRF_CLOCK_LFCLKSRCCOPY_SRC_Msk         CLOCK_LFCLK_SRCCOPY_SRC_Msk         /**< LF clock SRCCOPY status mask definition. */
+#define NRF_CLOCK_LFCLKSRCCOPY_SRC_Pos         CLOCK_LFCLK_SRCCOPY_SRC_Pos         /**< LF clock SRCCOPY status position definition. */
 #define NRF_CLOCK_LFCLKRUN_STATUS_Msk          CLOCK_LFCLK_RUN_STATUS_Msk          /**< LF clock RUN status mask definition. */
 #define NRF_CLOCK_LFCLKRUN_STATUS_Pos          CLOCK_LFCLK_RUN_STATUS_Pos          /**< LF clock RUN status position definition. */
 #define NRF_CLOCK_LFCLKSTAT_SRC_Msk            CLOCK_LFCLK_STAT_SRC_Msk            /**< LF clock STAT source mask definition. */
 #define NRF_CLOCK_LFCLKSTAT_SRC_Pos            CLOCK_LFCLK_STAT_SRC_Pos            /**< LF clock STAT source position definition. */
 #define NRF_CLOCK_LFCLKSTAT_STATE_Msk          CLOCK_LFCLK_STAT_STATE_Msk          /**< LF clock STAT state mask definition. */
 #define NRF_CLOCK_LFCLKSTAT_STATE_Pos          CLOCK_LFCLK_STAT_STATE_Pos          /**< LF clock STAT state position definition. */
+#define NRF_CLOCK_LFCLKSTAT_ALWAYSRUNNING_Msk  CLOCK_LFCLK_STAT_ALWAYSRUNNING_Msk  /**< LF clock STAT alwaysrunning position definition. */
+#define NRF_CLOCK_LFCLKSTAT_ALWAYSRUNNING_Pos  CLOCK_LFCLK_STAT_ALWAYSRUNNING_Pos  /**< LF clock STAT alwaysrunning mask definition. */
+#define NRF_CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Msk CLOCK_LFCLK_ALWAYSRUN_ALWAYSRUN_Msk /**< LF clock ALWAYSRUN position definition. */
+#define NRF_CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Pos CLOCK_LFCLK_ALWAYSRUN_ALWAYSRUN_Pos /**< LF clock ALWAYSRUN mask definition. */
 #else
 #define NRF_CLOCK_LFCLKRUN_STATUS_NotTriggered CLOCK_LFCLKRUN_STATUS_NotTriggered
 #define NRF_CLOCK_LFCLKRUN_STATUS_Triggered    CLOCK_LFCLKRUN_STATUS_Triggered
 #define NRF_CLOCK_INTENSET_LFCLKSTARTED_Msk    CLOCK_INTENSET_LFCLKSTARTED_Msk
+#define NRF_LFCLKSRCCOPY                       LFCLKSRCCOPY
 #define NRF_LFCLKRUN                           LFCLKRUN
 #define NRF_LFCLKSTAT                          LFCLKSTAT
 #define NRF_LFCLKSRC                           LFCLKSRC
+#define NRF_LFCLKALWAYSRUN                     LFCLKALWAYSRUN
+#define NRF_CLOCK_LFCLKSRCCOPY_SRC_Msk         CLOCK_LFCLKSRCCOPY_SRC_Msk
+#define NRF_CLOCK_LFCLKSRCCOPY_SRC_Pos         CLOCK_LFCLKSRCCOPY_SRC_Pos
 #define NRF_CLOCK_LFCLKRUN_STATUS_Msk          CLOCK_LFCLKRUN_STATUS_Msk
 #define NRF_CLOCK_LFCLKRUN_STATUS_Pos          CLOCK_LFCLKRUN_STATUS_Pos
 #define NRF_CLOCK_LFCLKSTAT_SRC_Msk            CLOCK_LFCLKSTAT_SRC_Msk
 #define NRF_CLOCK_LFCLKSTAT_SRC_Pos            CLOCK_LFCLKSTAT_SRC_Pos
 #define NRF_CLOCK_LFCLKSTAT_STATE_Msk          CLOCK_LFCLKSTAT_STATE_Msk
 #define NRF_CLOCK_LFCLKSTAT_STATE_Pos          CLOCK_LFCLKSTAT_STATE_Pos
+#define NRF_CLOCK_LFCLKSTAT_ALWAYSRUNNING_Msk  CLOCK_LFCLKSTAT_ALWAYSRUNNING_Msk
+#define NRF_CLOCK_LFCLKSTAT_ALWAYSRUNNING_Pos  CLOCK_LFCLKSTAT_ALWAYSRUNNING_Pos
+#define NRF_CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Msk CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Msk
+#define NRF_CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Pos CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Pos
 #endif
 
 #if NRF_CLOCK_HAS_XO
@@ -173,12 +190,10 @@ extern "C" {
 #define NRF_HFCLKSTAT                       XO.STAT                   /**< HF clock STAT register definition. */
 #define NRF_CLOCK_HFCLKRUN_STATUS_Msk       CLOCK_XO_RUN_STATUS_Msk   /**< HF clock RUN status mask definition. */
 #define NRF_CLOCK_HFCLKRUN_STATUS_Pos       CLOCK_XO_RUN_STATUS_Pos   /**< HF clock RUN status position definition. */
-#define NRF_CLOCK_HFCLKSTAT_SRC_Msk         CLOCK_XO_STAT_SRC_Msk     /**< HF clock STAT source mask definition. */
-#define NRF_CLOCK_HFCLKSTAT_SRC_Pos         CLOCK_XO_STAT_SRC_Pos     /**< HF clock STAT source position definition. */
 #define NRF_CLOCK_HFCLKSTAT_STATE_Msk       CLOCK_XO_STAT_STATE_Msk   /**< HF clock STAT state mask definition. */
 #define NRF_CLOCK_HFCLKSTAT_STATE_Pos       CLOCK_XO_STAT_STATE_Pos   /**< HF clock STAT state position definition. */
 #else
-#define NRF_CLOCK_INTENSET_HFCLKSTARTED_Msk CLOCK_INTENSET_HFCLKSTARTED_Msk 
+#define NRF_CLOCK_INTENSET_HFCLKSTARTED_Msk CLOCK_INTENSET_HFCLKSTARTED_Msk
 #define NRF_TASKS_HFCLKSTART                TASKS_HFCLKSTART
 #define NRF_TASKS_HFCLKSTOP                 TASKS_HFCLKSTOP
 #define NRF_EVENTS_HFCLKSTARTED             EVENTS_HFCLKSTARTED
@@ -186,8 +201,6 @@ extern "C" {
 #define NRF_HFCLKSTAT                       HFCLKSTAT
 #define NRF_CLOCK_HFCLKRUN_STATUS_Msk       CLOCK_HFCLKRUN_STATUS_Msk
 #define NRF_CLOCK_HFCLKRUN_STATUS_Pos       CLOCK_HFCLKRUN_STATUS_Pos
-#define NRF_CLOCK_HFCLKSTAT_SRC_Msk         CLOCK_HFCLKSTAT_SRC_Msk
-#define NRF_CLOCK_HFCLKSTAT_SRC_Pos         CLOCK_HFCLKSTAT_SRC_Pos
 #define NRF_CLOCK_HFCLKSTAT_STATE_Msk       CLOCK_HFCLKSTAT_STATE_Msk
 #define NRF_CLOCK_HFCLKSTAT_STATE_Pos       CLOCK_HFCLKSTAT_STATE_Pos
 #endif
@@ -547,7 +560,6 @@ NRF_STATIC_INLINE nrf_clock_lfclk_t nrf_clock_lf_src_get(NRF_CLOCK_Type const * 
  */
 NRF_STATIC_INLINE nrf_clock_lfclk_t nrf_clock_lf_actv_src_get(NRF_CLOCK_Type const * p_reg);
 
-#if NRF_CLOCK_HAS_LFCLKSRCCOPY
 /**
  * @brief Function for retrieving the clock source for the LFCLK clock when
  *        the task LKCLKSTART is triggered.
@@ -562,7 +574,6 @@ NRF_STATIC_INLINE nrf_clock_lfclk_t nrf_clock_lf_actv_src_get(NRF_CLOCK_Type con
  *                               the HFCLK is running and generating the LFCLK clock.
  */
 NRF_STATIC_INLINE nrf_clock_lfclk_t nrf_clock_lf_srccopy_get(NRF_CLOCK_Type const * p_reg);
-#endif
 
 /**
  * @brief Function for retrieving the state of the LFCLK clock.
@@ -744,7 +755,8 @@ NRF_STATIC_INLINE void nrf_clock_hfclk192m_src_set(NRF_CLOCK_Type *  p_reg,
 NRF_STATIC_INLINE nrf_clock_hfclk_t nrf_clock_hfclk192m_src_get(NRF_CLOCK_Type const * p_reg);
 #endif // NRF_CLOCK_HAS_HFCLK192M
 
-#if NRF_CLOCK_HAS_ALWAYSRUN
+#if (NRF_CLOCK_HAS_LFCLK_ALWAYSRUN || NRF_CLOCK_HAS_HFCLK_ALWAYSRUN || NRF_CLOCK_HAS_HFCLK192M || \
+     NRF_CLOCK_HAS_HFCLKAUDIO)
 /**
  * @brief Function for setting the clock domain to always run.
  *
@@ -777,7 +789,8 @@ NRF_STATIC_INLINE bool nrf_clock_alwaysrun_get(NRF_CLOCK_Type const * p_reg,
  */
 NRF_STATIC_INLINE bool nrf_clock_alwaysrun_active_get(NRF_CLOCK_Type const * p_reg,
                                                       nrf_clock_domain_t     domain);
-#endif
+#endif /* (NRF_CLOCK_HAS_LFCLK_ALWAYSRUN || NRF_CLOCK_HAS_HFCLK_ALWAYSRUN ||
+           NRF_CLOCK_HAS_HFCLK192M || NRF_CLOCK_HAS_HFCLKAUDIO) */
 
 #if defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 /**
@@ -933,8 +946,8 @@ NRF_STATIC_INLINE bool nrf_clock_is_running(NRF_CLOCK_Type const * p_reg,
                                                                     NRF_CLOCK_HFCLK_LOW_ACCURACY;
 #else
                 (*(nrf_clock_hfclk_t *)p_clk_src) =
-                    (nrf_clock_hfclk_t)((p_reg->NRF_HFCLKSTAT & NRF_CLOCK_HFCLKSTAT_SRC_Msk)
-                                        >> NRF_CLOCK_HFCLKSTAT_SRC_Pos);
+                    (nrf_clock_hfclk_t)((p_reg->NRF_HFCLKSTAT & CLOCK_HFCLKSTAT_SRC_Msk)
+                                        >> CLOCK_HFCLKSTAT_SRC_Pos);
 #endif
             }
             break;
@@ -982,13 +995,11 @@ NRF_STATIC_INLINE nrf_clock_lfclk_t nrf_clock_lf_actv_src_get(NRF_CLOCK_Type con
     return clk_src;
 }
 
-#if NRF_CLOCK_HAS_LFCLKSRCCOPY
 NRF_STATIC_INLINE nrf_clock_lfclk_t nrf_clock_lf_srccopy_get(NRF_CLOCK_Type const * p_reg)
 {
-    return (nrf_clock_lfclk_t)((p_reg->LFCLKSRCCOPY & CLOCK_LFCLKSRCCOPY_SRC_Msk)
-                                >> CLOCK_LFCLKSRCCOPY_SRC_Pos);
+    return (nrf_clock_lfclk_t)((p_reg->NRF_LFCLKSRCCOPY & NRF_CLOCK_LFCLKSRCCOPY_SRC_Msk)
+                                >> NRF_CLOCK_LFCLKSRCCOPY_SRC_Pos);
 }
-#endif
 
 NRF_STATIC_INLINE bool nrf_clock_lf_is_running(NRF_CLOCK_Type const * p_reg)
 {
@@ -1100,23 +1111,28 @@ NRF_STATIC_INLINE void nrf_clock_cal_timer_timeout_set(NRF_CLOCK_Type * p_reg, u
 }
 #endif
 
-#if NRF_CLOCK_HAS_ALWAYSRUN
+#if (NRF_CLOCK_HAS_LFCLK_ALWAYSRUN || NRF_CLOCK_HAS_HFCLK_ALWAYSRUN || NRF_CLOCK_HAS_HFCLK192M || \
+     NRF_CLOCK_HAS_HFCLKAUDIO)
 NRF_STATIC_INLINE void nrf_clock_alwaysrun_set(NRF_CLOCK_Type *   p_reg,
                                                nrf_clock_domain_t domain,
                                                bool               alwaysrun)
 {
     switch (domain)
     {
+#if NRF_CLOCK_HAS_LFCLK_ALWAYSRUN
         case NRF_CLOCK_DOMAIN_LFCLK:
-            p_reg->LFCLKALWAYSRUN =
-                ((alwaysrun << CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Pos)
-                 & CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Msk);
+            p_reg->NRF_LFCLKALWAYSRUN =
+                ((alwaysrun << NRF_CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Pos)
+                 & NRF_CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Msk);
             break;
+#endif
+#if NRF_CLOCK_HAS_HFCLK_ALWAYSRUN
         case NRF_CLOCK_DOMAIN_HFCLK:
             p_reg->HFCLKALWAYSRUN =
                 ((alwaysrun << CLOCK_HFCLKALWAYSRUN_ALWAYSRUN_Pos)
                  & CLOCK_HFCLKALWAYSRUN_ALWAYSRUN_Msk);
             break;
+#endif
 #if NRF_CLOCK_HAS_HFCLK192M
         case NRF_CLOCK_DOMAIN_HFCLK192M:
             p_reg->HFCLK192MALWAYSRUN =
@@ -1142,12 +1158,16 @@ NRF_STATIC_INLINE bool nrf_clock_alwaysrun_get(NRF_CLOCK_Type const * p_reg,
 {
     switch (domain)
     {
+#if NRF_CLOCK_HAS_LFCLK_ALWAYSRUN
         case NRF_CLOCK_DOMAIN_LFCLK:
-            return ((p_reg->LFCLKALWAYSRUN & CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Msk)
-                    >> CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Pos);
+            return ((p_reg->NRF_LFCLKALWAYSRUN & NRF_CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Msk)
+                    >> NRF_CLOCK_LFCLKALWAYSRUN_ALWAYSRUN_Pos);
+#endif
+#if NRF_CLOCK_HAS_HFCLK_ALWAYSRUN
         case NRF_CLOCK_DOMAIN_HFCLK:
             return ((p_reg->HFCLKALWAYSRUN & CLOCK_HFCLKALWAYSRUN_ALWAYSRUN_Msk)
                     >> CLOCK_HFCLKALWAYSRUN_ALWAYSRUN_Pos);
+#endif
 #if NRF_CLOCK_HAS_HFCLK192M
         case NRF_CLOCK_DOMAIN_HFCLK192M:
             return ((p_reg->HFCLK192MALWAYSRUN & CLOCK_HFCLK192MALWAYSRUN_ALWAYSRUN_Msk)
@@ -1169,12 +1189,16 @@ NRF_STATIC_INLINE bool nrf_clock_alwaysrun_active_get(NRF_CLOCK_Type const * p_r
 {
     switch (domain)
     {
+#if NRF_CLOCK_HAS_LFCLK_ALWAYSRUN
         case NRF_CLOCK_DOMAIN_LFCLK:
-            return ((p_reg->LFCLKSTAT & CLOCK_LFCLKSTAT_ALWAYSRUNNING_Msk)
-                    >> CLOCK_LFCLKSTAT_ALWAYSRUNNING_Pos);
+            return ((p_reg->NRF_LFCLKSTAT & NRF_CLOCK_LFCLKSTAT_ALWAYSRUNNING_Msk)
+                    >> NRF_CLOCK_LFCLKSTAT_ALWAYSRUNNING_Pos);
+#endif
+#if NRF_CLOCK_HAS_HFCLK_ALWAYSRUN
         case NRF_CLOCK_DOMAIN_HFCLK:
             return ((p_reg->HFCLKSTAT & CLOCK_HFCLKSTAT_ALWAYSRUNNING_Msk)
                     >> CLOCK_HFCLKSTAT_ALWAYSRUNNING_Pos);
+#endif
 #if NRF_CLOCK_HAS_HFCLK192M
         case NRF_CLOCK_DOMAIN_HFCLK192M:
             return ((p_reg->HFCLK192MSTAT & CLOCK_HFCLK192MSTAT_ALWAYSRUNNING_Msk)
@@ -1190,7 +1214,8 @@ NRF_STATIC_INLINE bool nrf_clock_alwaysrun_active_get(NRF_CLOCK_Type const * p_r
             return false;
     }
 }
-#endif // NRF_CLOCK_HAS_ALWAYSRUN
+#endif /* (NRF_CLOCK_HAS_LFCLK_ALWAYSRUN || NRF_CLOCK_HAS_HFCLK_ALWAYSRUN ||
+           NRF_CLOCK_HAS_HFCLK192M || NRF_CLOCK_HAS_HFCLKAUDIO) */
 
 #if defined(DPPI_PRESENT)
 NRF_STATIC_INLINE void nrf_clock_subscribe_set(NRF_CLOCK_Type * p_reg,

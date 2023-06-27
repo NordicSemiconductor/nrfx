@@ -49,6 +49,13 @@ extern "C" {
            for managing the Temperature sensor (TEMP).
 */
 
+#if NRF_TEMP_HAS_CALIBRATION || defined(__NRFX_DOXYGEN__)
+/** @refhal{NRF_TEMP_HAS_CALIBRATION} */
+#define NRFY_TEMP_HAS_CALIBRATION 1
+#else
+#define NRFY_TEMP_HAS_CALIBRATION 0
+#endif
+
 /**
  * @brief Function for initializing the specified TEMP interrupts.
  *
@@ -154,6 +161,24 @@ NRF_STATIC_INLINE int32_t nrfy_temp_result_get(NRF_TEMP_Type const * p_reg)
     nrf_barrier_r();
     return temperature;
 }
+
+#if NRFY_TEMP_HAS_CALIBRATION
+/** @refhal{nrf_temp_calibration_coeff_set} */
+NRF_STATIC_INLINE void nrfy_temp_calibration_coeff_set(NRF_TEMP_Type * p_reg, uint32_t coeff)
+{
+    nrf_temp_calibration_coeff_set(p_reg, coeff);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_temp_calibration_coeff_get} */
+NRF_STATIC_INLINE uint32_t nrfy_temp_calibration_coeff_get(NRF_TEMP_Type const * p_reg)
+{
+    nrf_barrier_rw();
+    uint32_t coeff = nrf_temp_calibration_coeff_get(p_reg);
+    nrf_barrier_r();
+    return coeff;
+}
+#endif
 
 /** @} */
 

@@ -167,6 +167,22 @@ static void pwm_configure(nrfx_pwm_t const * p_instance, nrfx_pwm_config_t const
 #endif
 }
 
+static bool pwm_stopped_check(nrfx_pwm_t const * p_instance)
+{
+    pwm_control_block_t * p_cb  = &m_cb[p_instance->instance_id];
+
+    if (p_cb->handler)
+    {
+        return (p_cb->state == NRFX_DRV_STATE_POWERED_ON ? false : true);
+    }
+    else
+    {
+        return ((p_cb->state != NRFX_DRV_STATE_POWERED_ON) ||
+                (nrfy_pwm_events_process(p_instance->p_reg,
+                                         NRFY_EVENT_TO_INT_BITMASK(NRF_PWM_EVENT_STOPPED))));
+    }
+}
+
 nrfx_err_t nrfx_pwm_init(nrfx_pwm_t const *        p_instance,
                          nrfx_pwm_config_t const * p_config,
                          nrfx_pwm_handler_t        handler,
@@ -290,9 +306,6 @@ static uint32_t start_playback(nrfx_pwm_t const *    p_instance,
             NRF_PWM_INT_SEQEND0_MASK | NRF_PWM_INT_SEQEND1_MASK);
     }
 #endif
-
-    nrfy_pwm_event_clear(p_instance->p_reg, NRF_PWM_EVENT_STOPPED);
-
     if (flags & NRFX_PWM_FLAG_START_VIA_TASK)
     {
         uint32_t starting_task_address =
@@ -423,15 +436,12 @@ bool nrfx_pwm_stop(nrfx_pwm_t const * p_instance, bool wait_until_stopped)
 
     if (wait_until_stopped)
     {
-        // Either status was already correct or new STOPPED event will appear.
-        while (!(nrfx_pwm_stopped_check(p_instance) ||
-                 nrfy_pwm_events_process(p_instance->p_reg,
-                                         NRFY_EVENT_TO_INT_BITMASK(NRF_PWM_EVENT_STOPPED))))
+        while (!pwm_stopped_check(p_instance))
         {}
         p_cb->state = NRFX_DRV_STATE_INITIALIZED;
     }
 
-    ret_val = nrfx_pwm_stopped_check(p_instance);
+    ret_val = pwm_stopped_check(p_instance);
 
     NRFX_LOG_INFO("%s returned %d.", __func__, ret_val);
     return ret_val;
@@ -439,15 +449,9 @@ bool nrfx_pwm_stop(nrfx_pwm_t const * p_instance, bool wait_until_stopped)
 
 bool nrfx_pwm_stopped_check(nrfx_pwm_t const * p_instance)
 {
-    pwm_control_block_t * p_cb  = &m_cb[p_instance->instance_id];
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+    NRFX_ASSERT(m_cb[p_instance->instance_id].state != NRFX_DRV_STATE_UNINITIALIZED);
 
-    bool ret_val = false;
-
-    if (p_cb->state != NRFX_DRV_STATE_POWERED_ON)
-    {
-        ret_val = true;
-    }
+    bool ret_val = pwm_stopped_check(p_instance);
 
     NRFX_LOG_INFO("%s returned %d.", __func__, ret_val);
     return ret_val;

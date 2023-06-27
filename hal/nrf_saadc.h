@@ -90,12 +90,18 @@ extern "C" {
 #define NRF_SAADC_HAS_DMA_REG 0
 #endif
 
-#if (defined(SAADC_TASKS_DMA_START_START_Msk) && defined(SAADC_EVENTS_DMA_END_END_Msk)) || \
-    defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether SAADC DMA tasks and events are present. */
-#define NRF_SAADC_HAS_DMA_TASKS_EVENTS 1
+#if defined(SAADC_EVENTS_DMA_END_END_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SAADC DMA events are present. */
+#define NRF_SAADC_HAS_DMA_EVENTS 1
 #else
-#define NRF_SAADC_HAS_DMA_TASKS_EVENTS 0
+#define NRF_SAADC_HAS_DMA_EVENTS 0
+#endif
+
+#if defined(SAADC_CH_CONFIG_RESP_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SAADC channel resistor control is present. */
+#define NRF_SAADC_HAS_CH_CONFIG_RES 1
+#else
+#define NRF_SAADC_HAS_CH_CONFIG_RES 0
 #endif
 
 #if !NRF_SAADC_HAS_ACQTIME_ENUM
@@ -185,6 +191,7 @@ typedef enum
     NRF_SAADC_OVERSAMPLE_256X     = SAADC_OVERSAMPLE_OVERSAMPLE_Over256x  ///< Oversample 256x.
 } nrf_saadc_oversample_t;
 
+#if NRF_SAADC_HAS_CH_CONFIG_RES
 /** @brief Analog-to-digital converter channel resistor control. */
 typedef enum
 {
@@ -198,6 +205,7 @@ typedef enum
     NRF_SAADC_RESISTOR_VDD1_2   = SAADC_CH_CONFIG_RESP_VDDAO1V8div2, ///< Set input at VDD/2.
 #endif
 } nrf_saadc_resistor_t;
+#endif
 
 /** @brief Gain factor of the analog-to-digital converter input. */
 typedef enum
@@ -271,13 +279,8 @@ typedef enum
 /** @brief Analog-to-digital converter tasks. */
 typedef enum
 {
-#if NRF_SAADC_HAS_DMA_TASKS_EVENTS
-    NRF_SAADC_TASK_START           = offsetof(NRF_SAADC_Type, TASKS_DMA.START),       ///< Start the ADC and prepare the result buffer in RAM.
-    NRF_SAADC_TASK_STOP            = offsetof(NRF_SAADC_Type, TASKS_DMA.STOP),        ///< Stop the ADC and terminate any ongoing conversion.
-#else
     NRF_SAADC_TASK_START           = offsetof(NRF_SAADC_Type, TASKS_START),           ///< Start the ADC and prepare the result buffer in RAM.
     NRF_SAADC_TASK_STOP            = offsetof(NRF_SAADC_Type, TASKS_STOP),            ///< Stop the ADC and terminate any ongoing conversion.
-#endif
     NRF_SAADC_TASK_SAMPLE          = offsetof(NRF_SAADC_Type, TASKS_SAMPLE),          ///< Take one ADC sample. If scan is enabled, all channels are sampled.
     NRF_SAADC_TASK_CALIBRATEOFFSET = offsetof(NRF_SAADC_Type, TASKS_CALIBRATEOFFSET), ///< Starts offset auto-calibration.
 } nrf_saadc_task_t;
@@ -286,7 +289,7 @@ typedef enum
 typedef enum
 {
     NRF_SAADC_EVENT_STARTED       = offsetof(NRF_SAADC_Type, EVENTS_STARTED),       ///< The ADC has started.
-#if NRF_SAADC_HAS_DMA_TASKS_EVENTS
+#if NRF_SAADC_HAS_DMA_EVENTS
     NRF_SAADC_EVENT_END           = offsetof(NRF_SAADC_Type, EVENTS_DMA.END),       ///< The ADC has filled up the result buffer.
 #else
     NRF_SAADC_EVENT_END           = offsetof(NRF_SAADC_Type, EVENTS_END),           ///< The ADC has filled up the result buffer.
@@ -317,7 +320,7 @@ typedef enum
 typedef enum
 {
     NRF_SAADC_INT_STARTED       = SAADC_INTENSET_STARTED_Msk,       ///< Interrupt on EVENTS_STARTED event.
-#if NRF_SAADC_HAS_DMA_TASKS_EVENTS
+#if NRF_SAADC_HAS_DMA_EVENTS
     NRF_SAADC_INT_END           = SAADC_INTENSET_DMAEND_Msk,        ///< Interrupt on EVENTS_END event.
 #else
     NRF_SAADC_INT_END           = SAADC_INTENSET_END_Msk,           ///< Interrupt on EVENTS_END event.
@@ -367,8 +370,10 @@ typedef struct
 /** @brief Analog-to-digital converter channel configuration structure. */
 typedef struct
 {
+#if NRF_SAADC_HAS_CH_CONFIG_RES
     nrf_saadc_resistor_t  resistor_p; ///< Resistor value on positive input.
     nrf_saadc_resistor_t  resistor_n; ///< Resistor value on negative input.
+#endif
     nrf_saadc_gain_t      gain;       ///< Gain control value.
     nrf_saadc_reference_t reference;  ///< Reference control value.
     nrf_saadc_acqtime_t   acq_time;   ///< Acquisition time.
@@ -1073,11 +1078,13 @@ NRF_STATIC_INLINE void nrf_saadc_channel_init(NRF_SAADC_Type *                  
     NRFX_ASSERT(config->conv_time <= NRF_SAADC_CONVTIME_MAX);
 #endif
     p_reg->CH[channel].CONFIG =
-            ((config->resistor_p   << SAADC_CH_CONFIG_RESP_Pos)   & SAADC_CH_CONFIG_RESP_Msk)
-            | ((config->resistor_n << SAADC_CH_CONFIG_RESN_Pos)   & SAADC_CH_CONFIG_RESN_Msk)
-            | ((config->gain       << SAADC_CH_CONFIG_GAIN_Pos)   & SAADC_CH_CONFIG_GAIN_Msk)
+            ((config->gain         << SAADC_CH_CONFIG_GAIN_Pos)   & SAADC_CH_CONFIG_GAIN_Msk)
             | ((config->reference  << SAADC_CH_CONFIG_REFSEL_Pos) & SAADC_CH_CONFIG_REFSEL_Msk)
             | ((config->acq_time   << SAADC_CH_CONFIG_TACQ_Pos)   & SAADC_CH_CONFIG_TACQ_Msk)
+#if NRF_SAADC_HAS_CH_CONTROL_RES
+            | ((config->resistor_p << SAADC_CH_CONFIG_RESP_Pos)   & SAADC_CH_CONFIG_RESP_Msk)
+            | ((config->resistor_n << SAADC_CH_CONFIG_RESN_Pos)   & SAADC_CH_CONFIG_RESN_Msk)
+#endif
 #if NRF_SAADC_HAS_CONVTIME
             | ((config->conv_time  << SAADC_CH_CONFIG_TCONV_Pos)  & SAADC_CH_CONFIG_TCONV_Msk)
 #endif

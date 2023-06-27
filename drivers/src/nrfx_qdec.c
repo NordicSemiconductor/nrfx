@@ -92,13 +92,13 @@ static void qdec_configure(nrfx_qdec_t const *        p_instance,
     };
 
     nrfy_qdec_periph_configure(p_instance->p_reg, &nrfy_config);
-    nrfy_qdec_shorts_enable(p_instance->p_reg, NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK);
 
     uint32_t int_mask = NRF_QDEC_INT_ACCOF_MASK;
 
     if (p_config->reportper_inten)
     {
         int_mask |= NRF_QDEC_INT_REPORTRDY_MASK;
+        nrfy_qdec_shorts_enable(p_instance->p_reg, NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK);
     }
     if (p_config->sample_inten)
     {

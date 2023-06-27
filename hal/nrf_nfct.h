@@ -65,6 +65,63 @@ extern "C" {
 #define NRF_NFCID1_HAS_NEW_LAYOUT 0
 #endif
 
+#if defined(NFCT_TASKS_STOPTX_TASKS_STOPTX_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether NFCT STOPTX event is present. */
+#define NRF_NFCT_HAS_STOPTX_TASK 1
+#else
+#define NRF_NFCT_HAS_STOPTX_TASK 0
+#endif
+
+#if defined(NFCT_MODULATIONPSEL_PIN_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether pin select for modulation control register is present. */
+#define NRF_NFCT_HAS_MODULATION_PSEL_REG 1
+#else
+#define NRF_NFCT_HAS_MODULATION_PSEL_REG 0
+#endif
+
+#if defined(NFCT_MODULATIONCTRL_MODULATIONCTRL_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether modulation output select register is present. */
+#define NRF_NFCT_HAS_MODULATION_CTRL_REG 1
+#else
+#define NRF_NFCT_HAS_MODULATION_CTRL_REG 0
+#endif
+
+#if defined(NFCT_NFCTAGSTATE_NFCTAGSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether current operating state of NFC tag register is present. */
+#define NRF_NFCT_HAS_TAG_STATE_REG 1
+#else
+#define NRF_NFCT_HAS_TAG_STATE_REG 0
+#endif
+
+#if defined(NFCT_SLEEPSTATE_SLEEPSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether sleep state during automatic collision resolution is present. */
+#define NRF_NFCT_HAS_SLEEP_STATE_REG 1
+#else
+#define NRF_NFCT_HAS_SLEEP_STATE_REG 0
+#endif
+
+#if defined (NFCT_AUTOCOLRESCONFIG_MODE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether automatic collision resolution control register is present. */
+#define NRF_NFCT_HAS_AUTOCOLRES_CONFIG_REG 1
+#else
+#define NRF_NFCT_HAS_AUTOCOLRES_CONFIG_REG 0
+#endif
+
+#if defined(NFCT_PADCONFIG_ENABLE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether NFC pad configuration register is present. */
+#define NRF_NFCT_HAS_PAD_CONFIG_REG 1
+#else
+#define NRF_NFCT_HAS_PAD_CONFIG_REG 0
+#endif
+
+#if defined(NFCT_BIASCFG_TRIMIBPSR_Msk) || defined(NFCT_BIASCFG_COARSEIBPSR_Msk) ||  \
+    defined(NFCT_BIASCFG_REFERENCEVOLTAGE_Msk) || defined(NFCT_BIASCFG_SPARE_Msk) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether NFC bias configuration trim register is present. */
+#define NRF_NFCT_HAS_BIAS_CONFIG_TRIM_REG 1
+#else
+#define NRF_NFCT_HAS_BIAS_CONFIG_TRIM_REG 0
+#endif
 /** @brief NFCT tasks. */
 typedef enum
 {
@@ -72,6 +129,9 @@ typedef enum
     NRF_NFCT_TASK_DISABLE      = offsetof(NRF_NFCT_Type, TASKS_DISABLE),      /**< Disable the NFCT peripheral. */
     NRF_NFCT_TASK_SENSE        = offsetof(NRF_NFCT_Type, TASKS_SENSE),        /**< Enable the NFC sense field mode, change state to sense mode. */
     NRF_NFCT_TASK_STARTTX      = offsetof(NRF_NFCT_Type, TASKS_STARTTX),      /**< Start the transmission of an outgoing frame, change state to transmit. */
+#if NRF_NFCT_HAS_STOPTX_TASK
+    NRF_NFCT_TASK_STOPTX       = offsetof(NRF_NFCT_Type, TASKS_STOPTX),       /**< Stop an issued transmission of a frame. */
+#endif
     NRF_NFCT_TASK_ENABLERXDATA = offsetof(NRF_NFCT_Type, TASKS_ENABLERXDATA), /**< Initialize EasyDMA for receive. */
     NRF_NFCT_TASK_GOIDLE       = offsetof(NRF_NFCT_Type, TASKS_GOIDLE),       /**< Force state machine to the IDLE state. */
     NRF_NFCT_TASK_GOSLEEP      = offsetof(NRF_NFCT_Type, TASKS_GOSLEEP),      /**< Force state machine to the SLEEP_A state. */
@@ -104,7 +164,7 @@ typedef enum
     NRF_NFCT_SHORT_FIELDLOST_SENSE_MASK         = NFCT_SHORTS_FIELDLOST_SENSE_Msk,         /**< Shortcut between the FIELDLOST event and the SENSE task. */
 #if defined(NFCT_SHORTS_TXFRAMEEND_ENABLERXDATA_Msk) || defined(__NRFX_DOXYGEN__)
     NRF_NFCT_SHORT_TXFRAMEEND_ENABLERXDATA_MASK = NFCT_SHORTS_TXFRAMEEND_ENABLERXDATA_Msk, /**< Shortcut between the TXFRAMEEND event and the ENABLERXDATA task. */
-#endif // defined(NFCT_SHORTS_TXFRAMEEND_ENABLERXDATA_Msk) || defined(__NRFX_DOXYGEN__)
+#endif
 } nrf_nfct_short_mask_t;
 
 /** @brief NFCT interrupts. */
@@ -133,10 +193,10 @@ typedef enum
     NRF_NFCT_ERROR_FRAMEDELAYTIMEOUT_MASK = NFCT_ERRORSTATUS_FRAMEDELAYTIMEOUT_Msk, /**< Timeout of the Frame Delay Timer (no frame transmission started in the FDT window). */
 #if defined(NFCT_ERRORSTATUS_NFCFIELDTOOSTRONG_Msk) || defined(__NRFX_DOXYGEN__)
     NRF_NFCT_ERROR_NFCFIELDTOOSTRONG_MASK = NFCT_ERRORSTATUS_NFCFIELDTOOSTRONG_Msk, /**< Field level is too high at maximum load resistance. */
-#endif // defined(NFCT_ERRORSTATUS_NFCFIELDTOOSTRONG_Msk) || defined(__NRFX_DOXYGEN__)
+#endif
 #if defined(NFCT_ERRORSTATUS_NFCFIELDTOOWEAK_Msk) || defined(__NRFX_DOXYGEN__)
     NRF_NFCT_ERROR_NFCFIELDTOOWEAK_MASK = NFCT_ERRORSTATUS_NFCFIELDTOOWEAK_Msk,     /**< Field level is too low at minimum load resistance. */
-#endif // defined(NFCT_ERRORSTATUS_NFCFIELDTOOWEAK_Msk) || defined(__NRFX_DOXYGEN__)
+#endif
 } nrf_nfct_error_status_t;
 
 /** @brief NFC received frame status bit masks. */
@@ -147,7 +207,7 @@ typedef enum
     NRF_NFCT_RX_FRAME_STATUS_OVERRUN_MASK = NFCT_FRAMESTATUS_RX_OVERRUN_Msk,      /**< Overrun status mask. */
 } nrf_nfct_rx_frame_status_t;
 
-#if defined(NFCT_NFCTAGSTATE_NFCTAGSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_NFCT_HAS_TAG_STATE_REG
 /** @brief NFC tag state. */
 typedef enum
 {
@@ -158,9 +218,9 @@ typedef enum
     NRF_NFCT_TAG_STATE_FRAME_DELAY = NFCT_NFCTAGSTATE_NFCTAGSTATE_FrameDelay, /**< Counting Frame Delay Time since the last symbol of the last received frame. */
     NRF_NFCT_TAG_STATE_TRANSMIT    = NFCT_NFCTAGSTATE_NFCTAGSTATE_Transmit    /**< Transmitting data. */
 } nrf_nfct_tag_state_t;
-#endif // defined(NFCT_NFCTAGSTATE_NFCTAGSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+#endif // NRF_NFCT_HAS_TAG_STATE_REG
 
-#if defined (NFCT_SLEEPSTATE_SLEEPSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_NFCT_HAS_SLEEP_STATE_REG
 /**
  * @brief NFC tag sleep state.
  *
@@ -172,7 +232,7 @@ typedef enum
     NRF_NFCT_SLEEP_STATE_IDLE    = NFCT_SLEEPSTATE_SLEEPSTATE_Idle,  /**< 'IDLE' state. */
     NRF_NFCT_SLEEP_STATE_SLEEP_A = NFCT_SLEEPSTATE_SLEEPSTATE_SleepA /**< 'SLEEP_A' state. */
 } nrf_nfct_sleep_state_t;
-#endif // defined (NFCT_SLEEPSTATE_SLEEPSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+#endif // NRF_NFCT_HAS_SLEEP_STATE_REG
 
 /** @brief NFC field state bit masks. */
 typedef enum
@@ -223,6 +283,15 @@ typedef enum
         NFCT_SENSRES_NFCIDSIZE_Msk                                         /**< Default size. Use this option to leave NFCID1 size unchanged. */
 } nrf_nfct_sensres_nfcid1_size_t;
 
+/** @brief Bias trim configuration. */
+typedef struct
+{
+    uint8_t trim_ibpsr;        /**< Fine trim IBPSR 4 µA bias current. */
+    uint8_t coarse_ibpsr;      /**< Coarse trim IBPSR 4 µA. */
+    uint8_t reference_volatge; /**< Reference voltage level. */
+    uint8_t spare;             /**< Spare. */
+} nrf_nfct_bias_config_t;
+
 /**
  * @brief 'Bit frame SDD' NFC field configuration for the SENS_RES frame according to the NFC
  *         Forum Digital Protocol Technical Specification.
@@ -267,7 +336,7 @@ typedef enum
     NRF_NFCT_SELRES_PROTOCOL_NFCDEP_T4AT = 3,  /**< NFC-DEP Protocol and Type 4A Tag platform). */
 } nrf_nfct_selres_protocol_t;
 
-#if defined(NFCT_MODULATIONCTRL_MODULATIONCTRL_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_NFCT_HAS_MODULATION_CTRL_REG
 /** @brief Modulation output configuration. */
 typedef enum
 {
@@ -276,7 +345,7 @@ typedef enum
     NRF_NFCT_MODULATION_CTRL_GPIO          = NFCT_MODULATIONCTRL_MODULATIONCTRL_ModToGpio,           /**< Transmit output digital modulation signal to a GPIO pin. */
     NRF_NFCT_MODULATION_CTRL_INTERNAL_GPIO = NFCT_MODULATIONCTRL_MODULATIONCTRL_InternalAndModToGpio /**< Use internal modulator and transmit output digital modulation signal to a GPIO pin. */
 } nrf_nfct_modulation_ctrl_t;
-#endif // defined(NFCT_MODULATIONCTRL_MODULATIONCTRL_Msk) || defined(__NRFX_DOXYGEN__)
+#endif // NRF_NFCT_HAS_MODULATION_CTRL_REG
 
 /**
  * @brief Function for activating a specific NFCT task.
@@ -395,8 +464,7 @@ NRF_STATIC_INLINE uint32_t nrf_nfct_int_enable_get(NRF_NFCT_Type const * p_reg);
  */
 NRF_STATIC_INLINE void nrf_nfct_int_disable(NRF_NFCT_Type * p_reg, uint32_t mask);
 
-#if defined(NFCT_MODULATIONPSEL_PIN_Msk) || defined(__NRFX_DOXYGEN__)
-
+#if NRF_NFCT_HAS_MODULATION_PSEL_REG
 /**
  * @brief Function for configuring the NFCT modulation control pin.
  *
@@ -416,9 +484,9 @@ NRF_STATIC_INLINE void nrf_nfct_mod_ctrl_pin_set(NRF_NFCT_Type * p_reg, uint32_t
  * @return Modulation control pin selection.
  */
 NRF_STATIC_INLINE uint32_t nrf_nfct_mod_ctrl_pin_get(NRF_NFCT_Type const * p_reg);
-#endif // defined(NFCT_MODULATIONPSEL_PIN_Msk) || defined(__NRFX_DOXYGEN__)
+#endif // NRF_NFCT_HAS_MODULATION_PSEL_REG
 
-#if defined(NFCT_MODULATIONCTRL_MODULATIONCTRL_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_NFCT_HAS_MODULATION_CTRL_REG
 /**
  * @brief Function for setting the modulation output. It enables the
  *        output to a GPIO pin which can be connected to a second external.
@@ -438,7 +506,7 @@ NRF_STATIC_INLINE void nrf_nfct_modulation_output_set(NRF_NFCT_Type *           
  */
 NRF_STATIC_INLINE
 nrf_nfct_modulation_ctrl_t nrf_nfct_modulation_output_get(NRF_NFCT_Type const * p_reg);
-#endif // defined(NFCT_MODULATIONCTRL_MODULATIONCTRL_Msk) || defined(__NRFX_DOXYGEN__)
+#endif // NRF_NFCT_HAS_MODULATION_CTRL_REG
 
 /**
  * @brief Function for getting the NFCT error status.
@@ -476,7 +544,7 @@ NRF_STATIC_INLINE uint32_t nrf_nfct_rx_frame_status_get(NRF_NFCT_Type const * p_
 NRF_STATIC_INLINE void nrf_nfct_rx_frame_status_clear(NRF_NFCT_Type * p_reg,
                                                       uint32_t        framestatus_flags);
 
-#if defined(NFCT_NFCTAGSTATE_NFCTAGSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_NFCT_HAS_TAG_STATE_REG
 /**
  * @brief Function for getting the NFC tag state.
  *
@@ -491,9 +559,9 @@ NRF_STATIC_INLINE void nrf_nfct_rx_frame_status_clear(NRF_NFCT_Type * p_reg,
  * @retval NRF_NFCT_TAG_STATE_TRANSMIT    NFC tag is transmitting data.
  */
 NRF_STATIC_INLINE nrf_nfct_tag_state_t nrf_nfct_tag_state_get(NRF_NFCT_Type const * p_reg);
-#endif // defined(NFCT_NFCTAGSTATE_NFCTAGSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+#endif // NRF_NFCT_HAS_TAG_STATE_REG
 
-#if defined (NFCT_SLEEPSTATE_SLEEPSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_NFCT_HAS_SLEEP_STATE_REG
 /**
  * @brief Function for getting the NFC tag sleep state during the automatic collision resolution.
  *
@@ -507,7 +575,7 @@ NRF_STATIC_INLINE nrf_nfct_tag_state_t nrf_nfct_tag_state_get(NRF_NFCT_Type cons
  *                                      collision resolution started.
  */
 NRF_STATIC_INLINE nrf_nfct_sleep_state_t nrf_nfct_sleep_state_get(NRF_NFCT_Type const * p_reg);
-#endif // defined (NFCT_SLEEPSTATE_SLEEPSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+#endif // NRF_NFCT_HAS_SLEEP_STATE_REG
 
 /**
  * @brief Function for getting the status of the external NFC field detection.
@@ -734,7 +802,7 @@ NRF_STATIC_INLINE void nrf_nfct_nfcid1_set(NRF_NFCT_Type *                p_reg,
                                            uint8_t const *                p_nfcid1_buf,
                                            nrf_nfct_sensres_nfcid1_size_t nfcid1_size);
 
-#if defined (NFCT_AUTOCOLRESCONFIG_MODE_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_NFCT_HAS_AUTOCOLRES_CONFIG_REG
 /**
  * @brief Function for getting the setting for the automatic collision resolution.
  *
@@ -767,7 +835,7 @@ NRF_STATIC_INLINE void nrf_nfct_autocolres_enable(NRF_NFCT_Type * p_reg);
  *          Digital Protocol Technical Specification 2.0, section 6.
  */
 NRF_STATIC_INLINE void nrf_nfct_autocolres_disable(NRF_NFCT_Type * p_reg);
-#endif // defined (NFCT_AUTOCOLRESCONFIG_MODE_Msk) || defined(__NRFX_DOXYGEN__)
+#endif // NRF_NFCT_HAS_AUTOCOLRES_CONFIG_REG
 
 /**
  * @brief Function for getting the NFCID1 size from the SENS_RES frame configuration.
@@ -902,6 +970,54 @@ NRF_STATIC_INLINE uint32_t nrf_nfct_selres_get(NRF_NFCT_Type const * p_reg);
  */
 NRF_STATIC_INLINE void nrf_nfct_selres_set(NRF_NFCT_Type * p_reg, uint32_t selres);
 
+#if NRF_NFCT_HAS_PAD_CONFIG_REG
+/**
+ * @brief Function for enabling or disabling the NFC pad configuration.
+ *
+ * @details When the NFC pads are enabled, they are configured as the NFC
+ *          antenna pins, and the NFC pins protection mechanism is enabled.
+ *          When the NFC pads are disabled, they are configured as GPIO pins.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] enable True if the NFC pads are to be enabled, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_nfct_pad_config_enable_set(NRF_NFCT_Type * p_reg, bool enable);
+
+/**
+ * @brief Function for checking the NFC pads configuration.
+ *
+ * @details When the NFC pads are enabled, they are configured as the NFC
+ *          antenna pins, and the NFC pins protection mechanism is enabled.
+ *          When the NFC pads are disabled, they are configured as GPIO pins.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval true  NFC pads are enabled.
+ * @retval false NFC pads are disabled.
+ */
+NRF_STATIC_INLINE bool nrf_nfct_pad_config_enable_check(NRF_NFCT_Type const * p_reg);
+#endif // NRF_NFCT_HAS_PAD_CONFIG_REG
+
+#if NRF_NFCT_HAS_BIAS_CONFIG_TRIM_REG
+/**
+ * @brief Function for setting the bias configuration.
+ *
+ * @param[in] p_reg         Pointer to the structure of registers of the peripheral.
+ * @param[in] p_bias_config Pointer to the structure of bias configuration parameters.
+ */
+NRF_STATIC_INLINE void nrf_nfct_bias_config_set(NRF_NFCT_Type *                p_reg,
+                                                nrf_nfct_bias_config_t const * p_bias_config);
+
+/**
+ * @brief Function for getting the bias configuration.
+ *
+ * @param[in] p_reg         Pointer to the structure of registers of the peripheral.
+ * @param[in] p_bias_config Pointer to the structure to be filled with bias configuration parameters.
+ */
+NRF_STATIC_INLINE void nrf_nfct_bias_config_get(NRF_NFCT_Type const *    p_reg,
+                                                nrf_nfct_bias_config_t * p_bias_config);
+#endif // NRF_NFCT_HAS_BIAS_CONFIG_TRIM_REG
+
 #ifndef NRF_DECLARE_ONLY
 NRF_STATIC_INLINE void nrf_nfct_task_trigger(NRF_NFCT_Type * p_reg, nrf_nfct_task_t task)
 {
@@ -971,7 +1087,7 @@ NRF_STATIC_INLINE void nrf_nfct_int_disable(NRF_NFCT_Type * p_reg, uint32_t mask
     p_reg->INTENCLR = mask;
 }
 
-#if defined(NFCT_MODULATIONPSEL_PIN_Msk)
+#if NRF_NFCT_HAS_MODULATION_PSEL_REG
 NRF_STATIC_INLINE void nrf_nfct_mod_ctrl_pin_set(NRF_NFCT_Type * p_reg, uint32_t mod_ctrl_pin)
 {
     p_reg->MODULATIONPSEL = mod_ctrl_pin;
@@ -981,9 +1097,9 @@ NRF_STATIC_INLINE uint32_t nrf_nfct_mod_ctrl_pin_get(NRF_NFCT_Type const * p_reg
 {
     return p_reg->MODULATIONPSEL;
 }
-#endif // (NFCT_MODULATIONPSEL_PIN_Msk)
+#endif // NRF_NFCT_HAS_MODULATION_PSEL_REG
 
-#if defined(NFCT_MODULATIONCTRL_MODULATIONCTRL_Msk)
+#if NRF_NFCT_HAS_MODULATION_CTRL_REG
 NRF_STATIC_INLINE void nrf_nfct_modulation_output_set(NRF_NFCT_Type *            p_reg,
                                                       nrf_nfct_modulation_ctrl_t mod_ctrl)
 {
@@ -996,7 +1112,7 @@ nrf_nfct_modulation_ctrl_t nrf_nfct_modulation_output_get(NRF_NFCT_Type const * 
     return (nrf_nfct_modulation_ctrl_t)(p_reg->MODULATIONCTRL &
                                         NFCT_MODULATIONCTRL_MODULATIONCTRL_Msk);
 }
-#endif // defined(NFCT_MODULATIONCTRL_MODULATIONCTRL_Msk)
+#endif // NRF_NFCT_HAS_MODULATION_CTRL_REG
 
 NRF_STATIC_INLINE uint32_t nrf_nfct_error_status_get(NRF_NFCT_Type const * p_reg)
 {
@@ -1019,21 +1135,21 @@ NRF_STATIC_INLINE void nrf_nfct_rx_frame_status_clear(NRF_NFCT_Type * p_reg,
     p_reg->FRAMESTATUS.RX = framestatus_flags;
 }
 
-#if defined(NFCT_NFCTAGSTATE_NFCTAGSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_NFCT_HAS_TAG_STATE_REG
 NRF_STATIC_INLINE nrf_nfct_tag_state_t nrf_nfct_tag_state_get(NRF_NFCT_Type const * p_reg)
 {
     return (nrf_nfct_tag_state_t)((p_reg->NFCTAGSTATE & NFCT_NFCTAGSTATE_NFCTAGSTATE_Msk) >>
                                   NFCT_NFCTAGSTATE_NFCTAGSTATE_Pos);
 }
-#endif // defined(NFCT_NFCTAGSTATE_NFCTAGSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+#endif // NRF_NFCT_HAS_TAG_STATE_REG
 
-#if defined (NFCT_SLEEPSTATE_SLEEPSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_NFCT_HAS_SLEEP_STATE_REG
 NRF_STATIC_INLINE nrf_nfct_sleep_state_t nrf_nfct_sleep_state_get(NRF_NFCT_Type const * p_reg)
 {
     return (nrf_nfct_sleep_state_t)((p_reg->SLEEPSTATE & NFCT_SLEEPSTATE_SLEEPSTATE_Msk) >>
                                     NFCT_SLEEPSTATE_SLEEPSTATE_Pos);
 }
-#endif // defined (NFCT_SLEEPSTATE_SLEEPSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+#endif // NRF_NFCT_HAS_SLEEP_STATE_REG
 
 NRF_STATIC_INLINE uint8_t nrf_nfct_field_status_get(NRF_NFCT_Type const * p_reg)
 {
@@ -1228,7 +1344,7 @@ NRF_STATIC_INLINE void nrf_nfct_nfcid1_set(NRF_NFCT_Type *                p_reg,
                          (uint32_t)size);
 }
 
-#if defined (NFCT_AUTOCOLRESCONFIG_MODE_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_NFCT_HAS_AUTOCOLRES_CONFIG_REG
 NRF_STATIC_INLINE bool nrf_nfct_autocolres_is_enabled(NRF_NFCT_Type const * p_reg)
 {
     return (p_reg->AUTOCOLRESCONFIG & NFCT_AUTOCOLRESCONFIG_MODE_Msk) ==
@@ -1248,7 +1364,7 @@ NRF_STATIC_INLINE void nrf_nfct_autocolres_disable(NRF_NFCT_Type * p_reg)
         (p_reg->AUTOCOLRESCONFIG & ~NFCT_AUTOCOLRESCONFIG_MODE_Msk) |
         (NFCT_AUTOCOLRESCONFIG_MODE_Disabled << NFCT_AUTOCOLRESCONFIG_MODE_Pos);
 }
-#endif // defined (NFCT_AUTOCOLRESCONFIG_MODE_Msk) || defined(__NRFX_DOXYGEN__)
+#endif // NRF_NFCT_HAS_AUTOCOLRES_CONFIG_REG
 
 NRF_STATIC_INLINE
 nrf_nfct_sensres_nfcid1_size_t nrf_nfct_sensres_nfcid1_size_get(NRF_NFCT_Type const * p_reg)
@@ -1270,7 +1386,7 @@ nrf_nfct_sensres_bit_frame_sdd_t nrf_nfct_sensres_bit_frame_sdd_get(NRF_NFCT_Typ
 }
 
 NRF_STATIC_INLINE
-void nrf_nfct_sensres_bit_frame_sdd_set(NRF_NFCT_Type * p_reg,
+void nrf_nfct_sensres_bit_frame_sdd_set(NRF_NFCT_Type *                  p_reg,
                                         nrf_nfct_sensres_bit_frame_sdd_t bit_frame_sdd)
 {
     p_reg->SENSRES = ((p_reg->SENSRES & ~(NFCT_SENSRES_BITFRAMESDD_Msk)) | (uint32_t)bit_frame_sdd);
@@ -1283,7 +1399,7 @@ nrf_nfct_sensres_platform_config_t nrf_nfct_sensres_platform_config_get(NRF_NFCT
 }
 
 NRF_STATIC_INLINE
-void nrf_nfct_sensres_platform_config_set(NRF_NFCT_Type * p_reg,
+void nrf_nfct_sensres_platform_config_set(NRF_NFCT_Type *                    p_reg,
                                           nrf_nfct_sensres_platform_config_t platform_config)
 {
     p_reg->SENSRES = ((p_reg->SENSRES & ~(NFCT_SENSRES_PLATFCONFIG_Msk)) |
@@ -1318,6 +1434,61 @@ NRF_STATIC_INLINE void nrf_nfct_selres_set(NRF_NFCT_Type * p_reg, uint32_t selre
 {
     p_reg->SELRES = (p_reg->SELRES & NFCT_SELRES_CASCADE_Msk) | (selres & ~NFCT_SELRES_CASCADE_Msk);
 }
+
+#if NRF_NFCT_HAS_PAD_CONFIG_REG
+NRF_STATIC_INLINE void nrf_nfct_pad_config_enable_set(NRF_NFCT_Type * p_reg, bool enable)
+{
+    p_reg->PADCONFIG = (enable ?
+                        NFCT_PADCONFIG_ENABLE_Enabled :
+                        NFCT_PADCONFIG_ENABLE_Disabled) <<
+                       NFCT_PADCONFIG_ENABLE_Pos;
+}
+
+NRF_STATIC_INLINE bool nrf_nfct_pad_config_enable_check(NRF_NFCT_Type const * p_reg)
+{
+    return (bool)(((p_reg->PADCONFIG & NFCT_PADCONFIG_ENABLE_Msk) >> NFCT_PADCONFIG_ENABLE_Pos));
+}
+#endif // NRF_NFCT_HAS_PAD_CONFIG_REG
+
+#if NRF_NFCT_HAS_BIAS_CONFIG_TRIM_REG
+NRF_STATIC_INLINE void nrf_nfct_bias_config_set(NRF_NFCT_Type *                p_reg,
+                                                nrf_nfct_bias_config_t const * p_bias_config)
+{
+    NRFX_ASSERT(p_bias_config != NULL);
+
+    p_reg->BIASCFG = (((p_bias_config->trim_ibpsr <<
+                        NFCT_BIASCFG_TRIMIBPSR_Pos) &
+                       NFCT_BIASCFG_TRIMIBPSR_Msk) |
+                      ((p_bias_config->coarse_ibpsr <<
+                        NFCT_BIASCFG_COARSEIBPSR_Pos) &
+                       NFCT_BIASCFG_COARSEIBPSR_Msk) |
+                      ((p_bias_config->reference_volatge <<
+                        NFCT_BIASCFG_REFERENCEVOLTAGE_Pos) &
+                       NFCT_BIASCFG_REFERENCEVOLTAGE_Msk) |
+                      ((p_bias_config->spare <<
+                        NFCT_BIASCFG_SPARE_Pos) &
+                       NFCT_BIASCFG_SPARE_Msk));
+}
+
+NRF_STATIC_INLINE void nrf_nfct_bias_config_get(NRF_NFCT_Type const *    p_reg,
+                                                nrf_nfct_bias_config_t * p_bias_config)
+{
+    NRFX_ASSERT(p_bias_config != NULL);
+
+    p_bias_config->trim_ibpsr = (p_reg->BIASCFG & NFCT_BIASCFG_TRIMIBPSR_Msk)
+                                >> NFCT_BIASCFG_TRIMIBPSR_Pos;
+
+    p_bias_config->coarse_ibpsr = (p_reg->BIASCFG & NFCT_BIASCFG_COARSEIBPSR_Msk)
+                                  >> NFCT_BIASCFG_COARSEIBPSR_Pos;
+
+    p_bias_config->reference_volatge = (p_reg->BIASCFG & NFCT_BIASCFG_REFERENCEVOLTAGE_Msk)
+                                       >> NFCT_BIASCFG_REFERENCEVOLTAGE_Pos;
+
+    p_bias_config->spare = (p_reg->BIASCFG & NFCT_BIASCFG_SPARE_Msk)
+                           >> NFCT_BIASCFG_SPARE_Pos;
+}
+#endif // NRF_NFCT_HAS_BIAS_CONFIG_TRIM_REG
+
 #endif /* NRF_DECLARE_ONLY */
 
 /** @} */

@@ -79,8 +79,10 @@ extern "C" {
 {                                                                      \
     .channel_config =                                                  \
     {                                                                  \
-        .resistor_p = NRF_SAADC_RESISTOR_DISABLED,                     \
-        .resistor_n = NRF_SAADC_RESISTOR_DISABLED,                     \
+        NRFX_COND_CODE_1(NRF_SAADC_HAS_CH_CONFIG_RES,                  \
+                         (.resistor_p = NRF_SAADC_RESISTOR_DISABLED,   \
+                          .resistor_n = NRF_SAADC_RESISTOR_DISABLED,), \
+                         ())                                           \
         .gain       = NRF_SAADC_GAIN1,                                 \
         .reference  = NRF_SAADC_REFERENCE_INTERNAL,                    \
         .acq_time   = NRFX_SAADC_DEFAULT_ACQTIME,                      \
@@ -115,8 +117,10 @@ extern "C" {
 {                                                                       \
     .channel_config =                                                   \
     {                                                                   \
-        .resistor_p = NRF_SAADC_RESISTOR_DISABLED,                      \
-        .resistor_n = NRF_SAADC_RESISTOR_DISABLED,                      \
+        NRFX_COND_CODE_1(NRF_SAADC_HAS_CH_CONFIG_RES,                   \
+                         (.resistor_p = NRF_SAADC_RESISTOR_DISABLED,    \
+                          .resistor_n = NRF_SAADC_RESISTOR_DISABLED,),  \
+                         ())                                            \
         .gain       = NRF_SAADC_GAIN1,                                  \
         .reference  = NRF_SAADC_REFERENCE_INTERNAL,                     \
         .acq_time   = NRFX_SAADC_DEFAULT_ACQTIME,                       \

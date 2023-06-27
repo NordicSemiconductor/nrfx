@@ -107,30 +107,33 @@ extern "C" {
 
 #if defined(CACHEINFO_SET_WAY_D0_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether dirtiness check functionality for cache is supported. */
-#define NRF_CACHE_HAS_DU_DIRTY 1
+#define NRF_CACHE_HAS_CACHEINFO_DU_DIRTY 1
 #else
-#define NRF_CACHE_HAS_DU_DIRTY 0
+#define NRF_CACHE_HAS_CACHEINFO_DU_DIRTY 0
 #endif
 
 #if defined(CACHEINFO_SET_WAY_DUV0_Msk) || defined(CACHEINFO_SET_WAY_INFO_DUV0_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether data unit validation functionality for cache is supported. */
-#define NRF_CACHE_HAS_DU_VALIDATION 1
+#define NRF_CACHE_HAS_CACHEINFO_DU_VALIDATION 1
 #else
-#define NRF_CACHE_HAS_DU_VALIDATION 0
+#define NRF_CACHE_HAS_CACHEINFO_DU_VALIDATION 0
 #endif
 
 #if defined(CACHEINFO_SET_WAY_INFO_DUV0_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether data unit validation functionality for cache is supported. */
-#define NRF_CACHE_HAS_SET_WAY_INFO 1
+/** @brief Symbol indicating whether cache info has INFO register. */
+#define NRF_CACHE_HAS_CACHEINFO_SET_WAY_INFO 1
 #else
-#define NRF_CACHE_HAS_SET_WAY_INFO 0
+#define NRF_CACHE_HAS_CACHEINFO_SET_WAY_INFO 0
 #endif
 
 #if NRF_CACHE_HAS_CACHEDATA
 /** @brief Max number of words in CACHEDATA data units. */
-#define NRF_CACHEDATA_DATA_WORDS_MAX CACHEDATA_SET_WAY_DU_DATA_MaxCount
+#define NRF_CACHEDATA_DATA_WORDS_IN_UNIT_MAX CACHEDATA_SET_WAY_DU_DATA_MaxCount
 /** @brief Max number of CACHEDATA data units. */
 #define NRF_CACHEDATA_DATA_UNITS_MAX CACHEDATA_SET_WAY_DU_MaxCount
+/** @brief Max number of CACHEDATA words. */
+#define NRF_CACHEDATA_WORD_INDEX_MAX \
+        (NRF_CACHEDATA_DATA_WORDS_IN_UNIT_MAX * NRF_CACHEDATA_DATA_UNITS_MAX)
 /** @brief Max number of CACHEDATA ways. */
 #define NRF_CACHEDATA_WAY_INDEX_MAX  CACHEDATA_SET_WAY_MaxCount
 /** @brief Max number of CACHEDATA sets. */
@@ -138,6 +141,13 @@ extern "C" {
 #endif
 
 #if NRF_CACHE_HAS_CACHEINFO
+/** @brief Max number of words in CACHEINFO data units. */
+#define NRF_CACHEINFO_DATA_WORDS_IN_UNIT_MAX CACHEDATA_SET_WAY_DU_DATA_MaxCount
+/** @brief Max number of CACHEINFO data units. */
+#define NRF_CACHEINFO_DATA_UNITS_MAX CACHEDATA_SET_WAY_DU_MaxCount
+/** @brief Max number of CACHEINFO words. */
+#define NRF_CACHEINFO_WORD_INDEX_MAX \
+        (NRF_CACHEINFO_DATA_WORDS_IN_UNIT_MAX * NRF_CACHEINFO_DATA_UNITS_MAX)
 /** @brief Max number of CACHEINFO ways. */
 #define NRF_CACHEINFO_WAY_INDEX_MAX  CACHEINFO_SET_WAY_MaxCount
 /** @brief Max number of CACHEINFO sets. */
@@ -186,22 +196,6 @@ typedef enum
     NRF_CACHE_RAMSIZE_NONE    = CACHE_MODE_RAMSIZE_None     ///< None of the RAM is used for cache memory.
 } nrf_cache_ramsize_t;
 #endif
-
-/** @brief Structure describing location of the data stored in cache depending on a cache set and way. */
-typedef struct
-{
-    uint32_t set; ///< Cache set containing data to get.
-    uint8_t  way; ///< Cache way containing data to get.
-} nrf_cache_set_way_loc_t;
-
-/** @brief Structure describing location of the data stored in cache depending on data unit and word. */
-typedef struct
-{
-#if NRF_CACHE_HAS_CACHEDATA_DU
-    uint8_t du;   ///< Data unit that containing data to get.
-#endif
-    uint8_t word; ///< Index of a specific data word.
-} nrf_cache_du_word_loc_t;
 
 /**
  * @brief Function for enabling the CACHE peripheral.
@@ -400,15 +394,17 @@ NRF_STATIC_INLINE void nrf_cache_update_lock_set(NRF_CACHE_Type * p_reg, bool en
  *
  * @note When operating in the RAM mode, the cache data is accessible as a general purpose RAM.
  *
- * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
- * @param[in] p_set_way Pointer to the structure of location parameters depending on a cache set and way.
- * @param[in] p_du_word Pointer to the structure of location parameters depending on data unit and word.
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] set   Set that contains the data to get.
+ * @param[in] way   Way that contains the data to get.
+ * @param[in] word  Data word index to get.
  *
  * @return 32-bit data word.
  */
-NRF_STATIC_INLINE uint32_t nrf_cache_data_get(NRF_CACHEDATA_Type const *      p_reg,
-                                              nrf_cache_set_way_loc_t const * p_set_way,
-                                              nrf_cache_du_word_loc_t const * p_du_word);
+NRF_STATIC_INLINE uint32_t nrf_cache_data_get(NRF_CACHEDATA_Type const * p_reg,
+                                              uint32_t                   set,
+                                              uint8_t                    way,
+                                              uint8_t                    word);
 #endif
 
 #if NRF_CACHE_HAS_CACHEINFO
@@ -417,25 +413,29 @@ NRF_STATIC_INLINE uint32_t nrf_cache_data_get(NRF_CACHEDATA_Type const *      p_
  *
  * The tag is used to check if an entry in the cache matches the address that is being fetched.
  *
- * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
- * @param[in] p_set_way Pointer to the structure of location parameters depending on a cache set and way.
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] set   Set that contains the tag to get.
+ * @param[in] way   Way that contains the tag to get.
  *
  * @return Tag value.
  */
-NRF_STATIC_INLINE uint32_t nrf_cache_tag_get(NRF_CACHEINFO_Type const *      p_reg,
-                                             nrf_cache_set_way_loc_t const * p_set_way);
+NRF_STATIC_INLINE uint32_t nrf_cache_tag_get(NRF_CACHEINFO_Type const * p_reg,
+                                             uint32_t                   set,
+                                             uint8_t                    way);
 
 /**
  * @brief Function for checking the validity of a cache line associated with the specified set and way.
  *
- * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
- * @param[in] p_set_way Pointer to the structure of location parameters depending on a cache set and way.
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] set   Set that contains the cache line to check.
+ * @param[in] way   Way that contains the cache line to check.
  *
  * @retval true  Cache line is valid.
  * @retval false Cache line is invalid.
  */
-NRF_STATIC_INLINE bool nrf_cache_line_validity_check(NRF_CACHEINFO_Type const *      p_reg,
-                                                     nrf_cache_set_way_loc_t const * p_set_way);
+NRF_STATIC_INLINE bool nrf_cache_line_validity_check(NRF_CACHEINFO_Type const * p_reg,
+                                                     uint32_t                   set,
+                                                     uint8_t                    way);
 
 /**
  * @brief Function for getting the most recently used way in the specified set.
@@ -450,36 +450,40 @@ NRF_STATIC_INLINE bool nrf_cache_line_validity_check(NRF_CACHEINFO_Type const * 
 NRF_STATIC_INLINE uint8_t nrf_cache_mru_get(NRF_CACHEINFO_Type const * p_reg, uint32_t set);
 #endif
 
-#if NRF_CACHE_HAS_DU_VALIDATION
+#if NRF_CACHE_HAS_CACHEINFO_DU_VALIDATION
 /**
- * @brief Function for checking the validity of a data unit associated with the specified set and way.
+ * @brief Function for checking the validity of a data unit associated with the specified set, way and word.
  *
- * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
- * @param[in] p_set_way Pointer to the structure of location parameters depending on a cache set and way.
- * @param[in] p_du_word Pointer to the structure of location parameters depending on data unit and word.
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] set   Set that contains the data unit to check.
+ * @param[in] way   Way that contains the data unit to check.
+ * @param[in] word  Data word index.
  *
  * @retval true  Data unit is valid.
  * @retval false Data unit is invalid.
  */
-NRF_STATIC_INLINE bool nrf_cache_data_unit_validity_check(NRF_CACHEINFO_Type const *      p_reg,
-                                                          nrf_cache_set_way_loc_t const * p_set_way,
-                                                          nrf_cache_du_word_loc_t const * p_du_word);
+NRF_STATIC_INLINE bool nrf_cache_data_unit_validity_check(NRF_CACHEINFO_Type const * p_reg,
+                                                          uint32_t                   set,
+                                                          uint8_t                    way,
+                                                          uint8_t                    word);
 #endif
 
-#if NRF_CACHE_HAS_DU_DIRTY
+#if NRF_CACHE_HAS_CACHEINFO_DU_DIRTY
 /**
- * @brief Function for checking the dirtiness of a data unit associated with the specified set and way.
+ * @brief Function for checking the dirtiness of a data unit associated with the specified set, way and word.
  *
- * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
- * @param[in] p_set_way Pointer to the structure of location parameters depending on a cache set and way.
- * @param[in] p_du_word Pointer to the structure of location parameters depending on data unit and word.
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] set   Set that contains the data unit to check.
+ * @param[in] way   Way that contains the data unit to check.
+ * @param[in] word  Data word index.
  *
  * @retval true  Data unit is dirty.
  * @retval false Data unit is clean.
  */
-NRF_STATIC_INLINE bool nrf_cache_is_data_unit_dirty_check(NRF_CACHEINFO_Type const *      p_reg,
-                                                          nrf_cache_set_way_loc_t const * p_set_way,
-                                                          nrf_cache_du_word_loc_t const * p_du_word);
+NRF_STATIC_INLINE bool nrf_cache_is_data_unit_dirty_check(NRF_CACHEINFO_Type const * p_reg,
+                                                          uint32_t                   set,
+                                                          uint8_t                    way,
+                                                          uint8_t                    word);
 #endif
 
 #if NRF_CACHE_HAS_TASKS
@@ -672,20 +676,23 @@ NRF_STATIC_INLINE void nrf_cache_update_lock_set(NRF_CACHE_Type * p_reg, bool en
 }
 
 #if NRF_CACHE_HAS_CACHEDATA
-NRF_STATIC_INLINE uint32_t nrf_cache_data_get(NRF_CACHEDATA_Type const *      p_reg,
-                                              nrf_cache_set_way_loc_t const * p_set_way,
-                                              nrf_cache_du_word_loc_t const * p_du_word)
+NRF_STATIC_INLINE uint32_t nrf_cache_data_get(NRF_CACHEDATA_Type const * p_reg,
+                                              uint32_t                   set,
+                                              uint8_t                    way,
+                                              uint8_t                    word)
 {
 #if NRF_CACHE_HAS_CACHEDATA_DU
-    NRFX_ASSERT(p_du_word->word < NRF_CACHEDATA_DATA_WORDS_MAX);
-    NRFX_ASSERT(p_du_word->du < NRF_CACHEDATA_DATA_UNITS_MAX);
-    NRFX_ASSERT(p_set_way->way < NRF_CACHEDATA_WAY_INDEX_MAX);
-    NRFX_ASSERT(p_set_way->set < NRF_CACHEDATA_SET_INDEX_MAX);
+    NRFX_ASSERT(word < NRF_CACHEDATA_WORD_INDEX_MAX);
+    NRFX_ASSERT(way < NRF_CACHEDATA_WAY_INDEX_MAX);
+    NRFX_ASSERT(set < NRF_CACHEDATA_SET_INDEX_MAX);
 
-    return p_reg->SET[p_set_way->set].WAY[p_set_way->way].DU[p_du_word->du].DATA[p_du_word->word];
+    uint8_t du   = (word / NRF_CACHEDATA_DATA_WORDS_IN_UNIT_MAX);
+    uint8_t data = (word - (du * NRF_CACHEDATA_DATA_WORDS_IN_UNIT_MAX));
+
+    return p_reg->SET[set].WAY[way].DU[du].DATA[data];
 #else
-    volatile CACHEDATA_SET_WAY_Type const * reg = &p_reg->SET[p_set_way->set].WAY[p_set_way->way];
-    switch (p_du_word->word)
+    volatile CACHEDATA_SET_WAY_Type const * reg = &p_reg->SET[set].WAY[way];
+    switch (word)
     {
         case 0: return reg->DATA0;
         case 1: return reg->DATA1;
@@ -700,28 +707,30 @@ NRF_STATIC_INLINE uint32_t nrf_cache_data_get(NRF_CACHEDATA_Type const *      p_
 #endif
 
 #if NRF_CACHE_HAS_CACHEINFO
-NRF_STATIC_INLINE uint32_t nrf_cache_tag_get(NRF_CACHEINFO_Type const *      p_reg,
-                                             nrf_cache_set_way_loc_t const * p_set_way)
+NRF_STATIC_INLINE uint32_t nrf_cache_tag_get(NRF_CACHEINFO_Type const * p_reg,
+                                             uint32_t                   set,
+                                             uint8_t                    way)
 {
 #if defined(CACHEINFO_SET_WAY_INFO_TAG_Msk)
-    NRFX_ASSERT(p_set_way->way < NRF_CACHEINFO_WAY_INDEX_MAX);
-    NRFX_ASSERT(p_set_way->set < NRF_CACHEINFO_SET_INDEX_MAX);
-    return (p_reg->SET[p_set_way->set].WAY[p_set_way->way].INFO & CACHEINFO_SET_WAY_INFO_TAG_Msk);
+    NRFX_ASSERT(way < NRF_CACHEINFO_WAY_INDEX_MAX);
+    NRFX_ASSERT(set < NRF_CACHEINFO_SET_INDEX_MAX);
+    return (p_reg->SET[set].WAY[way].INFO & CACHEINFO_SET_WAY_INFO_TAG_Msk);
 #else
-    return (p_reg->SET[p_set_way->set].WAY[p_set_way->way] & CACHEINFO_SET_WAY_TAG_Msk);
+    return (p_reg->SET[set].WAY[way] & CACHEINFO_SET_WAY_TAG_Msk);
 #endif
 }
 
-NRF_STATIC_INLINE bool nrf_cache_line_validity_check(NRF_CACHEINFO_Type const *      p_reg,
-                                                     nrf_cache_set_way_loc_t const * p_set_way)
+NRF_STATIC_INLINE bool nrf_cache_line_validity_check(NRF_CACHEINFO_Type const * p_reg,
+                                                     uint32_t                   set,
+                                                     uint8_t                    way)
 {
 #if defined(CACHEINFO_SET_WAY_INFO_V_Msk)
-    NRFX_ASSERT(p_set_way->way < NRF_CACHEINFO_WAY_INDEX_MAX);
-    NRFX_ASSERT(p_set_way->set < NRF_CACHEINFO_SET_INDEX_MAX);
-    return (p_reg->SET[p_set_way->set].WAY[p_set_way->way].INFO & CACHEINFO_SET_WAY_INFO_V_Msk) ==
+    NRFX_ASSERT(way < NRF_CACHEINFO_WAY_INDEX_MAX);
+    NRFX_ASSERT(set < NRF_CACHEINFO_SET_INDEX_MAX);
+    return (p_reg->SET[set].WAY[way].INFO & CACHEINFO_SET_WAY_INFO_V_Msk) ==
         (CACHEINFO_SET_WAY_INFO_V_Valid << CACHEINFO_SET_WAY_INFO_V_Pos);
 #else
-    return (p_reg->SET[p_set_way->set].WAY[p_set_way->way] & CACHEINFO_SET_WAY_V_Msk) ==
+    return (p_reg->SET[set].WAY[way] & CACHEINFO_SET_WAY_V_Msk) ==
         (CACHEINFO_SET_WAY_V_Valid << CACHEINFO_SET_WAY_V_Pos);
 #endif
 }
@@ -737,45 +746,48 @@ NRF_STATIC_INLINE uint8_t nrf_cache_mru_get(NRF_CACHEINFO_Type const * p_reg, ui
 #endif
 }
 
-#if NRF_CACHE_HAS_DU_VALIDATION
-NRF_STATIC_INLINE bool nrf_cache_data_unit_validity_check(NRF_CACHEINFO_Type const *      p_reg,
-                                                          nrf_cache_set_way_loc_t const * p_set_way,
-                                                          nrf_cache_du_word_loc_t const * p_du_word)
+#if NRF_CACHE_HAS_CACHEINFO_DU_VALIDATION
+NRF_STATIC_INLINE bool nrf_cache_data_unit_validity_check(NRF_CACHEINFO_Type const * p_reg,
+                                                          uint32_t                   set,
+                                                          uint8_t                    way,
+                                                          uint8_t                    word)
 {
-    (void)p_du_word->word;
-    NRFX_ASSERT(p_set_way->way < NRF_CACHEINFO_WAY_INDEX_MAX);
-    NRFX_ASSERT(p_set_way->set < NRF_CACHEINFO_SET_INDEX_MAX);
-    switch (p_du_word->du)
+    NRFX_ASSERT(word < NRF_CACHEINFO_WORD_INDEX_MAX);
+    NRFX_ASSERT(way < NRF_CACHEINFO_WAY_INDEX_MAX);
+    NRFX_ASSERT(set < NRF_CACHEINFO_SET_INDEX_MAX);
+
+    uint8_t du = (word / NRF_CACHEINFO_DATA_WORDS_IN_UNIT_MAX);
+    switch (du)
     {
-#if NRF_CACHE_HAS_SET_WAY_INFO
+#if NRF_CACHE_HAS_CACHEINFO_SET_WAY_INFO
         case 0:
-            return (p_reg->SET[p_set_way->set].WAY[p_set_way->way].INFO &
+            return (p_reg->SET[set].WAY[way].INFO &
                     CACHEINFO_SET_WAY_INFO_DUV0_Msk) ==
                    (CACHEINFO_SET_WAY_INFO_DUV0_Valid << CACHEINFO_SET_WAY_INFO_DUV0_Pos);
         case 1:
-            return (p_reg->SET[p_set_way->set].WAY[p_set_way->way].INFO &
+            return (p_reg->SET[set].WAY[way].INFO &
                     CACHEINFO_SET_WAY_INFO_DUV1_Msk) ==
                    (CACHEINFO_SET_WAY_INFO_DUV1_Valid << CACHEINFO_SET_WAY_INFO_DUV1_Pos);
         case 2:
-            return (p_reg->SET[p_set_way->set].WAY[p_set_way->way].INFO &
+            return (p_reg->SET[set].WAY[way].INFO &
                     CACHEINFO_SET_WAY_INFO_DUV2_Msk) ==
                    (CACHEINFO_SET_WAY_INFO_DUV2_Valid << CACHEINFO_SET_WAY_INFO_DUV2_Pos);
         case 3:
-            return (p_reg->SET[p_set_way->set].WAY[p_set_way->way].INFO &
+            return (p_reg->SET[set].WAY[way].INFO &
                     CACHEINFO_SET_WAY_INFO_DUV3_Msk) ==
                    (CACHEINFO_SET_WAY_INFO_DUV3_Valid << CACHEINFO_SET_WAY_INFO_DUV3_Pos);
 #else
         case 0:
-            return (p_reg->SET[p_set_way->set].WAY[p_set_way->way] & CACHEINFO_SET_WAY_DUV0_Msk) ==
+            return (p_reg->SET[set].WAY[way] & CACHEINFO_SET_WAY_DUV0_Msk) ==
                    (CACHEINFO_SET_WAY_DUV0_Valid << CACHEINFO_SET_WAY_DUV0_Pos);
         case 1:
-            return (p_reg->SET[p_set_way->set].WAY[p_set_way->way] & CACHEINFO_SET_WAY_DUV1_Msk) ==
+            return (p_reg->SET[set].WAY[way] & CACHEINFO_SET_WAY_DUV1_Msk) ==
                    (CACHEINFO_SET_WAY_DUV1_Valid << CACHEINFO_SET_WAY_DUV1_Pos);
         case 2:
-            return (p_reg->SET[p_set_way->set].WAY[p_set_way->way] & CACHEINFO_SET_WAY_DUV2_Msk) ==
+            return (p_reg->SET[set].WAY[way] & CACHEINFO_SET_WAY_DUV2_Msk) ==
                    (CACHEINFO_SET_WAY_DUV2_Valid << CACHEINFO_SET_WAY_DUV2_Pos);
         case 3:
-            return (p_reg->SET[p_set_way->set].WAY[p_set_way->way] & CACHEINFO_SET_WAY_DUV3_Msk) ==
+            return (p_reg->SET[set].WAY[way] & CACHEINFO_SET_WAY_DUV3_Msk) ==
                    (CACHEINFO_SET_WAY_DUV3_Valid << CACHEINFO_SET_WAY_DUV3_Pos);
 #endif
         default:
@@ -783,23 +795,30 @@ NRF_STATIC_INLINE bool nrf_cache_data_unit_validity_check(NRF_CACHEINFO_Type con
             return false;
     }
 }
-#endif // NRF_CACHE_HAS_DU_VALIDATION
+#endif // NRF_CACHE_HAS_CACHEINFO_DU_VALIDATION
 
-#if NRF_CACHE_HAS_DU_DIRTY
-NRF_STATIC_INLINE bool nrf_cache_is_data_unit_dirty_check(NRF_CACHEINFO_Type const *      p_reg,
-                                                          nrf_cache_set_way_loc_t const * p_set_way,
-                                                          nrf_cache_du_word_loc_t const * p_du_word)
+#if NRF_CACHE_HAS_CACHEINFO_DU_DIRTY
+NRF_STATIC_INLINE bool nrf_cache_is_data_unit_dirty_check(NRF_CACHEINFO_Type const * p_reg,
+                                                          uint32_t                   set,
+                                                          uint8_t                    way,
+                                                          uint8_t                    word)
 {
-    (void)p_du_word->word;
-    NRFX_ASSERT(p_set_way->way < NRF_CACHEINFO_WAY_INDEX_MAX);
-    NRFX_ASSERT(p_set_way->set < NRF_CACHEINFO_SET_INDEX_MAX);
-    switch (p_du_word->du)
+    NRFX_ASSERT(word < NRF_CACHEINFO_WORD_INDEX_MAX);
+    NRFX_ASSERT(way < NRF_CACHEINFO_WAY_INDEX_MAX);
+    NRFX_ASSERT(set < NRF_CACHEINFO_SET_INDEX_MAX);
+
+    uint8_t du = (word / NRF_CACHEINFO_DATA_WORDS_IN_UNIT_MAX);
+    switch (du)
     {
         case 0:
-            return (p_reg->SET[p_set_way->set].WAY[p_set_way->way] & CACHEINFO_SET_WAY_D0_Msk) ==
-                (CACHEINFO_SET_WAY_D0_Dirty << CACHEINFO_SET_WAY_D0_Pos);
+            /* FALLTHROUGH */
         case 1:
-            return (p_reg->SET[p_set_way->set].WAY[p_set_way->way] & CACHEINFO_SET_WAY_D1_Msk) ==
+            return (p_reg->SET[set].WAY[way] & CACHEINFO_SET_WAY_D0_Msk) ==
+                (CACHEINFO_SET_WAY_D0_Dirty << CACHEINFO_SET_WAY_D0_Pos);
+        case 2:
+            /* FALLTHROUGH */
+        case 3:
+            return (p_reg->SET[set].WAY[way] & CACHEINFO_SET_WAY_D1_Msk) ==
                 (CACHEINFO_SET_WAY_D1_Dirty << CACHEINFO_SET_WAY_D1_Pos);
         default:
             NRFX_ASSERT(false);

@@ -259,8 +259,7 @@ extern "C" {
          ((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(4))   ||                                 \
          ((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(8))   ||                                 \
          (((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(16)) && (NRF_SPIM_HAS_16_MHZ_FREQ)) ||  \
-         (((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(32)) && (NRF_SPIM_HAS_32_MHZ_FREQ)) )), \
-        "The specified frequency cannot be achieved with the given SPIM instance.")
+         (((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(32)) && (NRF_SPIM_HAS_32_MHZ_FREQ)))))
 
 /** @brief SPIM tasks. */
 typedef enum
@@ -312,7 +311,7 @@ typedef enum
     NRF_SPIM_SHORT_RXMATCH0_ENABLERXMATCH1_MASK  = SPIM_SHORTS_DMA_RX_MATCH0_DMA_RX_ENABLEMATCH1_Msk,  ///< Shortcut between DMA.RX.MATCH0 event and DMA.RX.ENABLEMATCH1 task.
     NRF_SPIM_SHORT_RXMATCH1_ENABLERXMATCH2_MASK  = SPIM_SHORTS_DMA_RX_MATCH1_DMA_RX_ENABLEMATCH2_Msk,  ///< Shortcut between DMA.RX.MATCH1 event and DMA.RX.ENABLEMATCH2 task.
     NRF_SPIM_SHORT_RXMATCH2_ENABLERXMATCH3_MASK  = SPIM_SHORTS_DMA_RX_MATCH2_DMA_RX_ENABLEMATCH3_Msk,  ///< Shortcut between DMA.RX.MATCH2 event and DMA.RX.ENABLEMATCH3 task.
-    NRF_SPIM_SHORT_RXMATCH3_ENABLERXMATCH4_MASK  = SPIM_SHORTS_DMA_RX_MATCH3_DMA_RX_ENABLEMATCH4_Msk,  ///< Shortcut between DMA.RX.MATCH3 event and DMA.RX.ENABLEMATCH4 task.
+    NRF_SPIM_SHORT_RXMATCH3_ENABLERXMATCH0_MASK  = SPIM_SHORTS_DMA_RX_MATCH3_DMA_RX_ENABLEMATCH0_Msk,  ///< Shortcut between DMA.RX.MATCH3 event and DMA.RX.ENABLEMATCH4 task.
     NRF_SPIM_SHORT_RXMATCH0_DISABLERXMATCH0_MASK = SPIM_SHORTS_DMA_RX_MATCH0_DMA_RX_DISABLEMATCH0_Msk, ///< Shortcut between DMA.RX.MATCH0 event and DMA.RX.DISABLEMATCH0 task.
     NRF_SPIM_SHORT_RXMATCH1_DISABLERXMATCH1_MASK = SPIM_SHORTS_DMA_RX_MATCH1_DMA_RX_DISABLEMATCH1_Msk, ///< Shortcut between DMA.RX.MATCH1 event and DMA.RX.DISABLEMATCH1 task.
     NRF_SPIM_SHORT_RXMATCH2_DISABLERXMATCH2_MASK = SPIM_SHORTS_DMA_RX_MATCH2_DMA_RX_DISABLEMATCH2_Msk, ///< Shortcut between DMA.RX.MATCH2 event and DMA.RX.DISABLEMATCH2 task.
@@ -323,7 +322,7 @@ typedef enum
                                   | SPIM_SHORTS_DMA_RX_MATCH0_DMA_RX_ENABLEMATCH1_Msk
                                   | SPIM_SHORTS_DMA_RX_MATCH1_DMA_RX_ENABLEMATCH2_Msk
                                   | SPIM_SHORTS_DMA_RX_MATCH2_DMA_RX_ENABLEMATCH3_Msk
-                                  | SPIM_SHORTS_DMA_RX_MATCH3_DMA_RX_ENABLEMATCH4_Msk
+                                  | SPIM_SHORTS_DMA_RX_MATCH3_DMA_RX_ENABLEMATCH0_Msk
                                   | SPIM_SHORTS_DMA_RX_MATCH0_DMA_RX_DISABLEMATCH0_Msk
                                   | SPIM_SHORTS_DMA_RX_MATCH1_DMA_RX_DISABLEMATCH1_Msk
                                   | SPIM_SHORTS_DMA_RX_MATCH2_DMA_RX_DISABLEMATCH2_Msk

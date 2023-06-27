@@ -311,13 +311,17 @@ void nrfx_spim_uninit(nrfx_spim_t const * p_instance);
  *   flag if the transfer is triggered externally by PPI. Use
  *   @ref nrfx_spim_start_task_address_get to get the address of the start task.
  *   Chip select must be configured to @ref NRF_SPIM_PIN_NOT_CONNECTED and managed outside the driver.
+ *   If you do not expect more transfers, you should call @ref nrfx_spim_abort to inform the driver
+ *   that the peripheral can be put into a low power state.
  * - @ref NRFX_SPIM_FLAG_NO_XFER_EVT_HANDLER - No user event handler after transfer
  *   completion. This also means no interrupt at the end of the transfer.
  *   If @ref NRFX_SPIM_FLAG_NO_XFER_EVT_HANDLER is used, the driver does not set the instance into
  *   busy state, so you must ensure that the next transfers are set up when SPIM is not active.
+ *   Additionally, you should call @ref nrfx_spim_abort to inform the driver that no more transfers will occur.
  *   @ref nrfx_spim_end_event_address_get function can be used to detect end of transfer. Option can
  *   be used together with @ref NRFX_SPIM_FLAG_REPEATED_XFER to prepare a sequence of SPI transfers
- *   without interruptions.
+ *   without interruptions. If you do not expect more transfers, you should call @ref nrfx_spim_abort
+ *   to inform the driver that the peripheral can be put into a low power state.
  * - @ref NRFX_SPIM_FLAG_REPEATED_XFER - Prepare for repeated transfers. You can set
  *   up a number of transfers that will be triggered externally (for example by PPI). An example is
  *   a TXRX transfer with the options @ref NRFX_SPIM_FLAG_RX_POSTINC,
@@ -327,7 +331,8 @@ void nrfx_spim_uninit(nrfx_spim_t const * p_instance);
  *   @ref nrfx_spim_end_event_address_get can be used to get the address of the END event, which can
  *   be used to count the number of transfers. If @ref NRFX_SPIM_FLAG_REPEATED_XFER is used,
  *   the driver does not set the instance into busy state, so you must ensure that the next
- *   transfers are set up when SPIM is not active.
+ *   transfers are set up when SPIM is not active. If you do not expect more transfers, you should call
+ *   @ref nrfx_spim_abort to inform the driver that the peripheral can be put into a low power state.
  *
  * @note Peripherals using EasyDMA (including SPIM) require the transfer buffers
  *       to be placed in the Data RAM region. If this condition is not met,
@@ -408,6 +413,12 @@ NRFX_STATIC_INLINE uint32_t nrfx_spim_end_event_address_get(nrfx_spim_t const * 
 
 /**
  * @brief Function for aborting ongoing transfer.
+ *
+ * @note You should call the function if the first transfer has been started with one or more
+ *       of the following options: @ref NRFX_SPIM_FLAG_NO_XFER_EVT_HANDLER,
+ *       @ref NRFX_SPIM_FLAG_HOLD_XFER, and @ref NRFX_SPIM_FLAG_REPEATED_XFER. When you do not
+ *       expect more transfers, use this function so that the driver can put the peripheral into
+ *       a low power state.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */

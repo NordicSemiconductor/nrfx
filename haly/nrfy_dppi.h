@@ -154,7 +154,7 @@ NRFY_STATIC_INLINE void nrfy_dppi_channels_include_in_group(NRF_DPPIC_Type *    
 }
 
 /** @refhal{nrf_dppi_channels_remove_from_group} */
-NRFY_STATIC_INLINE 
+NRFY_STATIC_INLINE
 void nrfy_dppi_channels_remove_from_group(NRF_DPPIC_Type *         p_reg,
                                           uint32_t                 channel_mask,
                                           nrf_dppi_channel_group_t channel_group)

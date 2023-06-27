@@ -235,9 +235,9 @@ void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void) \
     )
 
 /**
- * @brief Macro for generating else if statement code blocks that assignes token \<periph_name\>\<prefix\>\<i\>\<suffix\> 
+ * @brief Macro for generating else if statement code blocks that assignes token \<periph_name\>\<prefix\>\<i\>\<suffix\>
  *        to the variable \<var\> if \<p_reg\> points to the instance NRF_\<periph_name\>\<prefix\>\<i\>.
- * 
+ *
  * @param[in] periph_name Peripheral name, e.g. SPIM.
  * @param[in] prefix      Prefix appended to the index.
  * @param[in] i           Index.

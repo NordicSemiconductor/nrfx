@@ -69,6 +69,13 @@ extern "C" {
 #define NRF_PWM_HAS_DMA_TASKS_EVENTS 0
 #endif
 
+#if defined(PWM_SEQ_CNT_CNT_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether setting the number of duty cycle values for a sequence is available. */
+#define NRF_PWM_HAS_SEQ_CNT 1
+#else
+#define NRF_PWM_HAS_SEQ_CNT 0
+#endif
+
 /**
  * @brief Macro getting pointer to the structure of registers of the PWM peripheral.
  *
@@ -92,7 +99,7 @@ extern "C" {
  * @brief Helper macro for calculating the number of 16-bit values in the specified
  *        array of duty cycle values.
  */
-#define NRF_PWM_VALUES_LENGTH(array)  (sizeof(array) / sizeof(uint16_t))
+#define NRF_PWM_VALUES_LENGTH(array)  (sizeof(array) / 2UL)
 
 
 /** @brief PWM tasks. */
@@ -513,6 +520,7 @@ NRF_STATIC_INLINE void nrf_pwm_seq_ptr_set(NRF_PWM_Type *   p_reg,
                                            uint8_t          seq_id,
                                            uint16_t const * p_values);
 
+#if NRF_PWM_HAS_SEQ_CNT
 /**
  * @brief Function for modifying the total number of duty cycle values
  *        in the specified sequence.
@@ -524,6 +532,7 @@ NRF_STATIC_INLINE void nrf_pwm_seq_ptr_set(NRF_PWM_Type *   p_reg,
 NRF_STATIC_INLINE void nrf_pwm_seq_cnt_set(NRF_PWM_Type * p_reg,
                                            uint8_t        seq_id,
                                            uint16_t       length);
+#endif
 
 /**
  * @brief Function for modifying the additional number of PWM periods spent
@@ -735,7 +744,9 @@ NRF_STATIC_INLINE void nrf_pwm_sequence_set(NRF_PWM_Type *             p_reg,
     NRFX_ASSERT(p_seq != NULL);
 
     nrf_pwm_seq_ptr_set(      p_reg, seq_id, p_seq->values.p_raw);
+#if NRF_PWM_HAS_SEQ_CNT
     nrf_pwm_seq_cnt_set(      p_reg, seq_id, p_seq->length);
+#endif
     nrf_pwm_seq_refresh_set(  p_reg, seq_id, p_seq->repeats);
     nrf_pwm_seq_end_delay_set(p_reg, seq_id, p_seq->end_delay);
 }
@@ -753,6 +764,7 @@ NRF_STATIC_INLINE void nrf_pwm_seq_ptr_set(NRF_PWM_Type *   p_reg,
 #endif
 }
 
+#if NRF_PWM_HAS_SEQ_CNT
 NRF_STATIC_INLINE void nrf_pwm_seq_cnt_set(NRF_PWM_Type * p_reg,
                                            uint8_t        seq_id,
                                            uint16_t       length)
@@ -762,6 +774,7 @@ NRF_STATIC_INLINE void nrf_pwm_seq_cnt_set(NRF_PWM_Type * p_reg,
     NRFX_ASSERT(length <= PWM_SEQ_CNT_CNT_Msk);
     p_reg->SEQ[seq_id].CNT = length;
 }
+#endif
 
 NRF_STATIC_INLINE void nrf_pwm_seq_refresh_set(NRF_PWM_Type * p_reg,
                                                uint8_t        seq_id,

@@ -49,8 +49,7 @@ extern "C" {
 
 #if defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol specifying offset between address of TASK/EVENT register and address of associated SUBSCRIBE/PUBLISH register. */
-#define NRF_RADIO_DPPI_OFFSET \
-    (NRFX_OFFSETOF(NRF_RADIO_Type, SUBSCRIBE_TXEN) - NRFX_OFFSETOF(NRF_RADIO_Type, TASKS_TXEN))
+#define NRF_RADIO_DPPI_OFFSET NRF_SUBSCRIBE_PUBLISH_OFFSET_RADIO
 #endif // defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 
 /** @brief RADIO tasks. */
@@ -436,7 +435,9 @@ typedef enum
     NRF_RADIO_TXPOWER_NEG12DBM = RADIO_TXPOWER_TXPOWER_Neg12dBm, /**< -12 dBm. */
     NRF_RADIO_TXPOWER_NEG16DBM = RADIO_TXPOWER_TXPOWER_Neg16dBm, /**< -16 dBm. */
     NRF_RADIO_TXPOWER_NEG20DBM = RADIO_TXPOWER_TXPOWER_Neg20dBm, /**< -20 dBm. */
+#if defined(RADIO_TXPOWER_TXPOWER_Neg30dBm) || defined(__NRFX_DOXYGEN__)
     NRF_RADIO_TXPOWER_NEG30DBM = RADIO_TXPOWER_TXPOWER_Neg30dBm, /**< -30 dBm. */
+#endif
 #if defined(RADIO_TXPOWER_TXPOWER_Neg40dBm) || defined(__NRFX_DOXYGEN__)
     NRF_RADIO_TXPOWER_NEG40DBM = RADIO_TXPOWER_TXPOWER_Neg40dBm, /**< -40 dBm. */
 #endif

@@ -61,6 +61,14 @@ extern "C" {
 #define NRF_SPU_HAS_MEMORY 0
 #endif
 
+#if defined(SPU_FEATURE_BELLS_DOMAIN_MaxCount) || defined(SPU_FEATURE_BELLS_PROCESSOR_MaxCount) \
+    || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SPU has registers related to BELLS. */
+#define NRF_SPU_HAS_BELLS 1
+#else
+#define NRF_SPU_HAS_BELLS 0
+#endif
+
 #if defined(SPU_FEATURE_BELLS_DOMAIN_MaxCount) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether SPU uses DOMAIN register name. */
 #define NRF_SPU_HAS_DOMAIN 1
@@ -68,16 +76,25 @@ extern "C" {
 #define NRF_SPU_HAS_DOMAIN 0
 #endif
 
+#if defined(SPU_FEATURE_IPCT_CH_MaxCount) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SPU has registers related to IPCT. */
+#define NRF_SPU_HAS_IPCT 1
+#else
+#define NRF_SPU_HAS_IPCT 0
+#endif
+
 #if NRF_SPU_HAS_OWNERSHIP
 
 /** @brief Number of peripherals. */
 #define NRF_SPU_PERIPH_COUNT                     SPU_PERIPH_MaxCount
 
+#if NRF_SPU_HAS_IPCT
 /** @brief Number of IPCT channels. */
 #define NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT       SPU_FEATURE_IPCT_CH_MaxCount
 
 /** @brief Number of IPCT interrupts. */
 #define NRF_SPU_FEATURE_IPCT_INTERRUPT_COUNT     SPU_FEATURE_IPCT_INTERRUPT_MaxCount
+#endif
 
 /** @brief Number of DPPI channels. */
 #define NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT       SPU_FEATURE_DPPIC_CH_MaxCount
@@ -189,8 +206,10 @@ typedef enum
 /** @brief SPU features. */
 typedef enum
 {
+#if NRF_SPU_HAS_IPCT
     NRF_SPU_FEATURE_IPCT_CHANNEL,       /**< IPCT channel. */
     NRF_SPU_FEATURE_IPCT_INTERRUPT,     /**< IPCT interrupt. */
+#endif
     NRF_SPU_FEATURE_DPPI_CHANNEL,       /**< DPPI channel. */
     NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP, /**< DPPI channel group. */
     NRF_SPU_FEATURE_GPIOTE_CHANNEL,     /**< GPIOTE channel. */
@@ -199,12 +218,14 @@ typedef enum
     NRF_SPU_FEATURE_GRTC_CC,            /**< GRTC compare channel. */
     NRF_SPU_FEATURE_GRTC_SYSCOUNTER,    /**< GRTC SYSCOUNTER. */
     NRF_SPU_FEATURE_GRTC_INTERRUPT,     /**< GRTC interrupt. */
+#if NRF_SPU_HAS_BELLS
 #if NRF_SPU_HAS_DOMAIN
     NRF_SPU_FEATURE_BELLS_BELL,         /**< BELLS bell pair. */
 #else
     NRF_SPU_FEATURE_BELLS_TASKS,        /**< BELLS tasks pair. */
     NRF_SPU_FEATURE_BELLS_EVENTS,       /**< BELLS events pair. */
     NRF_SPU_FEATURE_BELLS_INTERRUPT,    /**< BELLS interrupt pair. */
+#endif
 #endif
 } nrf_spu_feature_t;
 
@@ -1059,6 +1080,7 @@ NRF_STATIC_INLINE bool nrf_spu_feature_secattr_get(NRF_SPU_Type const * p_reg,
 {
     switch (feature)
     {
+#if NRF_SPU_HAS_IPCT
         case NRF_SPU_FEATURE_IPCT_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
             return (p_reg->FEATURE.IPCT.CH[index]
@@ -1070,6 +1092,7 @@ NRF_STATIC_INLINE bool nrf_spu_feature_secattr_get(NRF_SPU_Type const * p_reg,
             return (p_reg->FEATURE.IPCT.INTERRUPT[index]
                     & SPU_FEATURE_IPCT_INTERRUPT_SECATTR_Msk)
                    >> SPU_FEATURE_IPCT_INTERRUPT_SECATTR_Pos;
+#endif // NRF_SPU_HAS_IPCT
 
         case NRF_SPU_FEATURE_DPPI_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
@@ -1121,6 +1144,7 @@ NRF_STATIC_INLINE bool nrf_spu_feature_secattr_get(NRF_SPU_Type const * p_reg,
                     & SPU_FEATURE_GRTC_INTERRUPT_SECATTR_Msk)
                    >> SPU_FEATURE_GRTC_INTERRUPT_SECATTR_Pos;
 
+#if NRF_SPU_HAS_BELLS
 #if NRF_SPU_HAS_DOMAIN
         case NRF_SPU_FEATURE_BELLS_BELL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
@@ -1145,7 +1169,8 @@ NRF_STATIC_INLINE bool nrf_spu_feature_secattr_get(NRF_SPU_Type const * p_reg,
             return (p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex]
                     & SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_SECATTR_Msk)
                    >> SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_SECATTR_Pos;
-#endif
+#endif // NRF_SPU_HAS_DOMAIN
+#endif // NRF_SPU_HAS_BELLS
 
         default:
             NRFX_ASSERT(0);
@@ -1160,6 +1185,7 @@ NRF_STATIC_INLINE bool nrf_spu_feature_lock_get(NRF_SPU_Type const * p_reg,
 {
     switch (feature)
     {
+#if NRF_SPU_HAS_IPCT
         case NRF_SPU_FEATURE_IPCT_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
             return (p_reg->FEATURE.IPCT.CH[index]
@@ -1171,6 +1197,7 @@ NRF_STATIC_INLINE bool nrf_spu_feature_lock_get(NRF_SPU_Type const * p_reg,
             return (p_reg->FEATURE.IPCT.INTERRUPT[index]
                     & SPU_FEATURE_IPCT_INTERRUPT_LOCK_Msk)
                    >> SPU_FEATURE_IPCT_INTERRUPT_LOCK_Pos;
+#endif // NRF_SPU_HAS_IPCT
 
         case NRF_SPU_FEATURE_DPPI_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
@@ -1222,6 +1249,7 @@ NRF_STATIC_INLINE bool nrf_spu_feature_lock_get(NRF_SPU_Type const * p_reg,
                     & SPU_FEATURE_GRTC_INTERRUPT_LOCK_Msk)
                    >> SPU_FEATURE_GRTC_INTERRUPT_LOCK_Pos;
 
+#if NRF_SPU_HAS_BELLS
 #if NRF_SPU_HAS_DOMAIN
         case NRF_SPU_FEATURE_BELLS_BELL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
@@ -1246,7 +1274,8 @@ NRF_STATIC_INLINE bool nrf_spu_feature_lock_get(NRF_SPU_Type const * p_reg,
             return (p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex]
                     & SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_LOCK_Msk)
                    >> SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_LOCK_Pos;
-#endif
+#endif // NRF_SPU_HAS_DOMAIN
+#endif // NRF_SPU_HAS_BELLS
         default:
             NRFX_ASSERT(0);
             return false;
@@ -1260,6 +1289,7 @@ NRF_STATIC_INLINE bool nrf_spu_feature_block_get(NRF_SPU_Type const * p_reg,
 {
     switch (feature)
     {
+#if NRF_SPU_HAS_IPCT
         case NRF_SPU_FEATURE_IPCT_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
             return (p_reg->FEATURE.IPCT.CH[index]
@@ -1271,6 +1301,7 @@ NRF_STATIC_INLINE bool nrf_spu_feature_block_get(NRF_SPU_Type const * p_reg,
             return (p_reg->FEATURE.IPCT.INTERRUPT[index]
                     & SPU_FEATURE_IPCT_INTERRUPT_BLOCK_Msk)
                    >> SPU_FEATURE_IPCT_INTERRUPT_BLOCK_Pos;
+#endif // NRF_SPU_HAS_IPCT
 
         case NRF_SPU_FEATURE_DPPI_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
@@ -1322,6 +1353,7 @@ NRF_STATIC_INLINE bool nrf_spu_feature_block_get(NRF_SPU_Type const * p_reg,
                     & SPU_FEATURE_GRTC_INTERRUPT_BLOCK_Msk)
                    >> SPU_FEATURE_GRTC_INTERRUPT_BLOCK_Pos;
 
+#if NRF_SPU_HAS_BELLS
 #if NRF_SPU_HAS_DOMAIN
         case NRF_SPU_FEATURE_BELLS_BELL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
@@ -1346,7 +1378,8 @@ NRF_STATIC_INLINE bool nrf_spu_feature_block_get(NRF_SPU_Type const * p_reg,
             return (p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex]
                     & SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_BLOCK_Msk)
                    >> SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_BLOCK_Pos;
-#endif
+#endif // NRF_SPU_HAS_DOMAIN
+#endif // NRF_SPU_HAS_BELLS
         default:
             NRFX_ASSERT(0);
             return false;
@@ -1360,6 +1393,7 @@ NRF_STATIC_INLINE nrf_owner_t nrf_spu_feature_ownerid_get(NRF_SPU_Type const * p
 {
     switch (feature)
     {
+#if NRF_SPU_HAS_IPCT
         case NRF_SPU_FEATURE_IPCT_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
             return (nrf_owner_t)((p_reg->FEATURE.IPCT.CH[index]
@@ -1371,6 +1405,7 @@ NRF_STATIC_INLINE nrf_owner_t nrf_spu_feature_ownerid_get(NRF_SPU_Type const * p
             return (nrf_owner_t)((p_reg->FEATURE.IPCT.INTERRUPT[index]
                                   & SPU_FEATURE_IPCT_INTERRUPT_OWNERID_Msk)
                                  >> SPU_FEATURE_IPCT_INTERRUPT_OWNERID_Pos);
+#endif // NRF_SPU_HAS_IPCT
 
         case NRF_SPU_FEATURE_DPPI_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
@@ -1422,6 +1457,7 @@ NRF_STATIC_INLINE nrf_owner_t nrf_spu_feature_ownerid_get(NRF_SPU_Type const * p
                                   & SPU_FEATURE_GRTC_INTERRUPT_OWNERID_Msk)
                                  >> SPU_FEATURE_GRTC_INTERRUPT_OWNERID_Pos);
 
+#if NRF_SPU_HAS_BELLS
 #if NRF_SPU_HAS_DOMAIN
         case NRF_SPU_FEATURE_BELLS_BELL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
@@ -1446,7 +1482,8 @@ NRF_STATIC_INLINE nrf_owner_t nrf_spu_feature_ownerid_get(NRF_SPU_Type const * p
             return (nrf_owner_t)((p_reg->FEATURE.BELLS.PROCESSOR[index].INTERRUPT[subindex]
                     & SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_OWNERID_Msk)
                    >> SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_OWNERID_Pos);
-#endif
+#endif // NRF_SPU_HAS_DOMAIN
+#endif // NRF_SPU_HAS_BELLS
         default:
             NRFX_ASSERT(0);
             return (nrf_owner_t)0;
@@ -1461,6 +1498,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_secattr_set(NRF_SPU_Type *    p_reg,
 {
     switch (feature)
     {
+#if NRF_SPU_HAS_IPCT
         case NRF_SPU_FEATURE_IPCT_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
             p_reg->FEATURE.IPCT.CH[index] =
@@ -1482,6 +1520,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_secattr_set(NRF_SPU_Type *    p_reg,
                    SPU_FEATURE_IPCT_INTERRUPT_SECATTR_NonSecure)
                   <<  SPU_FEATURE_IPCT_INTERRUPT_SECATTR_Pos));
             break;
+#endif // NRF_SPU_HAS_IPCT
 
         case NRF_SPU_FEATURE_DPPI_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
@@ -1573,6 +1612,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_secattr_set(NRF_SPU_Type *    p_reg,
                   <<  SPU_FEATURE_GRTC_INTERRUPT_SECATTR_Pos));
             break;
 
+#if NRF_SPU_HAS_BELLS
 #if NRF_SPU_HAS_DOMAIN
         case NRF_SPU_FEATURE_BELLS_BELL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
@@ -1617,7 +1657,8 @@ NRF_STATIC_INLINE void nrf_spu_feature_secattr_set(NRF_SPU_Type *    p_reg,
                    SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_SECATTR_NonSecure)
                   <<  SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_SECATTR_Pos));
             break;
-#endif
+#endif // NRF_SPU_HAS_DOMAIN
+#endif // NRF_SPU_HAS_BELLS
 
         default:
             NRFX_ASSERT(0);
@@ -1632,6 +1673,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_lock_enable(NRF_SPU_Type *    p_reg,
 {
     switch (feature)
     {
+#if NRF_SPU_HAS_IPCT
         case NRF_SPU_FEATURE_IPCT_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
             p_reg->FEATURE.IPCT.CH[index] =
@@ -1649,6 +1691,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_lock_enable(NRF_SPU_Type *    p_reg,
                  (SPU_FEATURE_IPCT_INTERRUPT_LOCK_Locked
                   << SPU_FEATURE_IPCT_INTERRUPT_LOCK_Pos));
             break;
+#endif // NRF_SPU_HAS_IPCT
 
         case NRF_SPU_FEATURE_DPPI_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
@@ -1724,6 +1767,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_lock_enable(NRF_SPU_Type *    p_reg,
                   << SPU_FEATURE_GRTC_INTERRUPT_LOCK_Pos));
             break;
 
+#if NRF_SPU_HAS_BELLS
 #if NRF_SPU_HAS_DOMAIN
         case NRF_SPU_FEATURE_BELLS_BELL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
@@ -1760,7 +1804,8 @@ NRF_STATIC_INLINE void nrf_spu_feature_lock_enable(NRF_SPU_Type *    p_reg,
                  (SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_LOCK_Locked
                   << SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_LOCK_Pos));
             break;
-#endif
+#endif // NRF_SPU_HAS_DOMAIN
+#endif // NRF_SPU_HAS_BELLS
 
         default:
             NRFX_ASSERT(0);
@@ -1775,6 +1820,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
 {
     switch (feature)
     {
+#if NRF_SPU_HAS_IPCT
         case NRF_SPU_FEATURE_IPCT_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
             p_reg->FEATURE.IPCT.CH[index] =
@@ -1792,6 +1838,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
                  (SPU_FEATURE_IPCT_INTERRUPT_BLOCK_Blocked
                   << SPU_FEATURE_IPCT_INTERRUPT_BLOCK_Pos));
             break;
+#endif // NRF_SPU_HAS_IPCT
 
         case NRF_SPU_FEATURE_DPPI_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
@@ -1867,6 +1914,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
                   << SPU_FEATURE_GRTC_INTERRUPT_BLOCK_Pos));
             break;
 
+#if NRF_SPU_HAS_BELLS
 #if NRF_SPU_HAS_DOMAIN
         case NRF_SPU_FEATURE_BELLS_BELL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
@@ -1903,7 +1951,8 @@ NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
                  (SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_BLOCK_Blocked
                   << SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_BLOCK_Pos));
             break;
-#endif
+#endif // NRF_SPU_HAS_DOMAIN
+#endif // NRF_SPU_HAS_BELLS
 
         default:
             NRFX_ASSERT(0);
@@ -1919,6 +1968,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
 {
     switch (feature)
     {
+#if NRF_SPU_HAS_IPCT
         case NRF_SPU_FEATURE_IPCT_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_IPCT_CHANNEL_COUNT);
             p_reg->FEATURE.IPCT.CH[index] =
@@ -1938,6 +1988,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
                    << SPU_FEATURE_IPCT_INTERRUPT_OWNERID_Pos) &
                   SPU_FEATURE_IPCT_INTERRUPT_OWNERID_Msk));
             break;
+#endif // NRF_SPU_HAS_IPCT
 
         case NRF_SPU_FEATURE_DPPI_CHANNEL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_DPPI_CHANNEL_COUNT);
@@ -2021,6 +2072,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
                   SPU_FEATURE_GRTC_INTERRUPT_OWNERID_Msk));
             break;
 
+#if NRF_SPU_HAS_BELLS
 #if NRF_SPU_HAS_DOMAIN
         case NRF_SPU_FEATURE_BELLS_BELL:
             NRFX_ASSERT(index < NRF_SPU_FEATURE_BELL_BELL_COUNT);
@@ -2061,7 +2113,8 @@ NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
                    << SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_OWNERID_Pos) &
                   SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_OWNERID_Msk));
             break;
-#endif
+#endif // NRF_SPU_HAS_DOMAIN
+#endif // NRF_SPU_HAS_BELLS
 
         default:
             NRFX_ASSERT(0);

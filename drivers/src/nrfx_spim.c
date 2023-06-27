@@ -207,6 +207,7 @@ static void spim_abort(NRF_SPIM_Type * p_spim, spim_control_block_t * p_cb)
         NRFX_LOG_ERROR("Failed to stop instance with base address: %p.", (void *)p_spim);
     }
     p_cb->transfer_in_progress = false;
+    nrfy_spim_disable(p_spim);
 }
 
 static void pin_init(uint32_t             pin,
@@ -545,7 +546,6 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
             return err_code;
         }
         spim_configure(p_instance, p_config);
-        nrfy_spim_enable(p_instance->p_reg);
     }
 
     p_cb->transfer_in_progress = false;
@@ -576,9 +576,7 @@ nrfx_err_t nrfx_spim_reconfigure(nrfx_spim_t const *        p_instance,
         return err_code;
     }
 
-    nrfy_spim_disable(p_instance->p_reg);
     spim_configure(p_instance, p_config);
-    nrfy_spim_enable(p_instance->p_reg);
 
     return NRFX_SUCCESS;
 }
@@ -602,14 +600,9 @@ void nrfx_spim_uninit(nrfx_spim_t const * p_instance)
     if (p_cb->handler)
     {
         nrfy_spim_int_disable(p_instance->p_reg, NRF_SPIM_ALL_INTS_MASK);
-        if (p_cb->transfer_in_progress)
-        {
-            // Ensure that SPI is not performing any transfer.
-            spim_abort(p_instance->p_reg, p_cb);
-        }
+        spim_abort(p_instance->p_reg, p_cb);
     }
 
-    nrfy_spim_disable(p_instance->p_reg);
     nrfy_spim_pins_t pins;
     nrfy_spim_pins_get(p_instance->p_reg, &pins);
 
@@ -688,14 +681,17 @@ static void set_ss_pin_state(spim_control_block_t * p_cb, bool active)
     }
 }
 
-static void finish_transfer(spim_control_block_t * p_cb)
+static void finish_transfer(NRF_SPIM_Type * p_spim, spim_control_block_t * p_cb)
 {
     // If Slave Select signal is used, this is the time to deactivate it.
     set_ss_pin_state(p_cb, false);
 
     // By clearing this flag before calling the handler we allow subsequent
     // transfers to be started directly from the handler function.
-    p_cb->transfer_in_progress = false;
+    if (p_cb->transfer_in_progress)
+    {
+        spim_abort(p_spim, p_cb);
+    }
 
     p_cb->evt.type = NRFX_SPIM_EVENT_DONE;
     p_cb->handler(&p_cb->evt, p_cb->p_context);
@@ -709,8 +705,10 @@ static nrfx_err_t spim_xfer(NRF_SPIM_Type               * p_spim,
     nrfx_err_t err_code;
     // EasyDMA requires that transfer buffers are placed in Data RAM region;
     // signal error if they are not.
-    if ((p_xfer_desc->p_tx_buffer != NULL && !nrfx_is_in_ram(p_xfer_desc->p_tx_buffer)) ||
-        (p_xfer_desc->p_rx_buffer != NULL && !nrfx_is_in_ram(p_xfer_desc->p_rx_buffer)))
+    if ((p_xfer_desc->p_tx_buffer != NULL &&
+         !nrf_dma_accessible_check(p_spim, p_xfer_desc->p_tx_buffer)) ||
+        (p_xfer_desc->p_rx_buffer != NULL &&
+         !nrf_dma_accessible_check(p_spim, p_xfer_desc->p_rx_buffer)))
     {
         p_cb->transfer_in_progress = false;
         err_code = NRFX_ERROR_INVALID_ADDR;
@@ -736,6 +734,7 @@ static nrfx_err_t spim_xfer(NRF_SPIM_Type               * p_spim,
 #if NRFX_CHECK(NRFX_SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED)
     if (flags & NRFX_SPIM_FLAG_HOLD_XFER)
     {
+        nrfy_spim_event_clear(p_spim, NRF_SPIM_EVENT_STARTED);
         xfer_desc.tx_length = 0;
         xfer_desc.rx_length = 0;
         nrfy_spim_int_enable(p_spim, NRF_SPIM_INT_STARTED_MASK);
@@ -744,6 +743,7 @@ static nrfx_err_t spim_xfer(NRF_SPIM_Type               * p_spim,
     nrfy_spim_buffers_set(p_spim, &xfer_desc);
 
     nrfy_spim_event_clear(p_spim, NRF_SPIM_EVENT_END);
+    nrfy_spim_enable(p_spim);
 
     if (!(flags & NRFX_SPIM_FLAG_HOLD_XFER))
     {
@@ -759,6 +759,10 @@ static nrfx_err_t spim_xfer(NRF_SPIM_Type               * p_spim,
         }
 #endif
         set_ss_pin_state(p_cb, false);
+        if (!(flags & NRFX_SPIM_FLAG_HOLD_XFER))
+        {
+            spim_abort(p_spim, p_cb);
+        }
     }
     else
     {
@@ -837,17 +841,14 @@ void nrfx_spim_abort(nrfx_spim_t const * p_instance)
 
 static void irq_handler(NRF_SPIM_Type * p_spim, spim_control_block_t * p_cb)
 {
-    uint32_t evt_mask = nrfy_spim_events_process(p_spim,
 #if NRFX_CHECK(NRFX_SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED)
-                                                 NRFY_EVENT_TO_INT_BITMASK(NRF_SPIM_EVENT_STARTED) |
-#endif
-                                                 NRFY_EVENT_TO_INT_BITMASK(NRF_SPIM_EVENT_END),
-                                                 &p_cb->evt.xfer_desc);
-
-#if NRFX_CHECK(NRFX_SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED)
-    if (evt_mask & NRFY_EVENT_TO_INT_BITMASK(NRF_SPIM_EVENT_STARTED))
+    if (nrfy_spim_int_enable_check(p_spim, NRF_SPIM_INT_STARTED_MASK) &&
+        nrfy_spim_event_check(p_spim, NRF_SPIM_EVENT_STARTED))
     {
         /* Handle first, zero-length, auxiliary transmission. */
+        nrfy_spim_event_clear(p_spim, NRF_SPIM_EVENT_STARTED);
+        nrfy_spim_event_clear(p_spim, NRF_SPIM_EVENT_END);
+
         NRFX_ASSERT(nrfy_spim_tx_maxcnt_get(p_spim) == 0);
         NRFX_ASSERT(nrfy_spim_rx_maxcnt_get(p_spim) == 0);
 
@@ -861,7 +862,9 @@ static void irq_handler(NRF_SPIM_Type * p_spim, spim_control_block_t * p_cb)
     }
 #endif
 
-    if (evt_mask & NRFY_EVENT_TO_INT_BITMASK(NRF_SPIM_EVENT_END))
+    if (nrfy_spim_events_process(p_spim,
+                                 NRFY_EVENT_TO_INT_BITMASK(NRF_SPIM_EVENT_END),
+                                 &p_cb->evt.xfer_desc))
     {
 #if NRFX_CHECK(NRFX_SPIM3_NRF52840_ANOMALY_198_WORKAROUND_ENABLED)
         if (p_spim == NRF_SPIM3)
@@ -871,7 +874,7 @@ static void irq_handler(NRF_SPIM_Type * p_spim, spim_control_block_t * p_cb)
 #endif
         NRFX_ASSERT(p_cb->handler);
         NRFX_LOG_DEBUG("Event: NRF_SPIM_EVENT_END.");
-        finish_transfer(p_cb);
+        finish_transfer(p_spim, p_cb);
     }
 }
 

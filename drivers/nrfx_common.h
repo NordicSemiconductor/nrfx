@@ -37,6 +37,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <string.h>
 #include <limits.h>
 
 #include <nrf.h>
@@ -404,6 +405,20 @@ extern "C" {
  * @return Larger value between two arguments.
  */
 #define NRFX_MAX(a, b) ((a) > (b) ? (a) : (b))
+
+/**
+ * @brief Macro for checking if a given value is in a given range.
+ *
+ * @note @p val is evaluated twice.
+ *
+ * @param[in] val A value to be checked.
+ * @param[in] min The lower bound (inclusive).
+ * @param[in] max The upper bound (inclusive).
+ *
+ * @retval true  The value is in the given range.
+ * @retval false The value is out of the given range.
+ */
+#define NRFX_IN_RANGE(val, min, max) ((val) >= (min) && (val) <= (max))
 
 /**
  * @brief Macro for performing rounded integer division (as opposed to

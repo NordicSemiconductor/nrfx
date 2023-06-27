@@ -231,8 +231,7 @@ extern "C" {
         (NRF_TIMER_BASE_FREQUENCY_GET(p_reg) == frequency) ||                                    \
         ((NRF_TIMER_BASE_FREQUENCY_GET(p_reg) % frequency == 0) &&                               \
          NRFX_IS_POWER_OF_TWO(NRF_TIMER_BASE_FREQUENCY_GET(p_reg) / (uint32_t)frequency) &&      \
-         ((NRF_TIMER_BASE_FREQUENCY_GET(p_reg) / frequency) <= (1 << NRF_TIMER_PRESCALER_MAX))), \
-        "Specified frequency can not be achived with given TIMER instance.")
+         ((NRF_TIMER_BASE_FREQUENCY_GET(p_reg) / frequency) <= (1 << NRF_TIMER_PRESCALER_MAX))))
 
 /**
  * @brief Macro for getting the number of capture/compare channels available
