@@ -89,7 +89,9 @@ typedef void (*nrfx_egu_event_handler_t)(uint8_t event_idx, void * p_context);
  * @param[in] p_context          Context passed to the event handler.
  *
  * @retval NRFX_SUCCESS             Initialization was successful.
- * @retval NRFX_ERROR_INVALID_STATE Driver is already initialized.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  */
 nrfx_err_t nrfx_egu_init(nrfx_egu_t const *       p_instance,
                          uint8_t                  interrupt_priority,
@@ -150,6 +152,16 @@ void nrfx_egu_trigger(nrfx_egu_t const * p_instance, uint8_t event_idx);
 void nrfx_egu_uninit(nrfx_egu_t const * p_instance);
 
 /**
+ * @brief Function for checking if the EGU driver instance is initialized.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  Instance is already initialized.
+ * @retval false Instance is not initialized.
+ */
+bool nrfx_egu_init_check(nrfx_egu_t const * p_instance);
+
+/**
  * @brief Macro returning EGU interrupt handler.
  *
  * param[in] idx EGU index.
@@ -181,11 +193,11 @@ NRFX_STATIC_INLINE uint32_t nrfx_egu_event_address_get(nrfx_egu_t const * p_inst
  * A specific interrupt handler for the driver instance can be retrieved by using
  * the NRFX_EGU_INST_HANDLER_GET macro.
  *
- * Here is a sample of using the NRFX_EGU_INST_HANDLER_GET macro to directly map
- * an interrupt handler in a Zephyr application:
+ * Here is a sample of using the NRFX_EGU_INST_HANDLER_GET macro to map an interrupt handler
+ * in a Zephyr application:
  *
- * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_EGU_INST_GET(\<instance_index\>)), \<priority\>,
- *                    NRFX_EGU_INST_HANDLER_GET(\<instance_index\>), 0);
+ * IRQ_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_EGU_INST_GET(\<instance_index\>)), \<priority\>,
+ *             NRFX_EGU_INST_HANDLER_GET(\<instance_index\>), 0, 0);
  */
 NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(EGU, egu)
 

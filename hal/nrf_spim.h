@@ -54,7 +54,7 @@ extern "C" {
  *
  * @return Pointer to the structure of registers of the SPIM peripheral.
  */
-#define NRF_SPIM_INST_GET(idx) NRFX_CONCAT_2(NRF_SPIM, idx)
+#define NRF_SPIM_INST_GET(idx) NRFX_CONCAT(NRF_, SPIM, idx)
 
 #if defined(SPIM_FREQUENCY_FREQUENCY_M16) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether 16 MHz clock frequency is available. */

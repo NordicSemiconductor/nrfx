@@ -228,7 +228,7 @@ NRFY_STATIC_INLINE void nrfy_nfct_parameters_restore(NRF_NFCT_Type *            
                                                      nrfy_nfct_parameters_t const * p_params)
 {
     nrf_nfct_frame_delay_max_set(p_reg, p_params->fdmax);
-    nrf_nfct_frame_delay_min_set(p_reg, p_params->fdmin);
+    nrf_nfct_frame_delay_min_set(p_reg, (uint16_t)p_params->fdmin);
     nrf_nfct_nfcid1_set(p_reg, p_params->nfcid1, p_params->nfcid1_size);
     nrf_nfct_selres_protocol_set(p_reg, p_params->protocol);
 

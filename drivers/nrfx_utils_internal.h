@@ -163,7 +163,8 @@
 #define _NRFX_IRQ_HANDLER(periph_name, prefix, i, periph_name_small) \
 void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void) \
 { \
-    irq_handler(NRFX_CONCAT(NRF_, periph_name, prefix, i), \
+    irq_handler(NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(NRFX_CONCAT(periph_name, prefix, i)), \
+                                 (NRFX_CONCAT(NRF_, periph_name, prefix, i)), (NULL)), \
                 &m_cb[NRFX_CONCAT(NRFX_, periph_name, prefix, i, _INST_IDX)]); \
 }
 
@@ -195,9 +196,21 @@ void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void) \
 #define _NRFX_IRQ_HANDLER_DECLARE(periph_name, prefix, i, periph_name_small) \
     void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void);
 
-/* Macro for getting third argument from the set of input arguments. */
+/* Macro for getting the fourth argument from the set of input arguments. */
+#define __NRFX_GET_ARG4(arg1, arg2, arg3, arg4...) arg4
+#define _NRFX_GET_ARG4(...) __NRFX_GET_ARG4(__VA_ARGS__)
+
+/* Macro for getting the third argument from the set of input arguments. */
 #define __NRFX_GET_ARG3(arg1, arg2, arg3, ...) arg3
 #define _NRFX_GET_ARG3(...) __NRFX_GET_ARG3(__VA_ARGS__)
+
+/* Macro for getting the second argument from the set of input arguments. */
+#define __NRFX_GET_ARG2(arg1, arg2, ...) arg2
+#define _NRFX_GET_ARG2(...) __NRFX_GET_ARG2(__VA_ARGS__)
+
+/* Macro for getting the first argument from the set of input arguments. */
+#define __NRFX_GET_ARG1(arg1, ...) arg1
+#define _NRFX_GET_ARG1(...) __NRFX_GET_ARG1(__VA_ARGS__)
 
 /* Macro for triggering argument evaluation. */
 #define _NRFX_EVAL(...) __VA_ARGS__

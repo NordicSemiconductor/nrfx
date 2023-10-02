@@ -73,13 +73,13 @@ NRFY_STATIC_INLINE void nrfy_dppi_channels_set(NRF_DPPIC_Type * p_reg, uint32_t 
 }
 
 /** @refhal{nrf_dppi_channel_number_get} */
-NRF_STATIC_INLINE uint8_t nrfy_dppi_channel_number_get(NRF_DPPIC_Type const * p_reg)
+NRFY_STATIC_INLINE uint8_t nrfy_dppi_channel_number_get(NRF_DPPIC_Type const * p_reg)
 {
     return nrf_dppi_channel_number_get(p_reg);
 }
 
 /** @refhal{nrf_dppi_group_number_get} */
-NRF_STATIC_INLINE uint8_t nrfy_dppi_group_number_get(NRF_DPPIC_Type const * p_reg)
+NRFY_STATIC_INLINE uint8_t nrfy_dppi_group_number_get(NRF_DPPIC_Type const * p_reg)
 {
     return nrf_dppi_group_number_get(p_reg);
 }
@@ -141,6 +141,15 @@ NRFY_STATIC_INLINE void nrfy_dppi_subscribe_set(NRF_DPPIC_Type * p_reg,
 NRFY_STATIC_INLINE void nrfy_dppi_subscribe_clear(NRF_DPPIC_Type * p_reg, nrf_dppi_task_t task)
 {
     nrf_dppi_subscribe_clear(p_reg, task);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_dppi_channels_group_set} */
+NRFY_STATIC_INLINE void nrfy_dppi_channels_group_set(NRF_DPPIC_Type *         p_reg,
+                                                     uint32_t                 channel_mask,
+                                                     nrf_dppi_channel_group_t channel_group)
+{
+    nrf_dppi_channels_group_set(p_reg, channel_mask, channel_group);
     nrf_barrier_w();
 }
 

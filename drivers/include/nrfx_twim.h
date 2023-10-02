@@ -49,14 +49,14 @@ extern "C" {
  * @brief   Two Wire Interface Master with EasyDMA (TWIM) peripheral driver.
  */
 
-/** @brief Structure for the TWI master driver instance. */
+/** @brief Structure for the TWIM driver instance. */
 typedef struct
 {
     NRF_TWIM_Type * p_twim;       ///< Pointer to a structure with TWIM registers.
     uint8_t         drv_inst_idx; ///< Index of the driver instance. For internal use only.
 } nrfx_twim_t;
 
-/** @brief Macro for creating a TWI master driver instance. */
+/** @brief Macro for creating a TWIM driver instance. */
 #define NRFX_TWIM_INSTANCE(id)                               \
 {                                                            \
     .p_twim       = NRFX_CONCAT_2(NRF_TWIM, id),             \
@@ -71,7 +71,7 @@ enum {
 };
 #endif
 
-/** @brief Structure for the TWI master driver instance configuration. */
+/** @brief Structure for the TWIM driver instance configuration. */
 typedef struct
 {
     uint32_t             scl_pin;            ///< SCL pin number.
@@ -129,7 +129,7 @@ typedef struct
 /** @brief Flag indicating that checks for spurious STOP condition will not be performed. */
 #define NRFX_TWIM_FLAG_NO_SPURIOUS_STOP_CHECK (1UL << 6)
 
-/** @brief TWI master driver event types. */
+/** @brief TWIM driver event types. */
 typedef enum
 {
     NRFX_TWIM_EVT_DONE,         ///< Transfer completed event.
@@ -139,7 +139,7 @@ typedef enum
     NRFX_TWIM_EVT_BUS_ERROR     ///< Error event: An unexpected transition occurred on the bus.
 } nrfx_twim_evt_type_t;
 
-/** @brief TWI master driver transfer types. */
+/** @brief TWIM driver transfer types. */
 typedef enum
 {
     NRFX_TWIM_XFER_TX,   ///< TX transfer.
@@ -148,7 +148,7 @@ typedef enum
     NRFX_TWIM_XFER_TXTX  ///< TX transfer followed by TX transfer with repeated start.
 } nrfx_twim_xfer_type_t;
 
-/** @brief Structure for a TWI transfer descriptor. */
+/** @brief Structure for a TWIM transfer descriptor. */
 typedef struct
 {
     nrfx_twim_xfer_type_t type;             ///< Type of transfer.
@@ -186,19 +186,19 @@ typedef struct
 #define NRFX_TWIM_XFER_DESC_TXTX(addr, p_tx, tx_len, p_tx2, tx_len2) \
         NRFX_TWIM_XFER_DESC(NRFX_TWIM_XFER_TXTX, addr, p_tx, tx_len, p_tx2, tx_len2)
 
-/** @brief Structure for a TWI event. */
+/** @brief Structure for a TWIM event. */
 typedef struct
 {
     nrfx_twim_evt_type_t  type;      ///< Event type.
     nrfx_twim_xfer_desc_t xfer_desc; ///< Transfer details.
 } nrfx_twim_evt_t;
 
-/** @brief TWI event handler prototype. */
+/** @brief TWIM event handler prototype. */
 typedef void (* nrfx_twim_evt_handler_t)(nrfx_twim_evt_t const * p_event,
                                          void *                  p_context);
 
 /**
- * @brief Function for initializing the TWI driver instance.
+ * @brief Function for initializing the TWIM driver instance.
  *
  * @param[in] p_instance    Pointer to the driver instance structure.
  * @param[in] p_config      Pointer to the structure with the initial configuration.
@@ -209,7 +209,9 @@ typedef void (* nrfx_twim_evt_handler_t)(nrfx_twim_evt_t const * p_event,
  *          <a href=@nRF5340pinAssignmentsURL>Pin assignments</a> in the Product Specification.
  *
  * @retval NRFX_SUCCESS             Initialization was successful.
- * @retval NRFX_ERROR_INVALID_STATE The driver is in invalid state.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_INVALID_PARAM Requested frequency is not available on the specified pins.
  * @retval NRFX_ERROR_BUSY          Some other peripheral with the same
  *                                  instance ID is already in use. This is
@@ -222,7 +224,7 @@ nrfx_err_t nrfx_twim_init(nrfx_twim_t const *        p_instance,
                           void *                     p_context);
 
 /**
- * @brief Function for reconfiguring the TWI instance.
+ * @brief Function for reconfiguring the TWIM instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  * @param[in] p_config   Pointer to the structure with the configuration.
@@ -235,28 +237,38 @@ nrfx_err_t nrfx_twim_reconfigure(nrfx_twim_t const *        p_instance,
                                  nrfx_twim_config_t const * p_config);
 
 /**
- * @brief Function for uninitializing the TWI instance.
+ * @brief Function for uninitializing the TWIM instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 void nrfx_twim_uninit(nrfx_twim_t const * p_instance);
 
 /**
- * @brief Function for enabling the TWI instance.
+ * @brief Function for checking if the TWIM driver instance is initialized.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  Instance is already initialized.
+ * @retval false Instance is not initialized.
+ */
+bool nrfx_twim_init_check(nrfx_twim_t const * p_instance);
+
+/**
+ * @brief Function for enabling the TWIM instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 void nrfx_twim_enable(nrfx_twim_t const * p_instance);
 
 /**
- * @brief Function for disabling the TWI instance.
+ * @brief Function for disabling the TWIM instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 void nrfx_twim_disable(nrfx_twim_t const * p_instance);
 
 /**
- * @brief Function for performing a TWI transfer.
+ * @brief Function for performing a TWIM transfer.
  *
  * The following transfer types can be configured (@ref nrfx_twim_xfer_desc_t.type):
  * - @ref NRFX_TWIM_XFER_TXRX - Write operation followed by a read operation (without STOP condition in between).
@@ -315,12 +327,12 @@ nrfx_err_t nrfx_twim_xfer(nrfx_twim_t           const * p_instance,
                           uint32_t                      flags);
 
 /**
- * @brief Function for checking the TWI driver state.
+ * @brief Function for checking the TWIM driver state.
  *
- * @param[in] p_instance TWI instance.
+ * @param[in] p_instance TWIM instance.
  *
- * @retval true  The TWI driver is currently busy performing a transfer.
- * @retval false The TWI driver is ready for a new transfer.
+ * @retval true  The TWIM driver is currently busy performing a transfer.
+ * @retval false The TWIM driver is ready for a new transfer.
  */
 bool nrfx_twim_is_busy(nrfx_twim_t const * p_instance);
 
@@ -393,11 +405,11 @@ NRFX_STATIC_INLINE nrfx_err_t nrfx_twim_bus_recover(uint32_t scl_pin, uint32_t s
  * A specific interrupt handler for the driver instance can be retrieved by using
  * the NRFX_TWIM_INST_HANDLER_GET macro.
  *
- * Here is a sample of using the NRFX_TWIM_INST_HANDLER_GET macro to directly map
- * an interrupt handler in a Zephyr application:
+ * Here is a sample of using the NRFX_TWIM_INST_HANDLER_GET macro to map an interrupt handler
+ * in a Zephyr application:
  *
- * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_TWIM_INST_GET(\<instance_index\>)), \<priority\>,
- *                    NRFX_TWIM_INST_HANDLER_GET(\<instance_index\>), 0);
+ * IRQ_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_TWIM_INST_GET(\<instance_index\>)), \<priority\>,
+ *             NRFX_TWIM_INST_HANDLER_GET(\<instance_index\>), 0, 0);
  */
 NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(TWIM, twim)
 

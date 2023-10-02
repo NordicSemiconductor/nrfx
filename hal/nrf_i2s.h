@@ -682,7 +682,11 @@ NRF_STATIC_INLINE void nrf_i2s_transfer_set(NRF_I2S_Type *   p_reg,
                                             uint32_t *       p_buffer_rx,
                                             uint32_t const * p_buffer_tx)
 {
+#if defined(DMA_BUFFER_UNIFIED_BYTE_ACCESS)
+    p_reg->RXTXD.MAXCNT = size * sizeof(uint32_t);
+#else
     p_reg->RXTXD.MAXCNT = size;
+#endif
 
     nrf_i2s_rx_buffer_set(p_reg, p_buffer_rx);
     p_reg->CONFIG.RXEN = (p_buffer_rx != NULL) ? 1 : 0;

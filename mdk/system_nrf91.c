@@ -42,11 +42,11 @@ void SystemStoreFICRNS();
                                 (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) | \
                                 (GPIO_PIN_CNF_DRIVE_H0H1 << GPIO_PIN_CNF_DRIVE_Pos) | \
                                 (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) )
-#define TRACE_TRACECLK_PIN   (21)
-#define TRACE_TRACEDATA0_PIN (22)
-#define TRACE_TRACEDATA1_PIN (23)
-#define TRACE_TRACEDATA2_PIN (24)
-#define TRACE_TRACEDATA3_PIN (25)
+#define TRACE_TRACECLK_PIN   (21ul)
+#define TRACE_TRACEDATA0_PIN (22ul)
+#define TRACE_TRACEDATA1_PIN (23ul)
+#define TRACE_TRACEDATA2_PIN (24ul)
+#define TRACE_TRACEDATA3_PIN (25ul)
 
 #if defined ( __CC_ARM )
     uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_DEFAULT;  
@@ -78,7 +78,7 @@ void SystemInit(void)
         /* Set all ARM SAU regions to NonSecure if TrustZone extensions are enabled.
         * Nordic SPU should handle Secure Attribution tasks */
         #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-          SAU->CTRL |= (1 << SAU_CTRL_ALLNS_Pos);
+          SAU->CTRL |= (1ul << SAU_CTRL_ALLNS_Pos);
         #endif
         
         /* Workaround for Errata 6 "POWER: SLEEPENTER and SLEEPEXIT events asserted after pin reset" found at the Errata document
@@ -91,7 +91,7 @@ void SystemInit(void)
         /* Workaround for Errata 14 "REGULATORS: LDO mode at startup" found at the Errata document
             for your device located at https://infocenter.nordicsemi.com/index.jsp  */
         if (nrf91_errata_14()){
-            *((volatile uint32_t *)0x50004A38) = 0x01ul;
+            *((volatile uint32_t *)0x50004A38ul) = 0x01ul;
             NRF_REGULATORS_S->DCDCEN = REGULATORS_DCDCEN_DCDCEN_Enabled << REGULATORS_DCDCEN_DCDCEN_Pos;
         }
 
@@ -104,14 +104,14 @@ void SystemInit(void)
         /* Workaround for Errata 20 "RAM content cannot be trusted upon waking up from System ON Idle or System OFF mode" found at the Errata document
             for your device located at https://infocenter.nordicsemi.com/index.jsp  */
         if (nrf91_errata_20()){
-            *((volatile uint32_t *)0x5003AEE4) = 0xE;
+            *((volatile uint32_t *)0x5003AEE4ul) = 0xEul;
         }
 
         /* Workaround for Errata 31 "XOSC32k Startup Failure" found at the Errata document
             for your device located at https://infocenter.nordicsemi.com/index.jsp  */
         if (nrf91_errata_31()){
-            *((volatile uint32_t *)0x5000470Cul) = 0x0;
-            *((volatile uint32_t *)0x50004710ul) = 0x1;
+            *((volatile uint32_t *)0x5000470Cul) = 0x0ul;
+            *((volatile uint32_t *)0x50004710ul) = 0x1ul;
         }
 
         #if !defined(NRF_SKIP_FICR_NS_COPY_TO_RAM)
@@ -121,7 +121,7 @@ void SystemInit(void)
         /* Trimming of the device. Copy all the trimming values from FICR into the target addresses. Trim
          until one ADDR is not initialized. */
             
-        for (uint32_t index = 0; index < 256ul && !is_empty_word(&NRF_FICR_S->TRIMCNF[index].ADDR); index++){
+        for (uint32_t index = 0ul; index < 256ul && !is_empty_word(&NRF_FICR_S->TRIMCNF[index].ADDR); index++){
           #if defined ( __ICCARM__ )
               #pragma diag_suppress=Pa082
           #endif
@@ -132,6 +132,7 @@ void SystemInit(void)
         }
 
         #if !defined(NRF_SKIP_UICR_HFXO_WORKAROUND)
+            bool irq_disabled = __get_PRIMASK() == 1; 
             uint32_t uicr_erased_value;
             uint32_t uicr_new_value;
             /* Set UICR->HFXOSRC and UICR->HFXOCNT to working defaults if UICR was erased */
@@ -143,6 +144,10 @@ void SystemInit(void)
                 /* Enable write mode in NVMC */
                 NRF_NVMC_S->CONFIG = NVMC_CONFIG_WEN_Wen;
                 while (NRF_NVMC_S->READY != NVMC_READY_READY_Ready);
+
+                if (!irq_disabled && nrf91_errata_7()){
+                    __disable_irq();
+                }
 
                 if (uicr_HFXOSRC_erased()){
                     /* Write default value to UICR->HFXOSRC */
@@ -160,6 +165,10 @@ void SystemInit(void)
                     NRF_UICR_S->HFXOCNT = uicr_new_value;
                     __DSB();
                     while (NRF_NVMC_S->READY != NVMC_READY_READY_Ready);
+                }
+                
+                if(!irq_disabled && nrf91_errata_7()){
+                    __enable_irq();
                 }
 
                 /* Enable read mode in NVMC */
@@ -179,11 +188,11 @@ void SystemInit(void)
             NRF_TAD_S->TASKS_CLOCKSTART = TAD_TASKS_CLOCKSTART_TASKS_CLOCKSTART_Msk;
 
             // Set up Trace pads SPU firewall
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1 << TRACE_TRACECLK_PIN);
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1 << TRACE_TRACEDATA0_PIN);
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1 << TRACE_TRACEDATA1_PIN);
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1 << TRACE_TRACEDATA2_PIN);
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1 << TRACE_TRACEDATA3_PIN);
+            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACECLK_PIN);
+            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA0_PIN);
+            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA1_PIN);
+            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA2_PIN);
+            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA3_PIN);
 
             // Configure trace port pads
             NRF_P0_S->PIN_CNF[TRACE_TRACECLK_PIN] =   TRACE_PIN_CNF_VALUE;
@@ -230,7 +239,7 @@ void SystemInit(void)
 
         /* Allow Non-Secure code to run FPU instructions. 
          * If only the secure code should control FPU power state these registers should be configured accordingly in the secure application code. */
-        SCB->NSACR |= (3UL << 10);
+        SCB->NSACR |= (3UL << 10ul);
 
         nrf91_handle_approtect();
     #endif
@@ -239,7 +248,7 @@ void SystemInit(void)
     * compiler. Since the FPU consumes energy, remember to disable FPU use in the compiler if floating point unit
     * operations are not used in your code. */
     #if (__FPU_USED == 1)
-        SCB->CPACR |= (3UL << 20) | (3UL << 22);
+        SCB->CPACR |= (3UL << 20ul) | (3UL << 22ul);
         __DSB();
         __ISB();
     #endif
@@ -251,21 +260,31 @@ void SystemInit(void)
     #if !defined(NRF_SKIP_UICR_HFXO_WORKAROUND)
         bool uicr_HFXOCNT_erased()
         {
-            if (is_empty_word(&NRF_UICR_S->HFXOCNT)) {
-                return true;
+            bool irq_disabled = __get_PRIMASK() == 1; 
+            if (!irq_disabled && nrf91_errata_7()){
+                __disable_irq();
             }
-            return false;
+            bool is_empty = is_empty_word(&NRF_UICR_S->HFXOCNT); 
+            if (!irq_disabled && nrf91_errata_7()){
+                __enable_irq();
+            }
+            return is_empty;
         }
         
         
         bool uicr_HFXOSRC_erased()
         {
+            bool irq_disabled = __get_PRIMASK() == 1; 
+            if (!irq_disabled && nrf91_errata_7()){
+                __disable_irq();
+            }
             uint32_t HFXOSRC_readout = NRF_UICR_S->HFXOSRC;
             __DSB();
-            if ((HFXOSRC_readout & UICR_HFXOSRC_HFXOSRC_Msk) != UICR_HFXOSRC_HFXOSRC_TCXO) {
-                return true;
+            bool erased = (HFXOSRC_readout & UICR_HFXOSRC_HFXOSRC_Msk) != UICR_HFXOSRC_HFXOSRC_TCXO;
+            if (!irq_disabled && nrf91_errata_7()){
+                __enable_irq();
             }
-            return false;
+            return erased;
         }
     #endif
     
@@ -303,7 +322,7 @@ void SystemStoreFICRNS()
     /* Make RAM region NS. */
     uint32_t ram_region = ((uint32_t)NRF_FICR_NS - (uint32_t)RAM_BASE) / SPU_RAMREGION_SIZE;
     __DSB();
-    NRF_SPU_S->RAMREGION[ram_region].PERM &= ~(1 << SPU_RAMREGION_PERM_SECATTR_Pos);
+    NRF_SPU_S->RAMREGION[ram_region].PERM &= ~(1ul << SPU_RAMREGION_PERM_SECATTR_Pos);
 }
 
 /* Block write and execute access to FICR RAM region */
@@ -319,10 +338,10 @@ void SystemLockFICRNS()
     __DSB();
     NRF_SPU_S->RAMREGION[ram_region].PERM &=
         ~(
-            (1 << SPU_RAMREGION_PERM_WRITE_Pos) |
-            (1 << SPU_RAMREGION_PERM_EXECUTE_Pos)
+            (1ul << SPU_RAMREGION_PERM_WRITE_Pos) |
+            (1ul << SPU_RAMREGION_PERM_EXECUTE_Pos)
         );
-    NRF_SPU_S->RAMREGION[ram_region].PERM |= 1 << SPU_RAMREGION_PERM_LOCK_Pos;
+    NRF_SPU_S->RAMREGION[ram_region].PERM |= 1ul << SPU_RAMREGION_PERM_LOCK_Pos;
 }
 
 /*lint --flb "Leave library region" */

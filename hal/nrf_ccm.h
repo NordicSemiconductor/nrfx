@@ -50,14 +50,14 @@ extern "C" {
  * @brief   Hardware access layer for managing the AES CCM peripheral.
  */
 
-#if defined(CCM_TASKS_KSGEN_TASKS_KSGEN_Msk) || defined(__NRFX_DOXYGEN__)
+#if defined(CCM_TASKS_KSGEN_TASKS_KSGEN_Msk) || defined(NRF51) || defined(__NRFX_DOXYGEN__)
 /** @brief Presence of the KSGEN task. */
 #define NRF_CCM_HAS_TASK_KSGEN 1
 #else
 #define NRF_CCM_HAS_TASK_KSGEN 0
 #endif
 
-#if defined(CCM_TASKS_CRYPT_TASKS_CRYPT_Msk) || defined(__NRFX_DOXYGEN__)
+#if defined(CCM_TASKS_CRYPT_TASKS_CRYPT_Msk) || defined(NRF51) || defined(__NRFX_DOXYGEN__)
 /** @brief Presence of the CRYPT task. */
 #define NRF_CCM_HAS_TASK_CRYPT 1
 #else

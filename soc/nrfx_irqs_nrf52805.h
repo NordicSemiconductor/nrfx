@@ -71,7 +71,7 @@ extern "C" {
 #endif
 
 // GPIOTE_IRQn
-#define nrfx_gpiote_irq_handler     GPIOTE_IRQHandler
+#define nrfx_gpiote_0_irq_handler   GPIOTE_IRQHandler
 
 // SAADC_IRQn
 #define nrfx_saadc_irq_handler      SAADC_IRQHandler

@@ -61,7 +61,7 @@ extern "C" {
  *
  * @return Pointer to the structure of registers of the SPIS peripheral.
  */
-#define NRF_SPIS_INST_GET(idx) NRFX_CONCAT_2(NRF_SPIS, idx)
+#define NRF_SPIS_INST_GET(idx) NRFX_CONCAT(NRF_, SPIS, idx)
 
 /**
  * @brief This value can be used as a parameter for the @ref nrf_spis_pins_set

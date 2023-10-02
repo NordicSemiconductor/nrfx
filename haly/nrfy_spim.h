@@ -400,7 +400,9 @@ NRFY_STATIC_INLINE void nrfy_spim_ext_pins_get(NRF_SPIM_Type const *  p_reg,
                                                nrfy_spim_ext_pins_t * p_pins)
 {
     p_pins->dcx_pin = nrf_spim_dcx_pin_get(p_reg);
+#if NRFY_SPIM_HAS_HW_CSN
     p_pins->csn_pin = nrf_spim_csn_pin_get(p_reg);
+#endif
 }
 #endif
 
@@ -719,14 +721,14 @@ NRFY_STATIC_INLINE void nrfy_spim_frequency_set(NRF_SPIM_Type *      p_reg,
 
 #if NRFY_SPIM_HAS_PRESCALER
 /** @refhal{nrf_spim_prescaler_set} */
-NRF_STATIC_INLINE void nrfy_spim_prescaler_set(NRF_SPIM_Type * p_reg, uint32_t prescaler)
+NRFY_STATIC_INLINE void nrfy_spim_prescaler_set(NRF_SPIM_Type * p_reg, uint32_t prescaler)
 {
     nrf_spim_prescaler_set(p_reg, prescaler);
     nrf_barrier_w();
 }
 
 /** @refhal{nrf_spim_prescaler_get} */
-NRF_STATIC_INLINE uint32_t nrfy_spim_prescaler_get(NRF_SPIM_Type const * p_reg)
+NRFY_STATIC_INLINE uint32_t nrfy_spim_prescaler_get(NRF_SPIM_Type const * p_reg)
 {
     nrf_barrier_rw();
     uint32_t prescaler = nrf_spim_prescaler_get(p_reg);

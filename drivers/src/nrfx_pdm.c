@@ -123,7 +123,11 @@ nrfx_err_t nrfx_pdm_init(nrfx_pdm_config_t const * p_config,
 
     if (m_cb.drv_state != NRFX_DRV_STATE_UNINITIALIZED)
     {
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+        err_code = NRFX_ERROR_ALREADY;
+#else
         err_code = NRFX_ERROR_INVALID_STATE;
+#endif
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -203,14 +207,19 @@ void nrfx_pdm_uninit(void)
     NRFX_LOG_INFO("Uninitialized.");
 }
 
-static void pdm_start()
+bool nrfx_pdm_init_check(void)
+{
+    return (m_cb.drv_state != NRFX_DRV_STATE_UNINITIALIZED);
+}
+
+static void pdm_start(void)
 {
     m_cb.drv_state = NRFX_DRV_STATE_POWERED_ON;
     nrfy_pdm_enable(NRF_PDM0);
     nrfy_pdm_start(NRF_PDM0, NULL);
 }
 
-static void pdm_buf_request()
+static void pdm_buf_request(void)
 {
     m_cb.irq_buff_request = 1;
     NRFY_IRQ_PENDING_SET(nrfx_get_irq_number(NRF_PDM0));

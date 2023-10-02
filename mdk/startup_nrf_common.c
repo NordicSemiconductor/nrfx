@@ -42,6 +42,11 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #endif
 
 /*---------------------------------------------------------------------------
+  Define __PROGRAM_START to avoid conflict with CMSIS
+ *---------------------------------------------------------------------------*/
+#define __PROGRAM_START
+
+/*---------------------------------------------------------------------------
   Interrupt vector tables
  *---------------------------------------------------------------------------*/
 
@@ -70,7 +75,7 @@ typedef struct __zero_table {
     uint32_t wlen;
 } __zero_table_t;
 
-void __STATIC_FORCEINLINE copy_region(const __copy_table_t * table)
+__STATIC_FORCEINLINE void copy_region(const __copy_table_t * table)
 {
     for (uint32_t i = 0; i < table->wlen; ++i)
     {
@@ -78,7 +83,7 @@ void __STATIC_FORCEINLINE copy_region(const __copy_table_t * table)
     }
 }
 
-void __STATIC_FORCEINLINE zero_region(const __zero_table_t * table)
+__STATIC_FORCEINLINE void zero_region(const __zero_table_t * table)
 {
     for (uint32_t i = 0; i < table->wlen; ++i)
     {
@@ -86,7 +91,7 @@ void __STATIC_FORCEINLINE zero_region(const __zero_table_t * table)
     }
 }
 
-void __STATIC_FORCEINLINE GNUInitializeMemories()
+__STATIC_FORCEINLINE void GNUInitializeMemories()
 {
     /* Perform C memory initialization */
     #ifndef NRF_SKIP_VARIABLE_INIT

@@ -52,7 +52,16 @@ extern "C" {
  *
  * @return Interrupt bit position.
  */
-#define NRFY_EVENT_TO_INT_BITPOS(event) ((((uint32_t)event) - 0x100) >> 2)
+#define NRFY_EVENT_TO_INT_BITPOS(event) ((((uint32_t)(event)) - 0x100) >> 2)
+
+/**
+ * @brief Macro for converting interrupt bit position to the specified event.
+ *
+ * @param[in] bitpos Interrupt bit position.
+ *
+ * @return Event.
+ */
+#define NRFY_INT_BITPOS_TO_EVENT(bitpos) (((bitpos) << 2) + 0x100)
 
 /**
  * @brief Macro for calculating interrupt bitmask associated with the specified event.

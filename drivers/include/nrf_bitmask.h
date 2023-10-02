@@ -60,7 +60,7 @@ extern "C" {
 #define BITMASK_BYTE_GET(abs_bit) ((abs_bit)/8)
 
 /** @brief Macro for getting relative index of bit in byte. */
-#define BITMASK_RELBIT_GET(abs_bit) ((abs_bit) & 0x00000007)
+#define BITMASK_RELBIT_GET(abs_bit) ((abs_bit) & 0x7UL)
 
 /**
  * @brief Function for checking if bit in the multi-byte bit mask is set.
@@ -90,7 +90,7 @@ __STATIC_INLINE void nrf_bitmask_bit_set(uint32_t bit, void * p_mask)
     uint8_t * p_mask8 = (uint8_t *)p_mask;
     uint32_t byte_idx = BITMASK_BYTE_GET(bit);
     bit = BITMASK_RELBIT_GET(bit);
-    p_mask8[byte_idx] |= (1 << bit);
+    p_mask8[byte_idx] |= (uint8_t)(1U << bit);
 }
 
 /**
@@ -104,7 +104,7 @@ __STATIC_INLINE void nrf_bitmask_bit_clear(uint32_t bit, void * p_mask)
     uint8_t * p_mask8 = (uint8_t *)p_mask;
     uint32_t byte_idx = BITMASK_BYTE_GET(bit);
     bit = BITMASK_RELBIT_GET(bit);
-    p_mask8[byte_idx] &= ~(1 << bit);
+    p_mask8[byte_idx] &= (uint8_t)~(1U << bit);
 }
 
 /**

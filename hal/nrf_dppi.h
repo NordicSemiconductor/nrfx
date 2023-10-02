@@ -230,6 +230,26 @@ NRF_STATIC_INLINE void nrf_dppi_subscribe_set(NRF_DPPIC_Type * p_reg,
 NRF_STATIC_INLINE void nrf_dppi_subscribe_clear(NRF_DPPIC_Type * p_reg, nrf_dppi_task_t task);
 
 /**
+ * @brief Function for setting multiple DPPI channels in a channel group.
+ *
+ * @details This function assigns all specified channels to the group.
+ * The bits in @p channel_mask value correspond to particular channels. It means that
+ * writing 1 to bit 0 includes channel 0, writing 1 to bit 1 includes channel 1, and so on.
+ *
+ * @warning All channels included previously will be overwritten.
+ *
+ * @warning Channel group configuration can be modified only if subscriptions for tasks
+ *          associated with this group are disabled.
+ *
+ * @param[in] p_reg         Pointer to the structure of registers of the peripheral.
+ * @param[in] channel_mask  Channels to be assigned in the group.
+ * @param[in] channel_group Channel group.
+ */
+NRF_STATIC_INLINE void nrf_dppi_channels_group_set(NRF_DPPIC_Type *         p_reg,
+                                                   uint32_t                 channel_mask,
+                                                   nrf_dppi_channel_group_t channel_group);
+
+/**
  * @brief Function for including multiple DPPI channels in a channel group.
  *
  * @details This function adds all specified channels to the group.
@@ -386,6 +406,13 @@ NRF_STATIC_INLINE void nrf_dppi_subscribe_set(NRF_DPPIC_Type * p_reg,
 NRF_STATIC_INLINE void nrf_dppi_subscribe_clear(NRF_DPPIC_Type * p_reg, nrf_dppi_task_t task)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
+}
+
+NRF_STATIC_INLINE void nrf_dppi_channels_group_set(NRF_DPPIC_Type *         p_reg,
+                                                   uint32_t                 channel_mask,
+                                                   nrf_dppi_channel_group_t channel_group)
+{
+    p_reg->CHG[(uint32_t) channel_group] = channel_mask;
 }
 
 NRF_STATIC_INLINE void nrf_dppi_channels_include_in_group(NRF_DPPIC_Type *         p_reg,

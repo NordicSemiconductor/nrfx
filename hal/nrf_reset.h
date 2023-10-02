@@ -62,6 +62,76 @@ extern "C" {
 #define NRF_RESET_HAS_APPLICATION 0
 #endif
 
+#if defined(RESET_RESETREAS_VBUS_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether VBUS reset is present. */
+#define NRF_RESET_HAS_VBUS_RESET 1
+#else
+#define NRF_RESET_HAS_VBUS_RESET 0
+#endif
+
+#if defined(RESET_RESETREAS_CTRLAP_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether CTRAP reset is present. */
+#define NRF_RESET_HAS_CTRLAP_RESET 1
+#else
+#define NRF_RESET_HAS_CTRLAP_RESET 0
+#endif
+
+#if defined(RESET_RESETREAS_CTRLAPSOFT_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether CTRAPSOFT reset is present. */
+#define NRF_RESET_HAS_CTRLAPSOFT_RESET 1
+#else
+#define NRF_RESET_HAS_CTRLAPSOFT_RESET 0
+#endif
+
+#if defined(RESET_RESETREAS_CTRLAPHARD_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether CTRAPHARD reset is present. */
+#define NRF_RESET_HAS_CTRLAPHARD_RESET 1
+#else
+#define NRF_RESET_HAS_CTRLAPHARD_RESET 0
+#endif
+
+#if defined(RESET_RESETREAS_CTRLAPPIN_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether CTRAPPIN reset is present. */
+#define NRF_RESET_HAS_CTRLAPPIN_RESET 1
+#else
+#define NRF_RESET_HAS_CTRLAPPIN_RESET 0
+#endif
+
+#if defined(RESET_RESETREAS_LPCOMP_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether LPCOMP reset is present. */
+#define NRF_RESET_HAS_LPCOMP_RESET 1
+#else
+#define NRF_RESET_HAS_LPCOMP_RESET 0
+#endif
+
+#if defined(RESET_RESETREAS_LLOCKUP_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether LLOCKUP reset is present. */
+#define NRF_RESET_HAS_LLOCKUP_RESET 1
+#else
+#define NRF_RESET_HAS_LLOCKUP_RESET 0
+#endif
+
+#if defined(RESET_RESETREAS_LDOG_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether LDOG reset is present. */
+#define NRF_RESET_HAS_LDOG_RESET 1
+#else
+#define NRF_RESET_HAS_LDOG_RESET 0
+#endif
+
+#if defined(RESET_RESETREAS_MFORCEOFF_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether MFORCEOFF reset is present. */
+#define NRF_RESET_HAS_MFORCEOFF_RESET 1
+#else
+#define NRF_RESET_HAS_MFORCEOFF_RESET 0
+#endif
+
+#if defined(RESET_RESETREAS_GRTC_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether GRTC reset is present. */
+#define NRF_RESET_HAS_GRTC_RESET 1
+#else
+#define NRF_RESET_HAS_GRTC_RESET 0
+#endif
+
 /** @brief Reset reason bit masks. */
 typedef enum
 {
@@ -73,44 +143,41 @@ typedef enum
     NRF_RESET_RESETREAS_DIF_MASK        = RESET_RESETREAS_DIF_Msk,        ///< Bit mask of DIF field.
     NRF_RESET_RESETREAS_NFC_MASK        = RESET_RESETREAS_NFC_Msk,        ///< Bit mask of NFC field.
     NRF_RESET_RESETREAS_DOG1_MASK       = RESET_RESETREAS_DOG1_Msk,       ///< Bit mask of DOG1 field.
-#if defined(RESET_RESETREAS_CTRLAPSOFT_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_RESET_HAS_CTRLAPSOFT_RESET
     NRF_RESET_RESETREAS_CTRLAPSOFT_MASK = RESET_RESETREAS_CTRLAPSOFT_Msk, ///< Bit mask of CTRLAPSOFT field.
 #endif
-#if defined(RESET_RESETREAS_CTRLAPHARD_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_RESET_HAS_CTRLAPHARD_RESET
     NRF_RESET_RESETREAS_CTRLAPHARD_MASK = RESET_RESETREAS_CTRLAPHARD_Msk, ///< Bit mask of CTRLAPHARD field.
 #endif
-#if defined(RESET_RESETREAS_CTRLAPPIN_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_RESET_HAS_CTRLAPPIN_RESET
     NRF_RESET_RESETREAS_CTRLAPPIN_MASK  = RESET_RESETREAS_CTRLAPPIN_Msk,  ///< Bit mask of CTRLAPPIN field.
 #endif
-#if defined(RESET_RESETREAS_CTRLAP_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_RESET_HAS_CTRLAP_RESET
     NRF_RESET_RESETREAS_CTRLAP_MASK     = RESET_RESETREAS_CTRLAP_Msk,     ///< Bit mask of CTRLAP field.
 #endif
-#if defined(RESET_RESETREAS_LPCOMP_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_RESET_HAS_LPCOMP_RESET
     NRF_RESET_RESETREAS_LPCOMP_MASK     = RESET_RESETREAS_LPCOMP_Msk,     ///< Bit mask of LPCOMP field.
 #endif
 #if NRF_RESET_HAS_NETWORK
     NRF_RESET_RESETREAS_LSREQ_MASK      = RESET_RESETREAS_LSREQ_Msk,      ///< Bit mask of LSREQ field.
 #endif
-#if defined(RESET_RESETREAS_LLOCKUP_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_RESET_HAS_LLOCKUP_RESET
     NRF_RESET_RESETREAS_LLOCKUP_MASK    = RESET_RESETREAS_LLOCKUP_Msk,    ///< Bit mask of LLOCKUP field.
 #endif
-#if defined(RESET_RESETREAS_LDOG_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_RESET_HAS_LDOG_RESET
     NRF_RESET_RESETREAS_LDOG_MASK       = RESET_RESETREAS_LDOG_Msk,       ///< Bit mask of LDOG field.
 #endif
-#if defined(RESET_RESETREAS_MFORCEOFF_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_RESET_HAS_MFORCEOFF_RESET
     NRF_RESET_RESETREAS_MFORCEOFF_MASK  = RESET_RESETREAS_MFORCEOFF_Msk,  ///< Bit mask of MFORCEOFF field.
 #endif
-#if defined(RESET_RESETREAS_GRTC_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_RESET_HAS_GRTC_RESET
     NRF_RESET_RESETREAS_GRTC_MASK       = RESET_RESETREAS_GRTC_Msk,       ///< Bit mask of GRTC field.
 #endif
-#if defined(RESET_RESETREAS_VBUS_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_RESET_HAS_VBUS_RESET
     NRF_RESET_RESETREAS_VBUS_MASK       = RESET_RESETREAS_VBUS_Msk,       ///< Bit mask of VBUS field.
 #endif
 #if NRF_RESET_HAS_NETWORK
     NRF_RESET_RESETREAS_LCTRLAP_MASK    = RESET_RESETREAS_LCTRLAP_Msk,    ///< Bit mask of LCTRLAP field.
-#endif
-#if defined(RESET_RESETREAS_VMON_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RESET_RESETREAS_VMON_MASK       = RESET_RESETREAS_VMON_Msk,       ///< Bit mask of VMON field.
 #endif
 #if defined(NRF_RESET_RESETREAS_EXT)
     NRF_RESET_RESETREAS_EXT

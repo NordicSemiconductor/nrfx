@@ -298,6 +298,15 @@ void nrfx_gppi_fork_endpoint_clear(uint8_t channel, uint32_t fork_tep);
 #endif // defined(PPI_FEATURE_FORKS_PRESENT) || defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 
 /**
+ * @brief Function for setting multiple channels in a channel group.
+ *
+ * @param[in] channel_mask  Channels to be set in the group.
+ * @param[in] channel_group Channel group.
+ */
+void nrfx_gppi_channels_group_set(uint32_t                  channel_mask,
+                                  nrfx_gppi_channel_group_t channel_group);
+
+/**
  * @brief Function for including multiple channels in a channel group.
  *
  * @param[in] channel_mask  Channels to be included in the group.

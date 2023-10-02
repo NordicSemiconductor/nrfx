@@ -66,9 +66,9 @@ extern "C" {
 
 #if defined(QDEC_TASKS_RDCLRDBL_TASKS_RDCLRDBL_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Presence of the RDCLRDBL task. */
-#define NRF_QDEC_HAS_RDCLRDBL 1
+#define NRF_QDEC_HAS_TASK_RDCLRDBL 1
 #else
-#define NRF_QDEC_HAS_RDCLRDBL 0
+#define NRF_QDEC_HAS_TASK_RDCLRDBL 0
 #endif
 
 #if defined(QDEC_EVENTS_DBLRDY_EVENTS_DBLRDY_Msk) || defined(__NRFX_DOXYGEN__)
@@ -84,6 +84,9 @@ extern "C" {
 #else
 #define NRF_QDEC_HAS_EVENT_STOPPED 0
 #endif
+
+/** @brief Reset value of LEDPRE register. */
+#define NRF_QDEC_LEDPRE_DEFAULT 0x10
 
 /** @brief QDEC tasks. */
 typedef enum

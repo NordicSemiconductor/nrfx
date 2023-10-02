@@ -63,8 +63,14 @@ NRFY_STATIC_INLINE uint32_t __nrfy_internal_lpcomp_events_process(NRF_LPCOMP_Typ
 /** @brief LPCOMP configuration structure. */
 typedef struct
 {
-    nrf_lpcomp_config_t config; ///< Peripheral configuration.
-    nrf_lpcomp_input_t  input;  ///< Input to be monitored.
+    nrf_lpcomp_config_t  config;    ///< Peripheral configuration. @deprecated Use other fields instead.
+    nrf_lpcomp_ref_t     reference; ///< Reference selection.
+    nrf_lpcomp_ext_ref_t ext_ref;   ///< External analog reference selection.
+    nrf_lpcomp_detect_t  detection; ///< Detection type.
+#if NRF_LPCOMP_HAS_HYST
+    nrf_lpcomp_hyst_t    hyst;      ///< Comparator hysteresis.
+#endif
+    nrf_lpcomp_input_t   input;     ///< Input to be monitored.
 } nrfy_lpcomp_config_t;
 
 /**
@@ -76,7 +82,16 @@ typedef struct
 NRFY_STATIC_INLINE void nrfy_lpcomp_periph_configure(NRF_LPCOMP_Type *            p_reg,
                                                      nrfy_lpcomp_config_t const * p_config)
 {
-    nrf_lpcomp_configure(p_reg, &p_config->config);
+    nrf_lpcomp_ref_set(p_reg, p_config->reference);
+    if (p_config->reference == NRF_LPCOMP_REF_EXT_REF)
+    {
+        nrf_lpcomp_ext_ref_set(p_reg, p_config->ext_ref);
+    }
+    nrf_lpcomp_detection_set(p_reg, p_config->detection);
+#if defined(LPCOMP_FEATURE_HYST_PRESENT)
+    nrf_lpcomp_hysteresis_set(p_reg, p_config->hyst);
+#endif
+
     nrf_lpcomp_input_select(p_reg, p_config->input);
     nrf_barrier_w();
 }
@@ -94,7 +109,6 @@ NRFY_STATIC_INLINE void nrfy_lpcomp_int_init(NRF_LPCOMP_Type * p_reg,
                                              uint8_t           irq_priority,
                                              bool              enable)
 {
-
     __nrfy_internal_lpcomp_event_enabled_clear(p_reg, mask, NRF_LPCOMP_EVENT_READY);
     __nrfy_internal_lpcomp_event_enabled_clear(p_reg, mask, NRF_LPCOMP_EVENT_DOWN);
     __nrfy_internal_lpcomp_event_enabled_clear(p_reg, mask, NRF_LPCOMP_EVENT_UP);
@@ -115,11 +129,11 @@ NRFY_STATIC_INLINE void nrfy_lpcomp_int_init(NRF_LPCOMP_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  */
- NRFY_STATIC_INLINE void nrfy_lpcomp_int_uninit(NRF_LPCOMP_Type * p_reg)
- {
+NRFY_STATIC_INLINE void nrfy_lpcomp_int_uninit(NRF_LPCOMP_Type * p_reg)
+{
     NRFX_IRQ_DISABLE(nrfx_get_irq_number(p_reg));
     nrf_barrier_w();
- }
+}
 
 /**
  * @brief Function for processing the specified LPCOMP events.
@@ -154,6 +168,39 @@ NRFY_STATIC_INLINE bool nrfy_lpcomp_sample_check(NRF_LPCOMP_Type * p_reg)
     nrf_barrier_r();
     return sample;
 }
+
+/** @refhal{nrf_lpcomp_ref_set} */
+NRFY_STATIC_INLINE void nrfy_lpcomp_ref_set(NRF_LPCOMP_Type * p_reg, nrf_lpcomp_ref_t reference)
+{
+    nrf_lpcomp_ref_set(p_reg, reference);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_lpcomp_ext_ref_set} */
+NRFY_STATIC_INLINE void nrfy_lpcomp_ext_ref_set(NRF_LPCOMP_Type *    p_reg,
+                                                nrf_lpcomp_ext_ref_t ext_ref)
+{
+    nrf_lpcomp_ext_ref_set(p_reg, ext_ref);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_lpcomp_detection_set} */
+NRFY_STATIC_INLINE void nrfy_lpcomp_detection_set(NRF_LPCOMP_Type *   p_reg,
+                                                  nrf_lpcomp_detect_t detection)
+{
+    nrf_lpcomp_detection_set(p_reg, detection);
+    nrf_barrier_w();
+}
+
+#if defined(LPCOMP_FEATURE_HYST_PRESENT) || defined(__NRFX_DOXYGEN__)
+/** @refhal{nrf_lpcomp_hysteresis_set} */
+NRFY_STATIC_INLINE void nrfy_lpcomp_hysteresis_set(NRF_LPCOMP_Type * p_reg,
+                                                   nrf_lpcomp_hyst_t hyst)
+{
+    nrf_lpcomp_hysteresis_set(p_reg, hyst);
+    nrf_barrier_w();
+}
+#endif
 
 /** @refhal{nrf_lpcomp_configure} */
 NRFY_STATIC_INLINE void nrfy_lpcomp_configure(NRF_LPCOMP_Type *           p_reg,

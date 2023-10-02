@@ -57,7 +57,7 @@ bool nrfx_flag32_is_allocated(nrfx_atomic_t mask, uint8_t bitpos)
 
 nrfx_err_t nrfx_flag32_alloc(nrfx_atomic_t * p_mask, uint8_t *p_flag)
 {
-    int8_t idx;
+    uint8_t idx;
     uint32_t new_mask, prev_mask;
 
     do {
@@ -66,8 +66,11 @@ nrfx_err_t nrfx_flag32_alloc(nrfx_atomic_t * p_mask, uint8_t *p_flag)
         {
             return NRFX_ERROR_NO_MEM;
         }
+        else
+        {
+            idx = (uint8_t)(31UL - NRF_CLZ(prev_mask));
+        }
 
-        idx = 31 - NRF_CLZ(prev_mask);
         new_mask = prev_mask & ~NRFX_BIT(idx);
     } while (!NRFX_ATOMIC_CAS(p_mask, prev_mask, new_mask));
 

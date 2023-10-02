@@ -61,7 +61,7 @@ nrfx_err_t nrfx_temp_init(nrfx_temp_config_t const * p_config, nrfx_temp_data_ha
 
     if (m_temp_state != NRFX_DRV_STATE_UNINITIALIZED)
     {
-        return NRFX_ERROR_ALREADY_INITIALIZED;
+        return NRFX_ERROR_ALREADY;
     }
 
 #if NRFX_CHECK(USE_WORKAROUND_FOR_TEMP_OFFSET_ANOMALY)
@@ -95,6 +95,11 @@ void nrfx_temp_uninit(void)
     }
 
     m_temp_state = NRFX_DRV_STATE_UNINITIALIZED;
+}
+
+bool nrfx_temp_init_check(void)
+{
+    return (m_temp_state != NRFX_DRV_STATE_UNINITIALIZED);
 }
 
 int32_t nrfx_temp_calculate(int32_t raw_measurement)

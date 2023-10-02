@@ -80,6 +80,11 @@ void nrfx_usbreg_uninit(void)
     m_usbevt_handler = NULL;
 }
 
+bool nrfx_usbreg_init_check(void)
+{
+    return (m_usbevt_handler != NULL);
+}
+
 void nrfx_usbreg_irq_handler(void)
 {
     if (nrf_usbreg_event_check(NRF_USBREGULATOR, NRF_USBREG_EVENT_USBDETECTED))

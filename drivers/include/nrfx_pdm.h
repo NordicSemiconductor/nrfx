@@ -145,7 +145,9 @@ typedef void (*nrfx_pdm_event_handler_t)(nrfx_pdm_evt_t const * p_evt);
  * @param[in] event_handler Event handler provided by the user. Cannot be NULL.
  *
  * @retval NRFX_SUCCESS             Initialization was successful.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_INVALID_PARAM Invalid configuration was specified.
  */
 nrfx_err_t nrfx_pdm_init(nrfx_pdm_config_t const * p_config,
@@ -169,6 +171,14 @@ nrfx_err_t nrfx_pdm_reconfigure(nrfx_pdm_config_t const * p_config);
  * This function stops PDM sampling, if it is in progress.
  */
 void nrfx_pdm_uninit(void);
+
+/**
+ * @brief Function for checking if the PDM interface is initialized.
+ *
+ * @retval true  Interface is already initialized.
+ * @retval false Interface is not initialized.
+ */
+bool nrfx_pdm_init_check(void);
 
 /**
  * @brief Function for getting the address of a PDM interface task.

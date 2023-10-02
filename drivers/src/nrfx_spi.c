@@ -140,12 +140,17 @@ nrfx_err_t nrfx_spi_init(nrfx_spi_t const *        p_instance,
                          void *                    p_context)
 {
     NRFX_ASSERT(p_config);
+
     spi_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
     nrfx_err_t err_code;
 
     if (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED)
     {
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+        err_code = NRFX_ERROR_ALREADY;
+#else
         err_code = NRFX_ERROR_INVALID_STATE;
+#endif
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -192,6 +197,7 @@ nrfx_err_t nrfx_spi_reconfigure(nrfx_spi_t const *        p_instance,
                                 nrfx_spi_config_t const * p_config)
 {
     NRFX_ASSERT(p_config);
+
     spi_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
     if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
@@ -211,8 +217,9 @@ nrfx_err_t nrfx_spi_reconfigure(nrfx_spi_t const *        p_instance,
 void nrfx_spi_uninit(nrfx_spi_t const * p_instance)
 {
     spi_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
     NRF_SPI_Type * p_spi = p_instance->p_reg;
+
+    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
     if (p_cb->handler)
     {
@@ -249,6 +256,14 @@ void nrfx_spi_uninit(nrfx_spi_t const * p_instance)
 #endif
 
     p_cb->state = NRFX_DRV_STATE_UNINITIALIZED;
+    NRFX_LOG_INFO("Uninitialized.");
+}
+
+bool nrfx_spi_init_check(nrfx_spi_t const * p_instance)
+{
+    spi_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    return (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 }
 
 static void finish_transfer(spi_control_block_t * p_cb)
@@ -376,6 +391,7 @@ nrfx_err_t nrfx_spi_xfer(nrfx_spi_t const *           p_instance,
                          uint32_t                     flags)
 {
     spi_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
+
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
     NRFX_ASSERT(p_xfer_desc->p_tx_buffer != NULL || p_xfer_desc->tx_length == 0);
     NRFX_ASSERT(p_xfer_desc->p_rx_buffer != NULL || p_xfer_desc->rx_length == 0);
@@ -423,7 +439,9 @@ nrfx_err_t nrfx_spi_xfer(nrfx_spi_t const *           p_instance,
 void nrfx_spi_abort(nrfx_spi_t const * p_instance)
 {
     spi_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+
     p_cb->abort = true;
 }
 

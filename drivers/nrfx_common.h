@@ -43,6 +43,7 @@
 #include <nrf.h>
 #include "nrfx_utils.h"
 #include <nrf_peripherals.h>
+#include <nrf_mem.h>
 #include "nrfx_ext.h"
 
 #ifdef __cplusplus
@@ -58,7 +59,7 @@ extern "C" {
 #endif
 
 #if defined(ISA_RISCV)
-#define __STATIC_INLINE static inline
+#define __STATIC_INLINE __attribute__((always_inline)) static inline
 #endif
 
 #ifndef NRFX_STATIC_INLINE
@@ -135,7 +136,7 @@ extern "C" {
  *
  * @return Bit mask.
  */
-#define NRFX_BIT_MASK(x) (((x) == 32) ? UINT32_MAX : ((1UL << x) - 1))
+#define NRFX_BIT_MASK(x) (((x) == 32) ? UINT32_MAX : ((1UL << (x)) - 1))
 
 /**
  * @brief Macro for returning size in bits for given size in bytes.
@@ -250,8 +251,8 @@ extern "C" {
 /**
  * @brief Macro for resolving provided user macro for present instances of a peripheral.
  *
- * Macro checks if peripheral instances are present by checking if there is
- * \<peripheral\>\<id\>_PRESENT define set to 1.
+ * Macro checks if peripheral instances are present by checking if there is a token
+ * NRF_\<periph_name\>\<id\> defined with wrapped in parenthesis value.
  *
  * Macro supports check on instances with following names:
  * - \<periph_name\>0 - \<periph_name\>255 - e.g. SPIM0, SPIM255

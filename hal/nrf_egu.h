@@ -66,7 +66,7 @@ extern "C" {
  *
  * @return Pointer to the structure of registers of the EGU peripheral.
  */
-#define NRF_EGU_INST_GET(idx) NRFX_CONCAT_2(NRF_EGU, idx)
+#define NRF_EGU_INST_GET(idx) NRFX_CONCAT(NRF_, EGU, idx)
 
 /** @brief EGU tasks. */
 typedef enum

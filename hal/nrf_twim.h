@@ -54,7 +54,7 @@ extern "C" {
  *
  * @return Pointer to the structure of registers of the TWIM peripheral.
  */
-#define NRF_TWIM_INST_GET(idx) NRFX_CONCAT_2(NRF_TWIM, idx)
+#define NRF_TWIM_INST_GET(idx) NRFX_CONCAT(NRF_, TWIM, idx)
 
 #if defined(TWIM_FREQUENCY_FREQUENCY_K1000) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether 1000 kHz clock frequency is available. */

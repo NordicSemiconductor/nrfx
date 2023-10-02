@@ -57,6 +57,7 @@ static void comp_configure(nrfx_comp_config_t const * p_config)
     nrfy_comp_config_t nrfy_config =
     {
         .reference  = p_config->reference,
+        .ext_ref    = p_config->ext_ref,
         .main_mode  = p_config->main_mode,
         .threshold  = p_config->threshold,
         .speed_mode = p_config->speed_mode,
@@ -108,7 +109,11 @@ nrfx_err_t nrfx_comp_init(nrfx_comp_config_t const * p_config,
 
     if (m_state != NRFX_DRV_STATE_UNINITIALIZED)
     { // COMP driver is already initialized
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+        err_code = NRFX_ERROR_ALREADY;
+#else
         err_code = NRFX_ERROR_INVALID_STATE;
+#endif
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -155,13 +160,24 @@ nrfx_err_t nrfx_comp_init(nrfx_comp_config_t const * p_config,
 nrfx_err_t nrfx_comp_reconfigure(nrfx_comp_config_t const * p_config)
 {
     NRFX_ASSERT(p_config);
+    nrfx_err_t err_code;
+
     if (m_state == NRFX_DRV_STATE_UNINITIALIZED)
     {
-        return NRFX_ERROR_INVALID_STATE;
+        err_code = NRFX_ERROR_INVALID_STATE;
+        NRFX_LOG_WARNING("Function: %s, error code: %s.",
+                         __func__,
+                         NRFX_LOG_ERROR_STRING_GET(err_code));
+        return err_code;
+
     }
-    if (m_state == NRFX_DRV_STATE_POWERED_ON)
+    else if (m_state == NRFX_DRV_STATE_POWERED_ON)
     {
-        return NRFX_ERROR_BUSY;
+        err_code = NRFX_ERROR_BUSY;
+        NRFX_LOG_WARNING("Function: %s, error code: %s.",
+                         __func__,
+                         NRFX_LOG_ERROR_STRING_GET(err_code));
+        return err_code;
     }
     nrfy_comp_disable(NRF_COMP);
     comp_configure(p_config);
@@ -172,6 +188,7 @@ nrfx_err_t nrfx_comp_reconfigure(nrfx_comp_config_t const * p_config)
 void nrfx_comp_uninit(void)
 {
     NRFX_ASSERT(m_state != NRFX_DRV_STATE_UNINITIALIZED);
+
     nrfy_comp_int_uninit(NRF_COMP);
     nrfy_comp_disable(NRF_COMP);
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
@@ -182,8 +199,15 @@ void nrfx_comp_uninit(void)
     NRFX_LOG_INFO("Uninitialized.");
 }
 
+bool nrfx_comp_init_check(void)
+{
+    return (m_state != NRFX_DRV_STATE_UNINITIALIZED);
+}
+
 void nrfx_comp_pin_select(nrf_comp_input_t psel)
 {
+    NRFX_ASSERT(m_state != NRFX_DRV_STATE_UNINITIALIZED);
+
     bool comp_enable_state = nrfy_comp_enable_check(NRF_COMP);
     nrfy_comp_task_trigger(NRF_COMP, NRF_COMP_TASK_STOP);
     if (m_state == NRFX_DRV_STATE_POWERED_ON)
@@ -201,6 +225,7 @@ void nrfx_comp_pin_select(nrf_comp_input_t psel)
 void nrfx_comp_start(uint32_t comp_int_mask, uint32_t comp_shorts_mask)
 {
     NRFX_ASSERT(m_state == NRFX_DRV_STATE_INITIALIZED);
+
     (void)nrfy_comp_events_process(NRF_COMP, comp_int_mask);
     nrfy_comp_int_enable(NRF_COMP, comp_int_mask);
     nrfy_comp_shorts_enable(NRF_COMP, comp_shorts_mask);
@@ -212,6 +237,7 @@ void nrfx_comp_start(uint32_t comp_int_mask, uint32_t comp_shorts_mask)
 void nrfx_comp_stop(void)
 {
     NRFX_ASSERT(m_state == NRFX_DRV_STATE_POWERED_ON);
+
     nrfy_comp_shorts_disable(NRF_COMP, UINT32_MAX);
     nrfy_comp_int_disable(NRF_COMP, UINT32_MAX);
     nrfy_comp_task_trigger(NRF_COMP, NRF_COMP_TASK_STOP);
@@ -222,6 +248,7 @@ void nrfx_comp_stop(void)
 uint32_t nrfx_comp_sample()
 {
     NRFX_ASSERT(m_state == NRFX_DRV_STATE_POWERED_ON);
+
     return nrfy_comp_sample(NRF_COMP);
 }
 

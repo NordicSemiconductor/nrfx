@@ -54,7 +54,7 @@ extern "C" {
  *
  * @return Pointer to the structure of registers of the TWI peripheral.
  */
-#define NRF_TWI_INST_GET(idx) NRFX_CONCAT_2(NRF_TWI, idx)
+#define NRF_TWI_INST_GET(idx) NRFX_CONCAT(NRF_, TWI, idx)
 
 /** @brief TWI tasks. */
 typedef enum

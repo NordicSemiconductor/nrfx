@@ -53,6 +53,13 @@ extern "C" {
  * @brief   Watchdog Timer (WDT) peripheral driver.
  */
 
+#if NRF_WDT_HAS_STOP || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether watchdog stopping is supported. */
+#define NRFX_WDT_HAS_STOP 1
+#else
+#define NRFX_WDT_HAS_STOP 0
+#endif
+
 #if !NRFX_CHECK(NRFX_WDT_CONFIG_NO_IRQ) || defined(__NRFX_DOXYGEN__)
 /** @brief WDT instance interrupt priority configuration. */
     #define NRFX_WDT_IRQ_CONFIG .interrupt_priority = NRFX_WDT_DEFAULT_CONFIG_IRQ_PRIORITY
@@ -60,13 +67,32 @@ extern "C" {
     #define NRFX_WDT_IRQ_CONFIG
 #endif
 
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
 /**
  * @brief WDT event handler function type.
  *
- * @param[in] requests Value of the request status register. Set bits can be used to determine
- *                     which RR register was the reason for timeout event.
+ * @param[in] event_type WDT event.
+ * @param[in] requests   Value of the request status register. Bits that have been set can be
+ *                       used to determine which RR (Reload Request) register was the reason
+ *                       for timeout event.
+ *                       Valid only when @ref NRF_WDT_EVENT_TIMEOUT is passed in @p event_type.
+ * @param[in] p_context  User context.
+ */
+typedef void (*nrfx_wdt_event_handler_t)(nrf_wdt_event_t event_type,
+                                         uint32_t        requests,
+                                         void *          p_context);
+#else
+/**
+ * @brief WDT event handler function type.
+ *
+ * @deprecated Use new variant instead.
+ *
+ * @param[in] requests Value of the request status register. Bits that have been set can be
+ *                     used to determine which RR (Reload Request) register was the reason
+ *                     for timeout event.
  */
 typedef void (*nrfx_wdt_event_handler_t)(uint32_t requests);
+#endif
 
 /** @brief WDT channel ID type. */
 typedef nrf_wdt_rr_register_t nrfx_wdt_channel_id;
@@ -93,13 +119,13 @@ enum {
     .drv_inst_idx = NRFX_CONCAT_3(NRFX_WDT, id, _INST_IDX), \
 }
 
-/** @brief Struct for WDT initialization. */
+/** @brief Structure for WDT initialization. */
 typedef struct
 {
-    uint32_t behaviour;          /**< WDT behaviour flags bitmask, constructed from @ref nrf_wdt_behaviour_mask_t. */
-    uint32_t reload_value;       /**< WDT reload value in ms. */
+    uint32_t behaviour;          ///< WDT behavior flags bitmask, constructed from @ref nrf_wdt_behaviour_mask_t.
+    uint32_t reload_value;       ///< WDT reload value in milliseconds.
 #if !NRFX_CHECK(NRFX_WDT_CONFIG_NO_IRQ) || defined(__NRFX_DOXYGEN__)
-    uint8_t  interrupt_priority; /**< WDT interrupt priority */
+    uint8_t  interrupt_priority; ///< WDT interrupt priority.
 #endif
 } nrfx_wdt_config_t;
 
@@ -117,8 +143,33 @@ typedef struct
     NRFX_WDT_IRQ_CONFIG                                     \
 }
 
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
 /**
  * @brief Function for initializing the WDT driver instance.
+ *
+ * @param[in] p_instance        Pointer to the driver instance structure.
+ * @param[in] p_config          Pointer to the structure with the initial configuration.
+ *                              NULL if configuration is to be skipped and will be done later
+ *                              using @ref nrfx_wdt_reconfigure.
+ * @param[in] wdt_event_handler Event handler provided by the user. Ignored when
+ *                              @ref NRFX_WDT_CONFIG_NO_IRQ option is enabled.
+ * @param[in] p_context         User context passed in event handler. Ignored when
+ *                              @ref NRFX_WDT_CONFIG_NO_IRQ option is enabled.
+ *
+ * @retval NRFX_SUCCESS             Initialization was successful.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
+ */
+nrfx_err_t nrfx_wdt_init(nrfx_wdt_t const *        p_instance,
+                         nrfx_wdt_config_t const * p_config,
+                         nrfx_wdt_event_handler_t  wdt_event_handler,
+                         void *                    p_context);
+#else
+/**
+ * @brief Function for initializing the WDT driver instance.
+ *
+ * @deprecated Use new variant instead.
  *
  * @param[in] p_instance        Pointer to the driver instance structure.
  * @param[in] p_config          Pointer to the structure with the initial configuration.
@@ -133,6 +184,26 @@ typedef struct
 nrfx_err_t nrfx_wdt_init(nrfx_wdt_t const *        p_instance,
                          nrfx_wdt_config_t const * p_config,
                          nrfx_wdt_event_handler_t  wdt_event_handler);
+#endif
+
+/**
+ * @brief Function for uninitializing the WDT driver instance.
+ *
+ * The instance can be uninitialized only when not running.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_wdt_uninit(nrfx_wdt_t const * p_instance);
+
+/**
+ * @brief Function for checking if the WDT driver instance is initialized.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  Instance is already initialized.
+ * @retval false Instance is not initialized.
+ */
+bool nrfx_wdt_init_check(nrfx_wdt_t const * p_instance);
 
 /**
  * @brief Function for reconfiguring the watchdog.
@@ -182,12 +253,24 @@ void nrfx_wdt_enable(nrfx_wdt_t const * p_instance);
 void nrfx_wdt_feed(nrfx_wdt_t const * p_instance);
 
 /**
- * @brief Function for feeding an invidual watchdog channel.
+ * @brief Function for feeding an individual watchdog channel.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  * @param[in] channel_id ID of watchdog channel.
  */
 void nrfx_wdt_channel_feed(nrfx_wdt_t const * p_instance, nrfx_wdt_channel_id channel_id);
+
+#if NRFX_WDT_HAS_STOP
+/**
+ * @brief Function for stopping the watchdog.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval NRFX_SUCCESS         Watchdog has been successfully stopped.
+ * @retval NRFX_ERROR_FORBIDDEN Configuration does not allow for stopping the watchdog.
+ */
+nrfx_err_t nrfx_wdt_stop(nrfx_wdt_t const * p_instance);
+#endif
 
 /**
  * @brief Function for returning a requested task address for the WDT driver module.
@@ -243,11 +326,11 @@ NRFX_STATIC_INLINE uint32_t nrfx_wdt_event_address_get(nrfx_wdt_t const * p_inst
  * A specific interrupt handler for the driver instance can be retrieved by using
  * the NRFX_WDT_INST_HANDLER_GET macro.
  *
- * Here is a sample of using the NRFX_WDT_INST_HANDLER_GET macro to directly map
- * an interrupt handler in a Zephyr application:
+ * Here is a sample of using the NRFX_WDT_INST_HANDLER_GET macro to map an interrupt handler
+ * in a Zephyr application:
  *
- * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_WDT_INST_GET(\<instance_index\>)), \<priority\>,
- *                    NRFX_WDT_INST_HANDLER_GET(\<instance_index\>), 0);
+ * IRQ_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_WDT_INST_GET(\<instance_index\>)), \<priority\>,
+ *             NRFX_WDT_INST_HANDLER_GET(\<instance_index\>), 0, 0);
  */
 NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(WDT, wdt)
 

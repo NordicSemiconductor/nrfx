@@ -122,7 +122,7 @@ typedef struct
  */
 #define NRFX_COMP_DEFAULT_CONFIG(_input)                                           \
 {                                                                                  \
-    .reference          = NRF_COMP_REF_INT_1V8,                                    \
+    .reference          = NRF_COMP_REF_INT_1V2,                                    \
     .main_mode          = NRF_COMP_MAIN_MODE_SE,                                   \
     .threshold          = NRFX_COMP_CONFIG_TH,                                     \
     .speed_mode         = NRF_COMP_SP_MODE_HIGH,                                   \
@@ -143,7 +143,9 @@ typedef struct
  *                          Must not be NULL.
  *
  * @retval NRFX_SUCCESS             Initialization was successful.
- * @retval NRFX_ERROR_INVALID_STATE The driver has already been initialized.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_BUSY          The LPCOMP peripheral is already in use.
  *                                  This is possible only if @ref nrfx_prs module
  *                                  is enabled.
@@ -172,6 +174,14 @@ nrfx_err_t nrfx_comp_reconfigure(nrfx_comp_config_t const * p_config);
  * @sa nrfx_comp_stop
  */
 void nrfx_comp_uninit(void);
+
+/**
+ * @brief Function for checking if the COMP driver is initialized.
+ *
+ * @retval true  Driver is already initialized.
+ * @retval false Driver is not initialized.
+ */
+bool nrfx_comp_init_check(void);
 
 /**
  * @brief Function for setting the analog input.

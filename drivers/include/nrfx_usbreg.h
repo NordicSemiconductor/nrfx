@@ -120,6 +120,14 @@ void nrfx_usbreg_disable(void);
 void nrfx_usbreg_uninit(void);
 
 /**
+ * @brief Function for checking if the USBREG driver is initialized.
+ *
+ * @retval true  Driver is already initialized.
+ * @retval false Driver is not initialized.
+ */
+bool nrfx_usbreg_init_check(void);
+
+/**
  * @brief Function for getting the status of USBREG.
  *
  * @return Current USB power status.

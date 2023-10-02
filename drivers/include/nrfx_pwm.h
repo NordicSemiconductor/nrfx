@@ -209,7 +209,9 @@ typedef void (* nrfx_pwm_handler_t)(nrfx_pwm_evt_type_t event_type, void * p_con
  * @param[in] p_context  Context passed to the event handler.
  *
  * @retval NRFX_SUCCESS             Initialization was successful.
- * @retval NRFX_ERROR_INVALID_STATE The driver was already initialized.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  */
 nrfx_err_t nrfx_pwm_init(nrfx_pwm_t const *        p_instance,
                          nrfx_pwm_config_t const * p_config,
@@ -236,6 +238,16 @@ nrfx_err_t nrfx_pwm_reconfigure(nrfx_pwm_t const * p_instance, nrfx_pwm_config_t
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 void nrfx_pwm_uninit(nrfx_pwm_t const * p_instance);
+
+/**
+ * @brief Function for checking if the PWM driver instance is initialized.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  Instance is already initialized.
+ * @retval false Instance is not initialized.
+ */
+bool nrfx_pwm_init_check(nrfx_pwm_t const * p_instance);
 
 /**
  * @brief Function for starting a single sequence playback.
@@ -426,11 +438,11 @@ NRFX_STATIC_INLINE uint32_t nrfx_pwm_event_address_get(nrfx_pwm_t const * p_inst
  * A specific interrupt handler for the driver instance can be retrieved by using
  * the NRFX_PWM_INST_HANDLER_GET macro.
  *
- * Here is a sample of using the NRFX_PWM_INST_HANDLER_GET macro to directly map
- * an interrupt handler in a Zephyr application:
+ * Here is a sample of using the NRFX_PWM_INST_HANDLER_GET macro to map an interrupt handler
+ * in a Zephyr application:
  *
- * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_PWM_INST_GET(\<instance_index\>)), \<priority\>,
- *                    NRFX_PWM_INST_HANDLER_GET(\<instance_index\>), 0);
+ * IRQ_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_PWM_INST_GET(\<instance_index\>)), \<priority\>,
+ *             NRFX_PWM_INST_HANDLER_GET(\<instance_index\>), 0, 0);
  */
 NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(PWM, pwm)
 

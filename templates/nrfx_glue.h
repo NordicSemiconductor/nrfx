@@ -279,6 +279,8 @@ extern "C" {
 /**
  * @brief Macro for writing back cache lines associated with the specified buffer.
  *
+ * @note Macro should be empty if data cache is disabled or not present.
+ *
  * @param[in] p_buffer Pointer to the buffer.
  * @param[in] size     Size of the buffer.
  */
@@ -286,6 +288,8 @@ extern "C" {
 
 /**
  * @brief Macro for invalidating cache lines associated with the specified buffer.
+ *
+ * @note Macro should be empty if data cache is disabled or not present.
  *
  * @param[in] p_buffer Pointer to the buffer.
  * @param[in] size     Size of the buffer.
@@ -295,6 +299,8 @@ extern "C" {
 /**
  * @brief Macro for writing back and invalidating cache lines associated with
  *        the specified buffer.
+ *
+ * @note Macro should be empty if data cache is disabled or not present.
  *
  * @param[in] p_buffer Pointer to the buffer.
  * @param[in] size     Size of the buffer.

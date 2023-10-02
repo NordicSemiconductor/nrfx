@@ -196,7 +196,9 @@ typedef void (*nrfx_uart_event_handler_t)(nrfx_uart_event_t const * p_event,
  *                          blocking mode.
  *
  * @retval NRFX_SUCCESS             Initialization is successful.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_BUSY          Some other peripheral with the same
  *                                  instance ID is already in use. This is
  *                                  possible only if @ref nrfx_prs module
@@ -225,6 +227,16 @@ nrfx_err_t nrfx_uart_reconfigure(nrfx_uart_t const *        p_instance,
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 void nrfx_uart_uninit(nrfx_uart_t const * p_instance);
+
+/**
+ * @brief Function for checking if the UART driver instance is initialized.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  Instance is already initialized.
+ * @retval false Instance is not initialized.
+ */
+bool nrfx_uart_init_check(nrfx_uart_t const * p_instance);
 
 /**
  * @brief Function for getting the address of the specified UART task.
@@ -414,11 +426,11 @@ NRFX_STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_in
  * A specific interrupt handler for the driver instance can be retrieved by using
  * the NRFX_UART_INST_HANDLER_GET macro.
  *
- * Here is a sample of using the NRFX_UART_INST_HANDLER_GET macro to directly map
- * an interrupt handler in a Zephyr application:
+ * Here is a sample of using the NRFX_UART_INST_HANDLER_GET macro to map an interrupt handler
+ * in a Zephyr application:
  *
- * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_UART_INST_GET(\<instance_index\>)), \<priority\>,
- *                    NRFX_UART_INST_HANDLER_GET(\<instance_index\>), 0);
+ * IRQ_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_UART_INST_GET(\<instance_index\>)), \<priority\>,
+ *             NRFX_UART_INST_HANDLER_GET(\<instance_index\>), 0, 0);
  */
 NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(UART, uart)
 

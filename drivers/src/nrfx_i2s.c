@@ -102,6 +102,12 @@ static void configure_pins(nrfx_i2s_config_t const * p_config)
         {
             nrfy_gpio_cfg_output(p_config->sck_pin);
             nrfy_gpio_cfg_output(p_config->lrck_pin);
+#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_I2S_CLOCKPIN_SCK_NEEDED_EXT)
+            nrfy_gpio_pin_clock_set(p_config->sck_pin, true);
+#endif
+#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_I2S_CLOCKPIN_LRCK_NEEDED_EXT)
+            nrfy_gpio_pin_clock_set(p_config->lrck_pin, true);
+#endif
         }
         else
         {
@@ -112,6 +118,9 @@ static void configure_pins(nrfx_i2s_config_t const * p_config)
         if (p_config->mck_pin != NRF_I2S_PIN_NOT_CONNECTED)
         {
             nrfy_gpio_cfg_output(p_config->mck_pin);
+#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_I2S_CLOCKPIN_MCK_NEEDED_EXT)
+            nrfy_gpio_pin_clock_set(p_config->mck_pin, true);
+#endif
         }
         // - SDOUT (optional) - always output,
         if (p_config->sdout_pin != NRF_I2S_PIN_NOT_CONNECTED)
@@ -218,7 +227,11 @@ nrfx_err_t nrfx_i2s_init(nrfx_i2s_t const *        p_instance,
 
     if (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED)
     {
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+        err_code = NRFX_ERROR_ALREADY;
+#else
         err_code = NRFX_ERROR_INVALID_STATE;
+#endif
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -319,6 +332,13 @@ void nrfx_i2s_uninit(nrfx_i2s_t const * p_instance)
     NRFX_LOG_INFO("Uninitialized.");
 }
 
+bool nrfx_i2s_init_check(nrfx_i2s_t const * p_instance)
+{
+    nrfx_i2s_cb_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    return (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+}
+
 nrfx_err_t nrfx_i2s_start(nrfx_i2s_t const *         p_instance,
                           nrfx_i2s_buffers_t const * p_initial_buffers,
                           uint16_t                   buffer_size,
@@ -381,8 +401,8 @@ nrfx_err_t nrfx_i2s_start(nrfx_i2s_t const *         p_instance,
     p_cb->state = NRFX_DRV_STATE_POWERED_ON;
 
     nrfy_i2s_int_enable(p_instance->p_reg,
-                        (p_cb->use_rx ? NRF_I2S_INT_RXPTRUPD_MASK : 0) |
-                        (p_cb->use_tx ? NRF_I2S_INT_TXPTRUPD_MASK : 0) |
+                        (p_cb->use_rx ? NRF_I2S_INT_RXPTRUPD_MASK : 0UL) |
+                        (p_cb->use_tx ? NRF_I2S_INT_TXPTRUPD_MASK : 0UL) |
                         NRF_I2S_INT_STOPPED_MASK);
 
     const nrfy_i2s_xfer_desc_t xfer = {

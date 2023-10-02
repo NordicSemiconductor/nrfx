@@ -612,8 +612,8 @@ NRF_STATIC_INLINE void nrf_pdm_gain_get(NRF_PDM_Type const * p_reg,
                                         nrf_pdm_gain_t *     p_gain_l,
                                         nrf_pdm_gain_t *     p_gain_r)
 {
-    *p_gain_l = p_reg->GAINL;
-    *p_gain_r = p_reg->GAINR;
+    *p_gain_l = (nrf_pdm_gain_t)p_reg->GAINL;
+    *p_gain_r = (nrf_pdm_gain_t)p_reg->GAINR;
 }
 
 NRF_STATIC_INLINE void nrf_pdm_buffer_set(NRF_PDM_Type * p_reg, uint32_t * p_buffer, uint32_t num)

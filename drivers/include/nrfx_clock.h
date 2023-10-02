@@ -74,10 +74,10 @@ typedef void (*nrfx_clock_event_handler_t)(nrfx_clock_evt_type_t event);
  * After initialization, the module is in power off state (clocks are not started).
  *
  * @param[in] event_handler Event handler provided by the user.
- *                          Must not be NULL.
+ *                          If not provided, driver works in blocking mode.
  *
- * @retval NRFX_SUCCESS                   The procedure is successful.
- * @retval NRFX_ERROR_ALREADY_INITIALIZED The driver is already initialized.
+ * @retval NRFX_SUCCESS       The procedure is successful.
+ * @retval NRFX_ERROR_ALREADY The driver is already initialized.
  */
 nrfx_err_t nrfx_clock_init(nrfx_clock_event_handler_t  event_handler);
 
@@ -89,6 +89,14 @@ void nrfx_clock_disable(void);
 
 /** @brief Function for uninitializing the clock module. */
 void nrfx_clock_uninit(void);
+
+/**
+ * @brief Function for checking if the clock driver is initialized.
+ *
+ * @retval true  Driver is already initialized.
+ * @retval false Driver is not initialized.
+ */
+bool nrfx_clock_init_check(void);
 
 /**
  * @brief Function for starting the specified clock domain.
@@ -220,9 +228,10 @@ NRFX_STATIC_INLINE void nrfx_clock_hfclkaudio_config_set(uint16_t freq_value);
  * @return Current value of FREQ_VALUE for HFCLKAUDIO.
  */
 NRFX_STATIC_INLINE uint16_t nrfx_clock_hfclkaudio_config_get(void);
-
 #endif
 
+#if (NRF_CLOCK_HAS_CALIBRATION && NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)) || \
+     defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for starting the calibration of internal LFCLK.
  *
@@ -245,6 +254,8 @@ nrfx_err_t nrfx_clock_calibration_start(void);
  */
 nrfx_err_t nrfx_clock_is_calibrating(void);
 
+#if (NRF_CLOCK_HAS_CALIBRATION_TIMER && NRFX_CHECK(NRFX_CLOCK_CONFIG_CT_ENABLED)) || \
+    defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for starting calibration timer.
  *
@@ -254,6 +265,9 @@ void nrfx_clock_calibration_timer_start(uint8_t interval);
 
 /** @brief Function for stopping the calibration timer. */
 void nrfx_clock_calibration_timer_stop(void);
+#endif
+#endif /* (NRF_CLOCK_HAS_CALIBRATION && NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)) || \
+           defined(__NRFX_DOXYGEN__) */
 
 /**
  * @brief Function for returning a requested task address for the clock driver module.

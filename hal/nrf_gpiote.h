@@ -40,6 +40,28 @@
 extern "C" {
 #endif
 
+#if !defined(NRF_GPIOTE0) && defined(NRF_GPIOTE)
+#define NRF_GPIOTE0 NRF_GPIOTE
+#endif
+
+#if !defined(GPIOTE0_CH_NUM) && defined(GPIOTE_CH_NUM) && \
+    (defined(NRF_GPIOTE) || defined(NRF_GPIOTE0))
+#define GPIOTE0_CH_NUM GPIOTE_CH_NUM
+#endif
+
+#if !defined(GPIOTE1_CH_NUM) && defined(GPIOTE_CH_NUM) && defined(NRF_GPIOTE1)
+#define GPIOTE1_CH_NUM GPIOTE_CH_NUM
+#endif
+
+#if !defined(GPIOTE0_AVAILABLE_GPIO_PORTS) && defined(GPIO_COUNT) && \
+    (defined(NRF_GPIOTE) || defined(NRF_GPIOTE0))
+#define GPIOTE0_AVAILABLE_GPIO_PORTS NRFX_BIT_MASK(GPIO_COUNT)
+#endif
+
+#if !defined(GPIOTE1_AVAILABLE_GPIO_PORTS) && defined(GPIO_COUNT) && defined(NRF_GPIOTE1)
+#define GPIOTE1_AVAILABLE_GPIO_PORTS NRFX_BIT_MASK(GPIO_COUNT)
+#endif
+
 /* Internal macro used for NRF_GPIOTE_INT_IN_MASK. */
 #define NRF_GPIOTE_INT_IN(idx, _) NRFX_CONCAT(NRF_GPIOTE_INT_IN, idx, _MASK)
 
@@ -49,6 +71,15 @@ extern "C" {
 * @ingroup nrf_gpiote
 * @brief   Hardware access layer (HAL) for managing the GPIOTE peripheral.
 */
+
+/**
+ * @brief Macro for getting a pointer to the structure of registers of the GPIOTE peripheral.
+ *
+ * @param[in] idx GPIOTE instance index.
+ *
+ * @return Pointer to the structure of registers of the GPIOTE peripheral.
+ */
+#define NRF_GPIOTE_INST_GET(idx) NRFX_CONCAT(NRF_, GPIOTE, idx)
 
 #if defined(GPIOTE_CONFIG_PORT_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Mask for covering port and pin bits in registers. */
@@ -187,7 +218,11 @@ typedef enum
     NRF_GPIOTE_INT_IN6_MASK = NRFX_CONCAT(GPIOTE_INTENSET, NRF_GPIOTE_IRQ_GROUP, _IN6_Msk), ///< GPIOTE interrupt from IN6.
     NRF_GPIOTE_INT_IN7_MASK = NRFX_CONCAT(GPIOTE_INTENSET, NRF_GPIOTE_IRQ_GROUP, _IN7_Msk), ///< GPIOTE interrupt from IN7.
 #endif
-    NRF_GPIOTE_INT_PORT_MASK = (int)NRF_GPIOTE_INT_PORT_MASK_NAME                           ///< GPIOTE interrupt from PORT event.
+#if defined(__CC_ARM) || defined(__NRFX_DOXYGEN__)
+    NRF_GPIOTE_INT_PORT_MASK = (int)NRF_GPIOTE_INT_PORT_MASK_NAME,                          ///< GPIOTE interrupt from PORT event.
+#else
+    NRF_GPIOTE_INT_PORT_MASK = NRF_GPIOTE_INT_PORT_MASK_NAME,
+#endif
 } nrf_gpiote_int_t;
 
 /** @brief Symbol specifying bitmask collecting all IN events interrupts. */

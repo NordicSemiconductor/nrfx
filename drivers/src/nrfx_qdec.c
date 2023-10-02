@@ -112,7 +112,6 @@ nrfx_err_t nrfx_qdec_init(nrfx_qdec_t const *        p_instance,
                           nrfx_qdec_event_handler_t  handler,
                           void *                     p_context)
 {
-    NRFX_ASSERT(p_instance);
     NRFX_ASSERT(p_config);
     NRFX_ASSERT(handler);
 
@@ -122,7 +121,11 @@ nrfx_err_t nrfx_qdec_init(nrfx_qdec_t const *        p_instance,
 
     if (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED)
     {
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+        err_code = NRFX_ERROR_ALREADY;
+#else
         err_code = NRFX_ERROR_INVALID_STATE;
+#endif
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -166,13 +169,13 @@ nrfx_err_t nrfx_qdec_reconfigure(nrfx_qdec_t const *        p_instance,
 
 void nrfx_qdec_uninit(nrfx_qdec_t const * p_instance)
 {
-    NRFX_ASSERT(p_instance);
     qdec_control_block_t * const p_cb = &m_cb[p_instance->drv_inst_idx];
     nrfy_qdec_pins_t pins;
 
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
     nrfy_qdec_disable(p_instance->p_reg);
+    nrfy_qdec_int_disable(p_instance->p_reg, 0xFFFFFFFF);
     nrfy_qdec_int_uninit(p_instance->p_reg);
 
     nrfy_qdec_shorts_disable(p_instance->p_reg, NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK);
@@ -193,10 +196,15 @@ void nrfx_qdec_uninit(nrfx_qdec_t const * p_instance)
     NRFX_LOG_INFO("Uninitialized.");
 }
 
+bool nrfx_qdec_init_check(nrfx_qdec_t const * p_instance)
+{
+    qdec_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    return (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+}
+
 void nrfx_qdec_enable(nrfx_qdec_t const * p_instance)
 {
-    NRFX_ASSERT(p_instance);
-
     qdec_control_block_t * const p_cb = &m_cb[p_instance->drv_inst_idx];
 
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
@@ -209,8 +217,6 @@ void nrfx_qdec_enable(nrfx_qdec_t const * p_instance)
 
 void nrfx_qdec_disable(nrfx_qdec_t const * p_instance)
 {
-    NRFX_ASSERT(p_instance);
-
     qdec_control_block_t * const p_cb = &m_cb[p_instance->drv_inst_idx];
 
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
@@ -224,7 +230,6 @@ void nrfx_qdec_accumulators_read(nrfx_qdec_t const * p_instance,
                                  int32_t *           p_acc,
                                  uint32_t *          p_accdbl)
 {
-    NRFX_ASSERT(p_instance);
     NRFX_ASSERT(p_accdbl);
     NRFX_ASSERT(p_acc);
     NRFX_ASSERT(m_cb[p_instance->drv_inst_idx].state == NRFX_DRV_STATE_POWERED_ON);
@@ -243,11 +248,13 @@ static void irq_handler(NRF_QDEC_Type * p_qdec, qdec_control_block_t * p_cb)
     uint32_t evt_to_process;
     nrfx_qdec_event_t event;
     uint32_t evt_mask;
+    uint32_t all_evt_mask;
 
-    evt_to_process = NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_SAMPLERDY) |
-                     NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_REPORTRDY) |
-                     NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_ACCOF);
+    all_evt_mask = NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_SAMPLERDY) |
+                   NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_REPORTRDY) |
+                   NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_ACCOF);
 
+    evt_to_process = nrfy_qdec_int_enable_check(p_qdec, all_evt_mask);
     evt_mask = nrfy_qdec_events_process(p_qdec, evt_to_process);
 
     if (evt_mask & NRFY_EVENT_TO_INT_BITMASK(NRF_QDEC_EVENT_SAMPLERDY))

@@ -272,6 +272,21 @@ NRF_STATIC_INLINE void nrf_ppi_channel_include_in_group(NRF_PPI_Type *          
                                                         nrf_ppi_channel_group_t channel_group);
 
 /**
+ * @brief Function for setting multiple PPI channels in a channel group.
+ *
+ * @details This function adds all specified channels to the group.
+ *
+ * @warning All channels included previously will be overwritten.
+ *
+ * @param[in] p_reg         Pointer to the structure of registers of the peripheral.
+ * @param[in] channel_mask  Channels to be assgined in the group.
+ * @param[in] channel_group Channel group.
+ */
+NRF_STATIC_INLINE void nrf_ppi_channels_group_set(NRF_PPI_Type *          p_reg,
+                                                  uint32_t                channel_mask,
+                                                  nrf_ppi_channel_group_t channel_group);
+
+/**
  * @brief Function for including multiple PPI channels in a channel group.
  *
  * @details This function adds all specified channels to the group.
@@ -486,6 +501,13 @@ NRF_STATIC_INLINE void nrf_ppi_channel_include_in_group(NRF_PPI_Type *          
                                                         nrf_ppi_channel_group_t channel_group)
 {
     p_reg->CHG[(uint32_t) channel_group] |= (PPI_CHG_CH0_Included << ((uint32_t) channel));
+}
+
+NRF_STATIC_INLINE void nrf_ppi_channels_group_set(NRF_PPI_Type *          p_reg,
+                                                  uint32_t                channel_mask,
+                                                  nrf_ppi_channel_group_t channel_group)
+{
+    p_reg->CHG[(uint32_t) channel_group] = channel_mask;
 }
 
 NRF_STATIC_INLINE void nrf_ppi_channels_include_in_group(NRF_PPI_Type *          p_reg,

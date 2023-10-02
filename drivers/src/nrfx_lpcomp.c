@@ -48,9 +48,56 @@
     (event == NRF_LPCOMP_EVENT_CROSS ? "NRF_LPCOMP_EVENT_CROSS" : \
                                        "UNKNOWN EVENT"))))
 
-
 static nrfx_lpcomp_event_handler_t  m_lpcomp_event_handler = NULL;
 static nrfx_drv_state_t             m_state = NRFX_DRV_STATE_UNINITIALIZED;
+
+static void lpcomp_configure(nrfx_lpcomp_config_t const * p_config)
+{
+    nrfy_lpcomp_config_t nrfy_config =
+    {
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+        .reference = p_config->reference,
+        .ext_ref   = p_config->ext_ref,
+        .detection = p_config->detection,
+        NRFX_COND_CODE_1(LPCOMP_FEATURE_HYST_PRESENT, (.hyst = p_config->config.hyst), ())
+#else
+        .config =
+        {
+            .reference = p_config->config.reference,
+            .detection = p_config->config.detection,
+            NRFX_COND_CODE_1(LPCOMP_FEATURE_HYST_PRESENT, (.hyst = p_config->config.hyst), ())
+        },
+#endif
+        .input = p_config->input
+    };
+
+    nrfy_lpcomp_periph_configure(NRF_LPCOMP, &nrfy_config);
+
+    uint32_t int_mask = 0;
+
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+    switch (p_config->detection)
+#else
+    switch (p_config->config.detection)
+#endif
+    {
+        case NRF_LPCOMP_DETECT_UP:
+            int_mask = NRF_LPCOMP_INT_UP_MASK;
+            break;
+
+        case NRF_LPCOMP_DETECT_DOWN:
+            int_mask = NRF_LPCOMP_INT_DOWN_MASK;
+            break;
+
+        case NRF_LPCOMP_DETECT_CROSS:
+            int_mask = NRF_LPCOMP_INT_CROSS_MASK;
+            break;
+
+        default:
+            break;
+    }
+    nrfy_lpcomp_int_init(NRF_LPCOMP, int_mask, p_config->interrupt_priority, true);
+}
 
 static void lpcomp_execute_handler(nrf_lpcomp_event_t event, uint32_t event_mask)
 {
@@ -85,7 +132,11 @@ nrfx_err_t nrfx_lpcomp_init(nrfx_lpcomp_config_t const * p_config,
 
     if (m_state != NRFX_DRV_STATE_UNINITIALIZED)
     { // LPCOMP driver is already initialized
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+        err_code = NRFX_ERROR_ALREADY;
+#else
         err_code = NRFX_ERROR_INVALID_STATE;
+#endif
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -107,17 +158,6 @@ nrfx_err_t nrfx_lpcomp_init(nrfx_lpcomp_config_t const * p_config,
     nrfy_lpcomp_task_trigger(NRF_LPCOMP, NRF_LPCOMP_TASK_STOP);
     nrfy_lpcomp_disable(NRF_LPCOMP);
 
-    nrfy_lpcomp_config_t nrfy_config =
-    {
-        .config = {
-            .reference = p_config->config.reference,
-            .detection = p_config->config.detection,
-            NRFX_COND_CODE_1(LPCOMP_FEATURE_HYST_PRESENT, (.hyst = p_config->config.hyst), ())
-        },
-        .input = p_config->input
-    };
-
-    nrfy_lpcomp_periph_configure(NRF_LPCOMP, &nrfy_config);
     nrfy_lpcomp_shorts_disable(NRF_LPCOMP,
                                NRF_LPCOMP_SHORT_CROSS_STOP_MASK |
                                NRF_LPCOMP_SHORT_UP_STOP_MASK |
@@ -129,27 +169,11 @@ nrfx_err_t nrfx_lpcomp_init(nrfx_lpcomp_config_t const * p_config,
                             NRF_LPCOMP_INT_DOWN_MASK |
                             NRF_LPCOMP_INT_UP_MASK |
                             NRF_LPCOMP_INT_CROSS_MASK);
+
+    lpcomp_configure(p_config);
+
     nrfy_lpcomp_enable(NRF_LPCOMP);
 
-    uint32_t int_mask = 0;
-    switch (p_config->config.detection)
-    {
-        case NRF_LPCOMP_DETECT_UP:
-            int_mask = NRF_LPCOMP_INT_UP_MASK;
-            break;
-
-        case NRF_LPCOMP_DETECT_DOWN:
-            int_mask = NRF_LPCOMP_INT_DOWN_MASK;
-            break;
-
-        case NRF_LPCOMP_DETECT_CROSS:
-            int_mask = NRF_LPCOMP_INT_CROSS_MASK;
-            break;
-
-        default:
-            break;
-    }
-    nrfy_lpcomp_int_init(NRF_LPCOMP, int_mask, p_config->interrupt_priority, true);
     nrfy_lpcomp_shorts_enable(NRF_LPCOMP, NRF_LPCOMP_SHORT_READY_SAMPLE_MASK);
 
     m_state = NRFX_DRV_STATE_INITIALIZED;
@@ -170,6 +194,11 @@ void nrfx_lpcomp_uninit(void)
     m_state = NRFX_DRV_STATE_UNINITIALIZED;
     m_lpcomp_event_handler = NULL;
     NRFX_LOG_INFO("Uninitialized.");
+}
+
+bool nrfx_lpcomp_init_check(void)
+{
+    return (m_state != NRFX_DRV_STATE_UNINITIALIZED);
 }
 
 void nrfx_lpcomp_enable(void)

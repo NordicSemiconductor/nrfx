@@ -232,9 +232,11 @@ typedef enum
 #endif
 
 #if defined(CLOCK_LFCLKSRC_SRC_Synth) || defined(__NRFX_DOXYGEN__)
-    NRF_CLOCK_LFCLK_SYNTH = CLOCK_LFCLKSRC_SRC_Synth,  /**< Internal 32 kHz synthesized from HFCLK system clock. */
+    NRF_CLOCK_LFCLK_SYNTH = CLOCK_LFCLKSRC_SRC_Synth,   /**< Internal 32 kHz synthesized from HFCLK system clock. */
+#elif NRF_CLOCK_HAS_LFCLK_TYPE
+    NRF_CLOCK_LFCLK_SYNTH = CLOCK_LFCLK_SRC_SRC_LFSYNT, /**< Internal 32 kHz synthesized from HFCLK system clock. */
 #elif defined(CLOCK_LFCLKSRC_SRC_LFSYNT)
-    NRF_CLOCK_LFCLK_SYNTH = CLOCK_LFCLKSRC_SRC_LFSYNT, /**< Internal 32 kHz synthesized from HFCLK system clock. */
+    NRF_CLOCK_LFCLK_SYNTH = CLOCK_LFCLKSRC_SRC_LFSYNT,  /**< Internal 32 kHz synthesized from HFCLK system clock. */
 #endif
 
 #if defined(NRF_CLOCK_USE_EXTERNAL_LFCLK_SOURCES) || defined(__NRFX_DOXYGEN__)

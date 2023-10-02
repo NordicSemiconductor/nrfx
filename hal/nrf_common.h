@@ -65,17 +65,27 @@ extern "C" {
 #if defined(NRF_RADIO)
 #define NRF_SUBSCRIBE_PUBLISH_OFFSET_RADIO \
     (NRFX_OFFSETOF(NRF_RADIO_Type, SUBSCRIBE_TXEN) - NRFX_OFFSETOF(NRF_RADIO_Type, TASKS_TXEN))
-#define NRF_SUBSCRIBE_PUBLISH_OFFSET(task_or_event)                              \
-    ((NRFX_IN_RANGE(task_or_event, (uint32_t)NRF_RADIO,                          \
-                    (uint32_t)NRF_RADIO + NRF_SUBSCRIBE_PUBLISH_OFFSET_RADIO)) ? \
-     (NRF_SUBSCRIBE_PUBLISH_OFFSET_RADIO) :                                      \
+#define NRF_SUBSCRIBE_PUBLISH_OFFSET(task_or_event)                  \
+    ((NRFX_IN_RANGE(task_or_event, (uint32_t)NRF_RADIO,              \
+                    (uint32_t)NRF_RADIO + sizeof(NRF_RADIO_Type))) ? \
+     (NRF_SUBSCRIBE_PUBLISH_OFFSET_RADIO) :                          \
      (0x80uL))
 #else
 #define NRF_SUBSCRIBE_PUBLISH_OFFSET(task_or_event) 0x80uL
 #endif // defined(NRF_RADIO)
 #endif // defined(DPPI_PRESENT)
 
+#if !defined(NRFY_CACHE_WB)
+#define NRFY_CACHE_WB(p_buffer, size)
+#endif
 
+#if !defined(NRFY_CACHE_INV)
+#define NRFY_CACHE_INV(p_buffer, size)
+#endif
+
+#if !defined(NRFY_CACHE_WBINV)
+#define NRFY_CACHE_WBINV(p_buffer, size)
+#endif
 
 #if defined(NRFX_CLZ)
 #define NRF_CLZ(value) NRFX_CLZ(value)

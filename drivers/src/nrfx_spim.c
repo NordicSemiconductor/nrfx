@@ -269,11 +269,14 @@ static void configure_pins(nrfx_spim_t const *        p_instance,
     //   buffer must always be connected for the SPI to work.
     uint32_t sck_val = (p_config->mode <= NRF_SPIM_MODE_1) ? 0 : 1;
     pin_init(p_config->sck_pin, NRF_GPIO_PIN_DIR_OUTPUT, NRF_GPIO_PIN_NOPULL, pin_drive, sck_val);
-#if NRF_GPIO_HAS_CLOCKPIN
+#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_SPIM_CLOCKPIN_SCK_NEEDED_EXT)
     nrfy_gpio_pin_clock_set(p_config->sck_pin, true);
 #endif
     // - MOSI (optional) - output with initial value 0
     pin_init(p_config->mosi_pin, NRF_GPIO_PIN_DIR_OUTPUT, NRF_GPIO_PIN_NOPULL, pin_drive, 0);
+#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_SPIM_CLOCKPIN_MOSI_NEEDED_EXT)
+    nrfy_gpio_pin_clock_set(p_config->mosi_pin, true);
+#endif
     // - MISO (optional) - input
     pin_init(p_config->miso_pin, NRF_GPIO_PIN_DIR_INPUT, p_config->miso_pull, pin_drive, 0);
     // - Slave Select (optional) - output with initial value 1 (inactive).
@@ -352,7 +355,7 @@ static nrf_spim_frequency_t spim_frequency_bit_decode(uint32_t frequency)
 #elif NRF_SPIM_HAS_PRESCALER
 static bool spim_frequency_valid_check(nrfx_spim_t const * p_instance, uint32_t frequency)
 {
-    uint32_t base_frequency = NRF_SPIM_BASE_FREQUENCY_GET(p_instance->p_reg);
+    uint32_t base_frequency = NRFX_SPIM_BASE_FREQUENCY_GET(p_instance);
     uint32_t prescaler = NRF_SPIM_PRESCALER_CALCULATE(p_instance->p_reg, frequency);
 
     return (base_frequency % frequency == 0) &&
@@ -509,12 +512,17 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
                           void *                     p_context)
 {
     NRFX_ASSERT(p_config);
+
     spim_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
     nrfx_err_t err_code;
 
     if (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED)
     {
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+        err_code = NRFX_ERROR_ALREADY;
+#else
         err_code = NRFX_ERROR_INVALID_STATE;
+#endif
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -560,6 +568,7 @@ nrfx_err_t nrfx_spim_reconfigure(nrfx_spim_t const *        p_instance,
                                  nrfx_spim_config_t const * p_config)
 {
     NRFX_ASSERT(p_config);
+
     spim_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
     if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
@@ -594,6 +603,7 @@ static void spim_pin_uninit(uint32_t pin)
 void nrfx_spim_uninit(nrfx_spim_t const * p_instance)
 {
     spim_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
     nrfy_spim_int_uninit(p_instance->p_reg);
@@ -636,6 +646,14 @@ void nrfx_spim_uninit(nrfx_spim_t const * p_instance)
 #endif
 
     p_cb->state = NRFX_DRV_STATE_UNINITIALIZED;
+    NRFX_LOG_INFO("Uninitialized.");
+}
+
+bool nrfx_spim_init_check(nrfx_spim_t const * p_instance)
+{
+    spim_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    return (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 }
 
 #if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED)
@@ -647,6 +665,7 @@ nrfx_err_t nrfx_spim_xfer_dcx(nrfx_spim_t const *           p_instance,
     (void)flags;
 
     NRFX_ASSERT(cmd_length <= NRF_SPIM_DCX_CNT_ALL_CMD);
+
     nrfy_spim_dcx_cnt_set((NRF_SPIM_Type *)p_instance->p_reg, cmd_length);
     return nrfx_spim_xfer(p_instance, p_xfer_desc, 0);
 }
@@ -785,6 +804,7 @@ nrfx_err_t nrfx_spim_xfer(nrfx_spim_t const *           p_instance,
                           uint32_t                      flags)
 {
     spim_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
     NRFX_ASSERT(p_xfer_desc->p_tx_buffer != NULL || p_xfer_desc->tx_length == 0);
     NRFX_ASSERT(p_xfer_desc->p_rx_buffer != NULL || p_xfer_desc->rx_length == 0);
@@ -834,6 +854,7 @@ nrfx_err_t nrfx_spim_xfer(nrfx_spim_t const *           p_instance,
 void nrfx_spim_abort(nrfx_spim_t const * p_instance)
 {
     spim_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
     spim_abort(p_instance->p_reg, p_cb);

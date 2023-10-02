@@ -105,6 +105,10 @@ NRFY_STATIC_INLINE void nrfy_qdec_periph_configure(NRF_QDEC_Type *            p_
         nrf_qdec_ledpre_set(p_reg, p_config->ledpre);
         nrf_qdec_ledpol_set(p_reg, p_config->ledpol);
     }
+    else
+    {
+        nrf_qdec_ledpre_set(p_reg, NRF_QDEC_LEDPRE_DEFAULT);
+    }
 
     if (!p_config->skip_psel_cfg)
     {

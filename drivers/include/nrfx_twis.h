@@ -184,10 +184,12 @@ typedef struct
  *                          It will be used by interrupts so make it sure that object
  *                          is not destroyed when function is leaving.
  * @param[in] p_config      Pointer to the structure with the initial configuration.
- * @param[in] event_handler Event handler provided by the user.
+ * @param[in] event_handler Event handler provided by the user. If NULL, blocking mode is enabled.
  *
  * @retval NRFX_SUCCESS             Initialization is successful.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_BUSY          Some other peripheral with the same
  *                                  instance ID is already in use. This is
  *                                  possible only if NRFX_PRS_ENABLED
@@ -226,6 +228,16 @@ nrfx_err_t nrfx_twis_reconfigure(nrfx_twis_t const *        p_instance,
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 void nrfx_twis_uninit(nrfx_twis_t const * p_instance);
+
+/**
+ * @brief Function for checking if the TWIS driver instance is initialized.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  Instance is already initialized.
+ * @retval false Instance is not initialized.
+ */
+bool nrfx_twis_init_check(nrfx_twis_t const * p_instance);
 
 /**
  * @brief Function for enabling the TWIS instance.
@@ -425,11 +437,11 @@ NRFX_STATIC_INLINE size_t nrfx_twis_rx_amount(nrfx_twis_t const * p_instance)
  * A specific interrupt handler for the driver instance can be retrieved by using
  * the NRFX_TWIS_INST_HANDLER_GET macro.
  *
- * Here is a sample of using the NRFX_TWIS_INST_HANDLER_GET macro to directly map
- * an interrupt handler in a Zephyr application:
+ * Here is a sample of using the NRFX_TWIS_INST_HANDLER_GET macro to map an interrupt handler
+ * in a Zephyr application:
  *
- * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_TWIS_INST_GET(\<instance_index\>)), \<priority\>,
- *                    NRFX_TWIS_INST_HANDLER_GET(\<instance_index\>), 0);
+ * IRQ_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_TWIS_INST_GET(\<instance_index\>)), \<priority\>,
+ *             NRFX_TWIS_INST_HANDLER_GET(\<instance_index\>), 0, 0);
  */
 NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(TWIS, twis)
 

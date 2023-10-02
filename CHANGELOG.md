@@ -1,8 +1,56 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
-## [3.1.0] - 2023-06-28
+## [3.2.0] - 2023-10-02
+### Added
+- Added multi-instance support for the GPIOTE driver.
+- Added the nrfx_ram_ctrl helper layer to facilitate developing generic code that controls the power and retention settings of RAM blocks.
+- Introduced the NRFX_TIMER_BASE_FREQUENCY_GET() and NRFX_SPIM_BASE_FREQUENCY_GET() macros for getting base frequencies in Hz for the specified TIMER and SPIM instances.
+- Added a function for checking whether the specified voltage regulator is enabled in the REGULATORS HAL.
+- Added a function for checking whether an inductor is connected to the DCC pin in the REGULATORS HAL.
+- Added a function for checking if the detected voltage is below or above the threshold of VPOF (POF Comparator's threshold voltage) in the REGULATORS HAL.
+- Added a function for powering on all RAM blocks in the VMC HAL.
+- Added missing entries in enumerators for RAM sections in the VMC HAL.
+- Added the new nrfx_wdt_stop() function to the WDT driver that stops the watchdog.
+- Added the new nrfx_wdt_uninit() function to the WDT driver that uninitializes the watchdog.
+- Added the new nrfy_wdt_task_stop_enable_set() function to the WDT HALY that enables or disables stopping the watchdog.
+- Added functions for retrieving pointers to the receive and transmit buffers in the TWIS HAL.
+- Added functions for checking whether given instance is initialized to all of the drivers.
+- Added individual functions for setting reference selection, external reference, detection type and enabling hysteresis in the LPCOMP HAL. Now they are supposed to be used instead of nrf_lpcomp_configure() function.
+- Added a blocking mode to the CLOCK driver. The mode is initialized when a user handler is set to NULL.
+- Added a new member to the configuration structure of the QSPI driver. The new configuration member determines time in milliseconds when a timeout of the QSPI operation occurs.
+- Added the new nrfx_qspi_timeout_signal() function to the QSPI driver that signals premature QSPI operation timeout.
 
+### Changed
+- Updated MDK to version 8.58.0.
+- Overhauled the UARTE driver. Extended the UARTE driver with various modes of operations including: mixing of blocking and non-blocking transfers, linking transfers, continuous reception, low power operation.
+- Changed all functions' parameters in the GPIOTE driver. A pointer to nrfx_gpiote_t structure was added as the first parameter in all functions. Now functions without the pointer to nrfx_gpiote_t structure as the first argument are deprecated.
+- Changed functions for setting and reading the GPREGRET registers in the POWER HAL. Now there are only two functions, nrf_power_gpregret_set() for setting and nrf_power_gpregret_get() for reading. A new `reg_num` argument was added to both of them.
+- Replaced nrf_regulators_dcdcen_set() and nrf_regulators_dcdcen_vddh_set() functions with nrf_regulators_vreg_enable_set().
+- Replaced nrf_regulators_pofcon_set() and nrf_regulators_pofcon_vddh_set() functions with nrf_regulators_config_set().
+- Replaced nrf_regulators_pofcon_get() function with nrf_regulators_pof_config_get().
+- Renamed nrf_regulators_mainregstatus_get() function to nrf_regulators_main_status_get().
+- Renamed NRF_REGULATORS_POTHR_V{XY} macros to NRF_REGULATORS_POF_THR_{X}V{Y}.
+- Renamed NRF_REGULATORS_PORTHRVDDH_V{XY} macros to NRF_REGULATORS_POF_THR_VDDH_{X}V{Y}.
+- Renamed nrf_regulators_pof_thrvddh_t structure to nrf_regulators_pof_thr_vddh_t.
+- Renamed macros indicating features presence in the REGULATORS HAL.
+- Changed a default value of the source reference structure member from 1.8V to 1.2V in the COMP driver configuration structure.
+- Changed a prototype of an event handler in the WDT driver. The new prototype accepts an event type, requests and a pointer to the context. A previous version is deprecated.
+- Changed a prototype of the nrfx_wdt_init() function in the WDT driver. The new prototype accepts a pointer to the instance, a pointer to the configuration, an event handler and a pointer to the context. A previous version is deprecated.
+- Replaced the nrf_wdt_task_stop_enable() function with nrf_wdt_task_stop_enable_set(). Now it takes a boolean parameter.
+- Replaced the deprecated NRFX_ERROR_ALREADY_INITIALIZED error code with the new NRFX_ERROR_ALREADY one.
+- Changed the organization of configuration structure members in the LPCOMP driver.
+- Changed the definition of nrf_saadc_value_t type in the SAADC HAL. Now pointer to the buffer holding conversion results is a void* instead of int16_t*.
+- Changed the return value in all drivers in case initialization functions have already been executed. Now the NRFX_ERROR_ALREADY error code will be returned instead of NRFX_ERROR_INVALID_STATE.
+- Changed the way that the QSPI peripheral is activated. Now the driver activates the peripheral instance before the first transfer or when the nrfx_qspi_activate() function is called.
+
+### Fixed
+- Fixed the device failing to reconnect to the host after USB cable being reconnected in the USBD driver.
+- Fixed configuration of the external reference in nrfx_comp_init() and nrfx_comp_reconfigure() functions. Now the differential mode can be enabled in the COMP driver.
+- Fixed support for P0.18, P0.20, and P0.28-P0.30 pins in the GPIOTE driver for nRF52820 SoC.
+- Fixed events being forwarded to the user callback despite having their interrupts disabled in the QDEC driver.
+
+## [3.1.0] - 2023-06-28
 ### Added
 - Added the HALY layer for the NFCT. HALY is an extension of the HAL layer that aggregates basic hardware use cases within single functions. Now it is used instead of HAL in the NFCT drivers.
 - Added the NRFX_IN_RANGE() macro for checking if a given value is in a given range.

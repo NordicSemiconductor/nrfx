@@ -82,6 +82,15 @@ included through a common nrfx_config.h file, according to the selected SoC.
 Refer to the "driver configuration" section in the API reference for a given
 driver for more information regarding configuration options available for it.
 
+@section nrfx_api_change_procedure API change procedure
+
+Starting from 3.0 release, nrfx API can no longer be considered as stable for minor version updates.
+Taking into account the potential impact on the end users, APIs are changed in a few stages.
+Every deprecated API is completely removed from the code base after two minor releases,
+counting from the one making the functionality obsolete.
+Refer to the <a href="https://github.com/NordicSemiconductor/nrfx/wiki/API-change-procedure">API change procedure</a>
+for more details regarding the process.
+
 @section nrfx_additional_reqs Additional requirements
 
 Nordic SoCs are based on ARM® Cortex™-M series processors. Before you can

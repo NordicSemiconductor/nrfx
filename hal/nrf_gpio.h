@@ -50,7 +50,7 @@ extern "C" {
 
 #define GPIO_PORT_NUM_LIST {NRFX_FOREACH_PRESENT(P, GPIO_PORT_NUM, (), (), _)}
 #define GPIO_REG_LIST      {NRFX_FOREACH_PRESENT(P, GPIO_REG, (), (), _)}
-#define NUMBER_OF_PINS     {NRFX_FOREACH_PRESENT(P, GPIO_NUM_OF_PINS, (+), (0), _)}
+#define NUMBER_OF_PINS     (NRFX_FOREACH_PRESENT(P, GPIO_NUM_OF_PINS, (+), (0), _))
 
 #if !defined(GPIO_REG_LIST)
 #error "Not supported."
@@ -312,8 +312,8 @@ typedef enum
  * @note For configuring only one pin as output, use @ref nrf_gpio_cfg_output.
  *       Sense capability on the pin is disabled and input is disconnected from the buffer as the pins are configured as output.
  *
- * @param pin_range_start  Specifies the start number (inclusive) in the range of pin numbers to be configured (allowed values 0-30).
- * @param pin_range_end    Specifies the end number (inclusive) in the range of pin numbers to be configured (allowed values 0-30).
+ * @param pin_range_start  Specifies the start number (inclusive) in the range of pin numbers to be configured.
+ * @param pin_range_end    Specifies the end number (inclusive) in the range of pin numbers to be configured.
  */
 NRF_STATIC_INLINE void nrf_gpio_range_cfg_output(uint32_t pin_range_start, uint32_t pin_range_end);
 
@@ -324,8 +324,8 @@ NRF_STATIC_INLINE void nrf_gpio_range_cfg_output(uint32_t pin_range_start, uint3
  * @note  For configuring only one pin as input, use @ref nrf_gpio_cfg_input.
  *        Sense capability on the pin is disabled and input is connected to buffer so that the GPIO->IN register is readable.
  *
- * @param pin_range_start  Specifies the start number (inclusive) in the range of pin numbers to be configured (allowed values 0-30).
- * @param pin_range_end    Specifies the end number (inclusive) in the range of pin numbers to be configured (allowed values 0-30).
+ * @param pin_range_start  Specifies the start number (inclusive) in the range of pin numbers to be configured.
+ * @param pin_range_end    Specifies the end number (inclusive) in the range of pin numbers to be configured.
  * @param pull_config      State of the pin range pull resistor (no pull, pulled down, or pulled high).
  */
 NRF_STATIC_INLINE void nrf_gpio_range_cfg_input(uint32_t            pin_range_start,

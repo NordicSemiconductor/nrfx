@@ -192,12 +192,17 @@ nrfx_err_t nrfx_uart_init(nrfx_uart_t const *        p_instance,
                           nrfx_uart_event_handler_t  event_handler)
 {
     NRFX_ASSERT(p_config);
+
     uart_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
     nrfx_err_t err_code = NRFX_SUCCESS;
 
     if (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED)
     {
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+        err_code = NRFX_ERROR_ALREADY;
+#else
         err_code = NRFX_ERROR_INVALID_STATE;
+#endif
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -244,6 +249,7 @@ nrfx_err_t nrfx_uart_reconfigure(nrfx_uart_t const *        p_instance,
                                  nrfx_uart_config_t const * p_config)
 {
     NRFX_ASSERT(p_config);
+
     uart_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
     if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
@@ -268,6 +274,8 @@ void nrfx_uart_uninit(nrfx_uart_t const * p_instance)
 {
     uart_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
+    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+
     nrf_uart_disable(p_instance->p_reg);
 
     if (p_cb->handler)
@@ -284,6 +292,13 @@ void nrfx_uart_uninit(nrfx_uart_t const * p_instance)
     p_cb->state   = NRFX_DRV_STATE_UNINITIALIZED;
     p_cb->handler = NULL;
     NRFX_LOG_INFO("Instance uninitialized: %d.", p_instance->drv_inst_idx);
+}
+
+bool nrfx_uart_init_check(nrfx_uart_t const * p_instance)
+{
+    uart_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    return (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 }
 
 static void tx_byte(NRF_UART_Type * p_uart, uart_control_block_t * p_cb)
@@ -322,6 +337,7 @@ nrfx_err_t nrfx_uart_tx(nrfx_uart_t const * p_instance,
                         size_t              length)
 {
     uart_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
     NRFX_ASSERT(p_data);
     NRFX_ASSERT(length > 0);
@@ -376,6 +392,8 @@ nrfx_err_t nrfx_uart_tx(nrfx_uart_t const * p_instance,
 
 bool nrfx_uart_tx_in_progress(nrfx_uart_t const * p_instance)
 {
+    NRFX_ASSERT(m_cb[p_instance->drv_inst_idx].state != NRFX_DRV_STATE_UNINITIALIZED);
+
     return (m_cb[p_instance->drv_inst_idx].tx_buffer_length != 0);
 }
 
@@ -405,7 +423,7 @@ nrfx_err_t nrfx_uart_rx(nrfx_uart_t const * p_instance,
 {
     uart_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
-    NRFX_ASSERT(m_cb[p_instance->drv_inst_idx].state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
     NRFX_ASSERT(p_data);
     NRFX_ASSERT(length > 0);
 
@@ -520,11 +538,15 @@ nrfx_err_t nrfx_uart_rx(nrfx_uart_t const * p_instance,
 
 bool nrfx_uart_rx_ready(nrfx_uart_t const * p_instance)
 {
+    NRFX_ASSERT(m_cb[p_instance->drv_inst_idx].state != NRFX_DRV_STATE_UNINITIALIZED);
+
     return nrf_uart_event_check(p_instance->p_reg, NRF_UART_EVENT_RXDRDY);
 }
 
 void nrfx_uart_rx_enable(nrfx_uart_t const * p_instance)
 {
+    NRFX_ASSERT(m_cb[p_instance->drv_inst_idx].state == NRFX_DRV_STATE_INITIALIZED);
+
     if (!m_cb[p_instance->drv_inst_idx].rx_enabled)
     {
         rx_enable(p_instance);
@@ -534,12 +556,18 @@ void nrfx_uart_rx_enable(nrfx_uart_t const * p_instance)
 
 void nrfx_uart_rx_disable(nrfx_uart_t const * p_instance)
 {
+    NRFX_ASSERT(m_cb[p_instance->drv_inst_idx].state == NRFX_DRV_STATE_INITIALIZED);
+
     nrf_uart_task_trigger(p_instance->p_reg, NRF_UART_TASK_STOPRX);
     m_cb[p_instance->drv_inst_idx].rx_enabled = false;
 }
 
 uint32_t nrfx_uart_errorsrc_get(nrfx_uart_t const * p_instance)
 {
+    NRFX_ASSERT(m_cb[p_instance->drv_inst_idx].state != NRFX_DRV_STATE_UNINITIALIZED);
+    /* Function must be used in blocking mode only. */
+    NRFX_ASSERT(m_cb[p_instance->drv_inst_idx].handler == NULL);
+
     nrf_uart_event_clear(p_instance->p_reg, NRF_UART_EVENT_ERROR);
     return nrf_uart_errorsrc_get_and_clear(p_instance->p_reg);
 }
@@ -575,6 +603,8 @@ void nrfx_uart_tx_abort(nrfx_uart_t const * p_instance)
 {
     uart_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
+    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+
     p_cb->tx_abort = true;
     nrf_uart_task_trigger(p_instance->p_reg, NRF_UART_TASK_STOPTX);
     if (p_cb->handler)
@@ -587,6 +617,8 @@ void nrfx_uart_tx_abort(nrfx_uart_t const * p_instance)
 
 void nrfx_uart_rx_abort(nrfx_uart_t const * p_instance)
 {
+    NRFX_ASSERT(m_cb[p_instance->drv_inst_idx].state != NRFX_DRV_STATE_UNINITIALIZED);
+
     nrf_uart_int_disable(p_instance->p_reg, NRF_UART_INT_MASK_RXDRDY |
                                             NRF_UART_INT_MASK_ERROR);
     nrf_uart_task_trigger(p_instance->p_reg, NRF_UART_TASK_STOPRX);

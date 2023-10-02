@@ -54,7 +54,7 @@ extern "C" {
  *
  * @return Pointer to the structure of registers of the RTC peripheral.
  */
-#define NRF_RTC_INST_GET(idx) NRFX_CONCAT_2(NRF_RTC, idx)
+#define NRF_RTC_INST_GET(idx) NRFX_CONCAT(NRF_, RTC, idx)
 
 /** @brief Macro for getting the number of compare channels available in a given RTC instance. */
 #define NRF_RTC_CC_CHANNEL_COUNT(id)  NRFX_CONCAT_3(RTC, id, _CC_NUM)

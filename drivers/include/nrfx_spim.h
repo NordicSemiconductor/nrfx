@@ -176,6 +176,14 @@ typedef struct
 #define NRFX_SPIM_FREQUENCY_STATIC_CHECK(id, frequency) \
          NRF_SPIM_FREQUENCY_STATIC_CHECK(NRF_SPIM_INST_GET(id), frequency)
 
+/**
+ * @brief Macro for getting base frequency value in Hz for a given SPIM instance.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+#define NRFX_SPIM_BASE_FREQUENCY_GET(p_instance) \
+        NRF_SPIM_BASE_FREQUENCY_GET((p_instance)->p_reg)
+
 /** @brief Flag indicating that TX buffer address will be incremented after transfer. */
 #define NRFX_SPIM_FLAG_TX_POSTINC          (1UL << 0)
 
@@ -257,7 +265,9 @@ typedef void (* nrfx_spim_evt_handler_t)(nrfx_spim_evt_t const * p_event,
  *          See the chapter <a href=@nRF5340pinAssignmentsURL>Pin assignments</a> in the Product Specification.
  *
  * @retval NRFX_SUCCESS             Initialization was successful.
- * @retval NRFX_ERROR_INVALID_STATE The driver was already initialized.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_BUSY          Some other peripheral with the same
  *                                  instance ID is already in use. This is
  *                                  possible only if @ref nrfx_prs module
@@ -299,6 +309,16 @@ nrfx_err_t nrfx_spim_reconfigure(nrfx_spim_t const *        p_instance,
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 void nrfx_spim_uninit(nrfx_spim_t const * p_instance);
+
+/**
+ * @brief Function for checking if the SPIM driver instance is initialized.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  Instance is already initialized.
+ * @retval false Instance is not initialized.
+ */
+bool nrfx_spim_init_check(nrfx_spim_t const * p_instance);
 
 /**
  * @brief Function for starting the SPIM data transfer.
@@ -453,11 +473,11 @@ NRFX_STATIC_INLINE uint32_t nrfx_spim_end_event_address_get(nrfx_spim_t const * 
  * A specific interrupt handler for the driver instance can be retrieved by using
  * the NRFX_SPIM_INST_HANDLER_GET macro.
  *
- * Here is a sample of using the NRFX_SPIM_INST_HANDLER_GET macro to directly map
- * an interrupt handler in a Zephyr application:
+ * Here is a sample of using the NRFX_SPIM_INST_HANDLER_GET macro to map an interrupt handler
+ * in a Zephyr application:
  *
- * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_SPIM_INST_GET(\<instance_index\>)), \<priority\>,
- *                    NRFX_SPIM_INST_HANDLER_GET(\<instance_index\>), 0);
+ * IRQ_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_SPIM_INST_GET(\<instance_index\>)), \<priority\>,
+ *             NRFX_SPIM_INST_HANDLER_GET(\<instance_index\>), 0, 0);
  */
 NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(SPIM, spim)
 

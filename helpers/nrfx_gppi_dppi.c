@@ -111,6 +111,14 @@ void nrfx_gppi_fork_endpoint_clear(uint8_t channel, uint32_t fork_tep)
     nrfx_gppi_task_endpoint_clear(channel, fork_tep);
 }
 
+void nrfx_gppi_channels_group_set(uint32_t                  channel_mask,
+                                  nrfx_gppi_channel_group_t channel_group)
+{
+    nrfy_dppi_channels_group_set(NRF_DPPIC,
+                                 channel_mask,
+                                 (nrf_dppi_channel_group_t)channel_group);
+}
+
 void nrfx_gppi_channels_include_in_group(uint32_t                  channel_mask,
                                          nrfx_gppi_channel_group_t channel_group)
 {

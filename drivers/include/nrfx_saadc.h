@@ -55,7 +55,7 @@ extern "C" {
 #define NRFX_SAADC_DEFAULT_ACQTIME 79
 #endif
 
-#if NRF_SAADC_HAS_CONV_TIME || defined(__NRFX_DOXYGEN__)
+#if NRF_SAADC_HAS_CONVTIME || defined(__NRFX_DOXYGEN__)
 /** @brief Auxiliary symbol specifying default value for the SAADC conversion time. */
 #define NRFX_SAADC_DEFAULT_CONV_TIME 7
 #endif
@@ -134,6 +134,39 @@ extern "C" {
     .pin_n          = (nrf_saadc_input_t)_pin_n,                        \
     .channel_index  = _index,                                           \
 }
+
+#if (NRF_SAADC_8BIT_SAMPLE_WIDTH == 8) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Macro for getting number of bytes needed to store specified number of SAADC samples
+ *        for given resolution of the SAADC.
+ *
+ * @param[in] _resolution Resolution expressed as @ref nrf_saadc_resolution_t.
+ * @param[in] _samples    Number of samples.
+ *
+ * @return Number of bytes needed to store specified number of samples.
+ */
+#define NRFX_SAADC_SAMPLES_TO_BYTES(_resolution, _samples) \
+    ((_resolution) == NRF_SAADC_RESOLUTION_8BIT ? _samples : (_samples * 2))
+#else
+#define NRFX_SAADC_SAMPLES_TO_BYTES(_resolution, _samples) (_samples)
+#endif
+
+#if (NRF_SAADC_8BIT_SAMPLE_WIDTH == 8) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Macro for getting specified SAADC sample from the filled buffer.
+ *
+ * @param[in] _resolution Resolution expressed as @ref nrf_saadc_resolution_t.
+ * @param[in] _samples    Pointer to the buffer filled with SAADC samples.
+ * @param[in] _index      Sample index.
+ *
+ * @return Specified sample.
+ */
+#define NRFX_SAADC_SAMPLE_GET(_resolution, _samples, _index) \
+    ((_resolution) == NRF_SAADC_RESOLUTION_8BIT ? (((int8_t *) (_samples))[(_index)]) : \
+                                                  (((int16_t *)(_samples))[(_index)]))
+#else
+#define NRFX_SAADC_SAMPLE_GET(_resolution, _samples, _index) (((int16_t *)(_samples))[(_index)])
+#endif
 
 /**
  * @brief SAADC driver advanced mode default configuration.
@@ -231,7 +264,9 @@ typedef void (* nrfx_saadc_event_handler_t)(nrfx_saadc_evt_t const * p_event);
  * @param[in] interrupt_priority Interrupt priority.
  *
  * @retval NRFX_SUCCESS             Initialization was successful.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  */
 nrfx_err_t nrfx_saadc_init(uint8_t interrupt_priority);
 
@@ -241,6 +276,14 @@ nrfx_err_t nrfx_saadc_init(uint8_t interrupt_priority);
  * This function stops all ongoing conversions and disables all channels.
  */
 void nrfx_saadc_uninit(void);
+
+/**
+ * @brief Function for checking if the SAADC driver is initialized.
+ *
+ * @retval true  Driver is already initialized.
+ * @retval false Driver is not initialized.
+ */
+bool nrfx_saadc_init_check(void);
 
 /**
  * @brief Function for configuring multiple SAADC channels.
@@ -364,14 +407,14 @@ nrfx_err_t nrfx_saadc_advanced_mode_set(uint32_t                        channel_
  *        the conversion.
  *
  * @param[in] p_buffer Pointer to the buffer to be filled with conversion results.
- * @param[in] size     Number of @ref nrf_saadc_value_t samples in buffer.
+ * @param[in] size     Number of samples in the buffer.
  *
- * @retval NRFX_SUCCESS                   Buffer was supplied successfully.
- * @retval NRFX_ERROR_INVALID_ADDR        The provided buffer is not in the Data RAM region.
- * @retval NRFX_ERROR_INVALID_LENGTH      The provided buffer is not aligned to the number of activated channels
- *                                        or is too long for the EasyDMA to handle.
- * @retval NRFX_ERROR_INVALID_STATE       The driver is in the idle mode.
- * @retval NRFX_ERROR_ALREADY_INITIALIZED Both buffers for double-buffered conversions are already set.
+ * @retval NRFX_SUCCESS              Buffer was supplied successfully.
+ * @retval NRFX_ERROR_INVALID_ADDR   The provided buffer is not in the Data RAM region.
+ * @retval NRFX_ERROR_INVALID_LENGTH The provided buffer is not aligned to the number of activated channels
+ *                                   or is too long for the EasyDMA to handle.
+ * @retval NRFX_ERROR_INVALID_STATE  The driver is in the idle mode.
+ * @retval NRFX_ERROR_ALREADY        Both buffers for double-buffered conversions are already set.
  */
 nrfx_err_t nrfx_saadc_buffer_set(nrf_saadc_value_t * p_buffer, uint16_t size);
 

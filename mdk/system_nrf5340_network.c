@@ -68,8 +68,8 @@ void SystemInit(void)
     {
         if (NRF_RESET_NS->RESETREAS & RESET_RESETREAS_RESETPIN_Msk)
         {
-            NRF_POWER_NS->EVENTS_SLEEPENTER = 0;
-            NRF_POWER_NS->EVENTS_SLEEPEXIT = 0;
+            NRF_POWER_NS->EVENTS_SLEEPENTER = 0ul;
+            NRF_POWER_NS->EVENTS_SLEEPEXIT = 0ul;
         }
     }
 
@@ -84,12 +84,12 @@ void SystemInit(void)
 
     if (nrf53_errata_160())
     {
-        *((volatile uint32_t *)0x41002118) = 0x7Ful;
-        *((volatile uint32_t *)0x41080E04) = 0x0ul;
-        *((volatile uint32_t *)0x41080E08) = 0x0ul;
-        *((volatile uint32_t *)0x41002124) = 0x0ul;
-        *((volatile uint32_t *)0x4100212C) = 0x0ul;
-        *((volatile uint32_t *)0x41101110) = 0x0ul;
+        *((volatile uint32_t *)0x41002118ul) = 0x7Ful;
+        *((volatile uint32_t *)0x41080E04ul) = 0x0ul;
+        *((volatile uint32_t *)0x41080E08ul) = 0x0ul;
+        *((volatile uint32_t *)0x41002124ul) = 0x0ul;
+        *((volatile uint32_t *)0x4100212Cul) = 0x0ul;
+        *((volatile uint32_t *)0x41101110ul) = 0x0ul;
     }
 
     /* Handle fw-branch APPROTECT setup. */

@@ -54,7 +54,7 @@ extern "C" {
  *
  * @return Pointer to the structure of registers of the TIMER peripheral.
  */
-#define NRF_TIMER_INST_GET(idx) NRFX_CONCAT_2(NRF_TIMER, idx)
+#define NRF_TIMER_INST_GET(idx) NRFX_CONCAT(NRF_, TIMER, idx)
 
 #if defined(TIMER_INTENSET_COMPARE4_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether timer has capture/compare channel 4. */

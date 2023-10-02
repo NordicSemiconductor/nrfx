@@ -83,7 +83,7 @@ extern "C" {
  *
  * @return Pointer to the structure of registers of the PWM peripheral.
  */
- #define NRF_PWM_INST_GET(idx) NRFX_CONCAT_2(NRF_PWM, idx)
+ #define NRF_PWM_INST_GET(idx) NRFX_CONCAT(NRF_, PWM, idx)
 
 /**
  * @brief This value can be provided as a parameter for the @ref nrf_pwm_pins_set

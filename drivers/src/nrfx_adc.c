@@ -63,7 +63,11 @@ nrfx_err_t nrfx_adc_init(nrfx_adc_config_t const * p_config,
 
     if (m_cb.state != NRFX_DRV_STATE_UNINITIALIZED)
     {
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+        err_code = NRFX_ERROR_ALREADY;
+#else
         err_code = NRFX_ERROR_INVALID_STATE;
+#endif
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -86,6 +90,8 @@ nrfx_err_t nrfx_adc_init(nrfx_adc_config_t const * p_config,
 
 void nrfx_adc_uninit(void)
 {
+    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+
     NRFX_IRQ_DISABLE(ADC_IRQn);
     nrf_adc_int_disable(NRF_ADC, NRF_ADC_INT_END_MASK);
     nrf_adc_task_trigger(NRF_ADC, NRF_ADC_TASK_STOP);
@@ -97,6 +103,12 @@ void nrfx_adc_uninit(void)
     m_cb.p_head = NULL;
 
     m_cb.state = NRFX_DRV_STATE_UNINITIALIZED;
+    NRFX_LOG_INFO("Uninitialized.");
+}
+
+bool nrfx_adc_init_check(void)
+{
+    return (m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
 }
 
 void nrfx_adc_channel_enable(nrfx_adc_channel_t * const p_channel)
@@ -245,6 +257,7 @@ static bool adc_sample_process()
 nrfx_err_t nrfx_adc_buffer_convert(nrf_adc_value_t * buffer, uint16_t size)
 {
     NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    NRFX_ASSERT(buffer);
 
     nrfx_err_t err_code;
 

@@ -65,7 +65,7 @@ extern "C" {
 #endif
 
 // GPIOTE_IRQn
-#define nrfx_gpiote_irq_handler     GPIOTE_IRQHandler
+#define nrfx_gpiote_0_irq_handler   GPIOTE_IRQHandler
 
 // ADC_IRQn
 #define nrfx_adc_irq_handler        ADC_IRQHandler

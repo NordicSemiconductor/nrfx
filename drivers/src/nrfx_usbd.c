@@ -276,6 +276,11 @@ static nrfx_atomic_t m_ep_dma_waiting;
 static bool m_dma_pending;
 
 /**
+ * @brief Tracks whether total bytes transferred by DMA is even or odd.
+ */
+static uint8_t m_dma_odd;
+
+/**
  * @brief First time enabling after reset. Used in nRF52 errata 223.
  */
 static bool m_first_enable = true;
@@ -684,7 +689,7 @@ static inline usbd_ep_state_t* ep_state_access(nrfx_usbd_ep_t ep)
 static inline uint8_t ep2bit(nrfx_usbd_ep_t ep)
 {
     NRFX_USBD_ASSERT_EP_VALID(ep);
-    return NRFX_USBD_EP_BITPOS(ep);
+    return (uint8_t)NRFX_USBD_EP_BITPOS(ep);
 }
 
 /**
@@ -803,7 +808,7 @@ static inline void usbd_ep_abort(nrfx_usbd_ep_t ep)
             if(ep != NRFX_USBD_EPIN0)
             {
                 *((volatile uint32_t *)((uint32_t)(NRF_USBD) + 0x800)) = 0x7B6 + (2u * (NRF_USBD_EP_NR_GET(ep) - 1));
-                uint8_t temp = *((volatile uint32_t *)((uint32_t)(NRF_USBD) + 0x804));
+                uint8_t temp = (uint8_t)*((volatile uint32_t *)((uint32_t)(NRF_USBD) + 0x804));
                 temp |= (1U << 1);
                 *((volatile uint32_t *)((uint32_t)(NRF_USBD) + 0x804)) |= temp;
                 (void)(*((volatile uint32_t *)((uint32_t)(NRF_USBD) + 0x804)));
@@ -811,7 +816,7 @@ static inline void usbd_ep_abort(nrfx_usbd_ep_t ep)
             else
             {
                 *((volatile uint32_t *)((uint32_t)(NRF_USBD) + 0x800)) = 0x7B4;
-                uint8_t temp = *((volatile uint32_t *)((uint32_t)(NRF_USBD) + 0x804));
+                uint8_t temp = (uint8_t)*((volatile uint32_t *)((uint32_t)(NRF_USBD) + 0x804));
                 temp |= (1U << 2);
                 *((volatile uint32_t *)((uint32_t)(NRF_USBD) + 0x804)) |= temp;
                 (void)(*((volatile uint32_t *)((uint32_t)(NRF_USBD) + 0x804)));
@@ -848,7 +853,7 @@ static void usbd_ep_abort_all(void)
     uint32_t ep_waiting = m_ep_dma_waiting | (m_ep_ready & NRFX_USBD_EPOUT_BIT_MASK);
     while (0 != ep_waiting)
     {
-        uint8_t bitpos = NRF_CTZ(ep_waiting);
+        uint8_t bitpos = (uint8_t)NRF_CTZ(ep_waiting);
         if (!NRF_USBD_EPISO_CHECK(bit2ep(bitpos)))
         {
             usbd_ep_abort(bit2ep(bitpos));
@@ -1282,7 +1287,7 @@ static void ev_epdata_handler(void)
     /* All finished endpoint have to be marked as busy */
     while (dataepstatus)
     {
-        uint8_t bitpos    = NRF_CTZ(dataepstatus);
+        uint8_t bitpos    = (uint8_t)NRF_CTZ(dataepstatus);
         nrfx_usbd_ep_t ep = bit2ep(bitpos);
         dataepstatus &= ~(1UL << bitpos);
 
@@ -1311,7 +1316,7 @@ static void ev_epdata_handler(void)
 static uint8_t usbd_dma_scheduler_algorithm(uint32_t req)
 {
     /* Only prioritized scheduling mode is supported. */
-    return NRF_CTZ(req);
+    return (uint8_t)NRF_CTZ(req);
 }
 
 /**
@@ -1437,11 +1442,12 @@ static void usbd_dmareq_process(void)
             /* There is a lot of USBD registers that cannot be accessed during EasyDMA transfer.
              * This is quick fix to maintain stability of the stack.
              * It cost some performance but makes stack stable. */
-            while (!nrf_usbd_event_check(NRF_USBD, nrfx_usbd_ep_to_endevent(ep)) &&
-                   !nrf_usbd_event_check(NRF_USBD, NRF_USBD_EVENT_USBRESET))
+            while (!nrf_usbd_event_check(NRF_USBD, nrfx_usbd_ep_to_endevent(ep)))
             {
                 /* Empty */
             }
+            /* DMA finished, track if total bytes transferred is even or odd */
+            m_dma_odd ^= nrf_usbd_ep_amount_get(NRF_USBD, ep) & 1;
 
             if (NRFX_USBD_DMAREQ_PROCESS_DEBUG)
             {
@@ -1628,7 +1634,7 @@ void nrfx_usbd_irq_handler(void)
     /* Check all enabled interrupts */
     while (to_process)
     {
-        uint8_t event_nr = NRF_CTZ(to_process);
+        uint8_t event_nr = (uint8_t)NRF_CTZ(to_process);
         if (nrf_usbd_event_get_and_clear(NRF_USBD,
                                          (nrf_usbd_event_t)nrfx_bitpos_to_event(event_nr)))
         {
@@ -1639,11 +1645,11 @@ void nrfx_usbd_irq_handler(void)
 
     /* Process the active interrupts */
     bool setup_active = 0 != (active & NRF_USBD_INT_EP0SETUP_MASK);
-    active &= ~NRF_USBD_INT_EP0SETUP_MASK;
+    active &= (uint32_t)~NRF_USBD_INT_EP0SETUP_MASK;
 
     while (active)
     {
-        uint8_t event_nr = NRF_CTZ(active);
+        uint8_t event_nr = (uint8_t)NRF_CTZ(active);
         m_isr[event_nr]();
         active &= ~(1UL << event_nr);
     }
@@ -1664,7 +1670,11 @@ nrfx_err_t nrfx_usbd_init(nrfx_usbd_event_handler_t event_handler)
 
     if (m_drv_state != NRFX_DRV_STATE_UNINITIALIZED)
     {
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+        return NRFX_ERROR_ALREADY;
+#else
         return NRFX_ERROR_INVALID_STATE;
+#endif
     }
 
     m_event_handler = event_handler;
@@ -1704,6 +1714,10 @@ void nrfx_usbd_uninit(void)
     return;
 }
 
+bool nrfx_usbd_init_check(void)
+{
+    return (m_drv_state != NRFX_DRV_STATE_UNINITIALIZED);
+}
 
 void nrfx_usbd_enable(void)
 {
@@ -1753,6 +1767,7 @@ void nrfx_usbd_enable(void)
 
     m_ep_ready = (((1U << NRF_USBD_EPIN_CNT) - 1U) << NRFX_USBD_EPIN_BITPOS_0);
     m_ep_dma_waiting = 0;
+    m_dma_odd = 0;
     usbd_dma_pending_clear();
     m_last_setup_dir = NRFX_USBD_EPOUT0;
 
@@ -1777,6 +1792,17 @@ void nrfx_usbd_disable(void)
 
     /* Disable all parts */
     nrf_usbd_int_disable(NRF_USBD, nrf_usbd_int_enable_get(NRF_USBD));
+    if (m_dma_odd)
+    {
+        /* Prevent invalid bus request after next USBD enable by ensuring
+         * that total number of bytes transferred by DMA is even. */
+        nrf_usbd_event_clear(NRF_USBD, NRF_USBD_EVENT_ENDEPIN0);
+        nrf_usbd_ep_easydma_set(NRF_USBD, NRFX_USBD_EPIN0, (uint32_t)&m_dma_odd, 1);
+        usbd_dma_start(NRFX_USBD_EPIN0);
+        while (!nrf_usbd_event_check(NRF_USBD, NRF_USBD_EVENT_ENDEPIN0))
+        {}
+        m_dma_odd = 0;
+    }
     nrf_usbd_disable(NRF_USBD);
     usbd_dma_pending_clear();
     m_drv_state = NRFX_DRV_STATE_INITIALIZED;

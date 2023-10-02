@@ -328,10 +328,22 @@ NRFX_STATIC_INLINE bool nrfx_nvmc_write_done_check(void)
 
 NRFX_STATIC_INLINE uint32_t nrfx_nvmc_uicr_word_read(uint32_t const volatile *address)
 {
+#if NRF91_ERRATA_7_ENABLE_WORKAROUND
+    bool irq_disabled = __get_PRIMASK() == 1;
+    if (!irq_disabled)
+    {
+        __disable_irq();
+    }
+#endif
+
     uint32_t value = nrf_nvmc_word_read((uint32_t)address);
 
 #if NRF91_ERRATA_7_ENABLE_WORKAROUND
     __DSB();
+    if (!irq_disabled)
+    {
+        __enable_irq();
+    }
 #endif
 
     return value;

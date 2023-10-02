@@ -41,7 +41,7 @@
 extern "C" {
 #endif
 
-typedef struct nrfy_uarte_xfer_desc_t nrfy_uarte_xfer_desc_t;
+typedef struct nrfy_uarte_buffer_t nrfy_uarte_buffer_t;
 
 NRFY_STATIC_INLINE void __nrfy_internal_uarte_event_enabled_clear(NRF_UARTE_Type *  p_reg,
                                                                   uint32_t          mask,
@@ -53,9 +53,9 @@ NRFY_STATIC_INLINE bool __nrfy_internal_uarte_event_handle(NRF_UARTE_Type *  p_r
                                                            uint32_t *        p_evt_mask);
 
 NRFY_STATIC_INLINE
-uint32_t __nrfy_internal_uarte_events_process(NRF_UARTE_Type *               p_reg,
-                                              uint32_t                       mask,
-                                              nrfy_uarte_xfer_desc_t const * p_xfer);
+uint32_t __nrfy_internal_uarte_events_process(NRF_UARTE_Type *            p_reg,
+                                              uint32_t                    mask,
+                                              nrfy_uarte_buffer_t const * p_xfer);
 
 /**
  * @defgroup nrfy_uarte UARTE HALY
@@ -91,10 +91,10 @@ typedef struct
 } nrfy_uarte_config_t;
 
 /** @brief Structure describing an UARTE transfer. */
-struct nrfy_uarte_xfer_desc_t
+struct nrfy_uarte_buffer_t
 {
-    uint8_t * p_buffer; ///< Pointer to transferred data.
-    size_t    length;   ///< Number of bytes transferred.
+    uint8_t * p_buffer; ///< Buffer address.
+    size_t    length;   ///< Data length.
 };
 
 /**
@@ -177,9 +177,9 @@ NRFY_STATIC_INLINE void nrfy_uarte_int_uninit(NRF_UARTE_Type * p_reg)
  * @return Mask of events that were generated and processed.
  *         To be checked against the result of @ref NRFY_EVENT_TO_INT_BITMASK().
  */
-NRFY_STATIC_INLINE uint32_t nrfy_uarte_events_process(NRF_UARTE_Type *               p_reg,
-                                                      uint32_t                       mask,
-                                                      nrfy_uarte_xfer_desc_t const * p_xfer)
+NRFY_STATIC_INLINE uint32_t nrfy_uarte_events_process(NRF_UARTE_Type *            p_reg,
+                                                      uint32_t                    mask,
+                                                      nrfy_uarte_buffer_t const * p_xfer)
 {
     uint32_t evt_mask = __nrfy_internal_uarte_events_process(p_reg, mask, p_xfer);
     nrf_barrier_w();
@@ -213,8 +213,8 @@ NRFY_STATIC_INLINE void nrfy_uarte_tx_abort(NRF_UARTE_Type * p_reg,
  * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
  * @param[in] p_xfer Pointer to the structure containing reception buffer. Can be NULL.
  */
-NRFY_STATIC_INLINE void nrfy_uarte_stop(NRF_UARTE_Type *               p_reg,
-                                        nrfy_uarte_xfer_desc_t const * p_xfer)
+NRFY_STATIC_INLINE void nrfy_uarte_stop(NRF_UARTE_Type *            p_reg,
+                                        nrfy_uarte_buffer_t const * p_xfer)
 {
     nrf_uarte_task_trigger(p_reg, NRF_UARTE_TASK_STOPTX);
     nrf_barrier_w();
@@ -270,8 +270,8 @@ NRFY_STATIC_INLINE uint32_t nrfy_uarte_tx_start(NRF_UARTE_Type * p_reg,
  * @return Mask of events occured, created by @ref NRFY_EVENT_TO_INT_BITMASK().
  *         Always 0 for non-blocking reception.
  */
-NRFY_STATIC_INLINE uint32_t nrfy_uarte_rx_start(NRF_UARTE_Type *               p_reg,
-                                                nrfy_uarte_xfer_desc_t const * p_xfer)
+NRFY_STATIC_INLINE uint32_t nrfy_uarte_rx_start(NRF_UARTE_Type *            p_reg,
+                                                nrfy_uarte_buffer_t const * p_xfer)
 {
     uint32_t evt_mask = 0;
     nrf_uarte_task_trigger(p_reg, NRF_UARTE_TASK_STARTRX);
@@ -340,6 +340,23 @@ NRFY_STATIC_INLINE uint32_t nrfy_uarte_event_address_get(NRF_UARTE_Type const * 
                                                          nrf_uarte_event_t      event)
 {
     return nrf_uarte_event_address_get(p_reg, event);
+}
+
+/** @refhal{nrf_uarte_shorts_set} */
+NRFY_STATIC_INLINE void nrfy_uarte_shorts_set(NRF_UARTE_Type * p_reg, uint32_t mask)
+{
+    nrf_uarte_shorts_set(p_reg, mask);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_uarte_shorts_get} */
+NRFY_STATIC_INLINE uint32_t nrfy_uarte_shorts_get(NRF_UARTE_Type * p_reg, uint32_t mask)
+{
+    nrf_barrier_rw();
+    uint32_t ret = nrf_uarte_shorts_get(p_reg, mask);
+    nrf_barrier_r();
+
+    return ret;
 }
 
 /** @refhal{nrf_uarte_shorts_enable} */
@@ -548,6 +565,15 @@ NRFY_STATIC_INLINE void nrfy_uarte_tx_buffer_set(NRF_UARTE_Type * p_reg,
     }
 }
 
+/** @refhal{nrf_uarte_tx_buffer_get} */
+NRFY_STATIC_INLINE uint8_t const * nrfy_uarte_tx_buffer_get(NRF_UARTE_Type * p_reg)
+{
+    nrf_barrier_r();
+    uint8_t const * ptr = nrf_uarte_tx_buffer_get(p_reg);
+    nrf_barrier_r();
+    return ptr;
+}
+
 /** @refhal{nrf_uarte_tx_amount_get} */
 NRFY_STATIC_INLINE uint32_t nrfy_uarte_tx_amount_get(NRF_UARTE_Type const * p_reg)
 {
@@ -604,9 +630,9 @@ NRFY_STATIC_INLINE bool __nrfy_internal_uarte_event_handle(NRF_UARTE_Type *  p_r
 }
 
 NRFY_STATIC_INLINE
-uint32_t __nrfy_internal_uarte_events_process(NRF_UARTE_Type *               p_reg,
-                                              uint32_t                       mask,
-                                              nrfy_uarte_xfer_desc_t const * p_xfer)
+uint32_t __nrfy_internal_uarte_events_process(NRF_UARTE_Type *            p_reg,
+                                              uint32_t                    mask,
+                                              nrfy_uarte_buffer_t const * p_xfer)
 {
     uint32_t evt_mask = 0;
 
@@ -633,6 +659,7 @@ uint32_t __nrfy_internal_uarte_events_process(NRF_UARTE_Type *               p_r
         nrf_barrier_rw();
         NRFY_CACHE_INV(p_xfer->p_buffer, size);
     }
+
     nrf_barrier_w();
     return evt_mask;
 }

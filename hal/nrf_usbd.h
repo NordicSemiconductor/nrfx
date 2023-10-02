@@ -1185,19 +1185,19 @@ NRF_STATIC_INLINE uint8_t nrf_usbd_setup_brequest_get(NRF_USBD_Type const * p_re
 
 NRF_STATIC_INLINE uint16_t nrf_usbd_setup_wvalue_get(NRF_USBD_Type const * p_reg)
 {
-    const uint16_t val = p_reg->WVALUEL;
+    const uint16_t val = (uint16_t)p_reg->WVALUEL;
     return (uint16_t)(val | ((p_reg->WVALUEH) << 8));
 }
 
 NRF_STATIC_INLINE uint16_t nrf_usbd_setup_windex_get(NRF_USBD_Type const * p_reg)
 {
-    const uint16_t val = p_reg->WINDEXL;
+    const uint16_t val = (uint16_t)p_reg->WINDEXL;
     return (uint16_t)(val | ((p_reg->WINDEXH) << 8));
 }
 
 NRF_STATIC_INLINE uint16_t nrf_usbd_setup_wlength_get(NRF_USBD_Type const * p_reg)
 {
-    const uint16_t val = p_reg->WLENGTHL;
+    const uint16_t val = (uint16_t)p_reg->WLENGTHL;
     return (uint16_t)(val | ((p_reg->WLENGTHH) << 8));
 }
 
@@ -1274,7 +1274,7 @@ NRF_STATIC_INLINE void nrf_usbd_dtoggle_set(NRF_USBD_Type *    p_reg,
     NRFX_ASSERT(NRF_USBD_EP_VALIDATE(ep));
     NRFX_ASSERT(!NRF_USBD_EPISO_CHECK(ep));
     p_reg->DTOGGLE = ep | (NRF_USBD_DTOGGLE_NOP << USBD_DTOGGLE_VALUE_Pos);
-    p_reg->DTOGGLE = ep | (op << USBD_DTOGGLE_VALUE_Pos);
+    p_reg->DTOGGLE = ep | ((uint32_t)op << USBD_DTOGGLE_VALUE_Pos);
     (void) p_reg->DTOGGLE;
 }
 

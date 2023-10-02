@@ -388,7 +388,9 @@ typedef struct
  * @param[in] event_handler Event handler provided by the user. Cannot be null.
  *
  * @retval NRFX_SUCCESS             Initialization successful.
- * @retval NRFX_ERROR_INVALID_STATE Driver was already initialized.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  */
 nrfx_err_t nrfx_usbd_init(nrfx_usbd_event_handler_t event_handler);
 
@@ -396,6 +398,14 @@ nrfx_err_t nrfx_usbd_init(nrfx_usbd_event_handler_t event_handler);
  * @brief Driver deinitialization.
  */
 void nrfx_usbd_uninit(void);
+
+/**
+ * @brief Function for checking if the USBD driver is initialized.
+ *
+ * @retval true  Driver is already initialized.
+ * @retval false Driver is not initialized.
+ */
+bool nrfx_usbd_init_check(void);
 
 /**
  * @brief Enable the USBD port.

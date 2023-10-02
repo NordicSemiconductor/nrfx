@@ -56,7 +56,7 @@ extern "C" {
  *
  * @return Pointer to the structure of registers of the UARTE peripheral.
  */
-#define NRF_UARTE_INST_GET(idx) NRFX_CONCAT_2(NRF_UARTE, idx)
+#define NRF_UARTE_INST_GET(idx) NRFX_CONCAT(NRF_, UARTE, idx)
 
 #if defined(UARTE_DMA_RX_PTR_PTR_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether dedicated DMA register is present. */
@@ -71,6 +71,13 @@ extern "C" {
 #define NRF_UARTE_HAS_DMA_TASKS_EVENTS 1
 #else
 #define NRF_UARTE_HAS_DMA_TASKS_EVENTS 0
+#endif
+
+#if defined(UARTE_SHORTS_ENDTX_STOPTX_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether UARTE ENDTX_STOPTX shortcut is present. */
+#define NRF_UARTE_HAS_ENDTX_STOPTX_SHORT 1
+#else
+#define NRF_UARTE_HAS_ENDTX_STOPTX_SHORT 0
 #endif
 
 /** @brief UARTE tasks. */
@@ -117,7 +124,10 @@ typedef enum
 typedef enum
 {
     NRF_UARTE_SHORT_ENDRX_STARTRX = UARTE_SHORTS_ENDRX_STARTRX_Msk, ///< Shortcut between ENDRX event and STARTRX task.
-    NRF_UARTE_SHORT_ENDRX_STOPRX  = UARTE_SHORTS_ENDRX_STOPRX_Msk   ///< Shortcut between ENDRX event and STOPRX task.
+    NRF_UARTE_SHORT_ENDRX_STOPRX  = UARTE_SHORTS_ENDRX_STOPRX_Msk,  ///< Shortcut between ENDRX event and STOPRX task.
+#if NRF_UARTE_HAS_ENDTX_STOPTX_SHORT
+    NRF_UARTE_SHORT_ENDTX_STOPTX  = UARTE_SHORTS_ENDTX_STOPTX_Msk   ///< Shortcut between ENDTX event and STOPTX task.
+#endif
 } nrf_uarte_short_t;
 
 
@@ -253,6 +263,24 @@ NRF_STATIC_INLINE uint32_t nrf_uarte_event_address_get(NRF_UARTE_Type const * p_
                                                        nrf_uarte_event_t      event);
 
 /**
+ * @brief Function for configuring UARTE shortcuts.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Shortcuts to be set.
+ */
+NRF_STATIC_INLINE void nrf_uarte_shorts_set(NRF_UARTE_Type * p_reg, uint32_t mask);
+
+/**
+ * @brief Function for getting UARTE shortcuts.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Shortcuts to be checked.
+ *
+ * @return Mask of requested shortcuts which were enabled.
+ */
+NRF_STATIC_INLINE uint32_t nrf_uarte_shorts_get(NRF_UARTE_Type * p_reg, uint32_t mask);
+
+/**
  * @brief Function for enabling UARTE shortcuts.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -362,6 +390,16 @@ NRF_STATIC_INLINE void nrf_uarte_enable(NRF_UARTE_Type * p_reg);
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  */
 NRF_STATIC_INLINE void nrf_uarte_disable(NRF_UARTE_Type * p_reg);
+
+/**
+ * @brief Function for checking if the UARTE is enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval true  The UARTE is enabled.
+ * @retval false The UARTE is not enabled.
+ */
+NRF_STATIC_INLINE bool nrf_uarte_enable_check(NRF_UARTE_Type const * p_reg);
 
 /**
  * @brief Function for configuring TX/RX pins.
@@ -484,6 +522,15 @@ NRF_STATIC_INLINE void nrf_uarte_tx_buffer_set(NRF_UARTE_Type * p_reg,
                                                size_t           length);
 
 /**
+ * @brief Function for getting the transmit buffer address.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Pointer to the transmit buffer.
+ */
+NRF_STATIC_INLINE uint8_t const * nrf_uarte_tx_buffer_get(NRF_UARTE_Type * p_reg);
+
+/**
  * @brief Function for getting number of bytes transmitted in the last transaction.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -502,6 +549,15 @@ NRF_STATIC_INLINE uint32_t nrf_uarte_tx_amount_get(NRF_UARTE_Type const * p_reg)
 NRF_STATIC_INLINE void nrf_uarte_rx_buffer_set(NRF_UARTE_Type * p_reg,
                                                uint8_t *        p_buffer,
                                                size_t           length);
+
+/**
+ * @brief Function for getting the reception buffer address.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Pointer to the reception buffer.
+ */
+NRF_STATIC_INLINE uint8_t * nrf_uarte_rx_buffer_get(NRF_UARTE_Type * p_reg);
 
 /**
  * @brief Function for getting number of bytes received in the last transaction.
@@ -529,6 +585,16 @@ NRF_STATIC_INLINE uint32_t nrf_uarte_event_address_get(NRF_UARTE_Type const * p_
                                                        nrf_uarte_event_t      event)
 {
     return (uint32_t)((uint8_t *)p_reg + (uint32_t)event);
+}
+
+NRF_STATIC_INLINE void nrf_uarte_shorts_set(NRF_UARTE_Type * p_reg, uint32_t mask)
+{
+    p_reg->SHORTS = mask;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_uarte_shorts_get(NRF_UARTE_Type * p_reg, uint32_t mask)
+{
+    return p_reg->SHORTS & mask;
 }
 
 NRF_STATIC_INLINE void nrf_uarte_shorts_enable(NRF_UARTE_Type * p_reg, uint32_t mask)
@@ -601,6 +667,11 @@ NRF_STATIC_INLINE void nrf_uarte_enable(NRF_UARTE_Type * p_reg)
 NRF_STATIC_INLINE void nrf_uarte_disable(NRF_UARTE_Type * p_reg)
 {
     p_reg->ENABLE = UARTE_ENABLE_ENABLE_Disabled;
+}
+
+NRF_STATIC_INLINE bool nrf_uarte_enable_check(NRF_UARTE_Type const * p_reg)
+{
+    return p_reg->ENABLE == UARTE_ENABLE_ENABLE_Enabled;
 }
 
 NRF_STATIC_INLINE void nrf_uarte_txrx_pins_set(NRF_UARTE_Type * p_reg,
@@ -691,6 +762,15 @@ NRF_STATIC_INLINE void nrf_uarte_tx_buffer_set(NRF_UARTE_Type * p_reg,
 #endif
 }
 
+NRF_STATIC_INLINE uint8_t const * nrf_uarte_tx_buffer_get(NRF_UARTE_Type * p_reg)
+{
+#if NRF_UARTE_HAS_DMA_REG
+    return (uint8_t const *)p_reg->DMA.TX.PTR;
+#else
+    return (uint8_t const *)p_reg->TXD.PTR;
+#endif
+}
+
 NRF_STATIC_INLINE uint32_t nrf_uarte_tx_amount_get(NRF_UARTE_Type const * p_reg)
 {
 #if NRF_UARTE_HAS_DMA_REG
@@ -710,6 +790,15 @@ NRF_STATIC_INLINE void nrf_uarte_rx_buffer_set(NRF_UARTE_Type * p_reg,
 #else
     p_reg->RXD.PTR    = (uint32_t)p_buffer;
     p_reg->RXD.MAXCNT = length;
+#endif
+}
+
+NRF_STATIC_INLINE uint8_t * nrf_uarte_rx_buffer_get(NRF_UARTE_Type * p_reg)
+{
+#if NRF_UARTE_HAS_DMA_REG
+    return (uint8_t *)p_reg->DMA.RX.PTR;
+#else
+    return (uint8_t *)p_reg->RXD.PTR;
 #endif
 }
 

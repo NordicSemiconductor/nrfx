@@ -112,10 +112,38 @@ extern "C" {
 #endif
 
 #if defined(POWER_RESETREAS_RESETPIN_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Auxiliary definition to mark the fact that RESETREAS register is present in POWER */
+/** @brief Symbol indicating whether RESETREAS register is present in POWER */
 #define NRF_POWER_HAS_RESETREAS 1
 #else
 #define NRF_POWER_HAS_RESETREAS 0
+#endif
+
+#if defined(POWER_RESETREAS_CTRLAP_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether RESETREAS CTRLAP is present. */
+#define NRF_POWER_HAS_RESETREAS_CTRLAP 1
+#else
+#define NRF_POWER_HAS_RESETREAS_CTRLAP 0
+#endif
+
+#if defined(POWER_RESETREAS_LPCOMP_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether RESETREAS LPCOMP is present. */
+#define NRF_POWER_HAS_RESETREAS_LPCOMP 1
+#else
+#define NRF_POWER_HAS_RESETREAS_LPCOMP 0
+#endif
+
+#if defined(POWER_RESETREAS_NFC_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether RESETREAS NFC is present. */
+#define NRF_POWER_HAS_RESETREAS_NFC 1
+#else
+#define NRF_POWER_HAS_RESETREAS_NFC 0
+#endif
+
+#if defined(POWER_RESETREAS_VBUS_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether RESETREAS VBUS is present. */
+#define NRF_POWER_HAS_RESETREAS_VBUS 1
+#else
+#define NRF_POWER_HAS_RESETREAS_VBUS 0
 #endif
 
 #if defined(POWER_MAINREGSTATUS_MAINREGSTATUS_Msk) || defined(__NRFX_DOXYGEN__)
@@ -137,6 +165,13 @@ extern "C" {
 #define NRF_POWER_HAS_GPREGRET_ARRAY 1
 #else
 #define NRF_POWER_HAS_GPREGRET_ARRAY 0
+#endif
+
+#if NRF_POWER_HAS_GPREGRET_ARRAY && defined(POWER_GPREGRET_MaxCount) || defined(__NRFX_DOXYGEN__)
+/** @brief Size of GPREGRET register when defined as array. */
+#define NRFX_POWER_GPREGRET_COUNT POWER_GPREGRET_MaxCount
+#elif NRF_POWER_HAS_GPREGRET_ARRAY
+#define NRFX_POWER_GPREGRET_COUNT 2
 #endif
 
 #if defined(POWER_TASKS_SEMAPHORE_ACQUIRE_ACQUIRE_Msk) || defined(__NRFX_DOXYGEN__)
@@ -277,14 +312,14 @@ typedef enum
     NRF_POWER_RESETREAS_SREQ_MASK     = POWER_RESETREAS_SREQ_Msk    , /**< Bit mask of SREQ field. */
     NRF_POWER_RESETREAS_LOCKUP_MASK   = POWER_RESETREAS_LOCKUP_Msk  , /**< Bit mask of LOCKUP field. */
     NRF_POWER_RESETREAS_OFF_MASK      = POWER_RESETREAS_OFF_Msk     , /**< Bit mask of OFF field. */
-#if defined(POWER_RESETREAS_LPCOMP_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_POWER_HAS_RESETREAS_LPCOMP
     NRF_POWER_RESETREAS_LPCOMP_MASK   = POWER_RESETREAS_LPCOMP_Msk  , /**< Bit mask of LPCOMP field. */
 #endif
     NRF_POWER_RESETREAS_DIF_MASK      = POWER_RESETREAS_DIF_Msk     , /**< Bit mask of DIF field. */
-#if defined(POWER_RESETREAS_NFC_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_POWER_HAS_RESETREAS_NFC
     NRF_POWER_RESETREAS_NFC_MASK      = POWER_RESETREAS_NFC_Msk     , /**< Bit mask of NFC field. */
 #endif
-#if defined(POWER_RESETREAS_VBUS_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_POWER_HAS_RESETREAS_VBUS
     NRF_POWER_RESETREAS_VBUS_MASK     = POWER_RESETREAS_VBUS_Msk    , /**< Bit mask of VBUS field. */
 #endif
 } nrf_power_resetreas_mask_t;
@@ -821,63 +856,23 @@ NRF_STATIC_INLINE nrf_power_pof_thrvddh_t nrf_power_pofcon_vddh_get(NRF_POWER_Ty
 /**
  * @brief Function for setting the general purpose retention register.
  *
- * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] val   Value to be set in the register.
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] reg_num General purpose retention register number.
+ * @param[in] val     Value to be set in the register.
  */
-NRF_STATIC_INLINE void nrf_power_gpregret_set(NRF_POWER_Type * p_reg, uint8_t val);
+NRF_STATIC_INLINE void nrf_power_gpregret_set(NRF_POWER_Type * p_reg,
+                                              uint32_t         reg_num,
+                                              uint32_t         val);
 
 /**
  * @brief Function for getting general purpose retention register.
  *
- * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- *
- * @return The value from the register.
- */
-NRF_STATIC_INLINE uint8_t nrf_power_gpregret_get(NRF_POWER_Type const * p_reg);
-
-#if defined(POWER_GPREGRET2_GPREGRET_Msk) || defined(__NRFX_DOXYGEN__)
-/**
- * @brief Function for setting the general purpose retention register 2.
- *
- * @note This register is not available in the nRF51 MCU family.
- *
- * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] val   Value to be set in the register.
- */
-NRF_STATIC_INLINE void nrf_power_gpregret2_set(NRF_POWER_Type * p_reg, uint8_t val);
-
-/**
- * @brief Function for getting the general purpose retention register 2.
- *
- * @note This register is not available in all MCUs.
- *
- * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- *
- * @return The value from the register.
- */
-NRF_STATIC_INLINE uint8_t nrf_power_gpregret2_get(NRF_POWER_Type const * p_reg);
-#endif // defined(POWER_GPREGRET2_GPREGRET_Msk) || defined(__NRFX_DOXYGEN__)
-
-/**
- * @brief Function for getting value of the particular general purpose retention register
- *
  * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
  * @param[in] reg_num General purpose retention register number.
  *
- * @return The value from the register
+ * @return Value from the register.
  */
-NRF_STATIC_INLINE uint8_t nrf_power_gpregret_ext_get(NRF_POWER_Type const * p_reg, uint8_t reg_num);
-
-/**
- * @brief Function for setting particular general purpose retention register.
- *
- * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
- * @param[in] reg_num General purpose retention register number.
- * @param[in] val     Value to be set in the register
- */
-NRF_STATIC_INLINE void nrf_power_gpregret_ext_set(NRF_POWER_Type * p_reg,
-                                                  uint8_t          reg_num,
-                                                  uint8_t          val);
+NRF_STATIC_INLINE uint32_t nrf_power_gpregret_get(NRF_POWER_Type const * p_reg, uint32_t reg_num);
 #endif // NRF_POWER_HAS_GPREGRET
 
 #if NRF_POWER_HAS_DCDCEN
@@ -1403,67 +1398,63 @@ NRF_STATIC_INLINE nrf_power_pof_thrvddh_t nrf_power_pofcon_vddh_get(NRF_POWER_Ty
 #endif // NRF_POWER_HAS_POFCON_VDDH
 
 #if NRF_POWER_HAS_GPREGRET
-NRF_STATIC_INLINE void nrf_power_gpregret_set(NRF_POWER_Type * p_reg, uint8_t val)
-{
-    volatile uint32_t * p_gpregret;
-    if (sizeof(p_reg->GPREGRET) > sizeof(uint32_t))
-    {
-        p_gpregret = &((volatile uint32_t *)p_reg->GPREGRET)[0];
-    }
-    else
-    {
-        p_gpregret = &((volatile uint32_t *)&p_reg->GPREGRET)[0];
-    }
-    *p_gpregret = val;
-}
-
-NRF_STATIC_INLINE uint8_t nrf_power_gpregret_get(NRF_POWER_Type const * p_reg)
-{
-    volatile uint32_t * p_gpregret;
-    if (sizeof(p_reg->GPREGRET) > sizeof(uint32_t))
-    {
-        p_gpregret = &((volatile uint32_t *)p_reg->GPREGRET)[0];
-    }
-    else
-    {
-        p_gpregret = &((volatile uint32_t *)&p_reg->GPREGRET)[0];
-    }
-    return (uint8_t)*p_gpregret;
-}
-
-NRF_STATIC_INLINE void nrf_power_gpregret_ext_set(NRF_POWER_Type * p_reg,
-                                                  uint8_t          reg_num,
-                                                  uint8_t          val)
+NRF_STATIC_INLINE void nrf_power_gpregret_set(NRF_POWER_Type * p_reg,
+                                              uint32_t         reg_num,
+                                              uint32_t         val)
 {
 #if NRF_POWER_HAS_GPREGRET_ARRAY
-    p_reg->GPREGRET[reg_num] = val;
+    NRFX_ASSERT(reg_num < NRFX_POWER_GPREGRET_COUNT);
+#elif defined(POWER_GPREGRET2_GPREGRET_Msk)
+    NRFX_ASSERT(reg_num < 2);
 #else
     NRFX_ASSERT(reg_num < 1);
-    p_reg->GPREGRET = val;
+#endif
+
+#if NRF_POWER_HAS_GPREGRET_ARRAY
+    p_reg->GPREGRET[reg_num] = (val & POWER_GPREGRET_GPREGRET_Msk) << POWER_GPREGRET_GPREGRET_Pos;
+#else
+    switch (reg_num)
+    {
+        case 0:
+            p_reg->GPREGRET = (val & POWER_GPREGRET_GPREGRET_Msk) << POWER_GPREGRET_GPREGRET_Pos;
+            break;
+#if defined(POWER_GPREGRET2_GPREGRET_Msk)
+        case 1:
+            p_reg->GPREGRET2 = (val & POWER_GPREGRET2_GPREGRET_Msk) << POWER_GPREGRET2_GPREGRET_Pos;
+            break;
+#endif
+        default:
+            break;
+    }
 #endif
 }
 
-NRF_STATIC_INLINE uint8_t nrf_power_gpregret_ext_get(NRF_POWER_Type const * p_reg, uint8_t reg_num)
+NRF_STATIC_INLINE uint32_t nrf_power_gpregret_get(NRF_POWER_Type const * p_reg, uint32_t reg_num)
 {
+#if NRF_POWER_HAS_GPREGRET_ARRAY
+    NRFX_ASSERT(reg_num < NRFX_POWER_GPREGRET_COUNT);
+#elif defined(POWER_GPREGRET2_GPREGRET_Msk)
+    NRFX_ASSERT(reg_num < 2);
+#else
+    NRFX_ASSERT(reg_num < 1);
+#endif
+
 #if NRF_POWER_HAS_GPREGRET_ARRAY
     return p_reg->GPREGRET[reg_num];
 #else
-    NRFX_ASSERT(reg_num < 1);
-    return (uint8_t)p_reg->GPREGRET;
-#endif
-}
-
+    switch (reg_num)
+    {
+        case 0:
+            return p_reg->GPREGRET;
 #if defined(POWER_GPREGRET2_GPREGRET_Msk)
-NRF_STATIC_INLINE void nrf_power_gpregret2_set(NRF_POWER_Type * p_reg, uint8_t val)
-{
-    p_reg->GPREGRET2 = val;
-}
-
-NRF_STATIC_INLINE uint8_t nrf_power_gpregret2_get(NRF_POWER_Type const * p_reg)
-{
-    return (uint8_t)p_reg->GPREGRET2;
-}
+        case 1:
+            return p_reg->GPREGRET2;
 #endif
+        default:
+            return 0;
+    }
+#endif
+}
 #endif // NRF_POWER_HAS_GPREGRET
 
 #if NRF_POWER_HAS_DCDCEN

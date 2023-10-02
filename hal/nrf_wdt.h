@@ -58,7 +58,7 @@ extern "C" {
  *
  * @return Pointer to the structure of registers of the WDT peripheral.
  */
-#define NRF_WDT_INST_GET(idx) NRFX_CONCAT_2(NRF_WDT, idx)
+#define NRF_WDT_INST_GET(idx) NRFX_CONCAT(NRF_, WDT, idx)
 
 #if defined(WDT_TASKS_STOP_TASKS_STOP_Msk) || defined (__NRFX_DOXYGEN__)
 /** @brief Presence of Task STOP functionality. */
@@ -79,7 +79,6 @@ extern "C" {
 
 /** @brief WDT register reload value. */
 #define NRF_WDT_RR_VALUE       0x6E524635UL /* Fixed value; should not be modified. */
-
 
 /** @brief WDT tasks. */
 typedef enum
@@ -104,7 +103,7 @@ typedef enum
 {
     NRF_WDT_BEHAVIOUR_RUN_SLEEP_MASK     = WDT_CONFIG_SLEEP_Msk,  /**< WDT will run when CPU is in SLEEP mode. */
     NRF_WDT_BEHAVIOUR_RUN_HALT_MASK      = WDT_CONFIG_HALT_Msk,   /**< WDT will run when CPU is in HALT mode. */
-#if defined(WDT_CONFIG_STOPEN_Msk)
+#if NRF_WDT_HAS_STOP
     NRF_WDT_BEHAVIOUR_STOP_ENABLE_MASK   = WDT_CONFIG_STOPEN_Msk, /**< WDT allows stopping. */
 #endif
 } nrf_wdt_behaviour_mask_t;
@@ -386,13 +385,14 @@ NRF_STATIC_INLINE bool nrf_wdt_reload_request_enable_check(NRF_WDT_Type const * 
 NRF_STATIC_INLINE void nrf_wdt_reload_request_set(NRF_WDT_Type *        p_reg,
                                                   nrf_wdt_rr_register_t rr_register);
 
-#if defined(WDT_TSEN_TSEN_Msk)
+#if NRF_WDT_HAS_STOP
 /**
- * @brief Function for enabling task stop.
+ * @brief Function for enabling or disabling stopping the watchdog.
  *
- * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] enable True if stopping is to be enabled, false otherwise.
  */
-NRF_STATIC_INLINE void nrf_wdt_task_stop_enable(NRF_WDT_Type * p_reg);
+NRF_STATIC_INLINE void nrf_wdt_task_stop_enable_set(NRF_WDT_Type * p_reg, bool enable);
 #endif
 
 #ifndef NRF_DECLARE_ONLY
@@ -544,10 +544,10 @@ NRF_STATIC_INLINE void nrf_wdt_reload_request_set(NRF_WDT_Type *        p_reg,
     p_reg->RR[rr_register] = NRF_WDT_RR_VALUE;
 }
 
-#if defined(WDT_TSEN_TSEN_Msk)
-NRF_STATIC_INLINE void nrf_wdt_task_stop_enable(NRF_WDT_Type * p_reg)
+#if NRF_WDT_HAS_STOP
+NRF_STATIC_INLINE void nrf_wdt_task_stop_enable_set(NRF_WDT_Type * p_reg, bool enable)
 {
-    p_reg->TSEN = NRF_WDT_RR_VALUE;
+    p_reg->TSEN = enable ? NRF_WDT_RR_VALUE : 0;
 }
 #endif
 

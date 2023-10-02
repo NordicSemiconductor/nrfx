@@ -68,10 +68,11 @@ typedef struct
  *
  * @param irq_priority Interrupt priority.
  * @param handler      Event handler provided by the user.
+ *                     Must not be NULL.
  * @param p_context    Context passed to event handler.
  *
- * @retval NRFX_SUCCESS             Initialization was successful.
- * @retval NRFX_ERROR_INVALID_STATE Driver is already initialized.
+ * @retval NRFX_SUCCESS       Initialization was successful.
+ * @retval NRFX_ERROR_ALREADY Driver is already initialized.
  */
 nrfx_err_t nrfx_ipc_init(uint8_t irq_priority, nrfx_ipc_handler_t handler, void * p_context);
 
@@ -111,6 +112,14 @@ NRFX_STATIC_INLINE uint32_t nrfx_ipc_gpmem_get(uint8_t mem_index);
 
 /** @brief Function for uninitializing the IPC module. */
 void nrfx_ipc_uninit(void);
+
+/**
+ * @brief Function for checking if the IPC driver is initialized.
+ *
+ * @retval true  Driver is already initialized.
+ * @retval false Driver is not initialized.
+ */
+bool nrfx_ipc_init_check(void);
 
 /**
  * @brief Function for enabling events to generate interrupt.

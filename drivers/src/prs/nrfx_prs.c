@@ -85,6 +85,9 @@ PRS_BOX_DEFINE(7)
 #if defined(NRFX_PRS_BOX_8_ADDR) && NRFX_CHECK(NRFX_PRS_BOX_8_ENABLED)
 PRS_BOX_DEFINE(8)
 #endif
+#if defined(NRFX_PRS_BOX_9_ADDR) && NRFX_CHECK(NRFX_PRS_BOX_9_ENABLED)
+PRS_BOX_DEFINE(9)
+#endif
 
 static prs_box_t * prs_box_get(void const * p_base_addr)
 {
@@ -126,6 +129,10 @@ static prs_box_t * prs_box_get(void const * p_base_addr)
 #endif
 #if defined(NRFX_PRS_BOX_8_ADDR) && NRFX_CHECK(NRFX_PRS_BOX_8_ENABLED)
     if (IS_PRS_BOX(8, p_base_addr)) { return &m_prs_box_8; }
+    else
+#endif
+#if defined(NRFX_PRS_BOX_9_ADDR) && NRFX_CHECK(NRFX_PRS_BOX_9_ENABLED)
+    if (IS_PRS_BOX(9, p_base_addr)) { return &m_prs_box_9; }
     else
 #endif
     {

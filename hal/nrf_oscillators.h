@@ -47,6 +47,98 @@ extern "C" {
  * @brief   Hardware access layer for managing the OSCILLATORS peripheral.
  */
 
+#if defined(OSCILLATORS_PLL_FREQ_FREQ_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether PLL is present. */
+#define NRF_OSCILLATORS_HAS_PLL 1
+#else
+#define NRF_OSCILLATORS_HAS_PLL 0
+#endif
+
+#if defined(OSCILLATORS_XOSC32M_CLOCKQUALITY_INDICATOR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether clock quality indicator is present. */
+#define NRF_OSCILLATORS_HAS_CLOCK_QUALITY_IND 1
+#else
+#define NRF_OSCILLATORS_HAS_CLOCK_QUALITY_IND 0
+#endif
+
+#if defined(OSCILLATORS_XOSC32KI_INTCAP_VAL_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether configuration of internal capacitor using integer value is present. */
+#define NRF_OSCILLATORS_HAS_LFXO_CAP_AS_INT_VALUE 1
+#else
+#define NRF_OSCILLATORS_HAS_LFXO_CAP_AS_INT_VALUE 0
+#endif
+
+#if defined(OSCILLATORS_XOSC32KI_Type) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether LFXO bypass is present. */
+#define NRF_OSCILLATORS_HAS_LFXO_BYPASS 1
+#else
+#define NRF_OSCILLATORS_HAS_LFXO_BYPASS 0
+#endif
+
+#if defined(NRF5340_XXAA_APPLICATION) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Macro for calculating HFXO internal capacitor value.
+ *
+ * Depending on the SoC used, a range of capacitance of internal capacitors is as follows:
+ * - From 7 pF to 20 pF in 0.5 pF steps for nRF5340.
+ * - From 4 pF to 17 pF in 0.25 pF steps for other SoCs.
+ * This macro should be used to calculate argument's value for @ref nrf_oscillators_hfxo_cap_set function.
+*/
+#define OSCILLATORS_HFXO_CAP_CALCULATE(p_ficr_reg, cap_val)   \
+    ((((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_SLOPE_Msk) \
+       << FICR_XOSC32MTRIM_SLOPE_Pos) / 16 + 1) *             \
+     (cap_val * 2 - 14) +                                     \
+     ((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_OFFSET_Msk) \
+       << FICR_XOSC32MTRIM_OFFSET_Pos))
+#else
+#define OSCILLATORS_HFXO_CAP_CALCULATE(p_ficr_reg, cap_val)       \
+    (((cap_val - 5.5) *                                           \
+      (((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_SLOPE_Msk)    \
+                          << FICR_XOSC32MTRIM_SLOPE_Pos) + 791) + \
+      (((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_OFFSET_Msk)   \
+         << FICR_XOSC32MTRIM_OFFSET_Pos) << 2)) >> 8)
+#endif
+
+#if NRF_OSCILLATORS_HAS_LFXO_CAP_AS_INT_VALUE
+/**
+ * @brief Macro for calculating LFXO internal capacitor value.
+ *
+ * The capacitance of internal capacitors ranges from 4 pF to 18 pF in 0.5 pF steps.
+ * This macro should be used to calculate argument's value for @ref nrf_oscillators_lfxo_cap_set function.
+*/
+#define OSCILLATORS_LFXO_CAP_CALCULATE(p_ficr_reg, cap_val)                     \
+    ((((cap_val - 4) * (((p_ficr_reg->XOSC32KTRIM & FICR_XOSC32KTRIM_SLOPE_Msk) \
+                          << FICR_XOSC32KTRIM_SLOPE_Pos)) + 392) >> 3 +         \
+      ((p_ficr_reg->XOSC32KTRIM & FICR_XOSC32KTRIM_OFFSET_Msk)                  \
+       << FICR_XOSC32KTRIM_OFFSET_Pos)) >> 6)
+#endif
+
+#if NRF_OSCILLATORS_HAS_CLOCK_QUALITY_IND
+/** @brief HFXO clock quality indicator. */
+typedef enum
+{
+    NRF_OSCILLATORS_HFXO_CLOCK_QUALITY_NONE     = OSCILLATORS_XOSC32M_CLOCKQUALITY_INDICATOR_NoStatus, ///< Clock XOSC32M status is not defined.
+    NRF_OSCILLATORS_HFXO_CLOCK_QUALITY_STARTING = OSCILLATORS_XOSC32M_CLOCKQUALITY_INDICATOR_Starting, ///< Clock XOSC32M has started but has not yet reached the specified frequency tolerance requirement fTOL_HFXO.
+    NRF_OSCILLATORS_HFXO_CLOCK_QUALITY_STARTED  = OSCILLATORS_XOSC32M_CLOCKQUALITY_INDICATOR_Started   ///< Clock XOSC32M has started and is operating with the specified frequency tolerance requirement fTOL_HFXO.
+} nrf_oscillators_hfxo_clock_quality_t;
+#endif
+
+#if NRF_OSCILLATORS_HAS_PLL
+/** @brief PLL frequencies. */
+typedef enum
+{
+    NRF_OSCILLATORS_PLL_FREQ_64M  = OSCILLATORS_PLL_FREQ_FREQ_CK64M,  ///< PLL 64 MHz frequency.
+    NRF_OSCILLATORS_PLL_FREQ_128M = OSCILLATORS_PLL_FREQ_FREQ_CK128M, ///< PLL 128 MHz frequency.
+} nrf_oscillators_pll_freq_t;
+#endif
+
+#if NRF_OSCILLATORS_HAS_LFXO_CAP_AS_INT_VALUE
+/** @brief LFXO capacitance type. */
+typedef uint32_t nrf_oscillators_lfxo_cap_t;
+
+/** @brief Symbol specifying usage of external capacitors. */
+#define NRF_OSCILLATORS_LFXO_CAP_EXTERNAL ((nrf_oscillators_lfxo_cap_t)0)
+#else
 /** @brief Capacitors configuration for LFXO. */
 typedef enum
 {
@@ -58,7 +150,42 @@ typedef enum
     NRF_OSCILLATORS_LFXO_CAP_11PF     = OSCILLATORS_XOSC32KI_INTCAP_INTCAP_C11PF,    ///< Use 11 pF internal capacitors.
 #endif
 } nrf_oscillators_lfxo_cap_t;
+#endif
 
+#if NRF_OSCILLATORS_HAS_CLOCK_QUALITY_IND
+/**
+ * @brief Function for reading HFXO clock quality indicator.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Clock quality indicator value.
+ */
+NRF_STATIC_INLINE nrf_oscillators_hfxo_clock_quality_t
+nrf_oscillators_hfxo_clock_quality_get(NRF_OSCILLATORS_Type * p_reg);
+#endif
+
+#if NRF_OSCILLATORS_HAS_PLL
+/**
+ * @brief Function for setting PLL frequency.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] freq  New PLL frequency.
+ */
+NRF_STATIC_INLINE void nrf_oscillators_pll_freq_set(NRF_OSCILLATORS_Type *     p_reg,
+                                                    nrf_oscillators_pll_freq_t freq);
+
+/**
+ * @brief Function for getting PLL frequency.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Current PLL frequency value.
+ */
+NRF_STATIC_INLINE
+nrf_oscillators_pll_freq_t nrf_oscillators_pll_freq_get(NRF_OSCILLATORS_Type * p_reg);
+#endif
+
+#if NRF_OSCILLATORS_HAS_LFXO_BYPASS
 /**
  * @brief Function for enabling or disabling the bypass of LFXO with external clock source.
  *
@@ -67,9 +194,12 @@ typedef enum
  *                   False if bypass is to be disabled (use with xtal or low-swing external source).
  */
 NRF_STATIC_INLINE void nrf_oscillators_lfxo_bypass_set(NRF_OSCILLATORS_Type * p_reg, bool enable);
+#endif
 
 /**
  * @brief Function for configuring the internal capacitors of LFXO.
+ *
+ * For SoCs other than nRF5340, to calculate the correct @p cap_value, use @ref OSCILLATORS_LFXO_CAP_CALCULATE macro.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] cap   Capacitors configuration.
@@ -78,11 +208,9 @@ NRF_STATIC_INLINE void nrf_oscillators_lfxo_cap_set(NRF_OSCILLATORS_Type *     p
                                                     nrf_oscillators_lfxo_cap_t cap);
 
 /**
- * @brief Function for configuring the internal capacitors of HXFO.
+ * @brief Function for configuring the internal capacitors of HFXO.
  *
- * The capacitance of internal capacitors ranges from 7 pF to 20 pF in 0.5 pF steps.
- * To calculate the correct @p cap_value, use the following equation:
- * CAPVALUE = (1+FICR->XOSC32MTRIM.SLOPE/16) * (CAPACITANCE*2-14) + FICR->XOSC32MTRIM.OFFSET
+ * To calculate the correct @p cap_value, use @ref OSCILLATORS_HFXO_CAP_CALCULATE macro.
  *
  * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
  * @param[in] enable    True if internal capacitors are to be enabled, false otherwise.
@@ -94,11 +222,36 @@ NRF_STATIC_INLINE void nrf_oscillators_hfxo_cap_set(NRF_OSCILLATORS_Type * p_reg
                                                     uint32_t               cap_value);
 
 #ifndef NRF_DECLARE_ONLY
+
+#if NRF_OSCILLATORS_HAS_CLOCK_QUALITY_IND
+NRF_STATIC_INLINE nrf_oscillators_hfxo_clock_quality_t
+nrf_oscillators_hfxo_clock_quality_get(NRF_OSCILLATORS_Type * p_reg)
+{
+    return (nrf_oscillators_hfxo_clock_quality_t)(p_reg->XOSC32M.CLOCKQUALITY);
+}
+#endif
+
+#if NRF_OSCILLATORS_HAS_PLL
+NRF_STATIC_INLINE void nrf_oscillators_pll_freq_set(NRF_OSCILLATORS_Type *     p_reg,
+                                                    nrf_oscillators_pll_freq_t freq)
+{
+    p_reg->PLL.FREQ = (uint32_t)freq;
+}
+
+NRF_STATIC_INLINE
+nrf_oscillators_pll_freq_t nrf_oscillators_pll_freq_get(NRF_OSCILLATORS_Type * p_reg)
+{
+    return (nrf_oscillators_pll_freq_t)(p_reg->PLL.CURRENTFREQ);
+}
+#endif
+
+#if NRF_OSCILLATORS_HAS_LFXO_BYPASS
 NRF_STATIC_INLINE void nrf_oscillators_lfxo_bypass_set(NRF_OSCILLATORS_Type * p_reg, bool enable)
 {
     p_reg->XOSC32KI.BYPASS = (enable ? OSCILLATORS_XOSC32KI_BYPASS_BYPASS_Enabled :
                                        OSCILLATORS_XOSC32KI_BYPASS_BYPASS_Disabled);
 }
+#endif
 
 NRF_STATIC_INLINE void nrf_oscillators_lfxo_cap_set(NRF_OSCILLATORS_Type *     p_reg,
                                                     nrf_oscillators_lfxo_cap_t cap)
@@ -110,10 +263,14 @@ NRF_STATIC_INLINE void nrf_oscillators_hfxo_cap_set(NRF_OSCILLATORS_Type * p_reg
                                                     bool                   enable,
                                                     uint32_t               cap_value)
 {
+#if defined(OSCILLATORS_XOSC32MCAPS_CAPVALUE_Msk)
     p_reg->XOSC32MCAPS =
         (enable ? ((OSCILLATORS_XOSC32MCAPS_ENABLE_Enabled << OSCILLATORS_XOSC32MCAPS_ENABLE_Pos) |
                    (cap_value << OSCILLATORS_XOSC32MCAPS_CAPVALUE_Pos))
                 : (OSCILLATORS_XOSC32MCAPS_ENABLE_Disabled << OSCILLATORS_XOSC32MCAPS_ENABLE_Pos));
+#else
+    p_reg->XOSC32M.CONFIG.INTCAP = enable ? cap_value : 0;
+#endif
 }
 #endif // NRF_DECLARE_ONLY
 

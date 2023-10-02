@@ -55,6 +55,7 @@ typedef struct
     nrf_qspi_pins_t      pins;          ///< Pin configuration structure.
     nrf_qspi_prot_conf_t prot_if;       ///< Protocol layer interface configuration structure.
     nrf_qspi_phy_conf_t  phy_if;        ///< Physical layer interface configuration structure.
+    uint32_t             timeout;       ///< Time in milliseconds used in timeout counter.
     uint8_t              irq_priority;  ///< Interrupt priority.
     bool                 skip_gpio_cfg; ///< Skip GPIO configuration of pins.
                                         /**< When set to true, the driver does not modify
@@ -84,6 +85,7 @@ typedef struct
  * - Deep Power-down disabled
  * - clock frequency: 2 MHz for nRF52 Series, 6 MHz for nRF53 Series
  * - SCK delay 5 clock ticks
+ * - 500 milliseconds operation timeout
  * - mode 0 (data captured on the clock rising edge and transmitted on a falling edge. Clock base level is '0')
  *
  * @param[in] _pin_sck Pin for clock signal.
@@ -117,6 +119,7 @@ typedef struct
         .spi_mode  = NRF_QSPI_MODE_0,                                  \
         .sck_freq  = NRF_QSPI_FREQ_DIV16,                              \
     },                                                                 \
+    .timeout       = 500,                                              \
     .irq_priority  = (uint8_t)NRFX_QSPI_DEFAULT_CONFIG_IRQ_PRIORITY,   \
 }
 
@@ -184,12 +187,14 @@ typedef void (*nrfx_qspi_handler_t)(nrfx_qspi_evt_t event, void * p_context);
 /**
  * @brief Function for initializing the QSPI driver instance.
  *
- * This function configures the peripheral and its interrupts, and activates it. During the
- * activation process, the internal clocks are started and the QSPI peripheral tries to read
- * the status byte to read the busy bit. Reading the status byte is done in a simple poll and wait
- * mechanism.
- * If the busy bit is 1, this indicates issues with the external memory device. As a result,
- * @ref nrfx_qspi_init returns NRFX_ERROR_TIMEOUT.
+ * This function configures the peripheral and its interrupts.
+ *
+ * @note The function does not activate the peripheral instance. The activation is done during the first
+ *       transfer after initialization or when calling @ref nrfx_qspi_activate function.
+ *       The activation process starts the internal clocks, and the QSPI peripheral tries to read
+ *       the status byte to check the busy bit. Reading the status byte is done in a simple poll
+ *       and wait mechanism. If the busy bit is set, this indicates issues with the external memory
+ *       device. As a result, transfer functions return @ref NRFX_ERROR_TIMEOUT.
  *
  * In case of issues:
  * - Check the connection.
@@ -206,8 +211,9 @@ typedef void (*nrfx_qspi_handler_t)(nrfx_qspi_evt_t event, void * p_context);
  *          in the Product Specification.
  *
  * @retval NRFX_SUCCESS             Initialization was successful.
- * @retval NRFX_ERROR_TIMEOUT       The peripheral cannot connect with external memory.
- * @retval NRFX_ERROR_INVALID_STATE The driver was already initialized.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_INVALID_PARAM The pin configuration was incorrect.
  */
 nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
@@ -218,6 +224,9 @@ nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
  * @brief Function for reconfiguring the QSPI driver instance.
  *
  * @param[in] p_config Pointer to the structure with the configuration.
+ *
+ * @warning The function deactivates the peripheral instance. The activation is done during the first
+ *          transfer after reconfiguration or when calling @ref nrfx_qspi_activate function.
  *
  * @retval NRFX_SUCCESS             Reconfiguration was successful.
  * @retval NRFX_ERROR_BUSY          The driver is during transaction.
@@ -231,7 +240,39 @@ nrfx_err_t nrfx_qspi_reconfigure(nrfx_qspi_config_t const * p_config);
 void nrfx_qspi_uninit(void);
 
 /**
+ * @brief Function for activating the QSPI driver instance.
+ *
+ * @param[in] wait True if activation is to be in blocking mode, false otherwise.
+ *
+ * @retval NRFX_SUCCESS       The driver instance has been activated.
+ * @retval NRFX_ERROR_ALREADY The driver is already activated.
+ * @retval NRFX_ERROR_TIMEOUT External memory is busy, or there are connection issues.
+ */
+nrfx_err_t nrfx_qspi_activate(bool wait);
+
+/** @brief Function for deactivating the QSPI driver instance.
+ *
+ * @retval NRFX_SUCCESS    The driver instance has been activated.
+ * @retval NRFX_ERROR_BUSY The driver is during transaction.
+ */
+nrfx_err_t nrfx_qspi_deactivate(void);
+
+/**
+ * @brief Function for checking if the QSPI driver is initialized.
+ *
+ * @retval true  Driver is already initialized.
+ * @retval false Driver is not initialized.
+ */
+bool nrfx_qspi_init_check(void);
+
+/**
  * @brief Function for reading data from the QSPI memory.
+ *
+ * @note If that is the first operation after activation of driver initialization has been triggered,
+ *       the activation process starts the internal clocks and the QSPI peripheral tries to read
+ *       the status byte to check the busy bit. Reading the status byte is done in a simple poll
+ *       and wait mechanism. If the busy bit is set, this indicates that the memory may not be ready yet.
+ *       As a result, the function returns @ref NRFX_ERROR_TIMEOUT.
  *
  * Write, read, and erase operations check memory device busy state before starting the operation.
  * If the memory is busy, the resulting action depends on the mode in which the read operation is used:
@@ -250,6 +291,7 @@ void nrfx_qspi_uninit(void);
  * @retval NRFX_SUCCESS            The operation was successful (blocking mode) or operation
  *                                 was commissioned (handler mode).
  * @retval NRFX_ERROR_BUSY         The driver currently handles another operation.
+ * @retval NRFX_ERROR_TIMEOUT      The external memory is busy, or there are connection issues.
  * @retval NRFX_ERROR_INVALID_ADDR The provided buffer is not placed in the Data RAM region
  *                                 or its address is not aligned to a 32-bit word.
  */
@@ -259,6 +301,8 @@ nrfx_err_t nrfx_qspi_read(void *   p_rx_buffer,
 
 /**
  * @brief Function for writing data to QSPI memory.
+ *
+ * @note Refer to the note for @ref nrfx_qspi_read.
  *
  * Write, read, and erase operations check memory device busy state before starting the operation.
  * If the memory is busy, the resulting action depends on the mode in which the write operation is used:
@@ -281,6 +325,7 @@ nrfx_err_t nrfx_qspi_read(void *   p_rx_buffer,
  * @retval NRFX_SUCCESS            The operation was successful (blocking mode) or operation
  *                                 was commissioned (handler mode).
  * @retval NRFX_ERROR_BUSY         The driver currently handles other operation.
+ * @retval NRFX_ERROR_TIMEOUT      The external memory is busy, or there are connection issues.
  * @retval NRFX_ERROR_INVALID_ADDR The provided buffer is not placed in the Data RAM region
  *                                 or its address is not aligned to a 32-bit word.
  */
@@ -290,6 +335,8 @@ nrfx_err_t nrfx_qspi_write(void const * p_tx_buffer,
 
 /**
  * @brief Function for starting erasing of one memory block - 4KB, 64KB, or the whole chip.
+ *
+ * @note Refer to the note for @ref nrfx_qspi_read.
  *
  * Write, read, and erase operations check memory device busy state before starting the operation.
  * If the memory is busy, the resulting action depends on the mode in which the erase operation is used:
@@ -308,8 +355,9 @@ nrfx_err_t nrfx_qspi_write(void const * p_tx_buffer,
  *
  * @retval NRFX_SUCCESS            The operation was successful (blocking mode) or operation
  *                                 was commissioned (handler mode).
- * @retval NRFX_ERROR_INVALID_ADDR The provided start address is not aligned to a 32-bit word.
  * @retval NRFX_ERROR_BUSY         The driver currently handles another operation.
+ * @retval NRFX_ERROR_TIMEOUT      The external memory is busy, or there are connection issues.
+ * @retval NRFX_ERROR_INVALID_ADDR The provided start address is not aligned to a 32-bit word.
  */
 nrfx_err_t nrfx_qspi_erase(nrf_qspi_erase_len_t length,
                            uint32_t             start_address);
@@ -317,17 +365,17 @@ nrfx_err_t nrfx_qspi_erase(nrf_qspi_erase_len_t length,
 /**
  * @brief Function for starting an erase operation of the whole chip.
  *
- * @retval NRFX_SUCCESS    The operation was successful (blocking mode) or operation
- *                         was commissioned (handler mode).
- * @retval NRFX_ERROR_BUSY The driver currently handles another operation.
+ * @note Refer to the note for @ref nrfx_qspi_read.
+ *
+ * @retval NRFX_SUCCESS       The operation was successful (blocking mode) or
+ *                            commissioned (handler mode).
+ * @retval NRFX_ERROR_BUSY    The driver currently is handling another operation.
+ * @retval NRFX_ERROR_TIMEOUT The external memory is busy, or there are connection issues.
  */
 nrfx_err_t nrfx_qspi_chip_erase(void);
 
 /**
  * @brief Function for getting the extended event associated with finished operation.
- *
- * @warning This function shall be used only in the context of event handler
-            passed by the user during driver initialization.
  *
  * @return Pointer to the extended event associated with finished operation.
  */
@@ -345,12 +393,23 @@ bool nrfx_qspi_xfer_buffered_check(void);
  *        testing WIP (write in progress) bit.
  *
  * @retval NRFX_SUCCESS    The driver and memory are ready to handle a new operation.
- * @retval NRFX_ERROR_BUSY The driver or memory currently handle another operation.
+ * @retval NRFX_ERROR_BUSY The driver currently is handling another operation.
  */
 nrfx_err_t nrfx_qspi_mem_busy_check(void);
 
 /**
+ * @brief Function for signaling premature operation timeout.
+ *
+ * The function provides a mechanism that can cause premature timeout when the driver is waiting for
+ * the READY event. This allows to use external source of the timeout. If the driver is initialized
+ * with a handler, it will not process the event generated for the transfer.
+ */
+void nrfx_qspi_timeout_signal(void);
+
+/**
  * @brief Function for sending operation code, sending data, and receiving data from the memory device.
+ *
+ * @note Refer to the note for @ref nrfx_qspi_read.
  *
  * Use this function to transfer configuration data to memory and to receive data from memory.
  * Pointers can be addresses from flash memory.
@@ -368,7 +427,7 @@ nrfx_err_t nrfx_qspi_mem_busy_check(void);
  * @param[out] p_rx_buffer Pointer to the array for data to receive. Can be NULL if there is nothing to receive.
  *
  * @retval NRFX_SUCCESS       The operation was successful.
- * @retval NRFX_ERROR_TIMEOUT The external memory is busy or there are connection issues.
+ * @retval NRFX_ERROR_TIMEOUT The external memory is busy, or there are connection issues.
  * @retval NRFX_ERROR_BUSY    The driver currently handles other operation.
  */
 nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
@@ -378,6 +437,8 @@ nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
 /**
  * @brief Function for sending operation code and data to the memory device with simpler configuration.
  *
+ * @note Refer to the note for @ref nrfx_qspi_read.
+ *
  * Use this function to transfer configuration data to memory and to receive data from memory.
  * This function is a synchronous function and should be used only if necessary.
  *
@@ -385,8 +446,9 @@ nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
  * @param[in] length      Length of the data to send and opcode. See @ref nrf_qspi_cinstr_len_t.
  * @param[in] p_tx_buffer Pointer to input data array.
  *
- * @retval NRFX_SUCCESS    The operation was successful.
- * @retval NRFX_ERROR_BUSY The driver currently handles another operation.
+ * @retval NRFX_SUCCESS       The operation was successful.
+ * @retval NRFX_ERROR_BUSY    The driver currently handles another operation.
+ * @retval NRFX_ERROR_TIMEOUT The external memory is busy, or there are connection issues.
  */
 nrfx_err_t nrfx_qspi_cinstr_quick_send(uint8_t               opcode,
                                        nrf_qspi_cinstr_len_t length,
@@ -394,6 +456,8 @@ nrfx_err_t nrfx_qspi_cinstr_quick_send(uint8_t               opcode,
 
 /**
  * @brief Function for starting the custom instruction long frame mode.
+ *
+ * @note Refer to the note for @ref nrfx_qspi_read.
  *
  * The long frame mode is a mechanism that allows for arbitrary byte length custom instructions.
  * Use this function to initiate a custom transaction by sending custom instruction opcode.
@@ -411,12 +475,14 @@ nrfx_err_t nrfx_qspi_cinstr_quick_send(uint8_t               opcode,
  *
  * @retval NRFX_SUCCESS       Operation was successful.
  * @retval NRFX_ERROR_BUSY    Driver currently handles other operation.
- * @retval NRFX_ERROR_TIMEOUT External memory is busy or there are connection issues.
+ * @retval NRFX_ERROR_TIMEOUT The external memory is busy, or there are connection issues.
  */
 nrfx_err_t nrfx_qspi_lfm_start(nrf_qspi_cinstr_conf_t const * p_config);
 
 /**
  * @brief Function for sending and receiving data in the custom instruction long frame mode.
+ *
+ * @note Refer to the note for @ref nrfx_qspi_read.
  *
  * Both specified buffers must be at least @p transfer_length bytes in size.
  *

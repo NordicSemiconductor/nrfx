@@ -188,7 +188,9 @@ typedef struct
  * @param[in] p_config  Pointer to the NFCT driver configuration structure.
  *
  * @retval NRFX_SUCCESS             The NFCT driver was initialized successfully.
- * @retval NRFX_ERROR_INVALID_STATE The NFCT driver is already initialized.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_FORBIDDEN     The NFCT antenna pads are not configured as antenna pins.
  */
 nrfx_err_t nrfx_nfct_init(nrfx_nfct_config_t const * p_config);
@@ -199,6 +201,14 @@ nrfx_err_t nrfx_nfct_init(nrfx_nfct_config_t const * p_config);
  * After uninitialization, the instance is in disabled state.
  */
 void nrfx_nfct_uninit(void);
+
+/**
+ * @brief Function for checking if the NFCT driver is initialized.
+ *
+ * @retval true  Driver is already initialized.
+ * @retval false Driver is not initialized.
+ */
+bool nrfx_nfct_init_check(void);
 
 /**
  * @brief Function for starting the NFC subsystem.

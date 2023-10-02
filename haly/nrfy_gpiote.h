@@ -51,7 +51,8 @@ NRFY_STATIC_INLINE bool __nrfy_internal_gpiote_event_handle(NRF_GPIOTE_Type *  p
                                                             uint32_t *         p_evt_mask);
 
 NRFY_STATIC_INLINE uint32_t __nrfy_internal_gpiote_events_process(NRF_GPIOTE_Type * p_reg,
-                                                                  uint32_t          mask);
+                                                                  uint32_t          mask,
+                                                                  uint32_t          channels_number);
 
 /**
  * @defgroup nrfy_gpiote GPIOTE HALY
@@ -70,25 +71,36 @@ NRFY_STATIC_INLINE uint32_t __nrfy_internal_gpiote_events_process(NRF_GPIOTE_Typ
 /**
  * @brief Function for initializing the specified GPIOTE interrupts.
  *
- * @param[in] p_reg        Pointer to the structure of registers of the peripheral.
- * @param[in] mask         Mask of interrupts to be initialized.
- * @param[in] irq_priority Interrupt priority.
- * @param[in] enable       True if the interrupts are to be enabled, false otherwise.
+ * @param[in] p_reg           Pointer to the structure of registers of the peripheral.
+ * @param[in] mask            Mask of interrupts to be initialized.
+ * @param[in] irq_priority    Interrupt priority.
+ * @param[in] enable          True if the interrupts are to be enabled, false otherwise.
+ * @param[in] channels_number Number of channels for specified GPIOTE peripheral.
  */
 NRFY_STATIC_INLINE void nrfy_gpiote_int_init(NRF_GPIOTE_Type * p_reg,
                                              uint32_t          mask,
                                              uint8_t           irq_priority,
-                                             bool              enable)
+                                             bool              enable,
+                                             uint32_t          channels_number)
 {
-    for (uint8_t i = 0; i < GPIOTE_CH_NUM; i++)
+    for (uint32_t i = 0; i < channels_number; i++)
     {
-        __nrfy_internal_gpiote_event_enabled_clear(p_reg, mask, nrf_gpiote_in_event_get(i));
+        __nrfy_internal_gpiote_event_enabled_clear(p_reg,
+                                                   mask,
+                                                   nrf_gpiote_in_event_get((uint8_t)i));
     }
 
     __nrfy_internal_gpiote_event_enabled_clear(p_reg, mask, NRF_GPIOTE_EVENT_PORT);
 
 #if defined(NRF_GPIOTE_IRQn_EXT)
     IRQn_Type irqn = NRF_GPIOTE_IRQn_EXT;
+#elif !defined(NRF_TRUSTZONE_NONSECURE)
+#if defined(NRF_GPIOTE0)
+#define GPIOTE_IRQ_OFFSET (p_reg == NRF_GPIOTE0 ? 0 : 1)
+#else
+#define GPIOTE_IRQ_OFFSET 1
+#endif
+    IRQn_Type irqn = (IRQn_Type)(nrfx_get_irq_number(p_reg) + GPIOTE_IRQ_OFFSET);
 #else
     IRQn_Type irqn = nrfx_get_irq_number(p_reg);
 #endif
@@ -104,16 +116,18 @@ NRFY_STATIC_INLINE void nrfy_gpiote_int_init(NRF_GPIOTE_Type * p_reg,
 /**
  * @brief Function for processing the specified GPIOTE events.
  *
- * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] mask  Mask of events to be processed, created by @ref NRFY_EVENT_TO_INT_BITMASK().
+ * @param[in] p_reg           Pointer to the structure of registers of the peripheral.
+ * @param[in] mask            Mask of events to be processed, created by @ref NRFY_EVENT_TO_INT_BITMASK().
+ * @param[in] channels_number Number of channels for specified GPIOTE peripheral.
  *
  * @return Mask of events that were generated and processed.
  *         To be checked against the result of @ref NRFY_EVENT_TO_INT_BITMASK().
  */
 NRFY_STATIC_INLINE uint32_t nrfy_gpiote_events_process(NRF_GPIOTE_Type * p_reg,
-                                                       uint32_t          mask)
+                                                       uint32_t          mask,
+                                                       uint32_t          channels_number)
 {
-    uint32_t evt_mask = __nrfy_internal_gpiote_events_process(p_reg, mask);
+    uint32_t evt_mask = __nrfy_internal_gpiote_events_process(p_reg, mask, channels_number);
     nrf_barrier_w();
     return evt_mask;
 }
@@ -387,16 +401,17 @@ NRFY_STATIC_INLINE bool __nrfy_internal_gpiote_event_handle(NRF_GPIOTE_Type *  p
 }
 
 NRFY_STATIC_INLINE uint32_t __nrfy_internal_gpiote_events_process(NRF_GPIOTE_Type * p_reg,
-                                                                  uint32_t          mask)
+                                                                  uint32_t          mask,
+                                                                  uint32_t          channels_number)
 {
     uint32_t event_mask = 0;
 
     nrf_barrier_r();
-    for (uint8_t i = 0; i < GPIOTE_CH_NUM; i++)
+    for (uint32_t i = 0; i < channels_number; i++)
     {
         (void)__nrfy_internal_gpiote_event_handle(p_reg,
                                                   mask,
-                                                  nrf_gpiote_in_event_get(i),
+                                                  nrf_gpiote_in_event_get((uint8_t)i),
                                                   &event_mask);
     }
 

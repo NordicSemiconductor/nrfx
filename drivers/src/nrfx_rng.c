@@ -56,7 +56,7 @@ nrfx_err_t nrfx_rng_init(nrfx_rng_config_t const * p_config, nrfx_rng_evt_handle
     NRFX_ASSERT(handler);
     if (m_rng_state != NRFX_DRV_STATE_UNINITIALIZED)
     {
-        return NRFX_ERROR_ALREADY_INITIALIZED;
+        return NRFX_ERROR_ALREADY;
     }
 
     m_rng_hndl = handler;
@@ -99,6 +99,11 @@ void nrfx_rng_uninit(void)
 
     m_rng_state = NRFX_DRV_STATE_UNINITIALIZED;
     NRFX_LOG_INFO("Uninitialized.");
+}
+
+bool nrfx_rng_init_check(void)
+{
+    return (m_rng_state != NRFX_DRV_STATE_UNINITIALIZED);
 }
 
 void nrfx_rng_irq_handler(void)

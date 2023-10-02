@@ -103,7 +103,7 @@ NRFY_STATIC_INLINE void nrfy_timer_int_init(NRF_TIMER_Type * p_reg,
                                             uint8_t          irq_priority,
                                             bool             enable)
 {
-    for (size_t i = 0; i < NRF_TIMER_CC_COUNT_MAX; i++)
+    for (uint8_t i = 0; i < NRF_TIMER_CC_COUNT_MAX; i++)
     {
         __nrfy_internal_timer_event_enabled_clear(p_reg, mask, nrf_timer_compare_event_get(i));
     }
@@ -329,14 +329,14 @@ NRFY_STATIC_INLINE nrf_timer_bit_width_t nrfy_timer_bit_width_get(NRF_TIMER_Type
 }
 
 /** @refhal{nrf_timer_prescaler_set} */
-NRF_STATIC_INLINE void nrfy_timer_prescaler_set(NRF_TIMER_Type * p_reg, uint32_t prescaler_factor)
+NRFY_STATIC_INLINE void nrfy_timer_prescaler_set(NRF_TIMER_Type * p_reg, uint32_t prescaler_factor)
 {
     nrf_timer_prescaler_set(p_reg, prescaler_factor);
     nrf_barrier_w();
 }
 
 /** @refhal{nrf_timer_prescaler_get} */
-NRF_STATIC_INLINE uint32_t nrfy_timer_prescaler_get(NRF_TIMER_Type const * p_reg)
+NRFY_STATIC_INLINE uint32_t nrfy_timer_prescaler_get(NRF_TIMER_Type const * p_reg)
 {
     nrf_barrier_rw();
     uint32_t prescaler = nrf_timer_prescaler_get(p_reg);
@@ -434,7 +434,7 @@ NRFY_STATIC_INLINE uint32_t __nrfy_internal_timer_events_process(NRF_TIMER_Type 
     uint32_t event_mask = 0;
 
     nrf_barrier_r();
-    for (uint32_t i = 0; i < NRF_TIMER_CC_COUNT_MAX; i++)
+    for (uint8_t i = 0; i < NRF_TIMER_CC_COUNT_MAX; i++)
     {
         __nrfy_internal_timer_event_handle(p_reg,
                                            mask,

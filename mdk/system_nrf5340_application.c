@@ -75,14 +75,14 @@ void SystemInit(void)
         /* Set all ARM SAU regions to NonSecure if TrustZone extensions are enabled.
         * Nordic SPU should handle Secure Attribution tasks */
         #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-            SAU->CTRL |= (1 << SAU_CTRL_ALLNS_Pos);
+            SAU->CTRL |= (1ul << SAU_CTRL_ALLNS_Pos);
         #endif
 
         /* Workaround for Errata 97 "ERASEPROTECT, APPROTECT, or startup problems" found at the Errata document
            for your device located at https://infocenter.nordicsemi.com/index.jsp  */
         if (nrf53_errata_97())
         {
-            if (*((volatile uint32_t *)0x50004A20ul) == 0)
+            if (*((volatile uint32_t *)0x50004A20ul) == 0ul)
             {
                 *((volatile uint32_t *)0x50004A20ul) = 0xDul;
                 *((volatile uint32_t *)0x5000491Cul) = 0x1ul;
@@ -92,8 +92,8 @@ void SystemInit(void)
 
         /* Trimming of the device. Copy all the trimming values from FICR into the target addresses. Trim
          until one ADDR is not initialized. */
-        uint32_t index = 0;
-        for (index = 0; index < 32ul && NRF_FICR_S->TRIMCNF[index].ADDR != 0xFFFFFFFFul; index++){
+        uint32_t index = 0ul;
+        for (index = 0ul; index < 32ul && NRF_FICR_S->TRIMCNF[index].ADDR != 0xFFFFFFFFul; index++){
             #if defined ( __ICCARM__ )
                 /* IAR will complain about the order of volatile pointer accesses. */
                 #pragma diag_suppress=Pa082
@@ -125,7 +125,7 @@ void SystemInit(void)
            for your device located at https://infocenter.nordicsemi.com/index.jsp  */
         if (nrf53_errata_46())
         {
-            *((volatile uint32_t *)0x5003254Cul) = 0;
+            *((volatile uint32_t *)0x5003254Cul) = 0ul;
         }
 
         /* Workaround for Errata 49 "SLEEPENTER and SLEEPEXIT events asserted after pin reset" found at the Errata document
@@ -134,8 +134,8 @@ void SystemInit(void)
         {
             if (NRF_RESET_S->RESETREAS & RESET_RESETREAS_RESETPIN_Msk)
             {
-                NRF_POWER_S->EVENTS_SLEEPENTER = 0;
-                NRF_POWER_S->EVENTS_SLEEPEXIT = 0;
+                NRF_POWER_S->EVENTS_SLEEPENTER = 0ul;
+                NRF_POWER_S->EVENTS_SLEEPEXIT = 0ul;
             }
         }
 
@@ -157,29 +157,29 @@ void SystemInit(void)
 
         if (nrf53_errata_140())
         {
-            if (*(volatile uint32_t *)0x50032420 & 0x80000000)
+            if (*(volatile uint32_t *)0x50032420ul & 0x80000000ul)
             {
                 /* Reset occured during calibration */
                 NRF_CLOCK_S->LFCLKSRC = CLOCK_LFCLKSRC_SRC_LFSYNT;
-                NRF_CLOCK_S->TASKS_LFCLKSTART = 1;
-                while (NRF_CLOCK_S->EVENTS_LFCLKSTARTED == 0) {}
-                NRF_CLOCK_S->EVENTS_LFCLKSTARTED = 0;
-                NRF_CLOCK_S->TASKS_LFCLKSTOP = 1;
+                NRF_CLOCK_S->TASKS_LFCLKSTART = 1ul;
+                while (NRF_CLOCK_S->EVENTS_LFCLKSTARTED == 0ul) {}
+                NRF_CLOCK_S->EVENTS_LFCLKSTARTED = 0ul;
+                NRF_CLOCK_S->TASKS_LFCLKSTOP = 1ul;
                 NRF_CLOCK_S->LFCLKSRC = CLOCK_LFCLKSRC_SRC_LFRC;
             }
         }
 
         if (nrf53_errata_160())
         {
-            *((volatile uint32_t *)0x5000470C) = 0x7Eul;
-            *((volatile uint32_t *)0x5000493C) = 0x7Eul;
-            *((volatile uint32_t *)0x50002118) = 0x7Ful;
-            *((volatile uint32_t *)0x50039E04) = 0x0ul;
-            *((volatile uint32_t *)0x50039E08) = 0x0ul;
-            *((volatile uint32_t *)0x50101110) = 0x0ul;
-            *((volatile uint32_t *)0x50002124) = 0x0ul;
-            *((volatile uint32_t *)0x5000212C) = 0x0ul;
-            *((volatile uint32_t *)0x502012A0) = 0x0ul;
+            *((volatile uint32_t *)0x5000470Cul) = 0x7Eul;
+            *((volatile uint32_t *)0x5000493Cul) = 0x7Eul;
+            *((volatile uint32_t *)0x50002118ul) = 0x7Ful;
+            *((volatile uint32_t *)0x50039E04ul) = 0x0ul;
+            *((volatile uint32_t *)0x50039E08ul) = 0x0ul;
+            *((volatile uint32_t *)0x50101110ul) = 0x0ul;
+            *((volatile uint32_t *)0x50002124ul) = 0x0ul;
+            *((volatile uint32_t *)0x5000212Cul) = 0x0ul;
+            *((volatile uint32_t *)0x502012A0ul) = 0x0ul;
         }
 
         #if !defined(NRF_SKIP_FICR_NS_COPY_TO_RAM)
@@ -212,7 +212,7 @@ void SystemInit(void)
             NRF_TAD_S->CLOCKSTART = TAD_CLOCKSTART_START_Msk;
 
             // Set up Trace pad SPU firewall
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1 << TRACE_TRACEDATA0_PIN);
+            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA0_PIN);
 
             // Configure trace port pad
             NRF_P0_S->PIN_CNF[TRACE_TRACEDATA0_PIN] = TRACE_PIN_CNF_VALUE;
@@ -232,11 +232,11 @@ void SystemInit(void)
             NRF_TAD_S->CLOCKSTART = TAD_CLOCKSTART_START_Msk;
 
             // Set up Trace pads SPU firewall
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1 << TRACE_TRACECLK_PIN);
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1 << TRACE_TRACEDATA0_PIN);
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1 << TRACE_TRACEDATA1_PIN);
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1 << TRACE_TRACEDATA2_PIN);
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1 << TRACE_TRACEDATA3_PIN);
+            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACECLK_PIN);
+            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA0_PIN);
+            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA1_PIN);
+            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA2_PIN);
+            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA3_PIN);
 
             // Configure trace port pads
             NRF_P0_S->PIN_CNF[TRACE_TRACECLK_PIN] =   TRACE_PIN_CNF_VALUE;
@@ -259,7 +259,7 @@ void SystemInit(void)
 
         /* Allow Non-Secure code to run FPU instructions.
          * If only the secure code should control FPU power state these registers should be configured accordingly in the secure application code. */
-        SCB->NSACR |= (3UL << 10);
+        SCB->NSACR |= (3UL << 10ul);
 
         /* Handle fw-branch APPROTECT setup. */
         nrf53_handle_approtect();
@@ -269,8 +269,8 @@ void SystemInit(void)
     /* Enable the FPU if the compiler used floating point unit instructions. __FPU_USED is a MACRO defined by the
     * compiler. Since the FPU consumes energy, remember to disable FPU use in the compiler if floating point unit
     * operations are not used in your code. */
-    #if (__FPU_USED == 1)
-        SCB->CPACR |= (3UL << 20) | (3UL << 22);
+    #if (__FPU_USED == 1ul)
+        SCB->CPACR |= (3UL << 20ul) | (3UL << 22ul);
         __DSB();
         __ISB();
     #endif
@@ -300,7 +300,7 @@ void SystemStoreFICRNS()
 
     /* Make RAM region NS. */
     uint32_t ram_region = ((uint32_t)NRF_FICR_NS - (uint32_t)RAM_BASE) / SPU_RAMREGION_SIZE;
-    NRF_SPU_S->RAMREGION[ram_region].PERM &= ~(1 << SPU_RAMREGION_PERM_SECATTR_Pos);
+    NRF_SPU_S->RAMREGION[ram_region].PERM &= ~(1ul << SPU_RAMREGION_PERM_SECATTR_Pos);
 }
 
 /* Block write and execute access to FICR RAM region */
@@ -315,10 +315,10 @@ void SystemLockFICRNS()
     uint32_t ram_region = ((uint32_t)NRF_FICR_NS - (uint32_t)RAM_BASE) / SPU_RAMREGION_SIZE;
     NRF_SPU_S->RAMREGION[ram_region].PERM &=
         ~(
-            (1 << SPU_RAMREGION_PERM_WRITE_Pos) |
-            (1 << SPU_RAMREGION_PERM_EXECUTE_Pos)
+            (1ul << SPU_RAMREGION_PERM_WRITE_Pos) |
+            (1ul << SPU_RAMREGION_PERM_EXECUTE_Pos)
         );
-    NRF_SPU_S->RAMREGION[ram_region].PERM |= 1 << SPU_RAMREGION_PERM_LOCK_Pos;
+    NRF_SPU_S->RAMREGION[ram_region].PERM |= 1ul << SPU_RAMREGION_PERM_LOCK_Pos;
 }
 
 /*lint --flb "Leave library region" */

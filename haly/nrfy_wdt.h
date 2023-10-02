@@ -59,6 +59,13 @@ NRFY_STATIC_INLINE void __nrfy_internal_wdt_event_enabled_clear(NRF_WDT_Type *  
  * @brief   Hardware access layer with cache and barrier support for managing the WDT peripheral.
  */
 
+#if NRF_WDT_HAS_STOP || defined(__NRFX_DOXYGEN__)
+/** @refhal{NRF_WDT_HAS_STOP} */
+#define NRFY_WDT_HAS_STOP 1
+#else
+#define NRFY_WDT_HAS_STOP 0
+#endif
+
 /** @brief WDT configuration structure. */
 typedef struct
 {
@@ -94,6 +101,9 @@ NRFY_STATIC_INLINE void nrfy_wdt_int_init(NRF_WDT_Type * p_reg,
                                           bool           enable)
 {
     __nrfy_internal_wdt_event_enabled_clear(p_reg, mask, NRF_WDT_EVENT_TIMEOUT);
+#if NRFY_WDT_HAS_STOP
+    __nrfy_internal_wdt_event_enabled_clear(p_reg, mask, NRF_WDT_EVENT_STOPPED);
+#endif
     nrf_barrier_w();
 
     NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number(p_reg), irq_priority);
@@ -312,6 +322,15 @@ NRFY_STATIC_INLINE void nrfy_wdt_reload_request_set(NRF_WDT_Type *        p_reg,
     nrf_barrier_w();
 }
 
+#if NRFY_WDT_HAS_STOP
+/** @refhal{nrf_wdt_task_stop_enable_set} */
+NRFY_STATIC_INLINE void nrfy_wdt_task_stop_enable_set(NRF_WDT_Type * p_reg, bool enable)
+{
+    nrf_wdt_task_stop_enable_set(p_reg, enable);
+    nrf_barrier_w();
+}
+#endif
+
 /** @} */
 
 NRFY_STATIC_INLINE bool __nrfy_internal_wdt_event_handle(NRF_WDT_Type *  p_reg,
@@ -337,6 +356,9 @@ NRFY_STATIC_INLINE uint32_t __nrfy_internal_wdt_events_process(NRF_WDT_Type * p_
 
     nrf_barrier_r();
     (void)__nrfy_internal_wdt_event_handle(p_reg, mask, NRF_WDT_EVENT_TIMEOUT, &evt_mask);
+#if NRFY_WDT_HAS_STOP
+    (void)__nrfy_internal_wdt_event_handle(p_reg, mask, NRF_WDT_EVENT_STOPPED, &evt_mask);
+#endif
 
     return evt_mask;
 }

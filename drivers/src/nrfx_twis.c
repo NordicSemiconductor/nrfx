@@ -54,7 +54,6 @@
     (event == NRF_TWIS_EVENT_READ      ? "NRF_TWIS_EVENT_READ"      : \
                                          "UNKNOWN EVENT"))))))
 
-
 /**
  * @brief Actual state of internal state machine
  *
@@ -355,7 +354,7 @@ static void irq_handler(NRF_TWIS_Type * p_reg, twis_control_block_t * p_cb)
                 evdata.data.tx_amount = nrf_twis_tx_amount_get(p_reg);
                 NRFX_LOG_INFO("Transfer tx_len:%d", evdata.data.tx_amount);
                 NRFX_LOG_DEBUG("Tx data:");
-                NRFX_LOG_HEXDUMP_DEBUG((uint8_t const *)p_reg->TXD.PTR,
+                NRFX_LOG_HEXDUMP_DEBUG((uint8_t const *)nrf_twis_tx_buffer_get(p_reg),
                                        evdata.data.tx_amount * sizeof(uint8_t));
                 call_event_handler(p_cb, &evdata);
                 /* Go to idle and repeat the state machine if READ or WRITE events detected.
@@ -427,7 +426,6 @@ static void irq_handler(NRF_TWIS_Type * p_reg, twis_control_block_t * p_cb)
     }
 }
 
-
 static inline void nrfx_twis_preprocess_status(nrfx_twis_t const * p_instance)
 {
     if (!NRFX_TWIS_NO_SYNC_MODE)
@@ -465,8 +463,10 @@ static void twis_configure(nrfx_twis_t const *        p_instance,
     {
         nrf_twis_pins_set(p_instance->p_reg, p_config->scl_pin, p_config->sda_pin);
     }
-    nrf_twis_address_set(p_instance->p_reg, 0, p_config->addr[0]);
-    nrf_twis_address_set(p_instance->p_reg, 1, p_config->addr[1]);
+
+    nrf_twis_address_set(p_instance->p_reg, 0, (nrf_twis_address_t)p_config->addr[0]);
+    nrf_twis_address_set(p_instance->p_reg, 1, (nrf_twis_address_t)p_config->addr[1]);
+
     nrf_twis_config_address_set(p_instance->p_reg, (nrf_twis_config_addr_mask_t)addr_mask);
 
     if (m_cb[p_instance->drv_inst_idx].ev_handler)
@@ -485,7 +485,6 @@ static void twis_configure(nrfx_twis_t const *        p_instance,
  *
  */
 
-
 nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
                           nrfx_twis_config_t const * p_config,
                           nrfx_twis_event_handler_t  event_handler)
@@ -498,7 +497,11 @@ nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
 
     if (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED)
     {
+#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+        err_code = NRFX_ERROR_ALREADY;
+#else
         err_code = NRFX_ERROR_INVALID_STATE;
+#endif
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -534,7 +537,7 @@ nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
             NRFX_ASSERT(p_config->scl_pin != p_config->sda_pin);
             nrfx_twis_config_pin(p_config->scl_pin, p_config->scl_pull);
             nrfx_twis_config_pin(p_config->sda_pin, p_config->sda_pull);
-#if NRF_GPIO_HAS_CLOCKPIN
+#if NRF_GPIO_HAS_CLOCKPIN &&  defined(NRF_TWIS_CLOCKPIN_SCL_NEEDED_EXT)
             nrf_gpio_pin_clock_set(p_config->scl_pin, true);
 #endif
         }
@@ -558,6 +561,7 @@ nrfx_err_t nrfx_twis_reconfigure(nrfx_twis_t const *        p_instance,
                                  nrfx_twis_config_t const * p_config)
 {
     NRFX_ASSERT(p_config);
+
     if (m_cb[p_instance->drv_inst_idx].state == NRFX_DRV_STATE_UNINITIALIZED)
     {
         return NRFX_ERROR_INVALID_STATE;
@@ -576,6 +580,7 @@ void nrfx_twis_uninit(nrfx_twis_t const * p_instance)
 {
     NRF_TWIS_Type *        p_reg = p_instance->p_reg;
     twis_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
+
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
     nrfx_twis_swreset(p_reg);
@@ -593,13 +598,21 @@ void nrfx_twis_uninit(nrfx_twis_t const * p_instance)
     /* Clear variables */
     p_cb->ev_handler = NULL;
     p_cb->state      = NRFX_DRV_STATE_UNINITIALIZED;
+    NRFX_LOG_INFO("Instance uninitialized: %d.", p_instance->drv_inst_idx);
 }
 
+bool nrfx_twis_init_check(nrfx_twis_t const * p_instance)
+{
+    twis_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    return (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+}
 
 void nrfx_twis_enable(nrfx_twis_t const * p_instance)
 {
     NRF_TWIS_Type *        p_reg = p_instance->p_reg;
     twis_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
+
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
 
     nrfx_twis_clear_all_events(p_reg);
@@ -616,11 +629,11 @@ void nrfx_twis_enable(nrfx_twis_t const * p_instance)
     p_cb->substate = NRFX_TWIS_SUBSTATE_IDLE;
 }
 
-
 void nrfx_twis_disable(nrfx_twis_t const * p_instance)
 {
     NRF_TWIS_Type *        p_reg = p_instance->p_reg;
     twis_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
+
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
     nrf_twis_int_disable(p_reg, m_used_ints_mask);
@@ -705,18 +718,22 @@ static uint32_t nrfx_twis_error_get_and_clear_internal(uint32_t volatile * perro
 
 uint32_t nrfx_twis_error_get_and_clear(nrfx_twis_t const * p_instance)
 {
+    twis_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
+
+    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+
     nrfx_twis_preprocess_status(p_instance);
     /* Make sure that access to error member is atomic
      * so there is no bit that is cleared if it is not copied to local variable already. */
-    twis_control_block_t * p_cb  = &m_cb[p_instance->drv_inst_idx];
     return nrfx_twis_error_get_and_clear_internal(&p_cb->error);
 }
-
 
 nrfx_err_t nrfx_twis_tx_prepare(nrfx_twis_t const * p_instance,
                                 void const *        p_buf,
                                 size_t              size)
 {
+    NRFX_ASSERT(p_buf);
+
     nrfx_err_t err_code;
     twis_control_block_t const * p_cb = &m_cb[p_instance->drv_inst_idx];
 
@@ -761,11 +778,12 @@ nrfx_err_t nrfx_twis_tx_prepare(nrfx_twis_t const * p_instance,
     return err_code;
 }
 
-
 nrfx_err_t nrfx_twis_rx_prepare(nrfx_twis_t const * p_instance,
                                 void *              p_buf,
                                 size_t              size)
 {
+    NRFX_ASSERT(p_buf);
+
     nrfx_err_t err_code;
     twis_control_block_t const * p_cb = &m_cb[p_instance->drv_inst_idx];
 
@@ -810,39 +828,53 @@ nrfx_err_t nrfx_twis_rx_prepare(nrfx_twis_t const * p_instance,
     return err_code;
 }
 
-
 bool nrfx_twis_is_busy(nrfx_twis_t const * p_instance)
 {
-    nrfx_twis_preprocess_status(p_instance);
     twis_control_block_t const * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
+
+    nrfx_twis_preprocess_status(p_instance);
     return NRFX_TWIS_SUBSTATE_IDLE != p_cb->substate;
 }
 
 bool nrfx_twis_is_waiting_tx_buff(nrfx_twis_t const * p_instance)
 {
-    nrfx_twis_preprocess_status(p_instance);
     twis_control_block_t const * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
+
+    nrfx_twis_preprocess_status(p_instance);
     return NRFX_TWIS_SUBSTATE_READ_WAITING == p_cb->substate;
 }
 
 bool nrfx_twis_is_waiting_rx_buff(nrfx_twis_t const * p_instance)
 {
-    nrfx_twis_preprocess_status(p_instance);
     twis_control_block_t const * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
+
+    nrfx_twis_preprocess_status(p_instance);
     return NRFX_TWIS_SUBSTATE_WRITE_WAITING == p_cb->substate;
 }
 
 bool nrfx_twis_is_pending_tx(nrfx_twis_t const * p_instance)
 {
-    nrfx_twis_preprocess_status(p_instance);
     twis_control_block_t const * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
+
+    nrfx_twis_preprocess_status(p_instance);
     return NRFX_TWIS_SUBSTATE_READ_PENDING == p_cb->substate;
 }
 
 bool nrfx_twis_is_pending_rx(nrfx_twis_t const * p_instance)
 {
-    nrfx_twis_preprocess_status(p_instance);
     twis_control_block_t const * p_cb = &m_cb[p_instance->drv_inst_idx];
+
+    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
+
+    nrfx_twis_preprocess_status(p_instance);
     return NRFX_TWIS_SUBSTATE_WRITE_PENDING == p_cb->substate;
 }
 

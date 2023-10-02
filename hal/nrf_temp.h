@@ -178,6 +178,52 @@ NRF_STATIC_INLINE void nrf_temp_calibration_coeff_set(NRF_TEMP_Type * p_reg, uin
 NRF_STATIC_INLINE uint32_t nrf_temp_calibration_coeff_get(NRF_TEMP_Type const * p_reg);
 #endif
 
+#if defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for setting the subscribe configuration for a given
+ *        TEMP task.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] task    Task for which to set the configuration.
+ * @param[in] channel Channel through which to subscribe events.
+ */
+NRF_STATIC_INLINE void nrf_temp_subscribe_set(NRF_TEMP_Type * p_reg,
+                                              nrf_temp_task_t task,
+                                              uint8_t         channel);
+
+/**
+ * @brief Function for clearing the subscribe configuration for a given
+ *        TEMP task.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] task  Task for which to clear the configuration.
+ */
+NRF_STATIC_INLINE void nrf_temp_subscribe_clear(NRF_TEMP_Type * p_reg,
+                                                nrf_temp_task_t task);
+
+/**
+ * @brief Function for setting the publish configuration for a given
+ *        TEMP event.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] event   Event for which to set the configuration.
+ * @param[in] channel Channel through which to publish the event.
+ */
+NRF_STATIC_INLINE void nrf_temp_publish_set(NRF_TEMP_Type *  p_reg,
+                                            nrf_temp_event_t event,
+                                            uint8_t          channel);
+
+/**
+ * @brief Function for clearing the publish configuration for a given
+ *        TEMP event.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] event Event for which to clear the configuration.
+ */
+NRF_STATIC_INLINE void nrf_temp_publish_clear(NRF_TEMP_Type *  p_reg,
+                                              nrf_temp_event_t event);
+#endif // defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
+
 #ifndef NRF_DECLARE_ONLY
 
 NRF_STATIC_INLINE void nrf_temp_int_enable(NRF_TEMP_Type * p_reg, uint32_t mask)
@@ -231,7 +277,7 @@ NRF_STATIC_INLINE int32_t nrf_temp_result_get(NRF_TEMP_Type const * p_reg)
     /* Apply workaround for the nRF51 series anomaly 28 - TEMP: Negative measured values are not represented correctly. */
     if ((raw_measurement & 0x00000200) != 0)
     {
-        raw_measurement |= 0xFFFFFC00UL;
+        raw_measurement |= (int32_t)0xFFFFFC00;
     }
 #endif
 
@@ -249,6 +295,36 @@ NRF_STATIC_INLINE uint32_t nrf_temp_calibration_coeff_get(NRF_TEMP_Type const * 
     return p_reg->CALIB;
 }
 #endif
+
+#if defined(DPPI_PRESENT)
+NRF_STATIC_INLINE void nrf_temp_subscribe_set(NRF_TEMP_Type * p_reg,
+                                              nrf_temp_task_t task,
+                                              uint8_t         channel)
+{
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
+}
+
+NRF_STATIC_INLINE void nrf_temp_subscribe_clear(NRF_TEMP_Type * p_reg,
+                                                nrf_temp_task_t task)
+{
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
+}
+
+NRF_STATIC_INLINE void nrf_temp_publish_set(NRF_TEMP_Type *  p_reg,
+                                            nrf_temp_event_t event,
+                                            uint8_t          channel)
+{
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
+            ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
+}
+
+NRF_STATIC_INLINE void nrf_temp_publish_clear(NRF_TEMP_Type *  p_reg,
+                                              nrf_temp_event_t event)
+{
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) = 0;
+}
+#endif // defined(DPPI_PRESENT)
 
 #endif // NRF_DECLARE_ONLY
 

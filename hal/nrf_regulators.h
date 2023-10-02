@@ -47,103 +47,193 @@ extern "C" {
  * @brief   Hardware access layer for managing the REGULATORS peripheral.
  */
 
-#if defined(REGULATORS_MAINREGSTATUS_VREGH_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether MAINREGSTATUS register is present. */
-#define NRF_REGULATORS_HAS_MAINREGSTATUS 1
-#else
-#define NRF_REGULATORS_HAS_MAINREGSTATUS 0
-#endif
-
-#if defined(REGULATORS_POFCON_POF_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether power failure comparator is present. */
-#define NRF_REGULATORS_HAS_POFCON 1
-#else
-#define NRF_REGULATORS_HAS_POFCON 0
-#endif
-
-#if defined(REGULATORS_POFCON_THRESHOLDVDDH_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether power failure comparator for VDDH is present. */
-#define NRF_REGULATORS_HAS_POFCON_VDDH 1
-#else
-#define NRF_REGULATORS_HAS_POFCON_VDDH 0
-#endif
-
 #if defined(REGULATORS_VREGH_DCDCEN_DCDCEN_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether high voltage regulator is present. */
-#define NRF_REGULATORS_HAS_DCDCEN_VDDH 1
+/** @brief Symbol indicating whether high voltage regulator (VREGH) is present. */
+#define NRF_REGULATORS_HAS_VREG_HIGH 1
 #else
-#define NRF_REGULATORS_HAS_DCDCEN_VDDH 0
+#define NRF_REGULATORS_HAS_VREG_HIGH 0
+#endif
+
+#if defined(REGULATORS_VREGM_ENABLE_ENABLE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether medium voltage regulator (VREGM) is present. */
+#define NRF_REGULATORS_HAS_VREG_MEDIUM 1
+#else
+#define NRF_REGULATORS_HAS_VREG_MEDIUM 0
 #endif
 
 #if defined(REGULATORS_VREGRADIO_DCDCEN_DCDCEN_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether radio regulator is present. */
-#define NRF_REGULATORS_HAS_DCDCEN_RADIO 1
+/** @brief Symbol indicating whether radio regulator (VREGRADIO) is present. */
+#define NRF_REGULATORS_HAS_VREG_RADIO 1
 #else
-#define NRF_REGULATORS_HAS_DCDCEN_RADIO 0
+#define NRF_REGULATORS_HAS_VREG_RADIO 0
 #endif
 
-#if NRF_REGULATORS_HAS_MAINREGSTATUS
-/** @brief Main regulator status. */
-typedef enum
-{
-    NRF_REGULATORS_MAINREGSTATUS_NORMAL = REGULATORS_MAINREGSTATUS_VREGH_Inactive, /**< Normal voltage mode. Voltage supplied on VDD and VDDH. */
-    NRF_REGULATORS_MAINREGSTATUS_HIGH   = REGULATORS_MAINREGSTATUS_VREGH_Active    /**< High voltage mode. Voltage supplied on VDDH. */
-} nrf_regulators_mainregstatus_t;
+#if defined(REGULATORS_POFCON_POF_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether Power-On-Fail Comparator (POF Comparator) is present. */
+#define NRF_REGULATORS_HAS_POF 1
+#else
+#define NRF_REGULATORS_HAS_POF 0
 #endif
 
-#if NRF_REGULATORS_HAS_POFCON
-/** @brief Power failure comparator thresholds. */
+#if defined(REGULATORS_POFCON_THRESHOLDVDDH_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether POF Comparator for VDDH is present. */
+#define NRF_REGULATORS_HAS_POF_VDDH 1
+#else
+#define NRF_REGULATORS_HAS_POF_VDDH 0
+#endif
+
+#if defined(REGULATORS_POFCON_EVENTDISABLE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether POF Comparator can disable POFWARN event. */
+#define NRF_REGULATORS_HAS_POF_WARN_DISABLE 1
+#else
+#define NRF_REGULATORS_HAS_POF_WARN_DISABLE 0
+#endif
+
+#if defined(REGULATORS_POFSTAT_COMPARATOR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether POF Comparator status is present. */
+#define NRF_REGULATORS_HAS_POF_STATUS 1
+#else
+#define NRF_REGULATORS_HAS_POF_STATUS 0
+#endif
+
+#if defined(REGULATORS_TRIM_ResetValue) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether TRIM register is present. */
+#define NRF_REGULATORS_HAS_TRIM 1
+#else
+#define NRF_REGULATORS_HAS_TRIM 0
+#endif
+
+#if defined(REGULATORS_MAINREGSTATUS_VREGH_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether main supply status is present. */
+#define NRF_REGULATORS_HAS_MAIN_STATUS 1
+#else
+#define NRF_REGULATORS_HAS_MAIN_STATUS 0
+#endif
+
+#if defined(REGULATORS_VREGMAIN_INDUCTORDET_DETECTED_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether inductor detection is present. */
+#define NRF_REGULATORS_HAS_INDUCTOR_DET 1
+#else
+#define NRF_REGULATORS_HAS_INDUCTOR_DET 0
+#endif
+
+/** @brief Voltage regulators. */
 typedef enum
 {
-    NRF_REGULATORS_POFTHR_V19 = REGULATORS_POFCON_THRESHOLD_V19, /**< Set threshold to 1.9&nbsp;V. */
-    NRF_REGULATORS_POFTHR_V20 = REGULATORS_POFCON_THRESHOLD_V20, /**< Set threshold to 2.0&nbsp;V. */
-    NRF_REGULATORS_POFTHR_V21 = REGULATORS_POFCON_THRESHOLD_V21, /**< Set threshold to 2.1&nbsp;V. */
-    NRF_REGULATORS_POFTHR_V22 = REGULATORS_POFCON_THRESHOLD_V22, /**< Set threshold to 2.2&nbsp;V. */
-    NRF_REGULATORS_POFTHR_V23 = REGULATORS_POFCON_THRESHOLD_V23, /**< Set threshold to 2.3&nbsp;V. */
-    NRF_REGULATORS_POFTHR_V24 = REGULATORS_POFCON_THRESHOLD_V24, /**< Set threshold to 2.4&nbsp;V. */
-    NRF_REGULATORS_POFTHR_V25 = REGULATORS_POFCON_THRESHOLD_V25, /**< Set threshold to 2.5&nbsp;V. */
-    NRF_REGULATORS_POFTHR_V26 = REGULATORS_POFCON_THRESHOLD_V26, /**< Set threshold to 2.6&nbsp;V. */
-    NRF_REGULATORS_POFTHR_V27 = REGULATORS_POFCON_THRESHOLD_V27, /**< Set threshold to 2.7&nbsp;V. */
-    NRF_REGULATORS_POFTHR_V28 = REGULATORS_POFCON_THRESHOLD_V28, /**< Set threshold to 2.8&nbsp;V. */
+    NRF_REGULATORS_VREG_MAIN,   ///< Main voltage regulator (VREGMAIN).
+#if NRF_REGULATORS_HAS_VREG_HIGH
+    NRF_REGULATORS_VREG_HIGH,   ///< High voltage regulator (VREGH).
+#endif
+#if NRF_REGULATORS_HAS_VREG_MEDIUM
+    NRF_REGULATORS_VREG_MEDIUM, ///< Medium voltage regulator (VREGM).
+#endif
+#if NRF_REGULATORS_HAS_VREG_RADIO
+    NRF_REGULATORS_VREG_RADIO,  ///< Radio voltage regulator (VREGRADIO).
+#endif
+} nrf_regulators_vreg_t;
+
+#if NRF_REGULATORS_HAS_POF
+/** @brief POF Comparator thresholds. */
+typedef enum
+{
+#if defined(REGULATORS_POFCON_THRESHOLD_V17) || defined(__NRFX_DOXYGEN__)
+    NRF_REGULATORS_POF_THR_1V7 = REGULATORS_POFCON_THRESHOLD_V17, ///< Set threshold to 1.7 V.
+#endif
+#if defined(REGULATORS_POFCON_THRESHOLD_V18) || defined(__NRFX_DOXYGEN__)
+    NRF_REGULATORS_POF_THR_1V8 = REGULATORS_POFCON_THRESHOLD_V18, ///< Set threshold to 1.8 V.
+#endif
+    NRF_REGULATORS_POF_THR_1V9 = REGULATORS_POFCON_THRESHOLD_V19, ///< Set threshold to 1.9 V.
+    NRF_REGULATORS_POF_THR_2V0 = REGULATORS_POFCON_THRESHOLD_V20, ///< Set threshold to 2.0 V.
+    NRF_REGULATORS_POF_THR_2V1 = REGULATORS_POFCON_THRESHOLD_V21, ///< Set threshold to 2.1 V.
+    NRF_REGULATORS_POF_THR_2V2 = REGULATORS_POFCON_THRESHOLD_V22, ///< Set threshold to 2.2 V.
+    NRF_REGULATORS_POF_THR_2V3 = REGULATORS_POFCON_THRESHOLD_V23, ///< Set threshold to 2.3 V.
+    NRF_REGULATORS_POF_THR_2V4 = REGULATORS_POFCON_THRESHOLD_V24, ///< Set threshold to 2.4 V.
+    NRF_REGULATORS_POF_THR_2V5 = REGULATORS_POFCON_THRESHOLD_V25, ///< Set threshold to 2.5 V.
+    NRF_REGULATORS_POF_THR_2V6 = REGULATORS_POFCON_THRESHOLD_V26, ///< Set threshold to 2.6 V.
+    NRF_REGULATORS_POF_THR_2V7 = REGULATORS_POFCON_THRESHOLD_V27, ///< Set threshold to 2.7 V.
+    NRF_REGULATORS_POF_THR_2V8 = REGULATORS_POFCON_THRESHOLD_V28, ///< Set threshold to 2.8 V.
 } nrf_regulators_pof_thr_t;
 #endif
 
-#if NRF_REGULATORS_HAS_POFCON_VDDH
-/** @brief Power failure comparator thresholds for VDDH. */
+#if NRF_REGULATORS_HAS_POF_VDDH
+/** @brief POF Comparator thresholds for VDDH. */
 typedef enum
 {
-    NRF_REGULATORS_POFTHRVDDH_V27 = REGULATORS_POFCON_THRESHOLDVDDH_V27, /**< Set threshold to 2.7&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V28 = REGULATORS_POFCON_THRESHOLDVDDH_V28, /**< Set threshold to 2.8&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V29 = REGULATORS_POFCON_THRESHOLDVDDH_V29, /**< Set threshold to 2.9&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V30 = REGULATORS_POFCON_THRESHOLDVDDH_V30, /**< Set threshold to 3.0&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V31 = REGULATORS_POFCON_THRESHOLDVDDH_V31, /**< Set threshold to 3.1&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V32 = REGULATORS_POFCON_THRESHOLDVDDH_V32, /**< Set threshold to 3.2&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V33 = REGULATORS_POFCON_THRESHOLDVDDH_V33, /**< Set threshold to 3.3&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V34 = REGULATORS_POFCON_THRESHOLDVDDH_V34, /**< Set threshold to 3.4&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V35 = REGULATORS_POFCON_THRESHOLDVDDH_V35, /**< Set threshold to 3.5&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V36 = REGULATORS_POFCON_THRESHOLDVDDH_V36, /**< Set threshold to 3.6&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V37 = REGULATORS_POFCON_THRESHOLDVDDH_V37, /**< Set threshold to 3.7&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V38 = REGULATORS_POFCON_THRESHOLDVDDH_V38, /**< Set threshold to 3.8&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V39 = REGULATORS_POFCON_THRESHOLDVDDH_V39, /**< Set threshold to 3.9&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V40 = REGULATORS_POFCON_THRESHOLDVDDH_V40, /**< Set threshold to 4.0&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V41 = REGULATORS_POFCON_THRESHOLDVDDH_V41, /**< Set threshold to 4.1&nbsp;V. */
-    NRF_REGULATORS_POFTHRVDDH_V42 = REGULATORS_POFCON_THRESHOLDVDDH_V42, /**< Set threshold to 4.2&nbsp;V. */
-} nrf_regulators_pof_thrvddh_t;
+    NRF_REGULATORS_POF_THR_VDDH_2V7 = REGULATORS_POFCON_THRESHOLDVDDH_V27, ///< Set threshold to 2.7 V.
+    NRF_REGULATORS_POF_THR_VDDH_2V8 = REGULATORS_POFCON_THRESHOLDVDDH_V28, ///< Set threshold to 2.8 V.
+    NRF_REGULATORS_POF_THR_VDDH_2V9 = REGULATORS_POFCON_THRESHOLDVDDH_V29, ///< Set threshold to 2.9 V.
+    NRF_REGULATORS_POF_THR_VDDH_3V0 = REGULATORS_POFCON_THRESHOLDVDDH_V30, ///< Set threshold to 3.0 V.
+    NRF_REGULATORS_POF_THR_VDDH_3V1 = REGULATORS_POFCON_THRESHOLDVDDH_V31, ///< Set threshold to 3.1 V.
+    NRF_REGULATORS_POF_THR_VDDH_3V2 = REGULATORS_POFCON_THRESHOLDVDDH_V32, ///< Set threshold to 3.2 V.
+    NRF_REGULATORS_POF_THR_VDDH_3V3 = REGULATORS_POFCON_THRESHOLDVDDH_V33, ///< Set threshold to 3.3 V.
+    NRF_REGULATORS_POF_THR_VDDH_3V4 = REGULATORS_POFCON_THRESHOLDVDDH_V34, ///< Set threshold to 3.4 V.
+    NRF_REGULATORS_POF_THR_VDDH_3V5 = REGULATORS_POFCON_THRESHOLDVDDH_V35, ///< Set threshold to 3.5 V.
+    NRF_REGULATORS_POF_THR_VDDH_3V6 = REGULATORS_POFCON_THRESHOLDVDDH_V36, ///< Set threshold to 3.6 V.
+    NRF_REGULATORS_POF_THR_VDDH_3V7 = REGULATORS_POFCON_THRESHOLDVDDH_V37, ///< Set threshold to 3.7 V.
+    NRF_REGULATORS_POF_THR_VDDH_3V8 = REGULATORS_POFCON_THRESHOLDVDDH_V38, ///< Set threshold to 3.8 V.
+    NRF_REGULATORS_POF_THR_VDDH_3V9 = REGULATORS_POFCON_THRESHOLDVDDH_V39, ///< Set threshold to 3.9 V.
+    NRF_REGULATORS_POF_THR_VDDH_4V0 = REGULATORS_POFCON_THRESHOLDVDDH_V40, ///< Set threshold to 4.0 V.
+    NRF_REGULATORS_POF_THR_VDDH_4V1 = REGULATORS_POFCON_THRESHOLDVDDH_V41, ///< Set threshold to 4.1 V.
+    NRF_REGULATORS_POF_THR_VDDH_4V2 = REGULATORS_POFCON_THRESHOLDVDDH_V42, ///< Set threshold to 4.2 V.
+} nrf_regulators_pof_thr_vddh_t;
+#endif
+
+#if NRF_REGULATORS_HAS_TRIM
+/** @brief Components allowed to introduce ELV mode. */
+typedef enum
+{
+    NRF_REGULATORS_ELV_MODE_ALLOW_MASK_EXT ///< Reserved. For internal use only.
+} nrf_regulators_elv_mode_allow_mask_t;
+#endif // NRF_REGULATORS_HAS_TRIM
+
+#if NRF_REGULATORS_HAS_POF
+/** @brief POF Comparator configuration structure. */
+typedef struct {
+    bool                          enable;       ///< Enable or disable POF Comparator.
+    nrf_regulators_pof_thr_t      thr;          ///< Threshold to be set for POF Comparator.
+#if NRF_REGULATORS_HAS_POF_VDDH
+    nrf_regulators_pof_thr_vddh_t thr_vddh;     ///< Threshold to be set for POF Comparator for VDDH.
+#endif
+#if NRF_REGULATORS_HAS_POF_WARN_DISABLE
+    bool                          warn_disable; ///< Disable or enable POFWARN event.
+#endif
+} nrf_regulators_pof_config_t;
+#endif
+
+#if NRF_REGULATORS_HAS_MAIN_STATUS
+/** @brief Main supply status. */
+typedef enum
+{
+    NRF_REGULATORS_MAIN_STATUS_NORMAL = REGULATORS_MAINREGSTATUS_VREGH_Inactive, ///< Normal voltage mode. Voltage supplied on VDD and VDDH.
+    NRF_REGULATORS_MAIN_STATUS_HIGH   = REGULATORS_MAINREGSTATUS_VREGH_Active    ///< High voltage mode. Voltage supplied on VDDH.
+} nrf_regulators_main_status_t;
 #endif
 
 /**
- * @brief Function for enabling or disabling DCDC converter.
+ * @brief Function for enabling or disabling the specified voltage regulator.
  *
- * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
- * @param[in] enable True if DCDC converter is to be enabled, false otherwise.
+ * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
+ * @param[in] regulator Regulator to be enabled or disabled.
+ * @param[in] enable    True if specified voltage regulator is to be enabled, false otherwise.
  */
-NRF_STATIC_INLINE void nrf_regulators_dcdcen_set(NRF_REGULATORS_Type * p_reg, bool enable);
+NRF_STATIC_INLINE void nrf_regulators_vreg_enable_set(NRF_REGULATORS_Type * p_reg,
+                                                      nrf_regulators_vreg_t regulator,
+                                                      bool                  enable);
 
 /**
- * @brief Function for putting CPU in system OFF mode.
+ * @brief Function for checking whether the specified voltage regulator is enabled.
  *
- * This function puts the CPU into system off mode.
- * The only way to wake up the CPU is by reset.
+ * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
+ * @param[in] regulator Regulator to be checked.
+ *
+ * @retval true  Specified voltage regulator is enabled.
+ * @retval false Specified voltage regulator is disabled.
+ */
+NRF_STATIC_INLINE bool nrf_regulators_vreg_enable_check(NRF_REGULATORS_Type const * p_reg,
+                                                       nrf_regulators_vreg_t        regulator);
+
+/**
+ * @brief Function for putting the CPU in System OFF mode.
  *
  * @note This function never returns.
  *
@@ -151,7 +241,7 @@ NRF_STATIC_INLINE void nrf_regulators_dcdcen_set(NRF_REGULATORS_Type * p_reg, bo
  */
 NRF_STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type * p_reg);
 
-#if NRF_REGULATORS_HAS_MAINREGSTATUS
+#if NRF_REGULATORS_HAS_MAIN_STATUS
 /**
  * @brief Function for getting the main supply status.
  *
@@ -160,86 +250,172 @@ NRF_STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type * p_reg);
  * @return The current main supply status.
  */
 NRF_STATIC_INLINE
-nrf_regulators_mainregstatus_t nrf_regulators_mainregstatus_get(NRF_REGULATORS_Type const * p_reg);
+nrf_regulators_main_status_t nrf_regulators_main_status_get(NRF_REGULATORS_Type const * p_reg);
 #endif
 
-#if NRF_REGULATORS_HAS_POFCON
+#if NRF_REGULATORS_HAS_POF
 /**
- * @brief Function for setting the power failure comparator configuration.
+ * @brief Function for setting the POF Comparator configuration.
  *
- * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
- * @param[in] enable True if power failure comparator is to be enabled, false otherwise.
- * @param[in] thr    Voltage threshold value.
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] p_config Pointer to the structure containing POF Comparator configuration.
  */
-NRF_STATIC_INLINE void nrf_regulators_pofcon_set(NRF_REGULATORS_Type *    p_reg,
-                                                 bool                     enable,
-                                                 nrf_regulators_pof_thr_t thr);
+NRF_STATIC_INLINE void nrf_regulators_pof_config_set(NRF_REGULATORS_Type *               p_reg,
+                                                     nrf_regulators_pof_config_t const * p_config);
 
 /**
- * @brief Function for getting the power failure comparator configuration.
+ * @brief Function for getting the POF Comparator configuration.
  *
- * @param[in]  p_reg     Pointer to the structure of registers of the peripheral.
- * @param[out] p_enabled Function sets this boolean variable to true
- *                       if power failure comparator is enabled.
- *                       The pointer can be NULL if we do not need this information.
- *
- * @return Threshold setting for power failure comparator.
+ * @param[in]  p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[out] p_config Pointer to the structure to be filled with POF Comparator configuration.
  */
-NRF_STATIC_INLINE
-nrf_regulators_pof_thr_t nrf_regulators_pofcon_get(NRF_REGULATORS_Type const * p_reg,
-                                                   bool *                      p_enabled);
-#endif // NRF_REGULATORS_HAS_POFCON
+NRF_STATIC_INLINE void nrf_regulators_pof_config_get(NRF_REGULATORS_Type const *   p_reg,
+                                                     nrf_regulators_pof_config_t * p_config);
+#endif // NRF_REGULATORS_HAS_POF
 
-#if NRF_REGULATORS_HAS_POFCON_VDDH
+#if NRF_REGULATORS_HAS_POF_STATUS
 /**
- * @brief Function for setting the VDDH power failure comparator threshold.
- *
- * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] thr   Threshold to be set.
- */
-NRF_STATIC_INLINE void nrf_regulators_pofcon_vddh_set(NRF_REGULATORS_Type *        p_reg,
-                                                      nrf_regulators_pof_thrvddh_t thr);
-
-/**
- * @brief Function for getting the VDDH regulators failure comparator threshold.
+ * @brief Function for checking if the detected voltage is below or above the threshold of VPOF (POF Comparator's threshold voltage).
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  *
- * @return Threshold setting for regulators failure comparator.
+ * @retval true  Voltage below VPOF threshold has been detected.
+ * @retval false Voltage above VPOF threshold has been detected.
  */
-NRF_STATIC_INLINE
-nrf_regulators_pof_thrvddh_t nrf_regulators_pofcon_vddh_get(NRF_REGULATORS_Type const * p_reg);
-#endif // NRF_REGULATORS_HAS_POFCON_VDDH
-
-#if NRF_REGULATORS_HAS_DCDCEN_VDDH
-/**
- * @brief Function for enabling or disabling the high voltage regulator.
- *
- * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
- * @param[in] enable True if the high voltage regulator is to be enabled, false otherwise.
- */
-NRF_STATIC_INLINE void nrf_regulators_dcdcen_vddh_set(NRF_REGULATORS_Type * p_reg, bool enable);
+NRF_STATIC_INLINE bool nrf_regulators_pof_below_thr_check(NRF_REGULATORS_Type const * p_reg);
 #endif
 
-#if NRF_REGULATORS_HAS_DCDCEN_RADIO
+#if NRF_REGULATORS_HAS_TRIM
 /**
- * @brief Function for enabling or disabling the radio regulator.
+ * @brief Function for setting components that are allowed to introduce the ELV mode.
  *
- * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
- * @param[in] enable True if the radio regulator is to be enabled, false otherwise.
+ * @warning This register is retained when retention is enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Mask of components to be set, created using @ref nrf_regulators_elv_mode_allow_mask_t.
  */
-NRF_STATIC_INLINE void nrf_regulators_dcdcen_radio_set(NRF_REGULATORS_Type * p_reg, bool enable);
+NRF_STATIC_INLINE void nrf_regulators_elv_mode_allow_set(NRF_REGULATORS_Type * p_reg,
+                                                         uint32_t              mask);
+
+/**
+ * @brief Function for geting components that are allowed to introduce the ELV mode.
+ *
+ * @warning This register is retained when retention is enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Mask of components allowed to introduce ELV mode,
+ *         created using @ref nrf_regulators_elv_mode_allow_mask_t.
+ */
+NRF_STATIC_INLINE uint32_t nrf_regulators_elv_mode_allow_get(NRF_REGULATORS_Type const * p_reg);
+#endif // NRF_REGULATORS_HAS_TRIM
+
+#if NRF_REGULATORS_HAS_INDUCTOR_DET
+/**
+ * @brief Function for checking whether an inductor is connected to the DCC pin.
+ *
+ * @note The detection can only take place if the VREG_MAIN DC/DC converter is not enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval true  Inductor detected.
+ * @retval false Inductor not detected.
+ */
+NRF_STATIC_INLINE bool nrf_regulators_inductor_check(NRF_REGULATORS_Type const * p_reg);
 #endif
 
 #ifndef NRF_DECLARE_ONLY
 
-NRF_STATIC_INLINE void nrf_regulators_dcdcen_set(NRF_REGULATORS_Type * p_reg, bool enable)
+NRF_STATIC_INLINE void nrf_regulators_vreg_enable_set(NRF_REGULATORS_Type * p_reg,
+                                                      nrf_regulators_vreg_t regulator,
+                                                      bool                  enable)
 {
+    switch (regulator)
+    {
+        case NRF_REGULATORS_VREG_MAIN:
 #if defined(REGULATORS_DCDCEN_DCDCEN_Msk)
-    p_reg->DCDCEN = (enable ? REGULATORS_DCDCEN_DCDCEN_Msk : 0);
+            p_reg->DCDCEN = (enable ? REGULATORS_DCDCEN_DCDCEN_Enabled :
+                             REGULATORS_DCDCEN_DCDCEN_Disabled) << REGULATORS_DCDCEN_DCDCEN_Pos;
+#elif defined(REGULATORS_VREGMAIN_DCDCEN_VAL_Msk)
+            p_reg->VREGMAIN.DCDCEN = (enable ? REGULATORS_VREGMAIN_DCDCEN_VAL_Enabled :
+                                      REGULATORS_VREGMAIN_DCDCEN_VAL_Disabled)
+                                     << REGULATORS_VREGMAIN_DCDCEN_VAL_Pos;
 #else
-    p_reg->VREGMAIN.DCDCEN = (enable ? REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Msk : 0);
+            p_reg->VREGMAIN.DCDCEN = (enable ? REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Enabled :
+                                      REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Disabled)
+                                     << REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Pos;
 #endif
+            break;
+
+#if NRF_REGULATORS_HAS_VREG_HIGH
+        case NRF_REGULATORS_VREG_HIGH:
+            p_reg->VREGH.DCDCEN = (enable ? REGULATORS_VREGH_DCDCEN_DCDCEN_Enabled :
+                                   REGULATORS_VREGH_DCDCEN_DCDCEN_Disabled)
+                                  << REGULATORS_VREGH_DCDCEN_DCDCEN_Pos;
+            break;
+#endif
+
+#if NRF_REGULATORS_HAS_VREG_MEDIUM
+        case NRF_REGULATORS_VREG_MEDIUM:
+            p_reg->VREGM.ENABLE = (enable ? REGULATORS_VREGM_ENABLE_ENABLE_Enabled :
+                                   REGULATORS_VREGM_ENABLE_ENABLE_Disabled)
+                                  << REGULATORS_VREGM_ENABLE_ENABLE_Pos;
+            break;
+#endif
+
+#if NRF_REGULATORS_HAS_VREG_RADIO
+        case NRF_REGULATORS_VREG_RADIO:
+            p_reg->VREGRADIO.DCDCEN = (enable ? REGULATORS_VREGRADIO_DCDCEN_DCDCEN_Enabled :
+                                       REGULATORS_VREGRADIO_DCDCEN_DCDCEN_Disabled)
+                                      << REGULATORS_VREGRADIO_DCDCEN_DCDCEN_Pos;
+            break;
+#endif
+
+        default:
+            NRFX_ASSERT(false);
+            break;
+    }
+}
+
+NRF_STATIC_INLINE bool nrf_regulators_vreg_enable_check(NRF_REGULATORS_Type const * p_reg,
+                                                        nrf_regulators_vreg_t       regulator)
+{
+    switch (regulator)
+    {
+        case NRF_REGULATORS_VREG_MAIN:
+#if defined(REGULATORS_DCDCEN_DCDCEN_Msk)
+            return (p_reg->DCDCEN >> REGULATORS_DCDCEN_DCDCEN_Pos) ==
+                   REGULATORS_DCDCEN_DCDCEN_Enabled;
+#elif defined(REGULATORS_VREGMAIN_DCDCEN_VAL_Msk)
+            return (p_reg->VREGMAIN.DCDCEN >> REGULATORS_VREGMAIN_DCDCEN_VAL_Pos) ==
+                   REGULATORS_VREGMAIN_DCDCEN_VAL_Enabled;
+#else
+            return (p_reg->VREGMAIN.DCDCEN >> REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Pos) ==
+                    REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Enabled;
+#endif
+
+#if NRF_REGULATORS_HAS_VREG_HIGH
+        case NRF_REGULATORS_VREG_HIGH:
+            return (p_reg->VREGH.DCDCEN >> REGULATORS_VREGH_DCDCEN_DCDCEN_Pos) ==
+                   REGULATORS_VREGH_DCDCEN_DCDCEN_Enabled;
+#endif
+
+#if NRF_REGULATORS_HAS_VREG_MEDIUM
+        case NRF_REGULATORS_VREG_MEDIUM:
+            return (p_reg->VREGM.ENABLE >> REGULATORS_VREGM_ENABLE_ENABLE_Pos) ==
+                   REGULATORS_VREGM_ENABLE_ENABLE_Enabled;
+#endif
+
+#if NRF_REGULATORS_HAS_VREG_RADIO
+        case NRF_REGULATORS_VREG_RADIO:
+            return (p_reg->VREGRADIO.DCDCEN >> REGULATORS_VREGRADIO_DCDCEN_DCDCEN_Pos) ==
+                   REGULATORS_VREGRADIO_DCDCEN_DCDCEN_Enabled;
+#endif
+
+        default:
+            NRFX_ASSERT(false);
+            return false;
+    }
 }
 
 NRF_STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type * p_reg)
@@ -254,82 +430,88 @@ NRF_STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type * p_reg)
     }
 }
 
-#if NRF_REGULATORS_HAS_MAINREGSTATUS
+#if NRF_REGULATORS_HAS_MAIN_STATUS
 NRF_STATIC_INLINE
-nrf_regulators_mainregstatus_t nrf_regulators_mainregstatus_get(NRF_REGULATORS_Type const * p_reg)
+nrf_regulators_main_status_t nrf_regulators_main_status_get(NRF_REGULATORS_Type const * p_reg)
 {
-    return (nrf_regulators_mainregstatus_t)p_reg->MAINREGSTATUS;
+    return (nrf_regulators_main_status_t)p_reg->MAINREGSTATUS;
 }
 #endif
 
-#if NRF_REGULATORS_HAS_POFCON
-NRF_STATIC_INLINE void nrf_regulators_pofcon_set(NRF_REGULATORS_Type *    p_reg,
-                                                 bool                     enable,
-                                                 nrf_regulators_pof_thr_t thr)
+#if NRF_REGULATORS_HAS_POF
+NRF_STATIC_INLINE void nrf_regulators_pof_config_set(NRF_REGULATORS_Type *               p_reg,
+                                                     nrf_regulators_pof_config_t const * p_config)
 {
-#if NRF_REGULATORS_HAS_POFCON_VDDH
-    uint32_t pofcon = p_reg->POFCON;
-    pofcon &= ~(REGULATORS_POFCON_THRESHOLD_Msk | REGULATORS_POFCON_POF_Msk);
-    pofcon |=
-#else // NRF_REGULATORS_HAS_POFCON_VDDH
-    p_reg->POFCON =
+    NRFX_ASSERT(p_config);
+
+    p_reg->POFCON = ((p_config->enable ? REGULATORS_POFCON_POF_Enabled :
+                      REGULATORS_POFCON_POF_Disabled) << REGULATORS_POFCON_POF_Pos) |
+                    (((uint32_t)p_config->thr) << REGULATORS_POFCON_THRESHOLD_Pos) |
+#if NRF_REGULATORS_HAS_POF_VDDH
+                    (((uint32_t)p_config->thr_vddh) << REGULATORS_POFCON_THRESHOLDVDDH_Pos) |
 #endif
-        (((uint32_t)thr) << REGULATORS_POFCON_THRESHOLD_Pos) |
-        (enable ?
-        (REGULATORS_POFCON_POF_Enabled << REGULATORS_POFCON_POF_Pos)
-        :
-        (REGULATORS_POFCON_POF_Disabled << REGULATORS_POFCON_POF_Pos));
-#if NRF_REGULATORS_HAS_POFCON_VDDH
-    p_reg->POFCON = pofcon;
+#if NRF_REGULATORS_HAS_POF_WARN_DISABLE
+                    ((p_config->warn_disable ? REGULATORS_POFCON_EVENTDISABLE_Disabled :
+                      REGULATORS_POFCON_EVENTDISABLE_Enabled)
+                     << REGULATORS_POFCON_EVENTDISABLE_Pos) |
+#endif
+                    0;
+}
+
+NRF_STATIC_INLINE void nrf_regulators_pof_config_get(NRF_REGULATORS_Type const *   p_reg,
+                                                     nrf_regulators_pof_config_t * p_config)
+{
+    NRFX_ASSERT(p_config);
+
+    p_config->enable = ((p_reg->POFCON & REGULATORS_POFCON_POF_Msk) >> REGULATORS_POFCON_POF_Pos)
+                        == REGULATORS_POFCON_POF_Enabled;
+
+    p_config->thr = (nrf_regulators_pof_thr_t)((p_reg->POFCON & REGULATORS_POFCON_THRESHOLD_Msk)
+                                               >> REGULATORS_POFCON_THRESHOLD_Pos);
+
+
+#if NRF_REGULATORS_HAS_POF_VDDH
+    p_config->thr_vddh = (nrf_regulators_pof_thr_vddh_t)((p_reg->POFCON &
+                                                          REGULATORS_POFCON_THRESHOLDVDDH_Msk)
+                                                         >> REGULATORS_POFCON_THRESHOLDVDDH_Pos);
+#endif
+
+#if NRF_REGULATORS_HAS_POF_WARN_DISABLE
+    p_config->warn_disable = ((p_reg->POFCON & REGULATORS_POFCON_EVENTDISABLE_Msk)
+                              >> REGULATORS_POFCON_EVENTDISABLE_Pos)
+                             == REGULATORS_POFCON_EVENTDISABLE_Disabled;
 #endif
 }
+#endif // NRF_REGULATORS_HAS_POF
 
-NRF_STATIC_INLINE
-nrf_regulators_pof_thr_t nrf_regulators_pofcon_get(NRF_REGULATORS_Type const * p_reg,
-                                                   bool *                      p_enabled)
+#if NRF_REGULATORS_HAS_POF_STATUS
+NRF_STATIC_INLINE bool nrf_regulators_pof_below_thr_check(NRF_REGULATORS_Type const * p_reg)
 {
-    uint32_t pofcon = p_reg->POFCON;
-    if (NULL != p_enabled)
-    {
-        (*p_enabled) = ((pofcon & REGULATORS_POFCON_POF_Msk) >> REGULATORS_POFCON_POF_Pos)
-            == REGULATORS_POFCON_POF_Enabled;
-    }
-    return (nrf_regulators_pof_thr_t)((pofcon & REGULATORS_POFCON_THRESHOLD_Msk) >>
-                                      REGULATORS_POFCON_THRESHOLD_Pos);
-}
-#endif // NRF_REGULATORS_HAS_POFCON
-
-#if NRF_REGULATORS_HAS_POFCON_VDDH
-NRF_STATIC_INLINE void nrf_regulators_pofcon_vddh_set(NRF_REGULATORS_Type *        p_reg,
-                                                      nrf_regulators_pof_thrvddh_t thr)
-{
-    uint32_t pofcon = p_reg->POFCON;
-    pofcon &= ~REGULATORS_POFCON_THRESHOLDVDDH_Msk;
-    pofcon |= (((uint32_t)thr) << REGULATORS_POFCON_THRESHOLDVDDH_Pos);
-    p_reg->POFCON = pofcon;
-}
-
-NRF_STATIC_INLINE
-nrf_regulators_pof_thrvddh_t nrf_regulators_pofcon_vddh_get(NRF_REGULATORS_Type const * p_reg)
-{
-    return (nrf_regulators_pof_thrvddh_t)((p_reg->POFCON & REGULATORS_POFCON_THRESHOLDVDDH_Msk) >>
-                                          REGULATORS_POFCON_THRESHOLDVDDH_Pos);
-}
-#endif // NRF_REGULATORS_HAS_POFCON_VDDH
-
-#if NRF_REGULATORS_HAS_DCDCEN_VDDH
-NRF_STATIC_INLINE void nrf_regulators_dcdcen_vddh_set(NRF_REGULATORS_Type * p_reg, bool enable)
-{
-    p_reg->VREGH.DCDCEN = (enable) ? REGULATORS_VREGH_DCDCEN_DCDCEN_Enabled :
-                                     REGULATORS_VREGH_DCDCEN_DCDCEN_Disabled;
+    return (p_reg->POFSTAT & REGULATORS_POFSTAT_COMPARATOR_Msk) >> REGULATORS_POFSTAT_COMPARATOR_Pos
+           == REGULATORS_POFSTAT_COMPARATOR_Below;
 }
 #endif
 
-#if NRF_REGULATORS_HAS_DCDCEN_RADIO
-NRF_STATIC_INLINE void nrf_regulators_dcdcen_radio_set(NRF_REGULATORS_Type * p_reg, bool enable)
+#if NRF_REGULATORS_HAS_TRIM
+NRF_STATIC_INLINE void nrf_regulators_elv_mode_allow_set(NRF_REGULATORS_Type * p_reg,
+                                                         uint32_t              mask)
 {
-    p_reg->VREGRADIO.DCDCEN = (enable) ? REGULATORS_VREGRADIO_DCDCEN_DCDCEN_Enabled :
-                                         REGULATORS_VREGRADIO_DCDCEN_DCDCEN_Disabled;
+    p_reg->TRIM = ((p_reg->TRIM & ~NRF_REGULATORS_ELV_MODE_ALL_MASK) |
+                   (mask & NRF_REGULATORS_ELV_MODE_ALL_MASK));
+}
+
+NRF_STATIC_INLINE uint32_t nrf_regulators_elv_mode_allow_get(NRF_REGULATORS_Type const * p_reg)
+{
+    return p_reg->TRIM & NRF_REGULATORS_ELV_MODE_ALL_MASK;
+}
+#endif // NRF_REGULATORS_HAS_TRIM
+
+#if NRF_REGULATORS_HAS_INDUCTOR_DET
+NRF_STATIC_INLINE bool nrf_regulators_inductor_check(NRF_REGULATORS_Type const * p_reg)
+{
+    return (p_reg->VREGMAIN.INDUCTORDET & REGULATORS_VREGMAIN_INDUCTORDET_DETECTED_Msk)
+           >> REGULATORS_VREGMAIN_INDUCTORDET_DETECTED_Pos
+           == REGULATORS_VREGMAIN_INDUCTORDET_DETECTED_InductorDetected;
 }
 #endif
 

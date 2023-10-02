@@ -42,33 +42,33 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 
 /* Simplify later device detection macros. Check DEVELOP_IN first, as they take precedence. */
 #if   defined (DEVELOP_IN_NRF52805)
-    #define IS_NRF52805 1
+    #define IS_NRF52805 1ul
 #elif defined (DEVELOP_IN_NRF52810)
-    #define IS_NRF52810 1
+    #define IS_NRF52810 1ul
 #elif defined (DEVELOP_IN_NRF52811)
-    #define IS_NRF52811 1
+    #define IS_NRF52811 1ul
 #elif defined (DEVELOP_IN_NRF52820)
-    #define IS_NRF52820 1
+    #define IS_NRF52820 1ul
 #elif defined (DEVELOP_IN_NRF52832)
     #define IS_NRF52832 1
 #elif defined (DEVELOP_IN_NRF52833)
     #define IS_NRF52833 1
 #elif defined (DEVELOP_IN_NRF52840)
-    #define IS_NRF52840 1
+    #define IS_NRF52840 1ul
 #elif defined (NRF52805_XXAA)
-    #define IS_NRF52805 1
+    #define IS_NRF52805 1ul
 #elif defined (NRF52810_XXAA)
-    #define IS_NRF52810 1
+    #define IS_NRF52810 1ul
 #elif defined (NRF52811_XXAA)
-    #define IS_NRF52811 1
+    #define IS_NRF52811 1ul
 #elif defined (NRF52820_XXAA)
-    #define IS_NRF52820 1
+    #define IS_NRF52820 1ul
 #elif defined (NRF52832_XXAA) || defined (NRF52832_XXAB)
-    #define IS_NRF52832 1
+    #define IS_NRF52832 1ul
 #elif defined (NRF52833_XXAA)
-    #define IS_NRF52833 1
+    #define IS_NRF52833 1ul
 #elif defined (NRF52840_XXAA)
-    #define IS_NRF52840 1
+    #define IS_NRF52840 1ul
 #else
     #error "A supported device macro must be defined."
 #endif
@@ -97,9 +97,9 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 /* Select correct reset pin */
 /* Handle DEVELOP_IN-targets first as they take precedence over the later macros */
 #if    IS_NRF52805 || IS_NRF52810 || IS_NRF52811 || IS_NRF52832
-    #define RESET_PIN 21
+    #define RESET_PIN 21ul
 #elif  IS_NRF52820 || IS_NRF52833 || IS_NRF52840
-    #define RESET_PIN 18
+    #define RESET_PIN 18ul
 #else
     #error "A supported device macro must be defined."
 #endif
@@ -182,9 +182,9 @@ void SystemInit(void)
         /* Workaround for Errata 36 "CLOCK: Some registers are not reset when expected" found at the Errata document
            for your device located at https://infocenter.nordicsemi.com/index.jsp  */
         if (nrf52_errata_36()){
-            NRF_CLOCK->EVENTS_DONE = 0;
-            NRF_CLOCK->EVENTS_CTTO = 0;
-            NRF_CLOCK->CTIV = 0;
+            NRF_CLOCK->EVENTS_DONE = 0ul;
+            NRF_CLOCK->EVENTS_CTTO = 0ul;
+            NRF_CLOCK->CTIV = 0ul;
         }
     #endif
 
@@ -259,7 +259,7 @@ void SystemInit(void)
         /* Workaround for Errata 115 "RAM: RAM content cannot be trusted upon waking up from System ON Idle or System OFF mode" found at the Errata document
            for your device located at https://infocenter.nordicsemi.com/index.jsp  */
         if (nrf52_errata_115()){
-            *(volatile uint32_t *)0x40000EE4 = (*(volatile uint32_t *)0x40000EE4 & 0xFFFFFFF0) | (*(uint32_t *)0x10000258 & 0x0000000F);
+            *(volatile uint32_t *)0x40000EE4ul = (*(volatile uint32_t *)0x40000EE4ul & 0xFFFFFFF0ul) | (*(uint32_t *)0x10000258ul & 0x0000000Ful);
         }
     #endif
 
@@ -285,7 +285,7 @@ void SystemInit(void)
         /* Workaround for Errata 182 "RADIO: Fixes for anomalies #102, #106, and #107 do not take effect" found at the Errata document
            for your device located at https://infocenter.nordicsemi.com/index.jsp  */
         if (nrf52_errata_182()){
-            *(volatile uint32_t *) 0x4000173C |= (0x1 << 10);
+            *(volatile uint32_t *) 0x4000173Cul |= (0x1ul << 10ul);
         }
     #endif
 
@@ -301,7 +301,7 @@ void SystemInit(void)
      * compiler. Since the FPU consumes energy, remember to disable FPU use in the compiler if floating point unit
      * operations are not used in your code. */
     #if (__FPU_USED == 1)
-        SCB->CPACR |= (3UL << 20) | (3UL << 22);
+        SCB->CPACR |= (3UL << 20ul) | (3UL << 22ul);
         __DSB();
         __ISB();
     #endif
@@ -309,12 +309,12 @@ void SystemInit(void)
     nrf52_handle_approtect();
 
     #if NRF52_CONFIGURATION_249_ENABLE && (defined(NRF52805_XXAA) || defined(NRF52810_XXAA) || defined(NRF52811_XXAA))
-        if (nrf52_configuration_249() && (NRF_UICR->NRFMDK[0] == 0xFFFFFFFF || NRF_UICR->NRFMDK[1] == 0xFFFFFFFF))
+        if (nrf52_configuration_249() && (NRF_UICR->NRFMDK[0] == 0xFFFFFFFFul || NRF_UICR->NRFMDK[1] == 0xFFFFFFFFul))
         {
             nvmc_config(NVMC_CONFIG_WEN_Wen);
-            NRF_UICR->NRFMDK[0] = 0;
+            NRF_UICR->NRFMDK[0] = 0ul;
             nvmc_wait();
-            NRF_UICR->NRFMDK[1] = 0;
+            NRF_UICR->NRFMDK[1] = 0ul;
             nvmc_wait();
             nvmc_config(NVMC_CONFIG_WEN_Ren);
         }
@@ -353,9 +353,9 @@ void SystemInit(void)
         make sure NFC pins are mapped as GPIO. */
     #if    defined (DEVELOP_IN_NRF52832) && defined(NRF52810_XXAA) \
         || defined (DEVELOP_IN_NRF52840) && defined(NRF52811_XXAA)
-        if ((*((uint32_t *)0x1000120C) & (1 << 0)) != 0){
+        if ((*((uint32_t *)0x1000120Cul) & (1ul << 0ul)) != 0ul){
             nvmc_config(NVMC_CONFIG_WEN_Wen);
-            *((uint32_t *)0x1000120C) = 0;
+            *((uint32_t *)0x1000120Cul) = 0ul;
             nvmc_wait();
             nvmc_config(NVMC_CONFIG_WEN_Ren);
             NVIC_SystemReset();

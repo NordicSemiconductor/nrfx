@@ -218,7 +218,9 @@ typedef void (* nrfx_spi_evt_handler_t)(nrfx_spi_evt_t const * p_event,
  * @param[in] p_context  Context passed to the event handler.
  *
  * @retval NRFX_SUCCESS             Initialization was successful.
- * @retval NRFX_ERROR_INVALID_STATE The driver was already initialized.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_BUSY          Some other peripheral with the same
  *                                  instance ID is already in use. This is
  *                                  possible only if @ref nrfx_prs module
@@ -248,6 +250,16 @@ nrfx_err_t nrfx_spi_reconfigure(nrfx_spi_t const *        p_instance,
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 void nrfx_spi_uninit(nrfx_spi_t const * p_instance);
+
+/**
+ * @brief Function for checking if the SPI driver instance is initialized.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  Instance is already initialized.
+ * @retval false Instance is not initialized.
+ */
+bool nrfx_spi_init_check(nrfx_spi_t const * p_instance);
 
 /**
  * @brief Function for starting the SPI data transfer.
@@ -295,11 +307,11 @@ void nrfx_spi_abort(nrfx_spi_t const * p_instance);
  * A specific interrupt handler for the driver instance can be retrieved by using
  * the NRFX_SPI_INST_HANDLER_GET macro.
  *
- * Here is a sample of using the NRFX_SPI_INST_HANDLER_GET macro to directly map
- * an interrupt handler in a Zephyr application:
+ * Here is a sample of using the NRFX_SPI_INST_HANDLER_GET macro to map an interrupt handler
+ * in a Zephyr application:
  *
- * IRQ_DIRECT_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_SPI_INST_GET(\<instance_index\>)), \<priority\>,
- *                    NRFX_SPI_INST_HANDLER_GET(\<instance_index\>), 0);
+ * IRQ_CONNECT(NRFX_IRQ_NUMBER_GET(NRF_SPI_INST_GET(\<instance_index\>)), \<priority\>,
+ *             NRFX_SPI_INST_HANDLER_GET(\<instance_index\>), 0, 0);
  */
 NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(SPI, spi)
 

@@ -95,7 +95,7 @@ NRFY_STATIC_INLINE void nrfy_rtc_int_init(NRF_RTC_Type * p_reg,
     __nrfy_internal_rtc_event_enabled_clear(p_reg, mask, NRF_RTC_EVENT_TICK);
     __nrfy_internal_rtc_event_enabled_clear(p_reg, mask, NRF_RTC_EVENT_OVERFLOW);
 
-    for (size_t i = 0; i < NRF_RTC_CC_COUNT_MAX; i++)
+    for (uint8_t i = 0; i < NRF_RTC_CC_COUNT_MAX; i++)
     {
         __nrfy_internal_rtc_event_enabled_clear(p_reg, mask, nrf_rtc_compare_event_get(i));
     }
@@ -394,7 +394,7 @@ NRFY_STATIC_INLINE uint32_t __nrfy_internal_rtc_events_process(NRF_RTC_Type * p_
     uint32_t event_mask = 0;
 
     nrf_barrier_r();
-    for (uint32_t i = 0; i < NRF_RTC_CC_COUNT_MAX; i++)
+    for (uint8_t i = 0; i < NRF_RTC_CC_COUNT_MAX; i++)
     {
         (void)__nrfy_internal_rtc_event_handle(p_reg,
                                                mask,

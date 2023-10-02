@@ -91,6 +91,13 @@ extern "C" {
 #define NRF_CACHE_HAS_TASK_FLUSH 0
 #endif
 
+#if defined(CACHE_TASKS_SAVE_TASKS_SAVE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether save and restore tasks are supported. */
+#define NRF_CACHE_HAS_TASK_SAVE_RESTORE 1
+#else
+#define NRF_CACHE_HAS_TASK_SAVE_RESTORE 0
+#endif
+
 #if defined(CACHE_STATUS_READY_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether status check is supported. */
 #define NRF_CACHE_HAS_STATUS 1
@@ -171,8 +178,10 @@ typedef enum
     NRF_CACHE_TASK_FLUSHCACHE      = offsetof(NRF_CACHE_Type, TASKS_FLUSHCACHE),      /**< Flush the whole cache. */
     NRF_CACHE_TASK_FLUSHLINE       = offsetof(NRF_CACHE_Type, TASKS_FLUSHLINE),       /**< Flush the cache line. */
 #endif
+#if NRF_CACHE_HAS_TASK_SAVE_RESTORE
     NRF_CACHE_TASK_SAVE            = offsetof(NRF_CACHE_Type, TASKS_SAVE),            /**< Save the state to a retained memory space. */
     NRF_CACHE_TASK_RESTORE         = offsetof(NRF_CACHE_Type, TASKS_RESTORE),         /**< Restore the state from a retained memory space. */
+#endif
     NRF_CACHE_TASK_INVALIDATECACHE = offsetof(NRF_CACHE_Type, TASKS_INVALIDATECACHE), /**< Invalidate the whole cache. */
     NRF_CACHE_TASK_INVALIDATELINE  = offsetof(NRF_CACHE_Type, TASKS_INVALIDATELINE),  /**< Invalidate the cache line. */
     NRF_CACHE_TASK_ERASE           = offsetof(NRF_CACHE_Type, TASKS_ERASE),           /**< Erase the whole cache. */
@@ -687,7 +696,7 @@ NRF_STATIC_INLINE uint32_t nrf_cache_data_get(NRF_CACHEDATA_Type const * p_reg,
     NRFX_ASSERT(set < NRF_CACHEDATA_SET_INDEX_MAX);
 
     uint8_t du   = (word / NRF_CACHEDATA_DATA_WORDS_IN_UNIT_MAX);
-    uint8_t data = (word - (du * NRF_CACHEDATA_DATA_WORDS_IN_UNIT_MAX));
+    uint8_t data = (uint8_t)(word - (du * NRF_CACHEDATA_DATA_WORDS_IN_UNIT_MAX));
 
     return p_reg->SET[set].WAY[way].DU[du].DATA[data];
 #else

@@ -47,7 +47,7 @@ extern "C" {
 #define nrfx_rng_irq_handler        RNG_IRQHandler
 
 // GPIOTE_IRQn
-#define nrfx_gpiote_irq_handler     GPIOTE_IRQHandler
+#define nrfx_gpiote_0_irq_handler   GPIOTE_IRQHandler
 
 // WDT_IRQn
 #define nrfx_wdt_0_irq_handler      WDT_IRQHandler
