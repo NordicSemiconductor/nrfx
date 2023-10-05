@@ -764,7 +764,6 @@ void nrfx_nfct_init_substate_force(nrfx_nfct_active_state_t sub_state)
 
 nrfx_err_t nrfx_nfct_parameter_set(nrfx_nfct_param_t const * p_param)
 {
-    NRFX_ASSERT(m_nfct_cb.state == NRFX_DRV_STATE_INITIALIZED);
     NRFX_ASSERT(p_param);
 
     switch (p_param->id)
