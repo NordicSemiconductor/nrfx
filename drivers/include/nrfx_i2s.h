@@ -95,8 +95,12 @@ typedef struct
                                        *   as they are ignored anyway. */
 } nrfx_i2s_config_t;
 
+#if NRFX_API_VER_AT_LEAST(3, 3, 0) || defined(__NRFX_DOXYGEN__)
 /** @brief I2S driver buffers structure. */
+typedef nrfy_i2s_xfer_desc_t nrfx_i2s_buffers_t;
+#else
 typedef nrfy_i2s_buffers_t nrfx_i2s_buffers_t;
+#endif
 
 /** @brief I2S driver instance structure. */
 typedef struct
@@ -228,7 +232,7 @@ typedef void (* nrfx_i2s_data_handler_t)(nrfx_i2s_buffers_t const * p_released,
  * @retval NRFX_SUCCESS             Initialization was successful.
  * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
- *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
+ *                                  Deprecated - use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_INVALID_PARAM The requested combination of configuration
  *                                  options is not allowed by the I2S peripheral.
  */
@@ -253,6 +257,45 @@ void nrfx_i2s_uninit(nrfx_i2s_t const * p_instance);
  */
 bool nrfx_i2s_init_check(nrfx_i2s_t const * p_instance);
 
+#if NRFX_API_VER_AT_LEAST(3, 3, 0) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for starting the continuous I2S transfer.
+ *
+ * The I2S data transfer can be performed in one of three modes: RX (reception)
+ * only, TX (transmission) only, or in both directions simultaneously.
+ * The mode is selected by specifying a proper buffer for a given direction
+ * in the call to this function or by passing NULL instead if this direction
+ * is to be disabled.
+ *
+ * The length of the buffer (which is a common value for RX and TX if both
+ * directions are enabled) is specified in 32-bit words. One 32-bit memory
+ * word can either contain four 8-bit samples, two 16-bit samples, or one
+ * right-aligned 24-bit sample sign-extended to a 32-bit value.
+ * For a detailed memory mapping for different supported configurations,
+ * see the Product Specification.
+ *
+ * @note Peripherals using EasyDMA (including I2S) require the transfer buffers
+ *       to be placed in the Data RAM region. If this condition is not met,
+ *       this function will fail with the error code NRFX_ERROR_INVALID_ADDR.
+ *
+ * @param[in] p_instance        Pointer to the driver instance structure.
+ * @param[in] p_initial_buffers Pointer to a structure specifying the buffers
+ *                              to be used in the initial part of the transfer
+ *                              (buffers for all consecutive parts are provided
+ *                              through the data handler).
+ * @param[in] flags             Transfer options (0 for default settings).
+ *                              Currently, no additional flags are available.
+ *
+ * @retval NRFX_SUCCESS             The operation was successful.
+ * @retval NRFX_ERROR_INVALID_STATE Transfer was already started or
+ *                                  the driver has not been initialized.
+ * @retval NRFX_ERROR_INVALID_ADDR  The provided buffers are not placed
+ *                                  in the Data RAM region.
+ */
+nrfx_err_t nrfx_i2s_start(nrfx_i2s_t const *         p_instance,
+                          nrfx_i2s_buffers_t const * p_initial_buffers,
+                          uint8_t                    flags);
+#else
 /**
  * @brief Function for starting the continuous I2S transfer.
  *
@@ -293,6 +336,7 @@ nrfx_err_t nrfx_i2s_start(nrfx_i2s_t const *         p_instance,
                           nrfx_i2s_buffers_t const * p_initial_buffers,
                           uint16_t                   buffer_size,
                           uint8_t                    flags);
+#endif
 
 /**
  * @brief Function for supplying the buffers to be used in the next part of

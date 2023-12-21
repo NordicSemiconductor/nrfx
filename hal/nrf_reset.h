@@ -132,6 +132,13 @@ extern "C" {
 #define NRF_RESET_HAS_GRTC_RESET 0
 #endif
 
+#if defined(RESET_RESETREAS_SECTAMPER_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SECTAMPER reset is present. */
+#define NRF_RESET_HAS_SECTAMPER_RESET 1
+#else
+#define NRF_RESET_HAS_SECTAMPER_RESET 0
+#endif
+
 /** @brief Reset reason bit masks. */
 typedef enum
 {
@@ -179,8 +186,8 @@ typedef enum
 #if NRF_RESET_HAS_NETWORK
     NRF_RESET_RESETREAS_LCTRLAP_MASK    = RESET_RESETREAS_LCTRLAP_Msk,    ///< Bit mask of LCTRLAP field.
 #endif
-#if defined(NRF_RESET_RESETREAS_EXT)
-    NRF_RESET_RESETREAS_EXT
+#if NRF_RESET_HAS_SECTAMPER_RESET
+    NRF_RESET_RESETREAS_SECTAMPER_MASK  = RESET_RESETREAS_SECTAMPER_Msk,  ///< Bit mask of SECTAMPER field.
 #endif
 } nrf_reset_resetreas_mask_t;
 

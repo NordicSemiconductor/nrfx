@@ -390,7 +390,7 @@ typedef struct
  * @retval NRFX_SUCCESS             Initialization successful.
  * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
- *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
+ *                                  Deprecated - use @ref NRFX_ERROR_ALREADY instead.
  */
 nrfx_err_t nrfx_usbd_init(nrfx_usbd_event_handler_t event_handler);
 

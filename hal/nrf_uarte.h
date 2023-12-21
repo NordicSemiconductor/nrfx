@@ -40,6 +40,10 @@
 extern "C" {
 #endif
 
+#if defined(NRF54H20_ENGA_XXAA)
+#define NRF_UARTE_CLOCKPIN_RTS_NEEDED
+#endif
+
 #define NRF_UARTE_PSEL_DISCONNECTED 0xFFFFFFFF
 
 /**
@@ -73,12 +77,53 @@ extern "C" {
 #define NRF_UARTE_HAS_DMA_TASKS_EVENTS 0
 #endif
 
-#if defined(UARTE_SHORTS_ENDTX_STOPTX_Msk) || defined(__NRFX_DOXYGEN__)
+#if defined(UARTE_SHORTS_DMA_RX_END_DMA_RX_START_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether UARTE DMA shortcuts are present. */
+#define NRF_UARTE_HAS_DMA_SHORTS 1
+#else
+#define NRF_UARTE_HAS_DMA_SHORTS 0
+#endif
+
+#if defined(UARTE_SHORTS_ENDTX_STOPTX_Msk) || defined(UARTE_SHORTS_DMA_TX_END_DMA_TX_STOP_Msk) || \
+    defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether UARTE ENDTX_STOPTX shortcut is present. */
 #define NRF_UARTE_HAS_ENDTX_STOPTX_SHORT 1
 #else
 #define NRF_UARTE_HAS_ENDTX_STOPTX_SHORT 0
 #endif
+
+/** @brief Base frequency value 128 MHz for UARTE. */
+#define NRF_UARTE_BASE_FREQUENCY_128MHZ (NRFX_MHZ_TO_HZ(128UL))
+/** @brief Base frequency value 64 MHz for UARTE. */
+#define NRF_UARTE_BASE_FREQUENCY_64MHZ  (NRFX_MHZ_TO_HZ(64UL))
+/** @brief Base frequency value 16 MHz for UARTE. */
+#define NRF_UARTE_BASE_FREQUENCY_16MHZ  (NRFX_MHZ_TO_HZ(16UL))
+
+#if !defined(NRF_UARTE_IS_128MHZ_UARTE)
+/** @brief Macro for checking whether the base frequency for the specified UARTE is 128 MHz. */
+#define NRF_UARTE_IS_128MHZ_UARTE(p_reg)                                                     \
+    (NRFX_COND_CODE_1(NRFX_IS_ENABLED(NRF_CPU_FREQ_IS_128MHZ),                               \
+        (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(UARTE00), (p_reg == NRF_UARTE00), (false))), \
+        (false)))
+#endif
+
+#if !defined(NRF_UARTE_IS_64MHZ_UARTE)
+/** @brief Macro for checking whether the base frequency for the specified UARTE is 64 MHz. */
+#define NRF_UARTE_IS_64MHZ_UARTE(p_reg)                                                      \
+    (NRFX_COND_CODE_1(NRFX_IS_ENABLED(NRF_CPU_FREQ_IS_64MHZ),                                \
+        (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(UARTE00), (p_reg == NRF_UARTE00), (false))), \
+        (false)))
+#endif
+
+/**
+ * @brief Macro for getting base frequency value in Hz for the specified UARTE.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ */
+#define NRF_UARTE_BASE_FREQUENCY_GET(p_reg)                                  \
+    ((NRF_UARTE_IS_128MHZ_UARTE(p_reg)) ? (NRF_UARTE_BASE_FREQUENCY_128MHZ): \
+    ((NRF_UARTE_IS_64MHZ_UARTE(p_reg))  ? (NRF_UARTE_BASE_FREQUENCY_64MHZ) : \
+    (NRF_UARTE_BASE_FREQUENCY_16MHZ)))
 
 /** @brief UARTE tasks. */
 typedef enum
@@ -123,10 +168,16 @@ typedef enum
 /** @brief Types of UARTE shortcuts. */
 typedef enum
 {
-    NRF_UARTE_SHORT_ENDRX_STARTRX = UARTE_SHORTS_ENDRX_STARTRX_Msk, ///< Shortcut between ENDRX event and STARTRX task.
-    NRF_UARTE_SHORT_ENDRX_STOPRX  = UARTE_SHORTS_ENDRX_STOPRX_Msk,  ///< Shortcut between ENDRX event and STOPRX task.
+#if NRF_UARTE_HAS_DMA_SHORTS
+    NRF_UARTE_SHORT_ENDRX_STARTRX = UARTE_SHORTS_DMA_RX_END_DMA_RX_START_Msk, ///< Shortcut between ENDRX event and STARTRX task.
+    NRF_UARTE_SHORT_ENDRX_STOPRX  = UARTE_SHORTS_DMA_RX_END_DMA_RX_STOP_Msk,  ///< Shortcut between ENDRX event and STOPRX task.
+    NRF_UARTE_SHORT_ENDTX_STOPTX  = UARTE_SHORTS_DMA_TX_END_DMA_TX_STOP_Msk   ///< Shortcut between ENDTX event and STOPTX task.
+#else
+    NRF_UARTE_SHORT_ENDRX_STARTRX = UARTE_SHORTS_ENDRX_STARTRX_Msk,           ///< Shortcut between ENDRX event and STARTRX task.
+    NRF_UARTE_SHORT_ENDRX_STOPRX  = UARTE_SHORTS_ENDRX_STOPRX_Msk,            ///< Shortcut between ENDRX event and STOPRX task.
 #if NRF_UARTE_HAS_ENDTX_STOPTX_SHORT
-    NRF_UARTE_SHORT_ENDTX_STOPTX  = UARTE_SHORTS_ENDTX_STOPTX_Msk   ///< Shortcut between ENDTX event and STOPTX task.
+    NRF_UARTE_SHORT_ENDTX_STOPTX  = UARTE_SHORTS_ENDTX_STOPTX_Msk             ///< Shortcut between ENDTX event and STOPTX task.
+#endif
 #endif
 } nrf_uarte_short_t;
 
@@ -301,6 +352,7 @@ NRF_STATIC_INLINE void nrf_uarte_shorts_disable(NRF_UARTE_Type * p_reg, uint32_t
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_uarte_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_uarte_int_enable(NRF_UARTE_Type * p_reg, uint32_t mask);
 
@@ -309,6 +361,7 @@ NRF_STATIC_INLINE void nrf_uarte_int_enable(NRF_UARTE_Type * p_reg, uint32_t mas
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_uarte_int_mask_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -319,6 +372,7 @@ NRF_STATIC_INLINE uint32_t nrf_uarte_int_enable_check(NRF_UARTE_Type const * p_r
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_uarte_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_uarte_int_disable(NRF_UARTE_Type * p_reg, uint32_t mask);
 
@@ -578,13 +632,13 @@ NRF_STATIC_INLINE void nrf_uarte_event_clear(NRF_UARTE_Type * p_reg, nrf_uarte_e
 NRF_STATIC_INLINE bool nrf_uarte_event_check(NRF_UARTE_Type const * p_reg,
                                              nrf_uarte_event_t      event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_uarte_event_address_get(NRF_UARTE_Type const * p_reg,
                                                        nrf_uarte_event_t      event)
 {
-    return (uint32_t)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_task_event_address_get(p_reg, event);
 }
 
 NRF_STATIC_INLINE void nrf_uarte_shorts_set(NRF_UARTE_Type * p_reg, uint32_t mask)

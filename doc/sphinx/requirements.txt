@@ -1,7 +1,4 @@
-Sphinx!=5.0.0,<6,>=4.0
-sphinx-ncs-theme==0.6.5
-sphinx-rtd-theme==0.5.2
-breathe==4.34.0
-m2r2==0.3.2
-Jinja2==3.0.3
-docutils<0.17
+Sphinx<7, >5
+sphinx-ncs-theme<1.1
+breathe
+m2r2

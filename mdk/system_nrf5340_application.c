@@ -33,7 +33,9 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 
 /*lint ++flb "Enter library region" */
 
-void SystemStoreFICRNS();
+void SystemStoreFICRNS(void);
+void SystemLockFICRNS(void);
+
 
 /* NRF5340 application core uses a variable System Clock Frequency that starts at 64MHz */
 #define __SYSTEM_CLOCK_MAX      (128000000UL)

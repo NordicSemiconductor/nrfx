@@ -218,7 +218,7 @@ nrfx_err_t nrfx_adc_sample_convert(nrfx_adc_channel_t const * p_channel,
     }
 }
 
-static bool adc_sample_process()
+static bool adc_sample_process(void)
 {
     nrf_adc_event_clear(NRF_ADC, NRF_ADC_EVENT_END);
     nrf_adc_disable(NRF_ADC);

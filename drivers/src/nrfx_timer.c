@@ -320,8 +320,8 @@ void nrfx_timer_extended_compare(nrfx_timer_t const *   p_instance,
     NRFX_ASSERT(m_cb[p_instance->instance_id].state == NRFX_DRV_STATE_INITIALIZED);
 
     nrfy_timer_shorts_disable(p_instance->p_reg,
-        (TIMER_SHORTS_COMPARE0_STOP_Msk  << cc_channel) |
-        (TIMER_SHORTS_COMPARE0_CLEAR_Msk << cc_channel));
+        (uint32_t)(NRF_TIMER_SHORT_COMPARE0_STOP_MASK  << cc_channel) |
+        (uint32_t)(NRF_TIMER_SHORT_COMPARE0_CLEAR_MASK << cc_channel));
 
     nrfy_timer_shorts_enable(p_instance->p_reg, timer_short_mask);
 

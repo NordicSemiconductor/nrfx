@@ -40,6 +40,26 @@
 extern "C" {
 #endif
 
+#if defined(HALTIUM_XXAA)
+#define NRF_SPIM_CLOCKPIN_SCK_NEEDED
+#endif
+
+/*
+ * Macro for generating code blocks that allow extracting
+ * the maximum prescaler value allowed for the specified SPIM instance.
+ */
+#define _NRF_SPIM_PRESCALER_MAX_GET(periph_name, prefix, idx, p_reg)           \
+    (p_reg == NRFX_CONCAT(NRF_, periph_name, prefix, idx)) ?                   \
+        (NRFX_CONCAT(periph_name, prefix, idx, _PRESCALER_DIVISOR_RANGE_MAX)) :
+
+/*
+ * Macro for generating code blocks that allow extracting
+ * the minimum prescaler value allowed for the specified SPIM instance.
+ */
+#define _NRF_SPIM_PRESCALER_MIN_GET(periph_name, prefix, idx, p_reg)           \
+    (p_reg == NRFX_CONCAT(NRF_, periph_name, prefix, idx)) ?                   \
+        (NRFX_CONCAT(periph_name, prefix, idx, _PRESCALER_DIVISOR_RANGE_MIN)) :
+
 /**
  * @defgroup nrf_spim_hal SPIM HAL
  * @{
@@ -107,13 +127,6 @@ extern "C" {
 #define NRF_SPIM_HAS_DMA_TASKS_EVENTS 0
 #endif
 
-/**
- * @brief This value can be used as a parameter for the @ref nrf_spim_pins_set
- *        function to specify that a given SPI signal (SCK, MOSI, or MISO)
- *        shall not be connected to a physical pin.
- */
-#define NRF_SPIM_PIN_NOT_CONNECTED  0xFFFFFFFF
-
 /** @brief Macro for checking if the hardware chip select function is available. */
 #if NRFX_FEATURE_PRESENT(SPIM, _FEATURE_HARDWARE_CSN_PRESENT) || defined(__NRFX_DOXYGEN__)
 #define NRF_SPIM_HAS_HW_CSN 1
@@ -162,45 +175,65 @@ extern "C" {
 #define NRF_SPIM_DCX_CNT_ALL_CMD 0xF
 #endif
 
-/** @brief Base frequency value 192 MHz for SPIM. */
-#define NRF_SPIM_BASE_FREQUENCY_192MHZ (192000000UL)
-
-/** @brief Base frequency value 128 MHz for SPIM. */
-#define NRF_SPIM_BASE_FREQUENCY_128MHZ (128000000UL)
-
-/** @brief Base frequency value 64 MHz for SPIM. */
-#define NRF_SPIM_BASE_FREQUENCY_64MHZ (64000000UL)
-
-/** @brief Base frequency value 32 MHz for SPIM. */
-#define NRF_SPIM_BASE_FREQUENCY_32MHZ (32000000UL)
-
-/** @brief Base frequency value 16 MHz for SPIM. */
-#define NRF_SPIM_BASE_FREQUENCY_16MHZ (16000000UL)
-
-/** @brief Minimal SPIM frequency in Hz. */
-#define NRF_SPIM_MIN_FREQUENCY (125000UL)
-
-#if NRF_SPIM_HAS_PRESCALER
-/** @brief Maximum value of PRESCALER register. */
-#define NRF_SPIM_PRESCALER_MAX SPIM_PRESCALER_DIVISOR_Max
-
-/** @brief Minimum value of PRESCALER register. */
-#define NRF_SPIM_PRESCALER_MIN SPIM_PRESCALER_DIVISOR_Min
-#endif
+/**
+ * @brief This value can be used as a parameter for the @ref nrf_spim_pins_set
+ *        function to specify that a given SPI signal (SCK, MOSI, or MISO)
+ *        shall not be connected to a physical pin.
+ */
+#define NRF_SPIM_PIN_NOT_CONNECTED  0xFFFFFFFF
 
 #if NRF_SPIM_HAS_DMA_TASKS_EVENTS
 /** @brief Max number of RX patterns. */
 #define NRF_SPIM_DMA_RX_PATTERN_MAX_COUNT SPIM_DMA_RX_MATCH_CANDIDATE_MaxCount
 #endif
 
+/** @brief Minimal SPIM frequency in Hz. */
+#define NRF_SPIM_MIN_FREQUENCY (NRFX_KHZ_TO_HZ(125UL))
+
+/** @brief Base frequency value 320 MHz for SPIM. */
+#define NRF_SPIM_BASE_FREQUENCY_320MHZ (NRFX_MHZ_TO_HZ(320UL))
+
+/** @brief Base frequency value 192 MHz for SPIM. */
+#define NRF_SPIM_BASE_FREQUENCY_192MHZ (NRFX_MHZ_TO_HZ(192UL))
+
+/** @brief Base frequency value 128 MHz for SPIM. */
+#define NRF_SPIM_BASE_FREQUENCY_128MHZ (NRFX_MHZ_TO_HZ(128UL))
+
+/** @brief Base frequency value 64 MHz for SPIM. */
+#define NRF_SPIM_BASE_FREQUENCY_64MHZ  (NRFX_MHZ_TO_HZ(64UL))
+
+/** @brief Base frequency value 32 MHz for SPIM. */
+#define NRF_SPIM_BASE_FREQUENCY_32MHZ  (NRFX_MHZ_TO_HZ(32UL))
+
+/** @brief Base frequency value 16 MHz for SPIM. */
+#define NRF_SPIM_BASE_FREQUENCY_16MHZ  (NRFX_MHZ_TO_HZ(16UL))
+
+#if !defined(NRF_SPIM_IS_320MHZ_SPIM)
+/** @brief Macro for checking whether the base frequency for the specified SPIM instance is 320 MHz. */
+#define NRF_SPIM_IS_320MHZ_SPIM(p_reg) \
+    (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM120), (p_reg == NRF_SPIM120), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM121), (p_reg == NRF_SPIM121), (false)))
+#endif
+
+#if !defined(NRF_SPIM_IS_192MHZ_SPIM)
+/** @brief Macro for checking whether the base frequency for the specified SPIM instance is 192 MHz. */
+#define NRF_SPIM_IS_192MHZ_SPIM(p_reg) false
+#endif
+
 #if !defined(NRF_SPIM_IS_128MHZ_SPIM)
 /** @brief Macro for checking whether the base frequency for the specified SPIM instance is 128 MHz. */
-#define NRF_SPIM_IS_128MHZ_SPIM(p_reg) false
+#define NRF_SPIM_IS_128MHZ_SPIM(p_reg)                                                     \
+    (NRFX_COND_CODE_1(NRFX_IS_ENABLED(NRF_CPU_FREQ_IS_128MHZ),                             \
+        (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM00), (p_reg == NRF_SPIM00), (false))), \
+        (false)))
 #endif
 
 #if !defined(NRF_SPIM_IS_64MHZ_SPIM)
 /** @brief Macro for checking whether the base frequency for the specified SPIM instance is 64 MHz. */
-#define NRF_SPIM_IS_64MHZ_SPIM(p_reg) false
+#define NRF_SPIM_IS_64MHZ_SPIM(p_reg)                                                      \
+    (NRFX_COND_CODE_1(NRFX_IS_ENABLED(NRF_CPU_FREQ_IS_64MHZ),                              \
+        (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM00), (p_reg == NRF_SPIM00), (false))), \
+        (false)))
 #endif
 
 #if !defined(NRF_SPIM_IS_32MHZ_SPIM)
@@ -208,20 +241,34 @@ extern "C" {
 #define NRF_SPIM_IS_32MHZ_SPIM(p_reg) false
 #endif
 
-#if !defined(NRF_SPIM_IS_16MHZ_SPIM)
-/** @brief Macro for checking whether the base frequency for the specified SPIM instance is 16 MHz. */
-#define NRF_SPIM_IS_16MHZ_SPIM(p_reg) true
-#endif
-
 /** @brief Macro for getting base frequency value in Hz for the specified SPIM instance. */
 #define NRF_SPIM_BASE_FREQUENCY_GET(p_reg)                                 \
-    ((NRF_SPIM_IS_16MHZ_SPIM(p_reg))  ? (NRF_SPIM_BASE_FREQUENCY_16MHZ):   \
-    ((NRF_SPIM_IS_32MHZ_SPIM(p_reg))  ? (NRF_SPIM_BASE_FREQUENCY_32MHZ) :  \
-    ((NRF_SPIM_IS_64MHZ_SPIM(p_reg))  ? (NRF_SPIM_BASE_FREQUENCY_64MHZ) :  \
+    ((NRF_SPIM_IS_320MHZ_SPIM(p_reg)) ? (NRF_SPIM_BASE_FREQUENCY_320MHZ) : \
+    ((NRF_SPIM_IS_192MHZ_SPIM(p_reg)) ? (NRF_SPIM_BASE_FREQUENCY_192MHZ) : \
     ((NRF_SPIM_IS_128MHZ_SPIM(p_reg)) ? (NRF_SPIM_BASE_FREQUENCY_128MHZ) : \
-    (NRF_SPIM_BASE_FREQUENCY_192MHZ)))))
+    ((NRF_SPIM_IS_64MHZ_SPIM(p_reg))  ? (NRF_SPIM_BASE_FREQUENCY_64MHZ) :  \
+    ((NRF_SPIM_IS_32MHZ_SPIM(p_reg))  ? (NRF_SPIM_BASE_FREQUENCY_32MHZ) :  \
+    (NRF_SPIM_BASE_FREQUENCY_16MHZ))))))
 
 #if NRF_SPIM_HAS_PRESCALER
+/**
+ * @brief Macro for getting the maximum value of PRESCALER register.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ */
+#define NRF_SPIM_PRESCALER_MAX_GET(p_reg)                                   \
+    (NRFX_FOREACH_ENABLED(SPIM, _NRF_SPIM_PRESCALER_MAX_GET, (), (), p_reg) \
+     SPIM_PRESCALER_DIVISOR_Max)
+
+/**
+ * @brief Macro for getting the minimum value of PRESCALER register.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ */
+#define NRF_SPIM_PRESCALER_MIN_GET(p_reg)                                   \
+    (NRFX_FOREACH_ENABLED(SPIM, _NRF_SPIM_PRESCALER_MIN_GET, (), (), p_reg) \
+     SPIM_PRESCALER_DIVISOR_Min)
+
 /**
  * @brief Macro for computing prescaler value for a given SPIM instance and desired frequency.
  *
@@ -243,22 +290,22 @@ extern "C" {
  * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
  * @param[in] frequency Desired frequency value in Hz.
  */
-#define NRF_SPIM_FREQUENCY_STATIC_CHECK(p_reg, frequency)                                          \
-    NRFX_STATIC_ASSERT(                                                                            \
-    NRFX_COND_CODE_1(NRF_SPIM_HAS_PRESCALER,                                                       \
-        ((NRF_SPIM_BASE_FREQUENCY_GET(p_reg) % (uint32_t)frequency == 0) &&                        \
-        (NRFX_IS_EVEN(NRF_SPIM_PRESCALER_CALCULATE(p_reg, (uint32_t)frequency))) &&                \
-        (NRF_SPIM_PRESCALER_CALCULATE(p_reg, (uint32_t)frequency) >= (NRF_SPIM_PRESCALER_MIN)) &&  \
-        (NRF_SPIM_PRESCALER_CALCULATE(p_reg, (uint32_t)frequency) <= (NRF_SPIM_PRESCALER_MAX)))    \
-        ,                                                                                          \
-        (((uint32_t)frequency == (uint32_t)NRFX_KHZ_TO_HZ(125)) ||                                 \
-         ((uint32_t)frequency == (uint32_t)NRFX_KHZ_TO_HZ(250)) ||                                 \
-         ((uint32_t)frequency == (uint32_t)NRFX_KHZ_TO_HZ(500)) ||                                 \
-         ((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(1))   ||                                 \
-         ((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(2))   ||                                 \
-         ((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(4))   ||                                 \
-         ((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(8))   ||                                 \
-         (((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(16)) && (NRF_SPIM_HAS_16_MHZ_FREQ)) ||  \
+#define NRF_SPIM_FREQUENCY_STATIC_CHECK(p_reg, frequency)                                                    \
+    NRFX_STATIC_ASSERT(                                                                                      \
+    NRFX_COND_CODE_1(NRF_SPIM_HAS_PRESCALER,                                                                 \
+        ((NRF_SPIM_BASE_FREQUENCY_GET(p_reg) % (uint32_t)frequency == 0) &&                                  \
+        (NRFX_IS_EVEN(NRF_SPIM_PRESCALER_CALCULATE(p_reg, (uint32_t)frequency))) &&                          \
+        (NRF_SPIM_PRESCALER_CALCULATE(p_reg, (uint32_t)frequency) >= (NRF_SPIM_PRESCALER_MIN_GET(p_reg))) && \
+        (NRF_SPIM_PRESCALER_CALCULATE(p_reg, (uint32_t)frequency) <= (NRF_SPIM_PRESCALER_MAX_GET(p_reg))))   \
+        ,                                                                                                    \
+        (((uint32_t)frequency == (uint32_t)NRFX_KHZ_TO_HZ(125)) ||                                           \
+         ((uint32_t)frequency == (uint32_t)NRFX_KHZ_TO_HZ(250)) ||                                           \
+         ((uint32_t)frequency == (uint32_t)NRFX_KHZ_TO_HZ(500)) ||                                           \
+         ((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(1))   ||                                           \
+         ((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(2))   ||                                           \
+         ((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(4))   ||                                           \
+         ((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(8))   ||                                           \
+         (((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(16)) && (NRF_SPIM_HAS_16_MHZ_FREQ)) ||            \
          (((uint32_t)frequency == (uint32_t)NRFX_MHZ_TO_HZ(32)) && (NRF_SPIM_HAS_32_MHZ_FREQ)))))
 
 /** @brief SPIM tasks. */
@@ -504,9 +551,31 @@ NRF_STATIC_INLINE uint32_t nrf_spim_shorts_get(NRF_SPIM_Type const * p_reg);
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_spim_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_spim_int_enable(NRF_SPIM_Type * p_reg,
                                            uint32_t        mask);
+
+/**
+ * @brief Function for disabling the specified interrupts.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_spim_int_mask_t values for bit masking.
+ */
+NRF_STATIC_INLINE void nrf_spim_int_disable(NRF_SPIM_Type * p_reg,
+                                            uint32_t        mask);
+
+/**
+ * @brief Function for checking if the specified interrupts are enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_spim_int_mask_t values for bit masking.
+ *
+ * @return Mask of enabled interrupts.
+ */
+NRF_STATIC_INLINE uint32_t nrf_spim_int_enable_check(NRF_SPIM_Type const * p_reg, uint32_t mask);
 
 #if NRF_SPIM_HAS_PRESCALER
 /**
@@ -527,25 +596,6 @@ NRF_STATIC_INLINE void nrf_spim_prescaler_set(NRF_SPIM_Type * p_reg,
  */
 NRF_STATIC_INLINE uint32_t nrf_spim_prescaler_get(NRF_SPIM_Type const * p_reg);
 #endif
-
-/**
- * @brief Function for disabling the specified interrupts.
- *
- * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] mask  Mask of interrupts to be disabled.
- */
-NRF_STATIC_INLINE void nrf_spim_int_disable(NRF_SPIM_Type * p_reg,
-                                            uint32_t        mask);
-
-/**
- * @brief Function for checking if the specified interrupts are enabled.
- *
- * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] mask  Mask of interrupts to be checked.
- *
- * @return Mask of enabled interrupts.
- */
-NRF_STATIC_INLINE uint32_t nrf_spim_int_enable_check(NRF_SPIM_Type const * p_reg, uint32_t mask);
 
 #if defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 /**
@@ -606,6 +656,16 @@ NRF_STATIC_INLINE void nrf_spim_enable(NRF_SPIM_Type * p_reg);
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  */
 NRF_STATIC_INLINE void nrf_spim_disable(NRF_SPIM_Type * p_reg);
+
+/**
+ * @brief Function for checking if the SPIM peripheral is enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval true  The SPIM is enabled.
+ * @retval false The SPIM is not enabled.
+ */
+NRF_STATIC_INLINE bool nrf_spim_enable_check(NRF_SPIM_Type const * p_reg);
 
 /**
  * @brief Function for configuring SPIM pins.
@@ -1030,7 +1090,7 @@ NRF_STATIC_INLINE void nrf_spim_task_trigger(NRF_SPIM_Type * p_reg,
 NRF_STATIC_INLINE uint32_t nrf_spim_task_address_get(NRF_SPIM_Type const * p_reg,
                                                      nrf_spim_task_t       task)
 {
-    return (uint32_t)((uint8_t *)p_reg + (uint32_t)task);
+    return nrf_task_event_address_get(p_reg, task);
 }
 
 NRF_STATIC_INLINE void nrf_spim_event_clear(NRF_SPIM_Type *  p_reg,
@@ -1043,13 +1103,13 @@ NRF_STATIC_INLINE void nrf_spim_event_clear(NRF_SPIM_Type *  p_reg,
 NRF_STATIC_INLINE bool nrf_spim_event_check(NRF_SPIM_Type const * p_reg,
                                             nrf_spim_event_t      event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_spim_event_address_get(NRF_SPIM_Type const * p_reg,
                                                       nrf_spim_event_t      event)
 {
-    return (uint32_t)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_task_event_address_get(p_reg, event);
 }
 
 NRF_STATIC_INLINE void nrf_spim_shorts_enable(NRF_SPIM_Type * p_reg,
@@ -1090,8 +1150,8 @@ NRF_STATIC_INLINE uint32_t nrf_spim_int_enable_check(NRF_SPIM_Type const * p_reg
 NRF_STATIC_INLINE void nrf_spim_prescaler_set(NRF_SPIM_Type * p_reg,
                                               uint32_t        prescaler)
 {
-    NRFX_ASSERT(prescaler >= NRF_SPIM_PRESCALER_MIN);
-    NRFX_ASSERT(prescaler <= NRF_SPIM_PRESCALER_MAX);
+    NRFX_ASSERT(prescaler >= NRF_SPIM_PRESCALER_MIN_GET(p_reg));
+    NRFX_ASSERT(prescaler <= NRF_SPIM_PRESCALER_MAX_GET(p_reg));
     NRFX_ASSERT(NRFX_IS_EVEN(prescaler));
     p_reg->PRESCALER = prescaler;
 }
@@ -1142,6 +1202,11 @@ NRF_STATIC_INLINE void nrf_spim_disable(NRF_SPIM_Type * p_reg)
     p_reg->ENABLE = (SPIM_ENABLE_ENABLE_Disabled << SPIM_ENABLE_ENABLE_Pos);
 }
 
+NRF_STATIC_INLINE bool nrf_spim_enable_check(NRF_SPIM_Type const * p_reg)
+{
+    return p_reg->ENABLE == SPIM_ENABLE_ENABLE_Enabled;
+}
+
 NRF_STATIC_INLINE void nrf_spim_pins_set(NRF_SPIM_Type * p_reg,
                                          uint32_t        sck_pin,
                                          uint32_t        mosi_pin,
@@ -1173,7 +1238,7 @@ NRF_STATIC_INLINE void nrf_spim_csn_configure(NRF_SPIM_Type *    p_reg,
                                               nrf_spim_csn_pol_t polarity,
                                               uint32_t           duration)
 {
-#if defined(SPIM_CSNPOL_CSNPOL0_LOW)
+#if defined(SPIM_CSNPOL_CSNPOL0_LOW) && defined(SPIM_PSEL_CSN_MaxCount)
     p_reg->PSEL.CSN[0] = pin;
 #else
     p_reg->PSEL.CSN = pin;
@@ -1184,7 +1249,7 @@ NRF_STATIC_INLINE void nrf_spim_csn_configure(NRF_SPIM_Type *    p_reg,
 
 NRF_STATIC_INLINE uint32_t nrf_spim_csn_pin_get(NRF_SPIM_Type const * p_reg)
 {
-#if defined(SPIM_CSNPOL_CSNPOL0_LOW)
+#if defined(SPIM_CSNPOL_CSNPOL0_LOW) && defined(SPIM_PSEL_CSN_MaxCount)
     return p_reg->PSEL.CSN[0];
 #else
     return p_reg->PSEL.CSN;
@@ -1563,7 +1628,7 @@ NRF_STATIC_INLINE bool nrf_spim_rx_terminate_on_bus_error_check(NRF_SPIM_Type co
 {
     return ((p_reg->DMA.RX.TERMINATEONBUSERROR & SPIM_DMA_RX_TERMINATEONBUSERROR_ENABLE_Msk)
             >> SPIM_DMA_RX_TERMINATEONBUSERROR_ENABLE_Pos) ==
-            SPIM_DMA_RX_ENABLE_ENABLE_Enabled;
+            SPIM_DMA_RX_TERMINATEONBUSERROR_ENABLE_Enabled;
 }
 
 NRF_STATIC_INLINE void nrf_spim_tx_terminate_on_bus_error_enable(NRF_SPIM_Type * p_reg)
@@ -1580,7 +1645,7 @@ NRF_STATIC_INLINE bool nrf_spim_tx_terminate_on_bus_error_check(NRF_SPIM_Type co
 {
     return ((p_reg->DMA.TX.TERMINATEONBUSERROR & SPIM_DMA_TX_TERMINATEONBUSERROR_ENABLE_Msk)
             >> SPIM_DMA_TX_TERMINATEONBUSERROR_ENABLE_Pos) ==
-            SPIM_DMA_TX_ENABLE_ENABLE_Enabled;
+            SPIM_DMA_TX_TERMINATEONBUSERROR_ENABLE_Enabled;
 }
 #endif // NRF_SPIM_HAS_DMA_REG
 

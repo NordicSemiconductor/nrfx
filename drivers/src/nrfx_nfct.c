@@ -576,10 +576,19 @@ nrfx_err_t nrfx_nfct_rx(nrfx_nfct_data_desc_t const * p_rx_data)
         return err;
     }
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#endif
+
     nrfy_nfct_rxtx_buffer_set(NRF_NFCT,
                               (uint8_t *)p_rx_data->p_data,
                               (uint16_t)p_rx_data->data_size,
                               true);
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
     nrfx_nfct_rxtx_int_enable(NRFX_NFCT_RX_INT_MASK);
     nrfy_nfct_task_trigger(NRF_NFCT, NRF_NFCT_TASK_ENABLERXDATA);
@@ -625,10 +634,20 @@ nrfx_err_t nrfx_nfct_tx(nrfx_nfct_data_desc_t const * p_tx_data,
         /* In case when Tx operation was scheduled with delay, stop scheduled Tx operation. */
         nfct_stop_tx();
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#endif
+
         nrfy_nfct_rxtx_buffer_set(NRF_NFCT,
                                   (uint8_t *)p_tx_data->p_data,
                                   (uint16_t)p_tx_data->data_size,
                                   false);
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
         nrfy_nfct_tx_bits_set(NRF_NFCT, (uint16_t)NRFX_NFCT_BYTES_TO_BITS(p_tx_data->data_size));
         nrfy_nfct_frame_delay_mode_set(NRF_NFCT, (nrf_nfct_frame_delay_mode_t) delay_mode);
         nfct_frame_delay_max_set(false);
@@ -692,10 +711,20 @@ nrfx_err_t nrfx_nfct_bits_tx(nrfx_nfct_data_desc_t const * p_tx_data,
         /* In case when Tx operation was scheduled with delay, stop scheduled Tx operation. */
         nfct_stop_tx();
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#endif
+
         nrfy_nfct_rxtx_buffer_set(NRF_NFCT,
                                   (uint8_t *)p_tx_data->p_data,
                                   (uint16_t)buffer_length,
                                   false);
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
         nrfy_nfct_tx_bits_set(NRF_NFCT, (uint16_t)p_tx_data->data_size);
         nrfy_nfct_frame_delay_mode_set(NRF_NFCT, (nrf_nfct_frame_delay_mode_t)delay_mode);
         nfct_frame_delay_max_set(false);
@@ -771,7 +800,7 @@ nrfx_err_t nrfx_nfct_parameter_set(nrfx_nfct_param_t const * p_param)
         case NRFX_NFCT_PARAM_ID_FDT:
         {
             uint32_t delay     = p_param->data.fdt;
-            uint32_t delay_thr = NFCT_FRAMEDELAYMAX_FRAMEDELAYMAX_Msk;
+            uint32_t delay_thr = NRF_NFCT_FRAME_DELAY_MAX_MAX_VALUE;
             uint32_t delay_max;
 
             delay_max = (delay > delay_thr) ? delay_thr : delay;
@@ -787,7 +816,7 @@ nrfx_err_t nrfx_nfct_parameter_set(nrfx_nfct_param_t const * p_param)
         case NRFX_NFCT_PARAM_ID_FDT_MIN:
         {
             uint32_t delay = p_param->data.fdt_min;
-            uint32_t delay_thr = NFCT_FRAMEDELAYMAX_FRAMEDELAYMAX_Msk;
+            uint32_t delay_thr = NRF_NFCT_FRAME_DELAY_MAX_MAX_VALUE;
             uint32_t delay_min;
 
             delay_min = (delay > delay_thr) ? delay_thr : delay;

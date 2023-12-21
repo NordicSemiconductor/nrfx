@@ -47,7 +47,7 @@ extern "C" {
 #endif
 
 #ifndef NRFX_CONFIG_API_VER_MINOR
-#define NRFX_CONFIG_API_VER_MINOR 0
+#define NRFX_CONFIG_API_VER_MINOR 1
 #endif
 
 #ifndef NRFX_CONFIG_API_VER_MICRO
@@ -103,6 +103,22 @@ extern "C" {
 #define NRF_CTZ(value) __builtin_ctz(value)
 #endif
 
+#if defined(HALTIUM_XXAA) || defined(LUMOS_XXAA)
+#define DMA_BUFFER_UNIFIED_BYTE_ACCESS 1
+#endif
+
+#if defined(LUMOS_XXAA)
+#if defined(NRF_SKIP_CLOCK_CONFIGURATION) || \
+    (defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 64))
+#define NRF_CPU_FREQ_IS_64MHZ 1
+#elif !defined(NRF_CONFIG_CPU_FREQ_MHZ) || \
+    (defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 128))
+#define NRF_CPU_FREQ_IS_128MHZ 1
+#else
+#error "Invalid MCU frequency"
+#endif
+#endif
+
 /** @brief Macro for extracting relative pin number from the absolute pin number. */
 #define NRF_PIN_NUMBER_TO_PIN(pin) ((pin) & 0x1F)
 
@@ -111,6 +127,17 @@ extern "C" {
 
 /** @brief Macro for extracting absolute pin number from the relative pin and port numbers. */
 #define NRF_PIN_PORT_TO_PIN_NUMBER(pin, port) (((pin) & 0x1F) | ((port) << 5))
+
+#if defined(LUMOS_XXAA)
+typedef NRF_DOMAINS_t    nrf_domain_t;
+typedef NRF_OWNERID_Type nrf_owner_t;
+#endif
+
+#if defined(HALTIUM_XXAA)
+typedef NRF_DOMAINID_Type    nrf_domain_t;
+typedef NRF_PROCESSORID_Type nrf_processor_t;
+typedef NRF_OWNERID_Type     nrf_owner_t;
+#endif
 
 /**
  * @brief Function for checking if an object is accesible by EasyDMA of given peripheral instance.
@@ -130,6 +157,10 @@ NRF_STATIC_INLINE void nrf_barrier_w(void);
 NRF_STATIC_INLINE void nrf_barrier_r(void);
 
 NRF_STATIC_INLINE void nrf_barrier_rw(void);
+
+NRF_STATIC_INLINE bool nrf_event_check(void const * p_reg, uint32_t event);
+
+NRF_STATIC_INLINE uint32_t nrf_task_event_address_get(void const * p_reg, uint32_t task_event);
 
 #ifndef NRF_DECLARE_ONLY
 
@@ -191,20 +222,6 @@ NRF_STATIC_INLINE uint8_t nrf_address_bus_get(uint32_t addr, size_t size)
 }
 #endif
 
-#if defined(ADDRESS_BRIDGE_GROUP_Msk)
-NRF_STATIC_INLINE uint8_t nrf_address_bridge_group_get(uint32_t addr)
-{
-    return (uint8_t)((addr & ADDRESS_BRIDGE_GROUP_Msk) >> ADDRESS_BRIDGE_GROUP_Pos);
-}
-#endif
-
-#if defined(ADDRESS_DOMAIN_SPEED_Msk)
-NRF_STATIC_INLINE nrf_domain_speed_t nrf_address_domain_speed_get(uint32_t addr)
-{
-    return (nrf_domain_speed_t)((addr & ADDRESS_DOMAIN_SPEED_Msk) >> ADDRESS_DOMAIN_SPEED_Pos);
-}
-#endif
-
 #if defined(ADDRESS_SLAVE_Msk)
 NRF_STATIC_INLINE uint8_t nrf_address_slave_get(uint32_t addr)
 {
@@ -221,14 +238,39 @@ NRF_STATIC_INLINE uint16_t nrf_address_periphid_get(uint32_t addr)
 
 NRF_STATIC_INLINE bool nrf_dma_accessible_check(void const * p_reg, void const * p_object)
 {
-#if defined(NRF_DMA_ACCESS_EXT)
-    NRF_DMA_ACCESS_EXT
+#if defined(HALTIUM_XXAA)
+    if (nrf_address_bus_get((uint32_t)p_reg, 0x10000) == 0x8E)
+    {
+        /* Bitwise operation to unify secure/non-secure memory address */
+        uint32_t addr = (uint32_t)p_object & 0xEFFFFFFFu;
+
+        /* When peripheral instance is high-speed check whether */
+        /* p_object is placed in GRAM2x or GRAM0x */
+        bool gram0x = (addr >= 0x2F000000u) && (addr < 0x2F038000);
+        bool gram2x = (addr >= 0x2F880000u) && (addr < 0x2F886200);
+        return gram0x || gram2x;
+    }
+    else
+    {
+        /* When peripheral instance is low-speed check whether */
+        /* p_object is placed in GRAM3x */
+        return ((((uint32_t)p_object) & 0xEFFF8000u) == 0x2FC00000u);
+    }
 #else
     (void)p_reg;
     return ((((uint32_t)p_object) & 0xE0000000u) == 0x20000000u);
 #endif
 }
 
+NRF_STATIC_INLINE bool nrf_event_check(void const * p_reg, uint32_t event)
+{
+    return (bool)*(volatile const uint32_t *)((const uint8_t *)p_reg + (uint32_t)event);
+}
+
+NRF_STATIC_INLINE uint32_t nrf_task_event_address_get(void const * p_reg, uint32_t task_event)
+{
+    return (uint32_t)((const uint8_t *)p_reg + task_event);
+}
 #endif // NRF_DECLARE_ONLY
 
 #ifdef __cplusplus

@@ -114,7 +114,7 @@ static void pins_configure(nrfx_spis_config_t const * p_config)
                  NRF_GPIO_PIN_NOPULL,
                  NRF_GPIO_PIN_S0S1,
                  NRF_GPIO_PIN_NOSENSE);
-#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_SPIS_CLOCKPIN_SCK_NEEDED_EXT)
+#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_SPIS_CLOCKPIN_SCK_NEEDED)
     nrfy_gpio_pin_clock_set(p_config->sck_pin, true);
 #endif
 
@@ -136,7 +136,7 @@ static void pins_configure(nrfx_spis_config_t const * p_config)
                      NRF_GPIO_PIN_NOPULL,
                      p_config->miso_drive,
                      NRF_GPIO_PIN_NOSENSE);
-#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_SPIS_CLOCKPIN_MISO_NEEDED_EXT)
+#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_SPIS_CLOCKPIN_MISO_NEEDED)
         nrfy_gpio_pin_clock_set(p_config->miso_pin, true);
 #endif
     }
@@ -311,6 +311,9 @@ nrfx_err_t nrfx_spis_init(nrfx_spis_t const *        p_instance,
 
     if (err_code != NRFX_SUCCESS)
     {
+#if NRFX_CHECK(NRFX_PRS_ENABLED)
+        nrfx_prs_release(p_spis);
+#endif
         err_code = NRFX_ERROR_INTERNAL;
         NRFX_LOG_ERROR("Function: %s, error code: %s.",
                         __func__,
@@ -577,8 +580,18 @@ static void irq_handler(NRF_SPIS_Type * p_spis, spis_cb_t * p_cb)
         switch (p_cb->spi_state)
         {
             case SPIS_BUFFER_RESOURCE_REQUESTED:
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#endif
+
                 nrf_spis_tx_buffer_set(p_spis, (uint8_t *)p_cb->tx_buffer, p_cb->tx_buffer_size);
                 nrf_spis_rx_buffer_set(p_spis, (uint8_t *)p_cb->rx_buffer, p_cb->rx_buffer_size);
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
                 nrf_spis_task_trigger(p_spis, NRF_SPIS_TASK_RELEASE);
 

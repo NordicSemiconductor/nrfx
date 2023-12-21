@@ -33,7 +33,8 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 
 /*lint ++flb "Enter library region" */
 
-void SystemStoreFICRNS();
+void SystemStoreFICRNS(void);
+void SystemLockFICRNS(void);
 
 #define __SYSTEM_CLOCK_DEFAULT      (64000000UL)     /*!< nRF91 Application core uses a fixed System Clock Frequency of 64MHz */
 

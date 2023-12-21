@@ -7,3 +7,4 @@ ICR
    :glob:
 
    ../ficr/hal.rst
+   ../uicr/hal.rst

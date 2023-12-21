@@ -46,7 +46,7 @@
 #define QSPI_STD_CMD_RDSR 0x05
 
 /** @brief Byte used to mask status register and retrieve the write-in-progess bit. */
-#define QSPI_MEM_STATUSREG_WIP_Pos 0x01
+#define QSPI_MEM_STATUSREG_WIP_MASK 0x01
 
 /** @brief Default time used in timeout function. */
 #define QSPI_DEF_WAIT_TIME_US 10
@@ -372,11 +372,6 @@ static void qspi_deactivate(void)
 {
     m_cb.activated = false;
 
-    if (nrf_qspi_cinstr_long_transfer_is_ongoing(NRF_QSPI))
-    {
-        nrf_qspi_cinstr_long_transfer_continue(NRF_QSPI, NRF_QSPI_CINSTR_LEN_1B, true);
-    }
-
     nrf_qspi_int_disable(NRF_QSPI, NRF_QSPI_INT_READY_MASK);
 
     nrf_qspi_task_trigger(NRF_QSPI, NRF_QSPI_TASK_DEACTIVATE);
@@ -438,7 +433,7 @@ nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
 
     if (p_config)
     {
-        nrfx_err_t err_code = qspi_configure(p_config);
+        err_code = qspi_configure(p_config);
         if (err_code != NRFX_SUCCESS)
         {
             NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -508,14 +503,6 @@ nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
         return NRFX_ERROR_TIMEOUT;
     }
 
-    /* In some cases, only opcode should be sent. To prevent execution, set function code is
-     * surrounded by an if.
-     */
-    if (p_tx_buffer)
-    {
-        nrf_qspi_cinstrdata_set(NRF_QSPI, p_config->length, p_tx_buffer);
-    }
-
     /* For custom instruction transfer driver has to switch to blocking mode.
      * If driver was previously configured to non-blocking mode, interrupts
      * will get reenabled before next standard transfer.
@@ -529,6 +516,14 @@ nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
     if (NRF52_ERRATA_215_ENABLE_WORKAROUND || NRF53_ERRATA_43_ENABLE_WORKAROUND)
     {
         qspi_workaround_apply();
+    }
+
+    /* In some cases, only opcode should be sent. To prevent execution, set function code is
+     * surrounded by an if.
+     */
+    if (p_tx_buffer)
+    {
+        nrf_qspi_cinstrdata_set(NRF_QSPI, p_config->length, p_tx_buffer);
     }
 
     m_cb.timeout_signal = false;
@@ -703,7 +698,7 @@ nrfx_err_t nrfx_qspi_mem_busy_check(void)
         return ret_code;
     }
 
-    if ((status_value & QSPI_MEM_STATUSREG_WIP_Pos) != 0x00)
+    if ((status_value & QSPI_MEM_STATUSREG_WIP_MASK) != 0x00)
     {
         return NRFX_ERROR_BUSY;
     }
@@ -761,7 +756,15 @@ nrfx_err_t nrfx_qspi_write(void const * p_tx_buffer,
                            size_t       tx_buffer_length,
                            uint32_t     dst_address)
 {
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#endif
     return qspi_xfer((void *)p_tx_buffer, tx_buffer_length, dst_address, NRFX_QSPI_STATE_WRITE);
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 }
 
 nrfx_err_t nrfx_qspi_read(void *   p_rx_buffer,

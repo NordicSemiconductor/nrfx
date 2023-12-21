@@ -46,7 +46,8 @@ extern "C" {
 
 #define GPIO_PORT_NUM(periph_name, prefix, i, _)    i,
 #define GPIO_REG(periph_name, prefix, i, _)         NRFX_CONCAT(NRF_, periph_name, prefix, i),
-#define GPIO_NUM_OF_PINS(periph_name, prefix, i, _) NRFX_CONCAT(periph_name, prefix, i, _PIN_NUM)
+#define GPIO_NUM_OF_PINS(periph_name, prefix, i, _) \
+    NRFX_CONCAT(periph_name, prefix, i, _PIN_NUM)
 
 #define GPIO_PORT_NUM_LIST {NRFX_FOREACH_PRESENT(P, GPIO_PORT_NUM, (), (), _)}
 #define GPIO_REG_LIST      {NRFX_FOREACH_PRESENT(P, GPIO_REG, (), (), _)}
@@ -276,7 +277,20 @@ typedef enum
     NRF_GPIO_PIN_SEL_APP        = GPIO_PIN_CNF_MCUSEL_AppMCU,     ///< Pin controlled by Application MCU.
     NRF_GPIO_PIN_SEL_NETWORK    = GPIO_PIN_CNF_MCUSEL_NetworkMCU, ///< Pin controlled by Network MCU.
     NRF_GPIO_PIN_SEL_PERIPHERAL = GPIO_PIN_CNF_MCUSEL_Peripheral, ///< Pin controlled by dedicated peripheral.
+#endif
+#if defined(GPIO_PIN_CNF_MCUSEL_TND) || defined(__NRFX_DOXYGEN__)
     NRF_GPIO_PIN_SEL_TND        = GPIO_PIN_CNF_MCUSEL_TND,        ///< Pin controlled by Trace and Debug Subsystem.
+#elif defined(GPIO_PIN_CNF_CTRLSEL_TND)
+    NRF_GPIO_PIN_SEL_TND        = GPIO_PIN_CNF_CTRLSEL_TND,       ///< Pin controlled by Trace and Debug Subsystem.
+#endif
+#if defined(GPIO_PIN_CNF_CTRLSEL_GPIO) || defined(__NRFX_DOXYGEN__)
+    NRF_GPIO_PIN_SEL_GPIO       = GPIO_PIN_CNF_CTRLSEL_GPIO,      ///< Pin controlled by GPIO or peripherals with configurable pins.
+#endif
+#if defined(GPIO_PIN_CNF_CTRLSEL_VPR) || defined(__NRFX_DOXYGEN__)
+    NRF_GPIO_PIN_SEL_VPR        = GPIO_PIN_CNF_CTRLSEL_VPR,       ///< Pin controlled by VPR.
+#endif
+#if defined(GPIO_PIN_CNF_CTRLSEL_GRTC) || defined(__NRFX_DOXYGEN__)
+    NRF_GPIO_PIN_SEL_GRTC       = GPIO_PIN_CNF_CTRLSEL_GRTC,      ///< Pin controlled by GRTC peripheral.
 #endif
 #if defined(NRF_GPIO_PIN_SEL_EXT)
     NRF_GPIO_PIN_SEL_EXT
@@ -288,12 +302,12 @@ typedef enum
 /** @brief Port impedance enable mask. */
 typedef enum
 {
-    NRF_GPIO_PORT_IMPEDANCE_50_MASK   = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE50_Msk,   //< Enable 50 Ohm impedance.
-    NRF_GPIO_PORT_IMPEDANCE_100_MASK  = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE100_Msk,  //< Enable 100 Ohm impedance.
-    NRF_GPIO_PORT_IMPEDANCE_200_MASK  = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE200_Msk,  //< Enable 200 Ohm impedance.
-    NRF_GPIO_PORT_IMPEDANCE_400_MASK  = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE400_Msk,  //< Enable 400 Ohm impedance.
-    NRF_GPIO_PORT_IMPEDANCE_800_MASK  = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE800_Msk,  //< Enable 800 Ohm impedance.
-    NRF_GPIO_PORT_IMPEDANCE_1600_MASK = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE1600_Msk, //< Enable 1600 Ohm impedance.
+    NRF_GPIO_PORT_IMPEDANCE_50_MASK   = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE50_Msk,   ///< Enable 50 Ohm impedance.
+    NRF_GPIO_PORT_IMPEDANCE_100_MASK  = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE100_Msk,  ///< Enable 100 Ohm impedance.
+    NRF_GPIO_PORT_IMPEDANCE_200_MASK  = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE200_Msk,  ///< Enable 200 Ohm impedance.
+    NRF_GPIO_PORT_IMPEDANCE_400_MASK  = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE400_Msk,  ///< Enable 400 Ohm impedance.
+    NRF_GPIO_PORT_IMPEDANCE_800_MASK  = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE800_Msk,  ///< Enable 800 Ohm impedance.
+    NRF_GPIO_PORT_IMPEDANCE_1600_MASK = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE1600_Msk, ///< Enable 1600 Ohm impedance.
 } nrf_gpio_port_impedance_mask_t;
 #endif
 
@@ -301,7 +315,15 @@ typedef enum
 /** @brief Retention enable mask. */
 typedef enum
 {
-    NRF_GPIO_RETAIN_EXT ///< Reserved. For internal use only.
+#if defined(GPIO_RETAIN_APPLICAION_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_GPIO_RETAIN_APPLICATION_MASK = GPIO_RETAIN_APPLICAION_Msk, ///< Enable retention for GPIO registers for Application domain
+#endif
+#if defined(GPIO_RETAIN_RADIOCORE_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_GPIO_RETAIN_NETWORK_MASK     = GPIO_RETAIN_RADIOCORE_Msk,  ///< Enable retention for GPIO registers for Radio core
+#endif
+#if defined(NRF_GPIO_RETAIN_EXT)
+    NRF_GPIO_RETAIN_EXT
+#endif
 } nrf_gpio_retain_mask_t;
 #endif
 

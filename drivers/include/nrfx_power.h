@@ -39,6 +39,10 @@
 #include <nrfx_power_clock.h>
 #include "nrfx_power_compat.h"
 
+#if defined(REGULATORS_PRESENT)
+#include <hal/nrf_regulators.h>
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -50,23 +54,24 @@ extern "C" {
  * @brief   POWER peripheral driver.
  */
 
-#if NRF_POWER_HAS_POFCON || NRFX_CHECK(NRF_REGULATORS_HAS_POF) || defined(__NRFX_DOXYGEN__)
+#if NRF_POWER_HAS_POFCON || (defined(REGULATORS_PRESENT) && NRF_REGULATORS_HAS_POF) \
+    || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether the power failure comparator is supported. */
 #define NRFX_POWER_SUPPORTS_POFCON 1
 #else
 #define NRFX_POWER_SUPPORTS_POFCON 0
 #endif
 
-#if NRF_POWER_HAS_POFCON_VDDH || NRFX_CHECK(NRF_REGULATORS_HAS_POF_VDDH) || \
-    defined(__NRFX_DOXYGEN__)
+#if NRF_POWER_HAS_POFCON_VDDH || (defined(REGULATORS_PRESENT) && NRF_REGULATORS_HAS_POF_VDDH) \
+    || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether the power failure comparator for VDDH is supported. */
 #define NRFX_POWER_SUPPORTS_POFCON_VDDH 1
 #else
 #define NRFX_POWER_SUPPORTS_POFCON_VDDH 0
 #endif
 
-#if NRF_POWER_HAS_DCDCEN_VDDH || NRFX_CHECK(NRF_REGULATORS_HAS_VREG_HIGH) || \
-    defined(__NRFX_DOXYGEN__)
+#if NRF_POWER_HAS_DCDCEN_VDDH || (defined(REGULATORS_PRESENT) && NRF_REGULATORS_HAS_VREG_HIGH) \
+    || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether the VDDH regulator is supported. */
 #define NRFX_POWER_SUPPORTS_DCDCEN_VDDH 1
 #else

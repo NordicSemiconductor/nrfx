@@ -497,12 +497,12 @@ NRF_STATIC_INLINE void nrf_regulators_elv_mode_allow_set(NRF_REGULATORS_Type * p
                                                          uint32_t              mask)
 {
     p_reg->TRIM = ((p_reg->TRIM & ~NRF_REGULATORS_ELV_MODE_ALL_MASK) |
-                   (mask & NRF_REGULATORS_ELV_MODE_ALL_MASK));
+                   (~mask & NRF_REGULATORS_ELV_MODE_ALL_MASK));
 }
 
 NRF_STATIC_INLINE uint32_t nrf_regulators_elv_mode_allow_get(NRF_REGULATORS_Type const * p_reg)
 {
-    return p_reg->TRIM & NRF_REGULATORS_ELV_MODE_ALL_MASK;
+    return ~(p_reg->TRIM & NRF_REGULATORS_ELV_MODE_ALL_MASK);
 }
 #endif // NRF_REGULATORS_HAS_TRIM
 

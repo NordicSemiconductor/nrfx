@@ -276,6 +276,7 @@ NRF_STATIC_INLINE void nrf_lpcomp_shorts_set(NRF_LPCOMP_Type * p_reg, uint32_t m
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_lpcomp_int_mask_t values for bit masking.
  *
  * @sa nrf_lpcomp_int_disable
  * @sa nrf_lpcomp_int_enable_check
@@ -287,6 +288,7 @@ NRF_STATIC_INLINE void nrf_lpcomp_int_enable(NRF_LPCOMP_Type * p_reg, uint32_t m
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_lpcomp_int_mask_t values for bit masking.
  *
  * @sa nrf_lpcomp_int_enable
  * @sa nrf_lpcomp_int_enable_check
@@ -298,6 +300,7 @@ NRF_STATIC_INLINE void nrf_lpcomp_int_disable(NRF_LPCOMP_Type * p_reg, uint32_t 
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_lpcomp_int_mask_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -450,13 +453,13 @@ NRF_STATIC_INLINE void nrf_lpcomp_task_trigger(NRF_LPCOMP_Type * p_reg, nrf_lpco
 NRF_STATIC_INLINE uint32_t nrf_lpcomp_task_address_get(NRF_LPCOMP_Type const * p_reg,
                                                        nrf_lpcomp_task_t       task)
 {
-    return (uint32_t)((uint8_t *)p_reg + task);
+    return nrf_task_event_address_get(p_reg, task);
 }
 
 NRF_STATIC_INLINE bool nrf_lpcomp_event_check(NRF_LPCOMP_Type const * p_reg,
                                               nrf_lpcomp_event_t      event)
 {
-    return (bool) (*(volatile uint32_t *)( (uint8_t *)p_reg + (uint32_t)event));
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE void nrf_lpcomp_event_clear(NRF_LPCOMP_Type * p_reg, nrf_lpcomp_event_t event)
@@ -468,7 +471,7 @@ NRF_STATIC_INLINE void nrf_lpcomp_event_clear(NRF_LPCOMP_Type * p_reg, nrf_lpcom
 NRF_STATIC_INLINE uint32_t nrf_lpcomp_event_address_get(NRF_LPCOMP_Type const * p_reg,
                                                         nrf_lpcomp_event_t      event)
 {
-    return (uint32_t)((uint8_t *)p_reg + event);
+    return nrf_task_event_address_get(p_reg, event);
 }
 
 NRF_STATIC_INLINE void nrf_lpcomp_shorts_enable(NRF_LPCOMP_Type * p_reg, uint32_t mask)

@@ -255,9 +255,9 @@ extern "C" {
 #define NRF_CCM_HAS_MODE_DATARATE_125KBPS 0
 #endif
 
+#if (!NRF_CCM_HAS_MODE_DATARATE_125KBPS && \
+     defined(CCM_MODE_DATARATE_125Kbit)) || defined(__NRFX_DOXYGEN__)
 /** @brief Support for 125 Kbit radio data rate. */
-#if !NRF_CCM_HAS_MODE_DATARATE_125KBPS && \
-    (defined(CCM_MODE_DATARATE_125Kbit) || defined(__NRFX_DOXYGEN__))
 #define NRF_CCM_HAS_MODE_DATARATE_125KBIT 1
 #else
 #define NRF_CCM_HAS_MODE_DATARATE_125KBIT 0
@@ -265,9 +265,9 @@ extern "C" {
 
 #if defined(CCM_MODE_DATARATE_250Kbit) || defined(__NRFX_DOXYGEN__)
 /** @brief Support for 250 Kbit radio data rate. */
-#define NRF_CCM_HAS_MODE_DATARATE_250Kbit 1
+#define NRF_CCM_HAS_MODE_DATARATE_250KBIT 1
 #else
-#define NRF_CCM_HAS_MODE_DATARATE_250Kbit 0
+#define NRF_CCM_HAS_MODE_DATARATE_250KBIT 0
 #endif
 
 #if defined(CCM_MODE_DATARATE_500Kbps) || defined(__NRFX_DOXYGEN__)
@@ -277,9 +277,9 @@ extern "C" {
 #define NRF_CCM_HAS_MODE_DATARATE_500KBPS 0
 #endif
 
+#if (!NRF_CCM_HAS_MODE_DATARATE_500KBPS && \
+     defined(CCM_MODE_DATARATE_500Kbit)) || defined(__NRFX_DOXYGEN__)
 /** @brief Support for 500 Kbit radio data rate. */
-#if !NRF_CCM_HAS_MODE_DATARATE_500KBPS && \
-    (defined(CCM_MODE_DATARATE_500Kbit) || defined(__NRFX_DOXYGEN__))
 #define NRF_CCM_HAS_MODE_DATARATE_500KBIT 1
 #else
 #define NRF_CCM_HAS_MODE_DATARATE_500KBIT 0
@@ -414,17 +414,15 @@ typedef enum
 
 #if NRF_CCM_HAS_MODE_DATARATE_125KBPS
     NRF_CCM_DATARATE_125K = CCM_MODE_DATARATE_125Kbps, ///< 125 Kbps.
-#endif
-#if NRF_CCM_HAS_MODE_DATARATE_125KBIT
+#elif NRF_CCM_HAS_MODE_DATARATE_125KBIT
     NRF_CCM_DATARATE_125K = CCM_MODE_DATARATE_125Kbit, ///< 125 Kbps.
 #endif
-#if NRF_CCM_HAS_MODE_DATARATE_250Kbit
+#if NRF_CCM_HAS_MODE_DATARATE_250KBIT
     NRF_CCM_DATARATE_250K = CCM_MODE_DATARATE_250Kbit, ///< 250 Kbps.
 #endif
 #if NRF_CCM_HAS_MODE_DATARATE_500KBPS
     NRF_CCM_DATARATE_500K = CCM_MODE_DATARATE_500Kbps, ///< 500 Kbps.
-#endif
-#if NRF_CCM_HAS_MODE_DATARATE_500KBIT
+#elif NRF_CCM_HAS_MODE_DATARATE_500KBIT
     NRF_CCM_DATARATE_500K = CCM_MODE_DATARATE_500Kbit, ///< 500 Kbit.
 #endif
     NRF_CCM_DATARATE_1M   = CCM_MODE_DATARATE_1Mbit,   ///< 1 Mbps.
@@ -575,7 +573,8 @@ NRF_STATIC_INLINE void nrf_ccm_shorts_set(NRF_CCM_Type * p_reg,
  * @brief Function for enabling specified interrupts.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] mask  Interrupts to be enabled.
+ * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_ccm_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_ccm_int_enable(NRF_CCM_Type * p_reg, uint32_t mask);
 
@@ -583,7 +582,8 @@ NRF_STATIC_INLINE void nrf_ccm_int_enable(NRF_CCM_Type * p_reg, uint32_t mask);
  * @brief Function for disabling specified interrupts.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] mask  Interrupts to be disabled.
+ * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_ccm_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_ccm_int_disable(NRF_CCM_Type * p_reg, uint32_t mask);
 
@@ -592,7 +592,8 @@ NRF_STATIC_INLINE void nrf_ccm_int_disable(NRF_CCM_Type * p_reg, uint32_t mask);
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
- *
+ *                  Use @ref nrf_ccm_int_mask_t values for bit masking.
+ * 
  * @return Mask of enabled interrupts.
  */
 NRF_STATIC_INLINE uint32_t nrf_ccm_int_enable_check(NRF_CCM_Type const * p_reg, uint32_t mask);
@@ -706,7 +707,7 @@ NRF_STATIC_INLINE void nrf_ccm_key_set(NRF_CCM_Type   * p_reg,
  *
  * @return Pointer to the AES 128-bit key value. The key is stored in big endian byte order.
  */
-NRF_STATIC_INLINE uint32_t const * nrf_ccm_key_get(NRF_CCM_Type const * p_reg);
+NRF_STATIC_INLINE uint32_t const volatile * nrf_ccm_key_get(NRF_CCM_Type const * p_reg);
 
 #endif // NRF_CCM_HAS_KEY
 
@@ -728,7 +729,7 @@ NRF_STATIC_INLINE void nrf_ccm_nonce_set(NRF_CCM_Type *   p_reg,
  *
  * @return Pointer to the AES 13-byte nonce value. The nonce is stored in big endian byte order.
  */
-NRF_STATIC_INLINE uint32_t const * nrf_ccm_nonce_get(NRF_CCM_Type const * p_reg);
+NRF_STATIC_INLINE uint32_t const volatile * nrf_ccm_nonce_get(NRF_CCM_Type const * p_reg);
 #endif // NRF_CCM_HAS_NONCE
 
 #if NRF_CCM_HAS_IN_AMOUNT
@@ -996,7 +997,7 @@ NRF_STATIC_INLINE void nrf_ccm_event_clear(NRF_CCM_Type *  p_reg,
 NRF_STATIC_INLINE bool nrf_ccm_event_check(NRF_CCM_Type const * p_reg,
                                            nrf_ccm_event_t      event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_ccm_event_address_get(NRF_CCM_Type const * p_reg,
@@ -1129,9 +1130,9 @@ NRF_STATIC_INLINE void nrf_ccm_key_set(NRF_CCM_Type   * p_reg,
     }
 }
 
-NRF_STATIC_INLINE uint32_t const * nrf_ccm_key_get(NRF_CCM_Type const * p_reg)
+NRF_STATIC_INLINE uint32_t const volatile * nrf_ccm_key_get(NRF_CCM_Type const * p_reg)
 {
-    return (uint32_t *)(p_reg->KEY.VALUE);
+    return (uint32_t const volatile *)(p_reg->KEY.VALUE);
 }
 #endif // NRF_CCM_HAS_KEY
 
@@ -1146,9 +1147,9 @@ NRF_STATIC_INLINE void nrf_ccm_nonce_set(NRF_CCM_Type *   p_reg,
     }
 }
 
-NRF_STATIC_INLINE uint32_t const * nrf_ccm_nonce_get(NRF_CCM_Type const * p_reg)
+NRF_STATIC_INLINE uint32_t const volatile * nrf_ccm_nonce_get(NRF_CCM_Type const * p_reg)
 {
-    return (uint32_t *)(p_reg->NONCE.VALUE);
+    return (uint32_t const volatile *)(p_reg->NONCE.VALUE);
 }
 #endif // NRF_CCM_HAS_NONCE
 

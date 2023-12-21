@@ -105,7 +105,7 @@ typedef struct
                                              *   as they are ignored anyway. */
 } nrfx_uart_config_t;
 
-#if defined(UART_CONFIG_STOP_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_UART_HAS_STOP_BITS || defined(__NRFX_DOXYGEN__)
     /** @brief UART additional stop bits configuration. */
     #define NRFX_UART_DEFAULT_EXTENDED_STOP_CONFIG   \
         .stop = NRF_UART_STOP_ONE,
@@ -113,7 +113,7 @@ typedef struct
     #define NRFX_UART_DEFAULT_EXTENDED_STOP_CONFIG
 #endif
 
-#if defined(UART_CONFIG_PARITYTYPE_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_UART_HAS_PARITY_BIT || defined(__NRFX_DOXYGEN__)
     /**  @brief UART additional parity type configuration. */
     #define NRFX_UART_DEFAULT_EXTENDED_PARITYTYPE_CONFIG   \
         .paritytype = NRF_UART_PARITYTYPE_EVEN,
@@ -198,7 +198,7 @@ typedef void (*nrfx_uart_event_handler_t)(nrfx_uart_event_t const * p_event,
  * @retval NRFX_SUCCESS             Initialization is successful.
  * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
- *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
+ *                                  Deprecated - use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_BUSY          Some other peripheral with the same
  *                                  instance ID is already in use. This is
  *                                  possible only if @ref nrfx_prs module

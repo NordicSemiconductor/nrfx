@@ -40,6 +40,11 @@
 extern "C" {
 #endif
 
+#if !defined(NRF_RTC0) && defined(NRF_RTC)
+#define NRF_RTC0    NRF_RTC
+#define RTC0_CC_NUM RTC_CC_NUM
+#endif
+
 /**
  * @defgroup nrf_rtc_hal RTC HAL
  * @{
@@ -145,7 +150,8 @@ NRF_STATIC_INLINE uint32_t nrf_rtc_cc_get(NRF_RTC_Type const * p_reg, uint32_t c
  * @brief Function for enabling interrupts.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] mask  Interrupt mask to be enabled.
+ * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_rtc_int_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_rtc_int_enable(NRF_RTC_Type * p_reg, uint32_t mask);
 
@@ -153,7 +159,8 @@ NRF_STATIC_INLINE void nrf_rtc_int_enable(NRF_RTC_Type * p_reg, uint32_t mask);
  * @brief Function for disabling interrupts.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] mask  Interrupt mask to be disabled.
+ * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_rtc_int_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_rtc_int_disable(NRF_RTC_Type * p_reg, uint32_t mask);
 
@@ -162,6 +169,7 @@ NRF_STATIC_INLINE void nrf_rtc_int_disable(NRF_RTC_Type * p_reg, uint32_t mask);
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_rtc_int_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -383,7 +391,7 @@ NRF_STATIC_INLINE void nrf_rtc_publish_clear(NRF_RTC_Type *  p_reg,
 
 NRF_STATIC_INLINE bool nrf_rtc_event_check(NRF_RTC_Type const * p_reg, nrf_rtc_event_t event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE void nrf_rtc_event_clear(NRF_RTC_Type * p_reg, nrf_rtc_event_t event)

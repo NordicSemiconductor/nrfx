@@ -40,6 +40,12 @@
 extern "C" {
 #endif
 
+#if defined(HALTIUM_XXAA)
+#define NRF_I2S_CLOCKPIN_SCK_NEEDED
+#define NRF_I2S_CLOCKPIN_LRCK_NEEDED
+#define NRF_I2S_CLOCKPIN_MCK_NEEDED
+#endif
+
 #if !defined(NRF_I2S0) && defined(NRF_I2S)
 #define NRF_I2S0 NRF_I2S
 #endif
@@ -86,6 +92,11 @@ extern "C" {
  */
 #define NRF_I2S_PIN_NOT_CONNECTED  0xFFFFFFFF
 
+/** @brief I2S SCK pin selection mask. */
+#define NRF_I2S_PSEL_SCK_PIN_MASK  I2S_PSEL_SCK_PIN_Msk
+
+/** @brief I2S SCK port selection mask. */
+#define NRF_I2S_PSEL_SCK_PORT_MASK I2S_PSEL_SCK_PORT_Msk
 
 /** @brief I2S tasks. */
 typedef enum
@@ -312,6 +323,7 @@ NRF_STATIC_INLINE uint32_t nrf_i2s_event_address_get(NRF_I2S_Type const * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_i2s_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_i2s_int_enable(NRF_I2S_Type * p_reg, uint32_t mask);
 
@@ -320,6 +332,7 @@ NRF_STATIC_INLINE void nrf_i2s_int_enable(NRF_I2S_Type * p_reg, uint32_t mask);
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_i2s_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_i2s_int_disable(NRF_I2S_Type * p_reg, uint32_t mask);
 
@@ -328,6 +341,7 @@ NRF_STATIC_INLINE void nrf_i2s_int_disable(NRF_I2S_Type * p_reg, uint32_t mask);
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_i2s_int_mask_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -557,7 +571,7 @@ NRF_STATIC_INLINE void nrf_i2s_event_clear(NRF_I2S_Type *  p_reg,
 NRF_STATIC_INLINE bool nrf_i2s_event_check(NRF_I2S_Type const * p_reg,
                                            nrf_i2s_event_t      event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_i2s_event_address_get(NRF_I2S_Type const * p_reg,

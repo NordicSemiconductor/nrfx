@@ -67,7 +67,7 @@ extern "C" {
     #define NRFX_WDT_IRQ_CONFIG
 #endif
 
-#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+#if NRFX_API_VER_AT_LEAST(3, 2, 0) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief WDT event handler function type.
  *
@@ -143,7 +143,7 @@ typedef struct
     NRFX_WDT_IRQ_CONFIG                                     \
 }
 
-#if NRFX_API_VER_AT_LEAST(3, 2, 0)
+#if NRFX_API_VER_AT_LEAST(3, 2, 0) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for initializing the WDT driver instance.
  *
@@ -159,7 +159,7 @@ typedef struct
  * @retval NRFX_SUCCESS             Initialization was successful.
  * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
- *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
+ *                                  Deprecated - use @ref NRFX_ERROR_ALREADY instead.
  */
 nrfx_err_t nrfx_wdt_init(nrfx_wdt_t const *        p_instance,
                          nrfx_wdt_config_t const * p_config,

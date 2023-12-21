@@ -352,6 +352,15 @@ NRFY_STATIC_INLINE void nrfy_pwm_disable(NRF_PWM_Type * p_reg)
     nrf_barrier_w();
 }
 
+/** @refhal{nrf_pwm_enable_check} */
+NRFY_STATIC_INLINE bool nrfy_pwm_enable_check(NRF_PWM_Type * p_reg)
+{
+    nrf_barrier_rw();
+    bool enabled = nrf_pwm_enable_check(p_reg);
+    nrf_barrier_r();
+    return enabled;
+}
+
 /** @refhal{nrf_pwm_pins_set} */
 NRFY_STATIC_INLINE void nrfy_pwm_pins_set(NRF_PWM_Type * p_reg,
                                           uint32_t       out_pins[NRF_PWM_CHANNEL_COUNT])

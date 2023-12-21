@@ -1822,7 +1822,9 @@ void nrfx_usbd_start(bool enable_sof)
 
     uint32_t ints_to_enable =
        NRF_USBD_INT_USBRESET_MASK     |
+#if NRFX_USBD_STARTED_EV_ENABLE
        NRF_USBD_INT_STARTED_MASK      |
+#endif
        NRF_USBD_INT_ENDEPIN0_MASK     |
        NRF_USBD_INT_EP0DATADONE_MASK  |
        NRF_USBD_INT_ENDEPOUT0_MASK    |
@@ -2045,6 +2047,10 @@ nrfx_err_t nrfx_usbd_ep_transfer(
 {
     nrfx_err_t ret;
     const uint8_t ep_bitpos = ep2bit(ep);
+#if NRFX_USBD_CONFIG_LOG_LEVEL > 3
+    char * p_mode = "";
+#endif
+
     NRFX_ASSERT(NULL != p_transfer);
 
     NRFX_CRITICAL_SECTION_ENTER();
@@ -2052,20 +2058,11 @@ nrfx_err_t nrfx_usbd_ep_transfer(
     if ((NRF_USBD_EP_NR_GET(ep) == 0) && (ep != m_last_setup_dir))
     {
         ret = NRFX_ERROR_INVALID_ADDR;
-        if (NRFX_USBD_FAILED_TRANSFERS_DEBUG &&
-            (NRFX_USBD_ISO_DEBUG || (!NRF_USBD_EPISO_CHECK(ep))))
-        {
-            NRFX_LOG_DEBUG("Transfer failed: Invalid EPr\n");
-        }
     }
     else if ((m_ep_dma_waiting | ((~m_ep_ready) & NRFX_USBD_EPIN_BIT_MASK)) & (1U << ep_bitpos))
     {
         /* IN (Device -> Host) transfer has to be transmitted out to allow new transmission */
         ret = NRFX_ERROR_BUSY;
-        if (NRFX_USBD_FAILED_TRANSFERS_DEBUG)
-        {
-            NRFX_LOG_DEBUG("Transfer failed: EP is busy");
-        }
     }
     else
     {
@@ -2081,26 +2078,22 @@ nrfx_err_t nrfx_usbd_ep_transfer(
                 if (0 == (p_transfer->flags & NRFX_USBD_TRANSFER_ZLP_FLAG))
                 {
                     p_state->handler.feeder = nrfx_usbd_feeder_ram;
+#if NRFX_USBD_CONFIG_LOG_LEVEL > 3
                     if (NRFX_USBD_ISO_DEBUG || (!NRF_USBD_EPISO_CHECK(ep)))
                     {
-                        NRFX_LOG_DEBUG(
-                            "Transfer called on endpoint %x, size: %u, mode: "
-                            "RAM",
-                            ep,
-                            p_transfer->size);
+                        p_mode = "RAM";
                     }
+#endif
                 }
                 else
                 {
                     p_state->handler.feeder = nrfx_usbd_feeder_ram_zlp;
+#if NRFX_USBD_CONFIG_LOG_LEVEL > 3
                     if (NRFX_USBD_ISO_DEBUG || (!NRF_USBD_EPISO_CHECK(ep)))
                     {
-                        NRFX_LOG_DEBUG(
-                            "Transfer called on endpoint %x, size: %u, mode: "
-                            "RAM_ZLP",
-                            ep,
-                            p_transfer->size);
+                        p_mode = "RAM_ZLP";
                     }
+#endif
                 }
             }
             else
@@ -2109,26 +2102,22 @@ nrfx_err_t nrfx_usbd_ep_transfer(
                 if (0 == (p_transfer->flags & NRFX_USBD_TRANSFER_ZLP_FLAG))
                 {
                     p_state->handler.feeder = nrfx_usbd_feeder_flash;
+#if NRFX_USBD_CONFIG_LOG_LEVEL > 3
                     if (NRFX_USBD_ISO_DEBUG || (!NRF_USBD_EPISO_CHECK(ep)))
                     {
-                        NRFX_LOG_DEBUG(
-                            "Transfer called on endpoint %x, size: %u, mode: "
-                            "FLASH",
-                            ep,
-                            p_transfer->size);
+                        p_mode = "FLASH";
                     }
+#endif
                 }
                 else
                 {
                     p_state->handler.feeder = nrfx_usbd_feeder_flash_zlp;
+#if NRFX_USBD_CONFIG_LOG_LEVEL > 3
                     if (NRFX_USBD_ISO_DEBUG || (!NRF_USBD_EPISO_CHECK(ep)))
                     {
-                        NRFX_LOG_DEBUG(
-                            "Transfer called on endpoint %x, size: %u, mode: "
-                            "FLASH_ZLP",
-                            ep,
-                            p_transfer->size);
+                        p_mode = "FLASH_ZLP";
                     }
+#endif
                 }
             }
         }
@@ -2148,6 +2137,27 @@ nrfx_err_t nrfx_usbd_ep_transfer(
         usbd_int_rise();
     }
     NRFX_CRITICAL_SECTION_EXIT();
+
+    if ((ret == NRFX_SUCCESS) &&
+        (NRFX_USBD_ISO_DEBUG || !NRF_USBD_EPISO_CHECK(ep)))
+    {
+#if NRFX_USBD_CONFIG_LOG_LEVEL > 3
+        NRFX_LOG_DEBUG("Transfer called on endpoint %x, size: %u, mode: %s", ep, p_transfer->size, p_mode);
+#endif
+    }
+    else if (NRFX_USBD_FAILED_TRANSFERS_DEBUG &&
+             (NRFX_USBD_ISO_DEBUG || (!NRF_USBD_EPISO_CHECK(ep))))
+    {
+        if (ret == NRFX_ERROR_BUSY)
+        {
+            NRFX_LOG_DEBUG("Transfer failed: EP is busy");
+        }
+        else if (ret == NRFX_ERROR_INVALID_ADDR)
+        {
+            NRFX_LOG_DEBUG("Transfer failed: Invalid EP");
+        }
+    }
+
     return ret;
 }
 
@@ -2164,19 +2174,11 @@ nrfx_err_t nrfx_usbd_ep_handled_transfer(
     if ((NRF_USBD_EP_NR_GET(ep) == 0) && (ep != m_last_setup_dir))
     {
         ret = NRFX_ERROR_INVALID_ADDR;
-        if (NRFX_USBD_FAILED_TRANSFERS_DEBUG && (NRFX_USBD_ISO_DEBUG || (!NRF_USBD_EPISO_CHECK(ep))))
-        {
-            NRFX_LOG_DEBUG("Transfer failed: Invalid EP");
-        }
     }
     else if ((m_ep_dma_waiting | ((~m_ep_ready) & NRFX_USBD_EPIN_BIT_MASK)) & (1U << ep_bitpos))
     {
         /* IN (Device -> Host) transfer has to be transmitted out to allow a new transmission */
         ret = NRFX_ERROR_BUSY;
-        if (NRFX_USBD_FAILED_TRANSFERS_DEBUG && (NRFX_USBD_ISO_DEBUG || (!NRF_USBD_EPISO_CHECK(ep))))
-        {
-            NRFX_LOG_DEBUG("Transfer failed: EP is busy");
-        }
     }
     else
     {
@@ -2190,13 +2192,28 @@ nrfx_err_t nrfx_usbd_ep_handled_transfer(
         m_ep_dma_waiting   |= 1U << ep_bitpos;
 
         ret = NRFX_SUCCESS;
-        if (NRFX_USBD_ISO_DEBUG || (!NRF_USBD_EPISO_CHECK(ep)))
-        {
-            NRFX_LOG_DEBUG("Transfer called on endpoint %x, mode: Handler", ep);
-        }
         usbd_int_rise();
     }
     NRFX_CRITICAL_SECTION_EXIT();
+
+    if ((ret == NRFX_SUCCESS) &&
+        (NRFX_USBD_ISO_DEBUG || !NRF_USBD_EPISO_CHECK(ep)))
+    {
+        NRFX_LOG_DEBUG("Transfer called on endpoint %x, mode: Handler", ep);
+    }
+    else if (NRFX_USBD_FAILED_TRANSFERS_DEBUG &&
+             (NRFX_USBD_ISO_DEBUG || (!NRF_USBD_EPISO_CHECK(ep))))
+    {
+        if (ret == NRFX_ERROR_BUSY)
+        {
+            NRFX_LOG_DEBUG("Transfer failed: EP is busy");
+        }
+        else if (ret == NRFX_ERROR_INVALID_ADDR)
+        {
+            NRFX_LOG_DEBUG("Transfer failed: Invalid EP");
+        }
+    }
+
     return ret;
 }
 

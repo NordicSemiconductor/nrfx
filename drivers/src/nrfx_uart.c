@@ -592,7 +592,15 @@ static void tx_done_event(uart_control_block_t * p_cb,
 
     event.type             = NRFX_UART_EVT_TX_DONE;
     event.data.rxtx.bytes  = bytes;
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#endif
     event.data.rxtx.p_data = (uint8_t *)p_cb->p_tx_buffer;
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
     p_cb->tx_buffer_length = 0;
 

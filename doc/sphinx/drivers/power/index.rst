@@ -8,6 +8,7 @@ POWER
 
    ../../nrfx_api/reset_reason.rst
    *
+   ../glitchdet/hal.rst
    ../reset/hal.rst
    ../usbreg/driver.rst
    ../usbreg/hal.rst

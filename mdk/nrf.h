@@ -37,8 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* MDK version */
 #define MDK_MAJOR_VERSION   8 
-#define MDK_MINOR_VERSION   58 
-#define MDK_MICRO_VERSION   0 
+#define MDK_MINOR_VERSION   60 
+#define MDK_MICRO_VERSION   3 
 
    
 /* Define coprocessor domains */
@@ -112,6 +112,26 @@ POSSIBILITY OF SUCH DAMAGE.
     #endif
 #endif
 
+/* Define NRF54H_SERIES for common use in nRF54H series devices */
+#if defined (NRF54H20_ENGA_XXAA)
+    #ifndef NRF54H_SERIES
+        #define NRF54H_SERIES
+    #endif
+    #ifndef HALTIUM_XXAA
+        #define HALTIUM_XXAA
+    #endif
+#endif
+
+/* Define NRF54L_SERIES for common use in nRF54L series devices */
+#if defined (NRF54L15_ENGA_XXAA)
+    #ifndef NRF54L_SERIES
+        #define NRF54L_SERIES
+    #endif
+    #ifndef LUMOS_XXAA
+        #define LUMOS_XXAA
+    #endif
+#endif
+
 /* Define NRF91_SERIES for common use in nRF91 series devices. */
 #if defined (NRF9160_XXAA) ||  defined (NRF9120_XXAA)
     #ifndef NRF91_SERIES    
@@ -181,6 +201,14 @@ POSSIBILITY OF SUCH DAMAGE.
         #include "nrf5340_network_bitfields.h"
         #include "nrf5340_network_name_change.h"
     #endif
+
+#elif defined (NRF54H20_ENGA_XXAA)
+    #include "nrf54h20_enga.h"
+    #include "nrf54h20_enga_interim.h"
+
+#elif defined (NRF54L15_ENGA_XXAA)
+    #include "nrf54l15_enga.h"
+    #include "nrf54l15_enga_interim.h"
 
 #elif defined (NRF9160_XXAA)
     #include "nrf9160.h"

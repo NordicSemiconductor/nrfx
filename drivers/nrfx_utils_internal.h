@@ -197,7 +197,7 @@ void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void) \
     void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void);
 
 /* Macro for getting the fourth argument from the set of input arguments. */
-#define __NRFX_GET_ARG4(arg1, arg2, arg3, arg4...) arg4
+#define __NRFX_GET_ARG4(arg1, arg2, arg3, arg4, ...) arg4
 #define _NRFX_GET_ARG4(...) __NRFX_GET_ARG4(__VA_ARGS__)
 
 /* Macro for getting the third argument from the set of input arguments. */
@@ -270,6 +270,13 @@ void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void) \
  */
 #define NRFX_INTERNAL_CHAN_NUM(periph_name, prefix, i, _) \
     NRFX_CONCAT(periph_name, prefix, i, _CH_NUM),
+
+/**
+ * Macro used with @p NRFX_FOREACH_PRESENT for generating comma separated
+ * \<periph_name\>\<prefix\>\<i\>_GROUP_NUM tokens.
+ */
+#define NRFX_INTERNAL_GROUP_NUM(periph_name, prefix, i, suffix) \
+    NRFX_CONCAT(periph_name, prefix, i, _GROUP_NUM),
 
 /* Internal macros for @ref NRFX_FOR_EACH_IDX_FIXED_ARG */
 #define _NRFX_FOR_EACH_IDX_FIXED_ARG_EXEC(idx, x, fixed_arg0, fixed_arg1) \

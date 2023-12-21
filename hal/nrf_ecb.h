@@ -208,7 +208,7 @@ typedef enum
 /**
  * @brief Function for activating the specified ECB task.
  *
- * @param[in] p_reg Pointer to the peripheral register structure.
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] task  Task to be activated.
  */
 NRF_STATIC_INLINE void nrf_ecb_task_trigger(NRF_ECB_Type * p_reg, nrf_ecb_task_t task);
@@ -216,7 +216,7 @@ NRF_STATIC_INLINE void nrf_ecb_task_trigger(NRF_ECB_Type * p_reg, nrf_ecb_task_t
 /**
  * @brief Function for getting the address of the specified ECB task register.
  *
- * @param[in] p_reg Pointer to the peripheral register structure.
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] task  Requested task.
  *
  * @return Address of the specified task register.
@@ -227,7 +227,7 @@ NRF_STATIC_INLINE uint32_t nrf_ecb_task_address_get(NRF_ECB_Type const * p_reg,
 /**
  * @brief Function for clearing the specified ECB event.
  *
- * @param[in] p_reg Pointer to the peripheral register structure.
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] event Event to clear.
  */
 NRF_STATIC_INLINE void nrf_ecb_event_clear(NRF_ECB_Type * p_reg, nrf_ecb_event_t event);
@@ -246,7 +246,7 @@ NRF_STATIC_INLINE bool nrf_ecb_event_check(NRF_ECB_Type const * p_reg, nrf_ecb_e
 /**
  * @brief Function for getting the address of the specified ECB event register.
  *
- * @param[in] p_reg Pointer to the peripheral register structure.
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] event Requested event.
  *
  * @return Address of the specified event register.
@@ -257,16 +257,18 @@ NRF_STATIC_INLINE uint32_t nrf_ecb_event_address_get(NRF_ECB_Type const * p_reg,
 /**
  * @brief Function for enabling the specified interrupts.
  *
- * @param[in] p_reg Pointer to the peripheral register structure.
- * @param[in] mask  Interrupts to be enabled.
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_ecb_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_ecb_int_enable(NRF_ECB_Type * p_reg, uint32_t mask);
 
 /**
  * @brief Function for disabling the specified interrupts.
  *
- * @param[in] p_reg Pointer to the peripheral register structure.
- * @param[in] mask  Interrupts to be disabled.
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_ecb_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_ecb_int_disable(NRF_ECB_Type * p_reg, uint32_t mask);
 
@@ -275,6 +277,7 @@ NRF_STATIC_INLINE void nrf_ecb_int_disable(NRF_ECB_Type * p_reg, uint32_t mask);
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_ecb_int_mask_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -287,7 +290,7 @@ NRF_STATIC_INLINE uint32_t nrf_ecb_int_enable_check(NRF_ECB_Type const * p_reg, 
  * @note The buffer has to be placed in the Data RAM region.
  *       For description of the data structure in this buffer, see the Product Specification.
  *
- * @param[in] p_reg    Pointer to the peripheral register structure.
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
  * @param[in] p_buffer Pointer to the ECB data buffer.
  */
 NRF_STATIC_INLINE void nrf_ecb_data_pointer_set(NRF_ECB_Type * p_reg, void const * p_buffer);
@@ -295,7 +298,7 @@ NRF_STATIC_INLINE void nrf_ecb_data_pointer_set(NRF_ECB_Type * p_reg, void const
 /**
  * @brief Function for getting the pointer to the ECB data buffer.
  *
- * @param[in] p_reg Pointer to the peripheral register structure.
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  *
  * @return Pointer to the ECB data buffer.
  */
@@ -453,7 +456,7 @@ NRF_STATIC_INLINE void nrf_ecb_event_clear(NRF_ECB_Type * p_reg, nrf_ecb_event_t
 
 NRF_STATIC_INLINE bool nrf_ecb_event_check(NRF_ECB_Type const * p_reg, nrf_ecb_event_t event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_ecb_event_address_get(NRF_ECB_Type const * p_reg,

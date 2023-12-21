@@ -40,6 +40,10 @@
 extern "C" {
 #endif
 
+#if defined(HALTIUM_XXAA)
+#define NRF_TWIM_CLOCKPIN_SCL_NEEDED
+#endif
+
 /**
  * @defgroup nrf_twim_hal TWIM HAL
  * @{
@@ -83,6 +87,13 @@ extern "C" {
 #define NRF_TWIM_HAS_DMA_TASKS_EVENTS 1
 #else
 #define NRF_TWIM_HAS_DMA_TASKS_EVENTS 0
+#endif
+
+#if defined(TWIM_SHORTS_LASTTX_DMA_RX_START_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether TWIM DMA shortcuts are present. */
+#define NRF_TWIM_HAS_DMA_SHORTS 1
+#else
+#define NRF_TWIM_HAS_DMA_SHORTS 0
 #endif
 
 #if NRF_TWIM_HAS_DMA_REG
@@ -141,9 +152,16 @@ typedef enum
 /** @brief TWIM shortcuts. */
 typedef enum
 {
-    NRF_TWIM_SHORT_LASTTX_STARTRX_MASK           = TWIM_SHORTS_LASTTX_STARTRX_Msk,                     ///< Shortcut between LASTTX event and STARTRX task.
     NRF_TWIM_SHORT_LASTTX_SUSPEND_MASK           = TWIM_SHORTS_LASTTX_SUSPEND_Msk,                     ///< Shortcut between LASTTX event and SUSPEND task.
     NRF_TWIM_SHORT_LASTTX_STOP_MASK              = TWIM_SHORTS_LASTTX_STOP_Msk,                        ///< Shortcut between LASTTX event and STOP task.
+    NRF_TWIM_SHORT_LASTRX_STOP_MASK              = TWIM_SHORTS_LASTRX_STOP_Msk,                        ///< Shortcut between LASTRX event and STOP task.
+#if NRF_TWIM_HAS_DMA_SHORTS
+    NRF_TWIM_SHORT_LASTTX_STARTRX_MASK           = TWIM_SHORTS_LASTTX_DMA_RX_START_Msk,                ///< Shortcut between LASTTX event and STARTRX task.
+    NRF_TWIM_SHORT_LASTRX_STARTTX_MASK           = TWIM_SHORTS_LASTRX_DMA_TX_START_Msk,                ///< Shortcut between LASTRX event and STARTTX task.
+#else
+    NRF_TWIM_SHORT_LASTTX_STARTRX_MASK           = TWIM_SHORTS_LASTTX_STARTRX_Msk,                     ///< Shortcut between LASTTX event and STARTRX task.
+    NRF_TWIM_SHORT_LASTRX_STARTTX_MASK           = TWIM_SHORTS_LASTRX_STARTTX_Msk,                     ///< Shortcut between LASTRX event and STARTTX task.
+#endif
 #if NRF_TWIM_HAS_DMA_TASKS_EVENTS
     NRF_TWIM_SHORT_RXMATCH0_ENABLERXMATCH1_MASK  = TWIM_SHORTS_DMA_RX_MATCH0_DMA_RX_ENABLEMATCH1_Msk,  ///< Shortcut between DMA.RX.MATCH0 event and DMA.RX.ENABLEMATCH1 task.
     NRF_TWIM_SHORT_RXMATCH1_ENABLERXMATCH2_MASK  = TWIM_SHORTS_DMA_RX_MATCH1_DMA_RX_ENABLEMATCH2_Msk,  ///< Shortcut between DMA.RX.MATCH1 event and DMA.RX.ENABLEMATCH2 task.
@@ -154,11 +172,14 @@ typedef enum
     NRF_TWIM_SHORT_RXMATCH2_DISABLERXMATCH2_MASK = TWIM_SHORTS_DMA_RX_MATCH2_DMA_RX_DISABLEMATCH2_Msk, ///< Shortcut between DMA.RX.MATCH2 event and DMA.RX.DISABLEMATCH2 task.
     NRF_TWIM_SHORT_RXMATCH3_DISABLERXMATCH3_MASK = TWIM_SHORTS_DMA_RX_MATCH3_DMA_RX_DISABLEMATCH3_Msk, ///< Shortcut between DMA.RX.MATCH3 event and DMA.RX.DISABLEMATCH3 task.
 #endif
-    NRF_TWIM_SHORT_LASTRX_STARTTX_MASK           = TWIM_SHORTS_LASTRX_STARTTX_Msk,                     ///< Shortcut between LASTRX event and STARTTX task.
-    NRF_TWIM_SHORT_LASTRX_STOP_MASK              = TWIM_SHORTS_LASTRX_STOP_Msk,                        ///< Shortcut between LASTRX event and STOP task.
-    NRF_TWIM_ALL_SHORTS_MASK                     = TWIM_SHORTS_LASTTX_STARTRX_Msk                     |
-                                                   TWIM_SHORTS_LASTTX_SUSPEND_Msk                     |
-                                                   TWIM_SHORTS_LASTTX_STOP_Msk                        |
+    NRF_TWIM_ALL_SHORTS_MASK                     =
+#if NRF_TWIM_HAS_DMA_SHORTS
+                                                   TWIM_SHORTS_LASTTX_DMA_RX_START_Msk                |
+                                                   TWIM_SHORTS_LASTRX_DMA_TX_START_Msk                |
+#else
+                                                   TWIM_SHORTS_LASTTX_STARTRX_Msk                     |
+                                                   TWIM_SHORTS_LASTRX_STARTTX_Msk                     |
+#endif
 #if NRF_TWIM_HAS_DMA_TASKS_EVENTS
                                                    TWIM_SHORTS_DMA_RX_MATCH0_DMA_RX_ENABLEMATCH1_Msk  |
                                                    TWIM_SHORTS_DMA_RX_MATCH1_DMA_RX_ENABLEMATCH2_Msk  |
@@ -169,7 +190,8 @@ typedef enum
                                                    TWIM_SHORTS_DMA_RX_MATCH2_DMA_RX_DISABLEMATCH2_Msk |
                                                    TWIM_SHORTS_DMA_RX_MATCH3_DMA_RX_DISABLEMATCH3_Msk |
 #endif
-                                                   TWIM_SHORTS_LASTRX_STARTTX_Msk                     |
+                                                   TWIM_SHORTS_LASTTX_SUSPEND_Msk                     |
+                                                   TWIM_SHORTS_LASTTX_STOP_Msk                        |
                                                    TWIM_SHORTS_LASTRX_STOP_Msk                         ///< All TWIM shortcuts.
 } nrf_twim_short_mask_t;
 
@@ -316,6 +338,7 @@ NRF_STATIC_INLINE void nrf_twim_shorts_disable(NRF_TWIM_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_twim_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_twim_int_enable(NRF_TWIM_Type * p_reg,
                                            uint32_t        mask);
@@ -325,6 +348,7 @@ NRF_STATIC_INLINE void nrf_twim_int_enable(NRF_TWIM_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_twim_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_twim_int_disable(NRF_TWIM_Type * p_reg,
                                             uint32_t        mask);
@@ -334,6 +358,7 @@ NRF_STATIC_INLINE void nrf_twim_int_disable(NRF_TWIM_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_twim_int_mask_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -643,7 +668,7 @@ NRF_STATIC_INLINE void nrf_twim_task_trigger(NRF_TWIM_Type * p_reg,
 NRF_STATIC_INLINE uint32_t nrf_twim_task_address_get(NRF_TWIM_Type const * p_reg,
                                                      nrf_twim_task_t       task)
 {
-    return (uint32_t)((uint8_t *)p_reg + (uint32_t)task);
+    return nrf_task_event_address_get(p_reg, task);
 }
 
 NRF_STATIC_INLINE void nrf_twim_event_clear(NRF_TWIM_Type * p_reg,
@@ -656,13 +681,13 @@ NRF_STATIC_INLINE void nrf_twim_event_clear(NRF_TWIM_Type * p_reg,
 NRF_STATIC_INLINE bool nrf_twim_event_check(NRF_TWIM_Type const * p_reg,
                                             nrf_twim_event_t      event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_twim_event_address_get(NRF_TWIM_Type const * p_reg,
                                                       nrf_twim_event_t      event)
 {
-    return (uint32_t)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_task_event_address_get(p_reg, event);
 }
 
 NRF_STATIC_INLINE void nrf_twim_shorts_enable(NRF_TWIM_Type * p_reg,

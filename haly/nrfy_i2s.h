@@ -84,18 +84,21 @@ typedef struct
                                      *   as they are ignored anyway. */
 } nrfy_i2s_config_t;
 
+#if !NRFX_API_VER_AT_LEAST(3, 3, 0)
 /** @brief I2S driver buffers structure. */
 typedef struct
 {
     uint32_t       * p_rx_buffer; ///< Pointer to the buffer for received data.
     uint32_t const * p_tx_buffer; ///< Pointer to the buffer with data to be sent.
 } nrfy_i2s_buffers_t;
+#endif
 
 /** @brief Structure describing single I2S transfer. */
 struct nrfy_i2s_xfer_desc_t
 {
-    nrfy_i2s_buffers_t const * p_buffers;   ///< Pointer to the structure with I2S buffers.
-    uint16_t                   buffer_size; ///< Size of buffers.
+    uint32_t       * p_rx_buffer; ///< Pointer to the buffer for received data.
+    uint32_t const * p_tx_buffer; ///< Pointer to the buffer with data to be sent.
+    uint16_t         buffer_size; ///< Size of buffers.
 };
 
 /**
@@ -194,15 +197,15 @@ NRFY_STATIC_INLINE uint32_t nrfy_i2s_events_process(NRF_I2S_Type *         p_reg
 NRFY_STATIC_INLINE void nrfy_i2s_buffers_set(NRF_I2S_Type *               p_reg,
                                              nrfy_i2s_xfer_desc_t const * p_xfer)
 {
-    if (p_xfer->p_buffers->p_tx_buffer != NULL)
+    if (p_xfer->p_tx_buffer != NULL)
     {
-        NRFY_CACHE_WB(p_xfer->p_buffers->p_tx_buffer, (p_xfer->buffer_size * sizeof(uint32_t)));
+        NRFY_CACHE_WB(p_xfer->p_tx_buffer, (p_xfer->buffer_size * sizeof(uint32_t)));
     }
 
     nrf_i2s_transfer_set(p_reg,
                          p_xfer->buffer_size,
-                         p_xfer->p_buffers->p_rx_buffer,
-                         p_xfer->p_buffers->p_tx_buffer);
+                         p_xfer->p_rx_buffer,
+                         p_xfer->p_tx_buffer);
 
     nrf_barrier_w();
 }
@@ -229,8 +232,8 @@ NRFY_STATIC_INLINE void nrfy_i2s_xfer_start(NRF_I2S_Type *               p_reg,
 
         bool tx_done = false, rx_done = false;
 
-        while (!((tx_done || (p_xfer->p_buffers->p_tx_buffer == NULL)) &&
-                 (rx_done || (p_xfer->p_buffers->p_rx_buffer == NULL))))
+        while (!((tx_done || (p_xfer->p_tx_buffer == NULL)) &&
+                 (rx_done || (p_xfer->p_rx_buffer == NULL))))
         {
             if (__nrfy_internal_i2s_events_process(p_reg,
                     NRFY_EVENT_TO_INT_BITMASK(NRF_I2S_EVENT_TXPTRUPD),
@@ -542,7 +545,7 @@ NRFY_STATIC_INLINE uint32_t __nrfy_internal_i2s_events_process(NRF_I2S_Type *   
     if (__nrfy_internal_i2s_event_handle(p_reg, mask, NRF_I2S_EVENT_RXPTRUPD, &event_mask) &&
         p_xfer)
     {
-        NRFY_CACHE_INV(p_xfer->p_buffers->p_rx_buffer,
+        NRFY_CACHE_INV(p_xfer->p_rx_buffer,
                        (p_xfer->buffer_size * sizeof(uint32_t)));
         invalidated = true;
     }
@@ -550,7 +553,7 @@ NRFY_STATIC_INLINE uint32_t __nrfy_internal_i2s_events_process(NRF_I2S_Type *   
     if (__nrfy_internal_i2s_event_handle(p_reg, mask, NRF_I2S_EVENT_STOPPED, &event_mask) &&
         p_xfer && !invalidated)
     {
-        NRFY_CACHE_INV(p_xfer->p_buffers->p_rx_buffer,
+        NRFY_CACHE_INV(p_xfer->p_rx_buffer,
                        (p_xfer->buffer_size * sizeof(uint32_t)));
     }
 

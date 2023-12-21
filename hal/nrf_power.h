@@ -322,6 +322,9 @@ typedef enum
 #if NRF_POWER_HAS_RESETREAS_VBUS
     NRF_POWER_RESETREAS_VBUS_MASK     = POWER_RESETREAS_VBUS_Msk    , /**< Bit mask of VBUS field. */
 #endif
+#if NRF_POWER_HAS_RESETREAS_CTRLAP
+    NRF_POWER_RESETREAS_CTRLAP_MASK   = POWER_RESETREAS_CTRLAP_Msk  , /**< Bit mask of CTRLAP field. */
+#endif
 } nrf_power_resetreas_mask_t;
 #endif // NRF_POWER_HAS_RESETREAS
 
@@ -1233,7 +1236,7 @@ NRF_STATIC_INLINE void nrf_power_event_clear(NRF_POWER_Type * p_reg, nrf_power_e
 
 NRF_STATIC_INLINE bool nrf_power_event_check(NRF_POWER_Type const * p_reg, nrf_power_event_t event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE bool nrf_power_event_get_and_clear(NRF_POWER_Type *  p_reg,

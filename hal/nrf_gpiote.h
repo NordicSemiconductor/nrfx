@@ -62,6 +62,30 @@ extern "C" {
 #define GPIOTE1_AVAILABLE_GPIO_PORTS NRFX_BIT_MASK(GPIO_COUNT)
 #endif
 
+#if defined(LUMOS_XXAA)
+#if (defined(ISA_ARM) && defined(NRF_TRUSTZONE_NONSECURE)) || defined(ISA_RISCV)
+#define GPIOTE20_IRQn       GPIOTE20_0_IRQn
+#define GPIOTE20_IRQHandler GPIOTE20_0_IRQHandler
+#define GPIOTE30_IRQn       GPIOTE30_0_IRQn
+#define GPIOTE30_IRQHandler GPIOTE30_0_IRQHandler
+#else
+#define GPIOTE20_IRQn       GPIOTE20_1_IRQn
+#define GPIOTE20_IRQHandler GPIOTE20_1_IRQHandler
+#define GPIOTE30_IRQn       GPIOTE30_1_IRQn
+#define GPIOTE30_IRQHandler GPIOTE30_1_IRQHandler
+#endif
+#endif
+
+#if defined(HALTIUM_XXAA)
+#if (defined(ISA_ARM) && defined(NRF_TRUSTZONE_NONSECURE)) || defined(ISA_RISCV)
+#define GPIOTE130_IRQn       GPIOTE130_0_IRQn
+#define GPIOTE130_IRQHandler GPIOTE130_0_IRQHandler
+#else
+#define GPIOTE130_IRQn       GPIOTE130_1_IRQn
+#define GPIOTE130_IRQHandler GPIOTE130_1_IRQHandler
+#endif
+#endif
+
 /* Internal macro used for NRF_GPIOTE_INT_IN_MASK. */
 #define NRF_GPIOTE_INT_IN(idx, _) NRFX_CONCAT(NRF_GPIOTE_INT_IN, idx, _MASK)
 
@@ -95,8 +119,10 @@ extern "C" {
 #define NRF_GPIOTE_HAS_LATENCY 0
 #endif
 
-#if !defined(NRF_GPIOTE_IRQ_GROUP) || defined(__NRFX_DOXYGEN__)
+#if defined(GPIOTE_IRQ_GROUP) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating which interrupt group to use. Empty if there are no groups. */
+#define NRF_GPIOTE_IRQ_GROUP GPIOTE_IRQ_GROUP
+#else
 #define NRF_GPIOTE_IRQ_GROUP
 #endif
 
@@ -109,6 +135,16 @@ extern "C" {
 #else
 /** @brief Symbol indicating a TrustZone suffix added to the register name. */
 #define NRF_GPIOTE_SECURE_SUFFIX
+#endif
+
+#if defined(GPIOTE_INTENSET0_IN0_Msk)
+#if defined(LUMOS_XXAA)
+#define NRF_GPIOTE_PORT_ID 0
+#elif defined(NRF_APPLICATION) || defined(NRF_PPR)
+#define NRF_GPIOTE_PORT_ID 1
+#elif defined(NRF_RADIOCORE)
+#define NRF_GPIOTE_PORT_ID 2
+#endif
 #endif
 
 #if defined(NRF_GPIOTE_PORT_ID)
@@ -283,6 +319,7 @@ NRF_STATIC_INLINE uint32_t nrf_gpiote_event_address_get(NRF_GPIOTE_Type const * 
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_gpiote_int_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_gpiote_int_enable(NRF_GPIOTE_Type * p_reg, uint32_t mask);
 
@@ -291,6 +328,7 @@ NRF_STATIC_INLINE void nrf_gpiote_int_enable(NRF_GPIOTE_Type * p_reg, uint32_t m
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_gpiote_int_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_gpiote_int_disable(NRF_GPIOTE_Type * p_reg, uint32_t mask);
 
@@ -299,6 +337,7 @@ NRF_STATIC_INLINE void nrf_gpiote_int_disable(NRF_GPIOTE_Type * p_reg, uint32_t 
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_gpiote_int_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -541,7 +580,7 @@ NRF_STATIC_INLINE uint32_t nrf_gpiote_task_address_get(NRF_GPIOTE_Type const * p
 NRF_STATIC_INLINE bool nrf_gpiote_event_check(NRF_GPIOTE_Type const * p_reg,
                                               nrf_gpiote_event_t      event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE void nrf_gpiote_event_clear(NRF_GPIOTE_Type * p_reg, nrf_gpiote_event_t event)

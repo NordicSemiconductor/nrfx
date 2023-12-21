@@ -54,7 +54,7 @@
 #define UARTE_LENGTH_VALIDATE(drv_inst_idx, len)    \
         (NRFX_FOREACH_ENABLED(UARTE, UARTEX_LENGTH_VALIDATE, (||), (0), drv_inst_idx, len, 0))
 
-#if NRFX_UARTE_CONFIG_RX_CACHE_ENABLED
+#if NRFX_CHECK(NRFX_UARTE_CONFIG_RX_CACHE_ENABLED)
 // Internal cache buffer is used if buffers provided by a user cannot be used in DMA. This is a
 // HW limitation on some platforms but for testing purposes it can be emulated on any platform.
 #define RX_CACHE_SUPPORTED 1
@@ -125,6 +125,9 @@
 
 // Flag indicates that RX was aborted.
 #define UARTE_FLAG_RX_ABORTED              UARTE_FLAG(RX, 6)
+//
+// Flag indicates that there are new bytes from flushed buffer copied to the user buffer.
+#define UARTE_FLAG_RX_FROM_FLUSH           UARTE_FLAG(RX, 7)
 
 // Flag is set if instance was configured to control PSEL pins during the initialization.
 #define UARTE_FLAG_PSEL_UNINIT             UARTE_FLAG(MISC, 0)
@@ -189,7 +192,7 @@ static void uarte_configure(nrfx_uarte_t        const * p_instance,
         {
             nrfy_gpio_pin_set(p_config->txd_pin);
             nrfy_gpio_cfg_output(p_config->txd_pin);
-#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_UARTE_CLOCKPIN_TXD_NEEDED_EXT)
+#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_UARTE_CLOCKPIN_TXD_NEEDED)
             nrfy_gpio_pin_clock_set(p_config->txd_pin, true);
 #endif
         }
@@ -211,7 +214,7 @@ static void uarte_configure(nrfx_uarte_t        const * p_instance,
         {
             nrfy_gpio_pin_set(p_config->rts_pin);
             nrfy_gpio_cfg_output(p_config->rts_pin);
-#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_UARTE_CLOCKPIN_RTS_NEEDED_EXT)
+#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_UARTE_CLOCKPIN_RTS_NEEDED)
                 nrfy_gpio_pin_clock_set(p_config->rts_pin, true);
 #endif
         }
@@ -231,11 +234,24 @@ static void uarte_configure(nrfx_uarte_t        const * p_instance,
             .rts_pin = p_config->rts_pin,
             .cts_pin = p_config->cts_pin
         },
-        .baudrate = p_config->baudrate,
         .skip_psel_cfg = NRFX_IS_ENABLED(NRFX_UARTE_CONFIG_SKIP_PSEL_CONFIG) ?
             true : p_config->skip_psel_cfg
     };
     nrfy_config.config = p_config->config;
+
+#if defined(LUMOS_XXAA)
+    uint32_t base_frequency = NRF_UARTE_BASE_FREQUENCY_GET(p_instance->p_reg);
+    if (base_frequency != NRF_UARTE_BASE_FREQUENCY_16MHZ)
+    {
+        uint32_t baudrate_factor = base_frequency / NRF_UARTE_BASE_FREQUENCY_16MHZ;
+        nrfy_config.baudrate =
+            (nrf_uarte_baudrate_t)((uint32_t)p_config->baudrate / baudrate_factor);
+    }
+    else
+#endif
+    {
+        nrfy_config.baudrate = p_config->baudrate;
+    }
 
     nrfy_uarte_periph_configure(p_instance->p_reg, &nrfy_config);
 
@@ -337,6 +353,20 @@ static void apply_workaround_for_enable_anomaly(nrfx_uarte_t const * p_instance)
 #endif // defined(NRF53_SERIES) || defined(NRF91_SERIES)
 }
 
+static uint32_t uarte_int_lock(NRF_UARTE_Type * p_uarte)
+{
+    uint32_t int_enabled = nrfy_uarte_int_enable_check(p_uarte, UINT32_MAX);
+
+    nrfy_uarte_int_disable(p_uarte, int_enabled);
+
+    return int_enabled;
+}
+
+static void uarte_int_unlock(NRF_UARTE_Type * p_uarte, uint32_t int_mask)
+{
+    nrfy_uarte_int_enable(p_uarte, int_mask);
+}
+
 /* Function returns true if new transfer can be started. Since TXSTOPPED
  * (and ENDTX) is cleared before triggering new transfer, TX is ready for new
  * transfer if any event is set.
@@ -435,7 +465,7 @@ nrfx_err_t nrfx_uarte_init(nrfx_uarte_t const *        p_instance,
     };
     if (nrfx_prs_acquire(p_instance->p_reg, irq_handlers[inst_idx]) != NRFX_SUCCESS)
     {
-        nrfx_err_t err_code = NRFX_ERROR_BUSY;
+        err_code = NRFX_ERROR_BUSY;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -474,14 +504,19 @@ nrfx_err_t nrfx_uarte_init(nrfx_uarte_t const *        p_instance,
         }
     }
 
+#if NRF_UARTE_HAS_ENDTX_STOPTX_SHORT
+    uint32_t tx_int_mask = 0;
+
+    nrfy_uarte_shorts_enable(p_instance->p_reg, NRF_UARTE_SHORT_ENDTX_STOPTX);
+#else
+    uint32_t tx_int_mask = (!event_handler || p_config->tx_stop_on_end) ?
+                               0 : NRF_UARTE_INT_ENDTX_MASK;
 
     if (p_config->tx_stop_on_end)
     {
         p_cb->flags |= UARTE_FLAG_TX_STOP_ON_END;
-#if NRF_UARTE_HAS_ENDTX_STOPTX_SHORT
-        nrfy_uarte_shorts_enable(p_instance->p_reg, NRF_UARTE_SHORT_ENDTX_STOPTX);
-#endif
     }
+#endif
 
     p_cb->handler = event_handler;
     p_cb->state   = NRFX_DRV_STATE_INITIALIZED;
@@ -489,6 +524,9 @@ nrfx_err_t nrfx_uarte_init(nrfx_uarte_t const *        p_instance,
     // Handle case when other user (e.g. bootloader) left RX in active state.
     if (!prepare_rx(p_instance->p_reg))
     {
+#if NRFX_CHECK(NRFX_PRS_ENABLED)
+        nrfx_prs_release(p_instance->p_reg);
+#endif
         return NRFX_ERROR_INTERNAL;
     }
 
@@ -496,11 +534,12 @@ nrfx_err_t nrfx_uarte_init(nrfx_uarte_t const *        p_instance,
 
     if (!prepare_tx(p_instance->p_reg, p_config->tx_stop_on_end))
     {
+#if NRFX_CHECK(NRFX_PRS_ENABLED)
+        nrfx_prs_release(p_instance->p_reg);
+#endif
         return NRFX_ERROR_INTERNAL;
     }
 
-    uint32_t tx_int_mask = (!event_handler || p_config->tx_stop_on_end) ?
-                               0 : NRF_UARTE_INT_ENDTX_MASK;
     uint32_t int_mask = tx_int_mask | ((event_handler) ? rx_int_mask : 0);
 
     nrfy_uarte_int_enable(p_instance->p_reg, int_mask);
@@ -556,6 +595,10 @@ void nrfx_uarte_uninit(nrfx_uarte_t const * p_instance)
                            NRF_UARTE_INT_RXSTARTED_MASK  |
                            NRF_UARTE_INT_TXSTOPPED_MASK);
     nrfy_uarte_int_uninit(p_uarte);
+
+#if NRF_UARTE_HAS_ENDTX_STOPTX_SHORT
+    nrfy_uarte_shorts_disable(p_uarte, NRF_UARTE_SHORT_ENDTX_STOPTX);
+#endif
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
     nrfx_prs_release(p_uarte);
@@ -831,8 +874,24 @@ nrfx_err_t nrfx_uarte_tx(nrfx_uarte_t const * p_instance,
         return NRFX_ERROR_INVALID_LENGTH;
     }
 
+    if (!p_cb->handler && (flags == 0))
+    {
+        if (p_cb->tx.curr.length == 0)
+        {
+            p_cb->tx.curr.length = length;
+        }
+        else
+        {
+            return NRFX_ERROR_BUSY;
+        }
+
+        err_code = blocking_tx(p_instance, p_data, length, 0);
+        p_cb->tx.curr.length = 0;
+        return err_code;
+    }
+
     // Handle case when transfer is blocking.
-    if (!p_cb->handler || (flags & (NRFX_UARTE_TX_EARLY_RETURN | NRFX_UARTE_TX_BLOCKING)))
+    if (flags & (NRFX_UARTE_TX_EARLY_RETURN | NRFX_UARTE_TX_BLOCKING))
     {
         return blocking_tx(p_instance, p_data, length, flags);
     }
@@ -870,7 +929,18 @@ nrfx_err_t nrfx_uarte_tx(nrfx_uarte_t const * p_instance,
     if (p_cb->tx.curr.length == 0)
     {
         p_cb->tx.curr.length = length;
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#endif
+
         p_cb->tx.curr.p_buffer = (uint8_t *)p_data;
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
         if (use_cache)
         {
             p_cb->flags |= UARTE_FLAG_TX_USE_CACHE;
@@ -886,17 +956,27 @@ nrfx_err_t nrfx_uarte_tx(nrfx_uarte_t const * p_instance,
             bool res;
 
             p_cb->flags |= UARTE_FLAG_TX_LINKED;
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#endif
+
             p_cb->tx.next.p_buffer = (uint8_t *)p_data;
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
             p_cb->tx.next.length = length;
             NRFX_WAIT_FOR(nrfy_uarte_event_check(p_uarte, NRF_UARTE_EVENT_TXSTARTED), 10, 1, res);
             if (res)
             {
 #if NRF_UARTE_HAS_ENDTX_STOPTX_SHORT
-                if (p_cb->flags & UARTE_FLAG_TX_STOP_ON_END)
-                {
-                    nrfy_uarte_shorts_disable(p_uarte, NRF_UARTE_SHORT_ENDTX_STOPTX);
-                }
+                nrfy_uarte_int_enable(p_instance->p_reg, NRF_UARTE_INT_ENDTX_MASK);
+                nrfy_uarte_shorts_disable(p_uarte, NRF_UARTE_SHORT_ENDTX_STOPTX);
 #endif
+                nrfy_uarte_event_clear(p_uarte, NRF_UARTE_EVENT_TXSTARTED);
                 nrfy_uarte_tx_buffer_set(p_uarte, p_data, length);
                 err_code = NRFX_SUCCESS;
             }
@@ -930,15 +1010,16 @@ nrfx_err_t nrfx_uarte_tx_abort(nrfx_uarte_t const * p_instance, bool sync)
 {
     uarte_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
     NRF_UARTE_Type * p_uarte = p_instance->p_reg;
-    uint32_t mask;
+    uint32_t int_mask;
+
+    int_mask = uarte_int_lock(p_uarte);
+    if (p_cb->tx.curr.length == 0)
+    {
+        uarte_int_unlock(p_uarte, int_mask);
+        return NRFX_ERROR_INVALID_STATE;
+    }
 
     NRFX_ATOMIC_FETCH_OR(&p_cb->flags, UARTE_FLAG_TX_ABORTED);
-
-    if (sync)
-    {
-        mask = nrfy_uarte_int_enable_check(p_uarte, NRF_UARTE_INT_ENDTX_MASK);
-        nrfy_uarte_int_disable(p_uarte, NRF_UARTE_INT_TXSTOPPED_MASK | NRF_UARTE_INT_ENDTX_MASK);
-    }
 
     nrfy_uarte_task_trigger(p_uarte, NRF_UARTE_TASK_STOPTX);
 
@@ -946,9 +1027,10 @@ nrfx_err_t nrfx_uarte_tx_abort(nrfx_uarte_t const * p_instance, bool sync)
     {
         block_on_tx(p_uarte, p_cb);
         nrfy_uarte_event_clear(p_uarte, NRF_UARTE_EVENT_ENDTX);
-        nrfy_uarte_int_enable(p_uarte, mask);
         p_cb->tx.curr.length = 0;
     }
+
+    uarte_int_unlock(p_uarte, int_mask);
 
     NRFX_LOG_INFO("TX transaction aborted.");
 
@@ -996,6 +1078,11 @@ static void user_handler_on_rx_done(uarte_control_block_t * p_cb,
                                     const uint8_t *         p_data,
                                     size_t                  len)
 {
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#endif
+
     nrfx_uarte_event_t event = {
         .type = NRFX_UARTE_EVT_RX_DONE,
         .data = {
@@ -1006,6 +1093,10 @@ static void user_handler_on_rx_done(uarte_control_block_t * p_cb,
         }
     };
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
     p_cb->handler(&event, p_cb->p_context);
 }
 
@@ -1014,6 +1105,11 @@ static void user_handler_on_tx_done(uarte_control_block_t * p_cb,
                                     size_t                  len,
                                     bool                    abort)
 {
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#endif
+
     nrfx_uarte_event_t event = {
         .type = NRFX_UARTE_EVT_TX_DONE,
         .data = {
@@ -1024,6 +1120,10 @@ static void user_handler_on_tx_done(uarte_control_block_t * p_cb,
             }
         }
     };
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
     p_cb->handler(&event, p_cb->p_context);
 }
@@ -1104,6 +1204,14 @@ static bool rx_flushed_handler(NRF_UARTE_Type * p_uarte, uarte_control_block_t *
         memcpy(p_cb->rx.curr.p_buffer, p_cb->rx.flush.p_buffer, p_cb->rx.flush.length);
         p_cb->rx.off = p_cb->rx.flush.length;
         p_cb->rx.flush.length = 0;
+        if (nrfy_uarte_int_enable_check(p_uarte, NRF_UARTE_INT_RXDRDY_MASK) && p_cb->handler)
+        {
+                user_handler(p_cb, NRFX_UARTE_EVT_RX_BYTE);
+        }
+        else
+        {
+            NRFX_ATOMIC_FETCH_OR(&p_cb->flags, UARTE_FLAG_RX_FROM_FLUSH);
+        }
     }
 
     return true;
@@ -1257,14 +1365,10 @@ nrfx_err_t nrfx_uarte_rx_buffer_set(nrfx_uarte_t const * p_instance,
     uarte_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
     NRF_UARTE_Type * p_uarte = p_instance->p_reg;
     bool cont = false;
-    bool int_enabled;
+    uint32_t int_enabled;
     nrfx_err_t err = NRFX_SUCCESS;
 
-    int_enabled = nrfy_uarte_int_enable_check(p_uarte, rx_int_mask) != 0;
-    if (int_enabled)
-    {
-        nrfy_uarte_int_disable(p_uarte, rx_int_mask);
-    }
+    int_enabled = uarte_int_lock(p_uarte);
 
     if (!nrf_dma_accessible_check(p_uarte, p_data))
     {
@@ -1324,10 +1428,7 @@ nrfx_err_t nrfx_uarte_rx_buffer_set(nrfx_uarte_t const * p_instance,
         err = rx_buffer_set(p_uarte, p_cb, p_data, length);
     }
 
-    if (int_enabled)
-    {
-        nrfy_uarte_int_enable(p_uarte, rx_int_mask);
-    }
+    uarte_int_unlock(p_uarte, int_enabled);
 
     return err;
 }
@@ -1406,11 +1507,17 @@ static nrfx_err_t rx_abort(NRF_UARTE_Type *        p_uarte,
 {
     uint32_t flag;
     bool endrx_startrx = nrfy_uarte_shorts_get(p_uarte, NRF_UARTE_SHORT_ENDRX_STARTRX) != 0;
+    uint32_t int_enabled;
 
-    if (!(p_cb->flags & UARTE_FLAG_RX_ENABLED))
+    // We need to ensure that operation is not interrupted by the UARTE interrupt since we
+    // are changing state flags. Otherwise interrupt may be executed with RX_ABORTED flag set
+    // but before STOPRX task is triggered which may lead to unexpected behavior.
+    if (!((p_cb->flags & (UARTE_FLAG_RX_ENABLED | UARTE_FLAG_RX_ABORTED)) == UARTE_FLAG_RX_ENABLED))
     {
         return NRFX_ERROR_INVALID_STATE;
     }
+
+    int_enabled = uarte_int_lock(p_uarte);
 
     if (disable_all || !endrx_startrx)
     {
@@ -1429,11 +1536,14 @@ static nrfx_err_t rx_abort(NRF_UARTE_Type *        p_uarte,
         nrfy_uarte_int_disable(p_uarte, rx_int_mask);
         nrfy_uarte_task_trigger(p_uarte, NRF_UARTE_TASK_STOPRX);
         wait_for_rx_completion(p_uarte, p_cb);
+        int_enabled &= ~rx_int_mask;
     }
     else
     {
         nrfy_uarte_task_trigger(p_uarte, NRF_UARTE_TASK_STOPRX);
     }
+
+    uarte_int_unlock(p_uarte, int_enabled);
 
     return NRFX_SUCCESS;
 }
@@ -1550,7 +1660,11 @@ uint32_t nrfx_uarte_errorsrc_get(nrfx_uarte_t const * p_instance)
 
 bool nrfx_uarte_rx_new_data_check(nrfx_uarte_t const * p_instance)
 {
-    if (nrfy_uarte_event_check(p_instance->p_reg, NRF_UARTE_EVENT_RXDRDY))
+    uarte_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+    bool flushed_data = (NRFX_ATOMIC_FETCH_AND(&p_cb->flags, ~UARTE_FLAG_RX_FROM_FLUSH) &
+                        UARTE_FLAG_RX_FROM_FLUSH) != 0;
+
+    if (nrfy_uarte_event_check(p_instance->p_reg, NRF_UARTE_EVENT_RXDRDY) || flushed_data)
     {
         nrfy_uarte_event_clear(p_instance->p_reg, NRF_UARTE_EVENT_RXDRDY);
         return true;
@@ -1665,10 +1779,19 @@ static bool endrx_irq_handler(NRF_UARTE_Type *        p_uarte,
         if (p_cb->flags & UARTE_FLAG_RX_STOP_ON_END)
         {
             nrfy_uarte_task_trigger(p_uarte, NRF_UARTE_TASK_STOPRX);
+            p_cb->flags |= UARTE_FLAG_RX_ABORTED;
         }
     }
-    else if (!(p_cb->flags & UARTE_FLAG_RX_CONT && rxstarted))
+    else if (!((p_cb->flags & UARTE_FLAG_RX_CONT) &&
+                (rxstarted || nrfy_uarte_event_check(p_uarte, NRF_UARTE_EVENT_RXSTARTED))))
     {
+        // If continuous transfer is set then we expect that new RX is already started by short.
+        // However it is possible that buffer was provided after ENDRX occurred. It can be checked
+        // by examining RXSTARTED event. If it did not occur that indicates that second buffer did
+        // not start but was set. It must be started manually. Usually RXSTARTED occurs almost
+        // immediately after ENDRX (if short is set) so rxstarted variable check seems to be enough
+        // but there are cases when RXSTARTED may be slightly delayed so if it is not set we
+        // need to check HW register to make sure that it did not occur.
         nrfy_uarte_task_trigger(p_uarte, NRF_UARTE_TASK_STARTRX);
         if (nrfy_uarte_event_check(p_uarte, NRF_UARTE_EVENT_RXTO))
         {
@@ -1782,10 +1905,17 @@ static void endtx_irq_handler(NRF_UARTE_Type * p_uarte, uarte_control_block_t * 
     {
         uint8_t const * p_buf = p_cb->tx.curr.p_buffer;
         uint32_t len = p_cb->tx.curr.length;
-        bool aborted;
+        bool aborted = p_cb->flags & UARTE_FLAG_TX_ABORTED;
 
         nrfy_uarte_event_clear(p_uarte, NRF_UARTE_EVENT_ENDTX);
+        // If we have no PPI connection then start the transfer ASAP.
+        if (!nrfy_uarte_event_check(p_uarte, NRF_UARTE_EVENT_TXSTARTED) && !aborted)
+        {
+            nrfy_uarte_task_trigger(p_uarte, NRF_UARTE_TASK_STARTTX);
+        }
+
 #if NRF_UARTE_HAS_ENDTX_STOPTX_SHORT
+        nrfy_uarte_int_disable(p_uarte, NRF_UARTE_INT_ENDTX_MASK);
         nrfy_uarte_shorts_enable(p_uarte, NRF_UARTE_SHORT_ENDTX_STOPTX);
 #endif
         NRFX_CRITICAL_SECTION_ENTER();
@@ -1855,6 +1985,14 @@ static void irq_handler(NRF_UARTE_Type * p_uarte, uarte_control_block_t * p_cb)
         bool endrx = nrfy_uarte_events_process(p_uarte,
                                                NRFY_EVENT_TO_INT_BITMASK(NRF_UARTE_EVENT_ENDRX),
                                                &p_cb->rx.curr);
+
+        // Report RXDRDY only if enabled
+        if (nrfy_uarte_int_enable_check(p_uarte, NRF_UARTE_INT_RXDRDY_MASK) &&
+            nrfy_uarte_event_check(p_uarte, NRF_UARTE_EVENT_RXDRDY))
+        {
+            nrfy_uarte_event_clear(p_uarte, NRF_UARTE_EVENT_RXDRDY);
+            user_handler(p_cb, NRFX_UARTE_EVT_RX_BYTE);
+        }
 
         if (endrx)
         {

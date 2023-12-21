@@ -1,6 +1,28 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.3.0] - 2023-12-21
+### Added
+- Added support for nRF54H20 Eng A and nRF54L15 Eng A.
+- Added HALs for BELLBOARD, CRACEN, CTRLAP, EXMIF, GLITCHDET, GRTC, HSFLL, IPCT, LRCCONF, MEMCONF, MPC, MVDMA, PPIB, RAMC, RESETINFO, RRAMC, STM, TAMPC, TBM, UICR and, VPR.
+- Added HALYs for BELLBOARD, GRTC, MVDMA, RRAMC, TBM, and VPR.
+- Added drivers for BELLBOARD, GRTC, RRAMC, TBM, and VEVIF.
+- Added the nrfx_ids helper layer to facilitate developing generic code that performs inter-domain signalling.
+- Added possibility to use TX link feature without (D)PPI connection in the UARTE driver.
+- Added possibility to get callback called on each byte received in the UARTE driver.
+
+### Changed
+- Updated MDK to version 8.60.3.
+- Changed the default nrfx API version to 3.1.0.
+- Changed how the buffers are provided to the I2S driver. Now, the buffer size must be passed alongside pointers to the next buffers.
+- Improved peripheral power management in the PWM driver. Now, the peripheral is enabled only during playback.
+
+### Fixed
+- Fixed the workaround for nRF52840 anomaly 215 and nRF5340 anomaly 215 in the QSPI driver. Now, the custom instruction functions do not risk triggering anomalies.
+- Fixed a missing CTRLAP reset reason for nRF91 in the POWER HAL.
+- Fixed incorrect assertion in the TWIS driver. Now, the driver status can be checked when the driver is idle.
+- Restored workaround for nRF52 anomaly 55 in the I2S driver.
+
 ## [3.2.0] - 2023-10-02
 ### Added
 - Added multi-instance support for the GPIOTE driver.

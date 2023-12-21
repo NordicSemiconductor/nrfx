@@ -269,12 +269,12 @@ static void configure_pins(nrfx_spim_t const *        p_instance,
     //   buffer must always be connected for the SPI to work.
     uint32_t sck_val = (p_config->mode <= NRF_SPIM_MODE_1) ? 0 : 1;
     pin_init(p_config->sck_pin, NRF_GPIO_PIN_DIR_OUTPUT, NRF_GPIO_PIN_NOPULL, pin_drive, sck_val);
-#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_SPIM_CLOCKPIN_SCK_NEEDED_EXT)
+#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_SPIM_CLOCKPIN_SCK_NEEDED)
     nrfy_gpio_pin_clock_set(p_config->sck_pin, true);
 #endif
     // - MOSI (optional) - output with initial value 0
     pin_init(p_config->mosi_pin, NRF_GPIO_PIN_DIR_OUTPUT, NRF_GPIO_PIN_NOPULL, pin_drive, 0);
-#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_SPIM_CLOCKPIN_MOSI_NEEDED_EXT)
+#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_SPIM_CLOCKPIN_MOSI_NEEDED)
     nrfy_gpio_pin_clock_set(p_config->mosi_pin, true);
 #endif
     // - MISO (optional) - input
@@ -358,10 +358,10 @@ static bool spim_frequency_valid_check(nrfx_spim_t const * p_instance, uint32_t 
     uint32_t base_frequency = NRFX_SPIM_BASE_FREQUENCY_GET(p_instance);
     uint32_t prescaler = NRF_SPIM_PRESCALER_CALCULATE(p_instance->p_reg, frequency);
 
-    return (base_frequency % frequency == 0) &&
+    return ((base_frequency % frequency) < prescaler) &&
             NRFX_IS_EVEN(prescaler) &&
-            (prescaler <= NRF_SPIM_PRESCALER_MAX) &&
-            (prescaler >= NRF_SPIM_PRESCALER_MIN);
+            (prescaler <= NRF_SPIM_PRESCALER_MAX_GET(p_instance->p_reg)) &&
+            (prescaler >= NRF_SPIM_PRESCALER_MIN_GET(p_instance->p_reg));
 }
 
 static uint32_t spim_prescaler_calculate(nrfx_spim_t const * p_instance, uint32_t frequency)
@@ -529,6 +529,15 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
         return err_code;
     }
 
+    if (p_config)
+    {
+        err_code = spim_configuration_verify(p_instance, p_config);
+        if (err_code != NRFX_SUCCESS)
+        {
+            return err_code;
+        }
+    }
+
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
     static nrfx_irq_handler_t const irq_handlers[NRFX_SPIM_ENABLED_COUNT] = {
         NRFX_INSTANCE_IRQ_HANDLERS_LIST(SPIM, spim)
@@ -548,11 +557,6 @@ nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
 
     if (p_config)
     {
-        err_code = spim_configuration_verify(p_instance, p_config);
-        if (err_code != NRFX_SUCCESS)
-        {
-            return err_code;
-        }
         spim_configure(p_instance, p_config);
     }
 

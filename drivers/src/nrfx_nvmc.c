@@ -76,7 +76,7 @@
     #define NVMC_FLASH_PAGE_SIZE  0x800  ///< 2 kB
 #endif
 
-#if defined(NRF_NVMC_PARTIAL_ERASE_PRESENT)
+#if NRF_NVMC_HAS_PARTIAL_ERASE
 /**
  * Value representing the page erase time.
  *
@@ -108,7 +108,7 @@ static uint32_t m_partial_erase_time_elapsed;
 /** Partial erase page address. */
 static uint32_t m_partial_erase_page_addr = NVMC_PARTIAL_ERASE_INVALID_ADDR;
 
-#endif // defined(NRF_NVMC_PARTIAL_ERASE_PRESENT)
+#endif // NRF_NVMC_HAS_PARTIAL_ERASE
 
 static uint32_t flash_page_size_get(void)
 {
@@ -200,7 +200,7 @@ static void nvmc_readonly_mode_set(void)
      * For secure code, the access mode needs to be set for both secure and
      * non-secure regions.
      */
-#if defined(NVMC_CONFIGNS_WEN_Msk)
+#if NRF_NVMC_HAS_NON_SECURE_OPERATIONS
     nrf_nvmc_nonsecure_mode_set(NRF_NVMC, NRF_NVMC_NS_MODE_READONLY);
 #endif
 #if !defined(NRF_TRUSTZONE_NONSECURE)
@@ -214,7 +214,7 @@ static void nvmc_write_mode_set(void)
      * For secure code, the access mode needs to be set for both secure and
      * non-secure regions.
      */
-#if defined(NVMC_CONFIGNS_WEN_Msk)
+#if NRF_NVMC_HAS_NON_SECURE_OPERATIONS
     nrf_nvmc_nonsecure_mode_set(NRF_NVMC, NRF_NVMC_NS_MODE_WRITE);
 #endif
 #if !defined(NRF_TRUSTZONE_NONSECURE)
@@ -228,7 +228,7 @@ static void nvmc_erase_mode_set(void)
      * For secure code, the access mode needs to be set for both secure and
      * non-secure regions.
      */
-#if defined(NVMC_CONFIGNS_WEN_Msk)
+#if NRF_NVMC_HAS_NON_SECURE_OPERATIONS
     nrf_nvmc_nonsecure_mode_set(NRF_NVMC, NRF_NVMC_NS_MODE_ERASE);
 #endif
 #if !defined(NRF_TRUSTZONE_NONSECURE)
@@ -278,7 +278,7 @@ nrfx_err_t nrfx_nvmc_page_erase(uint32_t addr)
 
 nrfx_err_t nrfx_nvmc_uicr_erase(void)
 {
-#if defined(NVMC_ERASEUICR_ERASEUICR_Msk)
+#if NRF_NVMC_HAS_UICR_ERASE
     nvmc_erase_mode_set();
     nrf_nvmc_uicr_erase_start(NRF_NVMC);
     while (!nrf_nvmc_ready_check(NRF_NVMC))
@@ -299,7 +299,7 @@ void nrfx_nvmc_all_erase(void)
     nvmc_readonly_mode_set();
 }
 
-#if defined(NRF_NVMC_PARTIAL_ERASE_PRESENT)
+#if NRF_NVMC_HAS_PARTIAL_ERASE
 nrfx_err_t nrfx_nvmc_page_partial_erase_init(uint32_t addr, uint32_t duration_ms)
 {
     NRFX_ASSERT(is_valid_address(addr, false));
@@ -344,7 +344,7 @@ bool nrfx_nvmc_page_partial_erase_continue(void)
         return true;
     }
 }
-#endif // defined(NRF_NVMC_PARTIAL_ERASE_PRESENT)
+#endif // NRF_NVMC_HAS_PARTIAL_ERASE
 
 bool nrfx_nvmc_byte_writable_check(uint32_t addr, uint8_t val_to_check)
 {

@@ -7,4 +7,5 @@ CLOCK
    :glob:
 
    *
+   ../hsfll/hal.rst
    ../oscillators/hal.rst

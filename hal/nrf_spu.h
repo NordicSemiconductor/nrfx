@@ -61,6 +61,13 @@ extern "C" {
 #define NRF_SPU_HAS_MEMORY 0
 #endif
 
+#if defined(SPU_PERIPH_PERM_BLOCK_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether block feature is present. */
+#define NRF_SPU_HAS_BLOCK 1
+#else
+#define NRF_SPU_HAS_BLOCK 0
+#endif
+
 #if defined(SPU_FEATURE_BELLS_DOMAIN_MaxCount) || defined(SPU_FEATURE_BELLS_PROCESSOR_MaxCount) \
     || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether SPU has registers related to BELLS. */
@@ -81,6 +88,20 @@ extern "C" {
 #define NRF_SPU_HAS_IPCT 1
 #else
 #define NRF_SPU_HAS_IPCT 0
+#endif
+
+#if defined(SPU_FEATURE_TDD_MaxCount) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SPU has registers related to TDD. */
+#define NRF_SPU_HAS_TDD 1
+#else
+#define NRF_SPU_HAS_TDD 0
+#endif
+
+#if defined(SPU_FEATURE_MRAMC_MaxCount) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SPU has registers related to MRAMC. */
+#define NRF_SPU_HAS_MRAMC 1
+#else
+#define NRF_SPU_HAS_MRAMC 0
 #endif
 
 #if NRF_SPU_HAS_OWNERSHIP
@@ -139,7 +160,17 @@ extern "C" {
 #define NRF_SPU_FEATURE_BELLS_INTERRUPT_COUNT    SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_MaxCount
 #endif
 
+#if NRF_SPU_HAS_TDD
+/** @brief Number of TDDs. */
+#define NRF_SPU_FEATURE_TDD_COUNT                SPU_FEATURE_TDD_MaxCount
 #endif
+
+#if NRF_SPU_HAS_MRAMC
+/** @brief Number of MRAMCs. */
+#define NRF_SPU_FEATURE_MRAMC_COUNT              SPU_FEATURE_MRAMC_MaxCount
+#endif
+
+#endif // NRF_SPU_HAS_OWNERSHIP
 
 /** @brief SPU events. */
 typedef enum
@@ -207,25 +238,33 @@ typedef enum
 typedef enum
 {
 #if NRF_SPU_HAS_IPCT
-    NRF_SPU_FEATURE_IPCT_CHANNEL,       /**< IPCT channel. */
-    NRF_SPU_FEATURE_IPCT_INTERRUPT,     /**< IPCT interrupt. */
+    NRF_SPU_FEATURE_IPCT_CHANNEL,         /**< IPCT channel. */
+    NRF_SPU_FEATURE_IPCT_INTERRUPT,       /**< IPCT interrupt. */
 #endif
-    NRF_SPU_FEATURE_DPPI_CHANNEL,       /**< DPPI channel. */
-    NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP, /**< DPPI channel group. */
-    NRF_SPU_FEATURE_GPIOTE_CHANNEL,     /**< GPIOTE channel. */
-    NRF_SPU_FEATURE_GPIOTE_INTERRUPT,   /**< GPIOTE interrupt. */
-    NRF_SPU_FEATURE_GPIO_PIN,           /**< GPIO pin. */
-    NRF_SPU_FEATURE_GRTC_CC,            /**< GRTC compare channel. */
-    NRF_SPU_FEATURE_GRTC_SYSCOUNTER,    /**< GRTC SYSCOUNTER. */
-    NRF_SPU_FEATURE_GRTC_INTERRUPT,     /**< GRTC interrupt. */
+    NRF_SPU_FEATURE_DPPI_CHANNEL,         /**< DPPI channel. */
+    NRF_SPU_FEATURE_DPPI_CHANNEL_GROUP,   /**< DPPI channel group. */
+    NRF_SPU_FEATURE_GPIOTE_CHANNEL,       /**< GPIOTE channel. */
+    NRF_SPU_FEATURE_GPIOTE_INTERRUPT,     /**< GPIOTE interrupt. */
+    NRF_SPU_FEATURE_GPIO_PIN,             /**< GPIO pin. */
+    NRF_SPU_FEATURE_GRTC_CC,              /**< GRTC compare channel. */
+    NRF_SPU_FEATURE_GRTC_SYSCOUNTER,      /**< GRTC SYSCOUNTER. */
+    NRF_SPU_FEATURE_GRTC_INTERRUPT,       /**< GRTC interrupt. */
 #if NRF_SPU_HAS_BELLS
 #if NRF_SPU_HAS_DOMAIN
-    NRF_SPU_FEATURE_BELLS_BELL,         /**< BELLS bell pair. */
+    NRF_SPU_FEATURE_BELLS_BELL,           /**< BELLS bell pair. */
 #else
-    NRF_SPU_FEATURE_BELLS_TASKS,        /**< BELLS tasks pair. */
-    NRF_SPU_FEATURE_BELLS_EVENTS,       /**< BELLS events pair. */
-    NRF_SPU_FEATURE_BELLS_INTERRUPT,    /**< BELLS interrupt pair. */
+    NRF_SPU_FEATURE_BELLS_TASKS,          /**< BELLS tasks pair. */
+    NRF_SPU_FEATURE_BELLS_EVENTS,         /**< BELLS events pair. */
+    NRF_SPU_FEATURE_BELLS_INTERRUPT,      /**< BELLS interrupt pair. */
 #endif
+#endif
+#if NRF_SPU_HAS_TDD
+    NRF_SPU_FEATURE_TDD,                  /**< TDD. */
+#endif
+#if NRF_SPU_HAS_MRAMC
+    NRF_SPU_FEATURE_MRAMC_WAITSTATES,     /**< MRAMC waitstates. */
+    NRF_SPU_FEATURE_MRAMC_AUTODPOWERDOWN, /**< MRAMC automatic power-down. */
+    NRF_SPU_FEATURE_MRAMC_READY           /**< MRAMC ready. */
 #endif
 } nrf_spu_feature_t;
 
@@ -256,7 +295,8 @@ NRF_STATIC_INLINE bool nrf_spu_event_check(NRF_SPU_Type const * p_reg,
  * @brief Function for enabling specified interrupts.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] mask  Interrupts to be enabled.
+ * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_spu_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_spu_int_enable(NRF_SPU_Type * p_reg,
                                           uint32_t       mask);
@@ -265,7 +305,8 @@ NRF_STATIC_INLINE void nrf_spu_int_enable(NRF_SPU_Type * p_reg,
  * @brief Function for disabling specified interrupts.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] mask  Interrupts to be disabled.
+ * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_spu_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_spu_int_disable(NRF_SPU_Type * p_reg,
                                            uint32_t       mask);
@@ -275,6 +316,7 @@ NRF_STATIC_INLINE void nrf_spu_int_disable(NRF_SPU_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_spu_int_mask_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -540,6 +582,7 @@ NRF_STATIC_INLINE void nrf_spu_periph_perm_dmasec_set(NRF_SPU_Type * p_reg,
                                                       uint8_t        index,
                                                       bool           enable);
 
+#if NRF_SPU_HAS_BLOCK
 /**
  * @brief Function for getting the status of the peripheral access lock of the specified slave.
  *
@@ -565,6 +608,7 @@ NRF_STATIC_INLINE bool nrf_spu_periph_perm_block_get(NRF_SPU_Type const * p_reg,
  */
 NRF_STATIC_INLINE void nrf_spu_periph_perm_block_enable(NRF_SPU_Type * p_reg,
                                                         uint8_t        index);
+#endif
 
 /**
  * @brief Function for getting the status of the peripheral management lock of the specified slave.
@@ -703,6 +747,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_lock_enable(NRF_SPU_Type *    p_reg,
                                                    uint8_t           index,
                                                    uint8_t           subindex);
 
+#if NRF_SPU_HAS_BLOCK
 /**
  * @brief Function for getting status of the access lock of the specified feature.
  *
@@ -736,6 +781,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
                                                     nrf_spu_feature_t feature,
                                                     uint8_t           index,
                                                     uint8_t           subindex);
+#endif
 
 /**
  * @brief Function for getting the feature owner ID of the specified feature.
@@ -780,7 +826,7 @@ NRF_STATIC_INLINE void nrf_spu_event_clear(NRF_SPU_Type *  p_reg,
 NRF_STATIC_INLINE bool nrf_spu_event_check(NRF_SPU_Type const * p_reg,
                                            nrf_spu_event_t      event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE void nrf_spu_int_enable(NRF_SPU_Type * p_reg,
@@ -969,6 +1015,7 @@ NRF_STATIC_INLINE bool nrf_spu_periph_perm_lock_get(NRF_SPU_Type const * p_reg,
            SPU_PERIPH_PERM_LOCK_Pos;
 }
 
+#if NRF_SPU_HAS_BLOCK
 NRF_STATIC_INLINE bool nrf_spu_periph_perm_block_get(NRF_SPU_Type const * p_reg,
                                                      uint8_t              index)
 {
@@ -976,6 +1023,7 @@ NRF_STATIC_INLINE bool nrf_spu_periph_perm_block_get(NRF_SPU_Type const * p_reg,
     return (p_reg->PERIPH[index].PERM & SPU_PERIPH_PERM_BLOCK_Msk) >>
            SPU_PERIPH_PERM_BLOCK_Pos;
 }
+#endif
 
 NRF_STATIC_INLINE bool nrf_spu_periph_perm_dmasec_get(NRF_SPU_Type const * p_reg,
                                                       uint8_t              index)
@@ -1002,6 +1050,7 @@ NRF_STATIC_INLINE void nrf_spu_periph_perm_lock_enable(NRF_SPU_Type * p_reg,
                                     SPU_PERIPH_PERM_LOCK_Pos));
 }
 
+#if NRF_SPU_HAS_BLOCK
 NRF_STATIC_INLINE void nrf_spu_periph_perm_block_enable(NRF_SPU_Type * p_reg,
                                                         uint8_t        index)
 {
@@ -1010,6 +1059,7 @@ NRF_STATIC_INLINE void nrf_spu_periph_perm_block_enable(NRF_SPU_Type * p_reg,
                                  | (SPU_PERIPH_PERM_BLOCK_Blocked <<
                                     SPU_PERIPH_PERM_BLOCK_Pos));
 }
+#endif
 
 NRF_STATIC_INLINE void nrf_spu_periph_perm_dmasec_set(NRF_SPU_Type * p_reg,
                                                       uint8_t        index,
@@ -1172,6 +1222,34 @@ NRF_STATIC_INLINE bool nrf_spu_feature_secattr_get(NRF_SPU_Type const * p_reg,
 #endif // NRF_SPU_HAS_DOMAIN
 #endif // NRF_SPU_HAS_BELLS
 
+#if NRF_SPU_HAS_TDD
+        case NRF_SPU_FEATURE_TDD:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_TDD_COUNT);
+            return (p_reg->FEATURE.TDD[index]
+                    & SPU_FEATURE_TDD_SECATTR_Msk)
+                   >> SPU_FEATURE_TDD_SECATTR_Pos;
+#endif // NRF_SPU_HAS_TDD
+
+#if NRF_SPU_HAS_MRAMC
+        case NRF_SPU_FEATURE_MRAMC_WAITSTATES:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            return (p_reg->FEATURE.MRAMC[index].WAITSTATES
+                    & SPU_FEATURE_MRAMC_WAITSTATES_SECATTR_Msk)
+                   >> SPU_FEATURE_MRAMC_WAITSTATES_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_MRAMC_AUTODPOWERDOWN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            return (p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN
+                    & SPU_FEATURE_MRAMC_AUTODPOWERDOWN_SECATTR_Msk)
+                   >> SPU_FEATURE_MRAMC_AUTODPOWERDOWN_SECATTR_Pos;
+
+        case NRF_SPU_FEATURE_MRAMC_READY:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            return (p_reg->FEATURE.MRAMC[index].READY
+                    & SPU_FEATURE_MRAMC_READY_SECATTR_Msk)
+                   >> SPU_FEATURE_MRAMC_READY_SECATTR_Pos;
+#endif // NRF_SPU_HAS_MRAMC
+
         default:
             NRFX_ASSERT(0);
             return false;
@@ -1276,12 +1354,42 @@ NRF_STATIC_INLINE bool nrf_spu_feature_lock_get(NRF_SPU_Type const * p_reg,
                    >> SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_LOCK_Pos;
 #endif // NRF_SPU_HAS_DOMAIN
 #endif // NRF_SPU_HAS_BELLS
+
+#if NRF_SPU_HAS_TDD
+        case NRF_SPU_FEATURE_TDD:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_TDD_COUNT);
+            return (p_reg->FEATURE.TDD[index]
+                    & SPU_FEATURE_TDD_LOCK_Msk)
+                   >> SPU_FEATURE_TDD_LOCK_Pos;
+#endif // NRF_SPU_HAS_TDD
+
+#if NRF_SPU_HAS_MRAMC
+        case NRF_SPU_FEATURE_MRAMC_WAITSTATES:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            return (p_reg->FEATURE.MRAMC[index].WAITSTATES
+                    & SPU_FEATURE_MRAMC_WAITSTATES_LOCK_Msk)
+                   >> SPU_FEATURE_MRAMC_WAITSTATES_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_MRAMC_AUTODPOWERDOWN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            return (p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN
+                    & SPU_FEATURE_MRAMC_AUTODPOWERDOWN_LOCK_Msk)
+                   >> SPU_FEATURE_MRAMC_AUTODPOWERDOWN_LOCK_Pos;
+
+        case NRF_SPU_FEATURE_MRAMC_READY:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            return (p_reg->FEATURE.MRAMC[index].READY
+                    & SPU_FEATURE_MRAMC_READY_LOCK_Msk)
+                   >> SPU_FEATURE_MRAMC_READY_LOCK_Pos;
+#endif // NRF_SPU_HAS_MRAMC
+
         default:
             NRFX_ASSERT(0);
             return false;
     }
 }
 
+#if NRF_SPU_HAS_BLOCK
 NRF_STATIC_INLINE bool nrf_spu_feature_block_get(NRF_SPU_Type const * p_reg,
                                                  nrf_spu_feature_t    feature,
                                                  uint8_t              index,
@@ -1380,11 +1488,41 @@ NRF_STATIC_INLINE bool nrf_spu_feature_block_get(NRF_SPU_Type const * p_reg,
                    >> SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_BLOCK_Pos;
 #endif // NRF_SPU_HAS_DOMAIN
 #endif // NRF_SPU_HAS_BELLS
+
+#if NRF_SPU_HAS_TDD
+        case NRF_SPU_FEATURE_TDD:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_TDD_COUNT);
+            return (p_reg->FEATURE.TDD[index]
+                    & SPU_FEATURE_TDD_BLOCK_Msk)
+                   >> SPU_FEATURE_TDD_BLOCK_Pos;
+#endif // NRF_SPU_HAS_TDD
+
+#if NRF_SPU_HAS_MRAMC
+        case NRF_SPU_FEATURE_MRAMC_WAITSTATES:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            return (p_reg->FEATURE.MRAMC[index].WAITSTATES
+                    & SPU_FEATURE_MRAMC_WAITSTATES_BLOCK_Msk)
+                   >> SPU_FEATURE_MRAMC_WAITSTATES_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_MRAMC_AUTODPOWERDOWN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            return (p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN
+                    & SPU_FEATURE_MRAMC_AUTODPOWERDOWN_BLOCK_Msk)
+                   >> SPU_FEATURE_MRAMC_AUTODPOWERDOWN_BLOCK_Pos;
+
+        case NRF_SPU_FEATURE_MRAMC_READY:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            return (p_reg->FEATURE.MRAMC[index].READY
+                    & SPU_FEATURE_MRAMC_READY_BLOCK_Msk)
+                   >> SPU_FEATURE_MRAMC_READY_BLOCK_Pos;
+#endif // NRF_SPU_HAS_MRAMC
+
         default:
             NRFX_ASSERT(0);
             return false;
     }
 }
+#endif // NRF_SPU_HAS_BLOCK
 
 NRF_STATIC_INLINE nrf_owner_t nrf_spu_feature_ownerid_get(NRF_SPU_Type const * p_reg,
                                                           nrf_spu_feature_t    feature,
@@ -1484,6 +1622,35 @@ NRF_STATIC_INLINE nrf_owner_t nrf_spu_feature_ownerid_get(NRF_SPU_Type const * p
                    >> SPU_FEATURE_BELLS_PROCESSOR_INTERRUPT_OWNERID_Pos);
 #endif // NRF_SPU_HAS_DOMAIN
 #endif // NRF_SPU_HAS_BELLS
+
+#if NRF_SPU_HAS_TDD
+        case NRF_SPU_FEATURE_TDD:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_TDD_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.TDD[index]
+                    & SPU_FEATURE_TDD_OWNERID_Msk)
+                   >> SPU_FEATURE_TDD_OWNERID_Pos);
+#endif // NRF_SPU_HAS_TDD
+
+#if NRF_SPU_HAS_MRAMC
+        case NRF_SPU_FEATURE_MRAMC_WAITSTATES:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.MRAMC[index].WAITSTATES
+                    & SPU_FEATURE_MRAMC_WAITSTATES_OWNERID_Msk)
+                   >> SPU_FEATURE_MRAMC_WAITSTATES_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_MRAMC_AUTODPOWERDOWN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN
+                    & SPU_FEATURE_MRAMC_AUTODPOWERDOWN_OWNERID_Msk)
+                   >> SPU_FEATURE_MRAMC_AUTODPOWERDOWN_OWNERID_Pos);
+
+        case NRF_SPU_FEATURE_MRAMC_READY:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            return (nrf_owner_t)((p_reg->FEATURE.MRAMC[index].READY
+                    & SPU_FEATURE_MRAMC_READY_OWNERID_Msk)
+                   >> SPU_FEATURE_MRAMC_READY_OWNERID_Pos);
+#endif // NRF_SPU_HAS_MRAMC
+
         default:
             NRFX_ASSERT(0);
             return (nrf_owner_t)0;
@@ -1660,6 +1827,54 @@ NRF_STATIC_INLINE void nrf_spu_feature_secattr_set(NRF_SPU_Type *    p_reg,
 #endif // NRF_SPU_HAS_DOMAIN
 #endif // NRF_SPU_HAS_BELLS
 
+#if NRF_SPU_HAS_TDD
+        case NRF_SPU_FEATURE_TDD:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_TDD_COUNT);
+            p_reg->FEATURE.TDD[index] =
+                ((p_reg->FEATURE.TDD[index] &
+                  SPU_FEATURE_TDD_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_TDD_SECATTR_Secure :
+                   SPU_FEATURE_TDD_SECATTR_NonSecure)
+                  << SPU_FEATURE_TDD_SECATTR_Pos));
+            break;
+#endif // NRF_SPU_HAS_TDD
+
+#if NRF_SPU_HAS_MRAMC
+        case NRF_SPU_FEATURE_MRAMC_WAITSTATES:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            p_reg->FEATURE.MRAMC[index].WAITSTATES =
+                ((p_reg->FEATURE.MRAMC[index].WAITSTATES &
+                  SPU_FEATURE_MRAMC_WAITSTATES_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_MRAMC_WAITSTATES_SECATTR_Secure :
+                   SPU_FEATURE_MRAMC_WAITSTATES_SECATTR_NonSecure)
+                  << SPU_FEATURE_MRAMC_WAITSTATES_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_MRAMC_AUTODPOWERDOWN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN =
+                ((p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN &
+                  SPU_FEATURE_MRAMC_AUTODPOWERDOWN_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_MRAMC_AUTODPOWERDOWN_SECATTR_Secure :
+                   SPU_FEATURE_MRAMC_AUTODPOWERDOWN_SECATTR_NonSecure)
+                  << SPU_FEATURE_MRAMC_AUTODPOWERDOWN_SECATTR_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_MRAMC_READY:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            p_reg->FEATURE.MRAMC[index].READY =
+                ((p_reg->FEATURE.MRAMC[index].READY &
+                  SPU_FEATURE_MRAMC_READY_SECATTR_Msk) |
+                 ((enable ?
+                   SPU_FEATURE_MRAMC_READY_SECATTR_Secure :
+                   SPU_FEATURE_MRAMC_READY_SECATTR_NonSecure)
+                  << SPU_FEATURE_MRAMC_READY_SECATTR_Pos));
+            break;
+#endif // NRF_SPU_HAS_MRAMC
+
         default:
             NRFX_ASSERT(0);
             break;
@@ -1807,12 +2022,53 @@ NRF_STATIC_INLINE void nrf_spu_feature_lock_enable(NRF_SPU_Type *    p_reg,
 #endif // NRF_SPU_HAS_DOMAIN
 #endif // NRF_SPU_HAS_BELLS
 
+#if NRF_SPU_HAS_TDD
+        case NRF_SPU_FEATURE_TDD:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_TDD_COUNT);
+            p_reg->FEATURE.TDD[index] =
+                ((p_reg->FEATURE.TDD[index] &
+                  SPU_FEATURE_TDD_LOCK_Msk) |
+                 (SPU_FEATURE_TDD_LOCK_Locked
+                  << SPU_FEATURE_TDD_LOCK_Pos));
+            break;
+#endif // NRF_SPU_HAS_TDD
+
+#if NRF_SPU_HAS_MRAMC
+        case NRF_SPU_FEATURE_MRAMC_WAITSTATES:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            p_reg->FEATURE.MRAMC[index].WAITSTATES =
+                ((p_reg->FEATURE.MRAMC[index].WAITSTATES &
+                  SPU_FEATURE_MRAMC_WAITSTATES_LOCK_Msk) |
+                 (SPU_FEATURE_MRAMC_WAITSTATES_LOCK_Locked
+                  << SPU_FEATURE_MRAMC_WAITSTATES_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_MRAMC_AUTODPOWERDOWN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN =
+                ((p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN &
+                  SPU_FEATURE_MRAMC_AUTODPOWERDOWN_LOCK_Msk) |
+                 (SPU_FEATURE_MRAMC_AUTODPOWERDOWN_LOCK_Locked
+                  << SPU_FEATURE_MRAMC_AUTODPOWERDOWN_LOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_MRAMC_READY:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            p_reg->FEATURE.MRAMC[index].READY =
+                ((p_reg->FEATURE.MRAMC[index].READY &
+                  SPU_FEATURE_MRAMC_READY_LOCK_Msk) |
+                 (SPU_FEATURE_MRAMC_READY_LOCK_Locked
+                  << SPU_FEATURE_MRAMC_READY_LOCK_Pos));
+            break;
+#endif // NRF_SPU_HAS_MRAMC
+
         default:
             NRFX_ASSERT(0);
             break;
     }
 }
 
+#if NRF_SPU_HAS_BLOCK
 NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
                                                     nrf_spu_feature_t feature,
                                                     uint8_t           index,
@@ -1954,11 +2210,52 @@ NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
 #endif // NRF_SPU_HAS_DOMAIN
 #endif // NRF_SPU_HAS_BELLS
 
+#if NRF_SPU_HAS_TDD
+        case NRF_SPU_FEATURE_TDD:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_TDD_COUNT);
+            p_reg->FEATURE.TDD[index] =
+                ((p_reg->FEATURE.TDD[index] &
+                  SPU_FEATURE_TDD_BLOCK_Msk) |
+                 (SPU_FEATURE_TDD_BLOCK_Blocked
+                  << SPU_FEATURE_TDD_BLOCK_Pos));
+            break;
+#endif // NRF_SPU_HAS_TDD
+
+#if NRF_SPU_HAS_MRAMC
+        case NRF_SPU_FEATURE_MRAMC_WAITSTATES:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            p_reg->FEATURE.MRAMC[index].WAITSTATES =
+                ((p_reg->FEATURE.MRAMC[index].WAITSTATES &
+                  SPU_FEATURE_MRAMC_WAITSTATES_BLOCK_Msk) |
+                 (SPU_FEATURE_MRAMC_WAITSTATES_BLOCK_Blocked
+                  << SPU_FEATURE_MRAMC_WAITSTATES_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_MRAMC_AUTODPOWERDOWN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN =
+                ((p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN &
+                  SPU_FEATURE_MRAMC_AUTODPOWERDOWN_BLOCK_Msk) |
+                 (SPU_FEATURE_MRAMC_AUTODPOWERDOWN_BLOCK_Blocked
+                  << SPU_FEATURE_MRAMC_AUTODPOWERDOWN_BLOCK_Pos));
+            break;
+
+        case NRF_SPU_FEATURE_MRAMC_READY:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            p_reg->FEATURE.MRAMC[index].READY =
+                ((p_reg->FEATURE.MRAMC[index].READY &
+                  SPU_FEATURE_MRAMC_READY_BLOCK_Msk) |
+                 (SPU_FEATURE_MRAMC_READY_BLOCK_Blocked
+                  << SPU_FEATURE_MRAMC_READY_LOCK_Pos));
+            break;
+#endif // NRF_SPU_HAS_MRAMC
+
         default:
             NRFX_ASSERT(0);
             break;
     }
 }
+#endif // NRF_SPU_HAS_BLOCK
 
 NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
                                                    nrf_spu_feature_t feature,
@@ -2115,6 +2412,50 @@ NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
             break;
 #endif // NRF_SPU_HAS_DOMAIN
 #endif // NRF_SPU_HAS_BELLS
+
+#if NRF_SPU_HAS_TDD
+        case NRF_SPU_FEATURE_TDD:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_TDD_COUNT);
+            p_reg->FEATURE.TDD[index] =
+                ((p_reg->FEATURE.TDD[index] &
+                  SPU_FEATURE_TDD_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_TDD_OWNERID_Pos) &
+                  SPU_FEATURE_TDD_OWNERID_Msk));
+            break;
+#endif // NRF_SPU_HAS_TDD
+
+#if NRF_SPU_HAS_MRAMC
+        case NRF_SPU_FEATURE_MRAMC_WAITSTATES:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            p_reg->FEATURE.MRAMC[index].WAITSTATES =
+                ((p_reg->FEATURE.MRAMC[index].WAITSTATES &
+                  SPU_FEATURE_MRAMC_WAITSTATES_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_MRAMC_WAITSTATES_OWNERID_Pos) &
+                  SPU_FEATURE_MRAMC_WAITSTATES_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_MRAMC_AUTODPOWERDOWN:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN =
+                ((p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN &
+                  SPU_FEATURE_MRAMC_AUTODPOWERDOWN_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_MRAMC_AUTODPOWERDOWN_OWNERID_Pos) &
+                  SPU_FEATURE_MRAMC_AUTODPOWERDOWN_OWNERID_Msk));
+            break;
+
+        case NRF_SPU_FEATURE_MRAMC_READY:
+            NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
+            p_reg->FEATURE.MRAMC[index].READY =
+                ((p_reg->FEATURE.MRAMC[index].READY &
+                  SPU_FEATURE_MRAMC_READY_OWNERID_Msk) |
+                 ((owner_id
+                   << SPU_FEATURE_MRAMC_READY_OWNERID_Pos) &
+                  SPU_FEATURE_MRAMC_READY_OWNERID_Msk));
+            break;
+#endif // NRF_SPU_HAS_MRAMC
 
         default:
             NRFX_ASSERT(0);

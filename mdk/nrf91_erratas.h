@@ -1655,11 +1655,7 @@ static bool nrf91_errata_35(void)
 }
 
 /* ========= Errata 36 ========= */
-#if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
-    #define NRF91_ERRATA_36_PRESENT 1
-#else
-    #define NRF91_ERRATA_36_PRESENT 0
-#endif
+#define NRF91_ERRATA_36_PRESENT 0
 
 #ifndef NRF91_ERRATA_36_ENABLE_WORKAROUND
     #define NRF91_ERRATA_36_ENABLE_WORKAROUND NRF91_ERRATA_36_PRESENT
@@ -1670,32 +1666,6 @@ static bool nrf91_errata_36(void)
     #ifndef NRF91_SERIES
         return false;
     #else
-        #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
-            #if defined(NRF_TRUSTZONE_NONSECURE)
-                uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000130ul))) & 0x00000FFFul;
-                uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
-            #else
-                uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
-                uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
-            #endif
-        #endif
-        #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
-            __DSB();
-            if (var1 == 0x09)
-            {
-                switch(var2)
-                {
-                    case 0x01ul:
-                        return false;
-                    case 0x02ul:
-                        return false;
-                    case 0x03ul:
-                        return true;
-                    default:
-                        return true;
-                }
-            }
-        #endif
         return false;
     #endif
 }

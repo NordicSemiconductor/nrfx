@@ -1,0 +1,517 @@
+/*
+ * Copyright (c) 2021 - 2023, Nordic Semiconductor ASA
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived from this
+ *    software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifndef NRFX_GRTC_H__
+#define NRFX_GRTC_H__
+
+#include <nrfx.h>
+#include <haly/nrfy_grtc.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * @defgroup nrfx_grtc GRTC driver
+ * @{
+ * @ingroup nrf_grtc
+ * @brief   Global Real Timer Counter (GRTC) peripheral driver.
+ */
+
+/**
+ * @brief GRTC driver instance compare handler type.
+ *
+ * @param[in] id        Channel ID.
+ * @param[in] cc_value  Compare value.
+ * @param[in] p_context User context.
+ */
+typedef void (*nrfx_grtc_cc_handler_t)(int32_t id, uint64_t cc_value, void * p_context);
+
+#if NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief GRTC driver instance SYSCOUNTER valid handler type.
+ *
+ * @param[in] p_context User context.
+ */
+typedef void (*nrfx_grtc_syscountervalid_handler_t)(void * p_context);
+
+/**
+ * @brief GRTC driver instance RTCOMPARESYNC handler type.
+ *
+ * @param[in] p_context User context.
+ */
+typedef void (*nrfx_grtc_rtcomparesync_handler_t)(void * p_context);
+#endif // NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
+
+/** @brief GRTC capture/compare channel description structure. */
+typedef struct
+{
+    nrfx_grtc_cc_handler_t handler;   /**< User handler. */
+    void *                 p_context; /**< User context. */
+    uint8_t                channel;   /**< Capture/compare channel number. */
+} nrfx_grtc_channel_t;
+
+#if NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
+/** @brief GRTC RTCOUNTER handler data structure. */
+typedef struct
+{
+    nrfx_grtc_cc_handler_t handler;   /**< User handler. */
+    void *                 p_context; /**< User context. */
+} nrfx_grtc_rtcounter_handler_data_t;
+#endif // NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
+
+#if NRFY_GRTC_HAS_EXTENDED || defined(__NRFX_DOXYGEN__)
+/** @brief GRTC action types. */
+typedef enum
+{
+    NRFX_GRTC_ACTION_START = NRF_GRTC_TASK_START, /**< Start the GRTC. */
+    NRFX_GRTC_ACTION_STOP  = NRF_GRTC_TASK_STOP,  /**< Stop the GRTC. */
+    NRFX_GRTC_ACTION_CLEAR = NRF_GRTC_TASK_CLEAR, /**< Clear the GRTC. */
+} nrfx_grtc_action_t;
+#endif // NRFY_GRTC_HAS_EXTENDED || defined(__NRFX_DOXYGEN__)
+
+/** @brief GRTC compare event relative references. */
+typedef enum
+{
+    NRFX_GRTC_CC_RELATIVE_SYSCOUNTER = NRF_GRTC_CC_ADD_REFERENCE_SYSCOUNTER, /**< The SYSCOUNTER content will be used as the reference. */
+    NRFX_GRTC_CC_RELATIVE_COMPARE    = NRF_GRTC_CC_ADD_REFERENCE_CC,         /**< The corresponding compare register content will be used as the reference. */
+} nrfx_grtc_cc_relative_reference_t;
+
+/**
+ * @brief Function for allocating the GRTC capture/compare channel.
+ *
+ * @note Function is thread safe as it uses @ref nrfx_flag32_alloc.
+ * @note Routines that allocate and free the GRTC channels are independent
+ *       from the rest of the driver. In particular, the driver does not need
+ *       to be initialized when this function is called.
+ *
+ * @param[out] p_channel Pointer to the capture/compare channel.
+ *
+ * @retval NRFX_SUCCESS      Allocation was successful.
+ * @retval NRFX_ERROR_NO_MEM No resource available.
+ */
+nrfx_err_t nrfx_grtc_channel_alloc(uint8_t * p_channel);
+
+/**
+ * @brief Function for freeing the GRTC capture/compare channel.
+ *
+ * @note Function is thread safe as it uses @ref nrfx_flag32_free.
+ * @note Routines that allocate and free the GRTC channels are independent
+ *       from the rest of the driver. In particular, the driver does not need
+ *       to be initialized when this function is called.
+ * @note This function also mark specified channel as unused by the driver.
+ *
+ * @param[in] channel Allocated channel to be freed.
+ *
+ * @retval NRFX_SUCCESS             Allocation was successful.
+ * @retval NRFX_ERROR_FORBIDDEN     The domain is not allowed to use specified @p channel.
+ * @retval NRFX_ERROR_INVALID_PARAM Channel is not allocated.
+ */
+nrfx_err_t nrfx_grtc_channel_free(uint8_t channel);
+
+/**
+ * @brief Function for checking whether the specified channel is used by the driver.
+ *
+ * @note Channels marked as used cannot be utilized by external API.
+ *
+ * @param[in] channel Channel to be checked.
+ *
+ * @retval true  Channel is used by the driver.
+ * @retval false Channel is not used by the driver.
+ */
+bool nrfx_grtc_is_channel_used(uint8_t channel);
+
+/**
+ * @brief Function for initializing the GRTC.
+ *
+ * @param[in] interrupt_priority Interrupt priority.
+ *
+ * @retval NRFX_SUCCESS             Initialization was successful.
+ * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
+ *                                  Deprecated - use @ref NRFX_ERROR_ALREADY instead.
+ * @retval NRFX_ERROR_INTERNAL      No valid channel configuration provided.
+ */
+nrfx_err_t nrfx_grtc_init(uint8_t interrupt_priority);
+
+#if NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for disabling the RTCOUNTER CC channel.
+ *
+ * @retval NRFX_SUCCESS        The procedure was successful.
+ * @retval NRFX_ERROR_INTERNAL The SYSCOUNTER (1 MHz) is running and the operation is not allowed.
+ * @retval NRFX_ERROR_TIMEOUT  RTCOUNTER compare interrupt is pending.
+ */
+nrfx_err_t nrfx_grtc_rtcounter_cc_disable(void);
+
+/**
+ * @brief Function for enabling the RTCOMPARESYNC interrupt.
+ *
+ * @param[in] handler   Handler provided by the user. May be NULL.
+ * @param[in] p_context User context.
+ */
+void nrfx_grtc_rtcomparesync_int_enable(nrfx_grtc_rtcomparesync_handler_t handler,
+                                        void *                            p_context);
+
+/** @brief Function for disabling the RTCOMPARESYNC interrupt. */
+void nrfx_grtc_rtcomparesync_int_disable(void);
+
+/**
+ * @brief Function for setting the absolute compare value for the RTCOUNTER.
+ *
+ * @param[in] handler_data Pointer to the handler data instance structure.
+ * @param[in] val          Absolute value to be set in the compare register.
+ * @param[in] enable_irq   True if interrupt is to be enabled, false otherwise.
+ * @param[in] sync         True if the internal synchronization mechanism shall be used,
+ *                         false otherwise.
+ *
+ * @retval NRFX_SUCCESS        The procedure was successful.
+ * @retval NRFX_ERROR_INTERNAL The SYSCOUNTER (1 MHz) is running and the operation is not allowed.
+ */
+nrfx_err_t nrfx_grtc_rtcounter_cc_absolute_set(nrfx_grtc_rtcounter_handler_data_t * handler_data,
+                                               uint64_t                             val,
+                                               bool                                 enable_irq,
+                                               bool                                 sync);
+
+/**
+ * @brief Function for enabling the RTCOUNTER compare interrupt.
+ *
+ * @param[in] sync True if the internal synchronization mechanism shall be used,
+ *                 false otherwise.
+ */
+void nrfx_grtc_rtcounter_cc_int_enable(bool sync);
+
+/** @brief Function for disabling the RTCOUNTER compare interrupt. */
+void nrfx_grtc_rtcounter_cc_int_disable(void);
+
+/**
+ * @brief Function for enabling the SYSCOUNTER valid interrupt.
+ *
+ * @param[in] handler   Handler provided by the user. May be NULL.
+ * @param[in] p_context User context.
+ */
+void nrfx_grtc_syscountervalid_int_enable(nrfx_grtc_syscountervalid_handler_t handler,
+                                          void *                              p_context);
+
+/** @brief Function for disabling the SYSCOUNTERVALID interrupt. */
+void nrfx_grtc_syscountervalid_int_disable(void);
+#endif // NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
+
+#if NRFY_GRTC_HAS_EXTENDED || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for starting the 1 MHz SYSCOUNTER.
+ *
+ * @note This function automatically allocates and marks as used the special-purpose main
+ *       capture/compare channel. It is available only for GRTC manager.
+ *
+ * @note Use auxiliary structure of type @ref nrfx_grtc_channel_t when working with SYSCOUNTER.
+ *
+ * @param[in]  busy_wait         True if wait for synchronization operation is to be performed,
+ *                               false otherwise.
+ * @param[out] p_main_cc_channel Pointer to the main capture/compare channel.
+ *
+ * @retval NRFX_SUCCESS       Starting was successful.
+ * @retval NRFX_ERROR_NO_MEM  No resource available to allocate main channel.
+ * @retval NRFX_ERROR_ALREADY The GRTC is already running.
+ */
+
+nrfx_err_t nrfx_grtc_syscounter_start(bool busy_wait, uint8_t * p_main_cc_channel);
+
+/**
+ * @brief Function for performing an action for the GRTC.
+ *
+ * @param[in] action Action to be performed.
+ *
+ * @retval NRFX_SUCCESS        Starting was successful.
+ * @retval NRFX_ERROR_INTERNAL The SYSCOUNTER (1 MHz) is running and the operation is not allowed.
+ */
+nrfx_err_t nrfx_grtc_action_perform(nrfx_grtc_action_t action);
+#endif // NRFY_GRTC_HAS_EXTENDED || defined(__NRFX_DOXYGEN__)
+
+/**
+ * @brief Function for uninitializing the GRTC.
+ *
+ * @note This function automatically frees all channels used by the driver.
+ *       It also marks these channels as unused
+*/
+void nrfx_grtc_uninit(void);
+
+/**
+ * @brief Function for checking if the GRTC driver is initialized.
+ *
+ * @retval true  Driver is already initialized.
+ * @retval false Driver is not initialized.
+ */
+bool nrfx_grtc_init_check(void);
+
+/**
+ * @brief Function for disabling the SYSCOUNTER CC channel.
+ *
+ * @note This function marks the specified @p channel as unused.
+ *
+ * @param[in] channel Channel to be disabled.
+ *
+ * @retval NRFX_SUCCESS             The procedure was successful.
+ * @retval NRFX_ERROR_FORBIDDEN     The domain is not allowed to use specified @p channel.
+ * @retval NRFX_ERROR_INVALID_PARAM The specified @p channel is either not allocated or
+ *                                  marked as unused.
+ * @retval NRFX_ERROR_INTERNAL      The SYSCOUNTER (1 MHz) is not running.
+ * @retval NRFX_ERROR_TIMEOUT       SYSCOUNTER compare interrupt is pending on the requested
+ *                                  channel.
+ */
+nrfx_err_t nrfx_grtc_syscounter_cc_disable(uint8_t channel);
+
+/**
+ * @brief Function for setting the absolute compare value for the SYSCOUNTER.
+ *
+ * @note This function marks the specified @p channel as used.
+ *
+ * @param[in] p_chan_data Pointer to the channel data instance structure.
+ * @param[in] val         Absolute value to be set in the compare register.
+ * @param[in] enable_irq  True if interrupt is to be enabled, false otherwise.
+ *
+ * @retval NRFX_SUCCESS             The procedure was successful.
+ * @retval NRFX_ERROR_FORBIDDEN     The domain is not allowed to use specified @p channel.
+ * @retval NRFX_ERROR_INVALID_PARAM Channel is not allocated.
+ * @retval NRFX_ERROR_INTERNAL      The SYSCOUNTER (1 MHz) is not running.
+ */
+nrfx_err_t nrfx_grtc_syscounter_cc_absolute_set(nrfx_grtc_channel_t * p_chan_data,
+                                                uint64_t              val,
+                                                bool                  enable_irq);
+
+/**
+ * @brief Function for setting the relative compare value for the SYSCOUNTER.
+ *
+ * @note This function marks the specified @p channel as used.
+ *
+ * @param[in] p_chan_data Pointer to the channel data instance structure.
+ * @param[in] val         Relative value to be set in the compare register.
+ * @param[in] enable_irq  True if interrupt is to be enabled, false otherwise.
+ * @param[in] reference   Reference type to be used.
+ *
+ * @retval NRFX_SUCCESS             The procedure was successful.
+ * @retval NRFX_ERROR_FORBIDDEN     The domain is not allowed to use specified @p channel.
+ * @retval NRFX_ERROR_INVALID_PARAM Channel is not allocated.
+ * @retval NRFX_ERROR_INTERNAL      The SYSCOUNTER (1 MHz) is not running.
+ */
+nrfx_err_t nrfx_grtc_syscounter_cc_relative_set(nrfx_grtc_channel_t *             p_chan_data,
+                                                uint32_t                          val,
+                                                bool                              enable_irq,
+                                                nrfx_grtc_cc_relative_reference_t reference);
+
+/**
+ * @brief Function for disabling the SYSCOUNTER compare interrupt.
+ *
+ * @param[in] channel Compare channel number.
+ *
+ * @retval NRFX_SUCCESS             The procedure was successful.
+ * @retval NRFX_ERROR_FORBIDDEN     The domain is not allowed to use specified @p channel.
+ * @retval NRFX_ERROR_INVALID_PARAM The specified @p channel is either not allocated or
+ *                                  marked as unused.
+ * @retval NRFX_ERROR_INTERNAL      The SYSCOUNTER (1 MHz) is not running.
+ */
+nrfx_err_t nrfx_grtc_syscounter_cc_int_disable(uint8_t channel);
+
+/**
+ * @brief Function for enabling the SYSCOUNTER compare interrupt.
+ *
+ * @note This function marks the specified @p channel as used.
+ *
+ * @param[in] channel Compare channel number.
+ *
+ * @retval NRFX_SUCCESS             The procedure was successful.
+ * @retval NRFX_ERROR_FORBIDDEN     The domain is not allowed to use specified @p channel.
+ * @retval NRFX_ERROR_INVALID_PARAM Channel is not allocated.
+ * @retval NRFX_ERROR_INTERNAL      The SYSCOUNTER (1 MHz) is not running.
+ */
+nrfx_err_t nrfx_grtc_syscounter_cc_int_enable(uint8_t channel);
+
+/**
+ * @brief Function for checking whether the SYSCOUNTER compare interrupt is enabled for
+ *        the specified channel.
+ *
+ * @param[in] channel Compare channel number.
+ *
+ * @retval true  The interrupt is enabled for the specified channel.
+ * @retval false The interrupt is disabled for the specified channel.
+ */
+bool nrfx_grtc_syscounter_cc_int_enable_check(uint8_t channel);
+
+/**
+ * @brief Function for triggering the SYSCOUNTER capture task
+ *
+ * @note This function marks the specified @p channel as used.
+ *
+ * @param[in] channel Capture channel number.
+ *
+ * @retval NRFX_SUCCESS             The procedure was successful.
+ * @retval NRFX_ERROR_FORBIDDEN     The domain is not allowed to use specified @p channel.
+ * @retval NRFX_ERROR_INVALID_PARAM Channel is not allocated.
+ * @retval NRFX_ERROR_INTERNAL      The SYSCOUNTER (1 MHz) is not running.
+ */
+nrfx_err_t nrfx_grtc_syscounter_capture(uint8_t channel);
+
+/**
+ * @brief Function for reading the GRTC capture/compare register for the specified @p channel.
+ *
+ * @param[in]  channel Capture channel number.
+ * @param[out] p_val   Pointer to the variable where the result is to be stored.
+ *
+ * @retval NRFX_SUCCESS             The procedure was successful.
+ * @retval NRFX_ERROR_FORBIDDEN     The domain is not allowed to use specified @p channel.
+ * @retval NRFX_ERROR_INVALID_PARAM The specified @p channel is either not allocated or
+ *                                  marked as unused.
+ * @retval NRFX_ERROR_INTERNAL      The SYSCOUNTER (1 MHz) is not running.
+ */
+nrfx_err_t nrfx_grtc_syscounter_cc_value_read(uint8_t channel, uint64_t * p_val);
+
+/**
+ * @brief Function for requesting the SYSCOUNTER state.
+ *
+ * @note By using this function any domain can prevent SYSCOUNTER from going to sleep state.
+ *
+ * @param[in] active True if SYSCOUNTER is to be always kept active, false otherwise.
+ */
+void nrfx_grtc_active_request_set(bool active);
+
+/**
+ * @brief Function for reading the GRTC SYSCOUNTER value.
+ *
+ * @param[out] p_counter p_counter Pointer to the variable to be filled with the SYSCOUNTER value.
+ *
+ * @retval NRFX_SUCCESS        The procedure was successful.
+ * @retval NRFX_ERROR_INTERNAL The SYSCOUNTER (1 MHz) is not running.
+ */
+nrfx_err_t nrfx_grtc_syscounter_get(uint64_t * p_counter);
+
+/**
+ * @brief Function for retrieving the address of the specified GRTC task.
+ *
+ * @param[in] task GRTC task.
+ *
+ * @return Task address.
+ */
+NRFX_STATIC_INLINE uint32_t nrfx_grtc_task_address_get(nrf_grtc_task_t task);
+
+/**
+ * @brief Function for retrieving the address of the specified GRTC event.
+ *
+ * @param[in] event GRTC event.
+ *
+ * @return Event address.
+ */
+NRFX_STATIC_INLINE uint32_t nrfx_grtc_event_address_get(nrf_grtc_event_t event);
+
+/**
+ * @brief Function for retrieving the address of the capture task for the specified channel.
+ *
+ * @param[in] channel Capture channel number.
+ *
+ * @return Task address.
+ */
+NRFX_STATIC_INLINE uint32_t nrfx_grtc_capture_task_address_get(uint8_t channel);
+
+/**
+ * @brief Function for retrieving the address of the capture task for the specified channel.
+ *
+ * @param[in] channel Compare channel number.
+ *
+ * @return Event address.
+ */
+NRFX_STATIC_INLINE uint32_t nrfx_grtc_event_compare_address_get(uint8_t channel);
+
+/**
+ * @brief Function for checking whether the specified capture/compare channel is enabled.
+ *
+ * @param[in] channel Channel to be checked.
+ *
+ * @retval true  Channel is enabled.
+ * @retval false Channel is disabled.
+ */
+NRFX_STATIC_INLINE bool nrfx_grtc_sys_counter_cc_enable_check(uint8_t channel);
+
+#if NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for reading the GRTC RTCOUNTER value.
+ *
+ * @return RTCOUNTER (32 kHz) value.
+ */
+NRFX_STATIC_INLINE uint64_t nrfx_grtc_rtcounter_get(void);
+#endif
+
+#ifndef NRFX_DECLARE_ONLY
+
+NRFX_STATIC_INLINE uint32_t nrfx_grtc_task_address_get(nrf_grtc_task_t task)
+{
+    return nrfy_grtc_task_address_get(NRF_GRTC, task);
+}
+
+NRFX_STATIC_INLINE uint32_t nrfx_grtc_event_address_get(nrf_grtc_event_t event)
+{
+    return nrfy_grtc_event_address_get(NRF_GRTC, event);
+}
+
+NRFX_STATIC_INLINE uint32_t nrfx_grtc_capture_task_address_get(uint8_t channel)
+{
+    return nrfy_grtc_task_address_get(NRF_GRTC, nrfy_grtc_sys_counter_capture_task_get(channel));
+}
+
+NRFX_STATIC_INLINE uint32_t nrfx_grtc_event_compare_address_get(uint8_t channel)
+{
+    return nrfy_grtc_event_address_get(NRF_GRTC, nrfy_grtc_sys_counter_compare_event_get(channel));
+}
+
+NRFX_STATIC_INLINE bool nrfx_grtc_sys_counter_cc_enable_check(uint8_t channel)
+{
+    NRFX_ASSERT(channel < NRF_GRTC_SYSCOUNTER_CC_COUNT);
+    return nrfy_grtc_sys_counter_cc_enable_check(NRF_GRTC, channel);
+}
+
+#if NRF_GRTC_HAS_RTCOUNTER
+NRFX_STATIC_INLINE uint64_t nrfx_grtc_rtcounter_get(void)
+{
+    return nrfy_grtc_rt_counter_get(NRF_GRTC);
+}
+#endif // NRF_GRTC_HAS_RTCOUNTER
+
+#endif // NRFX_DECLARE_ONLY
+
+/** @} */
+
+void nrfx_grtc_irq_handler(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // NRFX_GRTC_H__

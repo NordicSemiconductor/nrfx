@@ -117,7 +117,7 @@ nrfx_err_t nrfx_power_init(nrfx_power_config_t const * p_config)
 
 #if NRF_POWER_HAS_DCDCEN_VDDH
     nrf_power_dcdcen_vddh_set(NRF_POWER, p_config->dcdcenhv);
-#elif NRF_REGULATORS_HAS_VREG_HIGH
+#elif defined(REGULATORS_PRESENT) && NRF_REGULATORS_HAS_VREG_HIGH
     nrf_regulators_vreg_enable_set(NRF_REGULATORS, NRF_REGULATORS_VREG_HIGH, p_config->dcdcenhv);
 #endif
 

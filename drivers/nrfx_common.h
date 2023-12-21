@@ -97,7 +97,7 @@ extern "C" {
  * such warnings only in places where this macro is used for evaluation, not in
  * the whole analyzed code.
  */
-#define NRFX_CHECK(module_enabled) (module_enabled)
+#define NRFX_CHECK(module_enabled) NRFX_IS_ENABLED(module_enabled)
 
 /**
  * @brief Macro for checking if the configured API version is greater than or equal

@@ -113,11 +113,16 @@ typedef enum
 #elif defined(DPPI_PRESENT)
 #include <haly/nrfy_dppi.h>
 
-#define NRFX_GPPI_GROUP_NUM              DPPI_GROUP_NUM
+#define NRFX_GPPI_GROUP_NUM              NRF_DPPI_GROUP_NUM_MAX
 #define NRFX_GPPI_GROUPS_USED            NRFX_DPPI_GROUPS_USED
-#define NRFX_GPPI_ALL_APP_GROUPS_MASK    (NRFX_BIT_MASK(DPPI_GROUP_NUM) & ~NRFX_DPPI_GROUPS_USED)
-#define NRFX_GPPI_ALL_APP_CHANNELS_MASK  (NRFX_BIT_MASK(DPPI_CH_NUM) & ~NRFX_DPPI_CHANNELS_USED)
-#if !defined(NRFX_GPPI_PROG_APP_CHANNELS_MASK)
+#define NRFX_GPPI_ALL_APP_GROUPS_MASK    (NRFX_BIT_MASK(NRF_DPPI_GROUP_NUM_MAX) & \
+                                         ~NRFX_DPPI_GROUPS_USED)
+#define NRFX_GPPI_ALL_APP_CHANNELS_MASK  (NRFX_BIT_MASK(NRF_DPPI_CH_NUM_MAX) & \
+                                         ~NRFX_DPPI_CHANNELS_USED)
+#if defined(HALTIUM_XXAA) || defined(LUMOS_XXAA)
+#define NRFX_GPPI_PROG_APP_CHANNELS_NUM  NRFX_BIT_SIZE(sizeof(uint32_t))
+#define NRFX_GPPI_PROG_APP_CHANNELS_MASK NRFX_BIT_MASK(NRFX_GPPI_PROG_APP_CHANNELS_NUM)
+#else
 #define NRFX_GPPI_PROG_APP_CHANNELS_MASK NRFX_GPPI_ALL_APP_CHANNELS_MASK
 #endif
 
@@ -125,9 +130,11 @@ typedef enum
 {
     NRFX_GPPI_CHANNEL_GROUP0 = NRF_DPPI_CHANNEL_GROUP0,
     NRFX_GPPI_CHANNEL_GROUP1 = NRF_DPPI_CHANNEL_GROUP1,
-#if DPPI_GROUP_NUM > 2
+#if NRFX_GPPI_GROUP_NUM > 2
     NRFX_GPPI_CHANNEL_GROUP2 = NRF_DPPI_CHANNEL_GROUP2,
     NRFX_GPPI_CHANNEL_GROUP3 = NRF_DPPI_CHANNEL_GROUP3,
+#endif
+#if NRFX_GPPI_GROUP_NUM > 4
     NRFX_GPPI_CHANNEL_GROUP4 = NRF_DPPI_CHANNEL_GROUP4,
     NRFX_GPPI_CHANNEL_GROUP5 = NRF_DPPI_CHANNEL_GROUP5,
 #endif
@@ -139,11 +146,13 @@ typedef enum
     NRFX_GPPI_TASK_CHG0_DIS = NRF_DPPI_TASK_CHG0_DIS,
     NRFX_GPPI_TASK_CHG1_EN  = NRF_DPPI_TASK_CHG1_EN,
     NRFX_GPPI_TASK_CHG1_DIS = NRF_DPPI_TASK_CHG1_DIS,
-#if DPPI_GROUP_NUM > 2
+#if NRFX_GPPI_GROUP_NUM > 2
     NRFX_GPPI_TASK_CHG2_EN  = NRF_DPPI_TASK_CHG2_EN,
     NRFX_GPPI_TASK_CHG2_DIS = NRF_DPPI_TASK_CHG2_DIS,
     NRFX_GPPI_TASK_CHG3_EN  = NRF_DPPI_TASK_CHG3_EN,
     NRFX_GPPI_TASK_CHG3_DIS = NRF_DPPI_TASK_CHG3_DIS,
+#endif
+#if NRFX_GPPI_GROUP_NUM > 4
     NRFX_GPPI_TASK_CHG4_EN  = NRF_DPPI_TASK_CHG4_EN,
     NRFX_GPPI_TASK_CHG4_DIS = NRF_DPPI_TASK_CHG4_DIS,
     NRFX_GPPI_TASK_CHG5_EN  = NRF_DPPI_TASK_CHG5_EN,
@@ -158,12 +167,10 @@ typedef enum
 {
     NRFX_GPPI_CHANNEL_GROUP0, /**< Channel group 0.*/
     NRFX_GPPI_CHANNEL_GROUP1, /**< Channel group 1.*/
-#if NRFX_GPPI_GROUP_NUM > 2 || defined(__NRFX_DOXYGEN__)
     NRFX_GPPI_CHANNEL_GROUP2, /**< Channel group 2.*/
     NRFX_GPPI_CHANNEL_GROUP3, /**< Channel group 3.*/
     NRFX_GPPI_CHANNEL_GROUP4, /**< Channel group 4.*/
     NRFX_GPPI_CHANNEL_GROUP5, /**< Channel group 5.*/
-#endif
 } nrfx_gppi_channel_group_t;
 
 /** @brief Generic PPI tasks. */
@@ -173,7 +180,6 @@ typedef enum
     NRFX_GPPI_TASK_CHG0_DIS, /**< Task for disabling channel group 0 */
     NRFX_GPPI_TASK_CHG1_EN,  /**< Task for enabling channel group 1 */
     NRFX_GPPI_TASK_CHG1_DIS, /**< Task for disabling channel group 1 */
-#if NRFX_GPPI_GROUP_NUM > 2 || defined(__NRFX_DOXYGEN__)
     NRFX_GPPI_TASK_CHG2_EN,  /**< Task for enabling channel group 2 */
     NRFX_GPPI_TASK_CHG2_DIS, /**< Task for disabling channel group 2 */
     NRFX_GPPI_TASK_CHG3_EN,  /**< Task for enabling channel group 3 */
@@ -182,7 +188,6 @@ typedef enum
     NRFX_GPPI_TASK_CHG4_DIS, /**< Task for disabling channel group 4 */
     NRFX_GPPI_TASK_CHG5_EN,  /**< Task for enabling channel group 5 */
     NRFX_GPPI_TASK_CHG5_DIS, /**< Task for disabling channel group 5 */
-#endif
 } nrfx_gppi_task_t;
 #endif // defined(__NRFX_DOXYGEN__)
 

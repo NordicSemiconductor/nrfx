@@ -554,7 +554,7 @@ NRF_STATIC_INLINE void nrf_ppi_task_trigger(NRF_PPI_Type * p_reg, nrf_ppi_task_t
 NRF_STATIC_INLINE uint32_t nrf_ppi_task_address_get(NRF_PPI_Type const * p_reg,
                                                     nrf_ppi_task_t       ppi_task)
 {
-    return (uint32_t) ((uint8_t *) p_reg + (uint32_t) ppi_task);
+    return (uint32_t) ((const uint8_t *) p_reg + (uint32_t) ppi_task);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_ppi_task_group_enable_address_get(NRF_PPI_Type const *    p_reg,

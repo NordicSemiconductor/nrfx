@@ -145,6 +145,7 @@ NRF_STATIC_INLINE uint32_t nrf_spi_event_address_get(NRF_SPI_Type const * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_spi_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_spi_int_enable(NRF_SPI_Type * p_reg,
                                           uint32_t       mask);
@@ -154,6 +155,7 @@ NRF_STATIC_INLINE void nrf_spi_int_enable(NRF_SPI_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_spi_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_spi_int_disable(NRF_SPI_Type * p_reg,
                                            uint32_t       mask);
@@ -163,6 +165,7 @@ NRF_STATIC_INLINE void nrf_spi_int_disable(NRF_SPI_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_spi_int_mask_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -275,13 +278,13 @@ NRF_STATIC_INLINE void nrf_spi_event_clear(NRF_SPI_Type *  p_reg,
 NRF_STATIC_INLINE bool nrf_spi_event_check(NRF_SPI_Type const * p_reg,
                                            nrf_spi_event_t      event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_spi_event_address_get(NRF_SPI_Type const * p_reg,
                                                      nrf_spi_event_t      event)
 {
-    return (uint32_t)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_task_event_address_get(p_reg, event);
 }
 
 NRF_STATIC_INLINE void nrf_spi_int_enable(NRF_SPI_Type * p_reg,

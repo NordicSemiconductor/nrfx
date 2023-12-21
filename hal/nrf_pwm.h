@@ -369,6 +369,7 @@ NRF_STATIC_INLINE void nrf_pwm_shorts_set(NRF_PWM_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_pwm_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_pwm_int_enable(NRF_PWM_Type * p_reg,
                                           uint32_t       mask);
@@ -378,6 +379,7 @@ NRF_STATIC_INLINE void nrf_pwm_int_enable(NRF_PWM_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_pwm_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_pwm_int_disable(NRF_PWM_Type * p_reg,
                                            uint32_t       mask);
@@ -387,6 +389,7 @@ NRF_STATIC_INLINE void nrf_pwm_int_disable(NRF_PWM_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be set.
+ *                  Use @ref nrf_pwm_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_pwm_int_set(NRF_PWM_Type * p_reg,
                                        uint32_t       mask);
@@ -396,6 +399,7 @@ NRF_STATIC_INLINE void nrf_pwm_int_set(NRF_PWM_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_pwm_int_mask_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -460,6 +464,16 @@ NRF_STATIC_INLINE void nrf_pwm_enable(NRF_PWM_Type * p_reg);
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  */
 NRF_STATIC_INLINE void nrf_pwm_disable(NRF_PWM_Type * p_reg);
+
+/**
+ * @brief Function for checking if the PWM peripheral is enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval true  The PWM is enabled.
+ * @retval false The PWM is not enabled.
+ */
+NRF_STATIC_INLINE bool nrf_pwm_enable_check(NRF_PWM_Type const * p_reg);
 
 /**
  * @brief Function for assigning pins to PWM output channels.
@@ -625,7 +639,7 @@ NRF_STATIC_INLINE void nrf_pwm_event_clear(NRF_PWM_Type *  p_reg,
 NRF_STATIC_INLINE bool nrf_pwm_event_check(NRF_PWM_Type const * p_reg,
                                            nrf_pwm_event_t      event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_pwm_event_address_get(NRF_PWM_Type const * p_reg,
@@ -707,6 +721,11 @@ NRF_STATIC_INLINE void nrf_pwm_enable(NRF_PWM_Type * p_reg)
 NRF_STATIC_INLINE void nrf_pwm_disable(NRF_PWM_Type * p_reg)
 {
     p_reg->ENABLE = (PWM_ENABLE_ENABLE_Disabled << PWM_ENABLE_ENABLE_Pos);
+}
+
+NRF_STATIC_INLINE bool nrf_pwm_enable_check(NRF_PWM_Type const * p_reg)
+{
+    return p_reg->ENABLE == PWM_ENABLE_ENABLE_Enabled;
 }
 
 NRF_STATIC_INLINE void nrf_pwm_pins_set(NRF_PWM_Type * p_reg,

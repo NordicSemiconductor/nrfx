@@ -213,7 +213,7 @@ typedef void (*nrfx_qspi_handler_t)(nrfx_qspi_evt_t event, void * p_context);
  * @retval NRFX_SUCCESS             Initialization was successful.
  * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
- *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
+ *                                  Deprecated - use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_INVALID_PARAM The pin configuration was incorrect.
  */
 nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
@@ -236,7 +236,12 @@ nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
  */
 nrfx_err_t nrfx_qspi_reconfigure(nrfx_qspi_config_t const * p_config);
 
-/** @brief Function for uninitializing the QSPI driver instance. */
+/**
+ * @brief Function for uninitializing the QSPI driver instance.
+ *
+ * @note If a custom instruction long transfer is ongoing when the function is called,
+ *       the transfer will be interrupted.
+ */
 void nrfx_qspi_uninit(void);
 
 /**
@@ -250,7 +255,11 @@ void nrfx_qspi_uninit(void);
  */
 nrfx_err_t nrfx_qspi_activate(bool wait);
 
-/** @brief Function for deactivating the QSPI driver instance.
+/**
+ * @brief Function for deactivating the QSPI driver instance.
+ *
+ * @note If a custom instruction long transfer is ongoing when the function is called,
+ *       the transfer will be interrupted.
  *
  * @retval NRFX_SUCCESS    The driver instance has been activated.
  * @retval NRFX_ERROR_BUSY The driver is during transaction.

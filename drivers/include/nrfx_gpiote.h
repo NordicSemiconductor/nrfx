@@ -206,7 +206,7 @@ bool nrfx_gpiote_in_is_set(nrfx_gpiote_pin_t pin);
  * @retval NRFX_SUCCESS             Initialization was successful.
  * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
- *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
+ *                                  Deprecated - use @ref NRFX_ERROR_ALREADY instead.
  */
 nrfx_err_t nrfx_gpiote_init(nrfx_gpiote_t const * p_instance, uint8_t interrupt_priority);
 
@@ -618,8 +618,13 @@ NRFX_STATIC_INLINE nrf_gpiote_latency_t nrfx_gpiote_latency_get(nrfx_gpiote_t co
 #else
 
 #if !defined(NRF_GPIOTE_INDEX)
-#if (defined(NRF5340_XXAA_APPLICATION) || defined(NRF91_SERIES)) && \
-    defined(NRF_TRUSTZONE_NONSECURE)
+/* Choose the instance to use in case of using deprecated single-instance driver variant. */
+#if defined(HALTIUM_XXAA)
+#define NRF_GPIOTE_INDEX 130
+#elif defined(LUMOS_XXAA)
+#define NRF_GPIOTE_INDEX 20
+#elif (defined(NRF5340_XXAA_APPLICATION) || defined(NRF91_SERIES)) && \
+      defined(NRF_TRUSTZONE_NONSECURE)
 #define NRF_GPIOTE_INDEX 1
 #else
 #define NRF_GPIOTE_INDEX 0

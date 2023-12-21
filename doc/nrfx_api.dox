@@ -9,6 +9,8 @@
 
 @defgroup nrf_adc ADC
 
+@defgroup nrf_bellboard BELLBOARD
+
 @defgroup nrf_bprot BPROT
 
 @defgroup nrf_cache CACHE
@@ -21,6 +23,10 @@
 
 @defgroup nrf_systick Cortex-M Systick
 
+@defgroup nrf_cracen CRACEN
+
+@defgroup nrf_ctrlap CTRL-AP
+
 @defgroup nrf_dcnf DCNF
 
 @defgroup nrf_dppi DPPI
@@ -29,11 +35,17 @@
 
 @defgroup nrf_egu EGU
 
+@defgroup nrf_exmif EXMIF
+
 @defgroup nrf_fpu FPU
+
+@defgroup nrf_glitchdet GLITCHDET
 
 @defgroup nrf_gpio GPIO
 
 @defgroup nrf_gpiote GPIOTE
+
+@defgroup nrf_grtc GRTC
 
 @defgroup nrf_i2s I2S
 
@@ -41,13 +53,23 @@
 
 @defgroup nrf_ipc IPC
 
+@defgroup nrf_ipct IPCT
+
 @defgroup nrf_kmu KMU
 
 @defgroup nrf_lpcomp LPCOMP
 
+@defgroup nrf_lrc LRC
+
+@defgroup nrf_memconf MEMCONF
+
+@defgroup nrf_mpc MPC
+
 @defgroup nrf_mpu MPU
 
 @defgroup nrf_mutex MUTEX
+
+@defgroup nrf_mvdma MVDMA
 
 @defgroup nrf_mwu MWU
 
@@ -61,7 +83,15 @@
 
 @defgroup nrf_ppi PPI
 
+@defgroup nrf_ppib PPIB
+
 @defgroup nrf_pwm PWM
+
+@defgroup nrf_ramc RAMC
+
+@defgroup nrf_resetinfo RESETINFO
+
+@defgroup nrf_rramc RRAMC
 
 @defgroup nrf_qdec QDEC
 
@@ -83,6 +113,12 @@
 
 @defgroup nrf_spu SPU
 
+@defgroup nrf_stm STM
+
+@defgroup nrf_tampc TAMPC
+
+@defgroup nrf_tbm TBM
+
 @defgroup nrf_temp TEMP
 
 @defgroup nrf_timer TIMER
@@ -99,7 +135,11 @@
 
 @defgroup nrf_usbd USBD
 
+@defgroup nrf_usbhs USBHS
+
 @defgroup nrf_vmc VMC
+
+@defgroup nrf_vpr VPR
 
 @defgroup nrf_wdt WDT
 

@@ -214,8 +214,6 @@ nrfx_err_t nrfx_pwm_init(nrfx_pwm_t const *        p_instance,
         pwm_configure(p_instance, p_config);
     }
 
-    nrfy_pwm_enable(p_instance->p_reg);
-
     p_cb->state = NRFX_DRV_STATE_INITIALIZED;
 
     err_code = NRFX_SUCCESS;
@@ -237,9 +235,9 @@ nrfx_err_t nrfx_pwm_reconfigure(nrfx_pwm_t const * p_instance, nrfx_pwm_config_t
     {
         return NRFX_ERROR_BUSY;
     }
-    nrfy_pwm_disable(p_instance->p_reg);
+
     pwm_configure(p_instance, p_config);
-    nrfy_pwm_enable(p_instance->p_reg);
+
     return NRFX_SUCCESS;
 }
 
@@ -279,6 +277,8 @@ static uint32_t start_playback(nrfx_pwm_t const *    p_instance,
 {
     p_cb->state = NRFX_DRV_STATE_POWERED_ON;
     p_cb->flags = flags;
+
+    nrfy_pwm_enable(p_instance->p_reg);
 
     if (p_cb->handler)
     {
@@ -455,6 +455,7 @@ bool nrfx_pwm_stop(nrfx_pwm_t const * p_instance, bool wait_until_stopped)
     {
         while (!pwm_stopped_check(p_instance))
         {}
+        nrfy_pwm_disable(p_instance->p_reg);
         p_cb->state = NRFX_DRV_STATE_INITIALIZED;
     }
 
@@ -511,6 +512,7 @@ static void irq_handler(NRF_PWM_Type * p_pwm, pwm_control_block_t * p_cb)
     // The STOPPED event is always propagated to the user handler.
     if (evt_mask & NRFY_EVENT_TO_INT_BITMASK(NRF_PWM_EVENT_STOPPED))
     {
+        nrfy_pwm_disable(p_pwm);
         p_cb->state = NRFX_DRV_STATE_INITIALIZED;
         if (p_cb->handler)
         {

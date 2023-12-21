@@ -78,6 +78,26 @@ POSSIBILITY OF SUCH DAMAGE.
     #include "nrf9120_xxaa_memory.h"
 #elif defined(NRF9160_XXAA)
     #include "nrf9160_xxaa_memory.h"
+#elif defined(NRF54H20_ENGA_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf54h20_enga_xxaa_application_memory.h"
+    #endif
+    #if defined(NRF_RADIOCORE)
+        #include "nrf54h20_enga_xxaa_radiocore_memory.h"
+    #endif
+    #if defined(NRF_PPR)
+        #include "nrf54h20_enga_xxaa_ppr_memory.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf54h20_enga_xxaa_flpr_memory.h"
+    #endif
+#elif defined(NRF54L15_ENGA_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf54l15_enga_xxaa_application_memory.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf54l15_enga_xxaa_flpr_memory.h"
+    #endif
 #else
     #error "Device must be defined. See nrf_mem.h."
 #endif

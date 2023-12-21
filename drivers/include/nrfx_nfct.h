@@ -190,7 +190,7 @@ typedef struct
  * @retval NRFX_SUCCESS             The NFCT driver was initialized successfully.
  * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
- *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
+ *                                  Deprecated - use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_FORBIDDEN     The NFCT antenna pads are not configured as antenna pins.
  */
 nrfx_err_t nrfx_nfct_init(nrfx_nfct_config_t const * p_config);

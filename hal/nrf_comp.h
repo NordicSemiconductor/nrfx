@@ -221,6 +221,14 @@ typedef enum
     NRF_COMP_INT_CROSS_MASK = COMP_INTENSET_CROSS_Msk  /**< Interrupt on CROSS event. */
 } nrf_comp_int_mask_t;
 
+/** @brief COMP shortcut masks. */
+typedef enum
+{
+    NRF_COMP_SHORT_STOP_CROSS_MASK = COMP_SHORTS_CROSS_STOP_Msk, ///< Shortcut between the CROSS event and the STOP task.
+    NRF_COMP_SHORT_STOP_UP_MASK    = COMP_SHORTS_UP_STOP_Msk,    ///< Shortcut between the UP event and the STOP task.
+    NRF_COMP_SHORT_STOP_DOWN_MASK  = COMP_SHORTS_DOWN_STOP_Msk   ///< Shortcut between the DOWN event and the STOP task.
+} nrf_comp_short_mask_t;
+
 /** @brief COMP reference configuration. */
 typedef struct
 {
@@ -336,6 +344,7 @@ NRF_STATIC_INLINE uint32_t nrf_comp_result_get(NRF_COMP_Type const * p_reg);
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_comp_int_mask_t values for bit masking.
  *
  * @sa nrf_comp_int_enable_check
  */
@@ -346,6 +355,7 @@ NRF_STATIC_INLINE void nrf_comp_int_enable(NRF_COMP_Type * p_reg, uint32_t mask)
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_comp_int_mask_t values for bit masking.
  *
  * @sa nrf_comp_int_enable_check
  */
@@ -356,6 +366,7 @@ NRF_STATIC_INLINE void nrf_comp_int_disable(NRF_COMP_Type * p_reg, uint32_t mask
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_comp_int_mask_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -525,13 +536,13 @@ NRF_STATIC_INLINE uint32_t nrf_comp_int_enable_check(NRF_COMP_Type const * p_reg
 NRF_STATIC_INLINE uint32_t nrf_comp_task_address_get(NRF_COMP_Type const * p_reg,
                                                      nrf_comp_task_t       task)
 {
-    return (uint32_t)((uint8_t *)p_reg + (uint32_t)task);
+    return nrf_task_event_address_get(p_reg, task);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_comp_event_address_get(NRF_COMP_Type const * p_reg,
                                                       nrf_comp_event_t      event)
 {
-    return (uint32_t)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_task_event_address_get(p_reg, event);
 }
 
 NRF_STATIC_INLINE void nrf_comp_shorts_enable(NRF_COMP_Type * p_reg, uint32_t mask)
@@ -557,7 +568,7 @@ NRF_STATIC_INLINE void nrf_comp_event_clear(NRF_COMP_Type * p_reg, nrf_comp_even
 
 NRF_STATIC_INLINE bool nrf_comp_event_check(NRF_COMP_Type const * p_reg, nrf_comp_event_t event)
 {
-    return (bool) (*(volatile uint32_t *)( (uint8_t *)p_reg + (uint32_t)event));
+    return nrf_event_check(p_reg, event);
 }
 
 #endif // NRF_DECLARE_ONLY

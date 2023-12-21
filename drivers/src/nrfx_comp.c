@@ -189,6 +189,9 @@ void nrfx_comp_uninit(void)
 {
     NRFX_ASSERT(m_state != NRFX_DRV_STATE_UNINITIALIZED);
 
+    nrfy_comp_shorts_disable(NRF_COMP, UINT32_MAX);
+    nrfy_comp_int_disable(NRF_COMP, UINT32_MAX);
+    nrfy_comp_task_trigger(NRF_COMP, NRF_COMP_TASK_STOP);
     nrfy_comp_int_uninit(NRF_COMP);
     nrfy_comp_disable(NRF_COMP);
 #if NRFX_CHECK(NRFX_PRS_ENABLED)

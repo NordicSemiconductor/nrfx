@@ -40,6 +40,10 @@
 extern "C" {
 #endif
 
+#if defined(HALTIUM_XXAA)
+#define NRF_TWIS_CLOCKPIN_SCL_NEEDED
+#endif
+
 /**
  * @defgroup nrf_twis_hal TWIS HAL
  * @{
@@ -47,15 +51,6 @@ extern "C" {
  * @brief   Hardware access layer for managing the Two Wire Interface Slave with EasyDMA
  *          (TWIS) peripheral.
  */
-
-/**
- * @brief Macro getting pointer to the structure of registers of the TWIS peripheral.
- *
- * @param[in] idx TWIS instance index.
- *
- * @return Pointer to the structure of registers of the TWIS peripheral.
- */
-#define NRF_TWIS_INST_GET(idx) NRFX_CONCAT(NRF_, TWIS, idx)
 
 #if defined(TWIS_DMA_RX_PTR_PTR_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether dedicated DMA register is present. */
@@ -79,6 +74,25 @@ extern "C" {
 #else
 #define NRF_TWIS_HAS_LIST_REG 0
 #endif
+
+#if NRF_TWIS_HAS_DMA_REG
+/** @brief Symbol specifying maximum possible size of the TX channel buffer. */
+#define NRF_TWIS_TX_MAX_COUNT_SIZE TWIS_DMA_TX_MAXCNT_MAXCNT_Max
+/** @brief Symbol specifying maximum possible size of the RX channel buffer. */
+#define NRF_TWIS_RX_MAX_COUNT_SIZE TWIS_DMA_RX_MAXCNT_MAXCNT_Max
+#else
+#define NRF_TWIS_TX_MAX_COUNT_SIZE TWIS_TXD_MAXCNT_MAXCNT_Msk
+#define NRF_TWIS_RX_MAX_COUNT_SIZE TWIS_RXD_MAXCNT_MAXCNT_Msk
+#endif
+
+/**
+ * @brief Macro getting pointer to the structure of registers of the TWIS peripheral.
+ *
+ * @param[in] idx TWIS instance index.
+ *
+ * @return Pointer to the structure of registers of the TWIS peripheral.
+ */
+#define NRF_TWIS_INST_GET(idx) NRFX_CONCAT(NRF_, TWIS, idx)
 
 /** @brief TWIS tasks. */
 typedef enum
@@ -250,6 +264,7 @@ NRF_STATIC_INLINE uint32_t nrf_twis_shorts_get(NRF_TWIS_Type const * p_reg);
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_twis_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_twis_int_enable(NRF_TWIS_Type * p_reg, uint32_t mask);
 
@@ -258,6 +273,7 @@ NRF_STATIC_INLINE void nrf_twis_int_enable(NRF_TWIS_Type * p_reg, uint32_t mask)
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_twis_int_mask_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -268,6 +284,7 @@ NRF_STATIC_INLINE uint32_t nrf_twis_int_enable_check(NRF_TWIS_Type const * p_reg
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_twis_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_twis_int_disable(NRF_TWIS_Type * p_reg, uint32_t mask);
 
@@ -348,6 +365,16 @@ NRF_STATIC_INLINE void nrf_twis_enable(NRF_TWIS_Type * p_reg);
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  */
 NRF_STATIC_INLINE void nrf_twis_disable(NRF_TWIS_Type * p_reg);
+
+/**
+ * @brief Function for checking if the TWIS is enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval true  The TWIS is enabled.
+ * @retval false The TWIS is not enabled.
+ */
+NRF_STATIC_INLINE bool nrf_twis_enable_check(NRF_TWIS_Type const * p_reg);
 
 /**
  * @brief Function for configuring TWIS pins.
@@ -592,7 +619,7 @@ NRF_STATIC_INLINE volatile uint32_t* nrf_twis_getRegPtr(NRF_TWIS_Type * p_reg, u
 NRF_STATIC_INLINE volatile const uint32_t* nrf_twis_getRegPtr_c(NRF_TWIS_Type const * p_reg,
                                                                 uint32_t              offset)
 {
-    return (volatile const uint32_t*)((uint8_t *)p_reg + (uint32_t)offset);
+    return (volatile const uint32_t*)((uint8_t const *)p_reg + (uint32_t)offset);
 }
 
 
@@ -725,6 +752,11 @@ NRF_STATIC_INLINE void nrf_twis_enable(NRF_TWIS_Type * p_reg)
 NRF_STATIC_INLINE void nrf_twis_disable(NRF_TWIS_Type * p_reg)
 {
     p_reg->ENABLE = (TWIS_ENABLE_ENABLE_Disabled << TWIS_ENABLE_ENABLE_Pos);
+}
+
+NRF_STATIC_INLINE bool nrf_twis_enable_check(NRF_TWIS_Type const * p_reg)
+{
+    return (p_reg->ENABLE == (TWIS_ENABLE_ENABLE_Enabled << TWIS_ENABLE_ENABLE_Pos));
 }
 
 NRF_STATIC_INLINE void nrf_twis_pins_set(NRF_TWIS_Type * p_reg, uint32_t scl, uint32_t sda)

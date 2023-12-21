@@ -147,18 +147,21 @@ enum {
  * UARTE DMA registers are buffered which means that once transfer is started, registers with
  * transfer details (pointer and length) can be overwritten. If that is combined with the (D)PPI
  * connection between ENDTX and STARTTX events, then two transfers are linked together and
- * bytes are transfer without any gap allowing to utilize the maximum bandwidth.
+ * bytes are transferred without any gap allowing to utilize the maximum bandwidth.
  *
- * When the flag is set, it indicates that the user setup ENDTX-STARTTX (D)PPI connection and
- * wants to perform linked transfers. It is the user responsibility to disable the (D)PPI connection
- * when the last transfer is started. It is also their responsibility to use this flag when there is
- * already one ongoing transfer - otherwise, an error is returned.
+ * When the flag is set, it indicates that the user can set up an ENDTX-STARTTX (D)PPI connection and
+ * wants to perform linked transfers. It is the user's responsibility to disable the (D)PPI connection
+ * when the last transfer is started. If the user does not set up an ENDTX-STARTTX (D)PPI connection, then
+ * the transfer is restarted from the context of ENDTX event handling which is earlier than context
+ * of the @ref NRFX_UARTE_EVT_TX_DONE. The flag has no impact if used while there is no ongoing
+ * transfer.
  *
  * For example, if a sequence consists of three transfers, then the first @ref nrfx_uarte_tx
- * is called without the flag and the following two transfers must have the flag set. The second
- * @ref nrfx_uarte_tx may be called immediately after the first one and the third one after
- * the first @ref NRFX_UARTE_EVT_TX_DONE event. After the second @ref NRFX_UARTE_EVT_TX_DONE
- * event is received, (D)PPI connection must be disabled.
+ * can be called with or without the flag and the following two transfers must have the flag
+ * set. The second @ref nrfx_uarte_tx can be called immediately after the first one and the third
+ * one after the first @ref NRFX_UARTE_EVT_TX_DONE event. After the second
+ * @ref NRFX_UARTE_EVT_TX_DONE event is received, the (D)PPI connection must be disabled (if it was
+ * used).
  *
  * When (D)PPI connection is used, then it is critical that (D)PPI connection is disabled on time,
  * before the last transfer is completed. Otherwise, the transfer will be repeated, and unwanted data
@@ -170,12 +173,6 @@ enum {
  * When linked transfers are used, then blocking transfers (see @ref NRFX_UARTE_TX_BLOCKING and
  * @ref NRFX_UARTE_TX_EARLY_RETURN) cannot be performed. An error is returned when the flag is set
  * and the @ref nrfx_uarte_tx is called during ongoing blocking transfer.
- *
- * When this flag is used then driver instance must not use ENDTX-STOPTX (D)PPI connection.
- *
- * When linked transfers are used then blocking transfers (see @ref NRFX_UARTE_TX_BLOCKING and
- * @ref NRFX_UARTE_TX_EARLY_RETURN) cannot be performed. Error is returned when @ref nrfx_uarte_tx
- * is called with this flag set while there is on-going blocking transfer.
  */
 #define NRFX_UARTE_TX_LINK         NRFX_BIT(2)
 
@@ -198,6 +195,7 @@ typedef enum
     NRFX_UARTE_EVT_RX_BUF_REQUEST,  ///< Request for a RX buffer.
     NRFX_UARTE_EVT_RX_DISABLED,     ///< Receiver is disabled.
     NRFX_UARTE_EVT_RX_BUF_TOO_LATE, ///< RX buffer request handled too late.
+    NRFX_UARTE_EVT_RX_BYTE,         ///< Byte was received.
     NRFX_UARTE_EVT_TRIGGER,         ///< Result of @ref nrfx_uarte_int_trigger.
 } nrfx_uarte_evt_type_t;
 
@@ -294,9 +292,9 @@ typedef struct
     {                                                                           \
         .hwfc           = NRF_UARTE_HWFC_DISABLED,                              \
         .parity         = NRF_UARTE_PARITY_EXCLUDED,                            \
-        NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(UARTE_CONFIG_STOP_Msk),       \
+        NRFX_COND_CODE_1(NRF_UART_HAS_STOP_BITS,                                \
                 (.stop = (nrf_uarte_stop_t)NRF_UARTE_STOP_ONE,), ())            \
-        NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(UARTE_CONFIG_PARITYTYPE_Msk), \
+        NRFX_COND_CODE_1(NRF_UART_HAS_PARITY_BIT,                               \
                 (.paritytype = NRF_UARTE_PARITYTYPE_EVEN,), ())                 \
     },                                                                          \
     .skip_psel_cfg      = false,                                                \
@@ -371,7 +369,7 @@ typedef void (*nrfx_uarte_event_handler_t)(nrfx_uarte_event_t const * p_event,
  * @retval NRFX_SUCCESS             Initialization was successful.
  * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
- *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
+ *                                  Deprecated - use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_INVALID_PARAM Invalid configuration.
  * @retval NRFX_ERROR_BUSY          Some other peripheral with the same
  *                                  instance ID is already in use. This is
@@ -661,6 +659,33 @@ uint32_t nrfx_uarte_errorsrc_get(nrfx_uarte_t const * p_instance);
 bool nrfx_uarte_rx_new_data_check(nrfx_uarte_t const * p_instance);
 
 /**
+ * @brief Function for enabling @ref NRFX_UARTE_EVT_RX_BYTE event.
+ *
+ * The function enables the @ref NRF_UARTE_EVENT_RXDRDY hardware event which is generated whenever a byte is
+ * received in RXD registers. The event indicates only that data is received, hence it must not be used yet
+ * because it may not be present yet in the RAM buffer handled by the EasyDMA. The event can be used only to
+ * detect a receiver activity. The event can be enabled at any time. Enabling it may increase the number of interrupts (after each received byte).
+ *
+ * @note If there were a receiver activity prior to enabling the @ref NRF_UARTE_EVENT_RXDRDY event,
+ * the @ref NRF_UARTE_EVENT_RXDRDY event may already be set and the @ref NRFX_UARTE_EVT_RX_BYTE will be
+ * triggered immediately. To avoid that, it is recommended to clear that event by calling
+ * the @ref nrfx_uarte_rx_new_data_check.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+NRFX_STATIC_INLINE void nrfx_uarte_rxdrdy_enable(nrfx_uarte_t const * p_instance);
+
+/**
+ * @brief Function for disabling @ref NRFX_UARTE_EVT_RX_BYTE event.
+ *
+ * The function disables the RXDRDY hardware event. See the @ref nrfx_uarte_rxdrdy_enable for more details.
+ * The event can be disabled at any time.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+NRFX_STATIC_INLINE void nrfx_uarte_rxdrdy_disable(nrfx_uarte_t const * p_instance);
+
+/**
  * @brief Function for triggering UARTE interrupt.
  *
  * Function can be used to jump into UARTE interrupt context. User handler is
@@ -685,6 +710,17 @@ NRFX_STATIC_INLINE uint32_t nrfx_uarte_event_address_get(nrfx_uarte_t const * p_
 {
     return nrfy_uarte_event_address_get(p_instance->p_reg, event);
 }
+
+NRFX_STATIC_INLINE void nrfx_uarte_rxdrdy_enable(nrfx_uarte_t const * p_instance)
+{
+	nrfy_uarte_int_enable(p_instance->p_reg, NRF_UARTE_INT_RXDRDY_MASK);
+}
+
+NRFX_STATIC_INLINE void nrfx_uarte_rxdrdy_disable(nrfx_uarte_t const * p_instance)
+{
+	nrfy_uarte_int_disable(p_instance->p_reg, NRF_UARTE_INT_RXDRDY_MASK);
+}
+
 #endif // NRFX_DECLARE_ONLY
 
 /**

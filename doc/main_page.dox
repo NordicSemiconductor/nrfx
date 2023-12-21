@@ -25,7 +25,7 @@ named:
 - @ref nrfx_log
 
 Templates of these files are provided
-in the <a href="../../templates/">templates</a> subfolder. Their customized
+in the <a href="https://github.com/NordicSemiconductor/nrfx/tree/master/templates">nrfx/templates</a> subfolder. Their customized
 versions can be placed in any location within the host environment that the
 used compiler can access via include paths.
 
@@ -76,7 +76,7 @@ in a file named:
 
 This file, similarly to the integration files mentioned above, can be placed
 in any suitable location within the host environment.
-The <a href="../../templates/">templates</a> subfolder contains templates of
+The <a href="https://github.com/NordicSemiconductor/nrfx/tree/master/templates">nrfx/templates</a> subfolder contains templates of
 configuration files for all currently supported Nordic SoCs. These files are
 included through a common nrfx_config.h file, according to the selected SoC.
 Refer to the "driver configuration" section in the API reference for a given

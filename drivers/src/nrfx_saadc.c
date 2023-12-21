@@ -478,7 +478,7 @@ nrfx_err_t nrfx_saadc_buffer_set(nrf_saadc_value_t * p_buffer, uint16_t size)
     }
 
     if ((size % m_cb.channels_activated_count != 0) ||
-        (size >= (1 << SAADC_EASYDMA_MAXCNT_SIZE))  ||
+        (size > SAADC_RESULT_MAXCNT_MAXCNT_Msk)  ||
         (!size))
     {
         return NRFX_ERROR_INVALID_LENGTH;
@@ -741,7 +741,7 @@ nrfx_err_t nrfx_saadc_offset_calibrate(nrfx_saadc_event_handler_t calib_event_ha
 
 static void saadc_pre_calibration_state_restore(void)
 {
-    nrf_saadc_disable(NRF_SAADC);
+    nrfy_saadc_disable(NRF_SAADC);
     uint32_t int_mask = nrfy_saadc_int_enable_check(NRF_SAADC, ~0UL) &
                         (uint32_t)(~(NRF_SAADC_INT_STARTED | NRF_SAADC_INT_STOPPED |
                                      NRF_SAADC_INT_END | NRF_SAADC_INT_CALIBRATEDONE));

@@ -537,7 +537,7 @@ nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
             NRFX_ASSERT(p_config->scl_pin != p_config->sda_pin);
             nrfx_twis_config_pin(p_config->scl_pin, p_config->scl_pull);
             nrfx_twis_config_pin(p_config->sda_pin, p_config->sda_pull);
-#if NRF_GPIO_HAS_CLOCKPIN &&  defined(NRF_TWIS_CLOCKPIN_SCL_NEEDED_EXT)
+#if NRF_GPIO_HAS_CLOCKPIN &&  defined(NRF_TWIS_CLOCKPIN_SCL_NEEDED)
             nrf_gpio_pin_clock_set(p_config->scl_pin, true);
 #endif
         }
@@ -570,9 +570,18 @@ nrfx_err_t nrfx_twis_reconfigure(nrfx_twis_t const *        p_instance,
     {
         return NRFX_ERROR_BUSY;
     }
-    nrf_twis_disable(p_instance->p_reg);
-    twis_configure(p_instance, p_config);
-    nrf_twis_enable(p_instance->p_reg);
+
+    if (nrf_twis_enable_check(p_instance->p_reg))
+    {
+        nrf_twis_disable(p_instance->p_reg);
+        twis_configure(p_instance, p_config);
+        nrf_twis_enable(p_instance->p_reg);
+    }
+    else
+    {
+        twis_configure(p_instance, p_config);
+    }
+
     return NRFX_SUCCESS;
 }
 
@@ -756,12 +765,7 @@ nrfx_err_t nrfx_twis_tx_prepare(nrfx_twis_t const * p_instance,
         return err_code;
     }
     /* Check data size */
-#if NRF_TWIS_HAS_DMA_REG
-    size_t maxsize = TWIS_DMA_TX_MAXCNT_MAXCNT_Msk;
-#else
-    size_t maxsize = TWIS_TXD_MAXCNT_MAXCNT_Msk;
-#endif
-    if ((size & maxsize) != size)
+    if (size > NRF_TWIS_RX_MAX_COUNT_SIZE)
     {
         err_code = NRFX_ERROR_INVALID_LENGTH;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -806,12 +810,7 @@ nrfx_err_t nrfx_twis_rx_prepare(nrfx_twis_t const * p_instance,
         return err_code;
     }
     /* Check data size */
-#if NRF_TWIS_HAS_DMA_REG
-    size_t maxsize = TWIS_DMA_RX_MAXCNT_MAXCNT_Msk;
-#else
-    size_t maxsize = TWIS_RXD_MAXCNT_MAXCNT_Msk;
-#endif
-    if ((size & maxsize) != size)
+    if (size > NRF_TWIS_TX_MAX_COUNT_SIZE)
     {
         err_code = NRFX_ERROR_INVALID_LENGTH;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -832,7 +831,7 @@ bool nrfx_twis_is_busy(nrfx_twis_t const * p_instance)
 {
     twis_control_block_t const * p_cb = &m_cb[p_instance->drv_inst_idx];
 
-    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
+    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
     nrfx_twis_preprocess_status(p_instance);
     return NRFX_TWIS_SUBSTATE_IDLE != p_cb->substate;

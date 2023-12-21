@@ -28,9 +28,9 @@ exclude_patterns = ["theme"]
 # Options for HTML output ------------------------------------------------------
 
 html_theme = "sphinx_ncs_theme"
-html_static_path = [str(CONF_DIR / "_static")]
 html_last_updated_fmt = "%b %d, %Y"
 html_show_sphinx = False
+html_theme_options = {"standalone": True}
 
 # Options for Breathe ----------------------------------------------------------
 

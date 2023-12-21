@@ -78,6 +78,26 @@ POSSIBILITY OF SUCH DAMAGE.
     #include "nrf9120_vectors.h"
 #elif defined(NRF9160_XXAA)
     #include "nrf9160_vectors.h"
+#elif defined(NRF54H20_ENGA_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf54h20_enga_application_vectors.h"
+    #endif
+    #if defined(NRF_RADIOCORE)
+        #include "nrf54h20_enga_radiocore_vectors.h"
+    #endif
+    #if defined(NRF_PPR)
+        #include "nrf54h20_enga_ppr_vectors.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf54h20_enga_flpr_vectors.h"
+    #endif
+#elif defined(NRF54L15_ENGA_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf54l15_enga_application_vectors.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf54l15_enga_flpr_vectors.h"
+    #endif
 #else
     #error "Device must be defined. See nrf_vectors.h."
 #endif

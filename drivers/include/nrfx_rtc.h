@@ -66,7 +66,6 @@ typedef enum
 typedef struct
 {
     NRF_RTC_Type  * p_reg;            /**< Pointer to instance register set. */
-    IRQn_Type       irq;              /**< Instance IRQ ID. */
     uint8_t         instance_id;      /**< Index of the driver instance. For internal use only. */
     uint8_t         cc_channel_count; /**< Number of capture/compare channels. */
 } nrfx_rtc_t;
@@ -75,7 +74,6 @@ typedef struct
 #define NRFX_RTC_INSTANCE(id)                                   \
 {                                                               \
     .p_reg            = NRFX_CONCAT_3(NRF_, RTC, id),           \
-    .irq              = NRFX_CONCAT_3(RTC, id, _IRQn),          \
     .instance_id      = NRFX_CONCAT_3(NRFX_RTC, id, _INST_IDX), \
     .cc_channel_count = NRF_RTC_CC_CHANNEL_COUNT(id),           \
 }
@@ -129,7 +127,7 @@ typedef void (*nrfx_rtc_handler_t)(nrfx_rtc_int_type_t int_type);
  * @retval NRFX_SUCCESS             Successfully initialized.
  * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
- *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
+ *                                  Deprecated - use @ref NRFX_ERROR_ALREADY instead.
  */
 nrfx_err_t nrfx_rtc_init(nrfx_rtc_t const *        p_instance,
                          nrfx_rtc_config_t const * p_config,

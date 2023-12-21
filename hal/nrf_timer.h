@@ -100,6 +100,8 @@ extern "C" {
 
 /** @brief Base frequency value 320 MHz for TIMER. */
 #define NRF_TIMER_BASE_FREQUENCY_320MHZ (NRFX_MHZ_TO_HZ(320UL))
+/** @brief Base frequency value 128 MHz for TIMER. */
+#define NRF_TIMER_BASE_FREQUENCY_128MHZ (NRFX_MHZ_TO_HZ(128UL))
 /** @brief Base frequency value 64 MHz for TIMER. */
 #define NRF_TIMER_BASE_FREQUENCY_64MHZ  (NRFX_MHZ_TO_HZ(64UL))
 /** @brief Base frequency value 32 MHz for TIMER. */
@@ -107,8 +109,10 @@ extern "C" {
 /** @brief Base frequency value 16 MHz for TIMER. */
 #define NRF_TIMER_BASE_FREQUENCY_16MHZ  (NRFX_MHZ_TO_HZ(16UL))
 
-#if !defined(NRF_TIMER_PRESCALER_MAX)
+#if defined(TIMER_PRESCALER_PRESCALER_Max) || defined(__NRFX_DOXYGEN__)
 /** @brief Maximum value of PRESCALER register. */
+#define NRF_TIMER_PRESCALER_MAX TIMER_PRESCALER_PRESCALER_Max
+#else
 #define NRF_TIMER_PRESCALER_MAX 9
 #endif
 
@@ -152,48 +156,86 @@ extern "C" {
  * @retval true  Timer instance supports the specified bit width resolution value.
  * @retval false Timer instance does not support the specified bit width resolution value.
  */
-#if !defined(NRF_TIMER_IS_BIT_WIDTH_VALID)
-    #if (TIMER_COUNT == 3) || defined(__NRFX_DOXYGEN__)
-        #define NRF_TIMER_IS_BIT_WIDTH_VALID(p_reg, bit_width) (            \
-               ((p_reg == NRF_TIMER0) && TIMER_BIT_WIDTH_MAX(0, bit_width)) \
-            || ((p_reg == NRF_TIMER1) && TIMER_BIT_WIDTH_MAX(1, bit_width)) \
-            || ((p_reg == NRF_TIMER2) && TIMER_BIT_WIDTH_MAX(2, bit_width)))
-    #elif (TIMER_COUNT == 4)
-        #define NRF_TIMER_IS_BIT_WIDTH_VALID(p_reg, bit_width) (            \
-               ((p_reg == NRF_TIMER0) && TIMER_BIT_WIDTH_MAX(0, bit_width)) \
-            || ((p_reg == NRF_TIMER1) && TIMER_BIT_WIDTH_MAX(1, bit_width)) \
-            || ((p_reg == NRF_TIMER2) && TIMER_BIT_WIDTH_MAX(2, bit_width)) \
-            || ((p_reg == NRF_TIMER3) && TIMER_BIT_WIDTH_MAX(3, bit_width)))
-    #elif (TIMER_COUNT == 5)
-        #define NRF_TIMER_IS_BIT_WIDTH_VALID(p_reg, bit_width) (            \
-               ((p_reg == NRF_TIMER0) && TIMER_BIT_WIDTH_MAX(0, bit_width)) \
-            || ((p_reg == NRF_TIMER1) && TIMER_BIT_WIDTH_MAX(1, bit_width)) \
-            || ((p_reg == NRF_TIMER2) && TIMER_BIT_WIDTH_MAX(2, bit_width)) \
-            || ((p_reg == NRF_TIMER3) && TIMER_BIT_WIDTH_MAX(3, bit_width)) \
-            || ((p_reg == NRF_TIMER4) && TIMER_BIT_WIDTH_MAX(4, bit_width)))
-    #else
-        #error "Not supported timer count"
-    #endif
-#endif
+#define NRF_TIMER_IS_BIT_WIDTH_VALID(p_reg, bit_width)                                  \
+    (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER0),                                    \
+        (((p_reg == NRF_TIMER0)   && TIMER_BIT_WIDTH_MAX(0, bit_width))),   (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER1),                                    \
+        (((p_reg == NRF_TIMER1)   && TIMER_BIT_WIDTH_MAX(1, bit_width))),   (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER2),                                    \
+        (((p_reg == NRF_TIMER2)   && TIMER_BIT_WIDTH_MAX(2, bit_width))),   (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER3),                                    \
+        (((p_reg == NRF_TIMER3)   && TIMER_BIT_WIDTH_MAX(3, bit_width))),   (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER4),                                    \
+        (((p_reg == NRF_TIMER4)   && TIMER_BIT_WIDTH_MAX(4, bit_width))),   (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER00),                                   \
+        (((p_reg == NRF_TIMER00)  && TIMER_BIT_WIDTH_MAX(00, bit_width))),  (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER10),                                   \
+        (((p_reg == NRF_TIMER10)  && TIMER_BIT_WIDTH_MAX(10, bit_width))),  (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER20),                                   \
+        (((p_reg == NRF_TIMER20)  && TIMER_BIT_WIDTH_MAX(20, bit_width))),  (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER21),                                   \
+        (((p_reg == NRF_TIMER21)  && TIMER_BIT_WIDTH_MAX(21, bit_width))),  (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER22),                                   \
+        (((p_reg == NRF_TIMER22)  && TIMER_BIT_WIDTH_MAX(22, bit_width))),  (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER23),                                   \
+        (((p_reg == NRF_TIMER23)  && TIMER_BIT_WIDTH_MAX(23, bit_width))),  (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER24),                                   \
+        (((p_reg == NRF_TIMER24)  && TIMER_BIT_WIDTH_MAX(24, bit_width))),  (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER020),                                  \
+        (((p_reg == NRF_TIMER020) && TIMER_BIT_WIDTH_MAX(020, bit_width))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER021),                                  \
+        (((p_reg == NRF_TIMER021) && TIMER_BIT_WIDTH_MAX(021, bit_width))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER022),                                  \
+        (((p_reg == NRF_TIMER022) && TIMER_BIT_WIDTH_MAX(022, bit_width))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER120),                                  \
+        (((p_reg == NRF_TIMER120) && TIMER_BIT_WIDTH_MAX(120, bit_width))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER130),                                  \
+        (((p_reg == NRF_TIMER130) && TIMER_BIT_WIDTH_MAX(130, bit_width))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER131),                                  \
+        (((p_reg == NRF_TIMER131) && TIMER_BIT_WIDTH_MAX(131, bit_width))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER132),                                  \
+        (((p_reg == NRF_TIMER132) && TIMER_BIT_WIDTH_MAX(132, bit_width))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER133),                                  \
+        (((p_reg == NRF_TIMER133) && TIMER_BIT_WIDTH_MAX(133, bit_width))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER134),                                  \
+        (((p_reg == NRF_TIMER134) && TIMER_BIT_WIDTH_MAX(134, bit_width))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER135),                                  \
+        (((p_reg == NRF_TIMER135) && TIMER_BIT_WIDTH_MAX(135, bit_width))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER136),                                  \
+        (((p_reg == NRF_TIMER136) && TIMER_BIT_WIDTH_MAX(136, bit_width))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER137),                                  \
+        (((p_reg == NRF_TIMER137) && TIMER_BIT_WIDTH_MAX(137, bit_width))), (false)))
 
 #if !defined(NRF_TIMER_IS_320MHZ_TIMER)
 /** @brief Macro for checking whether the base frequency for the specified timer is 320 MHz. */
-#define NRF_TIMER_IS_320MHZ_TIMER(p_reg) false
+#define NRF_TIMER_IS_320MHZ_TIMER(p_reg) \
+    (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER120), (p_reg == NRF_TIMER120), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER121), (p_reg == NRF_TIMER121), (false)))
+#endif
+
+#if !defined(NRF_TIMER_IS_128MHZ_TIMER)
+/** @brief Macro for checking whether the base frequency for the specified timer is 128 MHz. */
+#define NRF_TIMER_IS_128MHZ_TIMER(p_reg)                                                     \
+    (NRFX_COND_CODE_1(NRFX_IS_ENABLED(NRF_CPU_FREQ_IS_128MHZ),                               \
+        (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER00), (p_reg == NRF_TIMER00), (false))), \
+        (false)))
 #endif
 
 #if !defined(NRF_TIMER_IS_64MHZ_TIMER)
 /** @brief Macro for checking whether the base frequency for the specified timer is 64 MHz. */
-#define NRF_TIMER_IS_64MHZ_TIMER(p_reg) false
+#define NRF_TIMER_IS_64MHZ_TIMER(p_reg)                                                      \
+    (NRFX_COND_CODE_1(NRFX_IS_ENABLED(NRF_CPU_FREQ_IS_64MHZ),                                \
+        (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER00), (p_reg == NRF_TIMER00), (false))), \
+        (false)))
 #endif
 
 #if !defined(NRF_TIMER_IS_32MHZ_TIMER)
 /** @brief Macro for checking whether the base frequency for the specified timer is 32 MHz. */
-#define NRF_TIMER_IS_32MHZ_TIMER(p_reg) false
-#endif
-
-#if !defined(NRF_TIMER_IS_16MHZ_TIMER)
-/** @brief Macro for checking whether the base frequency for the specified timer is 16 MHz. */
-#define NRF_TIMER_IS_16MHZ_TIMER(p_reg) true
+#define NRF_TIMER_IS_32MHZ_TIMER(p_reg) \
+    (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER020), (p_reg == NRF_TIMER020), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER021), (p_reg == NRF_TIMER021), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER022), (p_reg == NRF_TIMER022), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER10),  (p_reg == NRF_TIMER10),  (false)))
 #endif
 
 /**
@@ -203,9 +245,10 @@ extern "C" {
  */
 #define NRF_TIMER_BASE_FREQUENCY_GET(p_reg)                                  \
     ((NRF_TIMER_IS_320MHZ_TIMER(p_reg)) ? (NRF_TIMER_BASE_FREQUENCY_320MHZ): \
-    ((NRF_TIMER_IS_64MHZ_TIMER(p_reg))  ? (NRF_TIMER_BASE_FREQUENCY_64MHZ): \
-    ((NRF_TIMER_IS_16MHZ_TIMER(p_reg))  ? (NRF_TIMER_BASE_FREQUENCY_16MHZ) : \
-    (NRF_TIMER_BASE_FREQUENCY_32MHZ))))
+    ((NRF_TIMER_IS_128MHZ_TIMER(p_reg)) ? (NRF_TIMER_BASE_FREQUENCY_128MHZ): \
+    ((NRF_TIMER_IS_64MHZ_TIMER(p_reg))  ? (NRF_TIMER_BASE_FREQUENCY_64MHZ) : \
+    ((NRF_TIMER_IS_32MHZ_TIMER(p_reg))  ? (NRF_TIMER_BASE_FREQUENCY_32MHZ) : \
+    (NRF_TIMER_BASE_FREQUENCY_16MHZ)))))
 
 /**
  * @brief Macro for computing prescaler value for given base frequency and desired frequency.
@@ -530,6 +573,7 @@ NRF_STATIC_INLINE nrf_timer_short_mask_t nrf_timer_short_compare_stop_get(uint8_
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be enabled.
+ *                  Use @ref nrf_timer_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_timer_int_enable(NRF_TIMER_Type * p_reg,
                                             uint32_t         mask);
@@ -539,6 +583,7 @@ NRF_STATIC_INLINE void nrf_timer_int_enable(NRF_TIMER_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be disabled.
+ *                  Use @ref nrf_timer_int_mask_t values for bit masking.
  */
 NRF_STATIC_INLINE void nrf_timer_int_disable(NRF_TIMER_Type * p_reg,
                                              uint32_t         mask);
@@ -548,6 +593,7 @@ NRF_STATIC_INLINE void nrf_timer_int_disable(NRF_TIMER_Type * p_reg,
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
+ *                  Use @ref nrf_timer_int_mask_t values for bit masking.
  *
  * @return Mask of enabled interrupts.
  */
@@ -740,7 +786,7 @@ NRF_STATIC_INLINE void nrf_timer_task_trigger(NRF_TIMER_Type * p_reg,
 NRF_STATIC_INLINE uint32_t nrf_timer_task_address_get(NRF_TIMER_Type const * p_reg,
                                                       nrf_timer_task_t       task)
 {
-    return (uint32_t)((uint8_t *)p_reg + (uint32_t)task);
+    return nrf_task_event_address_get(p_reg, task);
 }
 
 NRF_STATIC_INLINE void nrf_timer_event_clear(NRF_TIMER_Type *  p_reg,
@@ -753,13 +799,13 @@ NRF_STATIC_INLINE void nrf_timer_event_clear(NRF_TIMER_Type *  p_reg,
 NRF_STATIC_INLINE bool nrf_timer_event_check(NRF_TIMER_Type const * p_reg,
                                              nrf_timer_event_t      event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_event_check(p_reg, event);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_timer_event_address_get(NRF_TIMER_Type const * p_reg,
                                                        nrf_timer_event_t      event)
 {
-    return (uint32_t)((uint8_t *)p_reg + (uint32_t)event);
+    return nrf_task_event_address_get(p_reg, event);
 }
 
 NRF_STATIC_INLINE void nrf_timer_shorts_enable(NRF_TIMER_Type * p_reg,

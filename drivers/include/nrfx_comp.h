@@ -69,18 +69,18 @@ typedef void (* nrfx_comp_event_handler_t)(nrf_comp_event_t event);
 /** @brief COMP shortcut masks. */
 typedef enum
 {
-    NRFX_COMP_SHORT_STOP_AFTER_CROSS_EVT = COMP_SHORTS_CROSS_STOP_Msk, /*!< Shortcut between the CROSS event and the STOP task. */
-    NRFX_COMP_SHORT_STOP_AFTER_UP_EVT    = COMP_SHORTS_UP_STOP_Msk,    /*!< Shortcut between the UP event and the STOP task. */
-    NRFX_COMP_SHORT_STOP_AFTER_DOWN_EVT  = COMP_SHORTS_DOWN_STOP_Msk   /*!< Shortcut between the DOWN event and the STOP task. */
+    NRFX_COMP_SHORT_STOP_AFTER_CROSS_EVT = NRF_COMP_SHORT_STOP_CROSS_MASK, ///< Shortcut between the CROSS event and the STOP task.
+    NRFX_COMP_SHORT_STOP_AFTER_UP_EVT    = NRF_COMP_SHORT_STOP_UP_MASK,    ///< Shortcut between the UP event and the STOP task.
+    NRFX_COMP_SHORT_STOP_AFTER_DOWN_EVT  = NRF_COMP_SHORT_STOP_DOWN_MASK   ///< Shortcut between the DOWN event and the STOP task.
 } nrfx_comp_short_mask_t;
 
 /** @brief COMP events masks. */
 typedef enum
 {
-    NRFX_COMP_EVT_EN_CROSS_MASK = COMP_INTENSET_CROSS_Msk, /*!< CROSS event (generated after VIN+ == VIN-). */
-    NRFX_COMP_EVT_EN_UP_MASK    = COMP_INTENSET_UP_Msk,    /*!< UP event (generated when VIN+ crosses VIN- while increasing). */
-    NRFX_COMP_EVT_EN_DOWN_MASK  = COMP_INTENSET_DOWN_Msk,  /*!< DOWN event (generated when VIN+ crosses VIN- while decreasing). */
-    NRFX_COMP_EVT_EN_READY_MASK = COMP_INTENSET_READY_Msk  /*!< READY event (generated when the module is ready). */
+    NRFX_COMP_EVT_EN_CROSS_MASK = NRF_COMP_INT_CROSS_MASK, ///< CROSS event (generated after VIN+ == VIN-).
+    NRFX_COMP_EVT_EN_UP_MASK    = NRF_COMP_INT_UP_MASK,    ///< UP event (generated when VIN+ crosses VIN- while increasing).
+    NRFX_COMP_EVT_EN_DOWN_MASK  = NRF_COMP_INT_DOWN_MASK,  ///< DOWN event (generated when VIN+ crosses VIN- while decreasing).
+    NRFX_COMP_EVT_EN_READY_MASK = NRF_COMP_INT_READY_MASK  ///< READY event (generated when the module is ready).
 } nrfx_comp_evt_en_mask_t;
 
 /** @brief COMP configuration. */
@@ -145,7 +145,7 @@ typedef struct
  * @retval NRFX_SUCCESS             Initialization was successful.
  * @retval NRFX_ERROR_ALREADY       The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
- *                                  @deprecated Use @ref NRFX_ERROR_ALREADY instead.
+ *                                  Deprecated - use @ref NRFX_ERROR_ALREADY instead.
  * @retval NRFX_ERROR_BUSY          The LPCOMP peripheral is already in use.
  *                                  This is possible only if @ref nrfx_prs module
  *                                  is enabled.
