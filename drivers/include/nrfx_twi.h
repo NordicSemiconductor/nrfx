@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -61,8 +61,8 @@ typedef struct
 /** @brief Macro for creating a TWI master driver instance. */
 #define NRFX_TWI_INSTANCE(id)                               \
 {                                                           \
-    .p_twi        = NRFX_CONCAT_2(NRF_TWI, id),             \
-    .drv_inst_idx = NRFX_CONCAT_3(NRFX_TWI, id, _INST_IDX), \
+    .p_twi        = NRFX_CONCAT(NRF_, TWI, id),             \
+    .drv_inst_idx = NRFX_CONCAT(NRFX_TWI, id, _INST_IDX),   \
 }
 
 #ifndef __NRFX_DOXYGEN__

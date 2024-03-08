@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -143,6 +143,20 @@ extern "C" {
 /** @brief Bitmask of CCADD register for the SYSCOUNTER. */
 #define NRF_GRTC_SYSCOUNTER_CCADD_MASK GRTC_CC_CCADD_VALUE_Msk
 
+#if defined(GRTC_SYSCOUNTERL_VALUE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Bitmask of the lower part of the SYSCOUNTER value. */
+#define NRF_GRTC_SYSCOUNTERL_VALUE_MASK GRTC_SYSCOUNTERL_VALUE_Msk
+#else
+#define NRF_GRTC_SYSCOUNTERL_VALUE_MASK GRTC_SYSCOUNTER_SYSCOUNTERL_VALUE_Msk
+#endif
+
+#if defined(GRTC_SYSCOUNTERH_VALUE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Bitmask of the higher part of the SYSCOUNTER value. */
+#define NRF_GRTC_SYSCOUNTERH_VALUE_MASK GRTC_SYSCOUNTERH_VALUE_Msk
+#else
+#define NRF_GRTC_SYSCOUNTERH_VALUE_MASK GRTC_SYSCOUNTER_SYSCOUNTERH_VALUE_Msk
+#endif
+
 /** @brief Bitmask of the higher 32-bits of capture/compare register for the RTCOUNTER. */
 #define NRF_GRTC_RTCOUNTER_CCH_MASK GRTC_RTCOMPAREH_VALUE_Msk
 
@@ -151,6 +165,13 @@ extern "C" {
 #define NRF_GRTC_SYSCOUNTERH_OVERFLOW_MASK GRTC_SYSCOUNTERH_OVERFLOW_Msk
 #else
 #define NRF_GRTC_SYSCOUNTERH_OVERFLOW_MASK GRTC_SYSCOUNTER_SYSCOUNTERH_OVERFLOW_Msk
+#endif
+
+#if defined(GRTC_SYSCOUNTERH_BUSY_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Bitmask of the BUSY bit. */
+#define NRF_GRTC_SYSCOUNTERH_BUSY_MASK GRTC_SYSCOUNTERH_BUSY_Msk
+#else
+#define NRF_GRTC_SYSCOUNTERH_BUSY_MASK GRTC_SYSCOUNTER_SYSCOUNTERH_BUSY_Msk
 #endif
 
 /** @brief Maximum value of TIMEOUT register content. */
@@ -166,7 +187,15 @@ extern "C" {
 #define NRF_GRTC_CHANNEL_INT_MASK(ch) ((uint32_t)(NRF_GRTC_INT_COMPARE0_MASK) << (ch))
 
 /** @brief Main channel that can be used only by the owner of GRTC. */
+#if defined(LUMOS_XXAA)
+#if defined(ISA_RISCV)
+#define NRF_GRTC_MAIN_CC_CHANNEL 4
+#else
 #define NRF_GRTC_MAIN_CC_CHANNEL 0
+#endif
+#else
+#define NRF_GRTC_MAIN_CC_CHANNEL 1
+#endif
 
 /** @brief Bitmask of interrupt enable. */
 #define NRF_GRTC_INTEN_MASK NRFX_BIT_MASK(GRTC_CC_MaxCount)
@@ -208,6 +237,8 @@ typedef enum
 #if NRF_GRTC_SYSCOUNTER_CC_COUNT > 16
     NRF_GRTC_TASK_CAPTURE_16 = offsetof(NRF_GRTC_Type, TASKS_CAPTURE[16]), /**< Capture the counter value on channel 16. */
     NRF_GRTC_TASK_CAPTURE_17 = offsetof(NRF_GRTC_Type, TASKS_CAPTURE[17]), /**< Capture the counter value on channel 17. */
+#endif
+#if NRF_GRTC_SYSCOUNTER_CC_COUNT > 18
     NRF_GRTC_TASK_CAPTURE_18 = offsetof(NRF_GRTC_Type, TASKS_CAPTURE[18]), /**< Capture the counter value on channel 18. */
     NRF_GRTC_TASK_CAPTURE_19 = offsetof(NRF_GRTC_Type, TASKS_CAPTURE[19]), /**< Capture the counter value on channel 19. */
     NRF_GRTC_TASK_CAPTURE_20 = offsetof(NRF_GRTC_Type, TASKS_CAPTURE[20]), /**< Capture the counter value on channel 20. */
@@ -241,6 +272,8 @@ typedef enum
 #if NRF_GRTC_SYSCOUNTER_CC_COUNT > 16
     NRF_GRTC_EVENT_COMPARE_16      = offsetof(NRF_GRTC_Type, EVENTS_COMPARE[16]),     /**< Compare 16 event. */
     NRF_GRTC_EVENT_COMPARE_17      = offsetof(NRF_GRTC_Type, EVENTS_COMPARE[17]),     /**< Compare 17 event. */
+#endif
+#if NRF_GRTC_SYSCOUNTER_CC_COUNT > 18
     NRF_GRTC_EVENT_COMPARE_18      = offsetof(NRF_GRTC_Type, EVENTS_COMPARE[18]),     /**< Compare 18 event. */
     NRF_GRTC_EVENT_COMPARE_19      = offsetof(NRF_GRTC_Type, EVENTS_COMPARE[19]),     /**< Compare 19 event. */
     NRF_GRTC_EVENT_COMPARE_20      = offsetof(NRF_GRTC_Type, EVENTS_COMPARE[20]),     /**< Compare 20 event. */
@@ -297,6 +330,8 @@ typedef enum
 #if NRF_GRTC_SYSCOUNTER_CC_COUNT > 16
     NRF_GRTC_INT_COMPARE16_MASK       = GRTC_INTENSET0_COMPARE16_Msk,       /**< GRTC interrupt from compare event on channel 16. */
     NRF_GRTC_INT_COMPARE17_MASK       = GRTC_INTENSET0_COMPARE17_Msk,       /**< GRTC interrupt from compare event on channel 17. */
+#endif
+#if NRF_GRTC_SYSCOUNTER_CC_COUNT > 18
     NRF_GRTC_INT_COMPARE18_MASK       = GRTC_INTENSET0_COMPARE18_Msk,       /**< GRTC interrupt from compare event on channel 18. */
     NRF_GRTC_INT_COMPARE19_MASK       = GRTC_INTENSET0_COMPARE19_Msk,       /**< GRTC interrupt from compare event on channel 19. */
     NRF_GRTC_INT_COMPARE20_MASK       = GRTC_INTENSET0_COMPARE20_Msk,       /**< GRTC interrupt from compare event on channel 20. */
@@ -629,6 +664,15 @@ NRF_STATIC_INLINE uint32_t nrf_grtc_sys_counter_low_get(NRF_GRTC_Type const * p_
 NRF_STATIC_INLINE uint32_t nrf_grtc_sys_counter_high_get(NRF_GRTC_Type const * p_reg);
 
 /**
+ * @brief Function for returning the 64-bit SYSCOUNTER value.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return SYSCOUNTER value.
+ */
+NRF_STATIC_INLINE uint64_t nrf_grtc_sys_counter_get(NRF_GRTC_Type const * p_reg);
+
+/**
  * @brief Function for checking whether the lower 32-bits of SYSCOUNTER overflowed after
  *        last execution of @ref nrf_grtc_sys_counter_low_get.
  *
@@ -761,6 +805,16 @@ NRF_STATIC_INLINE void nrf_grtc_sys_counter_set(NRF_GRTC_Type * p_reg, bool enab
  * @param[in] enable True if the automatic mode is to be enabled, false otherwise.
  */
 NRF_STATIC_INLINE void nrf_grtc_sys_counter_auto_mode_set(NRF_GRTC_Type * p_reg, bool enable);
+
+/**
+ * @brief Function for checking whether the SYSCOUNTER has automatic mode enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return True  Automatic mode is enabled.
+ * @return False Automatic mode is disabled.
+ */
+NRF_STATIC_INLINE bool nrf_grtc_sys_counter_auto_mode_check(NRF_GRTC_Type * p_reg);
 #endif // NRF_GRTC_HAS_EXTENDED
 
 /**
@@ -1163,6 +1217,15 @@ NRF_STATIC_INLINE uint32_t nrf_grtc_sys_counter_high_get(NRF_GRTC_Type const * p
 #endif // NRF_GRTC_HAS_SYSCOUNTER_ARRAY
 }
 
+NRF_STATIC_INLINE uint64_t nrf_grtc_sys_counter_get(NRF_GRTC_Type const * p_reg)
+{
+#if NRF_GRTC_HAS_SYSCOUNTER_ARRAY
+    return *((const uint64_t volatile *)&p_reg->GRTC_SYSCOUNTER.SYSCOUNTERL);
+#else
+    return *((const uint64_t volatile *)&p_reg->SYSCOUNTERL);
+#endif // NRF_GRTC_HAS_SYSCOUNTER_ARRAY
+}
+
 NRF_STATIC_INLINE bool nrf_grtc_sys_counter_overflow_check(NRF_GRTC_Type const * p_reg)
 {
 #if NRF_GRTC_HAS_SYSCOUNTER_ARRAY
@@ -1261,6 +1324,11 @@ NRF_STATIC_INLINE void nrf_grtc_sys_counter_auto_mode_set(NRF_GRTC_Type * p_reg,
     p_reg->MODE = ((p_reg->MODE & ~GRTC_MODE_AUTOEN_Msk) |
                   ((enable ? GRTC_MODE_AUTOEN_CpuActive :
                   GRTC_MODE_AUTOEN_Default) << GRTC_MODE_AUTOEN_Pos));
+}
+
+NRF_STATIC_INLINE bool nrf_grtc_sys_counter_auto_mode_check(NRF_GRTC_Type * p_reg)
+{
+    return (p_reg->MODE & GRTC_MODE_AUTOEN_Msk) == GRTC_MODE_AUTOEN_CpuActive;
 }
 
 #endif // NRF_GRTC_HAS_EXTENDED

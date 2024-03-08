@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -127,7 +127,7 @@ typedef union
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 1
 #define RAM_UNIFORM_SECTIONS_TOTAL     1
-#elif defined(NRF54L15_ENGA_XXAA)
+#elif defined(NRF54L15_XXAA) || defined(NRF54L15_ENGA_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (16UL * 1024UL)
 #define RAM_NON_UNIFORM_SECTIONS                                      \
     NRFX_LISTIFY(4, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -54,6 +54,12 @@ extern "C" {
 /** @brief Maximum preload timeout value for waiting for a next write. */
 #define NRF_RRAMC_READYNEXTTIMEOUT_MAX RRAMC_READYNEXTTIMEOUT_VALUE_Max
 
+/** @brief RRAMC region permissions bitmask. */
+#define NRF_RRAMC_REGION_CONFIG_PERM_MASK (RRAMC_REGION_CONFIG_READ_Msk    | \
+                                           RRAMC_REGION_CONFIG_WRITE_Msk   | \
+                                           RRAMC_REGION_CONFIG_EXECUTE_Msk | \
+                                           RRAMC_REGION_CONFIG_SECURE_Msk)
+
 /** @brief RRAMC tasks. */
 typedef enum
 {
@@ -103,6 +109,29 @@ typedef struct
     uint16_t access_timeout; ///< Access timeout used for going into standby power mode or remain active on wake up, expressed in clock cycles.
     bool     abort_on_pof;   ///< True if the current RRAM write operation is to be aborted on the power failure, false otherwise.
 } nrf_rramc_power_t;
+
+/**
+ * @brief RRAMC region permissions mask.
+ *
+ * @note When bit is set, the selected action is allowed.
+ */
+typedef enum
+{
+    NRF_RRAMC_REGION_PERM_READ_MASK    = RRAMC_REGION_CONFIG_READ_Msk,    ///< Read access.
+    NRF_RRAMC_REGION_PERM_WRITE_MASK   = RRAMC_REGION_CONFIG_WRITE_Msk,   ///< Write access.
+    NRF_RRAMC_REGION_PERM_EXECUTE_MASK = RRAMC_REGION_CONFIG_EXECUTE_Msk, ///< Software execute.
+    NRF_RRAMC_REGION_PERM_SECURE_MASK  = RRAMC_REGION_CONFIG_SECURE_Msk,  ///< Secure-only access.
+} nrf_rramc_region_perm_mask_t;
+
+/** @brief RRAMC region configuration. */
+typedef struct
+{
+    uint32_t address;     ///< Start address of the region.
+    uint32_t permissions; ///< Permissions created using @ref nrf_rramc_region_perm_mask_t.
+    bool     writeonce;   ///< True if writes to the region are to be applied only when the current data is 0xFFFFFFFF.
+    bool     lock;        ///< True if memory belonging to given region is to be read-only.
+    uint16_t size_kb;     ///< Region size in kBs. */
+} nrf_rramc_region_config_t;
 
 /**
  * @brief Function for activating the specified RRAMC task.
@@ -366,6 +395,28 @@ NRF_STATIC_INLINE bool nrf_rramc_erase_all_check(NRF_RRAMC_Type const * p_reg);
  */
 NRF_STATIC_INLINE void nrf_rramc_erase_all_set(NRF_RRAMC_Type * p_reg);
 
+/**
+ * @brief Function for setting the configuration of the specified RRAMC region.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] region   Region number.
+ * @param[in] p_config Pointer to the configuration structure.
+ */
+NRF_STATIC_INLINE void nrf_rramc_region_config_set(NRF_RRAMC_Type *                  p_reg,
+                                                   uint8_t                           region,
+                                                   nrf_rramc_region_config_t const * p_config);
+
+/**
+ * @brief Function for getting the configuration of the specified RRAMC region.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] region   Region number.
+ * @param[in] p_config Pointer to the structure to be filled with RRAMC region settings.
+ */
+NRF_STATIC_INLINE void nrf_rramc_region_config_get(NRF_RRAMC_Type const *      p_reg,
+                                                   uint8_t                     region,
+                                                   nrf_rramc_region_config_t * p_config);
+
 #ifndef NRF_DECLARE_ONLY
 
 NRF_STATIC_INLINE void nrf_rramc_task_trigger(NRF_RRAMC_Type * p_reg, nrf_rramc_task_t task)
@@ -540,6 +591,38 @@ NRF_STATIC_INLINE bool nrf_rramc_erase_all_check(NRF_RRAMC_Type const * p_reg)
 NRF_STATIC_INLINE void nrf_rramc_erase_all_set(NRF_RRAMC_Type * p_reg)
 {
     p_reg->ERASE.ERASEALL = RRAMC_ERASE_ERASEALL_ERASE_Erase;
+}
+
+NRF_STATIC_INLINE void nrf_rramc_region_config_set(NRF_RRAMC_Type *                  p_reg,
+                                                   uint8_t                           region,
+                                                   nrf_rramc_region_config_t const * p_config)
+{
+    p_reg->REGION[region].ADDRESS = p_config->address;
+    p_reg->REGION[region].CONFIG = (((p_config->permissions
+                                      & NRF_RRAMC_REGION_CONFIG_PERM_MASK)) |
+                                    ((p_config->writeonce ? RRAMC_REGION_CONFIG_WRITEONCE_Enabled :
+                                                            RRAMC_REGION_CONFIG_WRITEONCE_Disabled)
+                                     << RRAMC_REGION_CONFIG_WRITEONCE_Pos) |
+                                    ((p_config->lock ? RRAMC_REGION_CONFIG_LOCK_Enabled:
+                                                       RRAMC_REGION_CONFIG_LOCK_Disabled)
+                                     << RRAMC_REGION_CONFIG_LOCK_Pos) |
+                                    ((p_config->size_kb << RRAMC_REGION_CONFIG_SIZE_Pos)
+                                     & RRAMC_REGION_CONFIG_SIZE_Msk));
+}
+
+NRF_STATIC_INLINE void nrf_rramc_region_config_get(NRF_RRAMC_Type const *      p_reg,
+                                                   uint8_t                     region,
+                                                   nrf_rramc_region_config_t * p_config)
+{
+    uint32_t reg = p_reg->REGION[region].CONFIG;
+    p_config->permissions = reg & NRF_RRAMC_REGION_CONFIG_PERM_MASK;
+    p_config->writeonce   = ((reg & RRAMC_REGION_CONFIG_WRITEONCE_Msk)
+                             >> RRAMC_REGION_CONFIG_WRITE_Pos) ==
+                            RRAMC_REGION_CONFIG_WRITEONCE_Enabled;
+    p_config->lock        = ((reg & RRAMC_REGION_CONFIG_LOCK_Msk)
+                             >> RRAMC_REGION_CONFIG_LOCK_Pos) == RRAMC_REGION_CONFIG_LOCK_Enabled;
+    p_config->size_kb     = (reg & RRAMC_REGION_CONFIG_SIZE_Msk) >> RRAMC_REGION_CONFIG_SIZE_Pos;
+    p_config->address     = p_reg->REGION[region].ADDRESS;
 }
 
 #endif // NRF_DECLARE_ONLY

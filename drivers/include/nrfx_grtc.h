@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2021 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -57,14 +57,16 @@ extern "C" {
  */
 typedef void (*nrfx_grtc_cc_handler_t)(int32_t id, uint64_t cc_value, void * p_context);
 
-#if NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
+#if NRFY_GRTC_HAS_EXTENDED || defined(__NRFX_DOXYGEN__)
 /**
  * @brief GRTC driver instance SYSCOUNTER valid handler type.
  *
  * @param[in] p_context User context.
  */
 typedef void (*nrfx_grtc_syscountervalid_handler_t)(void * p_context);
+#endif //NRFY_GRTC_HAS_EXTENDED || defined(__NRFX_DOXYGEN__)
 
+#if NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
 /**
  * @brief GRTC driver instance RTCOMPARESYNC handler type.
  *
@@ -98,6 +100,29 @@ typedef enum
     NRFX_GRTC_ACTION_STOP  = NRF_GRTC_TASK_STOP,  /**< Stop the GRTC. */
     NRFX_GRTC_ACTION_CLEAR = NRF_GRTC_TASK_CLEAR, /**< Clear the GRTC. */
 } nrfx_grtc_action_t;
+
+/** @brief GRTC SYSCOUNTER sleep configuration structure. */
+typedef struct
+{
+    uint32_t timeout;   /**< Delay in LFCLK cycles after the condition allowing SYSCOUNTER to go to sleep is met. */
+    uint32_t waketime;  /**< Number of LFCLK cycles to wakeup the SYSCOUNTER before the wake-up event occured. */
+    bool     auto_mode; /**< Enable automatic mode, which keeps the SYSCOUNTER active when any of the local CPUs is active. */
+} nrfx_grtc_sleep_config_t;
+
+/**
+ * @brief GRTC sleep default configuration.
+ *
+ * This configuration sets up GRTC with the following options:
+ * - sleep timeout: 5 LFCLK cycles
+ * - wake time: 4 LFCLK cycles
+ * - automatic mode: true
+ */
+#define NRFX_GRTC_SLEEP_DEFAULT_CONFIG \
+{                                      \
+    .timeout   = 5,                    \
+    .waketime  = 4,                    \
+    .auto_mode = true                  \
+}
 #endif // NRFY_GRTC_HAS_EXTENDED || defined(__NRFX_DOXYGEN__)
 
 /** @brief GRTC compare event relative references. */
@@ -106,6 +131,28 @@ typedef enum
     NRFX_GRTC_CC_RELATIVE_SYSCOUNTER = NRF_GRTC_CC_ADD_REFERENCE_SYSCOUNTER, /**< The SYSCOUNTER content will be used as the reference. */
     NRFX_GRTC_CC_RELATIVE_COMPARE    = NRF_GRTC_CC_ADD_REFERENCE_CC,         /**< The corresponding compare register content will be used as the reference. */
 } nrfx_grtc_cc_relative_reference_t;
+
+#if NRFY_GRTC_HAS_EXTENDED || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for configuring the SYSCOUNTER sleep feature.
+ *
+ * @param[in] p_sleep_cfg Pointer to the configuration sleep structure.
+ *
+ * @retval NRFX_SUCCESS             The procedure was successful.
+ * @retval NRFX_ERROR_NOT_SUPPORTED The sleep feature is not supported.
+*/
+nrfx_err_t nrfx_grtc_sleep_configure(nrfx_grtc_sleep_config_t const * p_sleep_cfg);
+
+/**
+ * @brief Function for getting the SYSCOUNTER sleep configuration.
+ *
+ * @param[out] p_sleep_cfg Pointer to the structure to be filled with sleep configuration.
+ *
+ * @retval NRFX_SUCCESS             The procedure was successful.
+ * @retval NRFX_ERROR_NOT_SUPPORTED The sleep feature is not supported.
+*/
+nrfx_err_t nrfx_grtc_sleep_configuration_get(nrfx_grtc_sleep_config_t * p_sleep_cfg);
+#endif // NRFY_GRTC_HAS_EXTENDED || defined(__NRFX_DOXYGEN__)
 
 /**
  * @brief Function for allocating the GRTC capture/compare channel.
@@ -213,9 +260,11 @@ void nrfx_grtc_rtcounter_cc_int_enable(bool sync);
 
 /** @brief Function for disabling the RTCOUNTER compare interrupt. */
 void nrfx_grtc_rtcounter_cc_int_disable(void);
+#endif // NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
 
+#if NRFY_GRTC_HAS_EXTENDED || defined(__NRFX_DOXYGEN__)
 /**
- * @brief Function for enabling the SYSCOUNTER valid interrupt.
+ * @brief Function for enabling the SYSCOUNTERVALID interrupt.
  *
  * @param[in] handler   Handler provided by the user. May be NULL.
  * @param[in] p_context User context.
@@ -225,9 +274,7 @@ void nrfx_grtc_syscountervalid_int_enable(nrfx_grtc_syscountervalid_handler_t ha
 
 /** @brief Function for disabling the SYSCOUNTERVALID interrupt. */
 void nrfx_grtc_syscountervalid_int_disable(void);
-#endif // NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
 
-#if NRFY_GRTC_HAS_EXTENDED || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for starting the 1 MHz SYSCOUNTER.
  *
@@ -460,6 +507,16 @@ NRFX_STATIC_INLINE uint32_t nrfx_grtc_event_compare_address_get(uint8_t channel)
  */
 NRFX_STATIC_INLINE bool nrfx_grtc_sys_counter_cc_enable_check(uint8_t channel);
 
+/**
+ * @brief Function for retrieving the state of the compare GRTC event.
+ *
+ * @param[in] channel Compare channel of the corresponding event to be checked.
+ *
+ * @retval true  The event has been generated.
+ * @retval false The event has not been generated.
+ */
+NRFX_STATIC_INLINE bool nrfx_grtc_syscounter_compare_event_check(uint8_t channel);
+
 #if NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for reading the GRTC RTCOUNTER value.
@@ -467,7 +524,16 @@ NRFX_STATIC_INLINE bool nrfx_grtc_sys_counter_cc_enable_check(uint8_t channel);
  * @return RTCOUNTER (32 kHz) value.
  */
 NRFX_STATIC_INLINE uint64_t nrfx_grtc_rtcounter_get(void);
-#endif
+#endif // NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
+
+#if NRFY_GRTC_HAS_CLKSEL || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for setting the clock source for the GRTC low-frequency clock.
+ *
+ * @param[in] clk_src Selected clock source.
+ */
+NRFX_STATIC_INLINE void nrfx_grtc_clock_source_set(nrf_grtc_clksel_t clk_src);
+#endif // NRFY_GRTC_HAS_CLKSEL
 
 #ifndef NRFX_DECLARE_ONLY
 
@@ -497,6 +563,11 @@ NRFX_STATIC_INLINE bool nrfx_grtc_sys_counter_cc_enable_check(uint8_t channel)
     return nrfy_grtc_sys_counter_cc_enable_check(NRF_GRTC, channel);
 }
 
+NRFX_STATIC_INLINE bool nrfx_grtc_syscounter_compare_event_check(uint8_t channel)
+{
+    return nrfy_grtc_sys_counter_compare_event_check(NRF_GRTC, channel);
+}
+
 #if NRF_GRTC_HAS_RTCOUNTER
 NRFX_STATIC_INLINE uint64_t nrfx_grtc_rtcounter_get(void)
 {
@@ -504,6 +575,12 @@ NRFX_STATIC_INLINE uint64_t nrfx_grtc_rtcounter_get(void)
 }
 #endif // NRF_GRTC_HAS_RTCOUNTER
 
+#if NRFY_GRTC_HAS_CLKSEL
+NRFX_STATIC_INLINE void nrfx_grtc_clock_source_set(nrf_grtc_clksel_t  clk_src)
+{
+    nrfy_grtc_clksel_set(NRF_GRTC, clk_src);
+}
+#endif // NRFY_GRTC_HAS_CLKSEL
 #endif // NRFX_DECLARE_ONLY
 
 /** @} */

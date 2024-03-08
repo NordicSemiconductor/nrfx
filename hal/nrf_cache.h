@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -105,8 +105,15 @@ extern "C" {
 #define NRF_CACHE_HAS_STATUS 0
 #endif
 
-#if defined(CACHE_MODE_RAMSIZE_Msk) || defined(__NRFX_DOXYGEN__)
+#if defined(CACHE_MODE_MODE_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether splitting the dedicated RAM between cache and generic memory is supported. */
+#define NRF_CACHE_HAS_RAM_MODE 1
+#else
+#define NRF_CACHE_HAS_RAM_MODE 0
+#endif
+
+#if defined(CACHE_MODE_RAMSIZE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether configuration of split of dedicated RAM between cache and generic memory is supported. */
 #define NRF_CACHE_HAS_RAMSIZE 1
 #else
 #define NRF_CACHE_HAS_RAMSIZE 0
@@ -336,6 +343,7 @@ NRF_STATIC_INLINE uint32_t nrf_cache_data_hit_counter_get(NRF_CACHE_Type const *
 NRF_STATIC_INLINE uint32_t nrf_cache_data_miss_counter_get(NRF_CACHE_Type const * p_reg,
                                                            nrf_cache_region_t     region);
 
+#if NRF_CACHE_HAS_RAM_MODE
 /**
  * @brief Function for setting the cache RAM mode.
  *
@@ -359,6 +367,7 @@ NRF_STATIC_INLINE void nrf_cache_ram_mode_set(NRF_CACHE_Type * p_reg, bool enabl
  * @return True if the cache RAM mode is enabled, false otherwise.
  */
 NRF_STATIC_INLINE bool nrf_cache_ram_mode_check(NRF_CACHE_Type const * p_reg);
+#endif
 
 #if NRF_CACHE_HAS_RAMSIZE
 /**
@@ -664,6 +673,7 @@ NRF_STATIC_INLINE uint32_t nrf_cache_data_miss_counter_get(NRF_CACHE_Type const 
 #endif
 }
 
+#if NRF_CACHE_HAS_RAM_MODE
 NRF_STATIC_INLINE void nrf_cache_ram_mode_set(NRF_CACHE_Type * p_reg, bool enable)
 {
     p_reg->MODE = ((p_reg->MODE & ~CACHE_MODE_MODE_Msk) |
@@ -675,6 +685,7 @@ NRF_STATIC_INLINE bool nrf_cache_ram_mode_check(NRF_CACHE_Type const * p_reg)
 {
     return (p_reg->MODE & CACHE_MODE_MODE_Msk) == (CACHE_MODE_MODE_Ram << CACHE_MODE_MODE_Pos);
 }
+#endif
 
 #if NRF_CACHE_HAS_RAMSIZE
 NRF_STATIC_INLINE void nrf_cache_ramsize_set(NRF_CACHE_Type * p_reg, nrf_cache_ramsize_t ramsize)

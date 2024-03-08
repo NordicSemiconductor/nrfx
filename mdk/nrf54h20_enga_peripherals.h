@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -38,6 +38,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifdef __cplusplus
     extern "C" {
 #endif
+
+
 
 #if defined(NRF_APPLICATION)
   #include "nrf54h20_enga_application_peripherals.h"

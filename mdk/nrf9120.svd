@@ -8,7 +8,7 @@
   <version>1</version>
   <description>nrf9120 reference description for radio MCU with ARM 32-bit Cortex-M33 Microcontroller</description>
   <licenseText>
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 

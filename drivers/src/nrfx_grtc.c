@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2021 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -36,6 +36,7 @@
 #if NRFX_CHECK(NRFX_GRTC_ENABLED)
 
 #include <nrfx_grtc.h>
+#include <soc/nrfx_coredep.h>
 #include <helpers/nrfx_flag32_allocator.h>
 
 #define NRFX_LOG_MODULE GRTC
@@ -53,11 +54,11 @@
 #define GRTC_CHANNEL_MASK_TO_INT_MASK(ch_mask) ((ch_mask) << GRTC_INTEN0_COMPARE0_Pos)
 
 #if !defined(NRFX_GRTC_CONFIG_ALLOWED_CC_CHANNELS_MASK)
-#define NRFX_GRTC_CONFIG_ALLOWED_CC_CHANNELS_MASK 0
+#error "Channels mask for GRTC must be defined."
 #endif
 
 #if !defined(NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS)
-#define NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS 0
+#error "Number of channels for GRTC must be defined."
 #endif
 
 #if NRF_GRTC_HAS_RTCOUNTER
@@ -89,6 +90,9 @@
     #define MAIN_GRTC_CC_CHANNEL (m_cb.channel_data[0].channel)
 #endif // !(defined(NRF_SECURE) && NRFY_GRTC_HAS_EXTENDED)
 
+/* The maximum SYSCOUNTERVALID settling time equals 1x32k cycles + 20x16MHz cycles. */
+#define GRTC_SYSCOUNTERVALID_SETTLE_MAX_TIME_US 33
+
 typedef struct
 {
     nrfx_drv_state_t                    state;                                                 /**< Driver state. */
@@ -98,6 +102,8 @@ typedef struct
 #if NRF_GRTC_HAS_RTCOUNTER
     nrfx_grtc_rtcomparesync_handler_t   rtcomparesync_handler;                                 /**< User handler corresponding to rtcomparesync event.*/
     void *                              rtcomparesync_context;                                 /**< User context for rtcomparesync event handler. */
+#endif
+#if NRFY_GRTC_HAS_EXTENDED
     nrfx_grtc_syscountervalid_handler_t syscountervalid_handler;                               /**< User handler corresponding to syscountervalid event. */
     void *                              syscountervalid_context;                               /**< User context for syscountervalid event handler. */
 #endif
@@ -213,6 +219,59 @@ static void cc_channel_prepare(nrfx_grtc_channel_t * p_chan_data)
     channel_used_mark(p_chan_data->channel);
 }
 
+#if NRFY_GRTC_HAS_EXTENDED &&                           \
+    (NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_SLEEP_ALLOWED) || \
+    NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_AUTOSTART))
+static void sleep_configure(nrfx_grtc_sleep_config_t const * p_sleep_cfg)
+{
+    nrfy_grtc_sys_counter_auto_mode_set(NRF_GRTC, p_sleep_cfg->auto_mode);
+    nrfy_grtc_timeout_set(NRF_GRTC, p_sleep_cfg->timeout);
+    nrfy_grtc_waketime_set(NRF_GRTC, p_sleep_cfg->waketime);
+}
+
+#if NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_SLEEP_ALLOWED)
+static void sleep_configuration_get(nrfx_grtc_sleep_config_t * p_sleep_cfg)
+{
+    p_sleep_cfg->auto_mode = nrfy_grtc_sys_counter_auto_mode_check(NRF_GRTC);
+    p_sleep_cfg->timeout = nrfy_grtc_timeout_get(NRF_GRTC);
+    p_sleep_cfg->waketime = nrfy_grtc_waketime_get(NRF_GRTC);
+}
+#endif // NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_SLEEP_ALLOWED)
+#endif /* NRFY_GRTC_HAS_EXTENDED &&
+          (NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_SLEEP_ALLOWED) ||
+          NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_AUTOSTART)) */
+
+static inline bool is_active(void)
+{
+#if NRFY_GRTC_HAS_SYSCOUNTER_ARRAY
+    return nrfy_grtc_sys_counter_active_check(NRF_GRTC);
+#else
+    return nrfy_grtc_sys_counter_active_state_request_check(NRF_GRTC);
+#endif
+}
+
+static inline void grtc_wakeup(void)
+{
+#if defined(NRF_GRTC_HAS_SYSCOUNTER_ARRAY) && (NRF_GRTC_HAS_SYSCOUNTER_ARRAY == 1)
+    nrfy_grtc_sys_counter_active_set(NRF_GRTC, true);
+#else
+    nrfy_grtc_sys_counter_active_state_request_set(NRF_GRTC, true);
+    nrfx_coredep_delay_us(GRTC_SYSCOUNTERVALID_SETTLE_MAX_TIME_US);
+#endif
+}
+
+static inline void grtc_sleep(void)
+{
+    if (NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_SLEEP_ALLOWED))
+    {
+#if defined(NRF_GRTC_HAS_SYSCOUNTER_ARRAY) && (NRF_GRTC_HAS_SYSCOUNTER_ARRAY == 1)
+        nrfy_grtc_sys_counter_active_set(NRF_GRTC, false);
+#else
+        nrfy_grtc_sys_counter_active_state_request_set(NRF_GRTC, false);
+#endif
+    }
+}
+
 void nrfx_grtc_active_request_set(bool active)
 {
     NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
@@ -220,7 +279,14 @@ void nrfx_grtc_active_request_set(bool active)
 #if NRFY_GRTC_HAS_SYSCOUNTER_ARRAY
     nrfy_grtc_sys_counter_active_set(NRF_GRTC, active);
 #else
-    nrfy_grtc_sys_counter_active_state_request_set(NRF_GRTC, active);
+    if (active)
+    {
+        grtc_wakeup();
+    }
+    else
+    {
+        nrfy_grtc_sys_counter_active_state_request_set(NRF_GRTC, active);
+    }
 #endif
 }
 
@@ -241,25 +307,18 @@ nrfx_err_t nrfx_grtc_syscounter_get(uint64_t * p_counter)
         return err_code;
     }
 #endif // NRFY_GRTC_HAS_EXTENDED
-
-#if NRFY_GRTC_HAS_SYSCOUNTER_ARRAY
-    if (nrfy_grtc_sys_counter_active_check(NRF_GRTC))
+    NRFX_CRITICAL_SECTION_ENTER();
+    if (NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_SLEEP_ALLOWED) && !is_active())
     {
-        while (!nrfy_grtc_sys_conter_ready_check(NRF_GRTC))
-        {}
+        grtc_wakeup();
         *p_counter = nrfy_grtc_sys_counter_get(NRF_GRTC);
+        grtc_sleep();
     }
     else
     {
-        nrfy_grtc_sys_counter_active_set(NRF_GRTC, true);
-        while (!nrfy_grtc_sys_conter_ready_check(NRF_GRTC))
-        {}
         *p_counter = nrfy_grtc_sys_counter_get(NRF_GRTC);
-        nrfy_grtc_sys_counter_active_set(NRF_GRTC, false);
     }
-#else
-    *p_counter = nrfy_grtc_sys_counter_get(NRF_GRTC);
-#endif
+    NRFX_CRITICAL_SECTION_EXIT();
 
     return err_code;
 }
@@ -329,6 +388,17 @@ nrfx_err_t nrfx_grtc_init(uint8_t interrupt_priority)
                          NRFX_LOG_ERROR_STRING_GET(err_code));
         return err_code;
     }
+
+#if NRFY_GRTC_HAS_EXTENDED && NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_AUTOSTART)
+    nrfx_grtc_sleep_config_t sleep_cfg = NRFX_GRTC_SLEEP_DEFAULT_CONFIG;
+#if !NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_AUTOEN)
+    sleep_cfg.auto_mode = false;
+#endif
+
+    nrfy_grtc_sys_counter_set(NRF_GRTC, false);
+    sleep_configure(&sleep_cfg);
+#endif
+
     if ((num_of_channels_get(NRFX_GRTC_CONFIG_ALLOWED_CC_CHANNELS_MASK) !=
          NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS) || (NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS == 0))
     {
@@ -346,13 +416,42 @@ nrfx_err_t nrfx_grtc_init(uint8_t interrupt_priority)
 
     nrfy_grtc_int_init(NRF_GRTC, GRTC_ALL_INT_MASK, interrupt_priority, false);
 
-#if NRFY_GRTC_HAS_EXTENDED
+#if NRFY_GRTC_HAS_EXTENDED && NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_AUTOSTART)
     nrfy_grtc_prepare(NRF_GRTC, true);
 #endif
+
+    if (!NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_SLEEP_ALLOWED))
+    {
+        grtc_wakeup();
+    }
     m_cb.state = NRFX_DRV_STATE_INITIALIZED;
     NRFX_LOG_INFO("GRTC initialized.");
     return err_code;
 }
+
+#if NRFY_GRTC_HAS_EXTENDED
+nrfx_err_t nrfx_grtc_sleep_configure(nrfx_grtc_sleep_config_t const * p_sleep_cfg)
+{
+    NRFX_ASSERT(p_sleep_cfg);
+#if NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_SLEEP_ALLOWED)
+    sleep_configure(p_sleep_cfg);
+    return NRFX_SUCCESS;
+#else
+    return NRFX_ERROR_NOT_SUPPORTED;
+#endif
+}
+
+nrfx_err_t nrfx_grtc_sleep_configuration_get(nrfx_grtc_sleep_config_t * p_sleep_cfg)
+{
+    NRFX_ASSERT(p_sleep_cfg);
+#if NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_SLEEP_ALLOWED)
+    sleep_configuration_get(p_sleep_cfg);
+    return NRFX_SUCCESS;
+#else
+    return NRFX_ERROR_NOT_SUPPORTED;
+#endif
+}
+#endif // NRFY_GRTC_HAS_EXTENDED
 
 #if NRF_GRTC_HAS_RTCOUNTER
 nrfx_err_t nrfx_grtc_rtcounter_cc_disable(void)
@@ -432,7 +531,9 @@ nrfx_err_t nrfx_grtc_rtcounter_cc_absolute_set(nrfx_grtc_rtcounter_handler_data_
     p_chan_data->p_context = p_handler_data->p_context;
     p_chan_data->channel   = GRTC_RTCOUNTER_COMPARE_CHANNEL;
 
+    NRFX_CRITICAL_SECTION_ENTER();
     nrfy_grtc_rt_counter_cc_set(NRF_GRTC, val, sync);
+    NRFX_CRITICAL_SECTION_EXIT();
 
     nrf_grtc_event_t event = NRF_GRTC_EVENT_RTCOMPARE;
 
@@ -515,11 +616,6 @@ void nrfx_grtc_uninit(void)
     NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
 
     nrfy_grtc_int_disable(NRF_GRTC, GRTC_ALL_INT_MASK);
-#if NRFY_GRTC_HAS_EXTENDED
-    nrfy_grtc_sys_counter_set(NRF_GRTC, false);
-    nrf_grtc_task_trigger(NRF_GRTC, NRF_GRTC_TASK_STOP);
-    nrf_grtc_task_trigger(NRF_GRTC, NRF_GRTC_TASK_CLEAR);
-#endif // NRFY_GRTC_HAS_EXTENDED
 
     for (uint8_t chan = 0; ch_mask; chan++, ch_mask >>= 1)
     {
@@ -538,16 +634,18 @@ void nrfx_grtc_uninit(void)
     }
     nrfy_grtc_int_uninit(NRF_GRTC);
 
-#if NRFY_GRTC_HAS_EXTENDED
-    nrfy_grtc_sys_counter_auto_mode_set(NRF_GRTC, false);
-    nrfy_grtc_sys_counter_set(NRF_GRTC, false);
-#endif
-
 #if NRFY_GRTC_HAS_SYSCOUNTER_ARRAY
     nrfy_grtc_sys_counter_active_set(NRF_GRTC, false);
 #else
     nrfy_grtc_sys_counter_active_state_request_set(NRF_GRTC, false);
 #endif
+
+#if NRFY_GRTC_HAS_EXTENDED && NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_AUTOSTART)
+    nrfy_grtc_sys_counter_auto_mode_set(NRF_GRTC, false);
+    nrfy_grtc_sys_counter_set(NRF_GRTC, false);
+    nrf_grtc_task_trigger(NRF_GRTC, NRF_GRTC_TASK_STOP);
+    nrf_grtc_task_trigger(NRF_GRTC, NRF_GRTC_TASK_CLEAR);
+#endif // NRFY_GRTC_HAS_EXTENDED && NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_AUTOSTART)
 
     m_cb.state = NRFX_DRV_STATE_UNINITIALIZED;
     NRFX_LOG_INFO("GRTC uninitialized.");
@@ -576,7 +674,9 @@ void nrfx_grtc_rtcounter_cc_int_disable(void)
     nrfy_grtc_int_disable(NRF_GRTC, NRF_GRTC_INT_RTCOMPARE_MASK | NRF_GRTC_INT_RTCOMPARESYNC_MASK);
     NRFX_LOG_INFO("GRTC RTCOMPARE/RTCOMPARESYNC interrupt disabled.");
 }
+#endif // NRF_GRTC_HAS_RTCOUNTER
 
+#if NRFY_GRTC_HAS_EXTENDED
 void nrfx_grtc_syscountervalid_int_enable(nrfx_grtc_syscountervalid_handler_t handler,
                                           void *                              p_context)
 {
@@ -595,7 +695,7 @@ void nrfx_grtc_syscountervalid_int_disable(void)
     nrfy_grtc_int_disable(NRF_GRTC, NRF_GRTC_INT_SYSCOUNTERVALID_MASK);
     NRFX_LOG_INFO("GRTC SYSCOUNTERVALID interrupt disabled.");
 }
-#endif // NRF_GRTC_HAS_RTCOUNTER
+#endif // NRFY_GRTC_HAS_EXTENDED
 
 nrfx_err_t nrfx_grtc_syscounter_cc_disable(uint8_t channel)
 {
@@ -654,7 +754,9 @@ nrfx_err_t nrfx_grtc_syscounter_cc_absolute_set(nrfx_grtc_channel_t * p_chan_dat
     }
 
     cc_channel_prepare(p_chan_data);
+    NRFX_CRITICAL_SECTION_ENTER();
     nrfy_grtc_sys_counter_cc_set(NRF_GRTC, p_chan_data->channel, val);
+    NRFX_CRITICAL_SECTION_EXIT();
     nrfy_grtc_sys_counter_compare_event_int_clear_enable(NRF_GRTC,
                                                          p_chan_data->channel,
                                                          enable_irq);
@@ -682,9 +784,25 @@ nrfx_err_t nrfx_grtc_syscounter_cc_relative_set(nrfx_grtc_channel_t *           
     }
 
     cc_channel_prepare(p_chan_data);
-    nrfy_grtc_sys_counter_cc_add_set(NRF_GRTC, p_chan_data->channel,
-                                     val,
-                                     (nrf_grtc_cc_add_reference_t)reference);
+    NRFX_CRITICAL_SECTION_ENTER();
+    if (NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_SLEEP_ALLOWED) && !is_active())
+    {
+        grtc_wakeup();
+        nrfy_grtc_sys_counter_cc_add_set(NRF_GRTC,
+                                         p_chan_data->channel,
+                                         val,
+                                         (nrf_grtc_cc_add_reference_t)reference);
+        grtc_sleep();
+    }
+    else
+    {
+        nrfy_grtc_sys_counter_cc_add_set(NRF_GRTC,
+                                         p_chan_data->channel,
+                                         val,
+                                         (nrf_grtc_cc_add_reference_t)reference);
+    }
+    NRFX_CRITICAL_SECTION_EXIT();
+
     nrfy_grtc_sys_counter_compare_event_int_clear_enable(NRF_GRTC,
                                                          p_chan_data->channel,
                                                          enable_irq);
@@ -837,7 +955,8 @@ static void grtc_irq_handler(void)
             m_cb.rtcomparesync_handler(m_cb.rtcomparesync_context);
         }
     }
-
+#endif // NRF_GRTC_HAS_RTCOUNTER
+#if NRFY_GRTC_HAS_EXTENDED
     /* The SYSCOUNTERVALID bit is automatically cleared when GRTC goes into sleep state and set
      * when returning from this state. It can't be cleared inside the ISR procedure because we rely
      * on it during SYSCOUNTER value reading procedure. */
@@ -850,7 +969,7 @@ static void grtc_irq_handler(void)
             m_cb.syscountervalid_handler(m_cb.syscountervalid_context);
         }
     }
-#endif // NRF_GRTC_HAS_RTCOUNTER
+#endif // NRFY_GRTC_HAS_EXTENDED
 }
 
 void nrfx_grtc_irq_handler(void)

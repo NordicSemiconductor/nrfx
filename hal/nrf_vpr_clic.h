@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -56,7 +56,6 @@ typedef enum
     NRF_VPR_CLIC_MODE_M   = CLIC_CLIC_CLICCFG_NMBITS_ModeM, /**< All interrupts are M-mode only. */
 } nrf_vpr_clic_mode_t;
 
-#if defined(NRF54H20_ENGA_XXAA) || defined(__NRFX_DOXYGEN__)
 /** @brief Interrupt priority level. */
 typedef enum
 {
@@ -65,9 +64,12 @@ typedef enum
     NRF_VPR_CLIC_PRIORITY_LEVEL2 = CLIC_CLIC_CLICINT_PRIORITY_PRIOLEVEL2, /**< Priority level 2. */
     NRF_VPR_CLIC_PRIORITY_LEVEL3 = CLIC_CLIC_CLICINT_PRIORITY_PRIOLEVEL3, /**< Priority level 3. */
 } nrf_vpr_clic_priority_t;
-#else
-typedef uint8_t nrf_vpr_clic_priority_t;
-#endif
+
+/** @brief Macro for converting integer priority level to @ref nrf_vpr_clic_priority_t. */
+#define NRF_VPR_CLIC_INT_TO_PRIO(x) ((x) == 0 ? NRF_VPR_CLIC_PRIORITY_LEVEL0 : \
+                                    ((x) == 1 ? NRF_VPR_CLIC_PRIORITY_LEVEL1 : \
+                                    ((x) == 2 ? NRF_VPR_CLIC_PRIORITY_LEVEL2 : \
+                                    ((x) == 3 ? NRF_VPR_CLIC_PRIORITY_LEVEL3 : 0))))
 
 /** @brief VPR CLIC configuration structure. */
 typedef struct
@@ -281,9 +283,7 @@ NRF_STATIC_INLINE void nrf_vpr_clic_int_priority_set(NRF_CLIC_Type *         p_r
                                                      nrf_vpr_clic_priority_t priority)
 {
     NRFX_ASSERT(irq_num < NRF_VPR_CLIC_IRQ_COUNT);
-#if !defined(NRF54H20_ENGA_XXAA)
-    NRFX_ASSERT(priority < VPR_CLIC_PRIO_COUNT);
-#endif
+    NRFX_ASSERT(priority != 0);
 
     p_reg->CLIC.CLICINT[irq_num] = (p_reg->CLIC.CLICINT[irq_num] & ~CLIC_CLIC_CLICINT_PRIORITY_Msk)
                                    | (priority << CLIC_CLIC_CLICINT_PRIORITY_Pos);

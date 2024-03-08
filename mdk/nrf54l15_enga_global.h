@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -591,7 +591,7 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_RESET                               NRF_RESET_S
   #define NRF_OSCILLATORS                         NRF_OSCILLATORS_S
   #define NRF_REGULATORS                          NRF_REGULATORS_S
-#endif                                               /*!<  NRF_TRUSTZONE_NONSECURE                                             */
+#endif                                               /*!< NRF_TRUSTZONE_NONSECURE                                              */
 
 /* ========================================== End of section using anonymous unions ========================================== */
 

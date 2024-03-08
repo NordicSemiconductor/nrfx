@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -302,19 +302,46 @@
 #endif
 
 /**
+ * @brief NRFX_GRTC_CONFIG_SLEEP_ALLOWED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GRTC_CONFIG_SLEEP_ALLOWED
+#define NRFX_GRTC_CONFIG_SLEEP_ALLOWED 0
+#endif
+
+/**
+ * @brief NRFX_GRTC_CONFIG_AUTOEN
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GRTC_CONFIG_AUTOEN
+#define NRFX_GRTC_CONFIG_AUTOEN 0
+#endif
+
+/**
+ * @brief NRFX_GRTC_CONFIG_AUTOSTART
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GRTC_CONFIG_AUTOSTART
+#define NRFX_GRTC_CONFIG_AUTOSTART 1
+#endif
+
+/**
  * @brief NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS
  *
  * Integer value.
  */
 #ifndef NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS
-#define NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS 11
+#define NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS 8
 #endif
 
 /**
  * @brief NRFX_GRTC_CONFIG_ALLOWED_CC_CHANNELS_MASK
  */
 #ifndef NRFX_GRTC_CONFIG_ALLOWED_CC_CHANNELS_MASK
-#define NRFX_GRTC_CONFIG_ALLOWED_CC_CHANNELS_MASK 0x000007ff
+#define NRFX_GRTC_CONFIG_ALLOWED_CC_CHANNELS_MASK 0x00000f0f
 #endif
 
 /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -73,8 +73,8 @@ typedef struct
 /** @brief Macro for creating an RTC driver instance. */
 #define NRFX_RTC_INSTANCE(id)                                   \
 {                                                               \
-    .p_reg            = NRFX_CONCAT_3(NRF_, RTC, id),           \
-    .instance_id      = NRFX_CONCAT_3(NRFX_RTC, id, _INST_IDX), \
+    .p_reg            = NRFX_CONCAT(NRF_, RTC, id),             \
+    .instance_id      = NRFX_CONCAT(NRFX_RTC, id, _INST_IDX),   \
     .cc_channel_count = NRF_RTC_CC_CHANNEL_COUNT(id),           \
 }
 

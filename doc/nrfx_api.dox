@@ -119,6 +119,8 @@
 
 @defgroup nrf_tbm TBM
 
+@defgroup nrf_tdm TDM
+
 @defgroup nrf_temp TEMP
 
 @defgroup nrf_timer TIMER

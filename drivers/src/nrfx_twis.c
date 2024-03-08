@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -537,8 +537,13 @@ nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
             NRFX_ASSERT(p_config->scl_pin != p_config->sda_pin);
             nrfx_twis_config_pin(p_config->scl_pin, p_config->scl_pull);
             nrfx_twis_config_pin(p_config->sda_pin, p_config->sda_pull);
-#if NRF_GPIO_HAS_CLOCKPIN &&  defined(NRF_TWIS_CLOCKPIN_SCL_NEEDED)
+#if NRF_GPIO_HAS_CLOCKPIN
+#if defined(NRF_TWIS_CLOCKPIN_SCL_NEEDED)
             nrf_gpio_pin_clock_set(p_config->scl_pin, true);
+#endif
+#if defined(NRF_TWIS_CLOCKPIN_SDA_NEEDED)
+            nrf_gpio_pin_clock_set(p_config->sda_pin, true);
+#endif
 #endif
         }
         twis_configure(p_instance, p_config);

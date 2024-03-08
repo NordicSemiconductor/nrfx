@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -67,8 +67,8 @@ enum {
 /** @brief Macro for creating an instance of the SPIM driver. */
 #define NRFX_SPIM_INSTANCE(id)                               \
 {                                                            \
-    .p_reg        = NRFX_CONCAT_2(NRF_SPIM, id),             \
-    .drv_inst_idx = NRFX_CONCAT_3(NRFX_SPIM, id, _INST_IDX), \
+    .p_reg        = NRFX_CONCAT(NRF_, SPIM, id),             \
+    .drv_inst_idx = NRFX_CONCAT(NRFX_SPIM, id, _INST_IDX),   \
 }
 
 /** @brief Configuration structure of the SPIM driver instance. */
@@ -160,8 +160,9 @@ typedef struct
     .mode           = NRF_SPIM_MODE_0,                                                           \
     .bit_order      = NRF_SPIM_BIT_ORDER_MSB_FIRST,                                              \
     .miso_pull      = NRF_GPIO_PIN_NOPULL,                                                       \
-    NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED, (.use_hw_ss = false, .ss_duration = 0x02,), ()) \
-    NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED, (.rx_delay = 0x02,), ())                        \
+    NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED, (.use_hw_ss = false,), ())                      \
+    NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED, (.ss_duration = NRF_SPIM_CSNDUR_DEFAULT,), ())  \
+    NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED, (.rx_delay = NRF_SPIM_RXDELAY_DEFAULT,), ())    \
     NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED, (.dcx_pin = NRF_SPIM_PIN_NOT_CONNECTED,), ())   \
 }
 
@@ -275,8 +276,6 @@ typedef void (* nrfx_spim_evt_handler_t)(nrfx_spim_evt_t const * p_event,
  * @retval NRFX_ERROR_NOT_SUPPORTED Requested configuration is not supported
  *                                  by the SPIM instance.
  * @retval NRFX_ERROR_INVALID_PARAM Requested frequency is not available on the specified driver instance or pins.
- * @retval NRFX_ERROR_FORBIDDEN     Software-controlled Slave Select and hardware-controlled Slave Select
-                                    cannot be active at the same time.
  */
 nrfx_err_t nrfx_spim_init(nrfx_spim_t const *        p_instance,
                           nrfx_spim_config_t const * p_config,

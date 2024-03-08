@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -58,8 +58,8 @@ typedef struct
 /** @brief Macro for creating a PWM driver instance. */
 #define NRFX_PWM_INSTANCE(id)                              \
 {                                                          \
-    .p_reg       = NRFX_CONCAT_2(NRF_PWM, id),             \
-    .instance_id = NRFX_CONCAT_3(NRFX_PWM, id, _INST_IDX), \
+    .p_reg       = NRFX_CONCAT(NRF_, PWM, id),             \
+    .instance_id = NRFX_CONCAT(NRFX_PWM, id, _INST_IDX),   \
 }
 
 #ifndef __NRFX_DOXYGEN__

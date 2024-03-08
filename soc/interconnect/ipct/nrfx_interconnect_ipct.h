@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2022 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -36,7 +36,7 @@
 
 #include <nrfx.h>
 #include <hal/nrf_ipct.h>
-#include <interconnect/apb/nrfx_interconnect_apb.h>
+#include <soc/interconnect/apb/nrfx_interconnect_apb.h>
 
 #ifdef __cplusplus
 extern "C" {

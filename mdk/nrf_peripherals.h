@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -60,11 +60,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #elif defined (NRF5340_XXAA_NETWORK)
     #include "nrf5340_network_peripherals.h"
 
+#elif defined (NRF54H20_XXAA)
+    #include "nrf54h20_peripherals.h"
+
 #elif defined (NRF54H20_ENGA_XXAA)
-#include "nrf54h20_enga_peripherals.h"
+    #include "nrf54h20_enga_peripherals.h"
+
+#elif defined (NRF54L15_XXAA)
+    #include "nrf54l15_peripherals.h"
 
 #elif defined (NRF54L15_ENGA_XXAA)
-#include "nrf54l15_enga_peripherals.h"
+    #include "nrf54l15_enga_peripherals.h"
 
 #elif defined(NRF9120_XXAA)
     #include "nrf9120_peripherals.h"

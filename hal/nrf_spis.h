@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -40,8 +40,12 @@
 extern "C" {
 #endif
 
+#if defined(NRF54H20_XXAA)
+#define NRF_SPIS_CLOCKPIN_MISO_NEEDED 1
+#endif
+
 #if defined(HALTIUM_XXAA)
-#define NRF_SPIS_CLOCKPIN_SCK_NEEDED
+#define NRF_SPIS_CLOCKPIN_SCK_NEEDED 1
 #endif
 
 /**

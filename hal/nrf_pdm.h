@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -39,7 +39,7 @@
 extern "C" {
 #endif
 
-#ifndef NRF_PDM0
+#if !defined(NRF_PDM0) && defined(NRF_PDM)
 #define NRF_PDM0 NRF_PDM
 #endif
 

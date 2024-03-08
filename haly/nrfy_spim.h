@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2021 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -188,8 +188,6 @@ typedef struct
     nrf_spim_bit_order_t   bit_order;     ///< SPIM bit order.
 #if NRFY_SPIM_HAS_EXTENDED
     nrfy_spim_ext_config_t ext_config;    ///< Extended features configuration structure.
-                                          /**< Used only if @p ext_enable is true. */
-    bool                   ext_enable;    ///< True if extended features are to be configured, false otherwise.
 #endif
     bool                   skip_psel_cfg; ///< Skip pin selection configuration.
                                           /**< When set to true, the driver does not modify
@@ -215,6 +213,15 @@ NRFY_STATIC_INLINE void nrfy_spim_periph_configure(NRF_SPIM_Type *            p_
     {
         nrf_spim_pins_set(p_reg,
             p_config->pins.sck_pin, p_config->pins.mosi_pin, p_config->pins.miso_pin);
+#if NRFY_SPIM_HAS_DCX
+        nrf_spim_dcx_pin_set(p_reg, p_config->ext_config.pins.dcx_pin);
+#endif
+#if NRFY_SPIM_HAS_HW_CSN
+        nrf_spim_csn_configure(p_reg,
+                               p_config->ext_config.pins.csn_pin,
+                               p_config->ext_config.csn_pol,
+                               p_config->ext_config.csn_duration);
+#endif
     }
     nrf_spim_orc_set(p_reg, p_config->orc);
 #if NRFY_SPIM_HAS_FREQUENCY
@@ -223,32 +230,9 @@ NRFY_STATIC_INLINE void nrfy_spim_periph_configure(NRF_SPIM_Type *            p_
     nrf_spim_prescaler_set(p_reg, p_config->prescaler);
 #endif
     nrf_spim_configure(p_reg, p_config->mode, p_config->bit_order);
-#if NRFY_SPIM_HAS_EXTENDED
-    if (p_config->ext_enable)
-    {
-        if (!p_config->skip_psel_cfg)
-        {
-#if NRFY_SPIM_HAS_DCX
-            if (p_config->ext_config.pins.dcx_pin != NRF_SPIM_PIN_NOT_CONNECTED)
-            {
-                nrf_spim_dcx_pin_set(p_reg, p_config->ext_config.pins.dcx_pin);
-            }
-#endif
-#if NRFY_SPIM_HAS_HW_CSN
-            if (p_config->ext_config.pins.csn_pin != NRF_SPIM_PIN_NOT_CONNECTED)
-            {
-                nrf_spim_csn_configure(p_reg,
-                                       p_config->ext_config.pins.csn_pin,
-                                       p_config->ext_config.csn_pol,
-                                       p_config->ext_config.csn_duration);
-            }
-#endif
-        }
 #if NRFY_SPIM_HAS_RXDELAY
-        nrf_spim_iftiming_set(p_reg, p_config->ext_config.rx_delay);
+    nrf_spim_iftiming_set(p_reg, p_config->ext_config.rx_delay);
 #endif
-    }
-#endif // NRFY_SPIM_HAS_EXTENDED
     nrf_barrier_w();
 }
 

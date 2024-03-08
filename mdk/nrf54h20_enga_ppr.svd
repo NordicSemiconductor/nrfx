@@ -8,7 +8,7 @@
   <version>1</version>
   <description>LiliumSOC1 reference description for system-on-chip with many ARM 32-bit Cortex-M33 microcontrollers</description>
   <licenseText>
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -50486,6 +50486,34 @@ A write outputs the value to atbytesm.</description>
           </fields>
         </register>
         <register>
+          <name>EVENTS_RTCOMPARESYNC</name>
+          <description>Synchronize always-on LFCLK clock domain</description>
+          <addressOffset>0x164</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>EVENTS_RTCOMPARESYNC</name>
+              <description>Synchronize always-on LFCLK clock domain</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotGenerated</name>
+                  <description>Event not generated</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Generated</name>
+                  <description>Event generated</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>EVENTS_SYSCOUNTERVALID</name>
           <description>The SYSCOUNTER is in active state and value is valid</description>
           <addressOffset>0x168</addressOffset>
@@ -50839,6 +50867,24 @@ A write outputs the value to atbytesm.</description>
               <description>Enable or disable interrupt for event COMPARE[15]</description>
               <lsb>15</lsb>
               <msb>15</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Enable or disable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -51290,6 +51336,33 @@ A write outputs the value to atbytesm.</description>
               <description>Write '1' to enable interrupt for event COMPARE[15]</description>
               <lsb>15</lsb>
               <msb>15</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Write '1' to enable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -51782,6 +51855,33 @@ A write outputs the value to atbytesm.</description>
               </enumeratedValues>
             </field>
             <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Write '1' to disable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>SYSCOUNTERVALID</name>
               <description>Write '1' to disable interrupt for event SYSCOUNTERVALID</description>
               <lsb>26</lsb>
@@ -52123,6 +52223,25 @@ A write outputs the value to atbytesm.</description>
               </enumeratedValues>
             </field>
             <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Read pending status of interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>SYSCOUNTERVALID</name>
               <description>Read pending status of interrupt for event SYSCOUNTERVALID</description>
               <lsb>26</lsb>
@@ -52426,6 +52545,24 @@ A write outputs the value to atbytesm.</description>
               <description>Enable or disable interrupt for event COMPARE[15]</description>
               <lsb>15</lsb>
               <msb>15</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Enable or disable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -52877,6 +53014,33 @@ A write outputs the value to atbytesm.</description>
               <description>Write '1' to enable interrupt for event COMPARE[15]</description>
               <lsb>15</lsb>
               <msb>15</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Write '1' to enable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -53369,6 +53533,33 @@ A write outputs the value to atbytesm.</description>
               </enumeratedValues>
             </field>
             <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Write '1' to disable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>SYSCOUNTERVALID</name>
               <description>Write '1' to disable interrupt for event SYSCOUNTERVALID</description>
               <lsb>26</lsb>
@@ -53695,6 +53886,25 @@ A write outputs the value to atbytesm.</description>
               <description>Read pending status of interrupt for event COMPARE[15]</description>
               <lsb>15</lsb>
               <msb>15</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Read pending status of interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>

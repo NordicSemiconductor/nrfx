@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -138,6 +138,95 @@ typedef enum {
   SERIAL7_IRQn                           = 470,      /*!< 470 SERIAL7                                                          */
 } IRQn_Type;
 
+/* ==================================================== Interrupt Aliases ==================================================== */
+#define SPIS120_IRQn                  SPIS120_UARTE120_IRQn
+#define SPIS120_IRQHandler            SPIS120_UARTE120_IRQHandler
+#define UARTE120_IRQn                 SPIS120_UARTE120_IRQn
+#define UARTE120_IRQHandler           SPIS120_UARTE120_IRQHandler
+#define COMP_IRQn                     COMP_LPCOMP_IRQn
+#define COMP_IRQHandler               COMP_LPCOMP_IRQHandler
+#define LPCOMP_IRQn                   COMP_LPCOMP_IRQn
+#define LPCOMP_IRQHandler             COMP_LPCOMP_IRQHandler
+#define SPIM130_IRQn                  SERIAL0_IRQn
+#define SPIM130_IRQHandler            SERIAL0_IRQHandler
+#define SPIS130_IRQn                  SERIAL0_IRQn
+#define SPIS130_IRQHandler            SERIAL0_IRQHandler
+#define TWIM130_IRQn                  SERIAL0_IRQn
+#define TWIM130_IRQHandler            SERIAL0_IRQHandler
+#define TWIS130_IRQn                  SERIAL0_IRQn
+#define TWIS130_IRQHandler            SERIAL0_IRQHandler
+#define UARTE130_IRQn                 SERIAL0_IRQn
+#define UARTE130_IRQHandler           SERIAL0_IRQHandler
+#define SPIM131_IRQn                  SERIAL1_IRQn
+#define SPIM131_IRQHandler            SERIAL1_IRQHandler
+#define SPIS131_IRQn                  SERIAL1_IRQn
+#define SPIS131_IRQHandler            SERIAL1_IRQHandler
+#define TWIM131_IRQn                  SERIAL1_IRQn
+#define TWIM131_IRQHandler            SERIAL1_IRQHandler
+#define TWIS131_IRQn                  SERIAL1_IRQn
+#define TWIS131_IRQHandler            SERIAL1_IRQHandler
+#define UARTE131_IRQn                 SERIAL1_IRQn
+#define UARTE131_IRQHandler           SERIAL1_IRQHandler
+#define SPIM132_IRQn                  SERIAL2_IRQn
+#define SPIM132_IRQHandler            SERIAL2_IRQHandler
+#define SPIS132_IRQn                  SERIAL2_IRQn
+#define SPIS132_IRQHandler            SERIAL2_IRQHandler
+#define TWIM132_IRQn                  SERIAL2_IRQn
+#define TWIM132_IRQHandler            SERIAL2_IRQHandler
+#define TWIS132_IRQn                  SERIAL2_IRQn
+#define TWIS132_IRQHandler            SERIAL2_IRQHandler
+#define UARTE132_IRQn                 SERIAL2_IRQn
+#define UARTE132_IRQHandler           SERIAL2_IRQHandler
+#define SPIM133_IRQn                  SERIAL3_IRQn
+#define SPIM133_IRQHandler            SERIAL3_IRQHandler
+#define SPIS133_IRQn                  SERIAL3_IRQn
+#define SPIS133_IRQHandler            SERIAL3_IRQHandler
+#define TWIM133_IRQn                  SERIAL3_IRQn
+#define TWIM133_IRQHandler            SERIAL3_IRQHandler
+#define TWIS133_IRQn                  SERIAL3_IRQn
+#define TWIS133_IRQHandler            SERIAL3_IRQHandler
+#define UARTE133_IRQn                 SERIAL3_IRQn
+#define UARTE133_IRQHandler           SERIAL3_IRQHandler
+#define SPIM134_IRQn                  SERIAL4_IRQn
+#define SPIM134_IRQHandler            SERIAL4_IRQHandler
+#define SPIS134_IRQn                  SERIAL4_IRQn
+#define SPIS134_IRQHandler            SERIAL4_IRQHandler
+#define TWIM134_IRQn                  SERIAL4_IRQn
+#define TWIM134_IRQHandler            SERIAL4_IRQHandler
+#define TWIS134_IRQn                  SERIAL4_IRQn
+#define TWIS134_IRQHandler            SERIAL4_IRQHandler
+#define UARTE134_IRQn                 SERIAL4_IRQn
+#define UARTE134_IRQHandler           SERIAL4_IRQHandler
+#define SPIM135_IRQn                  SERIAL5_IRQn
+#define SPIM135_IRQHandler            SERIAL5_IRQHandler
+#define SPIS135_IRQn                  SERIAL5_IRQn
+#define SPIS135_IRQHandler            SERIAL5_IRQHandler
+#define TWIM135_IRQn                  SERIAL5_IRQn
+#define TWIM135_IRQHandler            SERIAL5_IRQHandler
+#define TWIS135_IRQn                  SERIAL5_IRQn
+#define TWIS135_IRQHandler            SERIAL5_IRQHandler
+#define UARTE135_IRQn                 SERIAL5_IRQn
+#define UARTE135_IRQHandler           SERIAL5_IRQHandler
+#define SPIM136_IRQn                  SERIAL6_IRQn
+#define SPIM136_IRQHandler            SERIAL6_IRQHandler
+#define SPIS136_IRQn                  SERIAL6_IRQn
+#define SPIS136_IRQHandler            SERIAL6_IRQHandler
+#define TWIM136_IRQn                  SERIAL6_IRQn
+#define TWIM136_IRQHandler            SERIAL6_IRQHandler
+#define TWIS136_IRQn                  SERIAL6_IRQn
+#define TWIS136_IRQHandler            SERIAL6_IRQHandler
+#define UARTE136_IRQn                 SERIAL6_IRQn
+#define UARTE136_IRQHandler           SERIAL6_IRQHandler
+#define SPIM137_IRQn                  SERIAL7_IRQn
+#define SPIM137_IRQHandler            SERIAL7_IRQHandler
+#define SPIS137_IRQn                  SERIAL7_IRQn
+#define SPIS137_IRQHandler            SERIAL7_IRQHandler
+#define TWIM137_IRQn                  SERIAL7_IRQn
+#define TWIM137_IRQHandler            SERIAL7_IRQHandler
+#define TWIS137_IRQn                  SERIAL7_IRQn
+#define TWIS137_IRQHandler            SERIAL7_IRQHandler
+#define UARTE137_IRQn                 SERIAL7_IRQn
+#define UARTE137_IRQHandler           SERIAL7_IRQHandler
 
 /* =========================================================================================================================== */
 /* ================                           Processor and Core Peripheral Section                           ================ */
@@ -208,14 +297,18 @@ typedef enum {
   #define NRF_FLPR_VPRCLIC                        NRF_FLPR_VPRCLIC_NS
 #else                                                /*!< Remap NRF_X_S instances to NRF_X symbol for ease of use.             */
   #define NRF_FLPR_VPRCLIC                        NRF_FLPR_VPRCLIC_S
-#endif                                               /*!<  NRF_TRUSTZONE_NONSECURE                                             */
+#endif                                               /*!< NRF_TRUSTZONE_NONSECURE                                              */
 
 /* =========================================================================================================================== */
 /* ================                                  Local Domain Remapping                                  ================ */
 /* =========================================================================================================================== */
 
-#ifdef NRF_FLPR                                      /*!< Remap NRF_DOMAIN instances to NRF_X symbol for ease of use.          */
-  #define NRF_VPRCLIC                             NRF_FLPR_VPRCLIC
+#ifdef NRF_FLPR                                      /*!< Remap NRF_DOMAIN_X instances to NRF_X symbol for ease of use.        */
+  #ifdef NRF_TRUSTZONE_NONSECURE                     /*!< Remap only nonsecure instances.                                      */
+    #define NRF_VPRCLIC                           NRF_FLPR_VPRCLIC
+  #else                                              /*!< Remap all instances.                                                 */
+    #define NRF_VPRCLIC                           NRF_FLPR_VPRCLIC
+  #endif                                             /*!< NRF_TRUSTZONE_NONSECURE                                              */
 #endif                                               /*!< NRF_FLPR                                                             */
 
 /* ========================================== End of section using anonymous unions ========================================== */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -115,8 +115,8 @@ enum {
 /** @brief Macro for creating an instance of the WDT driver. */
 #define NRFX_WDT_INSTANCE(id)                               \
 {                                                           \
-    .p_reg        = NRF_WDT##id,                            \
-    .drv_inst_idx = NRFX_CONCAT_3(NRFX_WDT, id, _INST_IDX), \
+    .p_reg        = NRFX_CONCAT(NRF_, WDT, id),             \
+    .drv_inst_idx = NRFX_CONCAT(NRFX_WDT, id, _INST_IDX),   \
 }
 
 /** @brief Structure for WDT initialization. */

@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -37,8 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* MDK version */
 #define MDK_MAJOR_VERSION   8 
-#define MDK_MINOR_VERSION   60 
-#define MDK_MICRO_VERSION   3 
+#define MDK_MINOR_VERSION   63 
+#define MDK_MICRO_VERSION   2 
 
    
 /* Define coprocessor domains */
@@ -113,7 +113,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 /* Define NRF54H_SERIES for common use in nRF54H series devices */
-#if defined (NRF54H20_ENGA_XXAA)
+#if defined (NRF54H20_ENGA_XXAA) || defined (NRF54H20_XXAA)
     #ifndef NRF54H_SERIES
         #define NRF54H_SERIES
     #endif
@@ -123,7 +123,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 /* Define NRF54L_SERIES for common use in nRF54L series devices */
-#if defined (NRF54L15_ENGA_XXAA)
+#if defined (NRF54L15_ENGA_XXAA) || defined (NRF54L15_XXAA)
     #ifndef NRF54L_SERIES
         #define NRF54L_SERIES
     #endif
@@ -205,10 +205,22 @@ POSSIBILITY OF SUCH DAMAGE.
 #elif defined (NRF54H20_ENGA_XXAA)
     #include "nrf54h20_enga.h"
     #include "nrf54h20_enga_interim.h"
+    #include "nrf54h20_enga_name_change.h"
+
+#elif defined (NRF54H20_XXAA)
+    #include "nrf54h20.h"
+    #include "nrf54h20_interim.h"
+    #include "nrf54h20_name_change.h"
 
 #elif defined (NRF54L15_ENGA_XXAA)
     #include "nrf54l15_enga.h"
     #include "nrf54l15_enga_interim.h"
+    #include "nrf54l15_enga_name_change.h"
+
+#elif defined (NRF54L15_XXAA)
+    #include "nrf54l15.h"
+    #include "nrf54l15_interim.h"
+    #include "nrf54l15_name_change.h"
 
 #elif defined (NRF9160_XXAA)
     #include "nrf9160.h"

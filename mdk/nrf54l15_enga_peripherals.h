@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -38,6 +38,20 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifdef __cplusplus
     extern "C" {
 #endif
+
+/* Domain IDs */
+ typedef enum {
+    NRF_DOMAIN_APPLICATION = 1,
+    NRF_DOMAIN_FLPR = 2,
+    NRF_DOMAIN_GLOBAL = 3,
+} NRF_DOMAINID_Type;
+
+/* Processor IDs */
+ typedef enum {
+    NRF_PROCESSOR_APPLICATION = 1,
+    NRF_PROCESSOR_FLPR = 2,
+    NRF_PROCESSOR_GLOBAL = 3,
+} NRF_PROCESSORID_Type;
 
 #if defined(NRF_APPLICATION)
   #include "nrf54l15_enga_application_peripherals.h"

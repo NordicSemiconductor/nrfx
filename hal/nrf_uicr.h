@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -47,11 +47,60 @@ extern "C" {
  * @brief   Hardware access layer for managing the User Information Configuration Registers (UICR) peripheral.
  */
 
-#if defined(UICR_GPIO_OWN_PIN0_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether GPIO port owner feature is present. */
+#if defined(UICR_MEM_CONFIG_READ_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether memory configuration through UICR is present. */
+#define NRF_UICR_HAS_MEM_CONFIG 1
+#else
+#define NRF_UICR_HAS_MEM_CONFIG 0
+#endif
+
+#if defined(UICR_PERIPH_CONFIG_PROCESSOR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether peripheral configuration through UICR is present. */
+#define NRF_UICR_HAS_PERIPH_CONFIG 1
+#else
+#define NRF_UICR_HAS_PERIPH_CONFIG 0
+#endif
+
+#if defined(UICR_GRTC_CC_OWN_CC0_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether feature configuration through UICR is present. */
+#define NRF_UICR_HAS_FEATURE_CONFIG 1
+#else
+#define NRF_UICR_HAS_FEATURE_CONFIG 0
+#endif
+
+#if defined(UICR_MAILBOX_CONFIG_SIZE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether mailbox configuration through UICR is present. */
+#define NRF_UICR_HAS_MAILBOX 1
+#else
+#define NRF_UICR_HAS_MAILBOX 0
+#endif
+
+#if defined(UICR_INITSVTOR_INITSVTOR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether VTOR configuration through UICR is present. */
+#define NRF_UICR_HAS_VTOR 1
+#else
+#define NRF_UICR_HAS_VTOR 0
+#endif
+
+#if defined(UICR_PTREXTUICR_PTREXTUICR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether extended UICR is present. */
+#define NRF_UICR_HAS_PTREXT 1
+#else
+#define NRF_UICR_HAS_PTREXT 0
+#endif
+
+#if defined(UICREXTENDED_GPIO_OWN_PIN0_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether GPIO feature is present. */
 #define NRF_UICR_HAS_FEATURE_GPIO 1
 #else
 #define NRF_UICR_HAS_FEATURE_GPIO 0
+#endif
+
+#if defined(UICR_BOOTCONF_READ_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether immutable boot region configuration is present. */
+#define NRF_UICR_HAS_BOOTCONF 1
+#else
+#define NRF_UICR_HAS_BOOTCONF 0
 #endif
 
 #if (defined(UICR_DPPI_GLOBAL_CH_LINK_DIR_CH0_Msk) & \
@@ -73,7 +122,7 @@ extern "C" {
 
 #if NRF_UICR_HAS_FEATURE_GPIO
 /** @brief Number of GPIOs. */
-#define NRF_UICR_GPIO_COUNT        UICR_GPIO_MaxCount
+#define NRF_UICR_GPIO_COUNT        UICREXTENDED_GPIO_MaxCount
 #endif
 
 /** @brief Number of GPIOTE channels. */
@@ -94,8 +143,13 @@ extern "C" {
 /** @brief Number of MAILBOXes. */
 #define NRF_UICR_MAILBOX_COUNT     UICR_MAILBOX_MaxCount
 
+/** @brief Immutable boot region permissions bitmask. */
+#define NRF_UICR_BOOTCONF_PERM_MASK (UICR_BOOTCONF_READ_Msk | UICR_BOOTCONF_WRITE_Msk | \
+                                     UICR_BOOTCONF_EXECUTE_Msk | UICR_BOOTCONF_SECURE_Msk)
+
+#if NRF_UICR_HAS_MEM_CONFIG
 /**
- * @brief Permissions mask.
+ * @brief Memory permissions mask.
  *
  * @note When bit is set, the selected action is not allowed.
  */
@@ -107,6 +161,16 @@ typedef enum
     NRF_UICR_MEM_CONFIG_PERM_NONSECURE_MASK = UICR_MEM_CONFIG_SECURE_Msk,  /**< Non-secure access. */
 } nrf_uicr_mem_config_perm_mask_t;
 
+/** @brief Memory configuration. */
+typedef struct
+{
+    uint32_t    permissions; /**< Permissions. */
+    nrf_owner_t owner;       /**< Owner identifier. */
+    uint32_t    address;     /**< Block start address. */
+} nrf_uicr_mem_config_t;
+#endif
+
+#if NRF_UICR_HAS_FEATURE_CONFIG
 /**
  * @brief Feature index mask.
  *
@@ -148,23 +212,6 @@ typedef enum
     NRF_UICR_FEATURE_INDEX_31_MASK = UICR_GPIOTE_CH_OWN_CH31_Msk, /**< Feature index 31. */
 } nrf_uicr_feature_index_mask_t;
 
-/** @brief Memory configuration. */
-typedef struct
-{
-    uint32_t    permissions; /**< Permissions. */
-    nrf_owner_t owner;       /**< Owner identifier. */
-    uint32_t    address;     /**< Block start address. */
-} nrf_uicr_mem_config_t;
-
-/** @brief Peripheral configuration. */
-typedef struct
-{
-    bool            secattr;   /**< Security mapping. */
-    bool            dmasec;    /**< Security attribution for the DMA transfer. */
-    nrf_processor_t processor; /**< Processor ID. */
-    uint32_t        address;   /**< Peripheral address. */
-} nrf_uicr_periph_config_t;
-
 /** @brief UICR features. */
 typedef enum
 {
@@ -201,7 +248,20 @@ typedef struct
     uint32_t source; /**< Source side. */
     uint32_t sink;   /**< Sink side. */
 } nrf_uicr_dppi_link_t;
+#endif // NRF_UICR_HAS_FEATURE_CONFIG
 
+#if NRF_UICR_HAS_PERIPH_CONFIG
+/** @brief Peripheral configuration. */
+typedef struct
+{
+    bool            secattr;   /**< Security mapping. */
+    bool            dmasec;    /**< Security attribution for the DMA transfer. */
+    nrf_processor_t processor; /**< Processor ID. */
+    uint32_t        address;   /**< Peripheral address. */
+} nrf_uicr_periph_config_t;
+#endif
+
+#if NRF_UICR_HAS_MAILBOX
 /** @brief MAILBOX configuration. */
 typedef struct
 {
@@ -209,7 +269,33 @@ typedef struct
     nrf_owner_t owner;  /**< Remote owner identification. */
     bool        secure; /**< Secure permission. */
 } nrf_uicr_mailbox_config_t;
+#endif
 
+#if NRF_UICR_HAS_BOOTCONF
+/**
+ * @brief Immutable boot region permissions mask.
+ *
+ * @note When bit is set, the selected action is allowed.
+ */
+typedef enum
+{
+    NRF_UICR_BOOT_REGION_PERM_READ_MASK    = UICR_BOOTCONF_READ_Msk,    ///< Read access.
+    NRF_UICR_BOOT_REGION_PERM_WRITE_MASK   = UICR_BOOTCONF_WRITE_Msk,   ///< Write access.
+    NRF_UICR_BOOT_REGION_PERM_EXECUTE_MASK = UICR_BOOTCONF_EXECUTE_Msk, ///< Software execute.
+    NRF_UICR_BOOT_REGION_PERM_SECURE_MASK  = UICR_BOOTCONF_SECURE_Msk,  ///< Secure-only access.
+} nrf_uicr_boot_region_perm_mask_t;
+
+/** @brief Immutable boot region configuration. */
+typedef struct
+{
+    uint32_t permissions; ///< Permissions created using @ref nrf_uicr_boot_region_perm_mask_t.
+    bool     writeonce;   ///< True if writes to the boot region are to be applied only when the current data is 0xFFFFFFFF.
+    bool     lock;        ///< True if RRAMC configuration registers for the boot region are to be read-only.
+    uint16_t size_kb;     ///< Region size in kBs. */
+} nrf_uicr_boot_region_config_t;
+#endif
+
+#if NRF_UICR_HAS_MEM_CONFIG
 /**
  * @brief Function for getting the configuration of the memory block.
  *
@@ -230,7 +316,9 @@ NRF_STATIC_INLINE nrf_uicr_mem_config_t nrf_uicr_mem_config_get(NRF_UICR_Type co
  * @return Size of the specified memory block in bytes.
  */
 NRF_STATIC_INLINE uint32_t nrf_uicr_mem_size_get(NRF_UICR_Type const * p_reg, uint8_t index);
+#endif
 
+#if NRF_UICR_HAS_PERIPH_CONFIG
 /**
  * @brief Function for getting the configuration of the peripheral.
  *
@@ -241,7 +329,9 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_mem_size_get(NRF_UICR_Type const * p_reg, ui
  */
 NRF_STATIC_INLINE nrf_uicr_periph_config_t nrf_uicr_periph_config_get(NRF_UICR_Type const * p_reg,
                                                                       uint8_t               index);
+#endif
 
+#if NRF_UICR_HAS_FEATURE_CONFIG
 /**
  * @brief Function for getting the ownership requests of the feature.
  *
@@ -291,7 +381,9 @@ NRF_STATIC_INLINE nrf_uicr_dppi_link_t nrf_uicr_feature_link_get(NRF_UICR_Type c
  */
 NRF_STATIC_INLINE nrf_uicr_ipcmap_config_t nrf_uicr_ipcmap_config_get(NRF_UICR_Type const * p_reg,
                                                                       uint8_t               index);
+#endif
 
+#if NRF_UICR_HAS_MAILBOX
 /**
  * @brief Function for getting the address of the MAILBOX.
  *
@@ -313,6 +405,9 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_mailbox_address_get(NRF_UICR_Type const * p_
 NRF_STATIC_INLINE
 nrf_uicr_mailbox_config_t nrf_uicr_mailbox_config_get(NRF_UICR_Type const * p_reg,
                                                       uint8_t               index);
+#endif
+
+#if NRF_UICR_HAS_VTOR
 /**
  * @brief Function for getting the initial value of the secure VTOR (Vector Table Offset Register).
  *
@@ -330,7 +425,9 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_initsvtor_get(NRF_UICR_Type const * p_reg);
  * @return Initial value of the non-secure VTOR.
  */
 NRF_STATIC_INLINE uint32_t nrf_uicr_initnsvtor_get(NRF_UICR_Type const * p_reg);
+#endif
 
+#if NRF_UICR_HAS_PTREXT
 /**
  * @brief Function for getting the pointer to the extended UICR.
  *
@@ -339,9 +436,59 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_initnsvtor_get(NRF_UICR_Type const * p_reg);
  * @return Pointer to the extended UICR.
  */
 NRF_STATIC_INLINE uint32_t * nrf_uicr_ptrextuicr_get(NRF_UICR_Type const * p_reg);
+#endif
+
+#if NRF_UICR_HAS_BOOTCONF
+/**
+ * @brief Function for setting the configuration of the immutable boot region.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] p_config Pointer to the configuration structure.
+ */
+NRF_STATIC_INLINE
+void nrf_uicr_boot_region_config_set(NRF_UICR_Type *                       p_reg,
+                                     nrf_uicr_boot_region_config_t const * p_config);
+
+/**
+ * @brief Function for getting the configuration of the immutable boot region.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] p_config Pointer to the structure to be filled with immutable boot region settings.
+ *
+ * @retval true  Configuration is applied.
+ * @retval false Register is equal to 0xFFFFFFFF, meaning that configuration is not applied.
+ */
+NRF_STATIC_INLINE bool nrf_uicr_boot_region_config_get(NRF_UICR_Type const *           p_reg,
+                                                       nrf_uicr_boot_region_config_t * p_config);
+#endif
+
+#if NRF_UICR_HAS_FEATURE_GPIO
+/**
+ * @brief Function for getting the GPIO instance address associated with the specified GPIO entry.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] index Index of GPIO entry.
+ *
+ * @return GPIO instance address.
+ */
+NRF_STATIC_INLINE uint32_t nrf_uicr_gpio_instance_get(NRF_UICREXTENDED_Type const * p_reg,
+                                                      uint8_t                       index);
+
+/**
+ * @brief Function for getting the CTRLSEL configuration associated with the specified GPIO pin.
+ *
+ * @param[in] p_reg      Pointer to the structure of registers of the peripheral.
+ * @param[in] pin_number Absolute pin number.
+ *
+ * @return CTRLSEL configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_uicr_gpio_ctrlsel_get(NRF_UICREXTENDED_Type const * p_reg,
+                                                     uint32_t                      pin_number);
+#endif
 
 #ifndef NRF_DECLARE_ONLY
 
+#if NRF_UICR_HAS_MEM_CONFIG
 NRF_STATIC_INLINE nrf_uicr_mem_config_t nrf_uicr_mem_config_get(NRF_UICR_Type const * p_reg,
                                                                 uint8_t               index)
 {
@@ -367,7 +514,9 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_mem_size_get(NRF_UICR_Type const * p_reg, ui
     NRFX_ASSERT(index < NRF_UICR_MEM_COUNT);
     return p_reg->MEM[index].SIZE;
 }
+#endif
 
+#if NRF_UICR_HAS_PERIPH_CONFIG
 NRF_STATIC_INLINE nrf_uicr_periph_config_t nrf_uicr_periph_config_get(NRF_UICR_Type const * p_reg,
                                                                       uint8_t               index)
 {
@@ -388,7 +537,9 @@ NRF_STATIC_INLINE nrf_uicr_periph_config_t nrf_uicr_periph_config_get(NRF_UICR_T
 
     return config;
 }
+#endif
 
+#if NRF_UICR_HAS_FEATURE_CONFIG
 NRF_STATIC_INLINE uint32_t nrf_uicr_feature_own_get(NRF_UICR_Type const * p_reg,
                                                     nrf_uicr_feature_t    feature,
                                                     uint8_t               index)
@@ -398,7 +549,7 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_feature_own_get(NRF_UICR_Type const * p_reg,
 #if NRF_UICR_HAS_FEATURE_GPIO
         case NRF_UICR_FEATURE_GPIO:
             NRFX_ASSERT(index < NRF_UICR_GPIO_COUNT);
-            return p_reg->GPIO[index].OWN;
+            return ((NRF_UICREXTENDED_Type *)nrf_uicr_ptrextuicr_get(p_reg))->GPIO[index].OWN;
 #endif
 
         case NRF_UICR_FEATURE_GPIOTE_CH:
@@ -439,7 +590,7 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_feature_secure_get(NRF_UICR_Type const * p_r
 #if NRF_UICR_HAS_FEATURE_GPIO
         case NRF_UICR_FEATURE_GPIO:
             NRFX_ASSERT(index < NRF_UICR_GPIO_COUNT);
-            return p_reg->GPIO[index].SECURE;
+            return ((NRF_UICREXTENDED_Type *)nrf_uicr_ptrextuicr_get(p_reg))->GPIO[index].SECURE;
 #endif
 
         case NRF_UICR_FEATURE_GPIOTE_CH:
@@ -543,7 +694,9 @@ NRF_STATIC_INLINE nrf_uicr_ipcmap_config_t nrf_uicr_ipcmap_config_get(NRF_UICR_T
 
     return map;
 }
+#endif
 
+#if NRF_UICR_HAS_MAILBOX
 NRF_STATIC_INLINE uint32_t nrf_uicr_mailbox_address_get(NRF_UICR_Type const * p_reg, uint8_t index)
 {
     NRFX_ASSERT(index < NRF_UICR_MAILBOX_COUNT);
@@ -569,7 +722,9 @@ nrf_uicr_mailbox_config_t nrf_uicr_mailbox_config_get(NRF_UICR_Type const * p_re
 
     return config;
 }
+#endif
 
+#if NRF_UICR_HAS_VTOR
 NRF_STATIC_INLINE uint32_t nrf_uicr_initsvtor_get(NRF_UICR_Type const * p_reg)
 {
     return p_reg->INITSVTOR;
@@ -579,11 +734,61 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_initnsvtor_get(NRF_UICR_Type const * p_reg)
 {
     return p_reg->INITNSVTOR;
 }
+#endif
 
+#if NRF_UICR_HAS_PTREXT
 NRF_STATIC_INLINE uint32_t * nrf_uicr_ptrextuicr_get(NRF_UICR_Type const * p_reg)
 {
     return (uint32_t *)p_reg->PTREXTUICR;
 }
+#endif
+
+#if NRF_UICR_HAS_BOOTCONF
+
+NRF_STATIC_INLINE
+void nrf_uicr_boot_region_config_set(NRF_UICR_Type *                       p_reg,
+                                     nrf_uicr_boot_region_config_t const * p_config)
+{
+    p_reg->BOOTCONF = (((p_config->permissions & NRF_UICR_BOOTCONF_PERM_MASK)) |
+                       ((p_config->writeonce ? UICR_BOOTCONF_WRITEONCE_Enabled :
+                                               UICR_BOOTCONF_WRITEONCE_Disabled)
+                        << UICR_BOOTCONF_WRITE_Pos) |
+                       ((p_config->lock ? UICR_BOOTCONF_LOCK_Enabled:
+                                          UICR_BOOTCONF_LOCK_Disabled) << UICR_BOOTCONF_LOCK_Pos) |
+                       ((p_config->size_kb << UICR_BOOTCONF_SIZE_Pos) & UICR_BOOTCONF_SIZE_Msk));
+}
+
+NRF_STATIC_INLINE bool nrf_uicr_boot_region_config_get(NRF_UICR_Type const *           p_reg,
+                                                       nrf_uicr_boot_region_config_t * p_config)
+{
+    uint32_t reg = p_reg->BOOTCONF;
+    p_config->permissions = reg & NRF_UICR_BOOTCONF_PERM_MASK;
+    p_config->writeonce   = ((reg & UICR_BOOTCONF_WRITEONCE_Msk) >> UICR_BOOTCONF_WRITEONCE_Pos) ==
+                            UICR_BOOTCONF_WRITEONCE_Enabled;
+    p_config->lock        = ((reg & UICR_BOOTCONF_LOCK_Msk) >> UICR_BOOTCONF_LOCK_Pos) ==
+                            UICR_BOOTCONF_LOCK_Enabled;
+    p_config->size_kb     = (reg & UICR_BOOTCONF_SIZE_Msk) >> UICR_BOOTCONF_SIZE_Pos;
+    return (reg != UICR_BOOTCONF_ResetValue);
+}
+#endif
+
+#if NRF_UICR_HAS_FEATURE_GPIO
+NRF_STATIC_INLINE uint32_t nrf_uicr_gpio_instance_get(NRF_UICREXTENDED_Type const * p_reg,
+                                                      uint8_t                       index)
+{
+    NRFX_ASSERT(index < NRF_UICR_GPIO_COUNT);
+    return p_reg->GPIO[index].INSTANCE;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_uicr_gpio_ctrlsel_get(NRF_UICREXTENDED_Type const * p_reg,
+                                                     uint32_t                      pin_number)
+{
+    uint32_t port = NRF_PIN_NUMBER_TO_PORT(pin_number);
+    uint32_t pin  = NRF_PIN_NUMBER_TO_PIN(pin_number);
+    NRFX_ASSERT(port < NRF_UICR_GPIO_COUNT);
+    return p_reg->GPIO[port].PIN[pin].CTRLSEL;
+}
+#endif
 
 #endif // NRF_DECLARE_ONLY
 

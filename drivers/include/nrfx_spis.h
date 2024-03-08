@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -67,8 +67,8 @@ enum {
 /** @brief Macro for creating an instance of the SPI slave driver. */
 #define NRFX_SPIS_INSTANCE(id)                               \
 {                                                            \
-    .p_reg        = NRFX_CONCAT_2(NRF_SPIS, id),             \
-    .drv_inst_idx = NRFX_CONCAT_3(NRFX_SPIS, id, _INST_IDX), \
+    .p_reg        = NRFX_CONCAT(NRF_, SPIS, id),             \
+    .drv_inst_idx = NRFX_CONCAT(NRFX_SPIS, id, _INST_IDX),   \
 }
 
 /** @brief SPI slave driver event types. */

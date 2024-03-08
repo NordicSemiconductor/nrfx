@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -108,7 +108,7 @@ typedef enum
     NRF_KMU_TASK_PUSH_KEYSLOT      = offsetof(NRF_KMU_Type, TASKS_PUSH),         ///< Push key slot.
 #endif
 #if NRF_KMU_HAS_REVOKE
-    NRF_KMU_TASK_REVOKE_KEYSLOT    = offsetof(NRF_KMU_Type, TASKS_PROVISION),    ///< Revoke key slot.
+    NRF_KMU_TASK_REVOKE_KEYSLOT    = offsetof(NRF_KMU_Type, TASKS_REVOKE),       ///< Revoke key slot.
 #endif
 #if NRF_KMU_HAS_READ_METADATA
     NRF_KMU_TASK_READ_METADATA     = offsetof(NRF_KMU_Type, TASKS_READMETADATA), ///< Read key slot metedata into METADATA register.

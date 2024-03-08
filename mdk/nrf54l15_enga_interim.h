@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -37,11 +37,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #if defined(NRF54L15_ENGA_XXAA)
 
-    typedef enum {
-        NRF_DOMAIN_APPLICATION = 1, /*!< Application core                   */
-        NRF_DOMAIN_FLPR    = 2,     /*!< Flipper, Fast Peripheral Processor */
-        NRF_DOMAIN_GLOBAL  = 3,     /*!< Global peripherals                 */
-    } NRF_DOMAINS_t;
 
     #define NRF_DOMAIN_COUNT NRF_DOMAIN_GLOBAL + 1
 
@@ -54,6 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
         NRF_OWNER_KMU             = 2,
     } NRF_OWNERID_Type;
 
+    #define NRF_DOMAINS_t NRF_DOMAINID_Type
 
     #define PPIB00_CH_NUM 8
     #define PPIB10_CH_NUM 8
@@ -160,12 +156,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
     #define I2S20_EASYDMA_MAXCNT_SIZE I2S20_EASYDMA_MAXCNT_SIZE_SIZE
 
-    #define TWIM_SHORTS_LASTRX_STOP_Pos (12UL)
-    #define TWIM_SHORTS_LASTRX_STOP_Msk (0x1UL << TWIM_SHORTS_LASTRX_STOP_Pos)
-    #define TWIM_SHORTS_LASTRX_STOP_Min (0x0UL)
-    #define TWIM_SHORTS_LASTRX_STOP_Max (0x1UL)
-    #define TWIM_SHORTS_LASTRX_STOP_Disabled (0x0UL)
-    #define TWIM_SHORTS_LASTRX_STOP_Enabled (0x1UL)
+    #define VPR_VEVIF_EVENT_MaxCount  32
+    #define VPR_CLIC_PRIO_COUNT       4
+    #define ADDRESS_SLAVE_Pos         (12UL)
+    #define ADDRESS_SLAVE_Msk         (0x3FUL << ADDRESS_SLAVE_Pos)
 
 #endif
 

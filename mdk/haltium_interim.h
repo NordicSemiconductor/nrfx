@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -47,6 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     #define NRF_DOMAINS_t NRF_DOMAINID_Type
 
+    
     typedef enum {
         NRF_OWNER_NONE            = 0,  /* Used to denote that ownership is not enforced */
         NRF_OWNER_APPLICATION     = 2,  /* Application Core */
@@ -56,11 +57,11 @@ POSSIBILITY OF SUCH DAMAGE.
     } NRF_OWNERID_Type;
 
     typedef enum {
-        NRF_PROCESSOR_APPLICATION = 2,  /* Application Core Processor */
-        NRF_PROCESSOR_RADIOCORE   = 3,  /* Radio Core Processor */
-        NRF_PROCESSOR_PPR         = 13, /* Peripheral Processor */
-        NRF_PROCESSOR_FLPR        = 14, /* Fast Lightweight Processor */
-    } NRF_PROCESSORID_Type;
+            NRF_PROCESSOR_APPLICATION = 2,  /* Application Core Processor */
+            NRF_PROCESSOR_RADIOCORE   = 3,  /* Radio Core Processor */
+            NRF_PROCESSOR_PPR         = 13, /* Peripheral Processor */
+            NRF_PROCESSOR_FLPR        = 14, /* Fast Lightweight Processor */
+        } NRF_PROCESSORID_Type;
 
 
     #define NRF_DOMAIN_COUNT    NRF_DOMAIN_GLOBAL + 1

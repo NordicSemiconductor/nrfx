@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -243,8 +243,13 @@ static bool pins_configure(nrfx_twim_config_t const * p_config)
         NRFX_ASSERT(p_config->scl_pin != p_config->sda_pin);
         TWIM_PIN_INIT(p_config->scl_pin, pin_drive);
         TWIM_PIN_INIT(p_config->sda_pin, pin_drive);
-#if NRF_GPIO_HAS_CLOCKPIN && defined(NRF_TWIM_CLOCKPIN_SCL_NEEDED)
+#if NRF_GPIO_HAS_CLOCKPIN
+#if defined(NRF_TWIM_CLOCKPIN_SCL_NEEDED)
         nrfy_gpio_pin_clock_set(p_config->scl_pin, true);
+#endif
+#if defined(NRF_TWIM_CLOCKPIN_SDA_NEEDED)
+        nrfy_gpio_pin_clock_set(p_config->sda_pin, true);
+#endif
 #endif
    }
     return true;

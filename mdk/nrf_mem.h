@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -78,6 +78,19 @@ POSSIBILITY OF SUCH DAMAGE.
     #include "nrf9120_xxaa_memory.h"
 #elif defined(NRF9160_XXAA)
     #include "nrf9160_xxaa_memory.h"
+#elif defined(NRF54H20_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf54h20_xxaa_application_memory.h"
+    #endif
+    #if defined(NRF_RADIOCORE)
+        #include "nrf54h20_xxaa_radiocore_memory.h"
+    #endif
+    #if defined(NRF_PPR)
+        #include "nrf54h20_xxaa_ppr_memory.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf54h20_xxaa_flpr_memory.h"
+    #endif
 #elif defined(NRF54H20_ENGA_XXAA)
     #if defined(NRF_APPLICATION)
         #include "nrf54h20_enga_xxaa_application_memory.h"
@@ -90,6 +103,13 @@ POSSIBILITY OF SUCH DAMAGE.
     #endif
     #if defined(NRF_FLPR)
         #include "nrf54h20_enga_xxaa_flpr_memory.h"
+    #endif
+#elif defined(NRF54L15_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf54l15_xxaa_application_memory.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf54l15_xxaa_flpr_memory.h"
     #endif
 #elif defined(NRF54L15_ENGA_XXAA)
     #if defined(NRF_APPLICATION)

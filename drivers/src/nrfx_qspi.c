@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -36,6 +36,7 @@
 #if NRFX_CHECK(NRFX_QSPI_ENABLED)
 
 #include <nrfx_qspi.h>
+#include <hal/nrf_clock.h>
 #include <hal/nrf_gpio.h>
 #include <nrf_erratas.h>
 
@@ -115,7 +116,8 @@ static qspi_control_block_t m_cb;
 
 static nrfx_err_t qspi_activate(bool wait);
 static nrfx_err_t qspi_ready_wait(void);
-static void       qspi_workaround_apply(void);
+static void       qspi_workaround_215_43_apply(void);
+static bool       qspi_errata_159_conditions_check(void);
 
 static nrfx_err_t qspi_xfer(void *            p_buffer,
                             size_t            length,
@@ -124,6 +126,11 @@ static nrfx_err_t qspi_xfer(void *            p_buffer,
 {
     NRFX_ASSERT(m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED);
     NRFX_ASSERT(p_buffer != NULL);
+
+    if (qspi_errata_159_conditions_check())
+    {
+        return NRFX_ERROR_FORBIDDEN;
+    }
 
     if (!nrfx_is_in_ram(p_buffer) || !nrfx_is_word_aligned(p_buffer))
     {
@@ -316,7 +323,7 @@ static nrfx_err_t qspi_configure(nrfx_qspi_config_t const * p_config)
          * It will be reenabled if needed before the next QSPI operation.
          */
         nrf_qspi_int_disable(NRF_QSPI, NRF_QSPI_INT_READY_MASK);
-        qspi_workaround_apply();
+        qspi_workaround_215_43_apply();
     }
 
     nrf_qspi_xip_offset_set(NRF_QSPI, p_config->xip_offset);
@@ -381,7 +388,22 @@ static void qspi_deactivate(void)
     nrf_qspi_event_clear(NRF_QSPI, NRF_QSPI_EVENT_READY);
 }
 
-static void qspi_workaround_apply(void)
+static bool qspi_errata_159_conditions_check(void)
+{
+#if NRF_CLOCK_HAS_HFCLK192M && NRF53_ERRATA_159_ENABLE_WORKAROUND
+    if ((nrf_clock_hfclk192m_div_get(NRF_CLOCK) != NRF_CLOCK_HFCLK_DIV_1) ||
+        (nrf_clock_hfclk_div_get(NRF_CLOCK) != NRF_CLOCK_HFCLK_DIV_2))
+    {
+        return true;
+    }
+    else
+#endif
+    {
+        return false;
+    }
+}
+
+static void qspi_workaround_215_43_apply(void)
 {
     nrf_qspi_pins_t pins;
     nrf_qspi_pins_t disconnected_pins = {
@@ -493,6 +515,11 @@ nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
 {
     NRFX_ASSERT(m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED);
 
+    if (qspi_errata_159_conditions_check())
+    {
+        return NRFX_ERROR_FORBIDDEN;
+    }
+
     if (m_cb.state != NRFX_QSPI_STATE_IDLE)
     {
         return NRFX_ERROR_BUSY;
@@ -515,7 +542,7 @@ nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
      */
     if (NRF52_ERRATA_215_ENABLE_WORKAROUND || NRF53_ERRATA_43_ENABLE_WORKAROUND)
     {
-        qspi_workaround_apply();
+        qspi_workaround_215_43_apply();
     }
 
     /* In some cases, only opcode should be sent. To prevent execution, set function code is
@@ -566,6 +593,11 @@ nrfx_err_t nrfx_qspi_lfm_start(nrf_qspi_cinstr_conf_t const * p_config)
     NRFX_ASSERT(m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED);
     NRFX_ASSERT(p_config->length == NRF_QSPI_CINSTR_LEN_1B);
 
+    if (qspi_errata_159_conditions_check())
+    {
+        return NRFX_ERROR_FORBIDDEN;
+    }
+
     if (m_cb.state != NRFX_QSPI_STATE_IDLE)
     {
         return NRFX_ERROR_BUSY;
@@ -588,7 +620,7 @@ nrfx_err_t nrfx_qspi_lfm_start(nrf_qspi_cinstr_conf_t const * p_config)
      */
     if (NRF52_ERRATA_215_ENABLE_WORKAROUND || NRF53_ERRATA_43_ENABLE_WORKAROUND)
     {
-        qspi_workaround_apply();
+        qspi_workaround_215_43_apply();
     }
 
     NRFX_ASSERT(!(nrf_qspi_cinstr_long_transfer_is_ongoing(NRF_QSPI)));
@@ -616,6 +648,11 @@ nrfx_err_t nrfx_qspi_lfm_xfer(void const * p_tx_buffer,
 {
     NRFX_ASSERT(m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED);
     NRFX_ASSERT(nrf_qspi_cinstr_long_transfer_is_ongoing(NRF_QSPI));
+
+    if (qspi_errata_159_conditions_check())
+    {
+        return NRFX_ERROR_FORBIDDEN;
+    }
 
     nrfx_err_t status = NRFX_SUCCESS;
 
@@ -778,6 +815,11 @@ nrfx_err_t nrfx_qspi_erase(nrf_qspi_erase_len_t length,
                            uint32_t             start_address)
 {
     NRFX_ASSERT(m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED);
+
+    if (qspi_errata_159_conditions_check())
+    {
+        return NRFX_ERROR_FORBIDDEN;
+    }
 
     if (!nrfx_is_word_aligned((void const *)start_address))
     {

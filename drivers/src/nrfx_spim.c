@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -108,7 +108,10 @@
 #define SPIM_MAX_DATARATE_TOKEN32 1
 
 #if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED)
+static const uint32_t rxdelay_support_mask =
+    NRFX_FEATURE_SUPPORTED_MASK(SPIM, FEATURE_RXDELAY_PRESENT);
 static const uint32_t dcx_support_mask =
+    NRFX_FEATURE_SUPPORTED_MASK(SPIM, FEATURE_HARDWARE_DCX_PRESENT) |
     NRFX_FEATURE_SUPPORTED_MASK(SPIM, FEATURE_DCX_PRESENT);
 static const uint32_t hw_csn_support_mask =
     NRFX_FEATURE_SUPPORTED_MASK(SPIM, FEATURE_HARDWARE_CSN_PRESENT);
@@ -122,6 +125,8 @@ static const uint8_t easydma_support_bits[] __UNUSED =
 #define SPIM_SUPPORTED_FREQ_VALIDATE(drv_inst_idx, freq)          \
             (((freq != NRFX_MHZ_TO_HZ(32)) && (freq != NRFX_MHZ_TO_HZ(16))) || \
              ((NRFX_BIT(drv_inst_idx)) & datarate32_support_mask))
+
+#define SPIM_RXDELAY_PRESENT_VALIDATE(drv_inst_idx) (NRFX_BIT(drv_inst_idx) & rxdelay_support_mask)
 
 #define SPIM_DCX_PRESENT_VALIDATE(drv_inst_idx) (NRFX_BIT(drv_inst_idx) & dcx_support_mask)
 
@@ -257,7 +262,9 @@ static void configure_pins(nrfx_spim_t const *        p_instance,
 
     nrf_gpio_pin_drive_t pin_drive;
     // Configure pin drive - high drive for 32 MHz clock frequency.
-#if (NRF_SPIM_HAS_FREQUENCY && NRF_SPIM_HAS_32_MHZ_FREQ) || NRF_SPIM_HAS_PRESCALER
+#if defined(LUMOS_XXAA)
+    pin_drive = NRF_GPIO_PIN_H0H1;
+#elif (NRF_SPIM_HAS_FREQUENCY && NRF_SPIM_HAS_32_MHZ_FREQ) || NRF_SPIM_HAS_PRESCALER
     pin_drive = (p_config->frequency == NRFX_MHZ_TO_HZ(32)) ? NRF_GPIO_PIN_H0H1 : NRF_GPIO_PIN_S0S1;
 #else
     pin_drive = NRF_GPIO_PIN_S0S1;
@@ -453,9 +460,9 @@ static void spim_configure(nrfx_spim_t const *        p_instance,
     configure_pins(p_instance, p_config);
 
 #if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED)
-    bool ext_support = NRFX_BIT(p_instance->drv_inst_idx) & hw_csn_support_mask;
-    bool hw_csn = p_config->use_hw_ss;
-    if (ext_support && hw_csn)
+    bool hw_csn_supported = SPIM_HW_CSN_PRESENT_VALIDATE(p_instance->drv_inst_idx);
+    bool use_csn = hw_csn_supported && p_config->use_hw_ss;
+    if (use_csn)
     {
         p_cb->ss_pin = NRF_SPIM_PIN_NOT_CONNECTED;
     }
@@ -482,20 +489,45 @@ static void spim_configure(nrfx_spim_t const *        p_instance,
 #endif
         .mode      = p_config->mode,
         .bit_order = p_config->bit_order,
-#if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED)
+#if NRFY_SPIM_HAS_EXTENDED
+        /* Extended config is applied even if only single instance supports it.
+           For other instances, and also when NRFX_SPIM_EXTENDED_ENABLED is 0,
+           apply default configuration. */
         .ext_config =
         {
             .pins =
             {
-                .dcx_pin = p_config->dcx_pin,
-                .csn_pin = p_config->use_hw_ss ? p_config->ss_pin : NRF_SPIM_PIN_NOT_CONNECTED
+#if NRFY_SPIM_HAS_DCX
+                .dcx_pin = NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED,
+                                            (p_config->dcx_pin,),
+                                            (NRF_SPIM_DCX_DEFAULT,))
+#endif
+#if NRFY_SPIM_HAS_HW_CSN
+                .csn_pin = NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED,
+                                            (use_csn ? p_config->ss_pin : NRF_SPIM_CSN_DEFAULT,),
+                                            (NRF_SPIM_CSN_DEFAULT,))
+#endif
             },
-            .csn_pol      = p_config->ss_active_high ? NRF_SPIM_CSN_POL_HIGH : NRF_SPIM_CSN_POL_LOW,
-            .csn_duration = p_config->ss_duration,
-            .rx_delay     = p_config->rx_delay
+#if NRFY_SPIM_HAS_HW_CSN
+            .csn_pol      = NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED,
+                                             (use_csn ?
+                                              (p_config->ss_active_high ?
+                                               NRF_SPIM_CSN_POL_HIGH : NRF_SPIM_CSN_POL_LOW) :
+                                               (nrf_spim_csn_pol_t)NRF_SPIM_CSNPOL_DEFAULT,),
+                                              ((nrf_spim_csn_pol_t)NRF_SPIM_CSNPOL_DEFAULT,))
+            .csn_duration = NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED,
+                                             (use_csn ?
+                                              p_config->ss_duration : NRF_SPIM_CSNDUR_DEFAULT,),
+                                             (NRF_SPIM_CSNDUR_DEFAULT,))
+#endif
+#if NRFY_SPIM_HAS_RXDELAY
+            .rx_delay = NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED,
+                                         (SPIM_RXDELAY_PRESENT_VALIDATE(p_instance->drv_inst_idx) ?
+                                          p_config->rx_delay : NRF_SPIM_RXDELAY_DEFAULT,),
+                                         (NRF_SPIM_RXDELAY_DEFAULT,))
+#endif
         },
-        .ext_enable = ext_support && (hw_csn || (p_config->dcx_pin != NRF_SPIM_PIN_NOT_CONNECTED)),
-#endif // NRFX_SPIM_EXTENDED_ENABLED
+#endif // NRFY_SPIM_HAS_EXTENDED
         .skip_psel_cfg = p_config->skip_psel_cfg
     };
 
@@ -632,8 +664,12 @@ void nrfx_spim_uninit(nrfx_spim_t const * p_instance)
         {
             nrfy_spim_ext_pins_t ext_pins;
             nrfy_spim_ext_pins_get(p_instance->p_reg, &ext_pins);
+#if NRFY_SPIM_HAS_DCX
             spim_pin_uninit(ext_pins.dcx_pin);
+#endif
+#if NRFY_SPIM_HAS_HW_CSN
             spim_pin_uninit(ext_pins.csn_pin);
+#endif
         }
 #endif
     }

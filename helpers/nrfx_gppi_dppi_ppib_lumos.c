@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -49,7 +49,7 @@
 #if defined(NRF54L15_ENGA_XXAA)
 #define NRFX_GPPI_PPIB_HAS_DYNAMIC_CONFIG 0
 #else
-#error "Unsupported device."
+#define NRFX_GPPI_PPIB_HAS_DYNAMIC_CONFIG 1
 #endif
 
 static nrfx_atomic_t m_virtual_channels = NRFX_GPPI_PROG_APP_CHANNELS_MASK;

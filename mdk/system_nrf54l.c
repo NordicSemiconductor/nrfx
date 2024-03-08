@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2009-2023 ARM Limited. All rights reserved.
+Copyright (c) 2009-2024 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -113,66 +113,71 @@ void SystemInit(void)
             __ISB();
         #endif
 
-        #if defined(NRF_CONFIG_NFCT_PINS_AS_GPIOS)
-            NRF_NFCT_S->PADCONFIG = (NFCT_PADCONFIG_ENABLE_Disabled << NFCT_PADCONFIG_ENABLE_Pos);
-        #endif 
+        #if !defined(NRF_TRUSTZONE_NONSECURE) && defined(__ARM_FEATURE_CMSE)
+            #if defined(NRF_CONFIG_NFCT_PINS_AS_GPIOS)
+                NRF_NFCT_S->PADCONFIG = (NFCT_PADCONFIG_ENABLE_Disabled << NFCT_PADCONFIG_ENABLE_Pos);
+            #endif 
 
-        /* Enable SWO trace functionality. If ENABLE_SWO is not defined, SWO pin will be used as GPIO (see Product
-           Specification to see which one). */
-        #if defined (ENABLE_SWO)
-                       // Enable Trace And Debug peripheral
-            NRF_TAD_S->ENABLE = TAD_ENABLE_ENABLE_Msk;
-            NRF_TAD_S->CLOCKSTART = TAD_CLOCKSTART_START_Msk;
+            /* Enable SWO trace functionality. If ENABLE_SWO is not defined, SWO pin will be used as GPIO (see Product
+            Specification to see which one). */
+            #if defined (ENABLE_SWO)
+                        // Enable Trace And Debug peripheral
+                NRF_TAD_S->ENABLE = TAD_ENABLE_ENABLE_Msk;
+                NRF_TAD_S->CLOCKSTART = TAD_CLOCKSTART_START_Msk;
 
-            // Set up Trace pad SPU firewall
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA0_PIN);
+                // Set up Trace pad SPU firewall
+                NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA0_PIN);
 
-            // Configure trace port pad
-            NRF_P0_S->PIN_CNF[TRACE_TRACEDATA0_PIN] = TRACE_PIN_CNF_VALUE;
+                // Configure trace port pad
+                NRF_P0_S->PIN_CNF[TRACE_TRACEDATA0_PIN] = TRACE_PIN_CNF_VALUE;
 
-            // Select trace pin
-            NRF_TAD_S->PSEL.TRACEDATA0 = TRACE_TRACEDATA0_PIN;
+                // Select trace pin
+                NRF_TAD_S->PSEL.TRACEDATA0 = TRACE_TRACEDATA0_PIN;
 
-            // Set trace port speed to 64 MHz
-            NRF_TAD_S->TRACEPORTSPEED = TAD_TRACEPORTSPEED_TRACEPORTSPEED_64MHz;
+                // Set trace port speed to 64 MHz
+                NRF_TAD_S->TRACEPORTSPEED = TAD_TRACEPORTSPEED_TRACEPORTSPEED_64MHz;
+            #endif
+
+                /* Enable Trace functionality. If ENABLE_TRACE is not defined, TRACE pins will be used as GPIOs (see Product
+                Specification to see which ones). */
+            #if defined (ENABLE_TRACE)
+                // Enable Trace And Debug peripheral
+                NRF_TAD_S->ENABLE = TAD_ENABLE_ENABLE_Msk;
+                NRF_TAD_S->CLOCKSTART = TAD_CLOCKSTART_START_Msk;
+
+                // Set up Trace pads SPU firewall
+                NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACECLK_PIN);
+                NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA0_PIN);
+                NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA1_PIN);
+                NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA2_PIN);
+                NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA3_PIN);
+
+                // Configure trace port pads
+                NRF_P0_S->PIN_CNF[TRACE_TRACECLK_PIN] = TRACE_PIN_CNF_VALUE;
+                NRF_P0_S->PIN_CNF[TRACE_TRACEDATA0_PIN] = TRACE_PIN_CNF_VALUE;
+                NRF_P0_S->PIN_CNF[TRACE_TRACEDATA1_PIN] = TRACE_PIN_CNF_VALUE;
+                NRF_P0_S->PIN_CNF[TRACE_TRACEDATA2_PIN] = TRACE_PIN_CNF_VALUE;
+                NRF_P0_S->PIN_CNF[TRACE_TRACEDATA3_PIN] = TRACE_PIN_CNF_VALUE;
+
+                // Select trace pins
+                NRF_TAD_S->PSEL.TRACECLK = TRACE_TRACECLK_PIN;
+                NRF_TAD_S->PSEL.TRACEDATA0 = TRACE_TRACEDATA0_PIN;
+                NRF_TAD_S->PSEL.TRACEDATA1 = TRACE_TRACEDATA1_PIN;
+                NRF_TAD_S->PSEL.TRACEDATA2 = TRACE_TRACEDATA2_PIN;
+                NRF_TAD_S->PSEL.TRACEDATA3 = TRACE_TRACEDATA3_PIN;
+
+                // Set trace port speed to 64 MHz
+                NRF_TAD_S->TRACEPORTSPEED = TAD_TRACEPORTSPEED_TRACEPORTSPEED_64MHz;
+            #endif
         #endif
 
-            /* Enable Trace functionality. If ENABLE_TRACE is not defined, TRACE pins will be used as GPIOs (see Product
-               Specification to see which ones). */
-        #if defined (ENABLE_TRACE)
-               // Enable Trace And Debug peripheral
-            NRF_TAD_S->ENABLE = TAD_ENABLE_ENABLE_Msk;
-            NRF_TAD_S->CLOCKSTART = TAD_CLOCKSTART_START_Msk;
-
-            // Set up Trace pads SPU firewall
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACECLK_PIN);
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA0_PIN);
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA1_PIN);
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA2_PIN);
-            NRF_SPU_S->GPIOPORT[0].PERM &= ~(1ul << TRACE_TRACEDATA3_PIN);
-
-            // Configure trace port pads
-            NRF_P0_S->PIN_CNF[TRACE_TRACECLK_PIN] = TRACE_PIN_CNF_VALUE;
-            NRF_P0_S->PIN_CNF[TRACE_TRACEDATA0_PIN] = TRACE_PIN_CNF_VALUE;
-            NRF_P0_S->PIN_CNF[TRACE_TRACEDATA1_PIN] = TRACE_PIN_CNF_VALUE;
-            NRF_P0_S->PIN_CNF[TRACE_TRACEDATA2_PIN] = TRACE_PIN_CNF_VALUE;
-            NRF_P0_S->PIN_CNF[TRACE_TRACEDATA3_PIN] = TRACE_PIN_CNF_VALUE;
-
-            // Select trace pins
-            NRF_TAD_S->PSEL.TRACECLK = TRACE_TRACECLK_PIN;
-            NRF_TAD_S->PSEL.TRACEDATA0 = TRACE_TRACEDATA0_PIN;
-            NRF_TAD_S->PSEL.TRACEDATA1 = TRACE_TRACEDATA1_PIN;
-            NRF_TAD_S->PSEL.TRACEDATA2 = TRACE_TRACEDATA2_PIN;
-            NRF_TAD_S->PSEL.TRACEDATA3 = TRACE_TRACEDATA3_PIN;
-
-            // Set trace port speed to 64 MHz
-            NRF_TAD_S->TRACEPORTSPEED = TAD_TRACEPORTSPEED_TRACEPORTSPEED_64MHz;
-
-        #endif
-
-        #if !defined (NRF_SKIP_GLITCHDETECTOR_DISABLE)
+        #if !defined(NRF_TRUSTZONE_NONSECURE) && !defined (NRF_SKIP_GLITCHDETECTOR_DISABLE)
             /* Disable glitch detector */
-            NRF_GLITCHDET_S->GLITCHDETECTOR.CONFIG = (GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Disable << GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Pos);
+            #if defined (GLITCHDET_GLITCHDETECTORS)
+                NRF_GLITCHDET_S->GLITCHDETECTOR.CONFIG = (GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Disable << GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Pos);
+            #else
+                NRF_GLITCHDET_S->CONFIG = (GLITCHDET_CONFIG_ENABLE_Disable << GLITCHDET_CONFIG_ENABLE_Pos);
+            #endif
         #endif
     #endif
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -176,6 +176,13 @@ typedef enum
     NRF_VPR_DMCONTROL_NDMRESET, /** Negative system reset signal. */
 } nrf_vpr_dmcontrol_t;
 
+/** @brief Debug Mode Control signal masks. */
+typedef enum
+{
+    NRF_VPR_DMCONTROL_DMACTIVE_MASK = VPR_DEBUGIF_DMCONTROL_DMACTIVE_Msk, /** Debug module active mask. */
+    NRF_VPR_DMCONTROL_NDMRESET_MASK = VPR_DEBUGIF_DMCONTROL_NDMRESET_Msk, /** Negative system reset signal mask. */
+} nrf_vpr_dmcontrol_mask_t;
+
 /**
  * @brief Function for triggering the specified VPR task.
  *
@@ -313,7 +320,7 @@ NRF_STATIC_INLINE void nrf_vpr_initpc_set(NRF_VPR_Type * p_reg,
 NRF_STATIC_INLINE uint32_t nrf_vpr_initpc_get(NRF_VPR_Type const * p_reg);
 
 /**
- * @brief Function for setting the debug mode control signals.
+ * @brief Function for setting the specified debug mode control signal.
  *
  * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
  * @param[in] signal Signal to be set.
@@ -322,6 +329,16 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_initpc_get(NRF_VPR_Type const * p_reg);
 NRF_STATIC_INLINE void nrf_vpr_debugif_dmcontrol_set(NRF_VPR_Type *      p_reg,
                                                      nrf_vpr_dmcontrol_t signal,
                                                      bool                enable);
+
+/**
+ * @brief Function for setting the mask of debug mode control signals.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Mask of signals to be set.
+ *                  Use @ref nrf_vpr_dmcontrol_mask_t values for bit masking.
+ */
+NRF_STATIC_INLINE void nrf_vpr_debugif_dmcontrol_mask_set(NRF_VPR_Type * p_reg,
+                                                          uint32_t       mask);
 
 /**
  * @brief Function for getting the debug mode control signals.
@@ -435,6 +452,12 @@ NRF_STATIC_INLINE void nrf_vpr_debugif_dmcontrol_set(NRF_VPR_Type *      p_reg,
         default:
             NRFX_ASSERT(0);
     }
+}
+
+NRF_STATIC_INLINE void nrf_vpr_debugif_dmcontrol_mask_set(NRF_VPR_Type * p_reg,
+                                                          uint32_t       mask)
+{
+    p_reg->DEBUGIF.DMCONTROL = mask;
 }
 
 NRF_STATIC_INLINE bool nrf_vpr_debugif_dmcontrol_get(NRF_VPR_Type const * p_reg,

@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -783,7 +783,7 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_TWIM137                             NRF_TWIM137_S
   #define NRF_TWIS137                             NRF_TWIS137_S
   #define NRF_UARTE137                            NRF_UARTE137_S
-#endif                                               /*!<  NRF_TRUSTZONE_NONSECURE                                             */
+#endif                                               /*!< NRF_TRUSTZONE_NONSECURE                                              */
 
 /* ========================================== End of section using anonymous unions ========================================== */
 

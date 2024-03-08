@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -67,8 +67,8 @@ enum {
 /** @brief Macro for creating an EGU driver instance. */
 #define NRFX_EGU_INSTANCE(id)                                 \
 {                                                             \
-    .p_reg        = NRFX_CONCAT_2(NRF_EGU, id),               \
-    .drv_inst_idx = NRFX_CONCAT_3(NRFX_EGU, id, _INST_IDX),   \
+    .p_reg        = NRFX_CONCAT(NRF_, EGU, id),               \
+    .drv_inst_idx = NRFX_CONCAT(NRFX_EGU, id, _INST_IDX),     \
 }
 
 /**

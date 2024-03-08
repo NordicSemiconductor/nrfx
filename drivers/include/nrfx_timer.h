@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -61,8 +61,8 @@ typedef struct
 /** @brief Macro for creating a timer driver instance. */
 #define NRFX_TIMER_INSTANCE(id)                                   \
 {                                                                 \
-    .p_reg            = NRFX_CONCAT_2(NRF_TIMER, id),             \
-    .instance_id      = NRFX_CONCAT_3(NRFX_TIMER, id, _INST_IDX), \
+    .p_reg            = NRFX_CONCAT(NRF_, TIMER, id),             \
+    .instance_id      = NRFX_CONCAT(NRFX_TIMER, id, _INST_IDX),   \
     .cc_channel_count = NRF_TIMER_CC_CHANNEL_COUNT(id),           \
 }
 

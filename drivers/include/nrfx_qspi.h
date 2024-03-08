@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -303,6 +303,9 @@ bool nrfx_qspi_init_check(void);
  * @retval NRFX_ERROR_TIMEOUT      The external memory is busy, or there are connection issues.
  * @retval NRFX_ERROR_INVALID_ADDR The provided buffer is not placed in the Data RAM region
  *                                 or its address is not aligned to a 32-bit word.
+ * @retval NRFX_ERROR_FORBIDDEN    The operation could trigger nRF5340 anomaly 159
+ *                                 due to the current configuration of clocks.
+ *                                 Refer to the errata document for more information.
  */
 nrfx_err_t nrfx_qspi_read(void *   p_rx_buffer,
                           size_t   rx_buffer_length,
@@ -337,6 +340,9 @@ nrfx_err_t nrfx_qspi_read(void *   p_rx_buffer,
  * @retval NRFX_ERROR_TIMEOUT      The external memory is busy, or there are connection issues.
  * @retval NRFX_ERROR_INVALID_ADDR The provided buffer is not placed in the Data RAM region
  *                                 or its address is not aligned to a 32-bit word.
+ * @retval NRFX_ERROR_FORBIDDEN    The operation could trigger nRF5340 anomaly 159
+ *                                 due to the current configuration of clocks.
+ *                                 Refer to the errata document for more information.
  */
 nrfx_err_t nrfx_qspi_write(void const * p_tx_buffer,
                            size_t       tx_buffer_length,
@@ -367,6 +373,9 @@ nrfx_err_t nrfx_qspi_write(void const * p_tx_buffer,
  * @retval NRFX_ERROR_BUSY         The driver currently handles another operation.
  * @retval NRFX_ERROR_TIMEOUT      The external memory is busy, or there are connection issues.
  * @retval NRFX_ERROR_INVALID_ADDR The provided start address is not aligned to a 32-bit word.
+ * @retval NRFX_ERROR_FORBIDDEN    The operation could trigger nRF5340 anomaly 159
+ *                                 due to the current configuration of clocks.
+ *                                 Refer to the errata document for more information.
  */
 nrfx_err_t nrfx_qspi_erase(nrf_qspi_erase_len_t length,
                            uint32_t             start_address);
@@ -376,10 +385,13 @@ nrfx_err_t nrfx_qspi_erase(nrf_qspi_erase_len_t length,
  *
  * @note Refer to the note for @ref nrfx_qspi_read.
  *
- * @retval NRFX_SUCCESS       The operation was successful (blocking mode) or
- *                            commissioned (handler mode).
- * @retval NRFX_ERROR_BUSY    The driver currently is handling another operation.
- * @retval NRFX_ERROR_TIMEOUT The external memory is busy, or there are connection issues.
+ * @retval NRFX_SUCCESS         The operation was successful (blocking mode) or
+ *                              commissioned (handler mode).
+ * @retval NRFX_ERROR_BUSY      The driver currently is handling another operation.
+ * @retval NRFX_ERROR_TIMEOUT   The external memory is busy, or there are connection issues.
+ * @retval NRFX_ERROR_FORBIDDEN The operation could trigger nRF5340 anomaly 159
+ *                              due to the current configuration of clocks.
+ *                              Refer to the errata document for more information.
  */
 nrfx_err_t nrfx_qspi_chip_erase(void);
 
@@ -401,8 +413,11 @@ bool nrfx_qspi_xfer_buffered_check(void);
  * @brief Function for getting the current driver status and status byte of memory device with
  *        testing WIP (write in progress) bit.
  *
- * @retval NRFX_SUCCESS    The driver and memory are ready to handle a new operation.
- * @retval NRFX_ERROR_BUSY The driver currently is handling another operation.
+ * @retval NRFX_SUCCESS         The driver and memory are ready to handle a new operation.
+ * @retval NRFX_ERROR_BUSY      The driver currently is handling another operation.
+ * @retval NRFX_ERROR_FORBIDDEN The operation could trigger nRF5340 anomaly 159
+ *                              due to the current configuration of clocks.
+ *                              Refer to the errata document for more information.
  */
 nrfx_err_t nrfx_qspi_mem_busy_check(void);
 
@@ -435,9 +450,12 @@ void nrfx_qspi_timeout_signal(void);
  * @param[in]  p_tx_buffer Pointer to the array with data to send. Can be NULL if only opcode is transmitted.
  * @param[out] p_rx_buffer Pointer to the array for data to receive. Can be NULL if there is nothing to receive.
  *
- * @retval NRFX_SUCCESS       The operation was successful.
- * @retval NRFX_ERROR_TIMEOUT The external memory is busy, or there are connection issues.
- * @retval NRFX_ERROR_BUSY    The driver currently handles other operation.
+ * @retval NRFX_SUCCESS         The operation was successful.
+ * @retval NRFX_ERROR_TIMEOUT   The external memory is busy, or there are connection issues.
+ * @retval NRFX_ERROR_BUSY      The driver currently handles other operation.
+ * @retval NRFX_ERROR_FORBIDDEN The operation could trigger nRF5340 anomaly 159
+ *                              due to the current configuration of clocks.
+ *                              Refer to the errata document for more information.
  */
 nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
                                  void const *                   p_tx_buffer,
@@ -455,9 +473,12 @@ nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
  * @param[in] length      Length of the data to send and opcode. See @ref nrf_qspi_cinstr_len_t.
  * @param[in] p_tx_buffer Pointer to input data array.
  *
- * @retval NRFX_SUCCESS       The operation was successful.
- * @retval NRFX_ERROR_BUSY    The driver currently handles another operation.
- * @retval NRFX_ERROR_TIMEOUT The external memory is busy, or there are connection issues.
+ * @retval NRFX_SUCCESS         The operation was successful.
+ * @retval NRFX_ERROR_BUSY      The driver currently handles another operation.
+ * @retval NRFX_ERROR_TIMEOUT   The external memory is busy, or there are connection issues.
+ * @retval NRFX_ERROR_FORBIDDEN The operation could trigger nRF5340 anomaly 159
+ *                              due to the current configuration of clocks.
+ *                              Refer to the errata document for more information.
  */
 nrfx_err_t nrfx_qspi_cinstr_quick_send(uint8_t               opcode,
                                        nrf_qspi_cinstr_len_t length,
@@ -482,9 +503,12 @@ nrfx_err_t nrfx_qspi_cinstr_quick_send(uint8_t               opcode,
  * @param[in] p_config Pointer to the structure with custom instruction opcode and transfer
  *                     configuration. Transfer length must be set to @ref NRF_QSPI_CINSTR_LEN_1B.
  *
- * @retval NRFX_SUCCESS       Operation was successful.
- * @retval NRFX_ERROR_BUSY    Driver currently handles other operation.
- * @retval NRFX_ERROR_TIMEOUT The external memory is busy, or there are connection issues.
+ * @retval NRFX_SUCCESS         Operation was successful.
+ * @retval NRFX_ERROR_BUSY      Driver currently handles other operation.
+ * @retval NRFX_ERROR_TIMEOUT   The external memory is busy, or there are connection issues.
+ * @retval NRFX_ERROR_FORBIDDEN The operation could trigger nRF5340 anomaly 159
+ *                              due to the current configuration of clocks.
+ *                              Refer to the errata document for more information.
  */
 nrfx_err_t nrfx_qspi_lfm_start(nrf_qspi_cinstr_conf_t const * p_config);
 
@@ -503,9 +527,12 @@ nrfx_err_t nrfx_qspi_lfm_start(nrf_qspi_cinstr_conf_t const * p_config);
  * @param[in]  finalize        True if custom instruction long frame mode is to be finalized
  *                             after this transfer.
  *
- * @retval NRFX_SUCCESS       Operation was successful.
- * @retval NRFX_ERROR_TIMEOUT External memory is busy or there are connection issues.
- *                            Long frame mode becomes deactivated.
+ * @retval NRFX_SUCCESS         Operation was successful.
+ * @retval NRFX_ERROR_TIMEOUT   External memory is busy or there are connection issues.
+ *                              Long frame mode becomes deactivated.
+ * @retval NRFX_ERROR_FORBIDDEN The operation could trigger nRF5340 anomaly 159
+ *                              due to the current configuration of clocks.
+ *                              Refer to the errata document for more information.
  */
 nrfx_err_t nrfx_qspi_lfm_xfer(void const * p_tx_buffer,
                               void *       p_rx_buffer,

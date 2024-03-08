@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -40,8 +40,12 @@
 extern "C" {
 #endif
 
+#if defined(NRF54H20_XXAA)
+#define NRF_TWIM_CLOCKPIN_SDA_NEEDED 1
+#endif
+
 #if defined(HALTIUM_XXAA)
-#define NRF_TWIM_CLOCKPIN_SCL_NEEDED
+#define NRF_TWIM_CLOCKPIN_SCL_NEEDED 1
 #endif
 
 /**
@@ -67,7 +71,8 @@ extern "C" {
 #define NRF_TWIM_HAS_1000_KHZ_FREQ 0
 #endif
 
-#if defined(TWIM_TXD_LIST_LIST_ArrayList) || defined(__NRFX_DOXYGEN__)
+#if defined(TWIM_TXD_LIST_LIST_ArrayList) || defined(TWIM_DMA_TX_LIST_TYPE_ArrayList) || \
+    defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether EasyDMA array list feature is present. */
 #define NRF_TWIM_HAS_ARRAY_LIST 1
 #else
@@ -79,6 +84,13 @@ extern "C" {
 #define NRF_TWIM_HAS_DMA_REG 1
 #else
 #define NRF_TWIM_HAS_DMA_REG 0
+#endif
+
+#if defined(TWIM_DMA_RX_CURRENTAMOUNT_AMOUNT_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether DMA CURRENTAMOUNT registers are present. */
+#define NRF_TWIM_HAS_DMA_CURRENTAMOUNT_REG 1
+#else
+#define NRF_TWIM_HAS_DMA_CURRENTAMOUNT_REG 0
 #endif
 
 #if (defined(TWIM_TASKS_DMA_RX_START_START_Msk) && defined(TWIM_EVENTS_DMA_RX_END_END_Msk)) || \
@@ -96,6 +108,14 @@ extern "C" {
 #define NRF_TWIM_HAS_DMA_SHORTS 0
 #endif
 
+#if (defined(TWIM_EVENTS_RXBUSERROR_EVENTS_RXBUSERROR_Msk) || \
+     defined(TWIM_EVENTS_DMA_RX_BUSERROR_BUSERROR_Msk)) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether TWIM BUSERROR events are present. */
+#define NRF_TWIM_HAS_BUS_ERROR_EVENTS 1
+#else
+#define NRF_TWIM_HAS_BUS_ERROR_EVENTS 0
+#endif
+
 #if NRF_TWIM_HAS_DMA_REG
 /** @brief Max number of RX patterns. */
 #define NRF_TWIM_DMA_RX_PATTERN_MAX_COUNT TWIM_DMA_RX_MATCH_CANDIDATE_MaxCount
@@ -105,8 +125,10 @@ extern "C" {
 typedef enum
 {
 #if NRF_TWIM_HAS_DMA_TASKS_EVENTS
-    NRF_TWIM_TASK_STARTRX         = offsetof(NRF_TWIM_Type, TASKS_DMA.RX.START),           ///< Start TWI receive sequence.
-    NRF_TWIM_TASK_STARTTX         = offsetof(NRF_TWIM_Type, TASKS_DMA.TX.START),           ///< Start TWI transmit sequence.
+    NRF_TWIM_TASK_STARTRX         = offsetof(NRF_TWIM_Type, TASKS_DMA.RX.START),           ///< Start TWI receive operation using easyDMA to load the values.
+    NRF_TWIM_TASK_STOPRX          = offsetof(NRF_TWIM_Type, TASKS_DMA.RX.STOP),            ///< Stop TWI receive  operation using easyDMA. This does not trigger an END event.
+    NRF_TWIM_TASK_STARTTX         = offsetof(NRF_TWIM_Type, TASKS_DMA.TX.START),           ///< Start TWI transmit operation using easyDMA to load the values.
+    NRF_TWIM_TASK_STOPTX          = offsetof(NRF_TWIM_Type, TASKS_DMA.TX.STOP),            ///< Stop TWI transmit operation using easyDMA to load the values.
     NRF_TWIM_TASK_ENABLERXMATCH0  = offsetof(NRF_TWIM_Type, TASKS_DMA.RX.ENABLEMATCH[0]),  ///< Enable TWI pattern matching functionality for pattern 0.
     NRF_TWIM_TASK_ENABLERXMATCH1  = offsetof(NRF_TWIM_Type, TASKS_DMA.RX.ENABLEMATCH[1]),  ///< Enable TWI pattern matching functionality for pattern 1.
     NRF_TWIM_TASK_ENABLERXMATCH2  = offsetof(NRF_TWIM_Type, TASKS_DMA.RX.ENABLEMATCH[2]),  ///< Enable TWI pattern matching functionality for pattern 2.
@@ -133,18 +155,24 @@ typedef enum
 #if NRF_TWIM_HAS_DMA_TASKS_EVENTS
     NRF_TWIM_EVENT_ENDRX      = offsetof(NRF_TWIM_Type, EVENTS_DMA.RX.END),      ///< Receive sequence finished.
     NRF_TWIM_EVENT_RXSTARTED  = offsetof(NRF_TWIM_Type, EVENTS_DMA.RX.READY),    ///< Receive sequence started.
-    NRF_TWIM_EVENT_RXBUSERROR = offsetof(NRF_TWIM_Type, EVENTS_DMA.RX.BUSERROR), ///< Memory bus error occurred during the RX transfer.
     NRF_TWIM_EVENT_RXMATCH0   = offsetof(NRF_TWIM_Type, EVENTS_DMA.RX.MATCH[0]), ///< Pattern match for pattern 0 detected.
     NRF_TWIM_EVENT_RXMATCH1   = offsetof(NRF_TWIM_Type, EVENTS_DMA.RX.MATCH[1]), ///< Pattern match for pattern 1 detected.
     NRF_TWIM_EVENT_RXMATCH2   = offsetof(NRF_TWIM_Type, EVENTS_DMA.RX.MATCH[2]), ///< Pattern match for pattern 2 detected.
     NRF_TWIM_EVENT_RXMATCH3   = offsetof(NRF_TWIM_Type, EVENTS_DMA.RX.MATCH[3]), ///< Pattern match for pattern 3 detected.
     NRF_TWIM_EVENT_ENDTX      = offsetof(NRF_TWIM_Type, EVENTS_DMA.TX.END),      ///< Transmit sequence finished.
     NRF_TWIM_EVENT_TXSTARTED  = offsetof(NRF_TWIM_Type, EVENTS_DMA.TX.READY),    ///< Transmit sequence started.
+#if NRF_TWIM_HAS_BUS_ERROR_EVENTS
+    NRF_TWIM_EVENT_RXBUSERROR = offsetof(NRF_TWIM_Type, EVENTS_DMA.RX.BUSERROR), ///< Memory bus error occurred during the RX transfer.
     NRF_TWIM_EVENT_TXBUSERROR = offsetof(NRF_TWIM_Type, EVENTS_DMA.TX.BUSERROR), ///< Memory bus error occurred during the TX transfer.
+#endif
 #else
     NRF_TWIM_EVENT_RXSTARTED  = offsetof(NRF_TWIM_Type, EVENTS_RXSTARTED),       ///< Receive sequence started.
     NRF_TWIM_EVENT_TXSTARTED  = offsetof(NRF_TWIM_Type, EVENTS_TXSTARTED),       ///< Transmit sequence started.
+#if NRF_TWIM_HAS_BUS_ERROR_EVENTS
+    NRF_TWIM_EVENT_RXBUSERROR = offsetof(NRF_TWIM_Type, EVENTS_RXBUSERROR),      ///< Memory bus error occurred during the RX transfer.
+    NRF_TWIM_EVENT_TXBUSERROR = offsetof(NRF_TWIM_Type, EVENTS_TXBUSERROR),      ///< Memory bus error occurred during the TX transfer.
 #endif
+#endif // NRF_TWIM_HAS_DMA_TASKS_EVENTS
     NRF_TWIM_EVENT_LASTRX     = offsetof(NRF_TWIM_Type, EVENTS_LASTRX),          ///< Byte boundary, starting to receive the last byte.
     NRF_TWIM_EVENT_LASTTX     = offsetof(NRF_TWIM_Type, EVENTS_LASTTX)           ///< Byte boundary, starting to transmit the last byte.
 } nrf_twim_event_t;
@@ -534,6 +562,9 @@ NRF_STATIC_INLINE uint32_t nrf_twim_shorts_get(NRF_TWIM_Type const * p_reg);
 /**
  * @brief Function for getting the amount of transmitted bytes.
  *
+ * @note In case of NACK error, includes the NACK'ed byte.
+ * @note Number of bytes are updated after the END event and each MATCH event.
+ *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  *
  * @return Amount of transmitted bytes.
@@ -541,13 +572,40 @@ NRF_STATIC_INLINE uint32_t nrf_twim_shorts_get(NRF_TWIM_Type const * p_reg);
 NRF_STATIC_INLINE size_t nrf_twim_txd_amount_get(NRF_TWIM_Type const * p_reg);
 
 /**
- * @brief Function for getting the amount of received bytes.
+ * @brief Function for getting the amount of received bytes in the last transaction.
+ *
+ * @note In case of NACK error, includes the NACK'ed byte.
+ * @note Number of bytes are updated after the END event and each MATCH event.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  *
  * @return Amount of received bytes.
  */
 NRF_STATIC_INLINE size_t nrf_twim_rxd_amount_get(NRF_TWIM_Type const * p_reg);
+
+#if NRF_TWIM_HAS_DMA_CURRENTAMOUNT_REG
+/**
+ * @brief Function for getting the amount of transmitted bytes in the current transaction.
+ *
+ * @note Number of bytes is continuously updated during transmission.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Amount of transmitted bytes.
+ */
+NRF_STATIC_INLINE size_t nrf_twim_txd_curr_amount_get(NRF_TWIM_Type const * p_reg);
+
+/**
+ * @brief Function for getting the amount of received bytes in the current transaction.
+ *
+ * @note Number of bytes is continuously updated during reception.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Amount of received bytes.
+ */
+NRF_STATIC_INLINE size_t nrf_twim_rxd_curr_amount_get(NRF_TWIM_Type const * p_reg);
+#endif
 
 #if NRF_TWIM_HAS_ARRAY_LIST
 /**
@@ -656,6 +714,48 @@ NRF_STATIC_INLINE void nrf_twim_rx_pattern_match_candidate_set(NRF_TWIM_Type * p
 NRF_STATIC_INLINE uint32_t nrf_twim_rx_pattern_match_candidate_get(NRF_TWIM_Type const * p_reg,
                                                                    uint8_t               index);
 #endif // NRF_TWIM_HAS_DMA_REG
+
+#if NRF_TWIM_HAS_BUS_ERROR_EVENTS
+/**
+ * @brief Function for enabling RX transaction termination on the detection of a BUSERROR event.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] enable True if the RX transaction termination is to be enabled, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_twim_rx_terminate_on_bus_error_enable_set(NRF_TWIM_Type * p_reg,
+                                                                     bool            enable);
+
+/**
+ * @brief Function for checking if the RX transaction termination on the detection
+ *        of a BUSERROR event is enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval true  Transaction termination on BUSERROR event is enabled.
+ * @retval false Transaction termination on BUSERROR event is disabled.
+ */
+NRF_STATIC_INLINE bool nrf_twim_rx_terminate_on_bus_error_check(NRF_TWIM_Type const * p_reg);
+
+/**
+ * @brief Function for enabling TX transaction termination on the detection of a BUSERROR event.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] enable True if the TX transaction termination is to be enabled, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_twim_tx_terminate_on_bus_error_enable_set(NRF_TWIM_Type * p_reg,
+                                                                     bool            enable);
+
+/**
+ * @brief Function for checking if the TX transaction termination on the detection
+ *        of a BUSERROR event is enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval true  Transaction termination on BUSERROR event is enabled.
+ * @retval false Transaction termination on BUSERROR event is disabled.
+ */
+NRF_STATIC_INLINE bool nrf_twim_tx_terminate_on_bus_error_check(NRF_TWIM_Type const * p_reg);
+#endif
 
 #ifndef NRF_DECLARE_ONLY
 
@@ -859,25 +959,53 @@ NRF_STATIC_INLINE size_t nrf_twim_rxd_amount_get(NRF_TWIM_Type const * p_reg)
 #endif
 }
 
+#if NRF_TWIM_HAS_DMA_CURRENTAMOUNT_REG
+NRF_STATIC_INLINE size_t nrf_twim_txd_curr_amount_get(NRF_TWIM_Type const * p_reg)
+{
+    return p_reg->DMA.TX.CURRENTAMOUNT;
+}
+
+NRF_STATIC_INLINE size_t nrf_twim_rxd_curr_amount_get(NRF_TWIM_Type const * p_reg)
+{
+    return p_reg->DMA.RX.CURRENTAMOUNT;
+}
+#endif
+
 #if NRF_TWIM_HAS_ARRAY_LIST
 NRF_STATIC_INLINE void nrf_twim_tx_list_enable(NRF_TWIM_Type * p_reg)
 {
+#if NRF_TWIM_HAS_DMA_REG
+    p_reg->DMA.TX.LIST = TWIM_DMA_TX_LIST_TYPE_ArrayList << TWIM_DMA_TX_LIST_TYPE_Pos;
+#else
     p_reg->TXD.LIST = TWIM_TXD_LIST_LIST_ArrayList << TWIM_TXD_LIST_LIST_Pos;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_twim_tx_list_disable(NRF_TWIM_Type * p_reg)
 {
+#if NRF_TWIM_HAS_DMA_REG
+    p_reg->DMA.TX.LIST = TWIM_DMA_TX_LIST_TYPE_Disabled << TWIM_DMA_TX_LIST_TYPE_Pos;
+#else
     p_reg->TXD.LIST = TWIM_TXD_LIST_LIST_Disabled << TWIM_TXD_LIST_LIST_Pos;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_twim_rx_list_enable(NRF_TWIM_Type * p_reg)
 {
+#if NRF_TWIM_HAS_DMA_REG
+    p_reg->DMA.RX.LIST = TWIM_DMA_RX_LIST_TYPE_ArrayList << TWIM_DMA_RX_LIST_TYPE_Pos;
+#else
     p_reg->RXD.LIST = TWIM_RXD_LIST_LIST_ArrayList << TWIM_RXD_LIST_LIST_Pos;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_twim_rx_list_disable(NRF_TWIM_Type * p_reg)
 {
+#if NRF_TWIM_HAS_DMA_REG
+    p_reg->DMA.RX.LIST = TWIM_DMA_RX_LIST_TYPE_Disabled << TWIM_DMA_RX_LIST_TYPE_Pos;
+#else
     p_reg->RXD.LIST = TWIM_RXD_LIST_LIST_Disabled << TWIM_RXD_LIST_LIST_Pos;
+#endif
 }
 #endif
 
@@ -1046,6 +1174,38 @@ NRF_STATIC_INLINE uint32_t nrf_twim_rx_pattern_match_candidate_get(NRF_TWIM_Type
     return p_reg->DMA.RX.MATCH.CANDIDATE[index];
 }
 #endif // NRF_TWIM_HAS_DMA_REG
+
+#if NRF_TWIM_HAS_BUS_ERROR_EVENTS
+NRF_STATIC_INLINE void nrf_twim_rx_terminate_on_bus_error_enable_set(NRF_TWIM_Type * p_reg,
+                                                                     bool            enable)
+{
+    p_reg->DMA.RX.TERMINATEONBUSERROR =  (enable ? TWIM_DMA_RX_TERMINATEONBUSERROR_ENABLE_Enabled :
+                                                   TWIM_DMA_RX_TERMINATEONBUSERROR_ENABLE_Disabled)
+                                         << TWIM_DMA_RX_TERMINATEONBUSERROR_ENABLE_Pos;
+}
+
+NRF_STATIC_INLINE bool nrf_twim_rx_terminate_on_bus_error_check(NRF_TWIM_Type const * p_reg)
+{
+    return ((p_reg->DMA.RX.TERMINATEONBUSERROR & TWIM_DMA_RX_TERMINATEONBUSERROR_ENABLE_Msk)
+            >> TWIM_DMA_RX_TERMINATEONBUSERROR_ENABLE_Pos) ==
+           TWIM_DMA_RX_TERMINATEONBUSERROR_ENABLE_Enabled;
+}
+
+NRF_STATIC_INLINE void nrf_twim_tx_terminate_on_bus_error_enable_set(NRF_TWIM_Type * p_reg,
+                                                                     bool            enable)
+{
+    p_reg->DMA.TX.TERMINATEONBUSERROR =  (enable ? TWIM_DMA_TX_TERMINATEONBUSERROR_ENABLE_Enabled :
+                                                   TWIM_DMA_TX_TERMINATEONBUSERROR_ENABLE_Disabled)
+                                         << TWIM_DMA_TX_TERMINATEONBUSERROR_ENABLE_Pos;
+}
+
+NRF_STATIC_INLINE bool nrf_twim_tx_terminate_on_bus_error_check(NRF_TWIM_Type const * p_reg)
+{
+    return ((p_reg->DMA.TX.TERMINATEONBUSERROR & TWIM_DMA_TX_TERMINATEONBUSERROR_ENABLE_Msk)
+            >> TWIM_DMA_TX_TERMINATEONBUSERROR_ENABLE_Pos) ==
+           TWIM_DMA_TX_TERMINATEONBUSERROR_ENABLE_Enabled;
+}
+#endif // NRF_TWIM_HAS_BUS_ERROR_EVENTS
 
 #endif // NRF_DECLARE_ONLY
 

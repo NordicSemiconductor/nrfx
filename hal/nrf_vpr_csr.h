@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -52,11 +52,15 @@ extern "C" {
 #define NRF_VPR_CSR_NORDIC_KEY_MASK \
     (VPRCSR_NORDIC_VPRNORDICCTRL_NORDICKEY_Enabled << VPRCSR_NORDIC_VPRNORDICCTRL_NORDICKEY_Pos)
 
-/** @brief Symbol specifying maximum interrupt threshold. */
-#define NRF_VPR_CSR_INT_THRESHOLD_MAX VPRCSR_MINTTHRESH_TH_Max
-
-/** @brief Symbol specifying minimum interrupt threshold. */
-#define NRF_VPR_CSR_INT_THRESHOLD_MIN VPRCSR_MINTTHRESH_TH_Min
+/** @brief Interrupt threshold levels. */
+typedef enum
+{
+    NRF_VPR_CSR_INT_THRESHOLD_DISABLED = VPRCSR_MINTTHRESH_TH_DISABLED,     ///< Threshold disabled.
+    NRF_VPR_CSR_INT_THRESHOLD_LEVEL0   = VPRCSR_MINTTHRESH_TH_THRESHLEVEL0, ///< Threshold level 0.
+    NRF_VPR_CSR_INT_THRESHOLD_LEVEL1   = VPRCSR_MINTTHRESH_TH_THRESHLEVEL1, ///< Threshold level 1.
+    NRF_VPR_CSR_INT_THRESHOLD_LEVEL2   = VPRCSR_MINTTHRESH_TH_THRESHLEVEL2, ///< Threshold level 2.
+    NRF_VPR_CSR_INT_THRESHOLD_LEVEL3   = VPRCSR_MINTTHRESH_TH_THRESHLEVEL3, ///< Threshold level 3.
+} nrf_vpr_csr_int_threshold_t;
 
 /** @brief Trap causes. */
 typedef enum
@@ -153,14 +157,14 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_machine_trap_value_get(void);
  *
  * @param[in] th Machine mode interrupt level threshold to be set.
  */
-NRF_STATIC_INLINE void nrf_vpr_csr_machine_interrupt_threshold_set(uint8_t th);
+NRF_STATIC_INLINE void nrf_vpr_csr_machine_interrupt_threshold_set(nrf_vpr_csr_int_threshold_t th);
 
 /**
  * @brief Function for getting the machine mode interrupt level threshold.
  *
  * @return Machine mode interrupt level threshold.
  */
-NRF_STATIC_INLINE uint8_t nrf_vpr_csr_machine_interrupt_threshold_get(void);
+NRF_STATIC_INLINE nrf_vpr_csr_int_threshold_t nrf_vpr_csr_machine_interrupt_threshold_get(void);
 
 /**
  * @brief Function for enabling or disabling the Cycle Counter.
@@ -362,12 +366,12 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_machine_trap_value_get(void)
     return nrf_csr_read(VPRCSR_MTVAL);
 }
 
-NRF_STATIC_INLINE void nrf_vpr_csr_machine_interrupt_threshold_set(uint8_t th)
+NRF_STATIC_INLINE void nrf_vpr_csr_machine_interrupt_threshold_set(nrf_vpr_csr_int_threshold_t th)
 {
     nrf_csr_write(VPRCSR_MINTTHRESH, (th << VPRCSR_MINTTHRESH_TH_Pos));
 }
 
-NRF_STATIC_INLINE uint8_t nrf_vpr_csr_machine_interrupt_threshold_get(void)
+NRF_STATIC_INLINE nrf_vpr_csr_int_threshold_t nrf_vpr_csr_machine_interrupt_threshold_get(void)
 {
     return (nrf_csr_read(VPRCSR_MINTTHRESH) & VPRCSR_MINTTHRESH_TH_Msk) >> VPRCSR_MINTTHRESH_TH_Pos;
 }

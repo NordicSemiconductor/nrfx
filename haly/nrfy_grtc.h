@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2021 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -36,6 +36,7 @@
 
 #include <nrfx.h>
 #include <hal/nrf_grtc.h>
+#include <soc/nrfx_coredep.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -104,6 +105,14 @@ NRFY_STATIC_INLINE uint64_t __nrfy_internal_grtc_rt_counter_read(NRF_GRTC_Type c
 #define NRFY_GRTC_HAS_CLKSEL 1
 #else
 #define NRFY_GRTC_HAS_CLKSEL 0
+#endif
+
+#if NRF_GRTC_HAS_SYSCOUNTER_ARRAY || defined(__NRFX_DOXYGEN__)
+/** @brief Mask to determine whether the SYSCOUNTER value is reliable. */
+#define NRFY_GRTC_SYSCOUNTER_RETRY_MASK \
+    ((uint64_t)(NRF_GRTC_SYSCOUNTERH_OVERFLOW_MASK + NRF_GRTC_SYSCOUNTERH_BUSY_MASK) << 32)
+#else
+#define NRFY_GRTC_SYSCOUNTER_RETRY_MASK ((uint64_t)(NRF_GRTC_SYSCOUNTERH_OVERFLOW_MASK) << 32)
 #endif
 
 /**
@@ -211,7 +220,10 @@ NRFY_STATIC_INLINE void nrfy_grtc_prepare(NRF_GRTC_Type * p_reg, bool busy_wait)
         {}
 #else
         // Wait 3 32k cycles.
-        NRFX_DELAY_US(93);
+        // `NRFX_DELAY_US()` macro cannot be used here because in Zephyr environment
+        // it calls `k_busy_wait()`. This function relies on system timer which is
+        // not started yet.
+        nrfx_coredep_delay_us(93);
 #endif // NRFY_GRTC_HAS_RTCOUNTER
     }
 }
@@ -227,15 +239,13 @@ NRFY_STATIC_INLINE void nrfy_grtc_prepare(NRF_GRTC_Type * p_reg, bool busy_wait)
  */
 NRFY_STATIC_INLINE void nrfy_grtc_sys_counter_start(NRF_GRTC_Type * p_reg, bool busy_wait)
 {
-    nrf_grtc_sys_counter_auto_mode_set(p_reg, true);
     nrf_grtc_sys_counter_set(p_reg, true);
     nrf_barrier_w();
     if (busy_wait)
     {
+        bool active;
 #if NRFY_GRTC_HAS_SYSCOUNTER_ARRAY
-        // It needs to be fixed in future, for Lumos it is required now.
-        // Without active GRTC, it stops in a while loop.
-        bool active = nrf_grtc_sys_counter_active_check(p_reg);
+        active = nrf_grtc_sys_counter_active_check(p_reg);
         nrf_barrier_r();
         if (!active)
         {
@@ -243,22 +253,27 @@ NRFY_STATIC_INLINE void nrfy_grtc_sys_counter_start(NRF_GRTC_Type * p_reg, bool 
             nrf_barrier_w();
         }
 #else
-        // Perform action which returns SysCounter to ative state.
-        // TODO: [NRFX-3159] Check whether solution MLT-3897 works. 
-        // Also according to HW team  calling `nrf_grtc_sys_counter_active_set()`
-        // should give expected result.
-        (void)nrf_grtc_sys_counter_low_get(p_reg);
-        (void)nrf_grtc_sys_counter_high_get(p_reg);
-#endif
-        while (!nrf_grtc_event_check(p_reg, NRF_GRTC_EVENT_SYSCOUNTERVALID))
-        {}
-#if NRFY_GRTC_HAS_SYSCOUNTER_ARRAY
+        active = nrf_grtc_sys_counter_active_state_request_check(p_reg);
+        nrf_barrier_r();
         if (!active)
         {
-            nrf_grtc_sys_counter_active_set(p_reg, false);
+            nrf_grtc_sys_counter_active_state_request_set(p_reg, true);
             nrf_barrier_w();
         }
+#endif // NRFY_GRTC_HAS_SYSCOUNTER_ARRAY
+        while (!nrf_grtc_event_check(p_reg, NRF_GRTC_EVENT_SYSCOUNTERVALID))
+        {}
+
+        if (!active)
+        {
+#if NRFY_GRTC_HAS_SYSCOUNTER_ARRAY
+            nrf_grtc_sys_counter_active_set(p_reg, false);
+#else
+            nrf_grtc_sys_counter_active_state_request_set(p_reg, true);
 #endif
+            nrf_barrier_w();
+        }
+
     }
 }
 #endif // NRFY_GRTC_HAS_EXTENDED
@@ -272,15 +287,12 @@ NRFY_STATIC_INLINE void nrfy_grtc_sys_counter_start(NRF_GRTC_Type * p_reg, bool 
  */
 NRFY_STATIC_INLINE uint64_t nrfy_grtc_sys_counter_get(NRF_GRTC_Type const * p_reg)
 {
-    uint32_t counter_l, counter_h;
+    uint64_t counter;
 
     do {
-        counter_l = nrf_grtc_sys_counter_low_get(p_reg);
-        nrf_barrier_r();
-        counter_h = nrf_grtc_sys_counter_high_get(p_reg);
-        nrf_barrier_r();
-    } while (counter_h & NRF_GRTC_SYSCOUNTERH_OVERFLOW_MASK);
-    return (uint64_t)counter_l | ((uint64_t)counter_h << 32);
+        counter = nrf_grtc_sys_counter_get(p_reg);
+    } while (counter & NRFY_GRTC_SYSCOUNTER_RETRY_MASK);
+    return counter;
 }
 
 /**
@@ -670,6 +682,15 @@ NRFY_STATIC_INLINE void nrfy_grtc_sys_counter_auto_mode_set(NRF_GRTC_Type * p_re
 {
     nrf_grtc_sys_counter_auto_mode_set(p_reg, enable);
     nrf_barrier_w();
+}
+
+/** @refhal{nrf_grtc_sys_counter_auto_mode_check} */
+NRFY_STATIC_INLINE bool nrfy_grtc_sys_counter_auto_mode_check(NRF_GRTC_Type * p_reg)
+{
+    nrf_barrier_rw();
+    bool check = nrf_grtc_sys_counter_auto_mode_check(p_reg);
+    nrf_barrier_r();
+    return check;
 }
 #endif // NRFY_GRTC_HAS_EXTENDED
 

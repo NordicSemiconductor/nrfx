@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -121,6 +121,65 @@ typedef enum {
   CLOCK_POWER_IRQn                       = 270,      /*!< 270 CLOCK_POWER                                                      */
 } IRQn_Type;
 
+/* ==================================================== Interrupt Aliases ==================================================== */
+#define AAR00_IRQn                    AAR00_CCM00_IRQn
+#define AAR00_IRQHandler              AAR00_CCM00_IRQHandler
+#define CCM00_IRQn                    AAR00_CCM00_IRQn
+#define CCM00_IRQHandler              AAR00_CCM00_IRQHandler
+#define SPIM00_IRQn                   SERIAL00_IRQn
+#define SPIM00_IRQHandler             SERIAL00_IRQHandler
+#define SPIS00_IRQn                   SERIAL00_IRQn
+#define SPIS00_IRQHandler             SERIAL00_IRQHandler
+#define UARTE00_IRQn                  SERIAL00_IRQn
+#define UARTE00_IRQHandler            SERIAL00_IRQHandler
+#define SPIM20_IRQn                   SERIAL20_IRQn
+#define SPIM20_IRQHandler             SERIAL20_IRQHandler
+#define SPIS20_IRQn                   SERIAL20_IRQn
+#define SPIS20_IRQHandler             SERIAL20_IRQHandler
+#define TWIM20_IRQn                   SERIAL20_IRQn
+#define TWIM20_IRQHandler             SERIAL20_IRQHandler
+#define TWIS20_IRQn                   SERIAL20_IRQn
+#define TWIS20_IRQHandler             SERIAL20_IRQHandler
+#define UARTE20_IRQn                  SERIAL20_IRQn
+#define UARTE20_IRQHandler            SERIAL20_IRQHandler
+#define SPIM21_IRQn                   SERIAL21_IRQn
+#define SPIM21_IRQHandler             SERIAL21_IRQHandler
+#define SPIS21_IRQn                   SERIAL21_IRQn
+#define SPIS21_IRQHandler             SERIAL21_IRQHandler
+#define TWIM21_IRQn                   SERIAL21_IRQn
+#define TWIM21_IRQHandler             SERIAL21_IRQHandler
+#define TWIS21_IRQn                   SERIAL21_IRQn
+#define TWIS21_IRQHandler             SERIAL21_IRQHandler
+#define UARTE21_IRQn                  SERIAL21_IRQn
+#define UARTE21_IRQHandler            SERIAL21_IRQHandler
+#define SPIM22_IRQn                   SERIAL22_IRQn
+#define SPIM22_IRQHandler             SERIAL22_IRQHandler
+#define SPIS22_IRQn                   SERIAL22_IRQn
+#define SPIS22_IRQHandler             SERIAL22_IRQHandler
+#define TWIM22_IRQn                   SERIAL22_IRQn
+#define TWIM22_IRQHandler             SERIAL22_IRQHandler
+#define TWIS22_IRQn                   SERIAL22_IRQn
+#define TWIS22_IRQHandler             SERIAL22_IRQHandler
+#define UARTE22_IRQn                  SERIAL22_IRQn
+#define UARTE22_IRQHandler            SERIAL22_IRQHandler
+#define SPIM30_IRQn                   SERIAL30_IRQn
+#define SPIM30_IRQHandler             SERIAL30_IRQHandler
+#define SPIS30_IRQn                   SERIAL30_IRQn
+#define SPIS30_IRQHandler             SERIAL30_IRQHandler
+#define TWIM30_IRQn                   SERIAL30_IRQn
+#define TWIM30_IRQHandler             SERIAL30_IRQHandler
+#define TWIS30_IRQn                   SERIAL30_IRQn
+#define TWIS30_IRQHandler             SERIAL30_IRQHandler
+#define UARTE30_IRQn                  SERIAL30_IRQn
+#define UARTE30_IRQHandler            SERIAL30_IRQHandler
+#define COMP_IRQn                     COMP_LPCOMP_IRQn
+#define COMP_IRQHandler               COMP_LPCOMP_IRQHandler
+#define LPCOMP_IRQn                   COMP_LPCOMP_IRQn
+#define LPCOMP_IRQHandler             COMP_LPCOMP_IRQHandler
+#define CLOCK_IRQn                    CLOCK_POWER_IRQn
+#define CLOCK_IRQHandler              CLOCK_POWER_IRQHandler
+#define POWER_IRQn                    CLOCK_POWER_IRQn
+#define POWER_IRQHandler              CLOCK_POWER_IRQHandler
 
 /* =========================================================================================================================== */
 /* ================                           Processor and Core Peripheral Section                           ================ */
@@ -220,23 +279,28 @@ typedef enum {
   #define NRF_APPLICATION_SWI01                   NRF_APPLICATION_SWI01_S
   #define NRF_APPLICATION_SWI02                   NRF_APPLICATION_SWI02_S
   #define NRF_APPLICATION_SWI03                   NRF_APPLICATION_SWI03_S
-#endif                                               /*!<  NRF_TRUSTZONE_NONSECURE                                             */
+#endif                                               /*!< NRF_TRUSTZONE_NONSECURE                                              */
 
 /* =========================================================================================================================== */
 /* ================                                  Local Domain Remapping                                  ================ */
 /* =========================================================================================================================== */
 
-#ifdef NRF_APPLICATION                               /*!< Remap NRF_DOMAIN instances to NRF_X symbol for ease of use.          */
-  #define NRF_ICACHEDATA                          NRF_APPLICATION_ICACHEDATA
-  #define NRF_ICACHEINFO                          NRF_APPLICATION_ICACHEINFO
-  #define NRF_TPIU                                NRF_APPLICATION_TPIU
-  #define NRF_ETM                                 NRF_APPLICATION_ETM
-  #define NRF_CPUC                                NRF_APPLICATION_CPUC
-  #define NRF_ICACHE                              NRF_APPLICATION_ICACHE
-  #define NRF_SWI00                               NRF_APPLICATION_SWI00
-  #define NRF_SWI01                               NRF_APPLICATION_SWI01
-  #define NRF_SWI02                               NRF_APPLICATION_SWI02
-  #define NRF_SWI03                               NRF_APPLICATION_SWI03
+#ifdef NRF_APPLICATION                               /*!< Remap NRF_DOMAIN_X instances to NRF_X symbol for ease of use.        */
+  #ifdef NRF_TRUSTZONE_NONSECURE                     /*!< Remap only nonsecure instances.                                      */
+    #define NRF_TPIU                              NRF_APPLICATION_TPIU
+    #define NRF_ETM                               NRF_APPLICATION_ETM
+  #else                                              /*!< Remap all instances.                                                 */
+    #define NRF_ICACHEDATA                        NRF_APPLICATION_ICACHEDATA
+    #define NRF_ICACHEINFO                        NRF_APPLICATION_ICACHEINFO
+    #define NRF_TPIU                              NRF_APPLICATION_TPIU
+    #define NRF_ETM                               NRF_APPLICATION_ETM
+    #define NRF_CPUC                              NRF_APPLICATION_CPUC
+    #define NRF_ICACHE                            NRF_APPLICATION_ICACHE
+    #define NRF_SWI00                             NRF_APPLICATION_SWI00
+    #define NRF_SWI01                             NRF_APPLICATION_SWI01
+    #define NRF_SWI02                             NRF_APPLICATION_SWI02
+    #define NRF_SWI03                             NRF_APPLICATION_SWI03
+  #endif                                             /*!< NRF_TRUSTZONE_NONSECURE                                              */
 #endif                                               /*!< NRF_APPLICATION                                                      */
 
 /* ========================================== End of section using anonymous unions ========================================== */

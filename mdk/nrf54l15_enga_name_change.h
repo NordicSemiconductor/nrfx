@@ -1,0 +1,63 @@
+/*
+
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
+
+SPDX-License-Identifier: BSD-3-Clause
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+3. Neither the name of Nordic Semiconductor ASA nor the names of its
+   contributors may be used to endorse or promote products derived from this
+   software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL NORDIC SEMICONDUCTOR ASA OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+
+*/
+
+#ifndef NRF54L15_ENGA_NAME_CHANGE_H
+#define NRF54L15_ENGA_NAME_CHANGE_H
+
+#ifdef __cplusplus
+    extern "C" {
+#endif
+
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_ResetValue GLITCHDET_CONFIG_ResetValue
+
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Pos GLITCHDET_CONFIG_ENABLE_Pos  
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Msk GLITCHDET_CONFIG_ENABLE_Msk                       
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Min GLITCHDET_CONFIG_ENABLE_Min 
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Max GLITCHDET_CONFIG_ENABLE_Max
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Disable GLITCHDET_CONFIG_ENABLE_Disable
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Enable GLITCHDET_CONFIG_ENABLE_Enable
+
+
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_MODE_Pos  GLITCHDET_CONFIG_MODE_Pos                                        
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_MODE_Msk GLITCHDET_CONFIG_MODE_Msk                          
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_MODE_Min GLITCHDET_CONFIG_MODE_Min
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_MODE_Max GLITCHDET_CONFIG_MODE_Max
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_MODE_HighPassFilter GLITCHDET_CONFIG_MODE_HighPassFilter
+#define GLITCHDET_GLITCHDETECTOR_CONFIG_MODE_CapDiv     GLITCHDET_CONFIG_MODE_CapDiv
+
+#ifdef __cplusplus
+}
+#endif
+#endif /* NRF54L15_ENGA_NAME_CHANGE_H */
+

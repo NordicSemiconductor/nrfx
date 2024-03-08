@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -66,8 +66,8 @@ enum {
 /** @brief Macro for creating a UARTE driver instance. */
 #define NRFX_UARTE_INSTANCE(id)                               \
 {                                                             \
-    .p_reg        = NRFX_CONCAT_2(NRF_UARTE, id),             \
-    .drv_inst_idx = NRFX_CONCAT_3(NRFX_UARTE, id, _INST_IDX), \
+    .p_reg        = NRFX_CONCAT(NRF_, UARTE, id),             \
+    .drv_inst_idx = NRFX_CONCAT(NRFX_UARTE, id, _INST_IDX),   \
 }
 
 /**@defgroup NRFX_UARTE_RX_ENABLE_FLAGS Flags used for @ref nrfx_uarte_rx_enable.

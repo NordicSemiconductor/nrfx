@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -40,8 +40,12 @@
 extern "C" {
 #endif
 
+#if defined(NRF54H20_XXAA)
+#define NRF_UARTE_CLOCKPIN_TXD_NEEDED 1
+#endif
+
 #if defined(NRF54H20_ENGA_XXAA)
-#define NRF_UARTE_CLOCKPIN_RTS_NEEDED
+#define NRF_UARTE_CLOCKPIN_RTS_NEEDED 1
 #endif
 
 #define NRF_UARTE_PSEL_DISCONNECTED 0xFFFFFFFF

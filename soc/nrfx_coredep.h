@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -77,10 +77,10 @@
 #elif defined(NRF5340_XXAA_NETWORK)
     #define NRFX_DELAY_CPU_FREQ_MHZ 64
     #define NRFX_DELAY_DWT_PRESENT  1
-#elif defined(NRF54H20_ENGA_XXAA)
+#elif defined(NRF54H20_XXAA) || defined(NRF54H20_ENGA_XXAA)
     #define NRFX_DELAY_CPU_FREQ_MHZ (SystemCoreClock / 1000000)
     #define NRFX_DELAY_DWT_PRESENT  0
-#elif defined(NRF54L15_ENGA_XXAA)
+#elif defined(NRF54L15_XXAA) || defined(NRF54L15_ENGA_XXAA)
     #define NRFX_DELAY_CPU_FREQ_MHZ (SystemCoreClock / 1000000)
     #define NRFX_DELAY_DWT_PRESENT  1
 #else
@@ -89,7 +89,13 @@
 
 #if NRFX_CHECK(ISA_RISCV)
 /** @brief Slowdown for RISCV cores. */
+#if !defined(NRFX_DELAY_RISCV_SLOWDOWN)
+#if defined(NRF54L15_XXAA) || defined(NRF54L15_ENGA_XXAA)
+#define NRFX_DELAY_RISCV_SLOWDOWN 15
+#else
 #define NRFX_DELAY_RISCV_SLOWDOWN 50
+#endif // defined(NRF54L15_XXAA) || defined(NRF54L15_ENGA_XXAA)
+#endif // !defined(NRFX_DELAY_RISCV_SLOWDOWN)
 #endif
 
 /**

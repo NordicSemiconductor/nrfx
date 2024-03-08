@@ -1,6 +1,20 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.4.0] - 2024-03-08
+### Added
+- Added support for nRF54H20 and nRF54L15.
+- Added support for changing the sub-power mode in the POWER driver.
+- Added support for sleep configuration in the GRTC driver.
+- Added HAL for TDM peripheral.
+- Implemented a workaround for the anomaly 159 on the nRF5340 SoC in the QSPI driver.
+
+### Changed
+- Updated MDK to version 8.63.2.
+
+### Fixed
+- Fixed extended configuration setting in the SPIM driver. Now extended configuration is applied correctly when only a subset of extended features is available.
+
 ## [3.3.0] - 2023-12-21
 ### Added
 - Added support for nRF54H20 Eng A and nRF54L15 Eng A.

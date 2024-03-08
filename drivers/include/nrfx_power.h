@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -79,13 +79,17 @@ extern "C" {
 #endif
 
 /**
- * @brief Power mode possible configurations
+ * @brief Sub-power mode possible configurations
  */
 typedef enum
 {
-    NRFX_POWER_MODE_CONSTLAT, /**< Constant latency mode */
-    NRFX_POWER_MODE_LOWPWR    /**< Low power mode        */
-}nrfx_power_mode_t;
+#if NRF_POWER_HAS_CONST_LATENCY || defined(__NRFX_DOXYGEN__)
+    NRFX_POWER_MODE_CONSTLAT, ///< Constant Latency mode.
+#endif
+#if NRF_POWER_HAS_LOW_POWER || defined(__NRFX_DOXYGEN__)
+    NRFX_POWER_MODE_LOWPWR    ///< Low Power mode.
+#endif
+} nrfx_power_mode_t;
 
 #if NRF_POWER_HAS_SLEEPEVT || defined(__NRFX_DOXYGEN__)
 /**
@@ -342,6 +346,39 @@ void nrfx_power_sleepevt_disable(void);
  */
 void nrfx_power_sleepevt_uninit(void);
 #endif /* NRF_POWER_HAS_SLEEPEVT */
+
+#if (NRF_POWER_HAS_CONST_LATENCY && NRF_POWER_HAS_LOW_POWER) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for requesting Constant Latency sub-power mode.
+ *
+ * @note This function uses a reference counter. As a result, if it is called more than once,
+ *       the function @ref nrfx_power_constlat_mode_free() needs to be called the same number of
+ *       times to change the mode to Low Power.
+ *
+ * @retval NRFX_SUCCESS       The sub-power mode was successfully changed to Constant Latency.
+ * @retval NRFX_ERROR_ALREADY Constant Latency mode was already requested and it is the current sub-power mode.
+ */
+nrfx_err_t nrfx_power_constlat_mode_request(void);
+
+/**
+ * @brief Function for freeing Constant Latency sub-power mode.
+ *
+ * @note This function uses a reference counter. As a result, it needs to be called the same number
+ *       of times as the @ref nrfx_power_constlat_mode_request() function to change the mode back
+ *       to Low Power.
+ *
+ * @retval NRFX_SUCCESS    The sub-power mode was successfully changed to Low Power.
+ * @retval NRFX_ERROR_BUSY The sub-power mode was not changed due to multiple calls to @ref nrfx_power_constlat_mode_request.
+ */
+nrfx_err_t nrfx_power_constlat_mode_free(void);
+
+/**
+ * @brief Function for getting the current sub-power mode.
+ *
+ * @return Current sub-power mode.
+ */
+nrfx_power_mode_t nrfx_power_mode_get(void);
+#endif
 
 #if NRF_POWER_HAS_USBREG || defined(__NRFX_DOXYGEN__)
 /**

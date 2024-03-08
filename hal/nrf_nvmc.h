@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2012 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -45,7 +45,7 @@
  * Integer value. Minimum: 0. Maximum: 3.
  */
 #ifndef NRFX_DEFAULT_IRQ_PRIORITY
-#define NRFX_DEFAULT_IRQ_PRIORITY 3
+#define NRFX_DEFAULT_IRQ_PRIORITY 0
 #endif
 
 /**
@@ -242,6 +242,33 @@
  */
 #ifndef NRFX_GRTC_ENABLED
 #define NRFX_GRTC_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_GRTC_CONFIG_SLEEP_ALLOWED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GRTC_CONFIG_SLEEP_ALLOWED
+#define NRFX_GRTC_CONFIG_SLEEP_ALLOWED 0
+#endif
+
+/**
+ * @brief NRFX_GRTC_CONFIG_AUTOEN
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GRTC_CONFIG_AUTOEN
+#define NRFX_GRTC_CONFIG_AUTOEN 0
+#endif
+
+/**
+ * @brief NRFX_GRTC_CONFIG_AUTOSTART
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GRTC_CONFIG_AUTOSTART
+#define NRFX_GRTC_CONFIG_AUTOSTART 0
 #endif
 
 /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -495,10 +495,26 @@ typedef enum
 /** @brief Types of CRC calculatons regarding address. */
 typedef enum
 {
+#if defined(RADIO_CRCCNF_SKIPADDR_Include) || defined(__NRFX_DOXYGEN__)
     NRF_RADIO_CRC_ADDR_INCLUDE    = RADIO_CRCCNF_SKIPADDR_Include,    /**< CRC calculation includes address field. */
+#else
+    NRF_RADIO_CRC_ADDR_INCLUDE    = RADIO_CRCCNF_OFFSET_Include,      /**< CRC calculation includes address field. */
+#endif
+#if defined(RADIO_CRCCNF_SKIPADDR_Skip) || defined(__NRFX_DOXYGEN__)
     NRF_RADIO_CRC_ADDR_SKIP       = RADIO_CRCCNF_SKIPADDR_Skip,       /**< CRC calculation does not include address field. */
+#else
+    NRF_RADIO_CRC_ADDR_SKIP       = RADIO_CRCCNF_OFFSET_Skip,         /**< CRC calculation does not include address field. */
+#endif
 #if defined(RADIO_CRCCNF_SKIPADDR_Ieee802154) || defined(__NRFX_DOXYGEN__)
     NRF_RADIO_CRC_ADDR_IEEE802154 = RADIO_CRCCNF_SKIPADDR_Ieee802154, /**< CRC calculation as per 802.15.4 standard. */
+#elif defined(RADIO_CRCCNF_OFFSET_LENGTH)
+    NRF_RADIO_CRC_ADDR_IEEE802154 = RADIO_CRCCNF_OFFSET_LENGTH,       /**< CRC calculation as per 802.15.4 standard. */
+#endif
+#if defined(RADIO_CRCCNF_OFFSET_SO) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_CRC_ADDR_S0        = RADIO_CRCCNF_OFFSET_SO,            /**< CRC calculation starting at first byte after S0 field. */
+#endif
+#if defined(RADIO_CRCCNF_OFFSET_S1) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_CRC_ADDR_S1        = RADIO_CRCCNF_OFFSET_S1,            /**< CRC calculation starting at first byte after S1 field. */
 #endif
 } nrf_radio_crc_addr_t;
 
@@ -1222,7 +1238,8 @@ NRF_STATIC_INLINE uint8_t nrf_radio_dacnf_ena_get(NRF_RADIO_Type const * p_reg);
  */
 NRF_STATIC_INLINE uint8_t nrf_radio_dacnf_txadd_get(NRF_RADIO_Type const * p_reg);
 
-#if defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(__NRFX_DOXYGEN__)
+#if defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(RADIO_INTENSET00_MHRMATCH_Msk) || \
+    defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for setting MAC Header Match Unit search pattern configuration.
  *
@@ -1259,7 +1276,8 @@ NRF_STATIC_INLINE void nrf_radio_mhmu_pattern_mask_set(NRF_RADIO_Type * p_reg,
  * @return Pattern mask.
  */
 NRF_STATIC_INLINE uint32_t nrf_radio_mhmu_pattern_mask_get(NRF_RADIO_Type const * p_reg);
-#endif // defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(__NRFX_DOXYGEN__)
+#endif // defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(RADIO_INTENSET00_MHRMATCH_Msk) ||
+       // defined(__NRFX_DOXYGEN__)
 
 #if defined(RADIO_MODECNF0_RU_Msk) || defined(__NRFX_DOXYGEN__)
 /**
@@ -1527,7 +1545,8 @@ NRF_STATIC_INLINE uint32_t nrf_radio_dfe_pattern_cnt_get(NRF_RADIO_Type const * 
 NRF_STATIC_INLINE void nrf_radio_dfe_pattern_clear(NRF_RADIO_Type * p_reg);
 #endif // defined(RADIO_SWITCHPATTERN_SWITCHPATTERN_Msk) || defined(__NRFX_DOXYGEN__)
 
-#if defined(RADIO_DFEPACKET_PTR_PTR_Msk) || defined(__NRFX_DOXYGEN__)
+#if defined(RADIO_DFEPACKET_PTR_PTR_Msk) || defined(RADIO_DFEPACKET_PTR_OFFSET_Msk) || \
+    defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for setting the buffer for storing IQ samples or magnitude and phase pairs
  *        of the samples.
@@ -1553,7 +1572,7 @@ NRF_STATIC_INLINE void nrf_radio_dfe_buffer_set(NRF_RADIO_Type * p_reg,
  */
 NRF_STATIC_INLINE uint32_t nrf_radio_dfe_amount_get(NRF_RADIO_Type const * p_reg);
 
-#if defined(RADIO_DFEPACKET_CURRENTAMOUNT_AMOUNT_Msk)
+#if defined(RADIO_DFEPACKET_CURRENTAMOUNT_AMOUNT_Msk) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for getting the number of bytes transferred in the current transaction.
  *
@@ -1887,7 +1906,11 @@ NRF_STATIC_INLINE void nrf_radio_crc_configure(NRF_RADIO_Type *     p_reg,
                                                uint32_t             crc_polynominal)
 {
     p_reg->CRCCNF = ((uint32_t)crc_length  << RADIO_CRCCNF_LEN_Pos) |
+#if defined(RADIO_CRCCNF_SKIPADDR_Msk)
                     ((uint32_t)crc_address << RADIO_CRCCNF_SKIPADDR_Pos);
+#else
+                    ((uint32_t)crc_address << RADIO_CRCCNF_OFFSET_Pos);
+#endif
     p_reg->CRCPOLY = (crc_polynominal << RADIO_CRCPOLY_CRCPOLY_Pos);
 }
 
@@ -1924,12 +1947,21 @@ NRF_STATIC_INLINE nrf_radio_state_t nrf_radio_state_get(NRF_RADIO_Type const * p
 
 NRF_STATIC_INLINE void nrf_radio_datawhiteiv_set(NRF_RADIO_Type * p_reg, uint8_t datawhiteiv)
 {
+#if defined(RADIO_DATAWHITEIV_DATAWHITEIV_Msk)
     p_reg->DATAWHITEIV = (((uint32_t)datawhiteiv) & RADIO_DATAWHITEIV_DATAWHITEIV_Msk);
+#else
+    p_reg->DATAWHITE &= ~RADIO_DATAWHITE_IV_Msk | (((uint32_t)datawhiteiv << RADIO_DATAWHITE_IV_Pos)
+                                                   & RADIO_DATAWHITE_IV_Msk);
+#endif
 }
 
 NRF_STATIC_INLINE uint8_t nrf_radio_datawhiteiv_get(NRF_RADIO_Type const * p_reg)
 {
+#if defined(RADIO_DATAWHITEIV_DATAWHITEIV_Msk)
     return (uint8_t)(p_reg->DATAWHITEIV & RADIO_DATAWHITEIV_DATAWHITEIV_Msk);
+#else
+    return (uint8_t)((p_reg->DATAWHITE & RADIO_DATAWHITE_IV_Msk) >> RADIO_DATAWHITE_IV_Pos);
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_radio_bcc_set(NRF_RADIO_Type * p_reg, uint32_t radio_bcc)
@@ -2000,7 +2032,7 @@ NRF_STATIC_INLINE uint8_t nrf_radio_dacnf_txadd_get(NRF_RADIO_Type const * p_reg
                                       RADIO_DACNF_TXADD7_Msk)) >> RADIO_DACNF_TXADD0_Pos);
 }
 
-#if defined(RADIO_INTENSET_MHRMATCH_Msk)
+#if defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(RADIO_INTENSET00_MHRMATCH_Msk)
 void nrf_radio_mhmu_search_pattern_set(NRF_RADIO_Type * p_reg,
                                        uint32_t         radio_mhmu_search_pattern)
 {
@@ -2015,14 +2047,22 @@ NRF_STATIC_INLINE uint32_t nrf_radio_mhmu_search_pattern_get(NRF_RADIO_Type cons
 NRF_STATIC_INLINE void nrf_radio_mhmu_pattern_mask_set(NRF_RADIO_Type * p_reg,
                                                        uint32_t         radio_mhmu_pattern_mask)
 {
+#if defined(RADIO_MHRMATCHMAS_MHRMATCHMAS_Msk)
     p_reg->MHRMATCHMAS = radio_mhmu_pattern_mask;
+#else
+    p_reg->MHRMATCHMASK = radio_mhmu_pattern_mask;
+#endif
 }
 
 NRF_STATIC_INLINE uint32_t nrf_radio_mhmu_pattern_mask_get(NRF_RADIO_Type const * p_reg)
 {
+#if defined(RADIO_MHRMATCHMAS_MHRMATCHMAS_Msk)
     return p_reg->MHRMATCHMAS;
+#else
+    return p_reg->MHRMATCHMASK;
+#endif
 }
-#endif // defined(RADIO_INTENSET_MHRMATCH_Msk)
+#endif // defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(RADIO_INTENSET00_MHRMATCH_Msk)
 
 #if defined(RADIO_MODECNF0_RU_Msk)
 NRF_STATIC_INLINE void nrf_radio_modecnf0_set(NRF_RADIO_Type * p_reg,
@@ -2250,7 +2290,7 @@ NRF_STATIC_INLINE void nrf_radio_dfe_pattern_clear(NRF_RADIO_Type * p_reg)
 }
 #endif
 
-#if defined(RADIO_DFEPACKET_PTR_PTR_Msk)
+#if defined(RADIO_DFEPACKET_PTR_PTR_Msk) || defined(RADIO_DFEPACKET_PTR_OFFSET_Msk)
 NRF_STATIC_INLINE void nrf_radio_dfe_buffer_set(NRF_RADIO_Type * p_reg,
                                                 uint32_t *       p_buffer,
                                                 size_t           length)

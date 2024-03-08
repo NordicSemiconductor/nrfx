@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -43,6 +43,7 @@
 #include "prs/nrfx_prs.h"
 #include <haly/nrfy_gpio.h>
 #include <string.h>
+#include <soc/nrfx_coredep.h>
 
 #define NRFX_LOG_MODULE UARTE
 #include <nrfx_log.h>
@@ -711,7 +712,15 @@ static nrfx_err_t wait_for_endtx(NRF_UARTE_Type * p_uarte,
             ready = is_tx_ready(p_uarte, stop_on_end);
             amount = nrfy_uarte_tx_amount_get(p_uarte);
             p_tx = nrfy_uarte_tx_buffer_get(p_uarte);
-    } while (!ready && p_tx == p_buf);
+
+            if (ready || (p_tx != p_buf))
+            {
+                break;
+            }
+#if defined(CONFIG_SOC_SERIES_BSIM_NRFXX)
+            nrfx_coredep_delay_us(3);
+#endif
+    } while (true);
 
     // Check if transfer got aborted. Note that aborted transfer can only be
     // detected if new transfer is not started.
@@ -835,13 +844,19 @@ static nrfx_err_t blocking_tx(nrfx_uarte_t const * p_instance,
     {
         do {
             err = poll_out(p_instance, &p_buffer[i], early_ret);
-            if ((err != NRFX_SUCCESS) && (err != NRFX_ERROR_BUSY))
+            if (err == NRFX_SUCCESS)
+            {
+                break;
+            }
+            if (err != NRFX_ERROR_BUSY)
             {
                 // TX aborted or other error
                 return err;
             }
-
-        } while (err != NRFX_SUCCESS);
+#if defined(CONFIG_SOC_SERIES_BSIM_NRFXX)
+            nrfx_coredep_delay_us(3);
+#endif
+        } while (true);
 
         if (!p_cb->handler && (p_cb->flags & UARTE_FLAG_TX_ABORTED))
         {
@@ -1156,6 +1171,7 @@ static void on_rx_disabled(NRF_UARTE_Type        * p_uarte,
                            uarte_control_block_t * p_cb,
                            size_t                  flush_cnt)
 {
+    nrfy_uarte_event_clear(p_uarte, NRF_UARTE_EVENT_RXDRDY);
     nrfy_uarte_shorts_disable(p_uarte, NRF_UARTE_SHORT_ENDRX_STARTRX);
     nrfy_uarte_int_disable(p_uarte, rx_int_mask);
     disable_hw_from_rx(p_uarte);
@@ -1204,14 +1220,7 @@ static bool rx_flushed_handler(NRF_UARTE_Type * p_uarte, uarte_control_block_t *
         memcpy(p_cb->rx.curr.p_buffer, p_cb->rx.flush.p_buffer, p_cb->rx.flush.length);
         p_cb->rx.off = p_cb->rx.flush.length;
         p_cb->rx.flush.length = 0;
-        if (nrfy_uarte_int_enable_check(p_uarte, NRF_UARTE_INT_RXDRDY_MASK) && p_cb->handler)
-        {
-                user_handler(p_cb, NRFX_UARTE_EVT_RX_BYTE);
-        }
-        else
-        {
-            NRFX_ATOMIC_FETCH_OR(&p_cb->flags, UARTE_FLAG_RX_FROM_FLUSH);
-        }
+        NRFX_ATOMIC_FETCH_OR(&p_cb->flags, UARTE_FLAG_RX_FROM_FLUSH);
     }
 
     return true;
@@ -1257,6 +1266,13 @@ nrfx_err_t nrfx_uarte_rx_enable(nrfx_uarte_t const * p_instance, uint32_t flags)
     {
         release_rx(p_cb);
         return NRFX_ERROR_NO_MEM;
+    }
+
+    if (nrfy_uarte_int_enable_check(p_uarte, NRF_UARTE_INT_RXDRDY_MASK) && p_cb->handler &&
+        (p_cb->flags & UARTE_FLAG_RX_FROM_FLUSH))
+    {
+        NRFX_ATOMIC_FETCH_AND(&p_cb->flags, ~UARTE_FLAG_RX_FROM_FLUSH);
+        user_handler(p_cb, NRFX_UARTE_EVT_RX_BYTE);
     }
 
     /* Check if instance is still enabled. It might get disabled at some point. */
@@ -1740,6 +1756,11 @@ static void handler_on_rx_done(uarte_control_block_t * p_cb,
 static void rxto_irq_handler(NRF_UARTE_Type *        p_uarte,
                              uarte_control_block_t * p_cb)
 {
+    if (RX_CACHE_SUPPORTED && (p_cb->flags & UARTE_FLAG_RX_USE_CACHE))
+    {
+	p_cb->rx.p_cache->user[0] = (nrfy_uarte_buffer_t){ NULL, 0 };
+    }
+
     if (p_cb->rx.curr.p_buffer)
     {
         handler_on_rx_done(p_cb, p_cb->rx.curr.p_buffer, 0, true);

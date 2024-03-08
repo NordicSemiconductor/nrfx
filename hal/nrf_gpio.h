@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -320,6 +320,40 @@ typedef enum
 #endif
 #if defined(GPIO_RETAIN_RADIOCORE_Msk) || defined(__NRFX_DOXYGEN__)
     NRF_GPIO_RETAIN_NETWORK_MASK     = GPIO_RETAIN_RADIOCORE_Msk,  ///< Enable retention for GPIO registers for Radio core
+#endif
+#if defined(GPIO_RETAIN_PIN0_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_GPIO_RETAIN_PIN0_MASK        = GPIO_RETAIN_PIN0_Msk,       ///< Enable retention for pin 0.
+    NRF_GPIO_RETAIN_PIN1_MASK        = GPIO_RETAIN_PIN1_Msk,       ///< Enable retention for pin 1.
+    NRF_GPIO_RETAIN_PIN2_MASK        = GPIO_RETAIN_PIN2_Msk,       ///< Enable retention for pin 2.
+    NRF_GPIO_RETAIN_PIN3_MASK        = GPIO_RETAIN_PIN3_Msk,       ///< Enable retention for pin 3.
+    NRF_GPIO_RETAIN_PIN4_MASK        = GPIO_RETAIN_PIN4_Msk,       ///< Enable retention for pin 4.
+    NRF_GPIO_RETAIN_PIN5_MASK        = GPIO_RETAIN_PIN5_Msk,       ///< Enable retention for pin 5.
+    NRF_GPIO_RETAIN_PIN6_MASK        = GPIO_RETAIN_PIN6_Msk,       ///< Enable retention for pin 6.
+    NRF_GPIO_RETAIN_PIN7_MASK        = GPIO_RETAIN_PIN7_Msk,       ///< Enable retention for pin 7.
+    NRF_GPIO_RETAIN_PIN8_MASK        = GPIO_RETAIN_PIN8_Msk,       ///< Enable retention for pin 8.
+    NRF_GPIO_RETAIN_PIN9_MASK        = GPIO_RETAIN_PIN9_Msk,       ///< Enable retention for pin 9.
+    NRF_GPIO_RETAIN_PIN10_MASK       = GPIO_RETAIN_PIN10_Msk,      ///< Enable retention for pin 10.
+    NRF_GPIO_RETAIN_PIN11_MASK       = GPIO_RETAIN_PIN11_Msk,      ///< Enable retention for pin 11.
+    NRF_GPIO_RETAIN_PIN12_MASK       = GPIO_RETAIN_PIN12_Msk,      ///< Enable retention for pin 12.
+    NRF_GPIO_RETAIN_PIN13_MASK       = GPIO_RETAIN_PIN13_Msk,      ///< Enable retention for pin 13.
+    NRF_GPIO_RETAIN_PIN14_MASK       = GPIO_RETAIN_PIN14_Msk,      ///< Enable retention for pin 14.
+    NRF_GPIO_RETAIN_PIN15_MASK       = GPIO_RETAIN_PIN15_Msk,      ///< Enable retention for pin 15.
+    NRF_GPIO_RETAIN_PIN16_MASK       = GPIO_RETAIN_PIN16_Msk,      ///< Enable retention for pin 16.
+    NRF_GPIO_RETAIN_PIN17_MASK       = GPIO_RETAIN_PIN17_Msk,      ///< Enable retention for pin 17.
+    NRF_GPIO_RETAIN_PIN18_MASK       = GPIO_RETAIN_PIN18_Msk,      ///< Enable retention for pin 18.
+    NRF_GPIO_RETAIN_PIN19_MASK       = GPIO_RETAIN_PIN19_Msk,      ///< Enable retention for pin 19.
+    NRF_GPIO_RETAIN_PIN20_MASK       = GPIO_RETAIN_PIN20_Msk,      ///< Enable retention for pin 20.
+    NRF_GPIO_RETAIN_PIN21_MASK       = GPIO_RETAIN_PIN21_Msk,      ///< Enable retention for pin 21.
+    NRF_GPIO_RETAIN_PIN22_MASK       = GPIO_RETAIN_PIN22_Msk,      ///< Enable retention for pin 22.
+    NRF_GPIO_RETAIN_PIN23_MASK       = GPIO_RETAIN_PIN23_Msk,      ///< Enable retention for pin 23.
+    NRF_GPIO_RETAIN_PIN24_MASK       = GPIO_RETAIN_PIN24_Msk,      ///< Enable retention for pin 24.
+    NRF_GPIO_RETAIN_PIN25_MASK       = GPIO_RETAIN_PIN25_Msk,      ///< Enable retention for pin 25.
+    NRF_GPIO_RETAIN_PIN26_MASK       = GPIO_RETAIN_PIN26_Msk,      ///< Enable retention for pin 26.
+    NRF_GPIO_RETAIN_PIN27_MASK       = GPIO_RETAIN_PIN27_Msk,      ///< Enable retention for pin 27.
+    NRF_GPIO_RETAIN_PIN28_MASK       = GPIO_RETAIN_PIN28_Msk,      ///< Enable retention for pin 28.
+    NRF_GPIO_RETAIN_PIN29_MASK       = GPIO_RETAIN_PIN29_Msk,      ///< Enable retention for pin 29.
+    NRF_GPIO_RETAIN_PIN30_MASK       = GPIO_RETAIN_PIN30_Msk,      ///< Enable retention for pin 30.
+    NRF_GPIO_RETAIN_PIN31_MASK       = GPIO_RETAIN_PIN31_Msk,      ///< Enable retention for pin 31.
 #endif
 #if defined(NRF_GPIO_RETAIN_EXT)
     NRF_GPIO_RETAIN_EXT

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -51,6 +51,16 @@ nrfx_err_t nrfx_twi_twim_bus_recover(uint32_t scl_pin, uint32_t sda_pin)
 
     TWI_TWIM_PIN_CONFIGURE(scl_pin);
     TWI_TWIM_PIN_CONFIGURE(sda_pin);
+
+#if NRF_GPIO_HAS_CLOCKPIN
+#if defined(NRF_TWIM_CLOCKPIN_SCL_NEEDED)
+        nrf_gpio_pin_clock_set(scl_pin, true);
+#endif
+#if defined(NRF_TWIM_CLOCKPIN_SDA_NEEDED)
+        nrf_gpio_pin_clock_set(sda_pin, true);
+#endif
+#endif
+
     NRFX_DELAY_US(4);
 
     for (uint8_t i = 0; i < 9; i++)

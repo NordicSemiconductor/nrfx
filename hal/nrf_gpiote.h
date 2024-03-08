@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2023, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -127,7 +127,8 @@ extern "C" {
 #endif
 
 #if defined(GPIOTE_INTENSET0_PORT0SECURE_Msk)
-#if defined(NRF_TRUSTZONE_NONSECURE) || defined(ISA_RISCV)
+#if defined(NRF_TRUSTZONE_NONSECURE) || \
+    (defined(ISA_RISCV) && defined(HALTIUM_XXAA))
 #define NRF_GPIOTE_SECURE_SUFFIX NONSECURE
 #else
 #define NRF_GPIOTE_SECURE_SUFFIX SECURE
@@ -241,6 +242,10 @@ typedef enum
     NRF_GPIOTE_EVENT_PORT = offsetof(NRF_GPIOTE_Type, NRF_GPIOTE_EVENTS_PORT_REG), ///< Port event.
 } nrf_gpiote_event_t;
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#endif
 /** @brief GPIOTE interrupts. */
 typedef enum
 {
@@ -260,6 +265,10 @@ typedef enum
     NRF_GPIOTE_INT_PORT_MASK = NRF_GPIOTE_INT_PORT_MASK_NAME,
 #endif
 } nrf_gpiote_int_t;
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
 /** @brief Symbol specifying bitmask collecting all IN events interrupts. */
 #define NRF_GPIOTE_INT_IN_MASK (NRFX_LISTIFY(GPIOTE_CH_NUM, NRF_GPIOTE_INT_IN, (|), _))

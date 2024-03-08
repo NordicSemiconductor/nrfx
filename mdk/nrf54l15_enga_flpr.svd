@@ -8,7 +8,7 @@
   <version>1</version>
   <description>System-on-chip with a 32-bit Arm Cortex-M33 microcontroller</description>
   <licenseText>
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -583,112 +583,6 @@ POSSIBILITY OF SUCH DAMAGE.
         <cluster>
           <dim>1</dim>
           <dimIncrement>0x020</dimIncrement>
-          <name>APPROTECT[%s]</name>
-          <description>Access Port Protection Registers</description>
-          <headerStructName>UICR_APPROTECT</headerStructName>
-          <access>read-writeonce</access>
-          <addressOffset>0x000</addressOffset>
-          <register>
-            <name>PROTECT0</name>
-            <description>Description cluster: Access port protection</description>
-            <addressOffset>0x000</addressOffset>
-            <access>read-writeonce</access>
-            <resetValue>0xFFFFFFFF</resetValue>
-            <size>0x20</size>
-            <fields>
-              <field>
-                <name>PALL</name>
-                <lsb>0</lsb>
-                <msb>31</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Protected</name>
-                    <description>Blocks debugger read/write access to all CPU registers and memory mapped addresses, and locks TAMPC PROTECT.DOMAIN DBGEN and NIDEN signal protectors.</description>
-                    <value>0x50FA50FA</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-          <register>
-            <name>PROTECT1</name>
-            <description>Description cluster: Access port protection</description>
-            <addressOffset>0x01C</addressOffset>
-            <access>read-writeonce</access>
-            <resetValue>0xFFFFFFFF</resetValue>
-            <size>0x20</size>
-            <fields>
-              <field>
-                <name>PALL</name>
-                <lsb>0</lsb>
-                <msb>31</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Protected</name>
-                    <description>Blocks debugger read/write access to all CPU registers and memory mapped addresses, and locks TAMPC PROTECT.DOMAIN DBGEN and NIDEN signal protectors.</description>
-                    <value>0x50FA50FA</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-        </cluster>
-        <cluster>
-          <dim>1</dim>
-          <dimIncrement>0x020</dimIncrement>
-          <name>SECUREAPPROTECT[%s]</name>
-          <description>Access Port Protection Registers</description>
-          <headerStructName>UICR_SECUREAPPROTECT</headerStructName>
-          <access>read-writeonce</access>
-          <addressOffset>0x020</addressOffset>
-          <register>
-            <name>PROTECT0</name>
-            <description>Description cluster: Access port protection</description>
-            <addressOffset>0x000</addressOffset>
-            <access>read-writeonce</access>
-            <resetValue>0xFFFFFFFF</resetValue>
-            <size>0x20</size>
-            <fields>
-              <field>
-                <name>PALL</name>
-                <lsb>0</lsb>
-                <msb>31</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Protected</name>
-                    <description>Blocks debugger read/write access to all CPU registers and memory mapped addresses, and locks TAMPC PROTECT.DOMAIN SPIDEN and SPNIDEN signal protectors.</description>
-                    <value>0x50FA50FA</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-          <register>
-            <name>PROTECT1</name>
-            <description>Description cluster: Access port protection register</description>
-            <addressOffset>0x01C</addressOffset>
-            <access>read-writeonce</access>
-            <resetValue>0xFFFFFFFF</resetValue>
-            <size>0x20</size>
-            <fields>
-              <field>
-                <name>PALL</name>
-                <lsb>0</lsb>
-                <msb>31</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Protected</name>
-                    <description>Blocks debugger read/write access to all CPU registers and memory mapped addresses, and locks TAMPC PROTECT.DOMAIN SPIDEN and SPNIDEN signal protectors.</description>
-                    <value>0x50FA50FA</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-        </cluster>
-        <cluster>
-          <dim>1</dim>
-          <dimIncrement>0x020</dimIncrement>
           <name>AUXAPPROTECT[%s]</name>
           <description>Access Port Protection Registers</description>
           <headerStructName>UICR_AUXAPPROTECT</headerStructName>
@@ -748,13 +642,11 @@ POSSIBILITY OF SUCH DAMAGE.
           <access>read-writeonce</access>
           <addressOffset>0x060</addressOffset>
           <register>
-            <dim>0x3</dim>
-            <dimIncrement>0x4</dimIncrement>
-            <name>PROTECT0[%s]</name>
-            <description>Description collection: Erase protection</description>
-            <addressOffset>0x004</addressOffset>
+            <name>PROTECT0</name>
+            <description>Description cluster: Erase protection</description>
+            <addressOffset>0x000</addressOffset>
             <access>read-writeonce</access>
-            <resetValue>0x50FA50FA</resetValue>
+            <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
               <field>
@@ -764,7 +656,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <enumeratedValues>
                   <enumeratedValue>
                     <name>Protected</name>
-                    <description>Protected, the device cannot be erased and TAMPC PROTECT.ERASEPROTECT signal protector is locked.</description>
+                    <description>Protected, the device cannot be erased using the CTRL-AP Erase all function and TAMPC PROTECT.ERASEPROTECT signal protector is locked.</description>
                     <value>0x50FA50FA</value>
                   </enumeratedValue>
                 </enumeratedValues>
@@ -772,13 +664,11 @@ POSSIBILITY OF SUCH DAMAGE.
             </fields>
           </register>
           <register>
-            <dim>0x3</dim>
-            <dimIncrement>0x4</dimIncrement>
-            <name>PROTECT1[%s]</name>
-            <description>Description collection: Erase protection</description>
-            <addressOffset>0x010</addressOffset>
+            <name>PROTECT1</name>
+            <description>Description cluster: Erase protection</description>
+            <addressOffset>0x01C</addressOffset>
             <access>read-writeonce</access>
-            <resetValue>0x50FA50FA</resetValue>
+            <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
               <field>
@@ -788,7 +678,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <enumeratedValues>
                   <enumeratedValue>
                     <name>Protected</name>
-                    <description>Protected, the device cannot be erased and TAMPC PROTECT.ERASEPROTECT signal protector is locked.</description>
+                    <description>Protected, the device cannot be erased using the CTRL-AP Erase all function and TAMPC PROTECT.ERASEPROTECT signal protector is locked.</description>
                     <value>0x50FA50FA</value>
                   </enumeratedValue>
                 </enumeratedValues>
@@ -9788,7 +9678,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>EVENTS_END</name>
-          <description>Address resolution procedure complete</description>
+          <description>Address resolution procedure complete or ended due to an error</description>
           <addressOffset>0x100</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -9796,7 +9686,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>EVENTS_END</name>
-              <description>Address resolution procedure complete</description>
+              <description>Address resolution procedure complete or ended due to an error</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -9853,6 +9743,34 @@ POSSIBILITY OF SUCH DAMAGE.
             <field>
               <name>EVENTS_NOTRESOLVED</name>
               <description>Address not resolved</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotGenerated</name>
+                  <description>Event not generated</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Generated</name>
+                  <description>Event generated</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>EVENTS_ERROR</name>
+          <description>Operation aborted because of a STOP task or due to an error</description>
+          <addressOffset>0x10C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>EVENTS_ERROR</name>
+              <description>Operation aborted because of a STOP task or due to an error</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -9970,6 +9888,39 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
+          <name>PUBLISH_ERROR</name>
+          <description>Publish configuration for event ERROR</description>
+          <addressOffset>0x18C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>CHIDX</name>
+              <description>DPPI channel that event ERROR will publish to</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+            </field>
+            <field>
+              <name>EN</name>
+              <lsb>31</lsb>
+              <msb>31</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable publishing</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable publishing</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>INTENSET</name>
           <description>Enable interrupt</description>
           <addressOffset>0x304</addressOffset>
@@ -10036,6 +9987,33 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Write '1' to enable interrupt for event NOTRESOLVED</description>
               <lsb>2</lsb>
               <msb>2</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ERROR</name>
+              <description>Write '1' to enable interrupt for event ERROR</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -10146,6 +10124,71 @@ POSSIBILITY OF SUCH DAMAGE.
                   <name>Clear</name>
                   <description>Disable</description>
                   <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ERROR</name>
+              <description>Write '1' to disable interrupt for event ERROR</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>ERRORSTATUS</name>
+          <description>Error status</description>
+          <addressOffset>0x404</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ERRORSTATUS</name>
+              <description>Error status when the ERROR event is generated</description>
+              <lsb>0</lsb>
+              <msb>2</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NoError</name>
+                  <description>No errors have occurred</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>PrematureInptrEnd</name>
+                  <description>End of INPTR job list before data structure was read.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>PrematureOutptrEnd</name>
+                  <description>End of OUTPTR job list before data structure was read.</description>
+                  <value>0x2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>DmaError</name>
+                  <description>Bus error during DMA access.</description>
+                  <value>0x4</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
@@ -10449,7 +10492,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>EVENTS_END</name>
-          <description>Encrypt/decrypt complete</description>
+          <description>Encrypt/decrypt complete or ended because of an error</description>
           <addressOffset>0x104</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -10457,7 +10500,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>EVENTS_END</name>
-              <description>Encrypt/decrypt complete</description>
+              <description>Encrypt/decrypt complete or ended because of an error</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -11489,6 +11532,49 @@ POSSIBILITY OF SUCH DAMAGE.
                   <name>Clear</name>
                   <description>Disable</description>
                   <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>ERRORSTATUS</name>
+          <description>Error status</description>
+          <addressOffset>0x400</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ERRORSTATUS</name>
+              <description>Error status when the ERROR event is generated</description>
+              <lsb>0</lsb>
+              <msb>2</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NoError</name>
+                  <description>No errors have occurred</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>PrematureInptrEnd</name>
+                  <description>End of INPTR job list before data structure was read.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>PrematureOutptrEnd</name>
+                  <description>End of OUTPTR job list before data structure was read.</description>
+                  <value>0x2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>EncryptionTooSlow</name>
+                  <description>Encryption of the unencrypted data structure did not complete in time.</description>
+                  <value>0x3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>DmaError</name>
+                  <description>Bus error during DMA access.</description>
+                  <value>0x4</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
@@ -21390,7 +21476,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </peripheral>
     <peripheral>
       <name>GLOBAL_GLITCHDET_S</name>
-      <description>GLITCH detector</description>
+      <description>Voltage glitch detectors</description>
       <baseAddress>0x5004B000</baseAddress>
       <headerStructName>GLITCHDET</headerStructName>
       <!--Security dma=NA-->
@@ -21403,59 +21489,52 @@ POSSIBILITY OF SUCH DAMAGE.
       <groupName>GLITCHDET</groupName>
       <size>0x20</size>
       <registers>
-        <cluster>
-          <name>GLITCHDETECTOR</name>
-          <description>Glitch detector</description>
-          <headerStructName>GLITCHDET_GLITCHDETECTOR</headerStructName>
-          <access>read-write</access>
+        <register>
+          <name>CONFIG</name>
+          <description>Configuration for glitch detector</description>
           <addressOffset>0x5A0</addressOffset>
-          <register>
-            <name>CONFIG</name>
-            <description>Configuration for glitch detector</description>
-            <addressOffset>0x000</addressOffset>
-            <access>read-write</access>
-            <resetValue>0x00000001</resetValue>
-            <size>0x20</size>
-            <fields>
-              <field>
-                <name>ENABLE</name>
-                <description>Enable glitch detector</description>
-                <lsb>0</lsb>
-                <msb>0</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Disable</name>
-                    <description>Disable glitch detector</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Enable</name>
-                    <description>Enable glitch detector</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-              <field>
-                <name>MODE</name>
-                <description>Glitch detector mode</description>
-                <lsb>4</lsb>
-                <msb>4</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>HighPassFilter</name>
-                    <description>High pass filter mode</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>CapDiv</name>
-                    <description>Cap divider mode</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-        </cluster>
+          <access>read-write</access>
+          <resetValue>0x00000001</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ENABLE</name>
+              <description>Enable glitch detector</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Disable glitch detector</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Enable glitch detector</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>MODE</name>
+              <description>Glitch detector mode</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>HighPassFilter</name>
+                  <description>High pass filter mode</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>CapDiv</name>
+                  <description>Cap divider mode</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
       </registers>
     </peripheral>
     <peripheral>
@@ -47321,10 +47400,10 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
-              <name>DMA_RX_MATCH0_DMA_RX_ENABLEMATCH1</name>
-              <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.ENABLEMATCH[1] Allows daisy-chaining match events.</description>
-              <lsb>20</lsb>
-              <msb>20</msb>
+              <name>LASTRX_STOP</name>
+              <description>Shortcut between event LASTRX and task STOP</description>
+              <lsb>12</lsb>
+              <msb>12</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -47339,8 +47418,8 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
-              <name>DMA_RX_MATCH1_DMA_RX_ENABLEMATCH2</name>
-              <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.ENABLEMATCH[2] Allows daisy-chaining match events.</description>
+              <name>DMA_RX_MATCH0_DMA_RX_ENABLEMATCH1</name>
+              <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.ENABLEMATCH[1] Allows daisy-chaining match events.</description>
               <lsb>21</lsb>
               <msb>21</msb>
               <enumeratedValues>
@@ -47357,8 +47436,8 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
-              <name>DMA_RX_MATCH2_DMA_RX_ENABLEMATCH3</name>
-              <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.ENABLEMATCH[3] Allows daisy-chaining match events.</description>
+              <name>DMA_RX_MATCH1_DMA_RX_ENABLEMATCH2</name>
+              <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.ENABLEMATCH[2] Allows daisy-chaining match events.</description>
               <lsb>22</lsb>
               <msb>22</msb>
               <enumeratedValues>
@@ -47375,8 +47454,8 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
-              <name>DMA_RX_MATCH3_DMA_RX_ENABLEMATCH0</name>
-              <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.ENABLEMATCH[0] Allows daisy-chaining match events.</description>
+              <name>DMA_RX_MATCH2_DMA_RX_ENABLEMATCH3</name>
+              <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.ENABLEMATCH[3] Allows daisy-chaining match events.</description>
               <lsb>23</lsb>
               <msb>23</msb>
               <enumeratedValues>
@@ -47393,8 +47472,8 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
-              <name>DMA_RX_MATCH0_DMA_RX_DISABLEMATCH0</name>
-              <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.DISABLEMATCH[n]</description>
+              <name>DMA_RX_MATCH3_DMA_RX_ENABLEMATCH0</name>
+              <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.ENABLEMATCH[0] Allows daisy-chaining match events.</description>
               <lsb>24</lsb>
               <msb>24</msb>
               <enumeratedValues>
@@ -47411,7 +47490,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
-              <name>DMA_RX_MATCH1_DMA_RX_DISABLEMATCH1</name>
+              <name>DMA_RX_MATCH0_DMA_RX_DISABLEMATCH0</name>
               <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.DISABLEMATCH[n]</description>
               <lsb>25</lsb>
               <msb>25</msb>
@@ -47429,7 +47508,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
-              <name>DMA_RX_MATCH2_DMA_RX_DISABLEMATCH2</name>
+              <name>DMA_RX_MATCH1_DMA_RX_DISABLEMATCH1</name>
               <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.DISABLEMATCH[n]</description>
               <lsb>26</lsb>
               <msb>26</msb>
@@ -47447,10 +47526,28 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
-              <name>DMA_RX_MATCH3_DMA_RX_DISABLEMATCH3</name>
+              <name>DMA_RX_MATCH2_DMA_RX_DISABLEMATCH2</name>
               <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.DISABLEMATCH[n]</description>
               <lsb>27</lsb>
               <msb>27</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable shortcut</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable shortcut</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DMA_RX_MATCH3_DMA_RX_DISABLEMATCH3</name>
+              <description>Shortcut between event DMA.RX.MATCH[n] and task DMA.RX.DISABLEMATCH[n]</description>
+              <lsb>28</lsb>
+              <msb>28</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -52699,7 +52796,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <registers>
         <cluster>
           <dim>2</dim>
-          <dimIncrement>0x010</dimIncrement>
+          <dimIncrement>0x00C</dimIncrement>
           <name>POWER[%s]</name>
           <description>Unspecified</description>
           <headerStructName>MEMCONF_POWER</headerStructName>
@@ -52707,7 +52804,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <addressOffset>0x500</addressOffset>
           <register>
             <name>CONTROL</name>
-            <description>Description cluster: RAM/ROM[n] power control register.</description>
+            <description>Description cluster: Control memory block power.</description>
             <addressOffset>0x000</addressOffset>
             <access>read-write</access>
             <resetValue>0xFFFFFFFF</resetValue>
@@ -52715,7 +52812,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>MEM0</name>
-                <description>Keep the RAM/ROM block MEM[0] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[0] on or off when in System ON mode.</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
                 <enumeratedValues>
@@ -52733,7 +52830,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM1</name>
-                <description>Keep the RAM/ROM block MEM[1] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[1] on or off when in System ON mode.</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
                 <enumeratedValues>
@@ -52751,7 +52848,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM2</name>
-                <description>Keep the RAM/ROM block MEM[2] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[2] on or off when in System ON mode.</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
                 <enumeratedValues>
@@ -52769,7 +52866,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM3</name>
-                <description>Keep the RAM/ROM block MEM[3] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[3] on or off when in System ON mode.</description>
                 <lsb>3</lsb>
                 <msb>3</msb>
                 <enumeratedValues>
@@ -52787,7 +52884,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM4</name>
-                <description>Keep the RAM/ROM block MEM[4] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[4] on or off when in System ON mode.</description>
                 <lsb>4</lsb>
                 <msb>4</msb>
                 <enumeratedValues>
@@ -52805,7 +52902,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM5</name>
-                <description>Keep the RAM/ROM block MEM[5] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[5] on or off when in System ON mode.</description>
                 <lsb>5</lsb>
                 <msb>5</msb>
                 <enumeratedValues>
@@ -52823,7 +52920,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM6</name>
-                <description>Keep the RAM/ROM block MEM[6] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[6] on or off when in System ON mode.</description>
                 <lsb>6</lsb>
                 <msb>6</msb>
                 <enumeratedValues>
@@ -52841,7 +52938,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM7</name>
-                <description>Keep the RAM/ROM block MEM[7] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[7] on or off when in System ON mode.</description>
                 <lsb>7</lsb>
                 <msb>7</msb>
                 <enumeratedValues>
@@ -52859,7 +52956,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM8</name>
-                <description>Keep the RAM/ROM block MEM[8] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[8] on or off when in System ON mode.</description>
                 <lsb>8</lsb>
                 <msb>8</msb>
                 <enumeratedValues>
@@ -52877,7 +52974,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM9</name>
-                <description>Keep the RAM/ROM block MEM[9] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[9] on or off when in System ON mode.</description>
                 <lsb>9</lsb>
                 <msb>9</msb>
                 <enumeratedValues>
@@ -52895,7 +52992,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM10</name>
-                <description>Keep the RAM/ROM block MEM[10] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[10] on or off when in System ON mode.</description>
                 <lsb>10</lsb>
                 <msb>10</msb>
                 <enumeratedValues>
@@ -52913,7 +53010,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM11</name>
-                <description>Keep the RAM/ROM block MEM[11] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[11] on or off when in System ON mode.</description>
                 <lsb>11</lsb>
                 <msb>11</msb>
                 <enumeratedValues>
@@ -52931,7 +53028,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM12</name>
-                <description>Keep the RAM/ROM block MEM[12] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[12] on or off when in System ON mode.</description>
                 <lsb>12</lsb>
                 <msb>12</msb>
                 <enumeratedValues>
@@ -52949,7 +53046,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM13</name>
-                <description>Keep the RAM/ROM block MEM[13] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[13] on or off when in System ON mode.</description>
                 <lsb>13</lsb>
                 <msb>13</msb>
                 <enumeratedValues>
@@ -52967,7 +53064,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM14</name>
-                <description>Keep the RAM/ROM block MEM[14] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[14] on or off when in System ON mode.</description>
                 <lsb>14</lsb>
                 <msb>14</msb>
                 <enumeratedValues>
@@ -52985,7 +53082,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM15</name>
-                <description>Keep the RAM/ROM block MEM[15] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[15] on or off when in System ON mode.</description>
                 <lsb>15</lsb>
                 <msb>15</msb>
                 <enumeratedValues>
@@ -53003,7 +53100,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM16</name>
-                <description>Keep the RAM/ROM block MEM[16] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[16] on or off when in System ON mode.</description>
                 <lsb>16</lsb>
                 <msb>16</msb>
                 <enumeratedValues>
@@ -53021,7 +53118,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM17</name>
-                <description>Keep the RAM/ROM block MEM[17] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[17] on or off when in System ON mode.</description>
                 <lsb>17</lsb>
                 <msb>17</msb>
                 <enumeratedValues>
@@ -53039,7 +53136,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM18</name>
-                <description>Keep the RAM/ROM block MEM[18] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[18] on or off when in System ON mode.</description>
                 <lsb>18</lsb>
                 <msb>18</msb>
                 <enumeratedValues>
@@ -53057,7 +53154,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM19</name>
-                <description>Keep the RAM/ROM block MEM[19] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[19] on or off when in System ON mode.</description>
                 <lsb>19</lsb>
                 <msb>19</msb>
                 <enumeratedValues>
@@ -53075,7 +53172,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM20</name>
-                <description>Keep the RAM/ROM block MEM[20] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[20] on or off when in System ON mode.</description>
                 <lsb>20</lsb>
                 <msb>20</msb>
                 <enumeratedValues>
@@ -53093,7 +53190,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM21</name>
-                <description>Keep the RAM/ROM block MEM[21] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[21] on or off when in System ON mode.</description>
                 <lsb>21</lsb>
                 <msb>21</msb>
                 <enumeratedValues>
@@ -53111,7 +53208,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM22</name>
-                <description>Keep the RAM/ROM block MEM[22] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[22] on or off when in System ON mode.</description>
                 <lsb>22</lsb>
                 <msb>22</msb>
                 <enumeratedValues>
@@ -53129,7 +53226,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM23</name>
-                <description>Keep the RAM/ROM block MEM[23] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[23] on or off when in System ON mode.</description>
                 <lsb>23</lsb>
                 <msb>23</msb>
                 <enumeratedValues>
@@ -53147,7 +53244,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM24</name>
-                <description>Keep the RAM/ROM block MEM[24] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[24] on or off when in System ON mode.</description>
                 <lsb>24</lsb>
                 <msb>24</msb>
                 <enumeratedValues>
@@ -53165,7 +53262,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM25</name>
-                <description>Keep the RAM/ROM block MEM[25] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[25] on or off when in System ON mode.</description>
                 <lsb>25</lsb>
                 <msb>25</msb>
                 <enumeratedValues>
@@ -53183,7 +53280,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM26</name>
-                <description>Keep the RAM/ROM block MEM[26] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[26] on or off when in System ON mode.</description>
                 <lsb>26</lsb>
                 <msb>26</msb>
                 <enumeratedValues>
@@ -53201,7 +53298,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM27</name>
-                <description>Keep the RAM/ROM block MEM[27] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[27] on or off when in System ON mode.</description>
                 <lsb>27</lsb>
                 <msb>27</msb>
                 <enumeratedValues>
@@ -53219,7 +53316,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM28</name>
-                <description>Keep the RAM/ROM block MEM[28] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[28] on or off when in System ON mode.</description>
                 <lsb>28</lsb>
                 <msb>28</msb>
                 <enumeratedValues>
@@ -53237,7 +53334,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM29</name>
-                <description>Keep the RAM/ROM block MEM[29] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[29] on or off when in System ON mode.</description>
                 <lsb>29</lsb>
                 <msb>29</msb>
                 <enumeratedValues>
@@ -53255,7 +53352,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM30</name>
-                <description>Keep the RAM/ROM block MEM[30] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[30] on or off when in System ON mode.</description>
                 <lsb>30</lsb>
                 <msb>30</msb>
                 <enumeratedValues>
@@ -53273,7 +53370,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM31</name>
-                <description>Keep the RAM/ROM block MEM[31] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[31] on or off when in System ON mode.</description>
                 <lsb>31</lsb>
                 <msb>31</msb>
                 <enumeratedValues>
@@ -53301,7 +53398,6 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>MEM0</name>
-                <description>Keep the RAM block MEM[0] retained when in System OFF mode.</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
                 <enumeratedValues>
@@ -53319,7 +53415,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM1</name>
-                <description>Keep the RAM block MEM[1] retained when in System OFF mode.</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
                 <enumeratedValues>
@@ -53337,7 +53432,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM2</name>
-                <description>Keep the RAM block MEM[2] retained when in System OFF mode.</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
                 <enumeratedValues>
@@ -53355,7 +53449,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM3</name>
-                <description>Keep the RAM block MEM[3] retained when in System OFF mode.</description>
                 <lsb>3</lsb>
                 <msb>3</msb>
                 <enumeratedValues>
@@ -53373,7 +53466,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM4</name>
-                <description>Keep the RAM block MEM[4] retained when in System OFF mode.</description>
                 <lsb>4</lsb>
                 <msb>4</msb>
                 <enumeratedValues>
@@ -53391,7 +53483,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM5</name>
-                <description>Keep the RAM block MEM[5] retained when in System OFF mode.</description>
                 <lsb>5</lsb>
                 <msb>5</msb>
                 <enumeratedValues>
@@ -53409,7 +53500,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM6</name>
-                <description>Keep the RAM block MEM[6] retained when in System OFF mode.</description>
                 <lsb>6</lsb>
                 <msb>6</msb>
                 <enumeratedValues>
@@ -53427,7 +53517,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM7</name>
-                <description>Keep the RAM block MEM[7] retained when in System OFF mode.</description>
                 <lsb>7</lsb>
                 <msb>7</msb>
                 <enumeratedValues>
@@ -53445,7 +53534,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM8</name>
-                <description>Keep the RAM block MEM[8] retained when in System OFF mode.</description>
                 <lsb>8</lsb>
                 <msb>8</msb>
                 <enumeratedValues>
@@ -53463,7 +53551,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM9</name>
-                <description>Keep the RAM block MEM[9] retained when in System OFF mode.</description>
                 <lsb>9</lsb>
                 <msb>9</msb>
                 <enumeratedValues>
@@ -53481,7 +53568,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM10</name>
-                <description>Keep the RAM block MEM[10] retained when in System OFF mode.</description>
                 <lsb>10</lsb>
                 <msb>10</msb>
                 <enumeratedValues>
@@ -53499,7 +53585,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM11</name>
-                <description>Keep the RAM block MEM[11] retained when in System OFF mode.</description>
                 <lsb>11</lsb>
                 <msb>11</msb>
                 <enumeratedValues>
@@ -53517,7 +53602,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM12</name>
-                <description>Keep the RAM block MEM[12] retained when in System OFF mode.</description>
                 <lsb>12</lsb>
                 <msb>12</msb>
                 <enumeratedValues>
@@ -53535,7 +53619,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM13</name>
-                <description>Keep the RAM block MEM[13] retained when in System OFF mode.</description>
                 <lsb>13</lsb>
                 <msb>13</msb>
                 <enumeratedValues>
@@ -53553,7 +53636,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM14</name>
-                <description>Keep the RAM block MEM[14] retained when in System OFF mode.</description>
                 <lsb>14</lsb>
                 <msb>14</msb>
                 <enumeratedValues>
@@ -53571,7 +53653,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM15</name>
-                <description>Keep the RAM block MEM[15] retained when in System OFF mode.</description>
                 <lsb>15</lsb>
                 <msb>15</msb>
                 <enumeratedValues>
@@ -53589,7 +53670,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM16</name>
-                <description>Keep the RAM block MEM[16] retained when in System OFF mode.</description>
                 <lsb>16</lsb>
                 <msb>16</msb>
                 <enumeratedValues>
@@ -53607,7 +53687,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM17</name>
-                <description>Keep the RAM block MEM[17] retained when in System OFF mode.</description>
                 <lsb>17</lsb>
                 <msb>17</msb>
                 <enumeratedValues>
@@ -53625,7 +53704,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM18</name>
-                <description>Keep the RAM block MEM[18] retained when in System OFF mode.</description>
                 <lsb>18</lsb>
                 <msb>18</msb>
                 <enumeratedValues>
@@ -53643,7 +53721,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM19</name>
-                <description>Keep the RAM block MEM[19] retained when in System OFF mode.</description>
                 <lsb>19</lsb>
                 <msb>19</msb>
                 <enumeratedValues>
@@ -53661,7 +53738,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM20</name>
-                <description>Keep the RAM block MEM[20] retained when in System OFF mode.</description>
                 <lsb>20</lsb>
                 <msb>20</msb>
                 <enumeratedValues>
@@ -53679,7 +53755,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM21</name>
-                <description>Keep the RAM block MEM[21] retained when in System OFF mode.</description>
                 <lsb>21</lsb>
                 <msb>21</msb>
                 <enumeratedValues>
@@ -53697,7 +53772,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM22</name>
-                <description>Keep the RAM block MEM[22] retained when in System OFF mode.</description>
                 <lsb>22</lsb>
                 <msb>22</msb>
                 <enumeratedValues>
@@ -53715,7 +53789,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM23</name>
-                <description>Keep the RAM block MEM[23] retained when in System OFF mode.</description>
                 <lsb>23</lsb>
                 <msb>23</msb>
                 <enumeratedValues>
@@ -53733,7 +53806,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM24</name>
-                <description>Keep the RAM block MEM[24] retained when in System OFF mode.</description>
                 <lsb>24</lsb>
                 <msb>24</msb>
                 <enumeratedValues>
@@ -53751,7 +53823,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM25</name>
-                <description>Keep the RAM block MEM[25] retained when in System OFF mode.</description>
                 <lsb>25</lsb>
                 <msb>25</msb>
                 <enumeratedValues>
@@ -53769,7 +53840,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM26</name>
-                <description>Keep the RAM block MEM[26] retained when in System OFF mode.</description>
                 <lsb>26</lsb>
                 <msb>26</msb>
                 <enumeratedValues>
@@ -53787,7 +53857,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM27</name>
-                <description>Keep the RAM block MEM[27] retained when in System OFF mode.</description>
                 <lsb>27</lsb>
                 <msb>27</msb>
                 <enumeratedValues>
@@ -53805,7 +53874,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM28</name>
-                <description>Keep the RAM block MEM[28] retained when in System OFF mode.</description>
                 <lsb>28</lsb>
                 <msb>28</msb>
                 <enumeratedValues>
@@ -53823,7 +53891,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM29</name>
-                <description>Keep the RAM block MEM[29] retained when in System OFF mode.</description>
                 <lsb>29</lsb>
                 <msb>29</msb>
                 <enumeratedValues>
@@ -53841,7 +53908,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM30</name>
-                <description>Keep the RAM block MEM[30] retained when in System OFF mode.</description>
                 <lsb>30</lsb>
                 <msb>30</msb>
                 <enumeratedValues>
@@ -53859,7 +53925,6 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
               <field>
                 <name>MEM31</name>
-                <description>Keep the RAM block MEM[31] retained when in System OFF mode.</description>
                 <lsb>31</lsb>
                 <msb>31</msb>
                 <enumeratedValues>
@@ -53877,589 +53942,214 @@ POSSIBILITY OF SUCH DAMAGE.
               </field>
             </fields>
           </register>
+        </cluster>
+        <cluster>
+          <dim>2</dim>
+          <dimIncrement>0x004</dimIncrement>
+          <name>BLOCKTYPE[%s]</name>
+          <description>Unspecified</description>
+          <headerStructName>MEMCONF_BLOCKTYPE</headerStructName>
+          <access>read-write</access>
+          <addressOffset>0x900</addressOffset>
           <register>
-            <name>RET2</name>
-            <description>Description cluster: RAM retention for the second bank in the RAM block</description>
-            <addressOffset>0x00C</addressOffset>
+            <name>TRIM</name>
+            <description>Description cluster: Trim configuration for the memory block types.</description>
+            <addressOffset>0x000</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
             <fields>
               <field>
-                <name>MEM0</name>
-                <description>Keep the second bank in RAM block MEM[0] retained when in System OFF mode.</description>
+                <name>MEMTRIM_0</name>
+                <description>Read/write margin trim.</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM1</name>
-                <description>Keep the second bank in RAM block MEM[1] retained when in System OFF mode.</description>
+                <name>MEMTRIM_1</name>
+                <description>Read/write margin trim.</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM2</name>
-                <description>Keep the second bank in RAM block MEM[2] retained when in System OFF mode.</description>
+                <name>MEMTRIM_2</name>
+                <description>Read/write margin trim.</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM3</name>
-                <description>Keep the second bank in RAM block MEM[3] retained when in System OFF mode.</description>
+                <name>MEMTRIM_3</name>
+                <description>Read/write margin trim.</description>
                 <lsb>3</lsb>
                 <msb>3</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM4</name>
-                <description>Keep the second bank in RAM block MEM[4] retained when in System OFF mode.</description>
+                <name>MEMTRIM_4</name>
+                <description>Read/write margin trim.</description>
                 <lsb>4</lsb>
                 <msb>4</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM5</name>
-                <description>Keep the second bank in RAM block MEM[5] retained when in System OFF mode.</description>
+                <name>MEMTRIM_5</name>
+                <description>Read/write margin trim.</description>
                 <lsb>5</lsb>
                 <msb>5</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM6</name>
-                <description>Keep the second bank in RAM block MEM[6] retained when in System OFF mode.</description>
+                <name>MEMTRIM_6</name>
+                <description>Read/write margin trim.</description>
                 <lsb>6</lsb>
                 <msb>6</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM7</name>
-                <description>Keep the second bank in RAM block MEM[7] retained when in System OFF mode.</description>
+                <name>MEMTRIM_7</name>
+                <description>Read/write margin trim.</description>
                 <lsb>7</lsb>
                 <msb>7</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM8</name>
-                <description>Keep the second bank in RAM block MEM[8] retained when in System OFF mode.</description>
+                <name>MEMTRIM_8</name>
+                <description>Read/write margin trim.</description>
                 <lsb>8</lsb>
                 <msb>8</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM9</name>
-                <description>Keep the second bank in RAM block MEM[9] retained when in System OFF mode.</description>
+                <name>MEMTRIM_9</name>
+                <description>Read/write margin trim.</description>
                 <lsb>9</lsb>
                 <msb>9</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM10</name>
-                <description>Keep the second bank in RAM block MEM[10] retained when in System OFF mode.</description>
+                <name>MEMTRIM_10</name>
+                <description>Read/write margin trim.</description>
                 <lsb>10</lsb>
                 <msb>10</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM11</name>
-                <description>Keep the second bank in RAM block MEM[11] retained when in System OFF mode.</description>
+                <name>MEMTRIM_11</name>
+                <description>Read/write margin trim.</description>
                 <lsb>11</lsb>
                 <msb>11</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM12</name>
-                <description>Keep the second bank in RAM block MEM[12] retained when in System OFF mode.</description>
+                <name>MEMTRIM_12</name>
+                <description>Read/write margin trim.</description>
                 <lsb>12</lsb>
                 <msb>12</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM13</name>
-                <description>Keep the second bank in RAM block MEM[13] retained when in System OFF mode.</description>
+                <name>MEMTRIM_13</name>
+                <description>Read/write margin trim.</description>
                 <lsb>13</lsb>
                 <msb>13</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM14</name>
-                <description>Keep the second bank in RAM block MEM[14] retained when in System OFF mode.</description>
+                <name>MEMTRIM_14</name>
+                <description>Read/write margin trim.</description>
                 <lsb>14</lsb>
                 <msb>14</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM15</name>
-                <description>Keep the second bank in RAM block MEM[15] retained when in System OFF mode.</description>
+                <name>MEMTRIM_15</name>
+                <description>Read/write margin trim.</description>
                 <lsb>15</lsb>
                 <msb>15</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM16</name>
-                <description>Keep the second bank in RAM block MEM[16] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_0</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>16</lsb>
                 <msb>16</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM17</name>
-                <description>Keep the second bank in RAM block MEM[17] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_1</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>17</lsb>
                 <msb>17</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM18</name>
-                <description>Keep the second bank in RAM block MEM[18] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_2</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>18</lsb>
                 <msb>18</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM19</name>
-                <description>Keep the second bank in RAM block MEM[19] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_3</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>19</lsb>
                 <msb>19</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM20</name>
-                <description>Keep the second bank in RAM block MEM[20] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_4</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>20</lsb>
                 <msb>20</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM21</name>
-                <description>Keep the second bank in RAM block MEM[21] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_5</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>21</lsb>
                 <msb>21</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM22</name>
-                <description>Keep the second bank in RAM block MEM[22] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_6</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>22</lsb>
                 <msb>22</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM23</name>
-                <description>Keep the second bank in RAM block MEM[23] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_7</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>23</lsb>
                 <msb>23</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM24</name>
-                <description>Keep the second bank in RAM block MEM[24] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_8</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>24</lsb>
                 <msb>24</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM25</name>
-                <description>Keep the second bank in RAM block MEM[25] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_9</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>25</lsb>
                 <msb>25</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM26</name>
-                <description>Keep the second bank in RAM block MEM[26] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_10</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>26</lsb>
                 <msb>26</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM27</name>
-                <description>Keep the second bank in RAM block MEM[27] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_11</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>27</lsb>
                 <msb>27</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM28</name>
-                <description>Keep the second bank in RAM block MEM[28] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_12</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>28</lsb>
                 <msb>28</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM29</name>
-                <description>Keep the second bank in RAM block MEM[29] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_13</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>29</lsb>
                 <msb>29</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM30</name>
-                <description>Keep the second bank in RAM block MEM[30] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_14</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>30</lsb>
                 <msb>30</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
-                <name>MEM31</name>
-                <description>Keep the second bank in RAM block MEM[31] retained when in System OFF mode.</description>
+                <name>MEMRETTRIM_15</name>
+                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
                 <lsb>31</lsb>
                 <msb>31</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Off</name>
-                    <description>Retention off</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>On</name>
-                    <description>Retention on</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
             </fields>
           </register>
@@ -64366,7 +64056,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 1st piece wise linear function</description>
           <addressOffset>0x520</addressOffset>
           <access>read-write</access>
-          <resetValue>0x000002C4</resetValue>
+          <resetValue>0x000002D6</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64382,7 +64072,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 2nd piece wise linear function</description>
           <addressOffset>0x524</addressOffset>
           <access>read-write</access>
-          <resetValue>0x000002FB</resetValue>
+          <resetValue>0x0000032D</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64398,7 +64088,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 3rd piece wise linear function</description>
           <addressOffset>0x528</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000328</resetValue>
+          <resetValue>0x00000384</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64414,7 +64104,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 4th piece wise linear function</description>
           <addressOffset>0x52C</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000377</resetValue>
+          <resetValue>0x000003E9</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64430,7 +64120,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 5th piece wise linear function</description>
           <addressOffset>0x530</addressOffset>
           <access>read-write</access>
-          <resetValue>0x000003DD</resetValue>
+          <resetValue>0x0000046F</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64446,7 +64136,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 6th piece wise linear function</description>
           <addressOffset>0x534</addressOffset>
           <access>read-write</access>
-          <resetValue>0x0000046F</resetValue>
+          <resetValue>0x00000522</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64462,7 +64152,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 7th piece wise linear function</description>
           <addressOffset>0x538</addressOffset>
           <access>read-write</access>
-          <resetValue>0x0000055A</resetValue>
+          <resetValue>0x000005B7</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64478,7 +64168,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 1st piece wise linear function</description>
           <addressOffset>0x540</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000072</resetValue>
+          <resetValue>0x00000FD6</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64494,7 +64184,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 2nd piece wise linear function</description>
           <addressOffset>0x544</addressOffset>
           <access>read-write</access>
-          <resetValue>0x0000000E</resetValue>
+          <resetValue>0x00000F76</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64510,7 +64200,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 3rd piece wise linear function</description>
           <addressOffset>0x548</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000FEA</resetValue>
+          <resetValue>0x00000F8A</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64526,7 +64216,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 4th piece wise linear function</description>
           <addressOffset>0x54C</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000FEA</resetValue>
+          <resetValue>0x00000FF8</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64542,7 +64232,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 5th piece wise linear function</description>
           <addressOffset>0x550</addressOffset>
           <access>read-write</access>
-          <resetValue>0x0000004A</resetValue>
+          <resetValue>0x000000CC</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64558,7 +64248,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 6th piece wise linear function</description>
           <addressOffset>0x554</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000134</resetValue>
+          <resetValue>0x00000207</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64574,7 +64264,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 7th piece wise linear function</description>
           <addressOffset>0x558</addressOffset>
           <access>read-write</access>
-          <resetValue>0x000002C0</resetValue>
+          <resetValue>0x00000558</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64590,7 +64280,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>End point of 1st piece wise linear function</description>
           <addressOffset>0x560</addressOffset>
           <access>read-write</access>
-          <resetValue>0x000000D8</resetValue>
+          <resetValue>0x000000E2</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64606,7 +64296,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>End point of 2nd piece wise linear function</description>
           <addressOffset>0x564</addressOffset>
           <access>read-write</access>
-          <resetValue>0x000000EC</resetValue>
+          <resetValue>0x00000002</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64622,7 +64312,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>End point of 3rd piece wise linear function</description>
           <addressOffset>0x568</addressOffset>
           <access>read-write</access>
-          <resetValue>0x000000FF</resetValue>
+          <resetValue>0x0000001F</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64638,7 +64328,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>End point of 4th piece wise linear function</description>
           <addressOffset>0x56C</addressOffset>
           <access>read-write</access>
-          <resetValue>0x0000001C</resetValue>
+          <resetValue>0x00000038</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64654,7 +64344,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>End point of 5th piece wise linear function</description>
           <addressOffset>0x570</addressOffset>
           <access>read-write</access>
-          <resetValue>0x0000003C</resetValue>
+          <resetValue>0x0000004F</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -64670,7 +64360,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>End point of 6th piece wise linear function</description>
           <addressOffset>0x574</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000052</resetValue>
+          <resetValue>0x00000066</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -67425,7 +67115,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Unspecified</description>
               <headerStructName>TAMPC_PROTECT_STRUCT0_AP</headerStructName>
               <access>read-write</access>
-              <addressOffset>0x020</addressOffset>
+              <addressOffset>0x200</addressOffset>
               <cluster>
                 <name>DBGEN</name>
                 <description>Unspecified</description>
@@ -71892,6 +71582,34 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
+          <name>EVENTS_RTCOMPARESYNC</name>
+          <description>Synchronize always-on LFCLK clock domain</description>
+          <addressOffset>0x164</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>EVENTS_RTCOMPARESYNC</name>
+              <description>Synchronize always-on LFCLK clock domain</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotGenerated</name>
+                  <description>Event not generated</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Generated</name>
+                  <description>Event generated</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>EVENTS_SYSCOUNTERVALID</name>
           <description>The SYSCOUNTER is in active state and value is valid</description>
           <addressOffset>0x168</addressOffset>
@@ -72221,6 +71939,24 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Enable or disable interrupt for event COMPARE[11]</description>
               <lsb>11</lsb>
               <msb>11</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Enable or disable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -72582,6 +72318,33 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Write '1' to enable interrupt for event COMPARE[11]</description>
               <lsb>11</lsb>
               <msb>11</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Write '1' to enable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -72993,6 +72756,33 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Write '1' to disable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>SYSCOUNTERVALID</name>
               <description>Write '1' to disable interrupt for event SYSCOUNTERVALID</description>
               <lsb>26</lsb>
@@ -73285,6 +73075,25 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Read pending status of interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>SYSCOUNTERVALID</name>
               <description>Read pending status of interrupt for event SYSCOUNTERVALID</description>
               <lsb>26</lsb>
@@ -73535,6 +73344,24 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Enable or disable interrupt for event COMPARE[11]</description>
               <lsb>11</lsb>
               <msb>11</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Enable or disable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -73896,6 +73723,33 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Write '1' to enable interrupt for event COMPARE[11]</description>
               <lsb>11</lsb>
               <msb>11</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Write '1' to enable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -74307,6 +74161,33 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Write '1' to disable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>SYSCOUNTERVALID</name>
               <description>Write '1' to disable interrupt for event SYSCOUNTERVALID</description>
               <lsb>26</lsb>
@@ -74599,6 +74480,25 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Read pending status of interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>SYSCOUNTERVALID</name>
               <description>Read pending status of interrupt for event SYSCOUNTERVALID</description>
               <lsb>26</lsb>
@@ -74849,6 +74749,24 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Enable or disable interrupt for event COMPARE[11]</description>
               <lsb>11</lsb>
               <msb>11</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Enable or disable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -75210,6 +75128,33 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Write '1' to enable interrupt for event COMPARE[11]</description>
               <lsb>11</lsb>
               <msb>11</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Write '1' to enable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -75621,6 +75566,33 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Write '1' to disable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>SYSCOUNTERVALID</name>
               <description>Write '1' to disable interrupt for event SYSCOUNTERVALID</description>
               <lsb>26</lsb>
@@ -75913,6 +75885,25 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Read pending status of interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>SYSCOUNTERVALID</name>
               <description>Read pending status of interrupt for event SYSCOUNTERVALID</description>
               <lsb>26</lsb>
@@ -76163,6 +76154,24 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Enable or disable interrupt for event COMPARE[11]</description>
               <lsb>11</lsb>
               <msb>11</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Enable or disable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -76524,6 +76533,33 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Write '1' to enable interrupt for event COMPARE[11]</description>
               <lsb>11</lsb>
               <msb>11</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Write '1' to enable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -76935,6 +76971,33 @@ POSSIBILITY OF SUCH DAMAGE.
               </enumeratedValues>
             </field>
             <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Write '1' to disable interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>SYSCOUNTERVALID</name>
               <description>Write '1' to disable interrupt for event SYSCOUNTERVALID</description>
               <lsb>26</lsb>
@@ -77212,6 +77275,25 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Read pending status of interrupt for event COMPARE[11]</description>
               <lsb>11</lsb>
               <msb>11</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTCOMPARESYNC</name>
+              <description>Read pending status of interrupt for event RTCOMPARESYNC</description>
+              <lsb>25</lsb>
+              <msb>25</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -81550,7 +81632,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <registers>
         <register>
           <name>TASKS_XOSTART</name>
-          <description>Start crystal oscillator</description>
+          <description>Start crystal oscillator (HFXO)</description>
           <addressOffset>0x000</addressOffset>
           <access>write-only</access>
           <resetValue>0x00000000</resetValue>
@@ -81558,7 +81640,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>TASKS_XOSTART</name>
-              <description>Start crystal oscillator</description>
+              <description>Start crystal oscillator (HFXO)</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -81573,7 +81655,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>TASKS_XOSTOP</name>
-          <description>Stop crystal oscillator</description>
+          <description>Stop crystal oscillator (HFXO)</description>
           <addressOffset>0x004</addressOffset>
           <access>write-only</access>
           <resetValue>0x00000000</resetValue>
@@ -81581,7 +81663,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>TASKS_XOSTOP</name>
-              <description>Stop crystal oscillator</description>
+              <description>Stop crystal oscillator (HFXO)</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -83673,7 +83755,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>DIF</name>
-              <description>Reset due to wakeup from System OFF mode when wakeup is triggered by entering the Debug Interface mode</description>
+              <description>Reset triggered by Debug Interface</description>
               <lsb>10</lsb>
               <msb>10</msb>
               <enumeratedValues>

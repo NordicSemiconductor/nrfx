@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2023, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -40,6 +40,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 #include <stdbool.h>
+/* Domain definition */
+#define NRF_DOMAIN NRF_DOMAIN_APPLICATION
+
 /*CACHEDATA*/
 #define CACHEDATA_PRESENT 1
 #define CACHEDATA_COUNT 1
@@ -288,6 +291,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define AAR_PRESENT 1
 #define AAR_COUNT 1
 
+#define AAR00_DMAERROR 1                             /*!< (unspecified)                                                        */
+
 /*AES CCM Mode Encryption*/
 #define CCM_PRESENT 1
 #define CCM_COUNT 1
@@ -301,6 +306,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define ECB_COUNT 1
 
 #define ECB00_AMOUNTREG 0                            /*!< (unspecified)                                                        */
+#define ECB00_DMAERROR 1                             /*!< (unspecified)                                                        */
 
 /*CRACEN*/
 #define CRACEN_PRESENT 1
@@ -370,7 +376,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM20_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
 #define SPIM20_FEATURE_HARDWARE_CSN_PRESENT 1        /*!< (unspecified)                                                        */
 #define SPIM20_FEATURE_HARDWARE_DCX_PRESENT 1        /*!< (unspecified)                                                        */
-#define SPIM20_FEATURE_RXDELAY_PRESENT 0             /*!< (unspecified)                                                        */
+#define SPIM20_FEATURE_RXDELAY_PRESENT 1             /*!< (unspecified)                                                        */
 #define SPIM20_STALL_STATUS_PRESENT 0                /*!< (unspecified)                                                        */
 #define SPIM20_STALL_STATUS_TX_PRESENT 0             /*!< (unspecified)                                                        */
 #define SPIM20_NUM_CHIPSELECT_MIN 0                  /*!< (unspecified)                                                        */
@@ -396,7 +402,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM21_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
 #define SPIM21_FEATURE_HARDWARE_CSN_PRESENT 1        /*!< (unspecified)                                                        */
 #define SPIM21_FEATURE_HARDWARE_DCX_PRESENT 1        /*!< (unspecified)                                                        */
-#define SPIM21_FEATURE_RXDELAY_PRESENT 0             /*!< (unspecified)                                                        */
+#define SPIM21_FEATURE_RXDELAY_PRESENT 1             /*!< (unspecified)                                                        */
 #define SPIM21_STALL_STATUS_PRESENT 0                /*!< (unspecified)                                                        */
 #define SPIM21_STALL_STATUS_TX_PRESENT 0             /*!< (unspecified)                                                        */
 #define SPIM21_NUM_CHIPSELECT_MIN 0                  /*!< (unspecified)                                                        */
@@ -422,7 +428,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM22_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
 #define SPIM22_FEATURE_HARDWARE_CSN_PRESENT 1        /*!< (unspecified)                                                        */
 #define SPIM22_FEATURE_HARDWARE_DCX_PRESENT 0        /*!< (unspecified)                                                        */
-#define SPIM22_FEATURE_RXDELAY_PRESENT 0             /*!< (unspecified)                                                        */
+#define SPIM22_FEATURE_RXDELAY_PRESENT 1             /*!< (unspecified)                                                        */
 #define SPIM22_STALL_STATUS_PRESENT 0                /*!< (unspecified)                                                        */
 #define SPIM22_STALL_STATUS_TX_PRESENT 0             /*!< (unspecified)                                                        */
 #define SPIM22_NUM_CHIPSELECT_MIN 0                  /*!< (unspecified)                                                        */
@@ -448,7 +454,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM30_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
 #define SPIM30_FEATURE_HARDWARE_CSN_PRESENT 1        /*!< (unspecified)                                                        */
 #define SPIM30_FEATURE_HARDWARE_DCX_PRESENT 0        /*!< (unspecified)                                                        */
-#define SPIM30_FEATURE_RXDELAY_PRESENT 0             /*!< (unspecified)                                                        */
+#define SPIM30_FEATURE_RXDELAY_PRESENT 1             /*!< (unspecified)                                                        */
 #define SPIM30_STALL_STATUS_PRESENT 0                /*!< (unspecified)                                                        */
 #define SPIM30_STALL_STATUS_TX_PRESENT 0             /*!< (unspecified)                                                        */
 #define SPIM30_NUM_CHIPSELECT_MIN 0                  /*!< (unspecified)                                                        */
@@ -550,11 +556,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE30_SHORTS_ENDTX_STOPTX 1                /*!< (unspecified)                                                        */
 #define UARTE30_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                  */
 
-/*GLITCH detector*/
+/*Voltage glitch detectors*/
 #define GLITCHDET_PRESENT 1
 #define GLITCHDET_COUNT 1
-
-#define GLITCHDET_GLITCHDETECTORS 1                  /*!< (unspecified)                                                        */
 
 /*RRAM controller GLITCH detector*/
 #define RRAMC_PRESENT 1
@@ -834,6 +838,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RADIO_PRESENT 1
 #define RADIO_COUNT 1
 
+#define RADIO_IRQ_COUNT 2
 #define RADIO_WHITENINGPOLY 0                        /*!< (unspecified)                                                        */
 #define RADIO_ADPLLCOMPANION_INCLUDE_DMA 0           /*!< (unspecified)                                                        */
 
@@ -892,7 +897,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define MEMCONF_RETTRIM 1                            /*!< (unspecified)                                                        */
 #define MEMCONF_REPAIR 0                             /*!< (unspecified)                                                        */
 #define MEMCONF_POWER 1                              /*!< (unspecified)                                                        */
-#define MEMCONF_RET2 1                               /*!< (unspecified)                                                        */
 
 /*Pulse width modulation unit*/
 #define PWM_PRESENT 1
@@ -947,6 +951,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIOTE_PRESENT 1
 #define GPIOTE_COUNT 2
 
+#define GPIOTE20_IRQ_COUNT 2
 #define GPIOTE20_GPIOTE_NCHANNELS_MIN 0              /*!< Number of GPIOTE channels: 0..7                                      */
 #define GPIOTE20_GPIOTE_NCHANNELS_MAX 7              /*!< Number of GPIOTE channels: 0..7                                      */
 #define GPIOTE20_GPIOTE_NCHANNELS_SIZE 8             /*!< Number of GPIOTE channels: 0..7                                      */
@@ -958,6 +963,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIOTE20_GPIOTE_NINTERRUPTS_SIZE 2           /*!< Number of GPIOTE interrupts: 0..1                                    */
 #define GPIOTE20_HAS_PORT_EVENT 1                    /*!< (unspecified)                                                        */
 
+#define GPIOTE30_IRQ_COUNT 2
 #define GPIOTE30_GPIOTE_NCHANNELS_MIN 0              /*!< Number of GPIOTE channels: 0..3                                      */
 #define GPIOTE30_GPIOTE_NCHANNELS_MAX 3              /*!< Number of GPIOTE channels: 0..3                                      */
 #define GPIOTE30_GPIOTE_NCHANNELS_SIZE 4             /*!< Number of GPIOTE channels: 0..3                                      */
@@ -992,6 +998,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GRTC_PRESENT 1
 #define GRTC_COUNT 1
 
+#define GRTC_IRQ_COUNT 4
 #define GRTC_MSBWIDTH_MIN 0                          /*!< Width of the RTCOUNTERH, RTCOMPAREH and RTCOMPARESYNCH registers :
                                                           0..14*/
 #define GRTC_MSBWIDTH_MAX 14                         /*!< Width of the RTCOUNTERH, RTCOMPAREH and RTCOMPARESYNCH registers :
@@ -1036,9 +1043,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_PRESENT 1
 #define CLOCK_COUNT 1
 
+#define CLOCK_XOTUNE 0                               /*!< (unspecified)                                                        */
+
 /*Power control*/
 #define POWER_PRESENT 1
 #define POWER_COUNT 1
+
+#define POWER_CONSTLATSTAT 0                         /*!< (unspecified)                                                        */
 
 /*Reset control*/
 #define RESET_PRESENT 1
