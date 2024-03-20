@@ -1424,7 +1424,7 @@ NRF_STATIC_INLINE uint8_t nrf_radio_ed_sample_get(NRF_RADIO_Type const * p_reg);
  * @param[in] cca_mode           Mode of CCA.
  * @param[in] cca_ed_threshold   Energy Detection threshold value.
  * @param[in] cca_corr_threshold Correlator Busy Threshold.
- * @param[in] cca_corr_cnt       Limit of occurances above Correlator Threshold.
+ * @param[in] cca_corr_cnt       Limit of occurrences above Correlator Threshold.
  *                               When not equal to zero the correlator based
  *                               signal detect is enabled.
  */
