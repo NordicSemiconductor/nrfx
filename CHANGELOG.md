@@ -290,7 +290,7 @@ All notable changes to this project are documented in this file.
 
 ### Fixed
 - Fixed unused parameters in the PPI, CLOCK, SPIM and POWER drivers to resolve compilation warnings, such as 'flags' in the SPIM driver.
-- Fixed a race condition in the COMP driver when interrupt occured before update of the driver internal state.
+- Fixed a race condition in the COMP driver when interrupt occurred before update of the driver internal state.
 - Fixed minor C++ compilation warnings in the drivers.
 - Fixed implementation of workaround for nRF52 Series anomaly 197 in the POWER HAL, which was applied in incorrect configuration.
 - Fixed implementation of workaround for nRF53 Series anomaly 4 in the CLOCK driver, which was applied in incorrect configuration.

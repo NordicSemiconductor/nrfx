@@ -6691,7 +6691,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: RADIO_CCACTRL */
 /* Description: IEEE 802.15.4 clear channel assessment control */
 
-/* Bits 31..24 : Limit for occurances above CCACORRTHRES. When not equal to zero the corrolator based signal detect is enabled. */
+/* Bits 31..24 : Limit for occurrences above CCACORRTHRES. When not equal to zero the corrolator based signal detect is enabled. */
 #define RADIO_CCACTRL_CCACORRCNT_Pos (24UL) /*!< Position of CCACORRCNT field. */
 #define RADIO_CCACTRL_CCACORRCNT_Msk (0xFFUL << RADIO_CCACTRL_CCACORRCNT_Pos) /*!< Bit mask of CCACORRCNT field. */
 
@@ -8670,8 +8670,8 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bit 0 : Overrun error */
 #define TWI_ERRORSRC_OVERRUN_Pos (0UL) /*!< Position of OVERRUN field. */
 #define TWI_ERRORSRC_OVERRUN_Msk (0x1UL << TWI_ERRORSRC_OVERRUN_Pos) /*!< Bit mask of OVERRUN field. */
-#define TWI_ERRORSRC_OVERRUN_NotPresent (0UL) /*!< Read: no overrun occured */
-#define TWI_ERRORSRC_OVERRUN_Present (1UL) /*!< Read: overrun occured */
+#define TWI_ERRORSRC_OVERRUN_NotPresent (0UL) /*!< Read: no overrun occurred */
+#define TWI_ERRORSRC_OVERRUN_Present (1UL) /*!< Read: overrun occurred */
 
 /* Register: TWI_ENABLE */
 /* Description: Enable TWI */

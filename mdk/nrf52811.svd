@@ -13350,7 +13350,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CCACORRCNT</name>
-              <description>Limit for occurances above CCACORRTHRES. When not equal to zero the corrolator based signal detect is enabled.</description>
+              <description>Limit for occurrences above CCACORRTHRES. When not equal to zero the corrolator based signal detect is enabled.</description>
               <lsb>24</lsb>
               <msb>31</msb>
             </field>
@@ -19677,12 +19677,12 @@ POSSIBILITY OF SUCH DAMAGE.\n
                 <usage>read</usage>
                 <enumeratedValue>
                   <name>NotPresent</name>
-                  <description>Read: no overrun occured</description>
+                  <description>Read: no overrun occurred</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Present</name>
-                  <description>Read: overrun occured</description>
+                  <description>Read: overrun occurred</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
