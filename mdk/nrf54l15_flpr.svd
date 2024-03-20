@@ -12899,7 +12899,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>BUSERROR</name>
-              <description>An error occured during the bus transfer.</description>
+              <description>An error occurred during the bus transfer.</description>
               <addressOffset>0x008</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -12907,7 +12907,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>BUSERROR</name>
-                  <description>An error occured during the bus transfer.</description>
+                  <description>An error occurred during the bus transfer.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -13020,7 +13020,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>BUSERROR</name>
-              <description>An error occured during the bus transfer.</description>
+              <description>An error occurred during the bus transfer.</description>
               <addressOffset>0x008</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -13028,7 +13028,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>BUSERROR</name>
-                  <description>An error occured during the bus transfer.</description>
+                  <description>An error occurred during the bus transfer.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -15553,7 +15553,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>BUSERROR</name>
-              <description>An error occured during the bus transfer.</description>
+              <description>An error occurred during the bus transfer.</description>
               <addressOffset>0x008</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -15561,7 +15561,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>BUSERROR</name>
-                  <description>An error occured during the bus transfer.</description>
+                  <description>An error occurred during the bus transfer.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -15674,7 +15674,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>BUSERROR</name>
-              <description>An error occured during the bus transfer.</description>
+              <description>An error occurred during the bus transfer.</description>
               <addressOffset>0x008</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -15682,7 +15682,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>BUSERROR</name>
-                  <description>An error occured during the bus transfer.</description>
+                  <description>An error occurred during the bus transfer.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -18365,7 +18365,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>BUSERROR</name>
-              <description>An error occured during the bus transfer.</description>
+              <description>An error occurred during the bus transfer.</description>
               <addressOffset>0x008</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -18373,7 +18373,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>BUSERROR</name>
-                  <description>An error occured during the bus transfer.</description>
+                  <description>An error occurred during the bus transfer.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -18486,7 +18486,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>BUSERROR</name>
-              <description>An error occured during the bus transfer.</description>
+              <description>An error occurred during the bus transfer.</description>
               <addressOffset>0x008</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -18494,7 +18494,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>BUSERROR</name>
-                  <description>An error occured during the bus transfer.</description>
+                  <description>An error occurred during the bus transfer.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -46976,7 +46976,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>BUSERROR</name>
-              <description>An error occured during the bus transfer.</description>
+              <description>An error occurred during the bus transfer.</description>
               <addressOffset>0x008</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -46984,7 +46984,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>BUSERROR</name>
-                  <description>An error occured during the bus transfer.</description>
+                  <description>An error occurred during the bus transfer.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -47097,7 +47097,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>BUSERROR</name>
-              <description>An error occured during the bus transfer.</description>
+              <description>An error occurred during the bus transfer.</description>
               <addressOffset>0x008</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -47105,7 +47105,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>BUSERROR</name>
-                  <description>An error occured during the bus transfer.</description>
+                  <description>An error occurred during the bus transfer.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -50144,7 +50144,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>BUSERROR</name>
-              <description>An error occured during the bus transfer.</description>
+              <description>An error occurred during the bus transfer.</description>
               <addressOffset>0x008</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -50152,7 +50152,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>BUSERROR</name>
-                  <description>An error occured during the bus transfer.</description>
+                  <description>An error occurred during the bus transfer.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -50265,7 +50265,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>BUSERROR</name>
-              <description>An error occured during the bus transfer.</description>
+              <description>An error occurred during the bus transfer.</description>
               <addressOffset>0x008</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -50273,7 +50273,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>BUSERROR</name>
-                  <description>An error occured during the bus transfer.</description>
+                  <description>An error occurred during the bus transfer.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -56483,7 +56483,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>BUSERROR</name>
-              <description>Description cluster: An error occured during the bus transfer.</description>
+              <description>Description cluster: An error occurred during the bus transfer.</description>
               <addressOffset>0x008</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -56491,7 +56491,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>BUSERROR</name>
-                  <description>An error occured during the bus transfer.</description>
+                  <description>An error occurred during the bus transfer.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
