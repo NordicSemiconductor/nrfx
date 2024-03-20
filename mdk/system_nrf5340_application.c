@@ -161,7 +161,7 @@ void SystemInit(void)
         {
             if (*(volatile uint32_t *)0x50032420ul & 0x80000000ul)
             {
-                /* Reset occured during calibration */
+                /* Reset occurred during calibration */
                 NRF_CLOCK_S->LFCLKSRC = CLOCK_LFCLKSRC_SRC_LFSYNT;
                 NRF_CLOCK_S->TASKS_LFCLKSTART = 1ul;
                 while (NRF_CLOCK_S->EVENTS_LFCLKSTARTED == 0ul) {}

@@ -161,7 +161,7 @@ typedef enum
  */
 typedef enum
 {
-    NRFX_USBD_EP_OK,       /**< No error occured. */
+    NRFX_USBD_EP_OK,       /**< No error occurred. */
     NRFX_USBD_EP_WAITING,  /**< Data received, no buffer prepared already - waiting for configured transfer. */
     NRFX_USBD_EP_OVERLOAD, /**< Received number of bytes cannot fit given buffer.
                             *   This error would also be returned when next_transfer function has been defined
