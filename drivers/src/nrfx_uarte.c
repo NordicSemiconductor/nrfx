@@ -98,7 +98,7 @@
 // is in the memory that cannot be used by the DMA.
 #define UARTE_FLAG_TX_USE_CACHE            UARTE_FLAG(TX, 1)
 
-// Flag is used to indicate that asynchronous TX transfer request occured during blocking transfer.
+// Flag is used to indicate that asynchronous TX transfer request occurred during blocking transfer.
 // Asynchronous pending transfer is started immediately after the current blocking transfer is
 // completed.
 #define UARTE_FLAG_TX_PENDING              UARTE_FLAG(TX, 2)

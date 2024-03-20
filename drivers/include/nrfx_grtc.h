@@ -105,7 +105,7 @@ typedef enum
 typedef struct
 {
     uint32_t timeout;   /**< Delay in LFCLK cycles after the condition allowing SYSCOUNTER to go to sleep is met. */
-    uint32_t waketime;  /**< Number of LFCLK cycles to wakeup the SYSCOUNTER before the wake-up event occured. */
+    uint32_t waketime;  /**< Number of LFCLK cycles to wakeup the SYSCOUNTER before the wake-up event occurred. */
     bool     auto_mode; /**< Enable automatic mode, which keeps the SYSCOUNTER active when any of the local CPUs is active. */
 } nrfx_grtc_sleep_config_t;
 
