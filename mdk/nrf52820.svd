@@ -13236,7 +13236,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
             <field>
               <name>CCACORRCNT</name>
-              <description>Limit for occurances above CCACORRTHRES. When not equal to zero the corrolator based signal detect is enabled.</description>
+              <description>Limit for occurrences above CCACORRTHRES. When not equal to zero the corrolator based signal detect is enabled.</description>
               <lsb>24</lsb>
               <msb>31</msb>
             </field>
