@@ -40263,8 +40263,8 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>ITCTRL</name>
-          <description>Used to enable topology detection. 
-        This register enables the component to switch from a functional mode, the default behavior, 
+          <description>Used to enable topology detection.
+        This register enables the component to switch from a functional mode, the default behavior,
         to integration mode where the inputs and outputs of the component can be directly controlled for integration testing and topology solving.</description>
           <addressOffset>0xF00</addressOffset>
           <access>read-write</access>
@@ -40316,10 +40316,10 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>LSR</name>
-          <description>This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug. 
-      Accesses to the extended stimulus port registers are not affected by the lock mechanism. 
-      This register must always be present although there might not be any lock access control mechanism. 
-      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register. 
+          <description>This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug.
+      Accesses to the extended stimulus port registers are not affected by the lock mechanism.
+      This register must always be present although there might not be any lock access control mechanism.
+      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register.
       For most components this covers all registers except for the Lock Access Register.</description>
           <addressOffset>0xFB4</addressOffset>
           <access>read-write</access>
@@ -43170,7 +43170,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>ITATBCTR0</name>
-          <description>The ITATBCTR0 register captures the values of the atvalids, afreadys, and atbytess inputs to the TPIU. 
+          <description>The ITATBCTR0 register captures the values of the atvalids, afreadys, and atbytess inputs to the TPIU.
       To ensure the integration registers work correctly in a system, the value of atbytess is only valid when atvalids, bit[0], is HIGH.</description>
           <addressOffset>0xEF8</addressOffset>
           <access>read-write</access>
@@ -43235,8 +43235,8 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>ITCTRL</name>
-          <description>Used to enable topology detection. 
-        This register enables the component to switch from a functional mode, the default behavior, 
+          <description>Used to enable topology detection.
+        This register enables the component to switch from a functional mode, the default behavior,
         to integration mode where the inputs and outputs of the component can be directly controlled for integration testing and topology solving.</description>
           <addressOffset>0xF00</addressOffset>
           <access>read-write</access>
@@ -43265,7 +43265,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>CLAIMSET</name>
-          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
+          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality.
       The claim tags have no effect on the operation of the component. The CLAIMSET register sets bits in the claim tag, and determines the number of claim bits implemented.</description>
           <addressOffset>0xFA0</addressOffset>
           <access>read-write</access>
@@ -43384,8 +43384,8 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>CLAIMCLR</name>
-          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
-      The claim tags have no effect on the operation of the component. 
+          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality.
+      The claim tags have no effect on the operation of the component.
       The CLAIMCLR register sets the bits in the claim tag to 0 and determines the current value of the claim tag.</description>
           <addressOffset>0xFA4</addressOffset>
           <access>read-write</access>
@@ -43527,10 +43527,10 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>LSR</name>
-          <description>This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug. 
-      Accesses to the extended stimulus port registers are not affected by the lock mechanism. 
-      This register must always be present although there might not be any lock access control mechanism. 
-      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register. 
+          <description>This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug.
+      Accesses to the extended stimulus port registers are not affected by the lock mechanism.
+      This register must always be present although there might not be any lock access control mechanism.
+      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register.
       For most components this covers all registers except for the Lock Access Register.</description>
           <addressOffset>0xFB4</addressOffset>
           <access>read-write</access>
@@ -43685,7 +43685,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>MUXNUM</name>
-              <description>Indicates the hidden level of input multiplexing. When non-zero, this value indicates the type of multiplexing on the input to the ATB. 
+              <description>Indicates the hidden level of input multiplexing. When non-zero, this value indicates the type of multiplexing on the input to the ATB.
         Currently only 0x00 is supported, that is, no multiplexing is present. This value helps detect the ATB structure.</description>
               <lsb>0</lsb>
               <msb>4</msb>
@@ -45786,7 +45786,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>ITCTRL</name>
-          <description>The ITCTRL register enables the component to switch from a functional mode, which is the default behavior, 
+          <description>The ITCTRL register enables the component to switch from a functional mode, which is the default behavior,
       to integration mode where the inputs and outputs of the component can be directly controlled for the purposes of integration testing and topology detection.</description>
           <addressOffset>0xF00</addressOffset>
           <access>read-write</access>
@@ -45815,7 +45815,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>CLAIMSET</name>
-          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
+          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality.
       The claim tags have no effect on the operation of the component. The CLAIMSET register sets bits in the claim tag, and determines the number of claim bits implemented.</description>
           <addressOffset>0xFA0</addressOffset>
           <access>read-write</access>
@@ -45934,8 +45934,8 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>CLAIMCLR</name>
-          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
-      The claim tags have no effect on the operation of the component. 
+          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality.
+      The claim tags have no effect on the operation of the component.
       The CLAIMCLR register sets the bits in the claim tag to 0 and determines the current value of the claim tag.</description>
           <addressOffset>0xFA4</addressOffset>
           <access>read-write</access>
@@ -46077,10 +46077,10 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>LSR</name>
-          <description>This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug. 
-      Accesses to the extended stimulus port registers are not affected by the lock mechanism. 
-      This register must always be present although there might not be any lock access control mechanism. 
-      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register. 
+          <description>This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug.
+      Accesses to the extended stimulus port registers are not affected by the lock mechanism.
+      This register must always be present although there might not be any lock access control mechanism.
+      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register.
       For most components this covers all registers except for the Lock Access Register.</description>
           <addressOffset>0xFB4</addressOffset>
           <access>read-write</access>
@@ -46541,9 +46541,9 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>HT</name>
-              <description>Hold Time. The formatting scheme can become inefficient when fast switching occurs, and you can use this setting to minimize switching. 
-          When a source has nothing to transmit, then another source is selected irrespective of the minimum number of transactions. 
-          The ATB funnel holds for the minimum hold time and one additional transaction. The actual hold time is the register value plus 1. 
+              <description>Hold Time. The formatting scheme can become inefficient when fast switching occurs, and you can use this setting to minimize switching.
+          When a source has nothing to transmit, then another source is selected irrespective of the minimum number of transactions.
+          The ATB funnel holds for the minimum hold time and one additional transaction. The actual hold time is the register value plus 1.
           The maximum value that can be entered is 0b1110 and this equates to 15 transactions. 0b1111 is reserved.</description>
               <lsb>8</lsb>
               <msb>11</msb>
@@ -47070,7 +47070,7 @@ A write outputs the value to atbytesm.</description>
         </register>
         <register>
           <name>ITCTRL</name>
-          <description>The ITCTRL register enables the component to switch from a functional mode, which is the default behavior, 
+          <description>The ITCTRL register enables the component to switch from a functional mode, which is the default behavior,
       to integration mode where the inputs and outputs of the component can be directly controlled for the purposes of integration testing and topology detection.</description>
           <addressOffset>0xF00</addressOffset>
           <access>read-write</access>
@@ -47099,7 +47099,7 @@ A write outputs the value to atbytesm.</description>
         </register>
         <register>
           <name>CLAIMSET</name>
-          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
+          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality.
       The claim tags have no effect on the operation of the component. The CLAIMSET register sets bits in the claim tag, and determines the number of claim bits implemented.</description>
           <addressOffset>0xFA0</addressOffset>
           <access>read-write</access>
@@ -47218,8 +47218,8 @@ A write outputs the value to atbytesm.</description>
         </register>
         <register>
           <name>CLAIMCLR</name>
-          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
-      The claim tags have no effect on the operation of the component. 
+          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality.
+      The claim tags have no effect on the operation of the component.
       The CLAIMCLR register sets the bits in the claim tag to 0 and determines the current value of the claim tag.</description>
           <addressOffset>0xFA4</addressOffset>
           <access>read-write</access>
@@ -47361,10 +47361,10 @@ A write outputs the value to atbytesm.</description>
         </register>
         <register>
           <name>LSR</name>
-          <description>This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug. 
-      Accesses to the extended stimulus port registers are not affected by the lock mechanism. 
-      This register must always be present although there might not be any lock access control mechanism. 
-      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register. 
+          <description>This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug.
+      Accesses to the extended stimulus port registers are not affected by the lock mechanism.
+      This register must always be present although there might not be any lock access control mechanism.
+      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register.
       For most components this covers all registers except for the Lock Access Register.</description>
           <addressOffset>0xFB4</addressOffset>
           <access>read-write</access>
@@ -58863,7 +58863,7 @@ A write outputs the value to atbytesm.</description>
           <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>EVENTS_ACKED[%s]</name>
-          <description>Description collection: Event received when hardware handshake of SEND task for IPCT 
+          <description>Description collection: Event received when hardware handshake of SEND task for IPCT
         source channel n is complete and a new signal can be triggered
         on that channel.</description>
           <addressOffset>0x140</addressOffset>
@@ -58873,7 +58873,7 @@ A write outputs the value to atbytesm.</description>
           <fields>
             <field>
               <name>EVENTS_ACKED</name>
-              <description>Event received when hardware handshake of SEND task for IPCT 
+              <description>Event received when hardware handshake of SEND task for IPCT
         source channel n is complete and a new signal can be triggered
         on that channel.</description>
               <lsb>0</lsb>
@@ -65244,8 +65244,8 @@ A write outputs the value to atbytesm.</description>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Busy</name>
-                    <description>An abstract command was executing while command, 
-                abstractcs, or abstractauto was written, or when one of the data or progbuf registers was read 
+                    <description>An abstract command was executing while command,
+                abstractcs, or abstractauto was written, or when one of the data or progbuf registers was read
                 or written. This status is only written if cmderr contains 0</description>
                     <value>0x1</value>
                   </enumeratedValue>
@@ -65257,19 +65257,19 @@ A write outputs the value to atbytesm.</description>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Exception</name>
-                    <description>An exception occurred while executing the 
+                    <description>An exception occurred while executing the
                 command  (e.g. while executing theProgram Buffer).</description>
                     <value>0x3</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>HaltResume</name>
-                    <description>The abstract command couldn't execute 
+                    <description>The abstract command couldn't execute
                 because the hart wasn't in the required state (running/halted). or unavailable.</description>
                     <value>0x4</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Bus</name>
-                    <description>The abstract command failed due to abus 
+                    <description>The abstract command failed due to abus
                 error (e.g. alignment, access size, or timeout).</description>
                     <value>0x5</value>
                   </enumeratedValue>
