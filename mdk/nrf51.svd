@@ -301,7 +301,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>RAMSTATUS</name>
           <description>Ram status register.</description>
@@ -378,7 +378,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>SYSTEMOFF</name>
           <description>System off register.</description>
@@ -399,7 +399,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POFCON</name>
           <description>Power failure configuration.</description>
@@ -566,7 +566,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>RAMONB</name>
           <description>Ram on/off.</description>
@@ -643,7 +643,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>DCDCEN</name>
           <description>DCDC converter enable configuration register.</description>
@@ -709,7 +709,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -1047,7 +1047,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>HFCLKSTAT</name>
           <description>High frequency clock status.</description>
@@ -1116,7 +1116,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>LFCLKSTAT</name>
           <description>Low frequency clock status.</description>
@@ -1195,7 +1195,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>LFCLKSRC</name>
           <description>Clock source for the LFCLK clock.</description>
@@ -1225,7 +1225,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>CTIV</name>
           <description>Calibration timer interval.</description>
@@ -1237,8 +1237,8 @@ POSSIBILITY OF SUCH DAMAGE.\n
               <lsb>0</lsb> <msb>6</msb>
             </field>
           </fields>
-        </register> 
-        
+        </register>
+
         <register>
           <name>XTALFREQ</name>
           <description>Crystal frequency.</description>
@@ -1263,7 +1263,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
               </enumeratedValues>
             </field>
           </fields>
-        </register> 
+        </register>
       </registers>
     </peripheral>
 
@@ -1654,7 +1654,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Length of RAM region 0.</description>
           <addressOffset>0x52C</addressOffset>
         </register>
-        
+
         <register>
           <name>PROTENSET0</name>
           <description>Erase and write protection bit enable set register.</description>
@@ -2494,7 +2494,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>PROTENSET1</name>
           <description>Erase and write protection bit enable set register.</description>
@@ -3334,7 +3334,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>DISABLEINDEBUG</name>
           <description>Disable erase and write protection mechanism in debug mode.</description>
@@ -3360,7 +3360,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>PROTBLOCKSIZE</name>
           <description>Erase and write protection block size.</description>
@@ -3380,7 +3380,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -4158,7 +4158,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>RXMATCH</name>
           <description>Received address.</description>
@@ -4172,7 +4172,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>RXCRC</name>
           <description>Received CRC.</description>
@@ -4206,7 +4206,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Packet pointer. Decision point: START task.</description>
           <addressOffset>0x504</addressOffset>
         </register>
-        
+
         <register>
           <name>FREQUENCY</name>
           <description>Frequency.</description>
@@ -4821,7 +4821,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>BCC</name>
           <description>Bit counter compare.</description>
@@ -5032,7 +5032,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>OVERRIDE0</name>
           <description>Trim value override register 0.</description>
@@ -5110,7 +5110,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -5222,7 +5222,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Receiver timeout.</description>
           <addressOffset>0x144</addressOffset>
         </register>
-        
+
         <register>
           <name>SHORTS</name>
           <description>Shortcuts for UART.</description>
@@ -5266,7 +5266,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>INTENSET</name>
           <description>Interrupt enable set register.</description>
@@ -5705,7 +5705,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>ENABLE</name>
           <description>Enable UART and acquire IOs.</description>
@@ -5754,7 +5754,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <addressOffset>0x514</addressOffset>
           <resetValue>0xFFFFFFFF</resetValue>
         </register>
-        
+
         <register>
           <name>RXD</name>
           <description>RXD register. On read action the buffer pointer is displaced. Once read the character is consumed. If read when no character available, the UART will stop working.</description>
@@ -5782,7 +5782,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>BAUDRATE</name>
           <description>UART Baudrate.</description>
@@ -5928,7 +5928,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -5953,7 +5953,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -6231,7 +6231,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -6256,7 +6256,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -6907,7 +6907,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -6932,7 +6932,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -6960,7 +6960,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
         <value>4</value>
       </interrupt>
     </peripheral>
-    
+
     <peripheral>
       <name>SPIS1</name>
       <version>522</version>
@@ -7251,7 +7251,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <name>STATUS</name>
           <description>Status from last transaction.</description>
           <addressOffset>0x440</addressOffset>
-          <fields>        
+          <fields>
             <field>
               <name>OVERREAD</name>
               <description>TX buffer overread detected, and prevented.</description>
@@ -7306,7 +7306,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>ENABLE</name>
           <description>Enable SPIS.</description>
@@ -7356,7 +7356,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <addressOffset>0x514</addressOffset>
           <resetValue>0xFFFFFFFF</resetValue>
         </register>
-        
+
         <register>
           <name>RXDPTR</name>
           <description>RX data pointer.</description>
@@ -7387,7 +7387,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>TXDPTR</name>
           <description>TX data pointer.</description>
@@ -7418,7 +7418,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>CONFIG</name>
           <description>Configuration register.</description>
@@ -7477,7 +7477,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>DEF</name>
           <description>Default character.</description>
@@ -7502,7 +7502,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -7527,7 +7527,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -7929,7 +7929,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -8292,7 +8292,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -8838,7 +8838,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Capture/compare registers.</description>
           <addressOffset>0x540</addressOffset>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -8863,7 +8863,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -9732,7 +9732,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>PRESCALER</name>
           <description>12-bit prescaler for COUNTER frequency (32768/(PRESCALER+1)). Must be written when RTC is STOPed.</description>
@@ -9760,7 +9760,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -9785,7 +9785,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -9903,7 +9903,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <access>read-only</access>
           <dataType>int32_t</dataType>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -10102,7 +10102,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -10127,7 +10127,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -10300,7 +10300,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>ECB block encrypt memory pointer.</description>
           <addressOffset>0x504</addressOffset>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -10325,7 +10325,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -10564,7 +10564,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>ENABLE</name>
           <description>Enable AAR.</description>
@@ -10589,7 +10589,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>NIRK</name>
           <description>Number of Identity root Keys in the IRK data structure.</description>
@@ -10603,7 +10603,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>IRKPTR</name>
           <description>Pointer to the IRK data structure.</description>
@@ -10619,7 +10619,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Pointer to a scratch data area used for temporary storage during resolution. A minimum of 3 bytes must be reserved.</description>
           <addressOffset>0x514</addressOffset>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -10644,7 +10644,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -10977,7 +10977,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>CNFPTR</name>
           <description>Pointer to a data structure holding AES key and NONCE vector.</description>
@@ -10998,7 +10998,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Pointer to a scratch data area used for temporary storage during resolution. A minimum of 43 bytes must be reserved.</description>
           <addressOffset>0x514</addressOffset>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -11023,7 +11023,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -11153,7 +11153,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>REQSTATUS</name>
           <description>Request status.</description>
@@ -11494,7 +11494,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <dim>8</dim>
           <dimIncrement>0x04</dimIncrement>
@@ -11517,7 +11517,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -11931,7 +11931,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>SAMPLE</name>
           <description>Motion sample value.</description>
@@ -11946,7 +11946,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>REPORTPER</name>
           <description>Number of samples to generate an EVENT_REPORTRDY.</description>
@@ -12009,7 +12009,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <access>read-only</access>
           <dataType>int32_t</dataType>
         </register>
-        
+
         <register>
           <name>ACCREAD</name>
           <description>Snapshot of ACC register. Value generated by the TASKS_READCLEACC task.</description>
@@ -12061,7 +12061,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>LEDPRE</name>
           <description>Time LED is switched ON before the sample.</description>
@@ -12089,7 +12089,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>ACCDBLREAD</name>
           <description>Snapshot of ACCDBL register. Value generated by the TASKS_READCLEACC task.</description>
@@ -12103,7 +12103,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -12534,7 +12534,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>ENABLE</name>
           <description>Enable the LPCOMP.</description>
@@ -12559,7 +12559,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>PSEL</name>
           <description>Input pin select.</description>
@@ -12613,7 +12613,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>REFSEL</name>
           <description>Reference select.</description>
@@ -12668,7 +12668,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>EXTREFSEL</name>
           <description>External reference select.</description>
@@ -12690,10 +12690,10 @@ POSSIBILITY OF SUCH DAMAGE.\n
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
-            </field>          
+            </field>
           </fields>
         </register>
-        
+
         <register>
           <name>ANADETECT</name>
           <description>Analog detect configuration.</description>
@@ -12723,7 +12723,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>POWER</name>
           <description>Peripheral power control.</description>
@@ -12748,10 +12748,10 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
       </registers>
     </peripheral>
-      
+
     <peripheral>
       <name>SWI</name>
       <version>522</version>
@@ -12885,7 +12885,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <addressOffset>0x508</addressOffset>
           <alternateRegister>ERASEPAGE</alternateRegister>
         </register>
-        
+
         <register>
           <name>ERASEALL</name>
           <description>Register for erasing all non-volatile user memory.</description>
@@ -12916,7 +12916,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Register for erasing a protected non-volatile memory page.</description>
           <addressOffset>0x510</addressOffset>
         </register>
-        
+
         <register>
           <name>ERASEUICR</name>
           <description>Register for start erasing User Information Congfiguration Registers.</description>
@@ -12943,7 +12943,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
         </register>
       </registers>
     </peripheral>
-   
+
     <peripheral>
       <name>PPI</name>
       <version>522</version>
@@ -12979,7 +12979,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             <access>write-only</access>
           </register>
         </cluster>
-        
+
         <register>
           <name>CHEN</name>
           <description>Channel enable.</description>
@@ -13460,7 +13460,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
-            </field>            
+            </field>
           </fields>
         </register>
         <register>
@@ -15437,7 +15437,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-          
+
       </registers>
     </peripheral>
 
@@ -15468,7 +15468,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Code memory size in pages.</description>
           <addressOffset>0x014</addressOffset>
         </register>
-      
+
         <register>
           <name>CLENR0</name>
           <description>Length of code region 0 in bytes.</description>
@@ -15517,7 +15517,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <addressOffset>0x038</addressOffset>
           <alternateRegister>SIZERAMBLOCKS</alternateRegister>
         </register>
-        
+
         <register>
           <name>CONFIGID</name>
           <description>Configuration identifier.</description>
@@ -15543,7 +15543,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Device identifier.</description>
           <addressOffset>0x060</addressOffset>
         </register>
-        
+
         <register>
           <dim>4</dim>
           <dimIncrement>0x04</dimIncrement>
@@ -15551,7 +15551,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Encryption root.</description>
           <addressOffset>0x080</addressOffset>
         </register>
-        
+
         <register>
           <dim>4</dim>
           <dimIncrement>0x04</dimIncrement>
@@ -15559,7 +15559,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Identity root.</description>
           <addressOffset>0x090</addressOffset>
         </register>
-        
+
         <register>
           <name>DEVICEADDRTYPE</name>
           <description>Device address type.</description>
@@ -15584,7 +15584,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <dim>2</dim>
           <dimIncrement>0x04</dimIncrement>
@@ -15592,7 +15592,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Device address.</description>
           <addressOffset>0x0A4</addressOffset>
         </register>
-        
+
         <register>
           <name>OVERRIDEEN</name>
           <description>Radio calibration override enable.</description>
@@ -15634,7 +15634,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <dim>5</dim>
           <dimIncrement>0x04</dimIncrement>
@@ -15649,7 +15649,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Override values for the OVERRIDEn registers in RADIO for BLE_1Mbit mode.</description>
           <addressOffset>0x0EC</addressOffset>
         </register>
-        
+
       </registers>
     </peripheral>
 
@@ -15675,7 +15675,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Length of code region 0.</description>
           <addressOffset>0x000</addressOffset>
         </register>
-        
+
         <register>
           <name>RBPCONF</name>
           <description>Readback protection configuration.</description>
@@ -15717,7 +15717,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>XTALFREQ</name>
           <description>Reset value for CLOCK XTALFREQ register.</description>
@@ -15742,7 +15742,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>FWID</name>
           <description>Firmware ID.</description>
@@ -15756,13 +15756,13 @@ POSSIBILITY OF SUCH DAMAGE.\n
             </field>
           </fields>
         </register>
-        
+
         <register>
           <name>BOOTLOADERADDR</name>
           <description>Bootloader start address.</description>
           <addressOffset>0x014</addressOffset>
         </register>
-        
+
         <register>
           <dim>15</dim>
           <dimIncrement>0x04</dimIncrement>
@@ -15785,7 +15785,7 @@ POSSIBILITY OF SUCH DAMAGE.\n
           <description>Reserved for customer.</description>
           <addressOffset>0x080</addressOffset>
         </register>
-        
+
       </registers>
     </peripheral>
 
