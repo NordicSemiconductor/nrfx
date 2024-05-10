@@ -2962,7 +2962,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>OPSIZE</name>
-                <description>Operand size (number of bytes): 
+                <description>Operand size (number of bytes):
 					This register is used when the memory is accessed via AHB Master</description>
                 <lsb>0</lsb>
                 <msb>12</msb>
@@ -6057,7 +6057,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>ITATBCTR0</name>
-          <description>The ITATBCTR0 register captures the values of the atvalids, afreadys, and atbytess inputs to the TPIU. 
+          <description>The ITATBCTR0 register captures the values of the atvalids, afreadys, and atbytess inputs to the TPIU.
       To ensure the integration registers work correctly in a system, the value of atbytess is only valid when atvalids, bit[0], is HIGH.</description>
           <addressOffset>0xEF8</addressOffset>
           <access>read-write</access>
@@ -6122,8 +6122,8 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>ITCTRL</name>
-          <description>Used to enable topology detection. 
-        This register enables the component to switch from a functional mode, the default behavior, 
+          <description>Used to enable topology detection.
+        This register enables the component to switch from a functional mode, the default behavior,
         to integration mode where the inputs and outputs of the component can be directly controlled for integration testing and topology solving.</description>
           <addressOffset>0xF00</addressOffset>
           <access>read-write</access>
@@ -6152,7 +6152,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>CLAIMSET</name>
-          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
+          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality.
       The claim tags have no effect on the operation of the component. The CLAIMSET register sets bits in the claim tag, and determines the number of claim bits implemented.</description>
           <addressOffset>0xFA0</addressOffset>
           <access>read-write</access>
@@ -6271,8 +6271,8 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>CLAIMCLR</name>
-          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
-      The claim tags have no effect on the operation of the component. 
+          <description>Software can use the claim tag to coordinate application and debugger access to trace unit functionality.
+      The claim tags have no effect on the operation of the component.
       The CLAIMCLR register sets the bits in the claim tag to 0 and determines the current value of the claim tag.</description>
           <addressOffset>0xFA4</addressOffset>
           <access>read-write</access>
@@ -6414,10 +6414,10 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>LSR</name>
-          <description>This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug. 
-      Accesses to the extended stimulus port registers are not affected by the lock mechanism. 
-      This register must always be present although there might not be any lock access control mechanism. 
-      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register. 
+          <description>This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug.
+      Accesses to the extended stimulus port registers are not affected by the lock mechanism.
+      This register must always be present although there might not be any lock access control mechanism.
+      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register.
       For most components this covers all registers except for the Lock Access Register.</description>
           <addressOffset>0xFB4</addressOffset>
           <access>read-write</access>
@@ -6572,7 +6572,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>MUXNUM</name>
-              <description>Indicates the hidden level of input multiplexing. When non-zero, this value indicates the type of multiplexing on the input to the ATB. 
+              <description>Indicates the hidden level of input multiplexing. When non-zero, this value indicates the type of multiplexing on the input to the ATB.
         Currently only 0x00 is supported, that is, no multiplexing is present. This value helps detect the ATB structure.</description>
               <lsb>0</lsb>
               <msb>4</msb>
@@ -7503,7 +7503,7 @@ generate before a trace synchronization request occurs. The number of bytes is a
           <fields>
             <field>
               <name>RANGE_0</name>
-              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting.
         Each field represents an address range comparator pair, so field[0] controls the selection of address range comparator pair 0.</description>
               <lsb>0</lsb>
               <msb>0</msb>
@@ -7522,7 +7522,7 @@ generate before a trace synchronization request occurs. The number of bytes is a
             </field>
             <field>
               <name>RANGE_1</name>
-              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting.
         Each field represents an address range comparator pair, so field[1] controls the selection of address range comparator pair 1.</description>
               <lsb>1</lsb>
               <msb>1</msb>
@@ -7541,7 +7541,7 @@ generate before a trace synchronization request occurs. The number of bytes is a
             </field>
             <field>
               <name>RANGE_2</name>
-              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting.
         Each field represents an address range comparator pair, so field[2] controls the selection of address range comparator pair 2.</description>
               <lsb>2</lsb>
               <msb>2</msb>
@@ -7560,7 +7560,7 @@ generate before a trace synchronization request occurs. The number of bytes is a
             </field>
             <field>
               <name>RANGE_3</name>
-              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting.
         Each field represents an address range comparator pair, so field[3] controls the selection of address range comparator pair 3.</description>
               <lsb>3</lsb>
               <msb>3</msb>
@@ -7579,7 +7579,7 @@ generate before a trace synchronization request occurs. The number of bytes is a
             </field>
             <field>
               <name>RANGE_4</name>
-              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting.
         Each field represents an address range comparator pair, so field[4] controls the selection of address range comparator pair 4.</description>
               <lsb>4</lsb>
               <msb>4</msb>
@@ -7598,7 +7598,7 @@ generate before a trace synchronization request occurs. The number of bytes is a
             </field>
             <field>
               <name>RANGE_5</name>
-              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting.
         Each field represents an address range comparator pair, so field[5] controls the selection of address range comparator pair 5.</description>
               <lsb>5</lsb>
               <msb>5</msb>
@@ -7617,7 +7617,7 @@ generate before a trace synchronization request occurs. The number of bytes is a
             </field>
             <field>
               <name>RANGE_6</name>
-              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting.
         Each field represents an address range comparator pair, so field[6] controls the selection of address range comparator pair 6.</description>
               <lsb>6</lsb>
               <msb>6</msb>
@@ -7636,7 +7636,7 @@ generate before a trace synchronization request occurs. The number of bytes is a
             </field>
             <field>
               <name>RANGE_7</name>
-              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+              <description>Address range field. Selects which address range comparator pairs are in use with branch broadcasting.
         Each field represents an address range comparator pair, so field[7] controls the selection of address range comparator pair 7.</description>
               <lsb>7</lsb>
               <msb>7</msb>
@@ -11821,7 +11821,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <fields>
             <field>
               <name>LOCKVTORAIRCRS</name>
-              <description>Locks both the Vector table Offset Register (VTOR) and 
+              <description>Locks both the Vector table Offset Register (VTOR) and
            Application Interrupt and Reset Control Register (AIRCR) for secure mode.</description>
               <lsb>0</lsb>
               <msb>0</msb>
@@ -33085,8 +33085,8 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Busy</name>
-                    <description>An abstract command was executing while command, 
-                abstractcs, or abstractauto was written, or when one of the data or progbuf registers was read 
+                    <description>An abstract command was executing while command,
+                abstractcs, or abstractauto was written, or when one of the data or progbuf registers was read
                 or written. This status is only written if cmderr contains 0</description>
                     <value>0x1</value>
                   </enumeratedValue>
@@ -33098,19 +33098,19 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Exception</name>
-                    <description>An exception occurred while executing the 
+                    <description>An exception occurred while executing the
                 command  (e.g. while executing theProgram Buffer).</description>
                     <value>0x3</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>HaltResume</name>
-                    <description>The abstract command couldn't execute 
+                    <description>The abstract command couldn't execute
                 because the hart wasn't in the required state (running/halted). or unavailable.</description>
                     <value>0x4</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Bus</name>
-                    <description>The abstract command failed due to abus 
+                    <description>The abstract command failed due to abus
                 error (e.g. alignment, access size, or timeout).</description>
                     <value>0x5</value>
                   </enumeratedValue>
