@@ -52,6 +52,13 @@ extern "C" {
 /** @brief Size of AXI bridge waitstates array. */
 #define NRF_LRCCONF_AXI_WAITSTATES_ARRAY_SIZE LRCCONF_AX2XWAITSTATES_MaxCount
 
+#if defined(LRCCONF_TASKS_REQHFXO_TASKS_REQHFXO_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether HFXO requesting is present. */
+#define NRF_LRCCONF_HAS_HFXO 1
+#else
+#define NRF_LRCCONF_HAS_HFXO 0
+#endif
+
 /** @brief Tasks. */
 typedef enum
 {
@@ -75,6 +82,10 @@ typedef enum
     NRF_LRCCONF_TASK_CONSTLAT_DISABLE  = offsetof(NRF_LRCCONF_Type, TASKS_CONSTLAT.DISABLE),   /**< Disable constant latency mode. */
     NRF_LRCCONF_TASK_SYSTEMOFFNOTREADY = offsetof(NRF_LRCCONF_Type, TASKS_SYSTEMOFF.NOTREADY), /**< Indicate being not ready to system off .*/
     NRF_LRCCONF_TASK_SYSTEMOFFREADY    = offsetof(NRF_LRCCONF_Type, TASKS_SYSTEMOFF.READY),    /**< Indicate being ready to system off .*/
+#if NRF_LRCCONF_HAS_HFXO
+    NRF_LRCCONF_TASK_REQHFXO           = offsetof(NRF_LRCCONF_Type, TASKS_REQHFXO),            /**< Request HFXO. */
+    NRF_LRCCONF_TASK_STOPREQHFXO       = offsetof(NRF_LRCCONF_Type, TASKS_STOPREQHFXO),        /**< Stop requesting HFXO. */
+#endif
 } nrf_lrcconf_task_t;
 
 /** @brief Events. */
@@ -88,6 +99,9 @@ typedef enum
     NRF_LRCCONF_EVENT_CLKSTARTED_5 = offsetof(NRF_LRCCONF_Type, EVENTS_CLKSRCSTARTED[5]), /**< Clock 5 started. */
     NRF_LRCCONF_EVENT_CLKSTARTED_6 = offsetof(NRF_LRCCONF_Type, EVENTS_CLKSRCSTARTED[6]), /**< Clock 6 started. */
     NRF_LRCCONF_EVENT_CLKSTARTED_7 = offsetof(NRF_LRCCONF_Type, EVENTS_CLKSRCSTARTED[7]), /**< Clock 7 started. */
+#if NRF_LRCCONF_HAS_HFXO
+    NRF_LRCCONF_EVENT_HFXOSTARTED  = offsetof(NRF_LRCCONF_Type, EVENTS_HFXOSTARTED),      /**< HFXO started. */
+#endif
 } nrf_lrcconf_event_t;
 
 /** @brief Clock sources. */

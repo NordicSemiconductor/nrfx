@@ -61,11 +61,18 @@ extern "C" {
 #define NRF_RESETINFO_HAS_MULTIPLE_SECWDT 0
 #endif
 
-#if defined(RESETINFO_MASKLOCKUP_MASK_Mask) || defined(__NRFX_DOXYGEN__)
+#if defined(RESETINFO_MASKLOCKUP_MASK_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether CPU lockup signal masking is present. */
 #define NRF_RESETINFO_HAS_MASKLOCKUP 1
 #else
 #define NRF_RESETINFO_HAS_MASKLOCKUP 0
+#endif
+
+#if defined(RESETINFO_RESETREAS_LOCAL_CROSSDOMAIN_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether CROSSDOMAIN local reset reason is present. */
+#define NRF_RESETINFO_HAS_LOCAL_CROSSDOMAIN 1
+#else
+#define NRF_RESETINFO_HAS_LOCAL_CROSSDOMAIN 0
 #endif
 
 #if defined(RESETINFO_ERROR_STATUS_ERRORSTATUS_Msk) || defined(__NRFX_DOXYGEN__)
@@ -106,7 +113,9 @@ typedef enum
     NRF_RESETINFO_RESETREAS_LOCAL_DOGNS_MASK       = RESETINFO_RESETREAS_LOCAL_DOGNS_Msk,          /**< Reset from the local non-secure watchdog timer. */
     NRF_RESETINFO_RESETREAS_LOCAL_SREQ_MASK        = RESETINFO_RESETREAS_LOCAL_SREQ_Msk,           /**< Reset from the local soft reset request. */
     NRF_RESETINFO_RESETREAS_LOCAL_LOCKUP_MASK      = RESETINFO_RESETREAS_LOCAL_LOCKUP_Msk,         /**< Reset from local CPU lockup. */
+#if NRF_RESETINFO_HAS_LOCAL_CROSSDOMAIN
     NRF_RESETINFO_RESETREAS_LOCAL_CROSSDOMAIN_MASK = RESETINFO_RESETREAS_LOCAL_CROSSDOMAIN_Msk,    /**< Reset due to cross domain reset source. */
+#endif
     NRF_RESETINFO_RESETREAS_LOCAL_UNRETAINED_MASK  = RESETINFO_RESETREAS_LOCAL_UNRETAINEDWAKE_Msk, /**< Reset due to wake from unretained state. */
 } nrf_resetinfo_resetreas_local_mask_t;
 

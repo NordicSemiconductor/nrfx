@@ -164,6 +164,15 @@
 #endif
 
 /**
+ * @brief NRFX_COREDEP_VPR_LEGACY
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_COREDEP_VPR_LEGACY
+#define NRFX_COREDEP_VPR_LEGACY 0
+#endif
+
+/**
  * @brief NRFX_DPPI_CONFIG_LOG_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
@@ -624,6 +633,75 @@
  */
 #ifndef NRFX_PRS_BOX_5_ENABLED
 #define NRFX_PRS_BOX_5_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_PWM_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_PWM_ENABLED
+#define NRFX_PWM_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_PWM_DEFAULT_CONFIG_IRQ_PRIORITY
+ *
+ * Integer value. Minimum: 0. Maximum: 3.
+ */
+#ifndef NRFX_PWM_DEFAULT_CONFIG_IRQ_PRIORITY
+#define NRFX_PWM_DEFAULT_CONFIG_IRQ_PRIORITY NRFX_DEFAULT_IRQ_PRIORITY
+#endif
+
+/**
+ * @brief NRFX_PWM_CONFIG_LOG_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_PWM_CONFIG_LOG_ENABLED
+#define NRFX_PWM_CONFIG_LOG_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_PWM_CONFIG_LOG_LEVEL
+ *
+ * Integer value.
+ * Supported values:
+ * - Off     = 0
+ * - Error   = 1
+ * - Warning = 2
+ * - Info    = 3
+ * - Debug   = 4
+ */
+#ifndef NRFX_PWM_CONFIG_LOG_LEVEL
+#define NRFX_PWM_CONFIG_LOG_LEVEL 3
+#endif
+
+/**
+ * @brief NRFX_PWM20_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_PWM20_ENABLED
+#define NRFX_PWM20_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_PWM21_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_PWM21_ENABLED
+#define NRFX_PWM21_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_PWM22_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_PWM22_ENABLED
+#define NRFX_PWM22_ENABLED 0
 #endif
 
 /**

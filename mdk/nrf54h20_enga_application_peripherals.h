@@ -40,7 +40,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 #include <stdbool.h>
-
 /*User information configuration registers*/
 #define UICR_PRESENT 1
 #define UICR_COUNT 1

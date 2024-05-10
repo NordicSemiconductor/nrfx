@@ -53,14 +53,27 @@ extern "C" {
 /** @brief Macro for creating the interrupt bitmask for all event channels */
 #define NRF_VPR_ALL_CHANNELS_INT_MASK \
     ((uint32_t) (((1ULL << NRF_VPR_EVENTS_TRIGGERED_COUNT) - 1) \
-    << VPR_EVENTS_TRIGGERED_EVENTS_TRIGGERED_Pos))
+     << VPR_EVENTS_TRIGGERED_MinIndex))
 
 /** @brief Macro used as an mask to clear all triggered interrupts within CSR */
 #define NRF_VPR_TASK_TRIGGER_ALL_MASK UINT32_MAX
 
+/** @brief Symbol specifying minimal index of TRIGGERED events array that is implemented. */
+#define NRF_VPR_EVENTS_TRIGGERED_MIN VPR_EVENTS_TRIGGERED_MinIndex
+
+/** @brief Symbol specifying maximal index of TRIGGERED events array that is implemented. */
+#define NRF_VPR_EVENTS_TRIGGERED_MAX VPR_EVENTS_TRIGGERED_MaxIndex
+
+/** @brief Symbol specifying minimal index of TRIGGER tasks array that is implemented. */
+#define NRF_VPR_TASKS_TRIGGER_MIN VPR_TASKS_TRIGGER_MinIndex
+
+/** @brief Symbol specifying maximal index of TRIGGER tasks array that is implemented. */
+#define NRF_VPR_TASKS_TRIGGER_MAX VPR_TASKS_TRIGGER_MaxIndex
+
 /** @brief VPR events. */
 typedef enum
 {
+#if NRF_VPR_EVENTS_TRIGGERED_MIN < 16
     NRF_VPR_EVENT_TRIGGERED_0  = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[0]),  /**< Triggered 0 event.*/
     NRF_VPR_EVENT_TRIGGERED_1  = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[1]),  /**< Triggered 1 event.*/
     NRF_VPR_EVENT_TRIGGERED_2  = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[2]),  /**< Triggered 2 event.*/
@@ -77,6 +90,7 @@ typedef enum
     NRF_VPR_EVENT_TRIGGERED_13 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[13]), /**< Triggered 13 event.*/
     NRF_VPR_EVENT_TRIGGERED_14 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[14]), /**< Triggered 14 event.*/
     NRF_VPR_EVENT_TRIGGERED_15 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[15]), /**< Triggered 15 event.*/
+#endif
     NRF_VPR_EVENT_TRIGGERED_16 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[16]), /**< Triggered 16 event.*/
     NRF_VPR_EVENT_TRIGGERED_17 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[17]), /**< Triggered 17 event.*/
     NRF_VPR_EVENT_TRIGGERED_18 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[18]), /**< Triggered 18 event.*/
@@ -84,6 +98,7 @@ typedef enum
     NRF_VPR_EVENT_TRIGGERED_20 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[20]), /**< Triggered 20 event.*/
     NRF_VPR_EVENT_TRIGGERED_21 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[21]), /**< Triggered 21 event.*/
     NRF_VPR_EVENT_TRIGGERED_22 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[22]), /**< Triggered 22 event.*/
+#if NRF_VPR_EVENTS_TRIGGERED_MAX > 22
     NRF_VPR_EVENT_TRIGGERED_23 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[23]), /**< Triggered 23 event.*/
     NRF_VPR_EVENT_TRIGGERED_24 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[24]), /**< Triggered 24 event.*/
     NRF_VPR_EVENT_TRIGGERED_25 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[25]), /**< Triggered 25 event.*/
@@ -93,11 +108,13 @@ typedef enum
     NRF_VPR_EVENT_TRIGGERED_29 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[29]), /**< Triggered 29 event.*/
     NRF_VPR_EVENT_TRIGGERED_30 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[30]), /**< Triggered 30 event.*/
     NRF_VPR_EVENT_TRIGGERED_31 = offsetof(NRF_VPR_Type, EVENTS_TRIGGERED[31]), /**< Triggered 31 event.*/
+#endif
 } nrf_vpr_event_t;
 
 /** @brief VPR interrupts. */
 typedef enum
 {
+#if NRF_VPR_EVENTS_TRIGGERED_MIN < 16
     NRF_VPR_INT_TRIGGERED_0_MASK  = VPR_INTENSET_TRIGGERED0_Msk,  /**< Triggered 0 interrupt mask. */
     NRF_VPR_INT_TRIGGERED_1_MASK  = VPR_INTENSET_TRIGGERED1_Msk,  /**< Triggered 1 interrupt mask. */
     NRF_VPR_INT_TRIGGERED_2_MASK  = VPR_INTENSET_TRIGGERED2_Msk,  /**< Triggered 2 interrupt mask. */
@@ -114,6 +131,7 @@ typedef enum
     NRF_VPR_INT_TRIGGERED_13_MASK = VPR_INTENSET_TRIGGERED13_Msk, /**< Triggered 13 interrupt mask. */
     NRF_VPR_INT_TRIGGERED_14_MASK = VPR_INTENSET_TRIGGERED14_Msk, /**< Triggered 14 interrupt mask. */
     NRF_VPR_INT_TRIGGERED_15_MASK = VPR_INTENSET_TRIGGERED15_Msk, /**< Triggered 15 interrupt mask. */
+#endif
     NRF_VPR_INT_TRIGGERED_16_MASK = VPR_INTENSET_TRIGGERED16_Msk, /**< Triggered 16 interrupt mask. */
     NRF_VPR_INT_TRIGGERED_17_MASK = VPR_INTENSET_TRIGGERED17_Msk, /**< Triggered 17 interrupt mask. */
     NRF_VPR_INT_TRIGGERED_18_MASK = VPR_INTENSET_TRIGGERED18_Msk, /**< Triggered 18 interrupt mask. */
@@ -121,6 +139,7 @@ typedef enum
     NRF_VPR_INT_TRIGGERED_20_MASK = VPR_INTENSET_TRIGGERED20_Msk, /**< Triggered 20 interrupt mask. */
     NRF_VPR_INT_TRIGGERED_21_MASK = VPR_INTENSET_TRIGGERED21_Msk, /**< Triggered 21 interrupt mask. */
     NRF_VPR_INT_TRIGGERED_22_MASK = VPR_INTENSET_TRIGGERED22_Msk, /**< Triggered 22 interrupt mask. */
+#if NRF_VPR_EVENTS_TRIGGERED_MAX > 22
     NRF_VPR_INT_TRIGGERED_23_MASK = VPR_INTENSET_TRIGGERED23_Msk, /**< Triggered 23 interrupt mask. */
     NRF_VPR_INT_TRIGGERED_24_MASK = VPR_INTENSET_TRIGGERED24_Msk, /**< Triggered 24 interrupt mask. */
     NRF_VPR_INT_TRIGGERED_25_MASK = VPR_INTENSET_TRIGGERED25_Msk, /**< Triggered 25 interrupt mask. */
@@ -130,11 +149,13 @@ typedef enum
     NRF_VPR_INT_TRIGGERED_29_MASK = VPR_INTENSET_TRIGGERED29_Msk, /**< Triggered 29 interrupt mask. */
     NRF_VPR_INT_TRIGGERED_30_MASK = VPR_INTENSET_TRIGGERED30_Msk, /**< Triggered 30 interrupt mask. */
     NRF_VPR_INT_TRIGGERED_31_MASK = VPR_INTENSET_TRIGGERED31_Msk, /**< Triggered 31 interrupt mask. */
+#endif
 } nrf_vpr_int_mask_t;
 
 /** @brief VPR tasks. */
 typedef enum
 {
+#if NRF_VPR_TASKS_TRIGGER_MIN < 16
     NRF_VPR_TASK_TRIGGER_0  = offsetof(NRF_VPR_Type, TASKS_TRIGGER[0]),  /**< Trigger 0 task. */
     NRF_VPR_TASK_TRIGGER_1  = offsetof(NRF_VPR_Type, TASKS_TRIGGER[1]),  /**< Trigger 1 task. */
     NRF_VPR_TASK_TRIGGER_2  = offsetof(NRF_VPR_Type, TASKS_TRIGGER[2]),  /**< Trigger 2 task. */
@@ -151,6 +172,7 @@ typedef enum
     NRF_VPR_TASK_TRIGGER_13 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[13]), /**< Trigger 13 task. */
     NRF_VPR_TASK_TRIGGER_14 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[14]), /**< Trigger 14 task. */
     NRF_VPR_TASK_TRIGGER_15 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[15]), /**< Trigger 15 task. */
+#endif
     NRF_VPR_TASK_TRIGGER_16 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[16]), /**< Trigger 16 task. */
     NRF_VPR_TASK_TRIGGER_17 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[17]), /**< Trigger 17 task. */
     NRF_VPR_TASK_TRIGGER_18 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[18]), /**< Trigger 18 task. */
@@ -158,6 +180,7 @@ typedef enum
     NRF_VPR_TASK_TRIGGER_20 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[20]), /**< Trigger 20 task. */
     NRF_VPR_TASK_TRIGGER_21 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[21]), /**< Trigger 21 task. */
     NRF_VPR_TASK_TRIGGER_22 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[22]), /**< Trigger 22 task. */
+#if NRF_VPR_TASKS_TRIGGER_MAX > 22
     NRF_VPR_TASK_TRIGGER_23 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[23]), /**< Trigger 23 task. */
     NRF_VPR_TASK_TRIGGER_24 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[24]), /**< Trigger 24 task. */
     NRF_VPR_TASK_TRIGGER_25 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[25]), /**< Trigger 25 task. */
@@ -167,6 +190,7 @@ typedef enum
     NRF_VPR_TASK_TRIGGER_29 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[29]), /**< Trigger 29 task. */
     NRF_VPR_TASK_TRIGGER_30 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[30]), /**< Trigger 30 task. */
     NRF_VPR_TASK_TRIGGER_31 = offsetof(NRF_VPR_Type, TASKS_TRIGGER[31]), /**< Trigger 31 task. */
+#endif
 } nrf_vpr_task_t;
 
 /** @brief Debug Mode Control signals. */

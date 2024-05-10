@@ -59,7 +59,7 @@ typedef struct
 
 static nrfx_vevif_cb_t m_cb;
 
-nrfx_err_t nrfx_vevif_init(nrf_vpr_clic_priority_t    interrupt_priority,
+nrfx_err_t nrfx_vevif_init(uint8_t                    interrupt_priority,
                            nrfx_vevif_event_handler_t event_handler,
                            void *                     p_context)
 {
@@ -84,7 +84,6 @@ nrfx_err_t nrfx_vevif_init(nrf_vpr_clic_priority_t    interrupt_priority,
     m_cb.p_context = p_context;
     m_cb.state     = NRFX_DRV_STATE_INITIALIZED;
 
-    nrf_vpr_csr_rtperiph_enable_set(true);
     nrf_vpr_csr_vevif_tasks_clear(NRF_VPR_TASK_TRIGGER_ALL_MASK);
 
     for (uint8_t i = 0; i < NRF_VPR_CSR_VEVIF_EVENT_TASK_COUNT; i++)

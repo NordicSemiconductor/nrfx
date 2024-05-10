@@ -91,6 +91,15 @@
 #endif
 
 /**
+ * @brief NRFX_COREDEP_VPR_LEGACY
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_COREDEP_VPR_LEGACY
+#define NRFX_COREDEP_VPR_LEGACY 0
+#endif
+
+/**
  * @brief NRFX_DPPI_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.

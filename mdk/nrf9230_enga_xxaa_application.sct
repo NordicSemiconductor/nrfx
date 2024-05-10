@@ -1,0 +1,56 @@
+LOAD 0x0E0A0000 0x00040000
+{
+    FLASH0 0x0E0A0000 0x00040000
+    {
+    *.o (RESET, +First)   ; RESET is code section with I.V.T.
+        * (InRoot$$Sections)
+        .ANY (+RO)
+        .ANY (+XO)
+    }
+
+    FLASH1 0x2F840000 0x00004000
+    {
+    
+        .ANY (+RO)
+        .ANY (+XO)
+    }
+    EXT_FLASH 0x70000000 0x20000000
+    {
+    .ANY (ext_flash) ; Data or code allocated to external memory 
+    }
+    RAM0 0x22000000 0x00008000
+    {
+    .ANY(+RW, +ZI) ; RW data and ZI data
+    }
+
+    RAM1 0x2F000000 0x00080000
+    {
+    .ANY(+RW, +ZI) ; RW data and ZI data
+    }
+
+    RAM2 0x2F080000 0x00060000
+    {
+    .ANY(+RW, +ZI) ; RW data and ZI data
+    }
+
+    RAM3 0x2F880000 0x00010000
+    {
+    .ANY(+RW, +ZI) ; RW data and ZI data
+    }
+
+    RAM4 0x2F890000 0x00008000
+    {
+    .ANY(+RW, +ZI) ; RW data and ZI data
+    }
+
+    RAM5 0x2FC00000 0x00004000
+    {
+    .ANY(+RW, +ZI) ; RW data and ZI data
+    }
+
+    RAM6 0x2FC04000 0x00004000
+    {
+    .ANY(+RW, +ZI) ; RW data and ZI data
+    }
+
+}

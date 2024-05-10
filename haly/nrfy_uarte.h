@@ -454,6 +454,15 @@ NRFY_STATIC_INLINE void nrfy_uarte_disable(NRF_UARTE_Type * p_reg)
     nrf_barrier_w();
 }
 
+/** @refhal{nrf_uarte_enable_check} */
+NRFY_STATIC_INLINE bool nrfy_uarte_enable_check(NRF_UARTE_Type * p_reg)
+{
+    nrf_barrier_rw();
+    bool ret = nrf_uarte_enable_check(p_reg);
+    nrf_barrier_r();
+    return ret;
+}
+
 /** @refhal{nrf_uarte_txrx_pins_set} */
 NRFY_STATIC_INLINE void nrfy_uarte_txrx_pins_set(NRF_UARTE_Type * p_reg,
                                                  uint32_t         pseltxd,

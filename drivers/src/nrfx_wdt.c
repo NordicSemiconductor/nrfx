@@ -255,6 +255,23 @@ nrfx_err_t nrfx_wdt_channel_alloc(nrfx_wdt_t const * p_instance, nrfx_wdt_channe
     return result;
 }
 
+void nrfx_wdt_channels_free(nrfx_wdt_t const * p_instance)
+{
+    uint8_t index;
+    nrfx_wdt_channel_id channel_id;
+    wdt_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
+
+    NRFX_CRITICAL_SECTION_ENTER();
+    for (index = 0; index < p_cb->alloc_index; index++)
+    {
+        channel_id = (nrfx_wdt_channel_id)(NRF_WDT_RR0 + index);
+        nrfy_wdt_reload_request_disable(p_instance->p_reg, channel_id);
+    }
+    p_cb->alloc_index = 0;
+    NRFX_CRITICAL_SECTION_EXIT();
+}
+
 void nrfx_wdt_channel_feed(nrfx_wdt_t const * p_instance, nrfx_wdt_channel_id channel_id)
 {
     NRFX_ASSERT(m_cb[p_instance->drv_inst_idx].state == NRFX_DRV_STATE_POWERED_ON);

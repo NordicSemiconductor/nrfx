@@ -127,6 +127,11 @@ typedef enum
     NRF_PPIB_EVENT_RECEIVE_31 = offsetof(NRF_PPIB_Type, EVENTS_RECEIVE[31]), /**< Receive 31 event. */
 } nrf_ppib_event_t;
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#endif
+
 /** @brief Send task mask. */
 typedef enum
 {
@@ -163,6 +168,10 @@ typedef enum
     NRF_PPIB_SEND_30_MASK = PPIB_OVERFLOW_SEND_SEND30_Msk, /* Send task 30 mask. */
     NRF_PPIB_SEND_31_MASK = PPIB_OVERFLOW_SEND_SEND31_Msk, /* Send task 31 mask. */
 } nrf_ppib_send_mask_t;
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
 /**
  * @brief Function for returning the specified PPIB SEND task.

@@ -1,6 +1,20 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.5.0] - 2024-05-10
+### Added
+- Added function for freeing all allocated channels in the WDT driver.
+- Added HAL for AUXPLL peripheral.
+- Added support for nRF54H20 and nRF54L15 in the AAR HAL.
+
+### Changed
+- Updated MDK to version 8.64.0.
+- Changed default implementation of the core-dependent delay loop for the VPR cores. Now, the VTIM peripheral is utilized instead of CPU spinning.
+
+### Fixed
+- Fixed 1 MHz clock frequency configuration setting in the TWIM driver. Now, the supported pins are checked only if GPIO or PSEL configuration is specified.
+- Fixed overridden write mode in the RRAMC HALY. Now, the configured write mode is preserved before the write operation and restored afterwards.
+
 ## [3.4.0] - 2024-03-08
 ### Added
 - Added support for nRF54H20 and nRF54L15.

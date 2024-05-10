@@ -84,6 +84,20 @@ extern "C" {
 #define NRF_TAMPC_HAS_ERASE_PROTECTOR 0
 #endif
 
+#if defined(TAMPC_PROTECT_TAMPERSWITCH_CTRL_VALUE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether TAMPC external tamper switch protector is present. */
+#define NRF_TAMPC_HAS_EXTERNAL_TAMPERSWITCH_PROTECTOR 1
+#else
+#define NRF_TAMPC_HAS_EXTERNAL_TAMPERSWITCH_PROTECTOR 0
+#endif
+
+#if defined(TAMPC_PROTECT_AP_SPIDEN_CTRL_VALUE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether AP secure priviliged invasive debug detector is present. */
+#define NRF_TAMPC_HAS_AP_SPIDEN_PROTECTOR 1
+#else
+#define NRF_TAMPC_HAS_AP_SPIDEN_PROTECTOR 0
+#endif
+
 #if defined(TAMPC_ENABLE_ACTIVESHIELD_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether the availability to enable the TAMPC detectors feature is present. */
 #define NRF_TAMPC_HAS_DETECTORS_ENABLE 1
@@ -103,6 +117,13 @@ extern "C" {
 #define NRF_TAMPC_HAS_WARMBOOT 1
 #else
 #define NRF_TAMPC_HAS_WARMBOOT 0
+#endif
+
+#if defined(TAMPC_STATUS_TAMPERSWITCH_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether TAMPC external tamper switch detector is present. */
+#define NRF_TAMPC_HAS_EXTERNAL_TAMPERSWITCH_DETECTOR 1
+#else
+#define NRF_TAMPC_HAS_EXTERNAL_TAMPERSWITCH_DETECTOR 0
 #endif
 
 /** @brief TAMPC events. */
@@ -146,7 +167,9 @@ typedef enum
 typedef enum
 {
     NRF_TAMPC_DETECTOR_ACTIVE_SHIELD      = TAMPC_STATUS_ACTIVESHIELD_Msk,       ///< Active shield error detector.
+#if NRF_TAMPC_HAS_EXTERNAL_TAMPERSWITCH_DETECTOR
     NRF_TAMPC_DETECTOR_TAMPER_SWITCH      = TAMPC_STATUS_TAMPERSWITCH_Msk,       ///< External tamper switch error detector.
+#endif
     NRF_TAMPC_DETECTOR_PROTECTED_SIGNAL   = TAMPC_STATUS_PROTECT_Msk,            ///< Protected signals error detector.
     NRF_TAMPC_DETECTOR_CRACEN             = TAMPC_STATUS_CRACENTAMP_Msk,         ///< CRACEN error detector.
     NRF_TAMPC_DETECTOR_GLITCH_DOMAIN_SLOW = TAMPC_STATUS_GLITCHSLOWDOMAIN0_Msk,  ///< Slow domain glitch error detector.
@@ -161,7 +184,9 @@ typedef enum
 typedef enum
 {
     NRF_TAMPC_PROTECT_ACTIVE_SHIELD      = offsetof(NRF_TAMPC_Type, PROTECT.ACTIVESHIELD),     ///< Control register for active shield detector enable signal.
+#if NRF_TAMPC_HAS_EXTERNAL_TAMPERSWITCH_PROTECTOR
     NRF_TAMPC_PROTECT_TAMPER_SWITCH      = offsetof(NRF_TAMPC_Type, PROTECT.TAMPERSWITCH),     ///< Control register for external tamper switch enable signal.
+#endif
     NRF_TAMPC_PROTECT_CRACEN             = offsetof(NRF_TAMPC_Type, PROTECT.CRACENTAMP),       ///< Control register for CRACEN tamper detector enable signal.
     NRF_TAMPC_PROTECT_GLITCH_DOMAIN_SLOW = offsetof(NRF_TAMPC_Type, PROTECT.GLITCHSLOWDOMAIN), ///< Control register for slow domain glitch detectors enable signal.
     NRF_TAMPC_PROTECT_GLITCH_DOMAIN_FAST = offsetof(NRF_TAMPC_Type, PROTECT.GLITCHFASTDOMAIN), ///< Control register for fast domain glitch detectors enable signal.
@@ -1022,6 +1047,7 @@ NRF_STATIC_INLINE void nrf_tampc_ap_ctrl_value_set(NRF_TAMPC_Type *       p_reg,
                 << TAMPC_PROTECT_AP_DBGEN_CTRL_VALUE_Pos))
                 | NRF_TAMPC_KEY_MASK;
             break;
+#if NRF_TAMPC_HAS_AP_SPIDEN_PROTECTOR
         case NRF_TAMPC_DEBUG_TYPE_SPIDEN:
 #if NRF_TAMPC_KEY_MASK
             p_reg->PROTECT.AP[domain].SPIDEN.CTRL =
@@ -1036,6 +1062,7 @@ NRF_STATIC_INLINE void nrf_tampc_ap_ctrl_value_set(NRF_TAMPC_Type *       p_reg,
                 << TAMPC_PROTECT_AP_SPIDEN_CTRL_VALUE_Pos))
                 | NRF_TAMPC_KEY_MASK;
             break;
+#endif
         default:
             NRFX_ASSERT(0);
     }
@@ -1054,10 +1081,12 @@ NRF_STATIC_INLINE bool nrf_tampc_ap_ctrl_value_get(NRF_TAMPC_Type const * p_reg,
             return ((p_reg->PROTECT.AP[domain].DBGEN.CTRL
                      & TAMPC_PROTECT_AP_DBGEN_CTRL_VALUE_Msk)
                     >> TAMPC_PROTECT_AP_DBGEN_CTRL_VALUE_Pos);
+#if NRF_TAMPC_HAS_AP_SPIDEN_PROTECTOR
         case NRF_TAMPC_DEBUG_TYPE_SPIDEN:
             return ((p_reg->PROTECT.AP[domain].SPIDEN.CTRL
                      & TAMPC_PROTECT_AP_SPIDEN_CTRL_VALUE_Msk)
                     >> TAMPC_PROTECT_AP_SPIDEN_CTRL_VALUE_Pos);
+#endif
         default:
             NRFX_ASSERT(0);
             return false;
@@ -1088,6 +1117,7 @@ NRF_STATIC_INLINE void nrf_tampc_ap_ctrl_lock_set(NRF_TAMPC_Type *       p_reg,
                 << TAMPC_PROTECT_AP_DBGEN_CTRL_LOCK_Pos))
                 | NRF_TAMPC_KEY_MASK;
             break;
+#if NRF_TAMPC_HAS_AP_SPIDEN_PROTECTOR
         case NRF_TAMPC_DEBUG_TYPE_SPIDEN:
 #if NRF_TAMPC_KEY_MASK
             p_reg->PROTECT.AP[domain].SPIDEN.CTRL =
@@ -1102,6 +1132,7 @@ NRF_STATIC_INLINE void nrf_tampc_ap_ctrl_lock_set(NRF_TAMPC_Type *       p_reg,
                 << TAMPC_PROTECT_AP_SPIDEN_CTRL_LOCK_Pos))
                 | NRF_TAMPC_KEY_MASK;
             break;
+#endif
         default:
             NRFX_ASSERT(0);
     }
@@ -1120,10 +1151,12 @@ NRF_STATIC_INLINE bool nrf_tampc_ap_ctrl_lock_get(NRF_TAMPC_Type const * p_reg,
             return ((p_reg->PROTECT.AP[domain].DBGEN.CTRL
                      & TAMPC_PROTECT_AP_DBGEN_CTRL_LOCK_Msk)
                     >> TAMPC_PROTECT_AP_DBGEN_CTRL_LOCK_Pos);
+#if NRF_TAMPC_HAS_AP_SPIDEN_PROTECTOR
         case NRF_TAMPC_DEBUG_TYPE_SPIDEN:
             return ((p_reg->PROTECT.AP[domain].SPIDEN.CTRL
                      & TAMPC_PROTECT_AP_SPIDEN_CTRL_LOCK_Msk)
                     >> TAMPC_PROTECT_AP_SPIDEN_CTRL_LOCK_Pos);
+#endif
         default:
             NRFX_ASSERT(0);
             return false;

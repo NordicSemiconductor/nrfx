@@ -70,7 +70,7 @@ extern "C" {
  *
  * @return Interrupt bitmask.
  */
-#define NRFY_EVENT_TO_INT_BITMASK(event) (1 << NRFY_EVENT_TO_INT_BITPOS(event))
+#define NRFY_EVENT_TO_INT_BITMASK(event) (1U << NRFY_EVENT_TO_INT_BITPOS(event))
 
 /** @sa NRFX_IRQ_PRIORITY_SET */
 #define NRFY_IRQ_PRIORITY_SET(irq_number, priority) NRFX_IRQ_PRIORITY_SET(irq_number, priority)

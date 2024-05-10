@@ -210,6 +210,11 @@ static bool pins_configure(nrfx_twim_config_t const * p_config)
 {
     nrf_gpio_pin_drive_t pin_drive;
 
+    if (p_config->skip_psel_cfg && p_config->skip_gpio_cfg)
+    {
+        return true;
+    }
+
 #if NRF_TWIM_HAS_1000_KHZ_FREQ && defined(NRF5340_XXAA)
     if (p_config->frequency >= NRF_TWIM_FREQ_1000K)
     {
@@ -340,10 +345,19 @@ nrfx_err_t nrfx_twim_reconfigure(nrfx_twim_t const *        p_instance,
     {
         return NRFX_ERROR_BUSY;
     }
+
+    nrfx_err_t err_code = NRFX_SUCCESS;
     nrfy_twim_disable(p_instance->p_twim);
-    twim_configure(p_instance, p_config);
+    if (pins_configure(p_config))
+    {
+        twim_configure(p_instance, p_config);
+    }
+    else
+    {
+        err_code = NRFX_ERROR_INVALID_PARAM;
+    }
     nrfy_twim_enable(p_instance->p_twim);
-    return NRFX_SUCCESS;
+    return err_code;
 }
 
 void nrfx_twim_uninit(nrfx_twim_t const * p_instance)

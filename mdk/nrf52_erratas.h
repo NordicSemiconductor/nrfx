@@ -14606,7 +14606,7 @@ static bool nrf52_errata_272(void)
                     case 0x00ul:
                         return false;
                     case 0x01ul:
-                        return false;
+                        return true;
                     case 0x02ul:
                         return true;
                     case 0x03ul:
@@ -14621,7 +14621,8 @@ static bool nrf52_errata_272(void)
 }
 
 /* ========= Errata 273 ========= */
-#if    defined (NRF52811_XXAA) || defined (DEVELOP_IN_NRF52811)
+#if    defined (NRF52810_XXAA) || defined (DEVELOP_IN_NRF52810) \
+    || defined (NRF52811_XXAA) || defined (DEVELOP_IN_NRF52811)
     #define NRF52_ERRATA_273_PRESENT 1
 #else
     #define NRF52_ERRATA_273_PRESENT 0
@@ -14636,9 +14637,26 @@ static bool nrf52_errata_273(void)
     #ifndef NRF52_SERIES
         return false;
     #else
-        #if defined (NRF52811_XXAA) || defined (DEVELOP_IN_NRF52811)
+        #if defined (NRF52810_XXAA) || defined (DEVELOP_IN_NRF52810)\
+         || defined (NRF52811_XXAA) || defined (DEVELOP_IN_NRF52811)
             uint32_t var1 = *(uint32_t *)0x10000130ul;
             uint32_t var2 = *(uint32_t *)0x10000134ul;
+        #endif
+        #if defined (NRF52810_XXAA) || defined (DEVELOP_IN_NRF52810)
+            if (var1 == 0x0A)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return false;
+                    case 0x01ul:
+                        return true;
+                    case 0x02ul:
+                        return false;
+                    default:
+                        return false;
+                }
+            }
         #endif
         #if defined (NRF52811_XXAA) || defined (DEVELOP_IN_NRF52811)
             if (var1 == 0x0E)
@@ -14646,7 +14664,7 @@ static bool nrf52_errata_273(void)
                 switch(var2)
                 {
                     case 0x00ul:
-                        return false;
+                        return true;
                     case 0x01ul:
                         return true;
                     default:

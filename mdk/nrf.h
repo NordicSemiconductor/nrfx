@@ -37,8 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* MDK version */
 #define MDK_MAJOR_VERSION   8 
-#define MDK_MINOR_VERSION   63 
-#define MDK_MICRO_VERSION   2 
+#define MDK_MINOR_VERSION   64 
+#define MDK_MICRO_VERSION   0 
 
    
 /* Define coprocessor domains */
@@ -136,6 +136,16 @@ POSSIBILITY OF SUCH DAMAGE.
 #if defined (NRF9160_XXAA) ||  defined (NRF9120_XXAA)
     #ifndef NRF91_SERIES    
         #define NRF91_SERIES
+    #endif
+#endif
+
+/* Define NRF92_SERIES for common use in nRF92 series devices. */
+#if defined(NRF9230_ENGA_XXAA)
+    #ifndef NRF92_SERIES
+        #define NRF92_SERIES
+    #endif
+    #ifndef HALTIUM_XXAA
+        #define HALTIUM_XXAA
     #endif
 #endif
 
@@ -243,6 +253,11 @@ POSSIBILITY OF SUCH DAMAGE.
         #define NRF_FICR_NS_BASE 0x2003E000
         #define NRF_FICR_NS ((NRF_FICR_Type*)          NRF_FICR_NS_BASE)
     #endif
+
+#elif defined (NRF9230_ENGA_XXAA)
+    #include "nrf9230_enga.h"
+    #include "nrf9230_enga_interim.h"
+    #include "nrf9230_enga_name_change.h"
 
 #else
     #error "Device must be defined. See nrf.h."

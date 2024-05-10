@@ -35,6 +35,9 @@
 #define NRF_AAR_H__
 
 #include <nrfx.h>
+#ifdef EASYVDMA_PRESENT
+#include <helpers/nrf_vdma.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,12 +50,86 @@ extern "C" {
  * @brief   Hardware access layer for managing the Accelerated Address Resolver (AAR) peripheral.
  */
 
+#if defined(AAR_EVENTS_ERROR_EVENTS_ERROR_Msk) || defined(AAR_INTENSET_ERROR_Msk) || \
+    defined(AAR_ERRORSTATUS_ERRORSTATUS_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the ERROR event and ERRORSTATUS register. */
+#define NRF_AAR_HAS_ERROR 1
+#else
+#define NRF_AAR_HAS_ERROR 0
+#endif
+
+#if defined(AAR_OUT_AMOUNT_AMOUNT_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the OUT.AMOUNT register. */
+#define NRF_AAR_HAS_OUT_AMOUNT 1
+#else
+#define NRF_AAR_HAS_OUT_AMOUNT 0
+#endif
+
+#if defined(AAR_NIRK_NIRK_Msk) || defined(NRF51) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the NIRK register. */
+#define NRF_AAR_HAS_NIRK 1
+#else
+#define NRF_AAR_HAS_NIRK 0
+#endif
+
+#if defined(AAR_IRKPTR_IRKPTR_Msk) || defined(NRF51) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the IRKPTR register. */
+#define NRF_AAR_HAS_IRKPTR 1
+#else
+#define NRF_AAR_HAS_IRKPTR 0
+#endif
+
+#if defined(AAR_IN_PTR_PTR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the IN.PTR register. */
+#define NRF_AAR_HAS_IN_PTR 1
+#else
+#define NRF_AAR_HAS_IN_PTR 0
+#endif
+
+#if defined(AAR_OUT_PTR_PTR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the OUT.PTR register. */
+#define NRF_AAR_HAS_OUT_PTR 1
+#else
+#define NRF_AAR_HAS_OUT_PTR 0
+#endif
+
+#if defined(AAR_ADDRPTR_ADDRPTR_Msk) || defined(NRF51) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the ADDRPTR register. */
+#define NRF_AAR_HAS_ADDRPTR 1
+#else
+#define NRF_AAR_HAS_ADDRPTR 0
+#endif
+
+#if defined(AAR_SCRATCHPTR_SCRATCHPTR_Msk) || defined(NRF51) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the SCRATCHPTR register. */
+#define NRF_AAR_HAS_SCRATCHPTR 1
+#else
+#define NRF_AAR_HAS_SCRATCHPTR 0
+#endif
+
+#if defined(AAR_STATUS_STATUS_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the STATUS register. */
+#define NRF_AAR_HAS_STATUS 1
+#else
+#define NRF_AAR_HAS_STATUS 0
+#endif
+
+#if defined(AAR_MAXRESOLVED_MAXRESOLVED_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Presence of the MAXRESOLVED register. */
+#define NRF_AAR_HAS_MAXRESOLVED 1
+#else
+#define NRF_AAR_HAS_MAXRESOLVED 0
+#endif
+
 /** @brief AAR events. */
 typedef enum
 {
     NRF_AAR_EVENT_END         = offsetof(NRF_AAR_Type, EVENTS_END),         ///< Address resolution procedure complete.
     NRF_AAR_EVENT_RESOLVED    = offsetof(NRF_AAR_Type, EVENTS_RESOLVED),    ///< Address resolved.
     NRF_AAR_EVENT_NOTRESOLVED = offsetof(NRF_AAR_Type, EVENTS_NOTRESOLVED), ///< Address not resolved.
+#if NRF_AAR_HAS_ERROR
+    NRF_AAR_EVENT_ERROR       = offsetof(NRF_AAR_Type, EVENTS_ERROR),       ///< Address resolution procedure aborted due to STOP task or error.
+#endif
 } nrf_aar_event_t;
 
 /** @brief AAR interrupts. */
@@ -61,7 +138,21 @@ typedef enum
     NRF_AAR_INT_END_MASK         = AAR_INTENSET_END_Msk,         ///< Interrupt on END event.
     NRF_AAR_INT_RESOLVED_MASK    = AAR_INTENSET_RESOLVED_Msk,    ///< Interrupt on RESOLVED event.
     NRF_AAR_INT_NOTRESOLVED_MASK = AAR_INTENSET_NOTRESOLVED_Msk, ///< Interrupt on NOTRESOLVED event.
+#if NRF_AAR_HAS_ERROR
+    NRF_AAR_INT_ERROR_MASK       = AAR_INTENSET_ERROR_Msk, ///< Interrupt on NOTRESOLVED event.
+#endif
 } nrf_aar_int_mask_t;
+
+#if NRF_AAR_HAS_ERROR
+/** @brief AAR error status when ERROR event is generated. */
+typedef enum
+{
+    NRF_AAR_ERROR_NO_ERROR             = AAR_ERRORSTATUS_ERRORSTATUS_NoError,            ///< No errors have occurred.
+    NRF_AAR_ERROR_PREMATURE_INPTR_END  = AAR_ERRORSTATUS_ERRORSTATUS_PrematureInptrEnd,  ///< End of INPTR job list before data structure was read.
+    NRF_AAR_ERROR_PREMATURE_OUTPTR_END = AAR_ERRORSTATUS_ERRORSTATUS_PrematureOutptrEnd, ///< End of OUTPTR job list before data structure was read.
+    NRF_AAR_ERROR_DMA_ERROR            = AAR_ERRORSTATUS_ERRORSTATUS_DmaError,           ///< Bus error during DMA access.
+} nrf_aar_error_t;
+#endif
 
 /** @brief AAR tasks. */
 typedef enum
@@ -164,6 +255,18 @@ NRF_STATIC_INLINE void nrf_aar_enable(NRF_AAR_Type * p_reg);
  */
 NRF_STATIC_INLINE void nrf_aar_disable(NRF_AAR_Type * p_reg);
 
+#if NRF_AAR_HAS_ERROR
+/**
+ * @brief Function for getting the error status when ERROR event is generated.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval Error status when the ERROR event is generated.
+ */
+NRF_STATIC_INLINE nrf_aar_error_t nrf_aar_error_get(NRF_AAR_Type const * p_reg);
+#endif // NRF_AAR_HAS_ERROR
+
+#if NRF_AAR_HAS_IRKPTR
 /**
  * @brief Function for setting the pointer to the Identity Resolving Keys (IRK) data structure.
  *
@@ -186,7 +289,9 @@ NRF_STATIC_INLINE void nrf_aar_irk_pointer_set(NRF_AAR_Type * p_reg, uint8_t con
  * @return Pointer to the IRK data structure.
  */
 NRF_STATIC_INLINE uint8_t const * nrf_aar_irk_pointer_get(NRF_AAR_Type const * p_reg);
+#endif // NRF_AAR_HAS_IRKPTR
 
+#if NRF_AAR_HAS_NIRK
 /**
  * @brief Function for setting the number of keys available in the Identity Resolving Keys
  *        data structure.
@@ -208,7 +313,30 @@ NRF_STATIC_INLINE void nrf_aar_irk_number_set(NRF_AAR_Type * p_reg, uint8_t irk_
  * @return Number of keys in the IRK data structure.
  */
 NRF_STATIC_INLINE uint8_t nrf_aar_irk_number_get(NRF_AAR_Type const * p_reg);
+#endif // NRF_AAR_HAS_NIRK
 
+#if NRF_AAR_HAS_MAXRESOLVED
+/**
+ * @brief Function for setting maximum number of Identity Resolving Keys to resolve.
+ *
+ * @param[in] p_reg       Pointer to the structure of registers of the peripheral.
+ * @param[in] maxresolved Maximum number of Identity Resolving Keys to resolve.
+ *
+ * @sa nrf_aar_irk_pointer_set
+ */
+NRF_STATIC_INLINE void nrf_aar_maxresolved_set(NRF_AAR_Type * p_reg, uint16_t maxresolved);
+
+/**
+ * @brief Function for getting maximum number of Identity Resolving Keys to resolve.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Maximum number of Identity Resolving Keys to resolve.
+ */
+NRF_STATIC_INLINE uint16_t nrf_aar_maxresolved_get(NRF_AAR_Type const * p_reg);
+#endif
+
+#if NRF_AAR_HAS_ADDRPTR
 /**
  * @brief Function for setting the pointer to the resolvable address.
  *
@@ -228,7 +356,67 @@ NRF_STATIC_INLINE void nrf_aar_addr_pointer_set(NRF_AAR_Type * p_reg, uint8_t co
  * @return Pointer to the address to resolve.
  */
 NRF_STATIC_INLINE uint8_t const * nrf_aar_addr_pointer_get(NRF_AAR_Type const * p_reg);
+#endif // NRF_AAR_HAS_ADDRPTR
 
+#if NRF_AAR_HAS_OUT_PTR
+/**
+ * @brief Function for setting the pointer to a job list containing description to store
+ *        resolved addresses.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] p_job Pointer to a job list.
+ */
+NRF_STATIC_INLINE void nrf_aar_out_ptr_set(NRF_AAR_Type *         p_reg,
+                                           nrf_vdma_job_t const * p_job);
+
+/**
+ * @brief Function for getting the pointer to a job list containing description to store
+ *        resolved addresses.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Pointer to the job list.
+ */
+NRF_STATIC_INLINE nrf_vdma_job_t * nrf_aar_out_ptr_get(NRF_AAR_Type const * p_reg);
+#endif // NRF_AAR_HAS_OUT_PTR
+
+#if NRF_AAR_HAS_IN_PTR
+/**
+ * @brief Function for setting the pointer to a job list containing both 
+ *        the Hash and Prand parts of the private resolvable address (DEVICEADDR) 
+ *        field from the Bluetooth packet, and a number of Identity Resolving Keys (IRK).
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] p_job Pointer to a job list.
+ */
+NRF_STATIC_INLINE void nrf_aar_in_ptr_set(NRF_AAR_Type *         p_reg,
+                                          nrf_vdma_job_t const * p_job);
+
+/**
+ * @brief Function for getting the pointer to a job list containing both 
+ *        the Hash and Prand parts of the private resolvable address (DEVICEADDR) 
+ *        field from the Bluetooth packet, and a number of Identity Resolving Keys (IRK).
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Pointer to the job list.
+ */
+NRF_STATIC_INLINE nrf_vdma_job_t * nrf_aar_in_ptr_get(NRF_AAR_Type const * p_reg);
+#endif // NRF_AAR_HAS_IN_PTR
+
+#if NRF_AAR_HAS_OUT_AMOUNT
+/**
+ * @brief Function for getting number of bytes available in the output data,
+ *        not including the job list structure.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Number of bytes available in the output data.
+ */
+NRF_STATIC_INLINE uint32_t nrf_aar_out_amount_get(NRF_AAR_Type const * p_reg);
+#endif // NRF_AAR_HAS_OUT_AMOUNT
+
+#if NRF_AAR_HAS_SCRATCHPTR
 /**
  * @brief Function for setting the pointer to the scratch data area.
  *
@@ -248,7 +436,9 @@ NRF_STATIC_INLINE void nrf_aar_scratch_pointer_set(NRF_AAR_Type * p_reg, uint8_t
  * @return Pointer to the scratch data area.
  */
 NRF_STATIC_INLINE uint8_t * nrf_aar_scratch_pointer_get(NRF_AAR_Type const * p_reg);
+#endif // NRF_AAR_HAS_SCRATCHPTR
 
+#if NRF_AAR_HAS_STATUS
 /**
  * @brief Function for getting the index of the Identity Resolving Key that was used
  *        the last time an address was resolved.
@@ -262,6 +452,7 @@ NRF_STATIC_INLINE uint8_t * nrf_aar_scratch_pointer_get(NRF_AAR_Type const * p_r
  * @return The index of the IRK that was used the last time an address was resolved.
  */
 NRF_STATIC_INLINE uint8_t nrf_aar_resolution_status_get(NRF_AAR_Type const * p_reg);
+#endif // NRF_AAR_HAS_STATUS
 
 #if defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 /**
@@ -313,7 +504,7 @@ NRF_STATIC_INLINE void nrf_aar_publish_clear(NRF_AAR_Type *  p_reg,
 NRF_STATIC_INLINE bool nrf_aar_event_check(NRF_AAR_Type const * p_reg,
                                            nrf_aar_event_t      aar_event)
 {
-    return (bool)*(volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)aar_event);
+    return nrf_event_check(p_reg, aar_event);
 }
 
 NRF_STATIC_INLINE void nrf_aar_event_clear(NRF_AAR_Type *  p_reg,
@@ -326,7 +517,7 @@ NRF_STATIC_INLINE void nrf_aar_event_clear(NRF_AAR_Type *  p_reg,
 NRF_STATIC_INLINE uint32_t nrf_aar_event_address_get(NRF_AAR_Type const * p_reg,
                                                      nrf_aar_event_t      aar_event)
 {
-    return (uint32_t)((uint8_t *)p_reg + (uint32_t)aar_event);
+    return nrf_task_event_address_get(p_reg, aar_event);
 }
 
 NRF_STATIC_INLINE void nrf_aar_int_enable(NRF_AAR_Type * p_reg, uint32_t mask)
@@ -365,6 +556,7 @@ NRF_STATIC_INLINE void nrf_aar_disable(NRF_AAR_Type * p_reg)
     p_reg->ENABLE = AAR_ENABLE_ENABLE_Disabled << AAR_ENABLE_ENABLE_Pos;
 }
 
+#if NRF_AAR_HAS_IRKPTR
 NRF_STATIC_INLINE void nrf_aar_irk_pointer_set(NRF_AAR_Type * p_reg, uint8_t const * irk_ptr)
 {
     p_reg->IRKPTR = (uint32_t)irk_ptr;
@@ -374,7 +566,9 @@ NRF_STATIC_INLINE uint8_t const * nrf_aar_irk_pointer_get(NRF_AAR_Type const * p
 {
     return (uint8_t const *)(p_reg->IRKPTR);
 }
+#endif // NRF_AAR_HAS_IRKPTR
 
+#if NRF_AAR_HAS_NIRK
 NRF_STATIC_INLINE void nrf_aar_irk_number_set(NRF_AAR_Type * p_reg, uint8_t irk_num)
 {
     p_reg->NIRK = irk_num;
@@ -384,7 +578,9 @@ NRF_STATIC_INLINE uint8_t nrf_aar_irk_number_get(NRF_AAR_Type const * p_reg)
 {
     return (uint8_t)(p_reg->NIRK);
 }
+#endif // NRF_AAR_HAS_NIRK
 
+#if NRF_AAR_HAS_ADDRPTR
 NRF_STATIC_INLINE void nrf_aar_addr_pointer_set(NRF_AAR_Type * p_reg, uint8_t const * addr_ptr)
 {
     p_reg->ADDRPTR = (uint32_t)addr_ptr;
@@ -394,7 +590,9 @@ NRF_STATIC_INLINE uint8_t const * nrf_aar_addr_pointer_get(NRF_AAR_Type const * 
 {
     return (uint8_t const *)(p_reg->ADDRPTR);
 }
+#endif // NRF_AAR_HAS_ADDRPTR
 
+#if NRF_AAR_HAS_SCRATCHPTR
 NRF_STATIC_INLINE void nrf_aar_scratch_pointer_set(NRF_AAR_Type * p_reg, uint8_t * scratch_ptr)
 {
     p_reg->SCRATCHPTR = (uint32_t)scratch_ptr;
@@ -404,11 +602,66 @@ NRF_STATIC_INLINE uint8_t * nrf_aar_scratch_pointer_get(NRF_AAR_Type const * p_r
 {
     return (uint8_t *)(p_reg->SCRATCHPTR);
 }
+#endif // NRF_AAR_HAS_SCRATCHPTR
 
+#if NRF_AAR_HAS_STATUS
 NRF_STATIC_INLINE uint8_t nrf_aar_resolution_status_get(NRF_AAR_Type const * p_reg)
 {
     return (uint8_t)(p_reg->STATUS);
 }
+#endif // NRF_AAR_HAS_STATUS
+
+#if NRF_AAR_HAS_ERROR
+NRF_STATIC_INLINE nrf_aar_error_t nrf_aar_error_get(NRF_AAR_Type const * p_reg)
+{
+    return (nrf_aar_error_t)(p_reg->ERRORSTATUS);
+}
+#endif // NRF_AAR_HAS_ERROR
+
+#if NRF_AAR_HAS_MAXRESOLVED
+NRF_STATIC_INLINE void nrf_aar_maxresolved_set(NRF_AAR_Type * p_reg, uint16_t maxresolved)
+{
+    p_reg->MAXRESOLVED = maxresolved;
+}
+
+NRF_STATIC_INLINE uint16_t nrf_aar_maxresolved_get(NRF_AAR_Type const * p_reg)
+{
+    return (uint16_t)(p_reg->MAXRESOLVED);
+}
+#endif // NRF_AAR_HAS_MAXRESOLVED
+
+#if NRF_AAR_HAS_IN_PTR
+NRF_STATIC_INLINE void nrf_aar_in_ptr_set(NRF_AAR_Type *         p_reg,
+                                          nrf_vdma_job_t const * p_job)
+{
+    p_reg->IN.PTR = (uint32_t)p_job;
+}
+
+NRF_STATIC_INLINE nrf_vdma_job_t * nrf_aar_in_ptr_get(NRF_AAR_Type const * p_reg)
+{
+    return (nrf_vdma_job_t *)(p_reg->IN.PTR);
+}
+#endif // NRF_AAR_HAS_IN_PTR
+
+#if NRF_AAR_HAS_OUT_PTR
+NRF_STATIC_INLINE void nrf_aar_out_ptr_set(NRF_AAR_Type *         p_reg,
+                                           nrf_vdma_job_t const * p_job)
+{
+    p_reg->OUT.PTR = (uint32_t)p_job;
+}
+
+NRF_STATIC_INLINE nrf_vdma_job_t * nrf_aar_out_ptr_get(NRF_AAR_Type const * p_reg)
+{
+    return (nrf_vdma_job_t *)(p_reg->OUT.PTR);
+}
+#endif // NRF_AAR_HAS_OUT_PTR
+
+#if NRF_AAR_HAS_OUT_AMOUNT
+NRF_STATIC_INLINE uint32_t nrf_aar_out_amount_get(NRF_AAR_Type const * p_reg)
+{
+    return p_reg->OUT.AMOUNT;
+}
+#endif // NRF_AAR_HAS_OUT_AMOUNT
 
 #if defined(DPPI_PRESENT)
 NRF_STATIC_INLINE void nrf_aar_subscribe_set(NRF_AAR_Type * p_reg,

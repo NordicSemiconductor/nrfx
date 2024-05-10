@@ -39,8 +39,6 @@ POSSIBILITY OF SUCH DAMAGE.
     extern "C" {
 #endif
 
-
-
 #if defined(NRF_APPLICATION)
   #include "nrf54h20_application_peripherals.h"
 #elif defined(NRF_FLPR)

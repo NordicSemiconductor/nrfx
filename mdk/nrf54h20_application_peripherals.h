@@ -40,7 +40,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 #include <stdbool.h>
-
 /*Extended UICR.*/
 #define UICREXTENDED_PRESENT 1
 #define UICREXTENDED_COUNT 1
@@ -73,6 +72,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define BICR_PRESENT 1
 #define BICR_COUNT 1
 
+#define BICR_P0_INTERNAL 1                           /*!< (unspecified)                                                        */
 #define BICR_P0_POWER 0                              /*!< (unspecified)                                                        */
 #define BICR_P1_POWER 1                              /*!< (unspecified)                                                        */
 #define BICR_P2_POWER 1                              /*!< (unspecified)                                                        */
@@ -121,6 +121,22 @@ POSSIBILITY OF SUCH DAMAGE.
 #define BICR_P13_DRIVECTRL 0                         /*!< (unspecified)                                                        */
 #define BICR_P14_DRIVECTRL 0                         /*!< (unspecified)                                                        */
 #define BICR_P15_DRIVECTRL 0                         /*!< (unspecified)                                                        */
+#define BICR_P0_BIASCTRL 0                           /*!< (unspecified)                                                        */
+#define BICR_P1_BIASCTRL 0                           /*!< (unspecified)                                                        */
+#define BICR_P2_BIASCTRL 0                           /*!< (unspecified)                                                        */
+#define BICR_P3_BIASCTRL 0                           /*!< (unspecified)                                                        */
+#define BICR_P4_BIASCTRL 0                           /*!< (unspecified)                                                        */
+#define BICR_P5_BIASCTRL 0                           /*!< (unspecified)                                                        */
+#define BICR_P6_BIASCTRL 0                           /*!< (unspecified)                                                        */
+#define BICR_P7_BIASCTRL 0                           /*!< (unspecified)                                                        */
+#define BICR_P8_BIASCTRL 0                           /*!< (unspecified)                                                        */
+#define BICR_P9_BIASCTRL 0                           /*!< (unspecified)                                                        */
+#define BICR_P10_BIASCTRL 0                          /*!< (unspecified)                                                        */
+#define BICR_P11_BIASCTRL 0                          /*!< (unspecified)                                                        */
+#define BICR_P12_BIASCTRL 0                          /*!< (unspecified)                                                        */
+#define BICR_P13_BIASCTRL 0                          /*!< (unspecified)                                                        */
+#define BICR_P14_BIASCTRL 0                          /*!< (unspecified)                                                        */
+#define BICR_P15_BIASCTRL 0                          /*!< (unspecified)                                                        */
 #define BICR_PMICLDO 0                               /*!< (unspecified)                                                        */
 
 /*CACHEDATA*/
@@ -335,6 +351,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RESETINFO_COUNT 1
 
 #define RESETINFO_HASRESETREAS 1                     /*!< (unspecified)                                                        */
+#define RESETINFO_CROSSDOMAINRESET 0                 /*!< (unspecified)                                                        */
 
 /*IPCT APB registers*/
 #define IPCT_PRESENT 1
@@ -1403,7 +1420,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS137_EASYDMA_MAXCNT_SIZE 16               /*!< (unspecified)                                                        */
 #define TWIS137_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                  */
 
-/* =============================================== APPLICATION_SPU010_FEATURES =============================================== */
+/* ============================================= SPU010 Split Security Features ============================================== */
 /**
   * @brief Indexes in SPU010.FEATURES controlling access permissions of features with split security
   */

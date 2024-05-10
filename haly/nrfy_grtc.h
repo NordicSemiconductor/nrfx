@@ -854,14 +854,14 @@ NRFY_STATIC_INLINE uint32_t nrfy_grtc_clkout_divider_get(NRF_GRTC_Type const * p
 
 #if NRFY_GRTC_HAS_CLKSEL
 /** @refhal{nrf_grtc_clksel_set} */
-NRF_STATIC_INLINE void nrfy_grtc_clksel_set(NRF_GRTC_Type * p_reg, nrf_grtc_clksel_t clksel)
+NRFY_STATIC_INLINE void nrfy_grtc_clksel_set(NRF_GRTC_Type * p_reg, nrf_grtc_clksel_t clksel)
 {
     nrf_grtc_clksel_set(p_reg, clksel);
     nrf_barrier_w();
 }
 
 /** @refhal{nrf_grtc_clksel_get} */
-NRF_STATIC_INLINE nrf_grtc_clksel_t nrfy_grtc_clksel_get(NRF_GRTC_Type const * p_reg)
+NRFY_STATIC_INLINE nrf_grtc_clksel_t nrfy_grtc_clksel_get(NRF_GRTC_Type const * p_reg)
 {
     nrf_barrier_rw();
     nrf_grtc_clksel_t clksel = nrf_grtc_clksel_get(p_reg);

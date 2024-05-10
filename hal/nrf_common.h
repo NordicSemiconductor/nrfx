@@ -47,7 +47,7 @@ extern "C" {
 #endif
 
 #ifndef NRFX_CONFIG_API_VER_MINOR
-#define NRFX_CONFIG_API_VER_MINOR 2
+#define NRFX_CONFIG_API_VER_MINOR 3
 #endif
 
 #ifndef NRFX_CONFIG_API_VER_MICRO
@@ -129,8 +129,8 @@ extern "C" {
 #define NRF_PIN_PORT_TO_PIN_NUMBER(pin, port) (((pin) & 0x1F) | ((port) << 5))
 
 #if defined(LUMOS_XXAA)
-typedef NRF_DOMAINS_t    nrf_domain_t;
-typedef NRF_OWNERID_Type nrf_owner_t;
+typedef NRF_DOMAINID_Type nrf_domain_t;
+typedef NRF_OWNERID_Type  nrf_owner_t;
 #endif
 
 #if defined(HALTIUM_XXAA)
@@ -241,20 +241,17 @@ NRF_STATIC_INLINE bool nrf_dma_accessible_check(void const * p_reg, void const *
 #if defined(HALTIUM_XXAA)
     if (nrf_address_bus_get((uint32_t)p_reg, 0x10000) == 0x8E)
     {
-        /* Bitwise operation to unify secure/non-secure memory address */
-        uint32_t addr = (uint32_t)p_object & 0xEFFFFFFFu;
-
         /* When peripheral instance is high-speed check whether */
         /* p_object is placed in GRAM2x or GRAM0x */
-        bool gram0x = (addr >= 0x2F000000u) && (addr < 0x2F038000);
-        bool gram2x = (addr >= 0x2F880000u) && (addr < 0x2F886200);
+        bool gram0x = ((uint32_t)p_object & 0xEFF00000) == 0x2F000000;
+        bool gram2x = ((uint32_t)p_object & 0xEFF80000) == 0x2F880000;
         return gram0x || gram2x;
     }
     else
     {
         /* When peripheral instance is low-speed check whether */
         /* p_object is placed in GRAM3x */
-        return ((((uint32_t)p_object) & 0xEFFF8000u) == 0x2FC00000u);
+        return ((((uint32_t)p_object) & 0xEFFE0000u) == 0x2FC00000u);
     }
 #else
     (void)p_reg;

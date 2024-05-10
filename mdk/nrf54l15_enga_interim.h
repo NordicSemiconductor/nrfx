@@ -38,18 +38,11 @@ POSSIBILITY OF SUCH DAMAGE.
 #if defined(NRF54L15_ENGA_XXAA)
 
 
-    #define NRF_DOMAIN_COUNT NRF_DOMAIN_GLOBAL + 1
+    #define NRF_DOMAIN_COUNT NRF_DOMAIN_NONE + 1
 
     #define ADDRESS_BUS_Pos (18UL)
     #define ADDRESS_BUS_Msk (0x3FUL << ADDRESS_BUS_Pos)
 
-    typedef enum {
-        NRF_OWNER_NONE            = 0,
-        NRF_OWNER_APPLICATION     = 1,
-        NRF_OWNER_KMU             = 2,
-    } NRF_OWNERID_Type;
-
-    #define NRF_DOMAINS_t NRF_DOMAINID_Type
 
     #define PPIB00_CH_NUM 8
     #define PPIB10_CH_NUM 8

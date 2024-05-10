@@ -12,6 +12,8 @@ Driver support overview
    nrf52833
    nrf52840
    nrf5340
+   nrf54h20
+   nrf54l15_enga
    nrf91_series
 
 .. role:: red

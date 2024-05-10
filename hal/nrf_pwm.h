@@ -54,7 +54,8 @@ extern "C" {
 #define NRF_PWM_HAS_DMA_REG 0
 #endif
 
-#if defined(PWM_SHORTS_LOOPSDONE_SEQSTART0_Msk) || defined(__NRFX_DOXYGEN__)
+#if defined(PWM_SHORTS_LOOPSDONE_SEQSTART0_Msk) || \
+    defined(PWM_SHORTS_LOOPSDONE_DMA_SEQ0_START_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether shorting SEQSTART task with LOOPSDONE event is available. */
 #define NRF_PWM_HAS_SHORT_LOOPSDONE_SEQSTART 1
 #else
@@ -143,13 +144,16 @@ typedef enum
 /** @brief PWM shortcuts. */
 typedef enum
 {
-    NRF_PWM_SHORT_SEQEND0_STOP_MASK        = PWM_SHORTS_SEQEND0_STOP_Msk,        ///< Shortcut between SEQEND[0] event and STOP task.
-    NRF_PWM_SHORT_SEQEND1_STOP_MASK        = PWM_SHORTS_SEQEND1_STOP_Msk,        ///< Shortcut between SEQEND[1] event and STOP task.
-#if NRF_PWM_HAS_SHORT_LOOPSDONE_SEQSTART
-    NRF_PWM_SHORT_LOOPSDONE_SEQSTART0_MASK = PWM_SHORTS_LOOPSDONE_SEQSTART0_Msk, ///< Shortcut between LOOPSDONE event and SEQSTART[0] task.
-    NRF_PWM_SHORT_LOOPSDONE_SEQSTART1_MASK = PWM_SHORTS_LOOPSDONE_SEQSTART1_Msk, ///< Shortcut between LOOPSDONE event and SEQSTART[1] task.
+    NRF_PWM_SHORT_SEQEND0_STOP_MASK        = PWM_SHORTS_SEQEND0_STOP_Msk,             ///< Shortcut between SEQEND[0] event and STOP task.
+    NRF_PWM_SHORT_SEQEND1_STOP_MASK        = PWM_SHORTS_SEQEND1_STOP_Msk,             ///< Shortcut between SEQEND[1] event and STOP task.
+#if defined(PWM_SHORTS_LOOPSDONE_SEQSTART0_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_PWM_SHORT_LOOPSDONE_SEQSTART0_MASK = PWM_SHORTS_LOOPSDONE_SEQSTART0_Msk,      ///< Shortcut between LOOPSDONE event and SEQSTART[0] task.
+    NRF_PWM_SHORT_LOOPSDONE_SEQSTART1_MASK = PWM_SHORTS_LOOPSDONE_SEQSTART1_Msk,      ///< Shortcut between LOOPSDONE event and SEQSTART[1] task.
+#else
+    NRF_PWM_SHORT_LOOPSDONE_SEQSTART0_MASK = PWM_SHORTS_LOOPSDONE_DMA_SEQ0_START_Msk, ///< Shortcut between LOOPSDONE event and DMA.SEQ[0].START task.
+    NRF_PWM_SHORT_LOOPSDONE_SEQSTART1_MASK = PWM_SHORTS_LOOPSDONE_DMA_SEQ1_START_Msk, ///< Shortcut between LOOPSDONE event and DMA.SEQ[1].START task.
 #endif
-    NRF_PWM_SHORT_LOOPSDONE_STOP_MASK      = PWM_SHORTS_LOOPSDONE_STOP_Msk       ///< Shortcut between LOOPSDONE event and STOP task.
+    NRF_PWM_SHORT_LOOPSDONE_STOP_MASK      = PWM_SHORTS_LOOPSDONE_STOP_Msk            ///< Shortcut between LOOPSDONE event and STOP task.
 } nrf_pwm_short_mask_t;
 
 /** @brief PWM modes of operation. */
@@ -534,19 +538,17 @@ NRF_STATIC_INLINE void nrf_pwm_seq_ptr_set(NRF_PWM_Type *   p_reg,
                                            uint8_t          seq_id,
                                            uint16_t const * p_values);
 
-#if NRF_PWM_HAS_SEQ_CNT
 /**
  * @brief Function for modifying the total number of duty cycle values
  *        in the specified sequence.
  *
  * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
  * @param[in] seq_id Identifier of the sequence (0 or 1).
- * @param[in] length Number of duty cycle values.
+ * @param[in] length Number of duty cycle values (in 16-bit half words).
  */
 NRF_STATIC_INLINE void nrf_pwm_seq_cnt_set(NRF_PWM_Type * p_reg,
                                            uint8_t        seq_id,
                                            uint16_t       length);
-#endif
 
 /**
  * @brief Function for modifying the additional number of PWM periods spent
@@ -763,9 +765,7 @@ NRF_STATIC_INLINE void nrf_pwm_sequence_set(NRF_PWM_Type *             p_reg,
     NRFX_ASSERT(p_seq != NULL);
 
     nrf_pwm_seq_ptr_set(      p_reg, seq_id, p_seq->values.p_raw);
-#if NRF_PWM_HAS_SEQ_CNT
     nrf_pwm_seq_cnt_set(      p_reg, seq_id, p_seq->length);
-#endif
     nrf_pwm_seq_refresh_set(  p_reg, seq_id, p_seq->repeats);
     nrf_pwm_seq_end_delay_set(p_reg, seq_id, p_seq->end_delay);
 }
@@ -783,17 +783,20 @@ NRF_STATIC_INLINE void nrf_pwm_seq_ptr_set(NRF_PWM_Type *   p_reg,
 #endif
 }
 
-#if NRF_PWM_HAS_SEQ_CNT
 NRF_STATIC_INLINE void nrf_pwm_seq_cnt_set(NRF_PWM_Type * p_reg,
                                            uint8_t        seq_id,
                                            uint16_t       length)
 {
     NRFX_ASSERT(seq_id <= 1);
     NRFX_ASSERT(length != 0);
+#if NRF_PWM_HAS_DMA_REG
+    NRFX_ASSERT(length * sizeof(uint16_t) <= PWM_DMA_SEQ_MAXCNT_MAXCNT_Msk);
+    p_reg->DMA.SEQ[seq_id].MAXCNT = length * sizeof(uint16_t);
+#else
     NRFX_ASSERT(length <= PWM_SEQ_CNT_CNT_Msk);
     p_reg->SEQ[seq_id].CNT = length;
-}
 #endif
+}
 
 NRF_STATIC_INLINE void nrf_pwm_seq_refresh_set(NRF_PWM_Type * p_reg,
                                                uint8_t        seq_id,

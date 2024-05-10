@@ -37,65 +37,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #if defined(HALTIUM_XXAA)
 
-    typedef enum {
-        NRF_DOMAIN_APPLICATION = 2,  /* Application Core */
-        NRF_DOMAIN_RADIOCORE   = 3,  /* Radio Core */
-        NRF_DOMAIN_GLOBALFAST  = 12, /* Global Domain - Fast clock domain */
-        NRF_DOMAIN_GLOBALSLOW  = 13, /* Global Domain - Slow clock domain */
-        NRF_DOMAIN_GLOBAL      = 15, /* Global Domain */
-    } NRF_DOMAINID_Type;
-
-    #define NRF_DOMAINS_t NRF_DOMAINID_Type
-
-    
-    typedef enum {
-        NRF_OWNER_NONE            = 0,  /* Used to denote that ownership is not enforced */
-        NRF_OWNER_APPLICATION     = 2,  /* Application Core */
-        NRF_OWNER_RADIOCORE       = 3,  /* Radio Core */
-        NRF_OWNER_DBG_APPLICATION = 10, /* AHB-AP for Application Core CPU */
-        NRF_OWNER_DBG_RADIOCORE   = 11, /* AHB-AP for Radio core CPU */
-    } NRF_OWNERID_Type;
-
-    typedef enum {
-            NRF_PROCESSOR_APPLICATION = 2,  /* Application Core Processor */
-            NRF_PROCESSOR_RADIOCORE   = 3,  /* Radio Core Processor */
-            NRF_PROCESSOR_PPR         = 13, /* Peripheral Processor */
-            NRF_PROCESSOR_FLPR        = 14, /* Fast Lightweight Processor */
-        } NRF_PROCESSORID_Type;
-
 
     #define NRF_DOMAIN_COUNT    NRF_DOMAIN_GLOBAL + 1
     #define NRF_PROCESSOR_COUNT NRF_PROCESSOR_FLPR + 1
 
-    #if defined(NRF_APPLICATION)
-        #define NRF_DOMAIN NRF_DOMAIN_APPLICATION
-    #elif defined(NRF_RADIOCORE)
-        #define NRF_DOMAIN NRF_DOMAIN_RADIOCORE
-    #elif defined(NRF_FLPR)
-        #define NRF_DOMAIN NRF_DOMAIN_GLOBALFAST
-    #elif defined(NRF_PPR)
-        #define NRF_DOMAIN NRF_DOMAIN_GLOBALSLOW
-    #endif
-
-    #if defined(NRF_APPLICATION)
-        #define NRF_PROCESSOR NRF_PROCESSOR_APPLICATION
-    #elif defined(NRF_RADIOCORE)
-        #define NRF_PROCESSOR NRF_PROCESSOR_RADIOCORE
-    #elif defined(NRF_FLPR)
-        #define NRF_PROCESSOR NRF_PROCESSOR_FLPR
-    #elif defined(NRF_PPR)
-        #define NRF_PROCESSOR NRF_PROCESSOR_PPR
-    #endif
-
-    #if defined(NRF_APPLICATION)
-        #define NRF_OWNER NRF_OWNER_APPLICATION
-    #elif defined(NRF_RADIOCORE)
-        #define NRF_OWNER NRF_OWNER_RADIOCORE
-    #elif defined(NRF_FLPR) && !defined(NRF_OWNER)
-        #define NRF_OWNER NRF_OWNER_APPLICATION
-    #elif defined(NRF_PPR) && !defined(NRF_OWNER)
-        #define NRF_OWNER NRF_OWNER_APPLICATION
-    #endif
 
     #define ADDRESS_REGION_Pos        (29UL)
     #define ADDRESS_REGION_Msk        (0x7UL << ADDRESS_REGION_Pos)

@@ -53,10 +53,12 @@ extern "C" {
 /**
  * @defgroup nrfx_ids Generic inter-domain signalling layer.
  * @{
- * @ingroup nrfx_ipc
- * @ingroup nrfx_vevif
- * @ingroup nrfx_bellboard
- * @brief   Helper layer that provides the common functionality for the inter-domain signalling (IDS) mechanisms.
+ * @ingroup nrfx
+ * @ingroup nrf_ipc
+ * @ingroup nrf_vevif
+ * @ingroup nrf_bellboard
+ *
+ * @brief Helper layer that provides the common functionality for the inter-domain signalling (IDS) mechanisms.
  */
 
 /**

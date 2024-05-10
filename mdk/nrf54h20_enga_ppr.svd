@@ -6,7 +6,7 @@
   <name>nrf54h20_enga_ppr</name>
   <series>nRF54h</series>
   <version>1</version>
-  <description>LiliumSOC1 reference description for system-on-chip with many ARM 32-bit Cortex-M33 microcontrollers</description>
+  <description>nRF54H20_EngA reference description for system-on-chip with many ARM 32-bit Cortex-M33 microcontrollers</description>
   <licenseText>
 Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
 
@@ -38965,7 +38965,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <dimIncrement>0x2000000</dimIncrement>
           <name>DOMAIN[%s]</name>
           <description>Unspecified</description>
-          <headerStructName>DOMAIN</headerStructName>
+          <headerStructName>STMDATA_DOMAIN</headerStructName>
           <access>read-write</access>
           <addressOffset>0x000</addressOffset>
           <register>
@@ -55660,9 +55660,9 @@ A write outputs the value to atbytesm.</description>
           </register>
         </cluster>
         <cluster>
-          <name>STRUCT1</name>
+          <name>STRUCT0</name>
           <description>Unspecified</description>
-          <headerStructName>STRUCT1</headerStructName>
+          <headerStructName>STRUCT0</headerStructName>
           <alternateCluster>EXTCONF1</alternateCluster>
           <access>read-write</access>
           <addressOffset>0x400</addressOffset>

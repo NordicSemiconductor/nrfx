@@ -225,12 +225,24 @@ typedef enum
 #endif
 #if defined(SAADC_CH_CONFIG_GAIN_Gain1_4) || defined(__NRFX_DOXYGEN__)
     NRF_SAADC_GAIN1_4 = SAADC_CH_CONFIG_GAIN_Gain1_4, ///< Gain factor 1/4.
+#elif defined(SAADC_CH_CONFIG_GAIN_Gain2_8) || defined(__NRFX_DOXYGEN__)
+    NRF_SAADC_GAIN1_4 = SAADC_CH_CONFIG_GAIN_Gain2_8, ///< Gain factor 1/4.
+#endif
+#if defined(SAADC_CH_CONFIG_GAIN_Gain2_7) || defined(__NRFX_DOXYGEN__)
+    NRF_SAADC_GAIN2_7 = SAADC_CH_CONFIG_GAIN_Gain2_7, ///< Gain factor 2/7.
 #endif
 #if defined(SAADC_CH_CONFIG_GAIN_Gain1_3) || defined(__NRFX_DOXYGEN__)
     NRF_SAADC_GAIN1_3 = SAADC_CH_CONFIG_GAIN_Gain1_3, ///< Gain factor 1/3.
+#elif defined(SAADC_CH_CONFIG_GAIN_Gain2_6) || defined(__NRFX_DOXYGEN__)
+    NRF_SAADC_GAIN1_3 = SAADC_CH_CONFIG_GAIN_Gain2_6, ///< Gain factor 1/3.
+#endif
+#if defined(SAADC_CH_CONFIG_GAIN_Gain2_5) || defined(__NRFX_DOXYGEN__)
+    NRF_SAADC_GAIN2_5 = SAADC_CH_CONFIG_GAIN_Gain2_5, ///< Gain factor 2/5.
 #endif
 #if defined(SAADC_CH_CONFIG_GAIN_Gain1_2) || defined(__NRFX_DOXYGEN__)
     NRF_SAADC_GAIN1_2 = SAADC_CH_CONFIG_GAIN_Gain1_2, ///< Gain factor 1/2.
+#elif defined(SAADC_CH_CONFIG_GAIN_Gain2_4) || defined(__NRFX_DOXYGEN__)
+    NRF_SAADC_GAIN1_2 = SAADC_CH_CONFIG_GAIN_Gain2_4, ///< Gain factor 1/2.
 #endif
 #if defined(SAADC_CH_CONFIG_GAIN_Gain2_3) || defined(__NRFX_DOXYGEN__)
     NRF_SAADC_GAIN2_3 = SAADC_CH_CONFIG_GAIN_Gain2_3, ///< Gain factor 2/3.

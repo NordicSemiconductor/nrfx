@@ -40,7 +40,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 #include <stdbool.h>
-
 /*CACHEDATA*/
 #define ICACHEDATA_PRESENT 1
 #define ICACHEDATA_COUNT 1
@@ -327,6 +326,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RESETINFO_COUNT 1
 
 #define RESETINFO_HASRESETREAS 1                     /*!< (unspecified)                                                        */
+#define RESETINFO_CROSSDOMAINRESET 0                 /*!< (unspecified)                                                        */
 
 /*Distributed programmable peripheral interconnect controller*/
 #define DPPIC_PRESENT 1
@@ -1516,7 +1516,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIS137_EASYDMA_MAXCNT_SIZE 16               /*!< (unspecified)                                                        */
 #define TWIS137_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                  */
 
-/* ================================================ RADIOCORE_SPU020_FEATURES ================================================ */
+/* ============================================= SPU020 Split Security Features ============================================== */
 /**
   * @brief Indexes in SPU020.FEATURES controlling access permissions of features with split security
   */
@@ -1569,7 +1569,7 @@ typedef enum {
   NRF_RADIOCORE_SPU020_FEATURES_DPPIC020_CHG_3 = 67, /*!< Index of access permissions for channel group 3 of DPPIC020          */
 } NRF_RADIOCORE_SPU020_FEATURES_ENUM_t;
 
-/* ================================================ RADIOCORE_SPU030_FEATURES ================================================ */
+/* ============================================= SPU030 Split Security Features ============================================== */
 /**
   * @brief Indexes in SPU030.FEATURES controlling access permissions of features with split security
   */

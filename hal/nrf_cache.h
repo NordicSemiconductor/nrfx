@@ -524,6 +524,15 @@ NRF_STATIC_INLINE bool nrf_cache_is_data_unit_dirty_check(NRF_CACHEINFO_Type con
 NRF_STATIC_INLINE void nrf_cache_lineaddr_set(NRF_CACHE_Type * p_reg, uint32_t addr);
 
 /**
+ * @brief Function to get the memory address covered by the line to be maintained.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Cache line adress.
+ */
+NRF_STATIC_INLINE uint32_t nrf_cache_lineaddr_get(NRF_CACHE_Type const * p_reg);
+
+/**
  * @brief Function for triggering the specified CACHE task.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -867,6 +876,11 @@ NRF_STATIC_INLINE bool nrf_cache_is_data_unit_dirty_check(NRF_CACHEINFO_Type con
 NRF_STATIC_INLINE void nrf_cache_lineaddr_set(NRF_CACHE_Type * p_reg, uint32_t addr)
 {
     p_reg->LINEADDR = addr;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_cache_lineaddr_get(NRF_CACHE_Type const * p_reg)
+{
+    return p_reg->LINEADDR;
 }
 
 NRF_STATIC_INLINE void nrf_cache_task_trigger(NRF_CACHE_Type * p_reg, nrf_cache_task_t task)

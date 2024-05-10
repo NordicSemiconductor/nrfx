@@ -41,10 +41,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 #define MDK_SOURCE_VERSION_MAJOR 0                   /*!< Major version of product specification.                              */
-#define MDK_SOURCE_VERSION_MINOR 5e                  /*!< Minor version of product specification.                              */
+#define MDK_SOURCE_VERSION_MINOR 5g                  /*!< Minor version of product specification.                              */
 #define MDK_SOURCE_VERSION_MICRO                     /*!< Micro version of product specification.                              */
 
-#define MDK_SOURCE_HASH Moonlight_OPS_v0.5E          /*!< Git hash of product specification source.                            */
 
 
 #ifdef __cplusplus

@@ -233,6 +233,16 @@ nrfx_err_t nrfx_wdt_channel_alloc(nrfx_wdt_t const *    p_instance,
                                   nrfx_wdt_channel_id * p_channel_id);
 
 /**
+ * @brief Function for deallocating all previously allocated watchdog channels.
+ *
+ * @note This function can be called when watchdog is stopped,
+ *       that is before @ref nrfx_wdt_enable() or after @ref nrfx_wdt_stop().
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_wdt_channels_free(nrfx_wdt_t const * p_instance);
+
+/**
  * @brief Function for starting the watchdog.
  *
  * @note After calling this function the watchdog is started, so the user needs to feed

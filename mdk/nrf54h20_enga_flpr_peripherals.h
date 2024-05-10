@@ -40,7 +40,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 #include <stdbool.h>
-
 /*VPR CSR registers*/
 #define VPRCSR_PRESENT 1
 #define VPRCSR_COUNT 1

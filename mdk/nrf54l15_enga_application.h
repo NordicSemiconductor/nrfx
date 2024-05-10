@@ -193,13 +193,21 @@ typedef enum {
 #define __MPU_PRESENT                  1             /*!< MPU present                                                          */
 #define __FPU_PRESENT                  1             /*!< FPU present                                                          */
 #define __FPU_DP                       0             /*!< Double Precision FPU                                                 */
-#define __INTERRUPTS_MAX             176             /*!< Size of interrupt vector table                                       */
+#define __INTERRUPTS_MAX             270             /*!< Size of interrupt vector table                                       */
 #define __Vendor_SysTickConfig         0             /*!< Vendor SysTick Config implementation is used                         */
 #define __SAUREGION_PRESENT            1             /*!< SAU present                                                          */
 #define __NUM_SAUREGIONS               4             /*!< Number of regions                                                    */
 
 #include "core_cm33.h"                               /*!< ARM Cortex-M33 processor and core peripherals                        */
 #include "system_nrf.h"                              /*!< nrf54l15_enga_application System Library                             */
+
+#endif                                               /*!< NRF_APPLICATION                                                      */
+
+
+#ifdef NRF_APPLICATION
+
+  #define NRF_DOMAIN                    NRF_DOMAIN_NONE
+  #define NRF_PROCESSOR                 NRF_PROCESSOR_CM33
 
 #endif                                               /*!< NRF_APPLICATION                                                      */
 

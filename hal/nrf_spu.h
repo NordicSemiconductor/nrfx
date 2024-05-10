@@ -54,6 +54,16 @@ extern "C" {
 #define NRF_SPU_HAS_PERIPHERAL_ACCESS 0
 #endif
 
+#if defined(SPU_PERIPHACCERR_INFO_OWNERID_Msk) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Symbol indicating whether register containing information about the transaction
+ *        that caused peripheral access error is present.
+ */
+#define NRF_SPU_HAS_PERIPHERAL_ACCESS_ERROR_INFO 1
+#else
+#define NRF_SPU_HAS_PERIPHERAL_ACCESS_ERROR_INFO 0
+#endif
+
 #if defined(SPU_PERIPH_PERM_OWNERPROG_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Presence of ownership feature. */
 #define NRF_SPU_HAS_OWNERSHIP 1
@@ -498,7 +508,7 @@ NRF_STATIC_INLINE void nrf_spu_extdomain_set(NRF_SPU_Type * p_reg,
  */
 NRF_STATIC_INLINE uint32_t nrf_spu_periphaccerr_address_get(NRF_SPU_Type const * p_reg);
 
-#if NRF_SPU_HAS_OWNERSHIP
+#if NRF_SPU_HAS_OWNERSHIP && NRF_SPU_HAS_PERIPHERAL_ACCESS_ERROR_INFO
 /**
  * @brief Function for getting the owner ID of the security violation.
  *
@@ -999,7 +1009,7 @@ NRF_STATIC_INLINE uint32_t nrf_spu_periphaccerr_address_get(NRF_SPU_Type const *
     return p_reg->PERIPHACCERR.ADDRESS;
 }
 
-#if NRF_SPU_HAS_OWNERSHIP
+#if NRF_SPU_HAS_OWNERSHIP && NRF_SPU_HAS_PERIPHERAL_ACCESS_ERROR_INFO
 NRF_STATIC_INLINE nrf_owner_t nrf_spu_periphaccerr_ownerid_get(NRF_SPU_Type const * p_reg)
 {
     return (nrf_owner_t)p_reg->PERIPHACCERR.INFO;

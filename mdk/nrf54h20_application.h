@@ -256,6 +256,15 @@ typedef enum {
 #endif                                               /*!< NRF_APPLICATION                                                      */
 
 
+#ifdef NRF_APPLICATION
+
+  #define NRF_DOMAIN                    NRF_DOMAIN_APPLICATION
+  #define NRF_PROCESSOR                 NRF_PROCESSOR_APPLICATION
+  #define NRF_OWNER                     NRF_OWNER_APPLICATION
+
+#endif                                               /*!< NRF_APPLICATION                                                      */
+
+
 /* ========================================= Start of section using anonymous unions ========================================= */
 
 #include "compiler_abstraction.h"

@@ -52,7 +52,11 @@ NRFY_STATIC_INLINE uint32_t __nrfy_internal_rramc_event_handle(NRF_RRAMC_Type * 
 NRFY_STATIC_INLINE uint32_t __nrfy_internal_rramc_events_process(NRF_RRAMC_Type * p_reg,
                                                                  uint32_t         mask);
 
-NRFY_STATIC_INLINE void __nrfy_internal_rramc_write_enable_set(NRF_RRAMC_Type * p_reg, bool enable);
+NRFY_STATIC_INLINE void __nrfy_internal_rramc_config_get(NRF_RRAMC_Type const * p_reg,
+                                                         nrf_rramc_config_t *   p_config);
+
+NRFY_STATIC_INLINE void __nrfy_internal_rramc_config_set(NRF_RRAMC_Type *           p_reg,
+                                                         nrf_rramc_config_t const * p_config);
 
 NRFY_STATIC_INLINE void __nrfy_internal_rramc_byte_write(NRF_RRAMC_Type * p_reg,
                                                          uint32_t         addr,
@@ -189,9 +193,16 @@ NRFY_STATIC_INLINE void nrfy_rramc_byte_write(NRF_RRAMC_Type * p_reg,
                                               uint32_t         address,
                                               uint8_t          value)
 {
-    __nrfy_internal_rramc_write_enable_set(p_reg, true);
+    nrf_rramc_config_t rramc_config;
+    nrf_rramc_config_t prev_rramc_config;
+
+    __nrfy_internal_rramc_config_get(p_reg, &rramc_config);
+    prev_rramc_config = rramc_config;
+    rramc_config.mode_write = true;
+
+    __nrfy_internal_rramc_config_set(p_reg, &rramc_config);
     __nrfy_internal_rramc_byte_write(p_reg, address, value);
-    __nrfy_internal_rramc_write_enable_set(p_reg, false);
+    __nrfy_internal_rramc_config_set(p_reg, &prev_rramc_config);
 }
 
 /**
@@ -211,12 +222,19 @@ NRFY_STATIC_INLINE void nrfy_rramc_bytes_write(NRF_RRAMC_Type * p_reg,
                                                void const *     src,
                                                uint32_t         num_bytes)
 {
-    __nrfy_internal_rramc_write_enable_set(p_reg, true);
+    nrf_rramc_config_t rramc_config;
+    nrf_rramc_config_t prev_rramc_config;
+
+    __nrfy_internal_rramc_config_get(p_reg, &rramc_config);
+    prev_rramc_config = rramc_config;
+    rramc_config.mode_write = true;
+
+    __nrfy_internal_rramc_config_set(p_reg, &rramc_config);
     for (uint32_t i = 0; i < num_bytes; i++)
     {
         __nrfy_internal_rramc_byte_write(p_reg, address + i, ((uint8_t const *)src)[i]);
     }
-    __nrfy_internal_rramc_write_enable_set(p_reg, false);
+    __nrfy_internal_rramc_config_set(p_reg, &prev_rramc_config);
 }
 
 /**
@@ -249,9 +267,16 @@ NRFY_STATIC_INLINE void nrfy_rramc_word_write(NRF_RRAMC_Type * p_reg,
                                               uint32_t         address,
                                               uint32_t         value)
 {
-    __nrfy_internal_rramc_write_enable_set(p_reg, true);
+    nrf_rramc_config_t rramc_config;
+    nrf_rramc_config_t prev_rramc_config;
+
+    __nrfy_internal_rramc_config_get(p_reg, &rramc_config);
+    prev_rramc_config = rramc_config;
+    rramc_config.mode_write = true;
+
+    __nrfy_internal_rramc_config_set(p_reg, &rramc_config);
     __nrfy_internal_rramc_word_write(p_reg, address, value);
-    __nrfy_internal_rramc_write_enable_set(p_reg, false);
+    __nrfy_internal_rramc_config_set(p_reg, &prev_rramc_config);
 }
 
 /**
@@ -271,14 +296,21 @@ NRFY_STATIC_INLINE void nrfy_rramc_words_write(NRF_RRAMC_Type * p_reg,
                                                void const *     src,
                                                uint32_t         num_words)
 {
-    __nrfy_internal_rramc_write_enable_set(p_reg, true);
+    nrf_rramc_config_t rramc_config;
+    nrf_rramc_config_t prev_rramc_config;
+
+    __nrfy_internal_rramc_config_get(p_reg, &rramc_config);
+    prev_rramc_config = rramc_config;
+    rramc_config.mode_write = true;
+
+    __nrfy_internal_rramc_config_set(p_reg, &rramc_config);
     for (uint32_t i = 0; i < num_words; i++)
     {
         __nrfy_internal_rramc_word_write(p_reg,
                                          address + (NRFY_RRAMC_BYTES_IN_WORD * i),
                                          ((uint32_t const *)src)[i]);
     }
-    __nrfy_internal_rramc_write_enable_set(p_reg, false);
+    __nrfy_internal_rramc_config_set(p_reg, &prev_rramc_config);
 }
 
 /**
@@ -363,9 +395,17 @@ NRFY_STATIC_INLINE bool nrfy_rramc_otp_word_write(NRF_RRAMC_Type * p_reg,
     {
         return false;
     }
-    __nrfy_internal_rramc_write_enable_set(p_reg, true);
+
+    nrf_rramc_config_t rramc_config;
+    nrf_rramc_config_t prev_rramc_config;
+
+    __nrfy_internal_rramc_config_get(p_reg, &rramc_config);
+    prev_rramc_config = rramc_config;
+    rramc_config.mode_write = true;
+
+    __nrfy_internal_rramc_config_set(p_reg, &rramc_config);
     NRF_UICR->OTP[index] = value;
-    __nrfy_internal_rramc_write_enable_set(p_reg, false);
+    __nrfy_internal_rramc_config_set(p_reg, &prev_rramc_config);
 
     return true;
 #else
@@ -511,21 +551,14 @@ NRFY_STATIC_INLINE bool nrfy_rramc_empty_buffer_check(NRF_RRAMC_Type const * p_r
 NRFY_STATIC_INLINE void nrfy_rramc_config_get(NRF_RRAMC_Type const * p_reg,
                                               nrf_rramc_config_t *   p_config)
 {
-    nrf_barrier_r();
-    nrf_rramc_config_get(p_reg, p_config);
-    nrf_barrier_r();
+    __nrfy_internal_rramc_config_get(p_reg, p_config);
 }
 
 /** @refhal{nrf_rramc_config_set} */
 NRFY_STATIC_INLINE void nrfy_rramc_config_set(NRF_RRAMC_Type *           p_reg,
                                               nrf_rramc_config_t const * p_config)
 {
-    nrf_rramc_config_set(p_reg, p_config);
-    nrf_barrier_w();
-    nrf_barrier_r();
-    while (!nrf_rramc_ready_check(p_reg))
-    {}
-    nrf_barrier_r();
+    __nrfy_internal_rramc_config_set(p_reg, p_config);
 }
 
 /** @refhal{nrf_rramc_ready_next_timeout_get} */
@@ -575,9 +608,16 @@ NRFY_STATIC_INLINE bool nrfy_rramc_erase_all_check(NRF_RRAMC_Type const * p_reg)
 /** @refhal{nrf_rramc_erase_all_set} */
 NRFY_STATIC_INLINE void nrfy_rramc_erase_all_set(NRF_RRAMC_Type * p_reg)
 {
-    __nrfy_internal_rramc_write_enable_set(p_reg, true);
+    nrf_rramc_config_t rramc_config;
+    nrf_rramc_config_t prev_rramc_config;
+
+    __nrfy_internal_rramc_config_get(p_reg, &rramc_config);
+    prev_rramc_config = rramc_config;
+    rramc_config.mode_write = true;
+
+    __nrfy_internal_rramc_config_set(p_reg, &rramc_config);
     nrf_rramc_erase_all_set(p_reg);
-    __nrfy_internal_rramc_write_enable_set(p_reg, false);
+    __nrfy_internal_rramc_config_set(p_reg, &prev_rramc_config);
 }
 
 /** @} */
@@ -619,18 +659,21 @@ NRFY_STATIC_INLINE uint32_t __nrfy_internal_rramc_events_process(NRF_RRAMC_Type 
     return evt_mask;
 }
 
-NRFY_STATIC_INLINE void __nrfy_internal_rramc_write_enable_set(NRF_RRAMC_Type * p_reg, bool enable)
+NRFY_STATIC_INLINE void __nrfy_internal_rramc_config_get(NRF_RRAMC_Type const * p_reg,
+                                                         nrf_rramc_config_t *   p_config)
 {
-    nrf_rramc_config_t rramc_config;
+    nrf_barrier_r();
+    nrf_rramc_config_get(p_reg, p_config);
+    nrf_barrier_r();
+}
 
-    nrf_barrier_r();
-    nrf_rramc_config_get(p_reg, &rramc_config);
-    nrf_barrier_r();
-    rramc_config.mode_write = enable;
-    nrf_rramc_config_set(p_reg, &rramc_config);
+NRFY_STATIC_INLINE void __nrfy_internal_rramc_config_set(NRF_RRAMC_Type *           p_reg,
+                                                         nrf_rramc_config_t const * p_config)
+{
+    nrf_rramc_config_set(p_reg, p_config);
     nrf_barrier_w();
     nrf_barrier_r();
-    while (!nrf_rramc_write_ready_check(p_reg))
+    while (!nrf_rramc_ready_check(p_reg))
     {}
     nrf_barrier_r();
 }

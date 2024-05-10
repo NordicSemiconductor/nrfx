@@ -279,6 +279,15 @@ typedef enum {
 #endif                                               /*!< NRF_RADIOCORE                                                        */
 
 
+#ifdef NRF_RADIOCORE
+
+  #define NRF_DOMAIN                    NRF_DOMAIN_RADIOCORE
+  #define NRF_PROCESSOR                 NRF_PROCESSOR_RADIOCORE
+  #define NRF_OWNER                     NRF_OWNER_RADIOCORE
+
+#endif                                               /*!< NRF_RADIOCORE                                                        */
+
+
 /* ========================================= Start of section using anonymous unions ========================================= */
 
 #include "compiler_abstraction.h"

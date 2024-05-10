@@ -755,11 +755,14 @@ nrfx_err_t nrfx_grtc_syscounter_cc_absolute_set(nrfx_grtc_channel_t * p_chan_dat
 
     cc_channel_prepare(p_chan_data);
     NRFX_CRITICAL_SECTION_ENTER();
+    nrfy_grtc_sys_counter_compare_event_clear(NRF_GRTC, p_chan_data->channel);
     nrfy_grtc_sys_counter_cc_set(NRF_GRTC, p_chan_data->channel, val);
     NRFX_CRITICAL_SECTION_EXIT();
-    nrfy_grtc_sys_counter_compare_event_int_clear_enable(NRF_GRTC,
-                                                         p_chan_data->channel,
-                                                         enable_irq);
+
+    if (enable_irq)
+    {
+        nrfy_grtc_int_enable(NRF_GRTC, GRTC_CHANNEL_TO_BITMASK(p_chan_data->channel));
+    }
 
     NRFX_LOG_INFO("GRTC SYSCOUNTER absolute compare for channel %u set to %u.",
                   (uint32_t)p_chan_data->channel,
@@ -785,6 +788,7 @@ nrfx_err_t nrfx_grtc_syscounter_cc_relative_set(nrfx_grtc_channel_t *           
 
     cc_channel_prepare(p_chan_data);
     NRFX_CRITICAL_SECTION_ENTER();
+    nrfy_grtc_sys_counter_compare_event_clear(NRF_GRTC, p_chan_data->channel);
     if (NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_SLEEP_ALLOWED) && !is_active())
     {
         grtc_wakeup();
@@ -803,9 +807,10 @@ nrfx_err_t nrfx_grtc_syscounter_cc_relative_set(nrfx_grtc_channel_t *           
     }
     NRFX_CRITICAL_SECTION_EXIT();
 
-    nrfy_grtc_sys_counter_compare_event_int_clear_enable(NRF_GRTC,
-                                                         p_chan_data->channel,
-                                                         enable_irq);
+    if (enable_irq)
+    {
+        nrfy_grtc_int_enable(NRF_GRTC, GRTC_CHANNEL_TO_BITMASK(p_chan_data->channel));
+    }
 
     NRFX_LOG_INFO("GRTC SYSCOUNTER compare for channel %u set to %u.",
                   (uint32_t)p_chan_data->channel,

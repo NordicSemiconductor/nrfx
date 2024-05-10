@@ -9,6 +9,8 @@
 
 @defgroup nrf_adc ADC
 
+@defgroup nrf_auxpll AUXPLL
+
 @defgroup nrf_bellboard BELLBOARD
 
 @defgroup nrf_bprot BPROT

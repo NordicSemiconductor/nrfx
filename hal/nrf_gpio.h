@@ -856,8 +856,6 @@ NRF_STATIC_INLINE bool nrf_gpio_pin_present_check(uint32_t pin_number);
 */
 NRF_STATIC_INLINE uint32_t nrf_gpio_pin_port_number_extract(uint32_t * p_pin);
 
-#ifndef NRF_DECLARE_ONLY
-
 /**
  * @brief Function for extracting port and the relative pin number from the absolute pin number.
  *
@@ -866,6 +864,10 @@ NRF_STATIC_INLINE uint32_t nrf_gpio_pin_port_number_extract(uint32_t * p_pin);
  *
  * @return Pointer to port register set.
  */
+NRF_STATIC_INLINE NRF_GPIO_Type * nrf_gpio_pin_port_decode(uint32_t * p_pin);
+
+#ifndef NRF_DECLARE_ONLY
+
 NRF_STATIC_INLINE NRF_GPIO_Type * nrf_gpio_pin_port_decode(uint32_t * p_pin)
 {
     NRFX_ASSERT(nrf_gpio_pin_present_check(*p_pin));

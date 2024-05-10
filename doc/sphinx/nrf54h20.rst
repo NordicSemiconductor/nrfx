@@ -1,0 +1,5 @@
+nRF54H20 drivers
+================
+
+.. doxygenpage:: nrf54h20_drivers
+    :content-only:

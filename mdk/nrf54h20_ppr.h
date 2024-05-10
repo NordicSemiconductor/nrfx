@@ -222,6 +222,9 @@ typedef enum {
 
 /* ====================== Configuration of the Nordic Semiconductor VPR Processor and Core Peripherals ======================= */
 #define __VPR_REV                    1.1             /*!< VPR Core Revision                                                    */
+#define __VPR_REV_MAJOR                1             /*!< VPR Core Major Revision                                              */
+#define __VPR_REV_MINOR                1             /*!< VPR Core Minor Revision                                              */
+#define __VPR_REV_PATCH                0             /*!< VPR Core Patch Revision                                              */
 #define __DSP_PRESENT                  0             /*!< DSP present or not                                                   */
 #define __CLIC_PRIO_BITS               3             /*!< Number of Bits used for Priority Levels                              */
 #define __MTVT_PRESENT                 1             /*!< CPU supports alternate Vector Table address                          */
@@ -230,8 +233,20 @@ typedef enum {
 #define __FPU_DP                       0             /*!< Double Precision FPU                                                 */
 #define __INTERRUPTS_MAX             480             /*!< Size of interrupt vector table                                       */
 
+#define NRF_VPR               NRF_VPR130             /*!< VPR instance name                                                    */
 #include "core_vpr.h"                                /*!< Nordic Semiconductor VPR processor and core peripherals              */
 #include "system_nrf.h"                              /*!< nrf54h20_ppr System Library                                          */
+
+#endif                                               /*!< NRF_PPR                                                              */
+
+
+#ifdef NRF_PPR
+
+  #define NRF_DOMAIN                    NRF_DOMAIN_GLOBALSLOW
+  #define NRF_PROCESSOR                 NRF_PROCESSOR_PPR
+  #ifndef NRF_OWNER
+    #define NRF_OWNER                   NRF_OWNER_APPLICATION
+  #endif
 
 #endif                                               /*!< NRF_PPR                                                              */
 
@@ -280,11 +295,7 @@ typedef enum {
 /* =========================================================================================================================== */
 
 #ifdef NRF_PPR                                       /*!< Remap NRF_DOMAIN_X instances to NRF_X symbol for ease of use.        */
-  #ifdef NRF_TRUSTZONE_NONSECURE                     /*!< Remap only nonsecure instances.                                      */
-    #define NRF_VPRCLIC                           NRF_PPR_VPRCLIC
-  #else                                              /*!< Remap all instances.                                                 */
-    #define NRF_VPRCLIC                           NRF_PPR_VPRCLIC
-  #endif                                             /*!< NRF_TRUSTZONE_NONSECURE                                              */
+  #define NRF_VPRCLIC                             NRF_PPR_VPRCLIC
 #endif                                               /*!< NRF_PPR                                                              */
 
 /* ========================================== End of section using anonymous unions ========================================== */

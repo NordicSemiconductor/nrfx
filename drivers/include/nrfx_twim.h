@@ -232,6 +232,7 @@ nrfx_err_t nrfx_twim_init(nrfx_twim_t const *        p_instance,
  * @retval NRFX_SUCCESS             Reconfiguration was successful.
  * @retval NRFX_ERROR_BUSY          The driver is during transaction.
  * @retval NRFX_ERROR_INVALID_STATE The driver is uninitialized.
+ * @retval NRFX_ERROR_INVALID_PARAM Requested frequency is not available on the specified pins.
  */
 nrfx_err_t nrfx_twim_reconfigure(nrfx_twim_t const *        p_instance,
                                  nrfx_twim_config_t const * p_config);
