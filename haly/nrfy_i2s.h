@@ -487,7 +487,7 @@ NRFY_STATIC_INLINE void nrfy_i2s_rx_buffer_set(NRF_I2S_Type * p_reg,
 NRFY_STATIC_INLINE uint32_t * nrfy_i2s_rx_buffer_get(NRF_I2S_Type const * p_reg)
 {
     nrf_barrier_rw();
-    uint32_t * p_buffer = nrfy_i2s_rx_buffer_get(p_reg);
+    uint32_t * p_buffer = nrf_i2s_rx_buffer_get(p_reg);
     nrf_barrier_r();
     return p_buffer;
 }
@@ -504,7 +504,7 @@ NRFY_STATIC_INLINE void nrfy_i2s_tx_buffer_set(NRF_I2S_Type *   p_reg,
 NRFY_STATIC_INLINE uint32_t * nrfy_i2s_tx_buffer_get(NRF_I2S_Type const * p_reg)
 {
     nrf_barrier_rw();
-    uint32_t * p_buffer = nrfy_i2s_tx_buffer_get(p_reg);
+    uint32_t * p_buffer = nrf_i2s_tx_buffer_get(p_reg);
     nrf_barrier_r();
     return p_buffer;
 }

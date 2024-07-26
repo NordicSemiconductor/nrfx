@@ -205,7 +205,7 @@ typedef enum {
 #define __VPR_REV                  1.4.1             /*!< VPR Core Revision                                                    */
 #define __VPR_REV_MAJOR                1             /*!< VPR Core Major Revision                                              */
 #define __VPR_REV_MINOR                4             /*!< VPR Core Minor Revision                                              */
-#define __VPR_REV_PATCH                0             /*!< VPR Core Patch Revision                                              */
+#define __VPR_REV_PATCH                1             /*!< VPR Core Patch Revision                                              */
 #define __DSP_PRESENT                  0             /*!< DSP present or not                                                   */
 #define __CLIC_PRIO_BITS               2             /*!< Number of Bits used for Priority Levels                              */
 #define __MTVT_PRESENT                 1             /*!< CPU supports alternate Vector Table address                          */

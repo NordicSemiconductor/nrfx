@@ -35,6 +35,7 @@
 #define NRFY_TWIM_H__
 
 #include <nrfx.h>
+#include <nrf_erratas.h>
 #include <hal/nrf_twim.h>
 
 #ifdef __cplusplus
@@ -364,6 +365,12 @@ NRFY_STATIC_INLINE void nrfy_twim_stop(NRF_TWIM_Type * p_reg)
 {
     nrf_twim_int_disable(p_reg, NRF_TWIM_ALL_INTS_MASK);
     nrf_twim_shorts_disable(p_reg, NRF_TWIM_ALL_SHORTS_MASK);
+#if NRF52_ERRATA_89_ENABLE_WORKAROUND
+    if (nrf52_errata_89())
+    {
+        *(volatile uint32_t *)((uint8_t *)p_reg + 0x500UL) = 9;
+    }
+#endif
     nrf_twim_disable(p_reg);
     nrf_barrier_w();
 }

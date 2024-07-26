@@ -154,8 +154,9 @@ typedef struct
     nrfx_spim_evt_t         evt;  // Keep the struct that is ready for event handler. Less memcpy.
     nrfx_drv_state_t        state;
     volatile bool           transfer_in_progress;
-    bool                    skip_gpio_cfg  : 1;
-    bool                    ss_active_high;
+    bool                    skip_gpio_cfg       : 1;
+    bool                    ss_active_high      : 1;
+    bool                    disable_on_xfer_end : 1;
     uint32_t                ss_pin;
 } spim_control_block_t;
 static spim_control_block_t m_cb[NRFX_SPIM_ENABLED_COUNT];
@@ -212,7 +213,12 @@ static void spim_abort(NRF_SPIM_Type * p_spim, spim_control_block_t * p_cb)
         NRFX_LOG_ERROR("Failed to stop instance with base address: %p.", (void *)p_spim);
     }
     p_cb->transfer_in_progress = false;
-    nrfy_spim_disable(p_spim);
+#if defined(HALTIUM_XXAA)
+    if (p_cb->disable_on_xfer_end)
+#endif
+    {
+        nrfy_spim_disable(p_spim);
+    }
 }
 
 static void pin_init(uint32_t             pin,
@@ -802,6 +808,12 @@ static nrfx_err_t spim_xfer(NRF_SPIM_Type               * p_spim,
     nrfy_spim_buffers_set(p_spim, &xfer_desc);
 
     nrfy_spim_event_clear(p_spim, NRF_SPIM_EVENT_END);
+#if defined(HALTIUM_XXAA)
+    p_cb->disable_on_xfer_end = (flags & (NRFX_SPIM_FLAG_NO_XFER_EVT_HANDLER |
+                                          NRFX_SPIM_FLAG_HOLD_XFER |
+                                          NRFX_SPIM_FLAG_REPEATED_XFER)) ?
+                                true : !nrfy_spim_enable_check(p_spim);
+#endif
     nrfy_spim_enable(p_spim);
 
     if (!(flags & NRFX_SPIM_FLAG_HOLD_XFER))

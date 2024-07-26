@@ -68,7 +68,7 @@ extern "C" {
 #define NRF_OSCILLATORS_HAS_LFXO_CAP_AS_INT_VALUE 0
 #endif
 
-#if defined(OSCILLATORS_XOSC32KI_Type) || defined(__NRFX_DOXYGEN__)
+#if defined(OSCILLATORS_XOSC32KI_BYPASS_BYPASS_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether LFXO bypass is present. */
 #define NRF_OSCILLATORS_HAS_LFXO_BYPASS 1
 #else

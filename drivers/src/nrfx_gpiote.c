@@ -825,7 +825,7 @@ static nrfx_err_t gpiote_init(nrfx_gpiote_t const * p_instance, uint8_t interrup
     nrfy_gpiote_int_init(p_instance->p_reg,
                          (uint32_t)NRF_GPIOTE_INT_PORT_MASK,
                          interrupt_priority,
-                         true,
+                         false,
                          p_cb->channels_number);
 
     p_cb->state = NRFX_DRV_STATE_INITIALIZED;
@@ -1016,6 +1016,11 @@ static void pin_trigger_enable(nrfx_gpiote_t const * p_instance,
                                bool                  int_enable)
 {
     NRFX_ASSERT(pin_has_trigger(p_instance, pin));
+
+    if (!nrfy_gpiote_int_enable_check(p_instance->p_reg, (uint32_t)NRF_GPIOTE_INT_PORT_MASK))
+    {
+        nrfy_gpiote_int_enable(p_instance->p_reg, (uint32_t)NRF_GPIOTE_INT_PORT_MASK);
+    }
 
     if (pin_in_use_by_te(p_instance, pin) && pin_is_input(p_instance, pin))
     {

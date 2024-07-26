@@ -328,7 +328,7 @@ void SystemInit(void)
     /* Configure NFCT pins as GPIOs if NFCT is not to be used in your code. If CONFIG_NFCT_PINS_AS_GPIOS is not defined,
        two GPIOs (see Product Specification to see which ones) will be reserved for NFC and will not be available as
        normal GPIOs. */
-    #if defined (CONFIG_NFCT_PINS_AS_GPIOS) && defined(NFCT_PRESENT)
+    #if (defined(CONFIG_NFCT_PINS_AS_GPIOS) || defined(NRF_CONFIG_NFCT_PINS_AS_GPIOS)) && defined(NFCT_PRESENT)
         if ((NRF_UICR->NFCPINS & UICR_NFCPINS_PROTECT_Msk) == (UICR_NFCPINS_PROTECT_NFC << UICR_NFCPINS_PROTECT_Pos)){
             nvmc_config(NVMC_CONFIG_WEN_Wen);
             NRF_UICR->NFCPINS &= ~UICR_NFCPINS_PROTECT_Msk;

@@ -77,7 +77,7 @@ extern "C" {
 /** @brief Symbol specifying maximum number of retention RAM blocks. */
 #define NRF_MEMCONF_POWERBLOCK_RAMBLOCK_RET_COUNT MEMCONF_POWER_RET_MEM31_Pos
 
-/** @brief Symbol specifying maximum number of second bank retention RAM blocks. */
+/** @brief Symbol specifying maximum number of the second bank retention RAM blocks. */
 #define NRF_MEMCONF_POWERBLOCK_RAMBLOCK_RET2_COUNT MEMCONF_POWER_RET2_MEM31_Pos
 
 /** @brief Symbol specifying bitmask collecting all memory read and write margin trims. */
@@ -198,7 +198,7 @@ NRF_STATIC_INLINE void nrf_memconf_ramblock_ret2_enable_set(NRF_MEMCONF_Type * p
                                                             bool               enable);
 
 /**
- * @brief Function for checking whether the retention of second bank in specified RAM block is enabled.
+ * @brief Function for checking whether the retention of the second bank in specified RAM block is enabled.
  *
  * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
  * @param[in] power_id Power block index.
@@ -210,6 +210,19 @@ NRF_STATIC_INLINE void nrf_memconf_ramblock_ret2_enable_set(NRF_MEMCONF_Type * p
 NRF_STATIC_INLINE bool nrf_memconf_ramblock_ret2_enable_check(NRF_MEMCONF_Type const * p_reg,
                                                               uint8_t                  power_id,
                                                               uint8_t                  ramblock);
+
+/**
+ * @brief Function for enabling or disabling retention of the second bank for the specified RAM blocks.
+ *
+ * @param[in] p_reg         Pointer to the structure of registers of the peripheral.
+ * @param[in] power_id      Power block index.
+ * @param[in] ramblock_mask Mask of RAM blocks.
+ * @param[in] enable        True if retention for RAM blocks is to be enabled, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_memconf_ramblock_ret2_mask_enable_set(NRF_MEMCONF_Type * p_reg,
+                                                                 uint8_t            power_id,
+                                                                 uint32_t           ramblock_mask,
+                                                                 bool               enable);
 #endif
 
 #if NRF_MEMCONF_HAS_REPAIR
@@ -415,6 +428,23 @@ NRF_STATIC_INLINE bool nrf_memconf_ramblock_ret2_enable_check(NRF_MEMCONF_Type c
     NRFX_ASSERT(ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_RET2_COUNT);
 
     return (bool)(p_reg->POWER[power_id].RET2 & (MEMCONF_POWER_RET2_MEM0_Msk << ramblock));
+}
+
+NRF_STATIC_INLINE void nrf_memconf_ramblock_ret2_mask_enable_set(NRF_MEMCONF_Type * p_reg,
+                                                                 uint8_t            power_id,
+                                                                 uint32_t           ramblock_mask,
+                                                                 bool               enable)
+{
+    NRFX_ASSERT(power_id < NRF_MEMCONF_POWERBLOCK_COUNT);
+
+    if (enable)
+    {
+        p_reg->POWER[power_id].RET2 |= ramblock_mask;
+    }
+    else
+    {
+        p_reg->POWER[power_id].RET2 &= ~ramblock_mask;
+    }
 }
 #endif
 

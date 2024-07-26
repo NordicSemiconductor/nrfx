@@ -46,7 +46,7 @@
 /** @brief Invalid channel number. */
 #define NRFX_GPPI_CHANNEL_INVALID UINT8_MAX
 
-#if defined(NRF54L15_ENGA_XXAA)
+#if defined(NRF54L15_ENGA_XXAA) || defined(NRF54L20_ENGA_XXAA)
 #define NRFX_GPPI_PPIB_HAS_DYNAMIC_CONFIG 0
 #else
 #define NRFX_GPPI_PPIB_HAS_DYNAMIC_CONFIG 1

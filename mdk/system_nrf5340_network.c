@@ -62,35 +62,41 @@ void SystemInit(void)
         #endif
     }
 
-    /* Workaround for Errata 49 "SLEEPENTER and SLEEPEXIT events asserted after pin reset" found at the Errata document
+    #if NRF53_ERRATA_49_ENABLE_WORKAROUND
+        /* Workaround for Errata 49 "SLEEPENTER and SLEEPEXIT events asserted after pin reset" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (nrf53_errata_49())
-    {
-        if (NRF_RESET_NS->RESETREAS & RESET_RESETREAS_RESETPIN_Msk)
+        if (nrf53_errata_49())
         {
-            NRF_POWER_NS->EVENTS_SLEEPENTER = 0ul;
-            NRF_POWER_NS->EVENTS_SLEEPEXIT = 0ul;
+            if (NRF_RESET_NS->RESETREAS & RESET_RESETREAS_RESETPIN_Msk)
+            {
+                NRF_POWER_NS->EVENTS_SLEEPENTER = 0ul;
+                NRF_POWER_NS->EVENTS_SLEEPEXIT = 0ul;
+            }
         }
-    }
+    #endif
 
-    /* Workaround for Errata 55 "Bits in RESETREAS are set when they should not be" found at the Errata document
+    #if NRF53_ERRATA_55_ENABLE_WORKAROUND
+        /* Workaround for Errata 55 "Bits in RESETREAS are set when they should not be" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (nrf53_errata_55())
-    {
-        if (NRF_RESET_NS->RESETREAS & RESET_RESETREAS_RESETPIN_Msk){
-            NRF_RESET_NS->RESETREAS = ~RESET_RESETREAS_RESETPIN_Msk;
+        if (nrf53_errata_55())
+        {
+            if (NRF_RESET_NS->RESETREAS & RESET_RESETREAS_RESETPIN_Msk){
+                NRF_RESET_NS->RESETREAS = ~RESET_RESETREAS_RESETPIN_Msk;
+            }
         }
-    }
+    #endif
 
-    if (nrf53_errata_160())
-    {
-        *((volatile uint32_t *)0x41002118ul) = 0x7Ful;
-        *((volatile uint32_t *)0x41080E04ul) = 0x0ul;
-        *((volatile uint32_t *)0x41080E08ul) = 0x0ul;
-        *((volatile uint32_t *)0x41002124ul) = 0x0ul;
-        *((volatile uint32_t *)0x4100212Cul) = 0x0ul;
-        *((volatile uint32_t *)0x41101110ul) = 0x0ul;
-    }
+    #if NRF53_ERRATA_160_ENABLE_WORKAROUND
+        if (nrf53_errata_160())
+        {
+            *((volatile uint32_t *)0x41002118ul) = 0x7Ful;
+            *((volatile uint32_t *)0x41080E04ul) = 0x0ul;
+            *((volatile uint32_t *)0x41080E08ul) = 0x0ul;
+            *((volatile uint32_t *)0x41002124ul) = 0x0ul;
+            *((volatile uint32_t *)0x4100212Cul) = 0x0ul;
+            *((volatile uint32_t *)0x41101110ul) = 0x0ul;
+        }
+    #endif
 
     /* Handle fw-branch APPROTECT setup. */
     nrf53_handle_approtect();

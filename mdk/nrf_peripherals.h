@@ -72,13 +72,16 @@ POSSIBILITY OF SUCH DAMAGE.
 #elif defined (NRF54L15_ENGA_XXAA)
     #include "nrf54l15_enga_peripherals.h"
 
+#elif defined (NRF54L20_ENGA_XXAA)
+    #include "nrf54l20_enga_peripherals.h"
+
 #elif defined(NRF9120_XXAA)
     #include "nrf9120_peripherals.h"
 #elif defined(NRF9160_XXAA)
     #include "nrf9160_peripherals.h"
 
-#elif defined (NRF9230_ENGA_XXAA)
-    #include "nrf9230_enga_peripherals.h"
+#elif defined (NRF9230_ENGB_XXAA)
+    #include "nrf9230_engb_peripherals.h"
 
 #else
     #error "Device must be defined. See nrf_peripherals.h."

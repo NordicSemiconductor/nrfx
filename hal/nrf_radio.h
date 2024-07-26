@@ -80,6 +80,11 @@ typedef enum
 #if defined(RADIO_TASKS_CCASTOP_TASKS_CCASTOP_Msk) || defined(__NRFX_DOXYGEN__)
     NRF_RADIO_TASK_CCASTOP   = offsetof(NRF_RADIO_Type, TASKS_CCASTOP),   /**< Stop the Clear Channel Assessment. */
 #endif
+#if defined(RADIO_TASKS_SOFTRESET_TASKS_SOFTRESET_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TASK_SOFTRESET = offsetof(NRF_RADIO_Type, TASKS_SOFTRESET), /**< Reset all public registers, but with these exceptions:
+                                                                           *   DMA registers and EVENT/INTEN/SUBSCRIBE/PUBLISH
+                                                                           *   registers. Only to be used in DISABLED state. */
+#endif
 } nrf_radio_task_t;
 
 /** @brief RADIO events. */
@@ -162,15 +167,15 @@ typedef enum
     defined(RADIO_INTENSET00_PHYEND_Msk) || \
     defined(__NRFX_DOXYGEN__)
     NRF_RADIO_EVENT_PHYEND     = offsetof(NRF_RADIO_Type, EVENTS_PHYEND),     /**< Generated in Ble_LR125Kbit, Ble_LR500Kbit
-                                                                                   and BleIeee802154_250Kbit modes when last
-                                                                                   bit is sent on the air. */
+                                                                               *   and BleIeee802154_250Kbit modes when last
+                                                                               *   bit is sent on the air. */
 #endif
 #if defined(RADIO_INTENSET_SYNC_Msk) ||   \
     defined(RADIO_INTENSET00_SYNC_Msk) || \
     defined(__NRFX_DOXYGEN__)
     NRF_RADIO_EVENT_SYNC       = offsetof(NRF_RADIO_Type, EVENTS_SYNC),       /**< Generated in Ble_LR125Kbit, Ble_LR500Kbit
-                                                                                   and BleIeee802154_250Kbit modes when possible
-                                                                                   preamble has been received. */
+                                                                               *   and BleIeee802154_250Kbit modes when possible
+                                                                               *   preamble has been received. */
 #endif
 #if defined(RADIO_INTENSET_CTEPRESENT_Msk) ||   \
     defined(RADIO_INTENSET00_CTEPRESENT_Msk) || \

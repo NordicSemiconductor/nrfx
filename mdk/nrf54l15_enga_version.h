@@ -45,7 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define MDK_SOURCE_VERSION_MICRO                     /*!< Micro version of product specification.                              */
 
 
-
 #ifdef __cplusplus
 }
 #endif

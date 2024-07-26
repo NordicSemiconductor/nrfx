@@ -417,6 +417,17 @@ NRF_STATIC_INLINE void nrf_rramc_region_config_get(NRF_RRAMC_Type const *      p
                                                    uint8_t                     region,
                                                    nrf_rramc_region_config_t * p_config);
 
+/**
+ * @brief Function for getting the raw configuration of the specified RRAMC region.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] region Region number.
+ *
+ * @return Raw configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_rramc_region_config_raw_get(NRF_RRAMC_Type const * p_reg,
+                                                           uint8_t                region);
+
 #ifndef NRF_DECLARE_ONLY
 
 NRF_STATIC_INLINE void nrf_rramc_task_trigger(NRF_RRAMC_Type * p_reg, nrf_rramc_task_t task)
@@ -623,6 +634,12 @@ NRF_STATIC_INLINE void nrf_rramc_region_config_get(NRF_RRAMC_Type const *      p
                              >> RRAMC_REGION_CONFIG_LOCK_Pos) == RRAMC_REGION_CONFIG_LOCK_Enabled;
     p_config->size_kb     = (reg & RRAMC_REGION_CONFIG_SIZE_Msk) >> RRAMC_REGION_CONFIG_SIZE_Pos;
     p_config->address     = p_reg->REGION[region].ADDRESS;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_rramc_region_config_raw_get(NRF_RRAMC_Type const * p_reg,
+                                                           uint8_t                region)
+{
+    return p_reg->REGION[region].CONFIG;
 }
 
 #endif // NRF_DECLARE_ONLY

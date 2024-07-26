@@ -1,6 +1,27 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.6.0] - 2024-07-26
+### Added
+- Added support for nRF54L20 Eng A and nRF9230 Eng B.
+- Added support for enabling and disabling the SPIM peripheral instance for nRF54H20 outside of driver context in the SPIM driver.
+- Added support for FRAMETIMEOUT event in the UARTE HAL.
+- Added support for SOFTRESET task in the RADIO HAL.
+- Added optimized functions for reading inputs, writing outputs and configuring direction of GPIO ports in the GPIO HAL.
+- Added getters for BLE address, BLE IR, and BLE ER in the FICR HAL.
+- Implemented a workaround for the anomaly 89 on the nRF52832 SoC in the TWIM and SPIM HALs.
+
+### Changed
+- Updated MDK to version 8.66.0.
+- Removed unsupported GPIO pin drive settings from the GPIO HAL.
+
+### Fixed
+- Fixed spurious assertion in the TIMER driver. Now, the nrfx_timer_extended_compare() function can be called after the TIMER has started.
+- Fixed potential data corruption when cache bounce buffer and RX FIFO buffer were shared in the UARTE driver.
+- Fixed handling of events having respective interrupts disabled in the UARTE driver.
+- Fixed dropping of data in case of RX abort in the UARTE driver.
+- Fixed frequency symbol setting in case of non-secure build on the nRF54L15 SoC.
+
 ## [3.5.0] - 2024-05-10
 ### Added
 - Added function for freeing all allocated channels in the WDT driver.

@@ -687,51 +687,42 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define P2_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P2_CTRLSEL_MAP2 1                            /*!< (unspecified)                                                        */
+#define P2_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P2_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P2_PIN_NUM_MAX 10                            /*!< (unspecified)                                                        */
 #define P2_PIN_NUM_SIZE 11                           /*!< (unspecified)                                                        */
-#define P2_PINS_PRESENT 2047                         /*!< (unspecified)                                                        */
+#define P2_FEATURE_PINS_PRESENT 2047                 /*!< (unspecified)                                                        */
 #define P2_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P2_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P2_PWRCTRL 0                                 /*!< (unspecified)                                                        */
-#define P2_PWRCTRL_SEPARATE_REG 0                    /*!< (unspecified)                                                        */
-#define P2_VSS_FLOAT_DFT 0                           /*!< (unspecified)                                                        */
 #define P2_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
-#define P2_WIFI_CORE_PRESENT 0                       /*!< (unspecified)                                                        */
-#define P2_RETAIN_PER_PIN 0                          /*!< (unspecified)                                                        */
-#define P2_CLOCKPIN 0                                /*!< (unspecified)                                                        */
+#define P2_BIASCTRL 0                                /*!< (unspecified)                                                        */
 
 #define P1_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP2 1                            /*!< (unspecified)                                                        */
+#define P1_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_MAX 15                            /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_SIZE 16                           /*!< (unspecified)                                                        */
-#define P1_PINS_PRESENT 65535                        /*!< (unspecified)                                                        */
+#define P1_FEATURE_PINS_PRESENT 65535                /*!< (unspecified)                                                        */
 #define P1_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P1_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P1_PWRCTRL 0                                 /*!< (unspecified)                                                        */
-#define P1_PWRCTRL_SEPARATE_REG 0                    /*!< (unspecified)                                                        */
-#define P1_VSS_FLOAT_DFT 0                           /*!< (unspecified)                                                        */
 #define P1_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
-#define P1_WIFI_CORE_PRESENT 0                       /*!< (unspecified)                                                        */
-#define P1_RETAIN_PER_PIN 0                          /*!< (unspecified)                                                        */
-#define P1_CLOCKPIN 0                                /*!< (unspecified)                                                        */
+#define P1_BIASCTRL 0                                /*!< (unspecified)                                                        */
 
 #define P0_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP2 1                            /*!< (unspecified)                                                        */
+#define P0_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_MAX 4                             /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_SIZE 5                            /*!< (unspecified)                                                        */
-#define P0_PINS_PRESENT 31                           /*!< (unspecified)                                                        */
+#define P0_FEATURE_PINS_PRESENT 31                   /*!< (unspecified)                                                        */
 #define P0_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P0_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P0_PWRCTRL 0                                 /*!< (unspecified)                                                        */
-#define P0_PWRCTRL_SEPARATE_REG 0                    /*!< (unspecified)                                                        */
-#define P0_VSS_FLOAT_DFT 0                           /*!< (unspecified)                                                        */
 #define P0_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
-#define P0_WIFI_CORE_PRESENT 0                       /*!< (unspecified)                                                        */
-#define P0_RETAIN_PER_PIN 0                          /*!< (unspecified)                                                        */
-#define P0_CLOCKPIN 0                                /*!< (unspecified)                                                        */
+#define P0_BIASCTRL 0                                /*!< (unspecified)                                                        */
 
 /*Control access port*/
 #define CTRLAPPERI_PRESENT 1

@@ -951,93 +951,6 @@
 #endif
 
 /**
- * @brief NRFX_SPI_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_SPI_ENABLED
-#define NRFX_SPI_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_SPI_DEFAULT_CONFIG_IRQ_PRIORITY
- *
- * Integer value. Minimum: 0. Maximum: 3.
- */
-#ifndef NRFX_SPI_DEFAULT_CONFIG_IRQ_PRIORITY
-#define NRFX_SPI_DEFAULT_CONFIG_IRQ_PRIORITY NRFX_DEFAULT_IRQ_PRIORITY
-#endif
-
-/**
- * @brief NRFX_SPI_CONFIG_LOG_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_SPI_CONFIG_LOG_ENABLED
-#define NRFX_SPI_CONFIG_LOG_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_SPI_CONFIG_LOG_LEVEL
- *
- * Integer value.
- * Supported values:
- * - Off     = 0
- * - Error   = 1
- * - Warning = 2
- * - Info    = 3
- * - Debug   = 4
- */
-#ifndef NRFX_SPI_CONFIG_LOG_LEVEL
-#define NRFX_SPI_CONFIG_LOG_LEVEL 3
-#endif
-
-/**
- * @brief NRFX_SPI00_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_SPI00_ENABLED
-#define NRFX_SPI00_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_SPI20_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_SPI20_ENABLED
-#define NRFX_SPI20_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_SPI21_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_SPI21_ENABLED
-#define NRFX_SPI21_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_SPI22_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_SPI22_ENABLED
-#define NRFX_SPI22_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_SPI30_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_SPI30_ENABLED
-#define NRFX_SPI30_ENABLED 0
-#endif
-
-/**
  * @brief NRFX_SPIM_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
@@ -1569,12 +1482,12 @@
 #endif
 
 /**
- * @brief NRFX_UARTE_CONFIG_RX_CACHE_ENABLED
+ * @brief NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE
  *
- * Boolean. Accepted values: 0 and 1.
+ * Integer value. Minimum: 0. Maximum: 255.
  */
-#ifndef NRFX_UARTE_CONFIG_RX_CACHE_ENABLED
-#define NRFX_UARTE_CONFIG_RX_CACHE_ENABLED 1
+#ifndef NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE
+#define NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE 171
 #endif
 
 /**

@@ -80,17 +80,19 @@ void SystemInit(void)
             SAU->CTRL |= (1ul << SAU_CTRL_ALLNS_Pos);
         #endif
 
-        /* Workaround for Errata 97 "ERASEPROTECT, APPROTECT, or startup problems" found at the Errata document
-           for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (nrf53_errata_97())
-        {
-            if (*((volatile uint32_t *)0x50004A20ul) == 0ul)
+        #if NRF53_ERRATA_97_ENABLE_WORKAROUND
+            /* Workaround for Errata 97 "ERASEPROTECT, APPROTECT, or startup problems" found at the Errata document
+               for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+            if (nrf53_errata_97())
             {
-                *((volatile uint32_t *)0x50004A20ul) = 0xDul;
-                *((volatile uint32_t *)0x5000491Cul) = 0x1ul;
-                *((volatile uint32_t *)0x5000491Cul) = 0x0ul;
+                if (*((volatile uint32_t *)0x50004A20ul) == 0ul)
+                {
+                    *((volatile uint32_t *)0x50004A20ul) = 0xDul;
+                    *((volatile uint32_t *)0x5000491Cul) = 0x1ul;
+                    *((volatile uint32_t *)0x5000491Cul) = 0x0ul;
+                }
             }
-        }
+        #endif
 
         /* Trimming of the device. Copy all the trimming values from FICR into the target addresses. Trim
          until one ADDR is not initialized. */
@@ -106,89 +108,108 @@ void SystemInit(void)
             #endif
         }
 
-        /* errata 64 must be before errata 42, as errata 42 is dependant on the changes in errata 64*/
-        /* Workaround for Errata 64 "VREGMAIN has invalid configuration when CPU is running at 128 MHz" found at the Errata document
-           for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (nrf53_errata_64())
-        {
-            *((volatile uint32_t *)0x5000470Cul) = 0x29ul;
-            *((volatile uint32_t *)0x5000473Cul) = 0x3ul;
-        }
-
-        /* Workaround for Errata 42 "Reset value of HFCLKCTRL is invalid" found at the Errata document
-           for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (nrf53_errata_42())
-        {
-            *((volatile uint32_t *)0x50039530ul) = 0xBEEF0044ul;
-            NRF_CLOCK_S->HFCLKCTRL = CLOCK_HFCLKCTRL_HCLK_Div2 << CLOCK_HFCLKCTRL_HCLK_Pos;
-        }
-
-        /* Workaround for Errata 46 "Higher power consumption of LFRC" found at the Errata document
-           for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (nrf53_errata_46())
-        {
-            *((volatile uint32_t *)0x5003254Cul) = 0ul;
-        }
-
-        /* Workaround for Errata 49 "SLEEPENTER and SLEEPEXIT events asserted after pin reset" found at the Errata document
-           for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (nrf53_errata_49())
-        {
-            if (NRF_RESET_S->RESETREAS & RESET_RESETREAS_RESETPIN_Msk)
+        #if NRF53_ERRATA_64_ENABLE_WORKAROUND
+            /* errata 64 must be before errata 42, as errata 42 is dependant on the changes in errata 64*/
+            /* Workaround for Errata 64 "VREGMAIN has invalid configuration when CPU is running at 128 MHz" found at the Errata document
+               for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+            if (nrf53_errata_64())
             {
-                NRF_POWER_S->EVENTS_SLEEPENTER = 0ul;
-                NRF_POWER_S->EVENTS_SLEEPEXIT = 0ul;
+                *((volatile uint32_t *)0x5000470Cul) = 0x29ul;
+                *((volatile uint32_t *)0x5000473Cul) = 0x3ul;
             }
-        }
+        #endif
 
-        /* Workaround for Errata 55 "Bits in RESETREAS are set when they should not be" found at the Errata document
-           for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (nrf53_errata_55())
-        {
-            if (NRF_RESET_S->RESETREAS & RESET_RESETREAS_RESETPIN_Msk){
-                NRF_RESET_S->RESETREAS = ~RESET_RESETREAS_RESETPIN_Msk;
-            }
-        }
 
-        /* Workaround for Errata 69 "VREGMAIN configuration is not retained in System OFF" found at the Errata document
-           for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (nrf53_errata_69())
-        {
-            *((volatile uint32_t *)0x5000470Cul) =0x65ul;
-        }
-
-        if (nrf53_errata_140())
-        {
-            if (*(volatile uint32_t *)0x50032420ul & 0x80000000ul)
+        #if NRF53_ERRATA_42_ENABLE_WORKAROUND
+            /* Workaround for Errata 42 "Reset value of HFCLKCTRL is invalid" found at the Errata document
+               for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+            if (nrf53_errata_42())
             {
-                /* Reset occured during calibration */
-                NRF_CLOCK_S->LFCLKSRC = CLOCK_LFCLKSRC_SRC_LFSYNT;
-                NRF_CLOCK_S->TASKS_LFCLKSTART = 1ul;
-                while (NRF_CLOCK_S->EVENTS_LFCLKSTARTED == 0ul) {}
-                NRF_CLOCK_S->EVENTS_LFCLKSTARTED = 0ul;
-                NRF_CLOCK_S->TASKS_LFCLKSTOP = 1ul;
-                NRF_CLOCK_S->LFCLKSRC = CLOCK_LFCLKSRC_SRC_LFRC;
+                *((volatile uint32_t *)0x50039530ul) = 0xBEEF0044ul;
+                NRF_CLOCK_S->HFCLKCTRL = CLOCK_HFCLKCTRL_HCLK_Div2 << CLOCK_HFCLKCTRL_HCLK_Pos;
             }
-        }
+        #endif
 
-        if (nrf53_errata_160())
-        {
-            *((volatile uint32_t *)0x5000470Cul) = 0x7Eul;
-            *((volatile uint32_t *)0x5000493Cul) = 0x7Eul;
-            *((volatile uint32_t *)0x50002118ul) = 0x7Ful;
-            *((volatile uint32_t *)0x50039E04ul) = 0x0ul;
-            *((volatile uint32_t *)0x50039E08ul) = 0x0ul;
-            *((volatile uint32_t *)0x50101110ul) = 0x0ul;
-            *((volatile uint32_t *)0x50002124ul) = 0x0ul;
-            *((volatile uint32_t *)0x5000212Cul) = 0x0ul;
-            *((volatile uint32_t *)0x502012A0ul) = 0x0ul;
-        }
+        #if NRF53_ERRATA_46_ENABLE_WORKAROUND
+            /* Workaround for Errata 46 "Higher power consumption of LFRC" found at the Errata document
+               for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+            if (nrf53_errata_46())
+            {
+                *((volatile uint32_t *)0x5003254Cul) = 0ul;
+            }
+        #endif
+
+
+        #if NRF53_ERRATA_49_ENABLE_WORKAROUND
+            /* Workaround for Errata 49 "SLEEPENTER and SLEEPEXIT events asserted after pin reset" found at the Errata document
+               for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+            if (nrf53_errata_49())
+            {
+                if (NRF_RESET_S->RESETREAS & RESET_RESETREAS_RESETPIN_Msk)
+                {
+                    NRF_POWER_S->EVENTS_SLEEPENTER = 0ul;
+                    NRF_POWER_S->EVENTS_SLEEPEXIT = 0ul;
+                }
+            }
+        #endif
+
+        #if NRF53_ERRATA_55_ENABLE_WORKAROUND
+            /* Workaround for Errata 55 "Bits in RESETREAS are set when they should not be" found at the Errata document
+               for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+            if (nrf53_errata_55())
+            {
+                if (NRF_RESET_S->RESETREAS & RESET_RESETREAS_RESETPIN_Msk){
+                    NRF_RESET_S->RESETREAS = ~RESET_RESETREAS_RESETPIN_Msk;
+                }
+            }
+        #endif
+
+
+        #if NRF53_ERRATA_69_ENABLE_WORKAROUND
+            /* Workaround for Errata 69 "VREGMAIN configuration is not retained in System OFF" found at the Errata document
+               for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+            if (nrf53_errata_69())
+            {
+                *((volatile uint32_t *)0x5000470Cul) =0x65ul;
+            }
+        #endif
+
+        #if NRF53_ERRATA_140_ENABLE_WORKAROUND
+            if (nrf53_errata_140())
+            {
+                if (*(volatile uint32_t *)0x50032420ul & 0x80000000ul)
+                {
+                    /* Reset occured during calibration */
+                    NRF_CLOCK_S->LFCLKSRC = CLOCK_LFCLKSRC_SRC_LFSYNT;
+                    NRF_CLOCK_S->TASKS_LFCLKSTART = 1ul;
+                    while (NRF_CLOCK_S->EVENTS_LFCLKSTARTED == 0ul) {}
+                    NRF_CLOCK_S->EVENTS_LFCLKSTARTED = 0ul;
+                    NRF_CLOCK_S->TASKS_LFCLKSTOP = 1ul;
+                    NRF_CLOCK_S->LFCLKSRC = CLOCK_LFCLKSRC_SRC_LFRC;
+                }
+            }
+        #endif
+
+        #if NRF53_ERRATA_160_ENABLE_WORKAROUND
+            if (nrf53_errata_160())
+            {
+                *((volatile uint32_t *)0x5000470Cul) = 0x7Eul;
+                *((volatile uint32_t *)0x5000493Cul) = 0x7Eul;
+                *((volatile uint32_t *)0x50002118ul) = 0x7Ful;
+                *((volatile uint32_t *)0x50039E04ul) = 0x0ul;
+                *((volatile uint32_t *)0x50039E08ul) = 0x0ul;
+                *((volatile uint32_t *)0x50101110ul) = 0x0ul;
+                *((volatile uint32_t *)0x50002124ul) = 0x0ul;
+                *((volatile uint32_t *)0x5000212Cul) = 0x0ul;
+                *((volatile uint32_t *)0x502012A0ul) = 0x0ul;
+            }
+        #endif
 
         #if !defined(NRF_SKIP_FICR_NS_COPY_TO_RAM)
             SystemStoreFICRNS();
         #endif
         
-        #if defined(CONFIG_NFCT_PINS_AS_GPIOS)
+        #if (defined(CONFIG_NFCT_PINS_AS_GPIOS) || defined(NRF_CONFIG_NFCT_PINS_AS_GPIOS))
 
             if ((NRF_UICR_S->NFCPINS & UICR_NFCPINS_PROTECT_Msk) == (UICR_NFCPINS_PROTECT_NFC << UICR_NFCPINS_PROTECT_Pos))
             {

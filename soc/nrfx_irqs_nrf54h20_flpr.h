@@ -31,8 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef NRFX_IRQS_NRF54H20_PPR_H__
-#define NRFX_IRQS_NRF54H20_PPR_H__
+#ifndef NRFX_IRQS_NRF54H20_FLPR_H__
+#define NRFX_IRQS_NRF54H20_FLPR_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -365,4 +365,4 @@ extern "C" {
 }
 #endif
 
-#endif // NRFX_IRQS_NRF54H20_PPR_H__
+#endif // NRFX_IRQS_NRF54H20_FLPR_H__

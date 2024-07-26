@@ -330,7 +330,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /*Distributed programmable peripheral interconnect controller*/
 #define DPPIC_PRESENT 1
-#define DPPIC_COUNT 9
+#define DPPIC_COUNT 10
 
 #define DPPIC020_HASCHANNELGROUPS 1                  /*!< (unspecified)                                                        */
 #define DPPIC020_CH_NUM_MIN 0                        /*!< (unspecified)                                                        */
@@ -339,6 +339,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #define DPPIC020_GROUP_NUM_MIN 0                     /*!< (unspecified)                                                        */
 #define DPPIC020_GROUP_NUM_MAX 3                     /*!< (unspecified)                                                        */
 #define DPPIC020_GROUP_NUM_SIZE 4                    /*!< (unspecified)                                                        */
+
+#define DPPIC030_HASCHANNELGROUPS 1                  /*!< (unspecified)                                                        */
+#define DPPIC030_CH_NUM_MIN 0                        /*!< (unspecified)                                                        */
+#define DPPIC030_CH_NUM_MAX 15                       /*!< (unspecified)                                                        */
+#define DPPIC030_CH_NUM_SIZE 16                      /*!< (unspecified)                                                        */
+#define DPPIC030_GROUP_NUM_MIN 0                     /*!< (unspecified)                                                        */
+#define DPPIC030_GROUP_NUM_MAX 0                     /*!< (unspecified)                                                        */
+#define DPPIC030_GROUP_NUM_SIZE 1                    /*!< (unspecified)                                                        */
 
 #define DPPIC120_HASCHANNELGROUPS 1                  /*!< (unspecified)                                                        */
 #define DPPIC120_CH_NUM_MIN 0                        /*!< (unspecified)                                                        */
@@ -684,6 +692,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #define AAR_PRESENT 1
 #define AAR_COUNT 2
 
+#define AAR030_DMAERROR 1                            /*!< (unspecified)                                                        */
+#define AAR030_ERRORSTATUS 0                         /*!< (unspecified)                                                        */
+#define AAR030_ERROREVENT 0                          /*!< (unspecified)                                                        */
+
+#define AAR031_DMAERROR 1                            /*!< (unspecified)                                                        */
+#define AAR031_ERRORSTATUS 0                         /*!< (unspecified)                                                        */
+#define AAR031_ERROREVENT 0                          /*!< (unspecified)                                                        */
+
 /*AES CCM Mode Encryption*/
 #define CCM_PRESENT 1
 #define CCM_COUNT 2
@@ -700,9 +716,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #define ECB_PRESENT 1
 #define ECB_COUNT 2
 
-#define ECB030_AMOUNTREG 1                           /*!< (unspecified)                                                        */
+#define ECB030_AMOUNTREG 0                           /*!< (unspecified)                                                        */
+#define ECB030_DMAERROR 1                            /*!< (unspecified)                                                        */
+#define ECB030_ERRORSTATUS 0                         /*!< (unspecified)                                                        */
 
-#define ECB031_AMOUNTREG 1                           /*!< (unspecified)                                                        */
+#define ECB031_AMOUNTREG 0                           /*!< (unspecified)                                                        */
+#define ECB031_DMAERROR 1                            /*!< (unspecified)                                                        */
+#define ECB031_ERRORSTATUS 0                         /*!< (unspecified)                                                        */
 
 /*IPCT APB registers*/
 #define IPCT_PRESENT 1
@@ -816,6 +836,10 @@ POSSIBILITY OF SUCH DAMAGE.
 /*BELLBOARD public registers*/
 #define BELLBOARDPUBLIC_PRESENT 1
 #define BELLBOARDPUBLIC_COUNT 1
+
+/*AUXPLL*/
+#define AUXPLL_PRESENT 1
+#define AUXPLL_COUNT 1
 
 /*VPR peripheral registers*/
 #define VPRPUBLIC_PRESENT 1

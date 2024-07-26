@@ -125,6 +125,7 @@ SECTIONS
         __rodata_start = .;
         *(.rodata*)
         *(.srodata .srodata.*)
+        . = ALIGN(4);
     } > FLASH
     __rodata_size       = SIZEOF(.rodata);
     __rodata_end        = __rodata_start + __rodata_size;
@@ -271,6 +272,7 @@ SECTIONS
         __sdata_start = .;
         *(.sdata .sdata.* .gnu.linkonce.s.*)
         *(.sdata2 .sdata2.* .gnu.linkonce.s2.*)
+        . = ALIGN(4);
     } > RAM
     __sdata_size       = SIZEOF(.sdata);
     __sdata_end        = __sdata_start + __sdata_size;
@@ -287,6 +289,7 @@ SECTIONS
         __tdata_start = .;
         *(.tdata .tdata.* .gnu.linkonce.td.*)
         *(.stdata .stdata.*)
+        . = ALIGN(4);
     } > RAM
     __tdata_size       = SIZEOF(.tdata);
     __tdata_end        = __tdata_start + __tdata_size;
@@ -305,6 +308,7 @@ SECTIONS
         *(.fastcode .fastcode.*)
         *(.fastdata .fastdata.*)
         *(.ramcode*)
+        . = ALIGN(4);
     } > RAM
     __fast_size       = SIZEOF(.fast);
     __fast_end        = __fast_start + __fast_size;

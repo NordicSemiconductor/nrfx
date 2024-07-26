@@ -39851,11 +39851,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   <description>GRTC peripheral</description>
                   <value>0x4</value>
                 </enumeratedValue>
-                <enumeratedValue>
-                  <name>TND</name>
-                  <description>Trace and Debug Subsystem</description>
-                  <value>0x7</value>
-                </enumeratedValue>
               </enumeratedValues>
             </field>
           </fields>
@@ -45779,7 +45774,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
         </register>
         <register>
           <name>EVENTS_END</name>
-          <description>Packet sent or received</description>
+          <description>Memory access for packet data has been completed</description>
           <addressOffset>0x218</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -45787,7 +45782,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <fields>
             <field>
               <name>EVENTS_END</name>
-              <description>Packet sent or received</description>
+              <description>Memory access for packet data has been completed</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -49897,13 +49892,13 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   <value>0x6</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>Nrf_4Mbit0_5</name>
-                  <description>4 Mbps Nordic proprietary radio mode (BT=0.5/h=0.5)</description>
+                  <name>Nrf_4Mbit_0BT6</name>
+                  <description>4 Mbps Nordic proprietary radio mode (BT=0.6/h=0.5)</description>
                   <value>0x9</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>Nrf_4Mbit0_25</name>
-                  <description>4 Mbps Nordic proprietary radio mode (BT=0.5/h=0.25)</description>
+                  <name>Nrf_4Mbit_0BT4</name>
+                  <description>4 Mbps Nordic proprietary radio mode (BT=0.4/h=0.5)</description>
                   <value>0xA</value>
                 </enumeratedValue>
                 <enumeratedValue>
@@ -59509,7 +59504,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <addressOffset>0x500</addressOffset>
           <register>
             <name>CONTROL</name>
-            <description>Description cluster: RAM/ROM[n] power control register.</description>
+            <description>Description cluster: Control memory block power.</description>
             <addressOffset>0x000</addressOffset>
             <access>read-write</access>
             <resetValue>0xFFFFFFFF</resetValue>
@@ -59517,7 +59512,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             <fields>
               <field>
                 <name>MEM0</name>
-                <description>Keep the RAM/ROM block MEM[0] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[0] on or off when in System ON mode.</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
                 <enumeratedValues>
@@ -59535,7 +59530,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM1</name>
-                <description>Keep the RAM/ROM block MEM[1] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[1] on or off when in System ON mode.</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
                 <enumeratedValues>
@@ -59553,7 +59548,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM2</name>
-                <description>Keep the RAM/ROM block MEM[2] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[2] on or off when in System ON mode.</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
                 <enumeratedValues>
@@ -59571,7 +59566,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM3</name>
-                <description>Keep the RAM/ROM block MEM[3] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[3] on or off when in System ON mode.</description>
                 <lsb>3</lsb>
                 <msb>3</msb>
                 <enumeratedValues>
@@ -59589,7 +59584,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM4</name>
-                <description>Keep the RAM/ROM block MEM[4] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[4] on or off when in System ON mode.</description>
                 <lsb>4</lsb>
                 <msb>4</msb>
                 <enumeratedValues>
@@ -59607,7 +59602,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM5</name>
-                <description>Keep the RAM/ROM block MEM[5] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[5] on or off when in System ON mode.</description>
                 <lsb>5</lsb>
                 <msb>5</msb>
                 <enumeratedValues>
@@ -59625,7 +59620,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM6</name>
-                <description>Keep the RAM/ROM block MEM[6] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[6] on or off when in System ON mode.</description>
                 <lsb>6</lsb>
                 <msb>6</msb>
                 <enumeratedValues>
@@ -59643,7 +59638,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM7</name>
-                <description>Keep the RAM/ROM block MEM[7] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[7] on or off when in System ON mode.</description>
                 <lsb>7</lsb>
                 <msb>7</msb>
                 <enumeratedValues>
@@ -59661,7 +59656,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM8</name>
-                <description>Keep the RAM/ROM block MEM[8] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[8] on or off when in System ON mode.</description>
                 <lsb>8</lsb>
                 <msb>8</msb>
                 <enumeratedValues>
@@ -59679,7 +59674,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM9</name>
-                <description>Keep the RAM/ROM block MEM[9] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[9] on or off when in System ON mode.</description>
                 <lsb>9</lsb>
                 <msb>9</msb>
                 <enumeratedValues>
@@ -59697,7 +59692,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM10</name>
-                <description>Keep the RAM/ROM block MEM[10] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[10] on or off when in System ON mode.</description>
                 <lsb>10</lsb>
                 <msb>10</msb>
                 <enumeratedValues>
@@ -59715,7 +59710,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM11</name>
-                <description>Keep the RAM/ROM block MEM[11] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[11] on or off when in System ON mode.</description>
                 <lsb>11</lsb>
                 <msb>11</msb>
                 <enumeratedValues>
@@ -59733,7 +59728,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM12</name>
-                <description>Keep the RAM/ROM block MEM[12] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[12] on or off when in System ON mode.</description>
                 <lsb>12</lsb>
                 <msb>12</msb>
                 <enumeratedValues>
@@ -59751,7 +59746,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM13</name>
-                <description>Keep the RAM/ROM block MEM[13] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[13] on or off when in System ON mode.</description>
                 <lsb>13</lsb>
                 <msb>13</msb>
                 <enumeratedValues>
@@ -59769,7 +59764,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM14</name>
-                <description>Keep the RAM/ROM block MEM[14] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[14] on or off when in System ON mode.</description>
                 <lsb>14</lsb>
                 <msb>14</msb>
                 <enumeratedValues>
@@ -59787,7 +59782,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM15</name>
-                <description>Keep the RAM/ROM block MEM[15] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[15] on or off when in System ON mode.</description>
                 <lsb>15</lsb>
                 <msb>15</msb>
                 <enumeratedValues>
@@ -59805,7 +59800,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM16</name>
-                <description>Keep the RAM/ROM block MEM[16] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[16] on or off when in System ON mode.</description>
                 <lsb>16</lsb>
                 <msb>16</msb>
                 <enumeratedValues>
@@ -59823,7 +59818,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM17</name>
-                <description>Keep the RAM/ROM block MEM[17] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[17] on or off when in System ON mode.</description>
                 <lsb>17</lsb>
                 <msb>17</msb>
                 <enumeratedValues>
@@ -59841,7 +59836,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM18</name>
-                <description>Keep the RAM/ROM block MEM[18] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[18] on or off when in System ON mode.</description>
                 <lsb>18</lsb>
                 <msb>18</msb>
                 <enumeratedValues>
@@ -59859,7 +59854,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM19</name>
-                <description>Keep the RAM/ROM block MEM[19] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[19] on or off when in System ON mode.</description>
                 <lsb>19</lsb>
                 <msb>19</msb>
                 <enumeratedValues>
@@ -59877,7 +59872,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM20</name>
-                <description>Keep the RAM/ROM block MEM[20] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[20] on or off when in System ON mode.</description>
                 <lsb>20</lsb>
                 <msb>20</msb>
                 <enumeratedValues>
@@ -59895,7 +59890,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM21</name>
-                <description>Keep the RAM/ROM block MEM[21] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[21] on or off when in System ON mode.</description>
                 <lsb>21</lsb>
                 <msb>21</msb>
                 <enumeratedValues>
@@ -59913,7 +59908,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM22</name>
-                <description>Keep the RAM/ROM block MEM[22] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[22] on or off when in System ON mode.</description>
                 <lsb>22</lsb>
                 <msb>22</msb>
                 <enumeratedValues>
@@ -59931,7 +59926,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM23</name>
-                <description>Keep the RAM/ROM block MEM[23] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[23] on or off when in System ON mode.</description>
                 <lsb>23</lsb>
                 <msb>23</msb>
                 <enumeratedValues>
@@ -59949,7 +59944,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM24</name>
-                <description>Keep the RAM/ROM block MEM[24] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[24] on or off when in System ON mode.</description>
                 <lsb>24</lsb>
                 <msb>24</msb>
                 <enumeratedValues>
@@ -59967,7 +59962,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM25</name>
-                <description>Keep the RAM/ROM block MEM[25] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[25] on or off when in System ON mode.</description>
                 <lsb>25</lsb>
                 <msb>25</msb>
                 <enumeratedValues>
@@ -59985,7 +59980,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM26</name>
-                <description>Keep the RAM/ROM block MEM[26] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[26] on or off when in System ON mode.</description>
                 <lsb>26</lsb>
                 <msb>26</msb>
                 <enumeratedValues>
@@ -60003,7 +59998,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM27</name>
-                <description>Keep the RAM/ROM block MEM[27] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[27] on or off when in System ON mode.</description>
                 <lsb>27</lsb>
                 <msb>27</msb>
                 <enumeratedValues>
@@ -60021,7 +60016,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM28</name>
-                <description>Keep the RAM/ROM block MEM[28] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[28] on or off when in System ON mode.</description>
                 <lsb>28</lsb>
                 <msb>28</msb>
                 <enumeratedValues>
@@ -60039,7 +60034,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM29</name>
-                <description>Keep the RAM/ROM block MEM[29] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[29] on or off when in System ON mode.</description>
                 <lsb>29</lsb>
                 <msb>29</msb>
                 <enumeratedValues>
@@ -60057,7 +60052,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM30</name>
-                <description>Keep the RAM/ROM block MEM[30] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[30] on or off when in System ON mode.</description>
                 <lsb>30</lsb>
                 <msb>30</msb>
                 <enumeratedValues>
@@ -60075,7 +60070,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM31</name>
-                <description>Keep the RAM/ROM block MEM[31] on or off when in System ON mode.</description>
+                <description>Keep the memory block MEM[31] on or off when in System ON mode.</description>
                 <lsb>31</lsb>
                 <msb>31</msb>
                 <enumeratedValues>
@@ -60098,7 +60093,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             <description>Description cluster: RAM retention for RAM [n].</description>
             <addressOffset>0x008</addressOffset>
             <access>read-write</access>
-            <resetValue>0x00000000</resetValue>
+            <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
               <field>
@@ -68253,6 +68248,29 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 <msb>11</msb>
               </field>
               <field>
+                <name>INTERNAL</name>
+                <description>Internal input selection for analog positive input when CH[n].PSELP.CONNECT = Internal</description>
+                <lsb>12</lsb>
+                <msb>13</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Avdd</name>
+                    <description>Connected to the internal 0.9V analog supply rail</description>
+                    <value>0x0</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Dvdd</name>
+                    <description>Connected to the internal 0.9V digital supply rail</description>
+                    <value>0x1</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Vdd</name>
+                    <description>Connected to VDD</description>
+                    <value>0x2</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+              <field>
                 <name>CONNECT</name>
                 <description>Connection</description>
                 <lsb>30</lsb>
@@ -68267,6 +68285,11 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                     <name>AnalogInput</name>
                     <description>Select analog input</description>
                     <value>0x1</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Internal</name>
+                    <description>Selects internal inputs.</description>
+                    <value>0x2</value>
                   </enumeratedValue>
                 </enumeratedValues>
               </field>
@@ -68324,7 +68347,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 <name>GAIN</name>
                 <description>Gain control</description>
                 <lsb>8</lsb>
-                <msb>9</msb>
+                <msb>10</msb>
                 <enumeratedValues>
                   <enumeratedValue>
                     <name>Gain2</name>
@@ -68599,11 +68622,11 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <description>RESULT EasyDMA channel</description>
           <headerStructName>SAADC_RESULT</headerStructName>
           <access>read-write</access>
-          <addressOffset>0x62C</addressOffset>
+          <addressOffset>0x628</addressOffset>
           <register>
             <name>PTR</name>
             <description>Data pointer</description>
-            <addressOffset>0x000</addressOffset>
+            <addressOffset>0x004</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
@@ -68619,7 +68642,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <register>
             <name>MAXCNT</name>
             <description>Maximum number of buffer bytes to transfer</description>
-            <addressOffset>0x004</addressOffset>
+            <addressOffset>0x008</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
@@ -68635,7 +68658,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <register>
             <name>AMOUNT</name>
             <description>Number of buffer bytes transferred since last START, updated after the END or STOPPED events</description>
-            <addressOffset>0x008</addressOffset>
+            <addressOffset>0x00C</addressOffset>
             <access>read-only</access>
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
@@ -68651,7 +68674,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <register>
             <name>CURRENTAMOUNT</name>
             <description>Number of buffer bytes transferred since last START, continuously updated</description>
-            <addressOffset>0x00C</addressOffset>
+            <addressOffset>0x010</addressOffset>
             <access>read-only</access>
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
@@ -68691,13 +68714,8 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Accuracy</name>
-                  <description>Noiseshaping and decimating. Smaller passband. Recommended resolution setting is 14 bits. Provides 1 5kS/s cut off frequency, 32x the oversampling ratio. See design description for more information</description>
+                  <description>Noiseshaping and decimating. Smaller passband. Recommended resolution setting is 14 bits. Provides a 5kS/s cut off frequency, 32x the oversampling ratio. See design description for more information</description>
                   <value>0x2</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Stage1</name>
-                  <description>Result from common 1st stage filter. For debugging only</description>
-                  <value>0x3</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
@@ -76259,7 +76277,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Control register for internal tamper reset enable signal.</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
-              <resetValue>0x00000010</resetValue>
+              <resetValue>0x00000011</resetValue>
               <size>0x20</size>
               <fields>
                 <field>
@@ -92652,38 +92670,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <headerStructName>OSCILLATORS_XOSC32M</headerStructName>
           <access>read-write</access>
           <addressOffset>0x700</addressOffset>
-          <register>
-            <name>CLOCKQUALITY</name>
-            <description>Clock quality indicator</description>
-            <addressOffset>0x10</addressOffset>
-            <access>read-only</access>
-            <resetValue>0x00000000</resetValue>
-            <size>0x20</size>
-            <fields>
-              <field>
-                <name>INDICATOR</name>
-                <lsb>0</lsb>
-                <msb>1</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>NoStatus</name>
-                    <description>XOSC32M status is not defined</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Starting</name>
-                    <description>XOSC32M has started but has not yet reached the specified frequency tolerance requirement fTOL_HFXO</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Started</name>
-                    <description>XOSC32M has started and is operating with the specified frequency tolerance requirement fTOL_HFXO</description>
-                    <value>0x3</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
           <cluster>
             <name>CONFIG</name>
             <description>Unspecified</description>
@@ -92700,6 +92686,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <fields>
                 <field>
                   <name>VAL</name>
+                  <description>Crystal load capacitor value</description>
                   <lsb>0</lsb>
                   <msb>5</msb>
                 </field>
@@ -92715,7 +92702,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <addressOffset>0x800</addressOffset>
           <register>
             <name>FREQ</name>
-            <description>CPU frequency</description>
+            <description>Set speed of MCU power domain, including CPU</description>
             <addressOffset>0x00</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000003</resetValue>
@@ -92743,7 +92730,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           </register>
           <register>
             <name>CURRENTFREQ</name>
-            <description>Current CPU frequency</description>
+            <description>Current speed of MCU power domain, including CPU</description>
             <addressOffset>0x04</addressOffset>
             <access>read-only</access>
             <resetValue>0x00000003</resetValue>
@@ -92772,7 +92759,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
         </cluster>
         <cluster>
           <name>XOSC32KI</name>
-          <description>32 kHz oscillator control</description>
+          <description>32.768 kHz oscillator control</description>
           <headerStructName>OSCILLATORS_XOSC32KI</headerStructName>
           <access>read-write</access>
           <addressOffset>0x900</addressOffset>
@@ -92788,7 +92775,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 <name>VAL</name>
                 <description>Crystal load capacitor as seen by the crystal across its terminals, including pin capacitance but excluding PCB stray capacitance.</description>
                 <lsb>0</lsb>
-                <msb>5</msb>
+                <msb>4</msb>
               </field>
             </fields>
           </register>
@@ -92813,7 +92800,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
       <registers>
         <cluster>
           <name>VREGM</name>
-          <description>Medium Voltage Regulator</description>
+          <description>Register interface for the medium voltage regulator</description>
           <headerStructName>REGULATORS_VREGM</headerStructName>
           <access>read-write</access>
           <addressOffset>0x400</addressOffset>
@@ -93013,7 +93000,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
         </register>
         <cluster>
           <name>VREGMAIN</name>
-          <description>Main voltage regulator</description>
+          <description>Register interface for main voltage regulator.</description>
           <headerStructName>REGULATORS_VREGMAIN</headerStructName>
           <access>read-write</access>
           <addressOffset>0x600</addressOffset>

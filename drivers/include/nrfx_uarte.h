@@ -601,6 +601,7 @@ nrfx_err_t nrfx_uarte_rx(nrfx_uarte_t const * p_instance,
  *
  * @retval NRFX_SUCCESS         The receiving operation is completed.
  * @retval NRFX_ERROR_BUSY      The receiver did not complete the operation.
+ * @retval NRFX_ERROR_ALREADY   The receiver is disabled.
  * @retval NRFX_ERROR_FORBIDDEN Operation is not supporting in the current configuration.
  */
 nrfx_err_t nrfx_uarte_rx_ready(nrfx_uarte_t const * p_instance, size_t * p_rx_amount);

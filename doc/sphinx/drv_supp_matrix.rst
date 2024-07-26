@@ -14,7 +14,9 @@ Driver support overview
    nrf5340
    nrf54h20
    nrf54l15_enga
+   nrf54l20_enga
    nrf91_series
+   nrf9230_engb
 
 .. role:: red
 .. role:: green

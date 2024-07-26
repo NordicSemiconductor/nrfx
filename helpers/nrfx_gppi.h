@@ -119,7 +119,7 @@ typedef enum
                                          ~NRFX_DPPI_GROUPS_USED)
 #define NRFX_GPPI_ALL_APP_CHANNELS_MASK  (NRFX_BIT_MASK(NRF_DPPI_CH_NUM_MAX) & \
                                          ~NRFX_DPPI_CHANNELS_USED)
-#if defined(HALTIUM_XXAA) || defined(LUMOS_XXAA)
+#if defined(HALTIUM_XXAA)
 #define NRFX_GPPI_PROG_APP_CHANNELS_NUM  NRFX_BIT_SIZE(sizeof(uint32_t))
 #define NRFX_GPPI_PROG_APP_CHANNELS_MASK NRFX_BIT_MASK(NRFX_GPPI_PROG_APP_CHANNELS_NUM)
 #else

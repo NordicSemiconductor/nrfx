@@ -564,6 +564,15 @@ NRFY_STATIC_INLINE void nrfy_spim_disable(NRF_SPIM_Type * p_reg)
     nrf_barrier_w();
 }
 
+/** @refhal{nrf_spim_enable_check} */
+NRFY_STATIC_INLINE bool nrfy_spim_enable_check(NRF_SPIM_Type const * p_reg)
+{
+    nrf_barrier_rw();
+    bool check = nrf_spim_enable_check(p_reg);
+    nrf_barrier_r();
+    return check;
+}
+
 /** @refhal{nrf_spim_pins_set} */
 NRFY_STATIC_INLINE void nrfy_spim_pins_set(NRF_SPIM_Type * p_reg,
                                            uint32_t        sck_pin,

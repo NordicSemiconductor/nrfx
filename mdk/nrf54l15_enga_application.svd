@@ -39718,11 +39718,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   <description>GRTC peripheral</description>
                   <value>0x4</value>
                 </enumeratedValue>
-                <enumeratedValue>
-                  <name>TND</name>
-                  <description>Trace and Debug Subsystem</description>
-                  <value>0x7</value>
-                </enumeratedValue>
               </enumeratedValues>
             </field>
           </fields>
@@ -59882,11 +59877,12 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             <description>Description cluster: RAM retention for RAM [n].</description>
             <addressOffset>0x008</addressOffset>
             <access>read-write</access>
-            <resetValue>0x00000000</resetValue>
+            <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
               <field>
                 <name>MEM0</name>
+                <description>Keep the RAM block MEM[0] retained when in System OFF mode.</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
                 <enumeratedValues>
@@ -59904,6 +59900,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM1</name>
+                <description>Keep the RAM block MEM[1] retained when in System OFF mode.</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
                 <enumeratedValues>
@@ -59921,6 +59918,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM2</name>
+                <description>Keep the RAM block MEM[2] retained when in System OFF mode.</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
                 <enumeratedValues>
@@ -59938,6 +59936,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM3</name>
+                <description>Keep the RAM block MEM[3] retained when in System OFF mode.</description>
                 <lsb>3</lsb>
                 <msb>3</msb>
                 <enumeratedValues>
@@ -59955,6 +59954,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM4</name>
+                <description>Keep the RAM block MEM[4] retained when in System OFF mode.</description>
                 <lsb>4</lsb>
                 <msb>4</msb>
                 <enumeratedValues>
@@ -59972,6 +59972,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM5</name>
+                <description>Keep the RAM block MEM[5] retained when in System OFF mode.</description>
                 <lsb>5</lsb>
                 <msb>5</msb>
                 <enumeratedValues>
@@ -59989,6 +59990,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM6</name>
+                <description>Keep the RAM block MEM[6] retained when in System OFF mode.</description>
                 <lsb>6</lsb>
                 <msb>6</msb>
                 <enumeratedValues>
@@ -60006,6 +60008,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM7</name>
+                <description>Keep the RAM block MEM[7] retained when in System OFF mode.</description>
                 <lsb>7</lsb>
                 <msb>7</msb>
                 <enumeratedValues>
@@ -60023,6 +60026,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM8</name>
+                <description>Keep the RAM block MEM[8] retained when in System OFF mode.</description>
                 <lsb>8</lsb>
                 <msb>8</msb>
                 <enumeratedValues>
@@ -60040,6 +60044,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM9</name>
+                <description>Keep the RAM block MEM[9] retained when in System OFF mode.</description>
                 <lsb>9</lsb>
                 <msb>9</msb>
                 <enumeratedValues>
@@ -60057,6 +60062,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM10</name>
+                <description>Keep the RAM block MEM[10] retained when in System OFF mode.</description>
                 <lsb>10</lsb>
                 <msb>10</msb>
                 <enumeratedValues>
@@ -60074,6 +60080,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM11</name>
+                <description>Keep the RAM block MEM[11] retained when in System OFF mode.</description>
                 <lsb>11</lsb>
                 <msb>11</msb>
                 <enumeratedValues>
@@ -60091,6 +60098,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM12</name>
+                <description>Keep the RAM block MEM[12] retained when in System OFF mode.</description>
                 <lsb>12</lsb>
                 <msb>12</msb>
                 <enumeratedValues>
@@ -60108,6 +60116,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM13</name>
+                <description>Keep the RAM block MEM[13] retained when in System OFF mode.</description>
                 <lsb>13</lsb>
                 <msb>13</msb>
                 <enumeratedValues>
@@ -60125,6 +60134,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM14</name>
+                <description>Keep the RAM block MEM[14] retained when in System OFF mode.</description>
                 <lsb>14</lsb>
                 <msb>14</msb>
                 <enumeratedValues>
@@ -60142,6 +60152,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM15</name>
+                <description>Keep the RAM block MEM[15] retained when in System OFF mode.</description>
                 <lsb>15</lsb>
                 <msb>15</msb>
                 <enumeratedValues>
@@ -60159,6 +60170,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM16</name>
+                <description>Keep the RAM block MEM[16] retained when in System OFF mode.</description>
                 <lsb>16</lsb>
                 <msb>16</msb>
                 <enumeratedValues>
@@ -60176,6 +60188,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM17</name>
+                <description>Keep the RAM block MEM[17] retained when in System OFF mode.</description>
                 <lsb>17</lsb>
                 <msb>17</msb>
                 <enumeratedValues>
@@ -60193,6 +60206,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM18</name>
+                <description>Keep the RAM block MEM[18] retained when in System OFF mode.</description>
                 <lsb>18</lsb>
                 <msb>18</msb>
                 <enumeratedValues>
@@ -60210,6 +60224,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM19</name>
+                <description>Keep the RAM block MEM[19] retained when in System OFF mode.</description>
                 <lsb>19</lsb>
                 <msb>19</msb>
                 <enumeratedValues>
@@ -60227,6 +60242,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM20</name>
+                <description>Keep the RAM block MEM[20] retained when in System OFF mode.</description>
                 <lsb>20</lsb>
                 <msb>20</msb>
                 <enumeratedValues>
@@ -60244,6 +60260,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM21</name>
+                <description>Keep the RAM block MEM[21] retained when in System OFF mode.</description>
                 <lsb>21</lsb>
                 <msb>21</msb>
                 <enumeratedValues>
@@ -60261,6 +60278,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM22</name>
+                <description>Keep the RAM block MEM[22] retained when in System OFF mode.</description>
                 <lsb>22</lsb>
                 <msb>22</msb>
                 <enumeratedValues>
@@ -60278,6 +60296,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM23</name>
+                <description>Keep the RAM block MEM[23] retained when in System OFF mode.</description>
                 <lsb>23</lsb>
                 <msb>23</msb>
                 <enumeratedValues>
@@ -60295,6 +60314,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM24</name>
+                <description>Keep the RAM block MEM[24] retained when in System OFF mode.</description>
                 <lsb>24</lsb>
                 <msb>24</msb>
                 <enumeratedValues>
@@ -60312,6 +60332,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM25</name>
+                <description>Keep the RAM block MEM[25] retained when in System OFF mode.</description>
                 <lsb>25</lsb>
                 <msb>25</msb>
                 <enumeratedValues>
@@ -60329,6 +60350,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM26</name>
+                <description>Keep the RAM block MEM[26] retained when in System OFF mode.</description>
                 <lsb>26</lsb>
                 <msb>26</msb>
                 <enumeratedValues>
@@ -60346,6 +60368,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM27</name>
+                <description>Keep the RAM block MEM[27] retained when in System OFF mode.</description>
                 <lsb>27</lsb>
                 <msb>27</msb>
                 <enumeratedValues>
@@ -60363,6 +60386,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM28</name>
+                <description>Keep the RAM block MEM[28] retained when in System OFF mode.</description>
                 <lsb>28</lsb>
                 <msb>28</msb>
                 <enumeratedValues>
@@ -60380,6 +60404,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM29</name>
+                <description>Keep the RAM block MEM[29] retained when in System OFF mode.</description>
                 <lsb>29</lsb>
                 <msb>29</msb>
                 <enumeratedValues>
@@ -60397,6 +60422,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM30</name>
+                <description>Keep the RAM block MEM[30] retained when in System OFF mode.</description>
                 <lsb>30</lsb>
                 <msb>30</msb>
                 <enumeratedValues>
@@ -60414,6 +60440,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>MEM31</name>
+                <description>Keep the RAM block MEM[31] retained when in System OFF mode.</description>
                 <lsb>31</lsb>
                 <msb>31</msb>
                 <enumeratedValues>
@@ -60428,217 +60455,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                     <value>0x1</value>
                   </enumeratedValue>
                 </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-        </cluster>
-        <cluster>
-          <dim>2</dim>
-          <dimIncrement>0x004</dimIncrement>
-          <name>BLOCKTYPE[%s]</name>
-          <description>Unspecified</description>
-          <headerStructName>MEMCONF_BLOCKTYPE</headerStructName>
-          <access>read-write</access>
-          <addressOffset>0x900</addressOffset>
-          <register>
-            <name>TRIM</name>
-            <description>Description cluster: Trim configuration for the memory block types.</description>
-            <addressOffset>0x000</addressOffset>
-            <access>read-write</access>
-            <resetValue>0x00000000</resetValue>
-            <size>0x20</size>
-            <fields>
-              <field>
-                <name>MEMTRIM_0</name>
-                <description>Read/write margin trim.</description>
-                <lsb>0</lsb>
-                <msb>0</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_1</name>
-                <description>Read/write margin trim.</description>
-                <lsb>1</lsb>
-                <msb>1</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_2</name>
-                <description>Read/write margin trim.</description>
-                <lsb>2</lsb>
-                <msb>2</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_3</name>
-                <description>Read/write margin trim.</description>
-                <lsb>3</lsb>
-                <msb>3</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_4</name>
-                <description>Read/write margin trim.</description>
-                <lsb>4</lsb>
-                <msb>4</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_5</name>
-                <description>Read/write margin trim.</description>
-                <lsb>5</lsb>
-                <msb>5</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_6</name>
-                <description>Read/write margin trim.</description>
-                <lsb>6</lsb>
-                <msb>6</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_7</name>
-                <description>Read/write margin trim.</description>
-                <lsb>7</lsb>
-                <msb>7</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_8</name>
-                <description>Read/write margin trim.</description>
-                <lsb>8</lsb>
-                <msb>8</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_9</name>
-                <description>Read/write margin trim.</description>
-                <lsb>9</lsb>
-                <msb>9</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_10</name>
-                <description>Read/write margin trim.</description>
-                <lsb>10</lsb>
-                <msb>10</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_11</name>
-                <description>Read/write margin trim.</description>
-                <lsb>11</lsb>
-                <msb>11</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_12</name>
-                <description>Read/write margin trim.</description>
-                <lsb>12</lsb>
-                <msb>12</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_13</name>
-                <description>Read/write margin trim.</description>
-                <lsb>13</lsb>
-                <msb>13</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_14</name>
-                <description>Read/write margin trim.</description>
-                <lsb>14</lsb>
-                <msb>14</msb>
-              </field>
-              <field>
-                <name>MEMTRIM_15</name>
-                <description>Read/write margin trim.</description>
-                <lsb>15</lsb>
-                <msb>15</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_0</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>16</lsb>
-                <msb>16</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_1</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>17</lsb>
-                <msb>17</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_2</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>18</lsb>
-                <msb>18</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_3</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>19</lsb>
-                <msb>19</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_4</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>20</lsb>
-                <msb>20</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_5</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>21</lsb>
-                <msb>21</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_6</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>22</lsb>
-                <msb>22</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_7</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>23</lsb>
-                <msb>23</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_8</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>24</lsb>
-                <msb>24</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_9</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>25</lsb>
-                <msb>25</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_10</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>26</lsb>
-                <msb>26</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_11</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>27</lsb>
-                <msb>27</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_12</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>28</lsb>
-                <msb>28</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_13</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>29</lsb>
-                <msb>29</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_14</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>30</lsb>
-                <msb>30</msb>
-              </field>
-              <field>
-                <name>MEMRETTRIM_15</name>
-                <description>Trimming for retention mode for decreased leakage. Must be kept active in RAM retention mode.</description>
-                <lsb>31</lsb>
-                <msb>31</msb>
               </field>
             </fields>
           </register>
@@ -66405,6 +66221,29 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 <msb>11</msb>
               </field>
               <field>
+                <name>INTERNAL</name>
+                <description>Internal input selection for analog positive input when CH[n].PSELP.CONNECT = Internal</description>
+                <lsb>12</lsb>
+                <msb>13</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Avdd</name>
+                    <description>Connected to the internal 0.9V analog supply rail</description>
+                    <value>0x0</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Dvdd</name>
+                    <description>Connected to the internal 0.9V digital supply rail</description>
+                    <value>0x1</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Vdd</name>
+                    <description>Connected to VDD</description>
+                    <value>0x2</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+              <field>
                 <name>CONNECT</name>
                 <description>Connection</description>
                 <lsb>30</lsb>
@@ -66419,6 +66258,11 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                     <name>AnalogInput</name>
                     <description>Select analog input</description>
                     <value>0x1</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Internal</name>
+                    <description>Selects internal inputs.</description>
+                    <value>0x2</value>
                   </enumeratedValue>
                 </enumeratedValues>
               </field>
@@ -66476,7 +66320,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 <name>GAIN</name>
                 <description>Gain control</description>
                 <lsb>8</lsb>
-                <msb>9</msb>
+                <msb>10</msb>
                 <enumeratedValues>
                   <enumeratedValue>
                     <name>Gain2</name>
@@ -66751,11 +66595,11 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <description>RESULT EasyDMA channel</description>
           <headerStructName>SAADC_RESULT</headerStructName>
           <access>read-write</access>
-          <addressOffset>0x62C</addressOffset>
+          <addressOffset>0x628</addressOffset>
           <register>
             <name>PTR</name>
             <description>Data pointer</description>
-            <addressOffset>0x000</addressOffset>
+            <addressOffset>0x004</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
@@ -66771,7 +66615,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <register>
             <name>MAXCNT</name>
             <description>Maximum number of buffer bytes to transfer</description>
-            <addressOffset>0x004</addressOffset>
+            <addressOffset>0x008</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
@@ -66787,7 +66631,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <register>
             <name>AMOUNT</name>
             <description>Number of buffer bytes transferred since last START, updated after the END or STOPPED events</description>
-            <addressOffset>0x008</addressOffset>
+            <addressOffset>0x00C</addressOffset>
             <access>read-only</access>
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
@@ -66803,7 +66647,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <register>
             <name>CURRENTAMOUNT</name>
             <description>Number of buffer bytes transferred since last START, continuously updated</description>
-            <addressOffset>0x00C</addressOffset>
+            <addressOffset>0x010</addressOffset>
             <access>read-only</access>
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
@@ -66843,13 +66687,8 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Accuracy</name>
-                  <description>Noiseshaping and decimating. Smaller passband. Recommended resolution setting is 14 bits. Provides 1 5kS/s cut off frequency, 32x the oversampling ratio. See design description for more information</description>
+                  <description>Noiseshaping and decimating. Smaller passband. Recommended resolution setting is 14 bits. Provides a 5kS/s cut off frequency, 32x the oversampling ratio. See design description for more information</description>
                   <value>0x2</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Stage1</name>
-                  <description>Result from common 1st stage filter. For debugging only</description>
-                  <value>0x3</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
@@ -90356,7 +90195,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
       <registers>
         <cluster>
           <name>VREGM</name>
-          <description>Medium Voltage Regulator</description>
+          <description>Register interface for the medium voltage regulator</description>
           <headerStructName>REGULATORS_VREGM</headerStructName>
           <access>read-write</access>
           <addressOffset>0x400</addressOffset>

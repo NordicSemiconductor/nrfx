@@ -42,12 +42,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define MDK_SOURCE_VERSION_MAJOR 0                   /*!< Major version of product specification.                              */
 #define MDK_SOURCE_VERSION_MINOR 2                   /*!< Minor version of product specification.                              */
-#define MDK_SOURCE_VERSION_MICRO 26                  /*!< Micro version of product specification.                              */
-
+#define MDK_SOURCE_VERSION_MICRO 27                  /*!< Micro version of product specification.                              */
 
 
 #ifdef __cplusplus
 }
 #endif
 #endif /* NRF54H20_ENGA_VERSION_H */
-

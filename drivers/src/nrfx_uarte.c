@@ -48,6 +48,10 @@
 #define NRFX_LOG_MODULE UARTE
 #include <nrfx_log.h>
 
+#if !defined(NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE)
+#define NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE 171
+#endif
+
 #define UARTEX_LENGTH_VALIDATE(periph_name, prefix, i, drv_inst_idx, len1, len2) \
     (((drv_inst_idx) == NRFX_CONCAT(NRFX_, periph_name, prefix, i, _INST_IDX)) && \
      NRFX_EASYDMA_LENGTH_VALIDATE(NRFX_CONCAT(periph_name, prefix, i), len1, len2))
@@ -63,6 +67,7 @@
 #define RX_CACHE_SUPPORTED 0
 #endif
 
+#define MIN_RX_CACHE_SIZE 8
 // There is a HW bug which results in RX amount value not being updated when FIFO was empty.
 // It is then hard to determine if FIFO contained anything or not.
 #define USE_WORKAROUND_FOR_FLUSHRX_ANOMALY 1
@@ -126,9 +131,12 @@
 
 // Flag indicates that RX was aborted.
 #define UARTE_FLAG_RX_ABORTED              UARTE_FLAG(RX, 6)
-//
+
 // Flag indicates that there are new bytes from flushed buffer copied to the user buffer.
 #define UARTE_FLAG_RX_FROM_FLUSH           UARTE_FLAG(RX, 7)
+
+// Flag indicates user explicitly aborted RX.
+#define UARTE_FLAG_RX_FORCED_ABORT         UARTE_FLAG(RX, 8)
 
 // Flag is set if instance was configured to control PSEL pins during the initialization.
 #define UARTE_FLAG_PSEL_UNINIT             UARTE_FLAG(MISC, 0)
@@ -492,7 +500,12 @@ nrfx_err_t nrfx_uarte_init(nrfx_uarte_t const *        p_instance,
         p_cb->rx.flush.length = 0;
         if (RX_CACHE_SUPPORTED && p_config->p_rx_cache_scratch)
         {
-            size_t buf_len = p_config->rx_cache.length / 2;
+            if (p_config->rx_cache.length < (UARTE_HW_RX_FIFO_SIZE + MIN_RX_CACHE_SIZE))
+            {
+                return NRFX_ERROR_INVALID_PARAM;
+            }
+            size_t cache_len = p_config->rx_cache.length - UARTE_HW_RX_FIFO_SIZE;
+            size_t buf_len = cache_len / 2;
 
             p_cb->rx.p_cache = p_config->p_rx_cache_scratch;
 
@@ -500,8 +513,10 @@ nrfx_err_t nrfx_uarte_init(nrfx_uarte_t const *        p_instance,
             // Split provided cache space into two equal buffers. Cache buffers can overlap with
             // flush buffer as they are not used simultaneously.
             p_cb->rx.p_cache->cache_len = buf_len;
-            p_cb->rx.p_cache->cache[0].p_buffer = p_config->rx_cache.p_buffer;
-            p_cb->rx.p_cache->cache[1].p_buffer = &p_config->rx_cache.p_buffer[buf_len];
+            p_cb->rx.p_cache->cache[0].p_buffer =
+                &p_config->rx_cache.p_buffer[UARTE_HW_RX_FIFO_SIZE];
+            p_cb->rx.p_cache->cache[1].p_buffer =
+                &p_config->rx_cache.p_buffer[UARTE_HW_RX_FIFO_SIZE + buf_len];
         }
     }
 
@@ -1182,6 +1197,45 @@ static void on_rx_disabled(NRF_UARTE_Type        * p_uarte,
     user_handler_on_rx_disabled(p_cb, flush_cnt);
 }
 
+static void handler_on_rx_done(uarte_control_block_t * p_cb,
+                               uint8_t *               p_data,
+                               size_t                  len,
+                               bool                    abort)
+{
+    bool cache_used = RX_CACHE_SUPPORTED && (p_cb->flags & UARTE_FLAG_RX_USE_CACHE);
+    nrfx_uarte_rx_cache_t * p_cache = p_cb->rx.p_cache;
+
+    if (!cache_used)
+    {
+        user_handler_on_rx_done(p_cb, p_data, len);
+        return;
+    }
+    else if (!p_cache->user[0].p_buffer)
+    {
+        return;
+    }
+
+    memcpy(&p_cache->user[0].p_buffer[p_cache->received], p_data, len);
+    p_cache->received += len;
+
+    bool user_buf_end = p_cache->user[0].length == p_cache->received;
+
+    if (user_buf_end || abort)
+    {
+        uint8_t *p_buf = p_cache->user[0].p_buffer;
+        size_t buf_len = p_cache->received;
+
+        p_cache->received = 0;
+        p_cache->user[0] = p_cache->user[1];
+        p_cache->user[1] = (nrfy_uarte_buffer_t){ NULL, 0 };
+        if (p_cache->user[0].length)
+        {
+            p_cache->buf_req = true;
+        }
+        user_handler_on_rx_done(p_cb, p_buf, buf_len);
+    }
+}
+
 /* Some data may be left in flush buffer. It need to be copied into rx buffer.
  * If flushed data exceeds input buffer rx enabled is terminated.
  * Returns true when flushed did not filled whole user buffer.
@@ -1193,7 +1247,7 @@ static bool rx_flushed_handler(NRF_UARTE_Type * p_uarte, uarte_control_block_t *
         return true;
     }
 
-    if ((uint32_t)p_cb->rx.flush.length > p_cb->rx.curr.length)
+    if ((uint32_t)p_cb->rx.flush.length >= p_cb->rx.curr.length)
     {
         uint8_t * p_buf = p_cb->rx.curr.p_buffer;
         size_t len = p_cb->rx.curr.length;
@@ -1206,8 +1260,15 @@ static bool rx_flushed_handler(NRF_UARTE_Type * p_uarte, uarte_control_block_t *
 
         if (p_cb->handler)
         {
-            user_handler_on_rx_done(p_cb, p_buf, len);
-            if (p_cb->flags & UARTE_FLAG_RX_STOP_ON_END)
+            bool stop_on_end = p_cb->flags & UARTE_FLAG_RX_STOP_ON_END;
+
+            if (stop_on_end)
+            {
+                NRFX_ATOMIC_FETCH_OR(&p_cb->flags, UARTE_FLAG_RX_ABORTED);
+            }
+
+            handler_on_rx_done(p_cb, p_buf, len, false);
+            if (stop_on_end)
             {
                     on_rx_disabled(p_uarte, p_cb, 0);
             }
@@ -1264,6 +1325,14 @@ nrfx_err_t nrfx_uarte_rx_enable(nrfx_uarte_t const * p_instance, uint32_t flags)
     // Expecting to get buffer set as a response to the request.
     if (p_cb->rx.curr.p_buffer == NULL)
     {
+        // If RX is not active then it means that reception is already stopped.
+        // It may happen if RX flush had enough data to fill the user buffer.
+        // In that case reception is disabled from the context of RX buffer set function.
+        if (!is_rx_active(p_cb))
+        {
+            return NRFX_SUCCESS;
+        }
+
         release_rx(p_cb);
         return NRFX_ERROR_NO_MEM;
     }
@@ -1318,7 +1387,12 @@ static nrfx_err_t rx_buffer_set(NRF_UARTE_Type *        p_uarte,
                                     p_cb->rx.curr.length - p_cb->rx.off);
             if (p_cb->flags & UARTE_FLAG_RX_ENABLED)
             {
+                NRFX_ATOMIC_FETCH_AND(&p_cb->flags, ~UARTE_FLAG_RX_ABORTED);
                 nrfy_uarte_task_trigger(p_uarte, NRF_UARTE_TASK_STARTRX);
+                if (nrfy_uarte_event_check(p_uarte, NRF_UARTE_EVENT_RXTO))
+                {
+                    nrfy_uarte_event_clear(p_uarte, NRF_UARTE_EVENT_RXTO);
+                }
             }
         }
     }
@@ -1360,8 +1434,10 @@ static size_t get_cache_buf_len(nrfx_uarte_rx_cache_t * p_cache)
 
     if (!len)
     {
-        p_cache->started = 0;
-        len = get_curr_cache_buf_len(p_cache->cache_len, p_cache->user[1].length, 0);
+        if (p_cache->user[1].length) {
+            p_cache->started = 0;
+            len = get_curr_cache_buf_len(p_cache->cache_len, p_cache->user[1].length, 0);
+        }
     }
 
     p_cache->started += len;
@@ -1386,7 +1462,11 @@ nrfx_err_t nrfx_uarte_rx_buffer_set(nrfx_uarte_t const * p_instance,
 
     int_enabled = uarte_int_lock(p_uarte);
 
-    if (!nrf_dma_accessible_check(p_uarte, p_data))
+    if (p_cb->flags & UARTE_FLAG_RX_ABORTED)
+    {
+        err = NRFX_ERROR_INVALID_STATE;
+    }
+    else if (!nrf_dma_accessible_check(p_uarte, p_data))
     {
         // No cache buffer provided or blocking mode, transfer cannot be handled.
         if (!RX_CACHE_SUPPORTED || !p_cb->rx.p_cache || !p_cb->handler)
@@ -1459,8 +1539,9 @@ static void rx_flush(NRF_UARTE_Type * p_uarte, uarte_control_block_t * p_cb)
 
     /* Flushing RX fifo requires buffer bigger than 4 bytes to empty fifo*/
     uint32_t prev_rx_amount = nrfy_uarte_rx_amount_get(p_uarte);
+    uint32_t check_content = prev_rx_amount <= UARTE_HW_RX_FIFO_SIZE;
 
-    if (USE_WORKAROUND_FOR_FLUSHRX_ANOMALY )
+    if (USE_WORKAROUND_FOR_FLUSHRX_ANOMALY && check_content)
     {
         /* There is a HW bug which results in rx amount value not being updated
          * when fifo was empty. It is then hard to determine if fifo contained
@@ -1468,7 +1549,8 @@ static void rx_flush(NRF_UARTE_Type * p_uarte, uarte_control_block_t * p_cb)
          * determine that by watermarking flush buffer to check if it was overwritten.
          * However, if fifo contained amount of bytes equal to last transfer and
          * bytes are equal to watermarking it will be dropped. */
-        memset(p_cb->rx.flush.p_buffer, 0xAA, UARTE_HW_RX_FIFO_SIZE);
+        memset(p_cb->rx.flush.p_buffer,
+               NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE, UARTE_HW_RX_FIFO_SIZE);
     }
 
     nrfy_uarte_rx_buffer_set(p_uarte, p_cb->rx.flush.p_buffer, UARTE_HW_RX_FIFO_SIZE);
@@ -1490,9 +1572,14 @@ static void rx_flush(NRF_UARTE_Type * p_uarte, uarte_control_block_t * p_cb)
     {
         if ((uint32_t)p_cb->rx.flush.length == prev_rx_amount)
         {
+            if (!check_content) {
+                p_cb->rx.flush.length = 0;
+                return;
+            }
+
             for (size_t i = 0; i < UARTE_HW_RX_FIFO_SIZE; i++)
             {
-                if (p_cb->rx.flush.p_buffer[i] != 0xAA)
+                if (p_cb->rx.flush.p_buffer[i] != NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE)
                 {
                     return;
                 }
@@ -1532,8 +1619,16 @@ static nrfx_err_t rx_abort(NRF_UARTE_Type *        p_uarte,
     // We need to ensure that operation is not interrupted by the UARTE interrupt since we
     // are changing state flags. Otherwise interrupt may be executed with RX_ABORTED flag set
     // but before STOPRX task is triggered which may lead to unexpected behavior.
-    if (!((p_cb->flags & (UARTE_FLAG_RX_ENABLED | UARTE_FLAG_RX_ABORTED)) == UARTE_FLAG_RX_ENABLED))
+    if (!((p_cb->flags & (UARTE_FLAG_RX_ENABLED | UARTE_FLAG_RX_ABORTED)) ==
+        UARTE_FLAG_RX_ENABLED))
     {
+        // If we late with the abort we still want to clean flushed data since explicit
+        // abort indicates that we are not interested in the data that ended up in the
+        // FIFO.
+        if (disable_all) {
+            p_cb->rx.flush.length = 0;
+        }
+
         return NRFX_ERROR_INVALID_STATE;
     }
 
@@ -1542,7 +1637,7 @@ static nrfx_err_t rx_abort(NRF_UARTE_Type *        p_uarte,
     if (disable_all || !endrx_startrx)
     {
         nrfy_uarte_shorts_disable(p_uarte, NRF_UARTE_SHORT_ENDRX_STARTRX);
-        flag = UARTE_FLAG_RX_STOP_ON_END | UARTE_FLAG_RX_ABORTED;
+        flag = UARTE_FLAG_RX_STOP_ON_END | UARTE_FLAG_RX_ABORTED | UARTE_FLAG_RX_FORCED_ABORT;
     }
     else
     {
@@ -1607,12 +1702,14 @@ nrfx_err_t nrfx_uarte_rx(nrfx_uarte_t const * p_instance,
 
     if (p_cb->handler == NULL)
     {
-        size_t rx_amount;
+        size_t rx_amount = 0;
 
-        while (nrfx_uarte_rx_ready(p_instance, &rx_amount) != NRFX_SUCCESS)
-        {}
+        do
+        {
+           err_code = nrfx_uarte_rx_ready(p_instance, &rx_amount);
+        } while (err_code == NRFX_ERROR_BUSY);
 
-        if (length > rx_amount)
+        if ((err_code == NRFX_ERROR_ALREADY) || (length > rx_amount))
         {
             err_code = NRFX_ERROR_FORBIDDEN;
         }
@@ -1637,8 +1734,16 @@ nrfx_err_t nrfx_uarte_rx_ready(nrfx_uarte_t const * p_instance, size_t * p_rx_am
         return NRFX_ERROR_FORBIDDEN;
     }
 
-    if (nrfy_uarte_event_check(p_instance->p_reg, NRF_UARTE_EVENT_ENDRX) ||
-        !nrfy_uarte_enable_check(p_instance->p_reg))
+    if (!nrfy_uarte_enable_check(p_instance->p_reg))
+    {
+        if (p_rx_amount)
+        {
+            *p_rx_amount = nrfy_uarte_rx_amount_get(p_instance->p_reg);
+        }
+
+        return NRFX_ERROR_ALREADY;
+    }
+    else if (nrfy_uarte_event_check(p_instance->p_reg, NRF_UARTE_EVENT_ENDRX))
     {
         if (p_rx_amount)
         {
@@ -1697,6 +1802,19 @@ static void rxstarted_irq_handler(NRF_UARTE_Type * p_reg, uarte_control_block_t 
 {
     bool cache_used = RX_CACHE_SUPPORTED && (p_cb->flags & UARTE_FLAG_RX_USE_CACHE);
 
+    // If both buffers are already setup just leave. It is possible in case
+    // of following scenario. 1 byte was requested and received. RX done event
+    // is generated and from that event nrfx_uarte_rx_buffer_set is called to
+    // receive next RX. This sets current buffer. After ENDRX event is processed
+    // then RXSTARTED event is processed (from that 1 byte transfer). From there
+    // RX buffer request is called and next buffer is provided - both buffers are
+    // set. Next RX is started and RXSTARTED event is triggered and we are in
+    // the situation where both buffers are already set.
+    if ((p_cb->rx.curr.p_buffer != NULL) && (p_cb->rx.next.p_buffer != NULL))
+    {
+        return;
+    }
+
     if (!cache_used)
     {
         user_handler(p_cb, NRFX_UARTE_EVT_RX_BUF_REQUEST);
@@ -1722,42 +1840,6 @@ static void rxstarted_irq_handler(NRF_UARTE_Type * p_reg, uarte_control_block_t 
     }
 }
 
-static void handler_on_rx_done(uarte_control_block_t * p_cb,
-                               uint8_t *               p_data,
-                               size_t                  len,
-                               bool                    abort)
-{
-    bool cache_used = RX_CACHE_SUPPORTED && (p_cb->flags & UARTE_FLAG_RX_USE_CACHE);
-    nrfx_uarte_rx_cache_t * p_cache = p_cb->rx.p_cache;
-
-    if (!cache_used)
-    {
-        user_handler_on_rx_done(p_cb, p_data, len);
-        return;
-    }
-    else if (!p_cache->user[0].p_buffer)
-    {
-        return;
-    }
-
-    memcpy(&p_cache->user[0].p_buffer[p_cache->received], p_data, len);
-    p_cache->received += len;
-
-    bool user_buf_end = p_cache->user[0].length == p_cache->received;
-
-    if (user_buf_end || abort)
-    {
-        user_handler_on_rx_done(p_cb, p_cache->user[0].p_buffer, p_cache->received);
-        p_cache->received = 0;
-        p_cache->user[0] = p_cache->user[1];
-        p_cache->user[1] = (nrfy_uarte_buffer_t){ NULL, 0 };
-        if (p_cache->user[0].length)
-        {
-            p_cache->buf_req = true;
-        }
-    }
-}
-
 static void rxto_irq_handler(NRF_UARTE_Type *        p_uarte,
                              uarte_control_block_t * p_cb)
 {
@@ -1772,7 +1854,9 @@ static void rxto_irq_handler(NRF_UARTE_Type *        p_uarte,
         p_cb->rx.p_cache->user[0] = (nrfy_uarte_buffer_t){ NULL, 0 };
     }
 
-    rx_flush(p_uarte, p_cb);
+    if (!(p_cb->flags & UARTE_FLAG_RX_FORCED_ABORT)) {
+        rx_flush(p_uarte, p_cb);
+    }
 
     on_rx_disabled(p_uarte, p_cb, p_cb->rx.flush.length);
 }
@@ -1785,16 +1869,17 @@ static bool endrx_irq_handler(NRF_UARTE_Type *        p_uarte,
     bool premature = p_cb->flags & (UARTE_FLAG_RX_RESTARTED | UARTE_FLAG_RX_ABORTED);
     bool aborted = false;
     bool late = false;
+    uint8_t *p_buf = p_cb->rx.curr.p_buffer;
+    size_t len = rx_amount + p_cb->rx.off;
 
-    handler_on_rx_done(p_cb, p_cb->rx.curr.p_buffer, rx_amount + p_cb->rx.off, premature);
+    p_cb->rx.curr = p_cb->rx.next;
+    p_cb->rx.next = (nrfy_uarte_buffer_t){ NULL, 0 };
+    handler_on_rx_done(p_cb, p_buf, len, premature);
     p_cb->rx.off = 0;
 
     NRFX_CRITICAL_SECTION_ENTER();
 
     p_cb->flags &= ~UARTE_FLAG_RX_RESTARTED;
-    p_cb->rx.curr = p_cb->rx.next;
-    p_cb->rx.next = (nrfy_uarte_buffer_t){ NULL, 0 };
-
     nrfy_uarte_shorts_disable(p_uarte, NRF_UARTE_SHORT_ENDRX_STARTRX);
     if (p_cb->flags & UARTE_FLAG_RX_ABORTED)
     {
@@ -1979,9 +2064,11 @@ static void int_trigger_handler(uarte_control_block_t * p_cb)
     user_handler(p_cb, NRFX_UARTE_EVT_TRIGGER);
 }
 
-static inline bool event_check_and_clear(NRF_UARTE_Type * p_uarte, nrf_uarte_event_t event)
+static inline bool event_check_and_clear(NRF_UARTE_Type * p_uarte,
+                                         nrf_uarte_event_t event,
+                                         uint32_t int_mask)
 {
-    if (nrfy_uarte_event_check(p_uarte, event)) {
+    if (nrfy_uarte_event_check(p_uarte, event) && (int_mask & NRFY_EVENT_TO_INT_BITMASK(event))) {
         nrfy_uarte_event_clear(p_uarte, event);
         return true;
     }
@@ -1989,19 +2076,25 @@ static inline bool event_check_and_clear(NRF_UARTE_Type * p_uarte, nrf_uarte_eve
     return false;
 }
 
+static inline bool event_check(NRF_UARTE_Type * p_uarte,
+                               nrf_uarte_event_t event,
+                               uint32_t int_mask)
+{
+    return nrfy_uarte_event_check(p_uarte, event) &&
+           (int_mask & NRFY_EVENT_TO_INT_BITMASK(event));
+}
+
 static void irq_handler(NRF_UARTE_Type * p_uarte, uarte_control_block_t * p_cb)
 {
     // ENDTX must be handled before TXSTOPPED so we read event status in the reversed order of
     // handling.
     uint32_t int_mask = nrfy_uarte_int_enable_check(p_uarte, UINT32_MAX);
-    bool txstopped = (int_mask & NRF_UARTE_INT_TXSTOPPED_MASK) &&
-                     nrfy_uarte_event_check(p_uarte, NRF_UARTE_EVENT_TXSTOPPED);
-    bool endtx = (int_mask & NRF_UARTE_INT_ENDTX_MASK) &&
-                 nrfy_uarte_event_check(p_uarte, NRF_UARTE_EVENT_ENDTX);
+    bool txstopped = event_check(p_uarte, NRF_UARTE_EVENT_TXSTOPPED, int_mask);
+    bool endtx =  event_check(p_uarte, NRF_UARTE_EVENT_ENDTX, int_mask);
 
     if (p_cb->handler)
     {
-        if (event_check_and_clear(p_uarte, NRF_UARTE_EVENT_ERROR))
+        if (event_check_and_clear(p_uarte, NRF_UARTE_EVENT_ERROR, int_mask))
         {
             error_irq_handler(p_uarte, p_cb);
         }
@@ -2009,15 +2102,13 @@ static void irq_handler(NRF_UARTE_Type * p_uarte, uarte_control_block_t * p_cb)
         // ENDRX must be handled before RXSTARTED. RXTO must be handled as the last one. We collect
         // state of all 3 events before processing to prevent reordering in case of higher interrupt
         // preemption. We read event status in the reversed order of handling.
-        bool rxto = event_check_and_clear(p_uarte, NRF_UARTE_EVENT_RXTO);
-        bool rxstarted = event_check_and_clear(p_uarte, NRF_UARTE_EVENT_RXSTARTED);
-        bool endrx = event_check_and_clear(p_uarte, NRF_UARTE_EVENT_ENDRX);
+        bool rxto = event_check_and_clear(p_uarte, NRF_UARTE_EVENT_RXTO, int_mask);
+        bool rxstarted = event_check_and_clear(p_uarte, NRF_UARTE_EVENT_RXSTARTED, int_mask);
+        bool endrx = event_check_and_clear(p_uarte, NRF_UARTE_EVENT_ENDRX, int_mask);
+        bool rxdrdy = event_check_and_clear(p_uarte, NRF_UARTE_EVENT_RXDRDY, int_mask);
 
-        // Report RXDRDY only if enabled
-        if ((int_mask & NRF_UARTE_INT_RXDRDY_MASK) &&
-            nrfy_uarte_event_check(p_uarte, NRF_UARTE_EVENT_RXDRDY))
+        if (rxdrdy)
         {
-            nrfy_uarte_event_clear(p_uarte, NRF_UARTE_EVENT_RXDRDY);
             user_handler(p_cb, NRFX_UARTE_EVT_RX_BYTE);
         }
 
@@ -2028,7 +2119,7 @@ static void irq_handler(NRF_UARTE_Type * p_uarte, uarte_control_block_t * p_cb)
             // actually occurred (if there is a linked reception). Read again to be sure.
             if (!rxstarted)
             {
-                rxstarted = event_check_and_clear(p_uarte, NRF_UARTE_EVENT_RXSTARTED);
+                rxstarted = event_check_and_clear(p_uarte, NRF_UARTE_EVENT_RXSTARTED, int_mask);
             }
 
             if (endrx_irq_handler(p_uarte, p_cb, rxstarted) == true)

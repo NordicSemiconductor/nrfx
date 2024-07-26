@@ -47,7 +47,7 @@ extern "C" {
 #endif
 
 #ifndef NRFX_CONFIG_API_VER_MINOR
-#define NRFX_CONFIG_API_VER_MINOR 3
+#define NRFX_CONFIG_API_VER_MINOR 4
 #endif
 
 #ifndef NRFX_CONFIG_API_VER_MICRO
@@ -108,14 +108,33 @@ extern "C" {
 #endif
 
 #if defined(LUMOS_XXAA)
+#if defined(NRF_TRUSTZONE_NONSECURE)
+/* Non-secure images must have CPU frequency specified and cannot rely on default values,
+ * as NRF_OSCILLATORS might be assigned and configured by Secure image. */
+#if defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 64)
+#define NRF_CPU_FREQ_IS_64MHZ 1
+#elif defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 128)
+#define NRF_CPU_FREQ_IS_128MHZ 1
+#elif !defined(NRF_CONFIG_CPU_FREQ_MHZ)
+#error "MCU frequency not specified"
+#else
+#error "Invalid MCU frequency"
+#endif
+
+#else
+
 #if defined(NRF_SKIP_CLOCK_CONFIGURATION) || \
     (defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 64))
 #define NRF_CPU_FREQ_IS_64MHZ 1
-#elif !defined(NRF_CONFIG_CPU_FREQ_MHZ) || \
-    (defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 128))
+#elif defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 128)
+#define NRF_CPU_FREQ_IS_128MHZ 1
+#elif !defined(NRF_CONFIG_CPU_FREQ_MHZ)
+/* If clock configuration is not skipped and frequency not specified,
+ * SystemInit() applies 128 MHz setting. */
 #define NRF_CPU_FREQ_IS_128MHZ 1
 #else
 #error "Invalid MCU frequency"
+#endif
 #endif
 #endif
 

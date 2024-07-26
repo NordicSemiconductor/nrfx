@@ -142,6 +142,41 @@ typedef union
                  1, 2), /* Section 2 of block 1 - 1 * 16 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
                  1, 3)  /* Section 3 of block 1 - 1 * 16 kB units. */
+#elif defined(NRF54L20_ENGA_XXAA)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_NON_UNIFORM_SECTIONS                                      \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 0, 0), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 0, 1), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 0, 2), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 0, 3), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 0, 4), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 0, 5), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 0, 6), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 0, 7), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 1, 0), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 1, 1), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 1, 2), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 1, 3), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 1, 4), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 1, 5), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 1, 6), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
+                 1, 7)  /* Section 0 of block 1 - 1 * 32 kB units. */
 #elif defined(NRF9120_XXAA) || defined(NRF9160_XXAA)
 #define RAM_SECTION_UNIT_SIZE          8192
 #define RAM_UNIFORM_BLOCKS             8

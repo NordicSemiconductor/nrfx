@@ -160,10 +160,10 @@ typedef struct
     .mode           = NRF_SPIM_MODE_0,                                                           \
     .bit_order      = NRF_SPIM_BIT_ORDER_MSB_FIRST,                                              \
     .miso_pull      = NRF_GPIO_PIN_NOPULL,                                                       \
+    NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED, (.dcx_pin = NRF_SPIM_PIN_NOT_CONNECTED,), ())   \
+    NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED, (.rx_delay = NRF_SPIM_RXDELAY_DEFAULT,), ())    \
     NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED, (.use_hw_ss = false,), ())                      \
     NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED, (.ss_duration = NRF_SPIM_CSNDUR_DEFAULT,), ())  \
-    NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED, (.rx_delay = NRF_SPIM_RXDELAY_DEFAULT,), ())    \
-    NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED, (.dcx_pin = NRF_SPIM_PIN_NOT_CONNECTED,), ())   \
 }
 
 /**

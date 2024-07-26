@@ -382,8 +382,8 @@ NRF_STATIC_INLINE nrf_vdma_job_t * nrf_aar_out_ptr_get(NRF_AAR_Type const * p_re
 
 #if NRF_AAR_HAS_IN_PTR
 /**
- * @brief Function for setting the pointer to a job list containing both 
- *        the Hash and Prand parts of the private resolvable address (DEVICEADDR) 
+ * @brief Function for setting the pointer to a job list containing both
+ *        the Hash and Prand parts of the private resolvable address (DEVICEADDR)
  *        field from the Bluetooth packet, and a number of Identity Resolving Keys (IRK).
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.

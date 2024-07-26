@@ -82,38 +82,48 @@ void SystemInit(void)
           SAU->CTRL |= (1ul << SAU_CTRL_ALLNS_Pos);
         #endif
         
-        /* Workaround for Errata 6 "POWER: SLEEPENTER and SLEEPEXIT events asserted after pin reset" found at the Errata document
-            for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (nrf91_errata_6()){
-            NRF_POWER_S->EVENTS_SLEEPENTER = (POWER_EVENTS_SLEEPENTER_EVENTS_SLEEPENTER_NotGenerated << POWER_EVENTS_SLEEPENTER_EVENTS_SLEEPENTER_Pos);
-            NRF_POWER_S->EVENTS_SLEEPEXIT = (POWER_EVENTS_SLEEPEXIT_EVENTS_SLEEPEXIT_NotGenerated << POWER_EVENTS_SLEEPEXIT_EVENTS_SLEEPEXIT_Pos);
-        }
+        #if NRF91_ERRATA_6_ENABLE_WORKAROUND
+            /* Workaround for Errata 6 "POWER: SLEEPENTER and SLEEPEXIT events asserted after pin reset" found at the Errata document
+                for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+            if (nrf91_errata_6()){
+                NRF_POWER_S->EVENTS_SLEEPENTER = (POWER_EVENTS_SLEEPENTER_EVENTS_SLEEPENTER_NotGenerated << POWER_EVENTS_SLEEPENTER_EVENTS_SLEEPENTER_Pos);
+                NRF_POWER_S->EVENTS_SLEEPEXIT = (POWER_EVENTS_SLEEPEXIT_EVENTS_SLEEPEXIT_NotGenerated << POWER_EVENTS_SLEEPEXIT_EVENTS_SLEEPEXIT_Pos);
+            }
+        #endif
         
-        /* Workaround for Errata 14 "REGULATORS: LDO mode at startup" found at the Errata document
-            for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (nrf91_errata_14()){
-            *((volatile uint32_t *)0x50004A38ul) = 0x01ul;
-            NRF_REGULATORS_S->DCDCEN = REGULATORS_DCDCEN_DCDCEN_Enabled << REGULATORS_DCDCEN_DCDCEN_Pos;
-        }
+        #if NRF91_ERRATA_14_ENABLE_WORKAROUND
+            /* Workaround for Errata 14 "REGULATORS: LDO mode at startup" found at the Errata document
+                for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+            if (nrf91_errata_14()){
+                *((volatile uint32_t *)0x50004A38ul) = 0x01ul;
+                NRF_REGULATORS_S->DCDCEN = REGULATORS_DCDCEN_DCDCEN_Enabled << REGULATORS_DCDCEN_DCDCEN_Pos;
+            }
+        #endif
 
-        /* Workaround for Errata 15 "REGULATORS: LDO mode at startup" found at the Errata document
-            for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (nrf91_errata_15()){
-            NRF_REGULATORS_S->DCDCEN = REGULATORS_DCDCEN_DCDCEN_Enabled << REGULATORS_DCDCEN_DCDCEN_Pos;
-        }
+        #if NRF91_ERRATA_15_ENABLE_WORKAROUND
+            /* Workaround for Errata 15 "REGULATORS: LDO mode at startup" found at the Errata document
+                for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+            if (nrf91_errata_15()){
+                NRF_REGULATORS_S->DCDCEN = REGULATORS_DCDCEN_DCDCEN_Enabled << REGULATORS_DCDCEN_DCDCEN_Pos;
+            }
+        #endif
 
-        /* Workaround for Errata 20 "RAM content cannot be trusted upon waking up from System ON Idle or System OFF mode" found at the Errata document
-            for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (nrf91_errata_20()){
-            *((volatile uint32_t *)0x5003AEE4ul) = 0xEul;
-        }
+        #if NRF91_ERRATA_20_ENABLE_WORKAROUND
+            /* Workaround for Errata 20 "RAM content cannot be trusted upon waking up from System ON Idle or System OFF mode" found at the Errata document
+                for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+            if (nrf91_errata_20()){
+                *((volatile uint32_t *)0x5003AEE4ul) = 0xEul;
+            }
+        #endif
 
-        /* Workaround for Errata 31 "XOSC32k Startup Failure" found at the Errata document
-            for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        if (nrf91_errata_31()){
-            *((volatile uint32_t *)0x5000470Cul) = 0x0ul;
-            *((volatile uint32_t *)0x50004710ul) = 0x1ul;
-        }
+        #if NRF91_ERRATA_31_ENABLE_WORKAROUND
+            /* Workaround for Errata 31 "XOSC32k Startup Failure" found at the Errata document
+                for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+            if (nrf91_errata_31()){
+                *((volatile uint32_t *)0x5000470Cul) = 0x0ul;
+                *((volatile uint32_t *)0x50004710ul) = 0x1ul;
+            }
+        #endif
 
         #if !defined(NRF_SKIP_FICR_NS_COPY_TO_RAM)
             SystemStoreFICRNS();

@@ -1,5 +1,5 @@
 /**
-@page nrf54l15_enga_drivers nRF54L15 EngA drivers
+@page nrf54l15_enga_drivers nRF54L15 Eng A drivers
 
 This page lists nrfx driver components supported by the nRF54L15 EngA SoC.
 For a complete overview, see @ref nrfx_drv_supp_matrix.

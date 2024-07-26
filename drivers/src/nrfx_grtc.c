@@ -855,7 +855,7 @@ nrfx_err_t nrfx_grtc_syscounter_cc_int_enable(uint8_t channel)
         return err_code;
     }
     channel_used_mark(channel);
-    nrfy_grtc_sys_counter_compare_event_int_clear_enable(NRF_GRTC, channel, true);
+    nrfy_grtc_int_enable(NRF_GRTC, GRTC_CHANNEL_TO_BITMASK(channel));
     NRFX_LOG_INFO("GRTC SYSCOUNTER compare interrupt for channel %u enabled.", (uint32_t)channel);
     return err_code;
 }

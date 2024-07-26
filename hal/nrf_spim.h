@@ -35,6 +35,7 @@
 #define NRF_SPIM_H__
 
 #include <nrfx.h>
+#include <nrf_erratas.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -1244,7 +1245,26 @@ NRF_STATIC_INLINE void nrf_spim_enable(NRF_SPIM_Type * p_reg)
 
 NRF_STATIC_INLINE void nrf_spim_disable(NRF_SPIM_Type * p_reg)
 {
-    p_reg->ENABLE = (SPIM_ENABLE_ENABLE_Disabled << SPIM_ENABLE_ENABLE_Pos);
+#if NRF52_ERRATA_89_ENABLE_WORKAROUND
+    if (nrf52_errata_89())
+    {
+        uint32_t temp1 = *(volatile uint32_t *)((uint8_t *)p_reg + 0x508UL);
+        uint32_t temp2 = *(volatile uint32_t *)((uint8_t *)p_reg + 0x50CUL);
+        *(volatile uint32_t *)((uint8_t *)p_reg + 0x500) = 0;
+        *(volatile uint32_t *)((uint8_t *)p_reg + 0x508) = 0xFFFFFFFF;
+        *(volatile uint32_t *)((uint8_t *)p_reg + 0x50C) = 0xFFFFFFFF;
+        *(volatile uint32_t *)((uint8_t *)p_reg + 0x500) = 9;
+
+        p_reg->ENABLE = (SPIM_ENABLE_ENABLE_Disabled << SPIM_ENABLE_ENABLE_Pos);
+
+        *(volatile uint32_t *)((uint8_t *)p_reg + 0x508) = temp1;
+        *(volatile uint32_t *)((uint8_t *)p_reg + 0x50C) = temp2;
+    }
+    else
+#endif
+    {
+        p_reg->ENABLE = (SPIM_ENABLE_ENABLE_Disabled << SPIM_ENABLE_ENABLE_Pos);
+    }
 }
 
 NRF_STATIC_INLINE bool nrf_spim_enable_check(NRF_SPIM_Type const * p_reg)
