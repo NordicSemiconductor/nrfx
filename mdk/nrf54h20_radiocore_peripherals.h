@@ -783,6 +783,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TPIU_PRESENT 1
 #define TPIU_COUNT 1
 
+/*Embedded Trace Buffer*/
+#define ETB_PRESENT 1
+#define ETB_COUNT 1
+
 /*ATB Replicator module*/
 #define ATBREPLICATOR_PRESENT 1
 #define ATBREPLICATOR_COUNT 4
@@ -790,6 +794,12 @@ POSSIBILITY OF SUCH DAMAGE.
 /*ATB funnel module*/
 #define ATBFUNNEL_PRESENT 1
 #define ATBFUNNEL_COUNT 4
+
+/*Granular Power Requester*/
+#define GPR_PRESENT 1
+#define GPR_COUNT 1
+
+#define GPR_NUM_CPWRUPM 9                            /*!< Number of power-control interfaces: 9                                */
 
 /*Global Real-time counter*/
 #define GRTC_PRESENT 1
@@ -1445,12 +1455,6 @@ POSSIBILITY OF SUCH DAMAGE.
 /*Quadrature Decoder*/
 #define QDEC_PRESENT 1
 #define QDEC_COUNT 2
-
-/*SIM card interface*/
-#define SIMIF_PRESENT 1
-#define SIMIF_COUNT 1
-
-#define SIMIF130_SWOVERRIDE_REGS 0                   /*!< (unspecified)                                                        */
 
 /*I2C compatible Two-Wire Master Interface with EasyDMA*/
 #define TWIM_PRESENT 1

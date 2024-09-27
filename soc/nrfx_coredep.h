@@ -81,7 +81,7 @@
 #elif defined(NRF5340_XXAA_NETWORK)
     #define NRFX_DELAY_CPU_FREQ_MHZ 64
     #define NRFX_DELAY_DWT_PRESENT  1
-#elif defined(NRF54H20_XXAA) || defined(NRF54H20_ENGA_XXAA) || \
+#elif defined(NRF54H20_XXAA) || defined(NRF54H20_ENGA_XXAA) || defined(NRF54H20_ENGB_XXAA) || \
       defined(NRF9230_ENGB_XXAA)
     #define NRFX_DELAY_CPU_FREQ_MHZ (SystemCoreClock / 1000000)
     #define NRFX_DELAY_DWT_PRESENT  0

@@ -48,6 +48,13 @@ extern "C" {
  *          and Status Registers (VPR CSR).
  */
 
+#if defined(VPRCSR_NORDIC_VPRNORDICCTRL_VPRBUSPRI_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether setting high priority for VPR RAM transactions is present. */
+#define NRF_VPR_HAS_RAM_PRIO 1
+#else
+#define NRF_VPR_HAS_RAM_PRIO 0
+#endif
+
 /** @brief Nordic key for CSR writes. */
 #define NRF_VPR_CSR_NORDIC_KEY_MASK \
     (VPRCSR_NORDIC_VPRNORDICCTRL_NORDICKEY_Enabled << VPRCSR_NORDIC_VPRNORDICCTRL_NORDICKEY_Pos)
@@ -225,6 +232,20 @@ NRF_STATIC_INLINE void nrf_vpr_csr_rtperiph_enable_set(bool enable);
 NRF_STATIC_INLINE bool nrf_vpr_csr_rtperiph_enable_check(void);
 
 /**
+ * @brief Function for enabling or disabling the remap functionality.
+ *
+ * @param[in] enable True if remap is to be enabled, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_remap_enable_set(bool enable);
+
+/**
+ * @brief Function for checking whether the remap functionality is enabled.
+ *
+ * @retval true  Remap is enabled.
+ * @retval false Remap is disabled.
+ */
+NRF_STATIC_INLINE bool nrf_vpr_csr_remap_enable_check(void);
+/**
  * @brief Function for enabling or disabling the generation of IRQ at position CNT_IRQ_POSITION.
  *
  * @param[in] enable True if generation of IRQ at position CNT_IRQ_POSITION is to be enabled, false otherwise.
@@ -238,6 +259,23 @@ NRF_STATIC_INLINE void nrf_vpr_csr_cnt_irq_enable_set(bool enable);
  * @retval false Generation of IRQ is disabled.
  */
 NRF_STATIC_INLINE bool nrf_vpr_csr_cnt_irq_enable_check(void);
+
+#if NRF_VPR_HAS_RAM_PRIO
+/**
+ * @brief Function for enabling or disabling the high priority for VPR RAM transactions on bus.
+ *
+ * @param[in] enable True if high priority is to be enabled, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_ram_prio_enable_set(bool enable);
+
+/**
+ * @brief Function for checking whether the high priority for VPR RAM transactions on bus is enabled.
+ *
+ * @retval true  High priority is enabled.
+ * @retval false High priority is disabled.
+ */
+NRF_STATIC_INLINE bool nrf_vpr_csr_ram_prio_enable_check(void);
+#endif
 
 /**
  * @brief Function for setting the sleep state.
@@ -440,6 +478,24 @@ NRF_STATIC_INLINE bool nrf_vpr_csr_rtperiph_enable_check(void)
            >> VPRCSR_NORDIC_VPRNORDICCTRL_ENABLERTPERIPH_Pos;
 }
 
+NRF_STATIC_INLINE void nrf_vpr_csr_remap_enable_set(bool enable)
+{
+    uint32_t reg = nrf_csr_read(VPRCSR_NORDIC_VPRNORDICCTRL);
+    reg = (reg & ~VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Msk) | NRF_VPR_CSR_NORDIC_KEY_MASK;
+
+    reg |= ((enable ? VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Enabled :
+                      VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Disabled)
+            << VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Pos) | NRF_VPR_CSR_NORDIC_KEY_MASK;
+
+    nrf_csr_write(VPRCSR_NORDIC_VPRNORDICCTRL, reg);
+}
+
+NRF_STATIC_INLINE bool nrf_vpr_csr_remap_enable_check(void)
+{
+    return (nrf_csr_read(VPRCSR_NORDIC_VPRNORDICCTRL) & VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Msk)
+           >> VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Pos;
+}
+
 NRF_STATIC_INLINE void nrf_vpr_csr_cnt_irq_enable_set(bool enable)
 {
     uint32_t reg = nrf_csr_read(VPRCSR_NORDIC_VPRNORDICCTRL);
@@ -457,6 +513,26 @@ NRF_STATIC_INLINE bool nrf_vpr_csr_cnt_irq_enable_check(void)
     return (nrf_csr_read(VPRCSR_NORDIC_VPRNORDICCTRL) & VPRCSR_NORDIC_VPRNORDICCTRL_CNTIRQENABLE_Msk)
            >> VPRCSR_NORDIC_VPRNORDICCTRL_CNTIRQENABLE_Pos;
 }
+
+#if NRF_VPR_HAS_RAM_PRIO
+NRF_STATIC_INLINE void nrf_vpr_csr_ram_prio_enable_set(bool enable)
+{
+    uint32_t reg = nrf_csr_read(VPRCSR_NORDIC_VPRNORDICCTRL);
+    reg = (reg & ~VPRCSR_NORDIC_VPRNORDICCTRL_VPRBUSPRI_Msk) | NRF_VPR_CSR_NORDIC_KEY_MASK;
+
+    reg |= ((enable ? VPRCSR_NORDIC_VPRNORDICCTRL_VPRBUSPRI_LowPriority :
+                      VPRCSR_NORDIC_VPRNORDICCTRL_VPRBUSPRI_HighPriority)
+            << VPRCSR_NORDIC_VPRNORDICCTRL_VPRBUSPRI_Pos) | NRF_VPR_CSR_NORDIC_KEY_MASK;
+
+    nrf_csr_write(VPRCSR_NORDIC_VPRNORDICCTRL, reg);
+}
+
+NRF_STATIC_INLINE bool nrf_vpr_csr_ram_prio_enable_check(void)
+{
+    return (nrf_csr_read(VPRCSR_NORDIC_VPRNORDICCTRL) & VPRCSR_NORDIC_VPRNORDICCTRL_VPRBUSPRI_Msk)
+           >> VPRCSR_NORDIC_VPRNORDICCTRL_VPRBUSPRI_Pos;
+}
+#endif
 
 NRF_STATIC_INLINE void nrf_vpr_csr_sleep_state_set(nrf_vpr_csr_sleep_state_t state)
 {

@@ -40,7 +40,7 @@
 extern "C" {
 #endif
 
-#if defined(NRF54H20_XXAA)
+#if defined(NRF54H20_XXAA) || defined(NRF54H20_ENGB_XXAA)
 #define NRF_TWIS_CLOCKPIN_SDA_NEEDED 1
 #endif
 

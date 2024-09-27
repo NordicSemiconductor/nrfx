@@ -152,7 +152,7 @@ extern "C" {
 #define nrfx_pwm_0_irq_handler      PWM0_IRQHandler
 
 // PDM_IRQn
-#define nrfx_pdm_irq_handler        PDM_IRQHandler
+#define nrfx_pdm_0_irq_handler      PDM_IRQHandler
 
 // MWU_IRQn
 

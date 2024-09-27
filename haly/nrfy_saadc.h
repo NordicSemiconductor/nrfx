@@ -406,6 +406,15 @@ NRFY_STATIC_INLINE void nrfy_saadc_channel_pos_input_set(NRF_SAADC_Type *  p_reg
     nrf_barrier_w();
 }
 
+/** @refhal{nrf_saadc_channel_neg_input_set} */
+NRFY_STATIC_INLINE void nrfy_saadc_channel_neg_input_set(NRF_SAADC_Type *  p_reg,
+                                                         uint8_t           channel,
+                                                         nrf_saadc_input_t pseln)
+{
+    nrf_saadc_channel_neg_input_set(p_reg, channel, pseln);
+    nrf_barrier_w();
+}
+
 /** @refhal{nrf_saadc_channel_limits_set} */
 NRFY_STATIC_INLINE void nrfy_saadc_channel_limits_set(NRF_SAADC_Type * p_reg,
                                                       uint8_t          channel,

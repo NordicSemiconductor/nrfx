@@ -50,6 +50,15 @@ extern "C" {
  * @brief   Hardware access layer for managing the Pulse Density Modulation (PDM) peripheral.
  */
 
+/**
+ * @brief Macro for getting a pointer to the structure of registers of the PDM peripheral.
+ *
+ * @param[in] idx PDM instance index.
+ *
+ * @return Pointer to the structure of registers of the PDM peripheral.
+ */
+#define NRF_PDM_INST_GET(idx) NRFX_CONCAT_2(NRF_PDM, idx)
+
 #if defined(PDM_MCLKCONFIG_SRC_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether master clock source configuration is available. */
 #define NRF_PDM_HAS_MCLKCONFIG 1
@@ -64,19 +73,26 @@ extern "C" {
 #define NRF_PDM_HAS_RATIO_CONFIG 0
 #endif
 
-#if defined(PDM_DMA_PTR_PTR_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether dedicated DMA register is present. */
-#define NRF_PDM_HAS_DMA_REG 1
-#else
-#define NRF_PDM_HAS_DMA_REG 0
-#endif
-
 #if (defined(PDM_TASKS_DMA_START_START_Msk) && defined(PDM_EVENTS_DMA_END_END_Msk)) || \
     defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether PDM DMA tasks and events are present. */
 #define NRF_PDM_HAS_DMA_TASKS_EVENTS 1
 #else
 #define NRF_PDM_HAS_DMA_TASKS_EVENTS 0
+#endif
+
+#if defined(PDM_PDMCLKCTRL_FREQ_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether PDM clock control register is available. */
+#define NRF_PDM_HAS_PDMCLKCTRL 1
+#else
+#define NRF_PDM_HAS_PDMCLKCTRL 0
+#endif
+
+#if defined(PDM_PRESCALER_DIVISOR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether PDM prescaler register is available. */
+#define NRF_PDM_HAS_PRESCALER 1
+#else
+#define NRF_PDM_HAS_PRESCALER 0
 #endif
 
 /** @brief Minimum value of PDM gain. */
@@ -86,6 +102,12 @@ extern "C" {
 /** @brief Maximum value of PDM gain. */
 #define NRF_PDM_GAIN_MAXIMUM  0x50
 
+#if NRF_PDM_HAS_PRESCALER
+/** @brief Minimum value of PDM prescaler. */
+#define NRF_PDM_PRESCALER_MIN PDM_PRESCALER_DIVISOR_Min
+/** @brief Maximum value of PDM prescaler. */
+#define NRF_PDM_PRESCALER_MAX PDM_PRESCALER_DIVISOR_Max
+#endif
 
 /** @brief PDM gain type. */
 typedef uint8_t nrf_pdm_gain_t;
@@ -126,6 +148,7 @@ typedef enum
 #endif
 } nrf_pdm_int_mask_t;
 
+#if NRF_PDM_HAS_PDMCLKCTRL
 /** @brief PDM clock frequency. */
 typedef enum
 {
@@ -142,14 +165,32 @@ typedef enum
     NRF_PDM_FREQ_1333K = PDM_PDMCLKCTRL_FREQ_1333K    ///< PDM_CLK = 1.333 MHz.
 #endif
 } nrf_pdm_freq_t;
-
+#endif 
 
 #if NRF_PDM_HAS_RATIO_CONFIG
 /** @brief PDM ratio between PDM_CLK and output sample rate. */
 typedef enum
 {
-    NRF_PDM_RATIO_64X = PDM_RATIO_RATIO_Ratio64, ///< Ratio of 64.
-    NRF_PDM_RATIO_80X = PDM_RATIO_RATIO_Ratio80  ///< Ratio of 80.
+#if defined(PDM_RATIO_RATIO_Ratio32)  || defined(__NRFX_DOXYGEN__)
+    NRF_PDM_RATIO_32X  = PDM_RATIO_RATIO_Ratio32,  ///< Ratio of 32.
+#endif
+#if defined(PDM_RATIO_RATIO_Ratio48)  || defined(__NRFX_DOXYGEN__)
+    NRF_PDM_RATIO_48X  = PDM_RATIO_RATIO_Ratio48,  ///< Ratio of 48.
+#endif
+#if defined(PDM_RATIO_RATIO_Ratio50)  || defined(__NRFX_DOXYGEN__)
+    NRF_PDM_RATIO_50X  = PDM_RATIO_RATIO_Ratio50,  ///< Ratio of 50.
+#endif
+    NRF_PDM_RATIO_64X  = PDM_RATIO_RATIO_Ratio64,  ///< Ratio of 64.
+    NRF_PDM_RATIO_80X  = PDM_RATIO_RATIO_Ratio80,  ///< Ratio of 80.
+#if defined(PDM_RATIO_RATIO_Ratio96)  || defined(__NRFX_DOXYGEN__)
+    NRF_PDM_RATIO_96X  = PDM_RATIO_RATIO_Ratio96,  ///< Ratio of 96.
+#endif
+#if defined(PDM_RATIO_RATIO_Ratio100) || defined(__NRFX_DOXYGEN__)
+    NRF_PDM_RATIO_100X = PDM_RATIO_RATIO_Ratio100, ///< Ratio of 100.
+#endif
+#if defined(PDM_RATIO_RATIO_Ratio128) || defined(__NRFX_DOXYGEN__)
+    NRF_PDM_RATIO_128X = PDM_RATIO_RATIO_Ratio128, ///< Ratio of 128.
+#endif
 } nrf_pdm_ratio_t;
 #endif
 
@@ -346,6 +387,7 @@ NRF_STATIC_INLINE void nrf_pdm_mode_get(NRF_PDM_Type const * p_reg,
                                         nrf_pdm_mode_t *     p_pdm_mode,
                                         nrf_pdm_edge_t *     p_pdm_edge);
 
+#if NRF_PDM_HAS_PDMCLKCTRL
 /**
  * @brief Function for setting the PDM clock frequency.
  *
@@ -362,6 +404,26 @@ NRF_STATIC_INLINE void nrf_pdm_clock_set(NRF_PDM_Type * p_reg, nrf_pdm_freq_t pd
  * @return PDM clock frequency.
  */
 NRF_STATIC_INLINE nrf_pdm_freq_t nrf_pdm_clock_get(NRF_PDM_Type const * p_reg);
+#endif
+
+#if NRF_PDM_HAS_PRESCALER
+/**
+ * @brief Function for setting the PDM prescaler divisor.
+ *
+ * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
+ * @param[in] prescaler PDM prescaler divisor.
+ */
+NRF_STATIC_INLINE void nrf_pdm_prescaler_set(NRF_PDM_Type * p_reg, uint32_t prescaler);
+
+/**
+ * @brief Function for getting the PDM prescaler divisor.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return PDM prescaler divisor.
+ */
+NRF_STATIC_INLINE uint32_t nrf_pdm_prescaler_get(NRF_PDM_Type const * p_reg);
+#endif
 
 /**
  * @brief Function for setting up the PDM pins.
@@ -566,6 +628,7 @@ NRF_STATIC_INLINE void nrf_pdm_mode_get(NRF_PDM_Type const * p_reg,
     *p_pdm_edge = (nrf_pdm_edge_t)((mode & PDM_MODE_EDGE_Msk ) >> PDM_MODE_EDGE_Pos);
 }
 
+#if NRF_PDM_HAS_PDMCLKCTRL
 NRF_STATIC_INLINE void nrf_pdm_clock_set(NRF_PDM_Type * p_reg, nrf_pdm_freq_t pdm_freq)
 {
     p_reg->PDMCLKCTRL = ((pdm_freq << PDM_PDMCLKCTRL_FREQ_Pos) & PDM_PDMCLKCTRL_FREQ_Msk);
@@ -576,6 +639,21 @@ NRF_STATIC_INLINE nrf_pdm_freq_t nrf_pdm_clock_get(NRF_PDM_Type const * p_reg)
      return (nrf_pdm_freq_t) ((p_reg->PDMCLKCTRL << PDM_PDMCLKCTRL_FREQ_Pos) &
                               PDM_PDMCLKCTRL_FREQ_Msk);
 }
+#endif
+
+#if NRF_PDM_HAS_PRESCALER
+NRF_STATIC_INLINE void nrf_pdm_prescaler_set(NRF_PDM_Type * p_reg, uint32_t prescaler)
+{
+    NRFX_ASSERT(prescaler >= NRF_PDM_PRESCALER_MIN);
+    NRFX_ASSERT(prescaler <= NRF_PDM_PRESCALER_MAX);
+    p_reg->PRESCALER = prescaler;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_pdm_prescaler_get(NRF_PDM_Type const * p_reg)
+{
+    return p_reg->PRESCALER;
+}
+#endif
 
 NRF_STATIC_INLINE void nrf_pdm_psel_connect(NRF_PDM_Type * p_reg,
                                             uint32_t       psel_clk,
@@ -621,22 +699,17 @@ NRF_STATIC_INLINE void nrf_pdm_gain_get(NRF_PDM_Type const * p_reg,
 
 NRF_STATIC_INLINE void nrf_pdm_buffer_set(NRF_PDM_Type * p_reg, uint32_t * p_buffer, uint32_t num)
 {
-#if NRF_PDM_HAS_DMA_REG
-    p_reg->DMA.PTR = (uint32_t)p_buffer;
-    p_reg->DMA.MAXCNT = num;
-#else
     p_reg->SAMPLE.PTR = (uint32_t)p_buffer;
+#if defined(DMA_BUFFER_UNIFIED_BYTE_ACCESS)
+    p_reg->SAMPLE.MAXCNT = num * sizeof(int16_t);
+#else
     p_reg->SAMPLE.MAXCNT = num;
 #endif
 }
 
 NRF_STATIC_INLINE uint32_t * nrf_pdm_buffer_get(NRF_PDM_Type const * p_reg)
 {
-#if NRF_PDM_HAS_DMA_REG
-    return (uint32_t *)p_reg->DMA.PTR;
-#else
     return (uint32_t *)p_reg->SAMPLE.PTR;
-#endif
 }
 
 #if NRF_PDM_HAS_RATIO_CONFIG

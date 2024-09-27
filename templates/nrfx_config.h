@@ -71,6 +71,14 @@
     #include <nrfx_config_nrf54h20_enga_ppr.h>
 #elif defined(NRF54H20_ENGA_XXAA) && defined(NRF_FLPR)
     #include <nrfx_config_nrf54h20_enga_flpr.h>
+#elif defined(NRF54H20_ENGB_XXAA) && defined(NRF_APPLICATION)
+    #include <nrfx_config_nrf54h20_engb_application.h>
+#elif defined(NRF54H20_ENGB_XXAA) && defined(NRF_RADIOCORE)
+    #include <nrfx_config_nrf54h20_engb_radiocore.h>
+#elif defined(NRF54H20_ENGB_XXAA) && defined(NRF_PPR)
+    #include <nrfx_config_nrf54h20_engb_ppr.h>
+#elif defined(NRF54H20_ENGB_XXAA) && defined(NRF_FLPR)
+    #include <nrfx_config_nrf54h20_engb_flpr.h>
 #elif defined(NRF54L15_XXAA) && defined(NRF_APPLICATION)
     #include <nrfx_config_nrf54l15_application.h>
 #elif defined(NRF54L15_XXAA) && defined(NRF_FLPR)

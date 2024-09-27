@@ -84,19 +84,17 @@ extern "C" {
  * - From 4 pF to 17 pF in 0.25 pF steps for other SoCs.
  * This macro should be used to calculate argument's value for @ref nrf_oscillators_hfxo_cap_set function.
 */
-#define OSCILLATORS_HFXO_CAP_CALCULATE(p_ficr_reg, cap_val)   \
-    ((((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_SLOPE_Msk) \
-       << FICR_XOSC32MTRIM_SLOPE_Pos) / 16 + 1) *             \
-     (cap_val * 2 - 14) +                                     \
-     ((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_OFFSET_Msk) \
-       << FICR_XOSC32MTRIM_OFFSET_Pos))
+#define OSCILLATORS_HFXO_CAP_CALCULATE(p_ficr_reg, cap_val)                   \
+    (((((((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_SLOPE_Msk)              \
+       >> FICR_XOSC32MTRIM_SLOPE_Pos) + 56) * (uint32_t)(cap_val * 2 - 14)) + \
+       ((((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_OFFSET_Msk)             \
+       >> FICR_XOSC32MTRIM_OFFSET_Pos) - 8) << 4)) + 32) >> 6)
 #else
-#define OSCILLATORS_HFXO_CAP_CALCULATE(p_ficr_reg, cap_val)       \
-    (((cap_val - 5.5) *                                           \
-      (((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_SLOPE_Msk)    \
-                          << FICR_XOSC32MTRIM_SLOPE_Pos) + 791) + \
-      (((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_OFFSET_Msk)   \
-         << FICR_XOSC32MTRIM_OFFSET_Pos) << 2)) >> 8)
+#define OSCILLATORS_HFXO_CAP_CALCULATE(p_ficr_reg, cap_val)                     \
+      (((((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_SLOPE_Msk)                \
+         >> FICR_XOSC32MTRIM_SLOPE_Pos) + 791) * (uint32_t)(cap_val * 4 - 22) + \
+        (((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_OFFSET_Msk)               \
+         >> FICR_XOSC32MTRIM_OFFSET_Pos) << 4)) >> 10)
 #endif
 
 #if NRF_OSCILLATORS_HAS_LFXO_CAP_AS_INT_VALUE
@@ -106,11 +104,11 @@ extern "C" {
  * The capacitance of internal capacitors ranges from 4 pF to 18 pF in 0.5 pF steps.
  * This macro should be used to calculate argument's value for @ref nrf_oscillators_lfxo_cap_set function.
 */
-#define OSCILLATORS_LFXO_CAP_CALCULATE(p_ficr_reg, cap_val)                     \
-    ((((cap_val - 4) * (((p_ficr_reg->XOSC32KTRIM & FICR_XOSC32KTRIM_SLOPE_Msk) \
-                          << FICR_XOSC32KTRIM_SLOPE_Pos)) + 392) >> 3 +         \
-      ((p_ficr_reg->XOSC32KTRIM & FICR_XOSC32KTRIM_OFFSET_Msk)                  \
-       << FICR_XOSC32KTRIM_OFFSET_Pos)) >> 6)
+#define OSCILLATORS_LFXO_CAP_CALCULATE(p_ficr_reg, cap_val)                          \
+      (((((p_ficr_reg->XOSC32KTRIM & FICR_XOSC32KTRIM_SLOPE_Msk)                     \
+        >> FICR_XOSC32KTRIM_SLOPE_Pos) + 392) >> 9) * (uint32_t)(cap_val * 2 - 12) + \
+       (((p_ficr_reg->XOSC32KTRIM & FICR_XOSC32KTRIM_OFFSET_Msk)                     \
+        >> FICR_XOSC32KTRIM_OFFSET_Pos) >> 6))
 #endif
 
 #if NRF_OSCILLATORS_HAS_CLOCK_QUALITY_IND

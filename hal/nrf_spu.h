@@ -1863,7 +1863,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_secattr_set(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_TDD_COUNT);
             p_reg->FEATURE.TDD[index] =
                 ((p_reg->FEATURE.TDD[index] &
-                  SPU_FEATURE_TDD_SECATTR_Msk) |
+                  ~SPU_FEATURE_TDD_SECATTR_Msk) |
                  ((enable ?
                    SPU_FEATURE_TDD_SECATTR_Secure :
                    SPU_FEATURE_TDD_SECATTR_NonSecure)
@@ -1876,7 +1876,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_secattr_set(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
             p_reg->FEATURE.MRAMC[index].WAITSTATES =
                 ((p_reg->FEATURE.MRAMC[index].WAITSTATES &
-                  SPU_FEATURE_MRAMC_WAITSTATES_SECATTR_Msk) |
+                  ~SPU_FEATURE_MRAMC_WAITSTATES_SECATTR_Msk) |
                  ((enable ?
                    SPU_FEATURE_MRAMC_WAITSTATES_SECATTR_Secure :
                    SPU_FEATURE_MRAMC_WAITSTATES_SECATTR_NonSecure)
@@ -1887,7 +1887,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_secattr_set(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
             p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN =
                 ((p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN &
-                  SPU_FEATURE_MRAMC_AUTODPOWERDOWN_SECATTR_Msk) |
+                  ~SPU_FEATURE_MRAMC_AUTODPOWERDOWN_SECATTR_Msk) |
                  ((enable ?
                    SPU_FEATURE_MRAMC_AUTODPOWERDOWN_SECATTR_Secure :
                    SPU_FEATURE_MRAMC_AUTODPOWERDOWN_SECATTR_NonSecure)
@@ -1898,7 +1898,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_secattr_set(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
             p_reg->FEATURE.MRAMC[index].READY =
                 ((p_reg->FEATURE.MRAMC[index].READY &
-                  SPU_FEATURE_MRAMC_READY_SECATTR_Msk) |
+                  ~SPU_FEATURE_MRAMC_READY_SECATTR_Msk) |
                  ((enable ?
                    SPU_FEATURE_MRAMC_READY_SECATTR_Secure :
                    SPU_FEATURE_MRAMC_READY_SECATTR_NonSecure)
@@ -2058,7 +2058,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_lock_enable(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_TDD_COUNT);
             p_reg->FEATURE.TDD[index] =
                 ((p_reg->FEATURE.TDD[index] &
-                  SPU_FEATURE_TDD_LOCK_Msk) |
+                  ~SPU_FEATURE_TDD_LOCK_Msk) |
                  (SPU_FEATURE_TDD_LOCK_Locked
                   << SPU_FEATURE_TDD_LOCK_Pos));
             break;
@@ -2069,7 +2069,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_lock_enable(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
             p_reg->FEATURE.MRAMC[index].WAITSTATES =
                 ((p_reg->FEATURE.MRAMC[index].WAITSTATES &
-                  SPU_FEATURE_MRAMC_WAITSTATES_LOCK_Msk) |
+                  ~SPU_FEATURE_MRAMC_WAITSTATES_LOCK_Msk) |
                  (SPU_FEATURE_MRAMC_WAITSTATES_LOCK_Locked
                   << SPU_FEATURE_MRAMC_WAITSTATES_LOCK_Pos));
             break;
@@ -2078,7 +2078,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_lock_enable(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
             p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN =
                 ((p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN &
-                  SPU_FEATURE_MRAMC_AUTODPOWERDOWN_LOCK_Msk) |
+                  ~SPU_FEATURE_MRAMC_AUTODPOWERDOWN_LOCK_Msk) |
                  (SPU_FEATURE_MRAMC_AUTODPOWERDOWN_LOCK_Locked
                   << SPU_FEATURE_MRAMC_AUTODPOWERDOWN_LOCK_Pos));
             break;
@@ -2087,7 +2087,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_lock_enable(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
             p_reg->FEATURE.MRAMC[index].READY =
                 ((p_reg->FEATURE.MRAMC[index].READY &
-                  SPU_FEATURE_MRAMC_READY_LOCK_Msk) |
+                  ~SPU_FEATURE_MRAMC_READY_LOCK_Msk) |
                  (SPU_FEATURE_MRAMC_READY_LOCK_Locked
                   << SPU_FEATURE_MRAMC_READY_LOCK_Pos));
             break;
@@ -2246,7 +2246,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_TDD_COUNT);
             p_reg->FEATURE.TDD[index] =
                 ((p_reg->FEATURE.TDD[index] &
-                  SPU_FEATURE_TDD_BLOCK_Msk) |
+                  ~SPU_FEATURE_TDD_BLOCK_Msk) |
                  (SPU_FEATURE_TDD_BLOCK_Blocked
                   << SPU_FEATURE_TDD_BLOCK_Pos));
             break;
@@ -2257,7 +2257,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
             p_reg->FEATURE.MRAMC[index].WAITSTATES =
                 ((p_reg->FEATURE.MRAMC[index].WAITSTATES &
-                  SPU_FEATURE_MRAMC_WAITSTATES_BLOCK_Msk) |
+                  ~SPU_FEATURE_MRAMC_WAITSTATES_BLOCK_Msk) |
                  (SPU_FEATURE_MRAMC_WAITSTATES_BLOCK_Blocked
                   << SPU_FEATURE_MRAMC_WAITSTATES_BLOCK_Pos));
             break;
@@ -2266,7 +2266,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
             p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN =
                 ((p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN &
-                  SPU_FEATURE_MRAMC_AUTODPOWERDOWN_BLOCK_Msk) |
+                  ~SPU_FEATURE_MRAMC_AUTODPOWERDOWN_BLOCK_Msk) |
                  (SPU_FEATURE_MRAMC_AUTODPOWERDOWN_BLOCK_Blocked
                   << SPU_FEATURE_MRAMC_AUTODPOWERDOWN_BLOCK_Pos));
             break;
@@ -2275,7 +2275,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_block_enable(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
             p_reg->FEATURE.MRAMC[index].READY =
                 ((p_reg->FEATURE.MRAMC[index].READY &
-                  SPU_FEATURE_MRAMC_READY_BLOCK_Msk) |
+                  ~SPU_FEATURE_MRAMC_READY_BLOCK_Msk) |
                  (SPU_FEATURE_MRAMC_READY_BLOCK_Blocked
                   << SPU_FEATURE_MRAMC_READY_LOCK_Pos));
             break;
@@ -2450,7 +2450,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_TDD_COUNT);
             p_reg->FEATURE.TDD[index] =
                 ((p_reg->FEATURE.TDD[index] &
-                  SPU_FEATURE_TDD_OWNERID_Msk) |
+                  ~SPU_FEATURE_TDD_OWNERID_Msk) |
                  ((owner_id
                    << SPU_FEATURE_TDD_OWNERID_Pos) &
                   SPU_FEATURE_TDD_OWNERID_Msk));
@@ -2462,7 +2462,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
             p_reg->FEATURE.MRAMC[index].WAITSTATES =
                 ((p_reg->FEATURE.MRAMC[index].WAITSTATES &
-                  SPU_FEATURE_MRAMC_WAITSTATES_OWNERID_Msk) |
+                  ~SPU_FEATURE_MRAMC_WAITSTATES_OWNERID_Msk) |
                  ((owner_id
                    << SPU_FEATURE_MRAMC_WAITSTATES_OWNERID_Pos) &
                   SPU_FEATURE_MRAMC_WAITSTATES_OWNERID_Msk));
@@ -2472,7 +2472,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
             p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN =
                 ((p_reg->FEATURE.MRAMC[index].AUTODPOWERDOWN &
-                  SPU_FEATURE_MRAMC_AUTODPOWERDOWN_OWNERID_Msk) |
+                  ~SPU_FEATURE_MRAMC_AUTODPOWERDOWN_OWNERID_Msk) |
                  ((owner_id
                    << SPU_FEATURE_MRAMC_AUTODPOWERDOWN_OWNERID_Pos) &
                   SPU_FEATURE_MRAMC_AUTODPOWERDOWN_OWNERID_Msk));
@@ -2482,7 +2482,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
             NRFX_ASSERT(index < NRF_SPU_FEATURE_MRAMC_COUNT);
             p_reg->FEATURE.MRAMC[index].READY =
                 ((p_reg->FEATURE.MRAMC[index].READY &
-                  SPU_FEATURE_MRAMC_READY_OWNERID_Msk) |
+                  ~SPU_FEATURE_MRAMC_READY_OWNERID_Msk) |
                  ((owner_id
                    << SPU_FEATURE_MRAMC_READY_OWNERID_Pos) &
                   SPU_FEATURE_MRAMC_READY_OWNERID_Msk));

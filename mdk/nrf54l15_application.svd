@@ -209,7 +209,7 @@ POSSIBILITY OF SUCH DAMAGE.
           </register>
           <register>
             <name>RAM</name>
-            <description>RAM variant</description>
+            <description>RAM size (KB)</description>
             <addressOffset>0x028</addressOffset>
             <access>read-only</access>
             <resetValue>0xFFFFFFFF</resetValue>
@@ -217,7 +217,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>RAM</name>
-                <description>RAM variant</description>
+                <description>RAM size (KB)</description>
                 <lsb>0</lsb>
                 <msb>31</msb>
                 <enumeratedValues>
@@ -237,7 +237,7 @@ POSSIBILITY OF SUCH DAMAGE.
           </register>
           <register>
             <name>RRAM</name>
-            <description>RRAM variant</description>
+            <description>RRAM size (KB)</description>
             <addressOffset>0x02C</addressOffset>
             <access>read-only</access>
             <resetValue>0xFFFFFFFF</resetValue>
@@ -245,7 +245,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>RRAM</name>
-                <description>RRAM variant</description>
+                <description>RRAM size (KB)</description>
                 <lsb>0</lsb>
                 <msb>31</msb>
                 <enumeratedValues>
@@ -19760,12 +19760,12 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Decryption</name>
-                  <description>AES CCM packet decryption mode</description>
+                  <description>Deprecated enumerator -  This mode will run CCM decryption in the speed of the DATARATE field.</description>
                   <value>0x1</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>FastDecryption</name>
-                  <description>AES fast decrypt mode. This mode will run CCM decryption as fast as possible, i.e. not locked to a radio data rate. This can be used when a packet has been completely received.</description>
+                  <description>AES CCM decryption mode.</description>
                   <value>0x2</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -20468,7 +20468,12 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>EncryptionTooSlow</name>
-                  <description>Encryption of the unencrypted data structure did not complete in time.</description>
+                  <description>Deprecated enumerator -  Encryption aborted due to higher priority peripheral requesting or using the AES module.</description>
+                  <value>0x3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Aborted</name>
+                  <description>Encryption aborted due to higher priority peripheral requesting or using the AES module.</description>
                   <value>0x3</value>
                 </enumeratedValue>
                 <enumeratedValue>
@@ -30709,6 +30714,34 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           </fields>
         </register>
         <register>
+          <name>EVENTS_ECCERROR</name>
+          <description>Uncorrectable ECC error detected</description>
+          <addressOffset>0x110</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>EVENTS_ECCERROR</name>
+              <description>Uncorrectable ECC error detected</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotGenerated</name>
+                  <description>Event not generated</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Generated</name>
+                  <description>Event generated</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>PUBLISH_WOKENUP</name>
           <description>Publish configuration for event WOKENUP</description>
           <addressOffset>0x180</addressOffset>
@@ -30821,6 +30854,24 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValue>
               </enumeratedValues>
             </field>
+            <field>
+              <name>ECCERROR</name>
+              <description>Enable or disable interrupt for event ECCERROR</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
           </fields>
         </register>
         <register>
@@ -30917,6 +30968,33 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Write '1' to enable interrupt for event ACCESSERROR</description>
               <lsb>3</lsb>
               <msb>3</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ECCERROR</name>
+              <description>Write '1' to enable interrupt for event ECCERROR</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -31057,6 +31135,33 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValue>
               </enumeratedValues>
             </field>
+            <field>
+              <name>ECCERROR</name>
+              <description>Write '1' to disable interrupt for event ECCERROR</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
           </fields>
         </register>
         <register>
@@ -31129,6 +31234,25 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Read pending status of interrupt for event ACCESSERROR</description>
               <lsb>3</lsb>
               <msb>3</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ECCERROR</name>
+              <description>Read pending status of interrupt for event ECCERROR</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -31251,6 +31375,29 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             </fields>
           </register>
         </cluster>
+        <cluster>
+          <name>ECC</name>
+          <description>Unspecified</description>
+          <headerStructName>RRAMC_ECC</headerStructName>
+          <access>read-write</access>
+          <addressOffset>0x420</addressOffset>
+          <register>
+            <name>ERRORADDR</name>
+            <description>Address of the first ECC error that could not be corrected</description>
+            <addressOffset>0x000</addressOffset>
+            <access>read-only</access>
+            <resetValue>0x00FFFFFF</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>ADDRESS</name>
+                <description>ECC error address</description>
+                <lsb>0</lsb>
+                <msb>31</msb>
+              </field>
+            </fields>
+          </register>
+        </cluster>
         <register>
           <name>CONFIG</name>
           <description>Configuration register</description>
@@ -31361,6 +31508,44 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                     <name>Abort</name>
                     <description>Abort the current RRAM write</description>
                     <value>0x1</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>LOWPOWERCONFIG</name>
+            <description>Low power mode configuration</description>
+            <addressOffset>0x008</addressOffset>
+            <access>read-write</access>
+            <resetValue>0x00000000</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>MODE</name>
+                <description>RRAM low power mode</description>
+                <lsb>0</lsb>
+                <msb>1</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>PowerDown</name>
+                    <description>The RRAM goes into power down mode</description>
+                    <value>0x0</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Standby</name>
+                    <description>The RRAM automatically goes into standby mode while the RRAM is not being accessed</description>
+                    <value>0x1</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>NAP</name>
+                    <description>The RRAM goes into NAP mode</description>
+                    <value>0x2</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>PowerOff</name>
+                    <description>The RRAM is powered Off</description>
+                    <value>0x3</value>
                   </enumeratedValue>
                 </enumeratedValues>
               </field>
@@ -50155,122 +50340,132 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 <enumeratedValue>
                   <name>Pos8dBm</name>
                   <description>+8 dBm</description>
-                  <value>0x033</value>
+                  <value>0x03F</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Pos7dBm</name>
                   <description>+7 dBm</description>
-                  <value>0x02D</value>
+                  <value>0x039</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Pos6dBm</name>
                   <description>+6 dBm</description>
-                  <value>0x028</value>
+                  <value>0x033</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Pos5dBm</name>
                   <description>+5 dBm</description>
-                  <value>0x023</value>
+                  <value>0x02D</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Pos4dBm</name>
                   <description>+4 dBm</description>
-                  <value>0x01F</value>
+                  <value>0x028</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Pos3dBm</name>
                   <description>+3 dBm</description>
-                  <value>0x01B</value>
+                  <value>0x023</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Pos2dBm</name>
                   <description>+2 dBm</description>
-                  <value>0x018</value>
+                  <value>0x01F</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Pos1dBm</name>
                   <description>+1 dBm</description>
-                  <value>0x015</value>
+                  <value>0x01B</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>0dBm</name>
                   <description>0 dBm</description>
-                  <value>0x013</value>
+                  <value>0x018</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg1dBm</name>
                   <description>-1 dBm</description>
-                  <value>0x011</value>
+                  <value>0x015</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg2dBm</name>
                   <description>-2 dBm</description>
-                  <value>0x00F</value>
+                  <value>0x013</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg3dBm</name>
                   <description>-3 dBm</description>
-                  <value>0x00D</value>
+                  <value>0x011</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg4dBm</name>
                   <description>-4 dBm</description>
-                  <value>0x00B</value>
+                  <value>0x00F</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg5dBm</name>
                   <description>-5 dBm</description>
-                  <value>0x00A</value>
+                  <value>0x00D</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg6dBm</name>
                   <description>-6 dBm</description>
-                  <value>0x009</value>
+                  <value>0x00B</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg7dBm</name>
                   <description>-7 dBm</description>
-                  <value>0x008</value>
+                  <value>0x00A</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg8dBm</name>
                   <description>-8 dBm</description>
-                  <value>0x007</value>
+                  <value>0x009</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg9dBm</name>
                   <description>-9 dBm</description>
-                  <value>0x006</value>
+                  <value>0x008</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg10dBm</name>
                   <description>-10 dBm</description>
-                  <value>0x005</value>
+                  <value>0x007</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg12dBm</name>
                   <description>-12 dBm</description>
-                  <value>0x004</value>
+                  <value>0x006</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg14dBm</name>
                   <description>-14 dBm</description>
-                  <value>0x003</value>
+                  <value>0x005</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg16dBm</name>
                   <description>-16 dBm</description>
-                  <value>0x002</value>
+                  <value>0x004</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Neg18dBm</name>
+                  <description>-18 dBm</description>
+                  <value>0x003</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg20dBm</name>
                   <description>-20 dBm</description>
-                  <value>0x001</value>
+                  <value>0x002</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>Neg26dBm</name>
-                  <description>-26 dBm</description>
-                  <value>0x000</value>
+                  <name>Neg22dBm</name>
+                  <description>-22 dBm</description>
+                  <value>0x002</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Neg28dBm</name>
+                  <description>-28 dBm</description>
+                  <value>0x001</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg40dBm</name>
@@ -51404,8 +51599,8 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </enumeratedValues>
             </field>
             <field>
-              <name>OFFSET</name>
-              <description>Which packet fields to be kept out of CRC calculation. Subsequent fields after the specified options are included in CRC calculation.</description>
+              <name>SKIPADDR</name>
+              <description>Control whether CRC calculation skips the address field. Other fields can also be skipped.</description>
               <lsb>8</lsb>
               <msb>10</msb>
               <enumeratedValues>
@@ -51416,22 +51611,22 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Skip</name>
-                  <description>CRC calculation does not include address field. The CRC calculation will start at the first byte after the address.</description>
+                  <description>CRC calculation starting at first byte after address field.</description>
                   <value>0x1</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>LENGTH</name>
-                  <description>CRC calculation as per 802.15.4 standard. Starting at first byte after length field.</description>
+                  <name>Ieee802154</name>
+                  <description>CRC calculation starting at first byte after length field (as per 802.15.4 standard).</description>
                   <value>0x2</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>SO</name>
-                  <description>CRC calculation Starting at first byte after S0 field.</description>
+                  <name>SkipS0</name>
+                  <description>CRC calculation starting at first byte after S0 field.</description>
                   <value>0x3</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>S1</name>
-                  <description>CRC calculation Starting at first byte after S1 field.</description>
+                  <name>SkipS1</name>
+                  <description>CRC calculation starting at first byte after S1 field.</description>
                   <value>0x4</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -79763,7 +79958,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
         </register>
         <register>
           <name>EVENTS_RTCOMPARESYNC</name>
-          <description>Synchronize always-on LFCLK clock domain</description>
+          <description>The GRTC low frequency timer is synchronized with the SYSCOUNTER</description>
           <addressOffset>0x164</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -79771,35 +79966,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <fields>
             <field>
               <name>EVENTS_RTCOMPARESYNC</name>
-              <description>Synchronize always-on LFCLK clock domain</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>NotGenerated</name>
-                  <description>Event not generated</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Generated</name>
-                  <description>Event generated</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>EVENTS_SYSCOUNTERVALID</name>
-          <description>The SYSCOUNTER is in active state and value is valid</description>
-          <addressOffset>0x168</addressOffset>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>EVENTS_SYSCOUNTERVALID</name>
-              <description>The SYSCOUNTER is in active state and value is valid</description>
+              <description>The GRTC low frequency timer is synchronized with the SYSCOUNTER</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -80137,24 +80304,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Enable or disable interrupt for event RTCOMPARESYNC</description>
               <lsb>25</lsb>
               <msb>25</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Disable</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Enable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Enable or disable interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -80525,33 +80674,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Write '1' to enable interrupt for event RTCOMPARESYNC</description>
               <lsb>25</lsb>
               <msb>25</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Set</name>
-                  <description>Enable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Write '1' to enable interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -80963,33 +81085,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </enumeratedValues>
             </field>
             <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Write '1' to disable interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Clear</name>
-                  <description>Disable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
               <name>PWMPERIODEND</name>
               <description>Write '1' to disable interrupt for event PWMPERIODEND</description>
               <lsb>27</lsb>
@@ -81274,25 +81369,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </enumeratedValues>
             </field>
             <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Read pending status of interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>NotPending</name>
-                  <description>Read: Not pending</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Pending</name>
-                  <description>Read: Pending</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
               <name>PWMPERIODEND</name>
               <description>Read pending status of interrupt for event PWMPERIODEND</description>
               <lsb>27</lsb>
@@ -81542,24 +81618,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Enable or disable interrupt for event RTCOMPARESYNC</description>
               <lsb>25</lsb>
               <msb>25</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Disable</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Enable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Enable or disable interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -81930,33 +81988,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Write '1' to enable interrupt for event RTCOMPARESYNC</description>
               <lsb>25</lsb>
               <msb>25</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Set</name>
-                  <description>Enable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Write '1' to enable interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -82368,33 +82399,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </enumeratedValues>
             </field>
             <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Write '1' to disable interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Clear</name>
-                  <description>Disable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
               <name>PWMPERIODEND</name>
               <description>Write '1' to disable interrupt for event PWMPERIODEND</description>
               <lsb>27</lsb>
@@ -82679,25 +82683,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </enumeratedValues>
             </field>
             <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Read pending status of interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>NotPending</name>
-                  <description>Read: Not pending</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Pending</name>
-                  <description>Read: Pending</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
               <name>PWMPERIODEND</name>
               <description>Read pending status of interrupt for event PWMPERIODEND</description>
               <lsb>27</lsb>
@@ -82947,24 +82932,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Enable or disable interrupt for event RTCOMPARESYNC</description>
               <lsb>25</lsb>
               <msb>25</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Disable</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Enable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Enable or disable interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -83335,33 +83302,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Write '1' to enable interrupt for event RTCOMPARESYNC</description>
               <lsb>25</lsb>
               <msb>25</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Set</name>
-                  <description>Enable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Write '1' to enable interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -83773,33 +83713,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </enumeratedValues>
             </field>
             <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Write '1' to disable interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Clear</name>
-                  <description>Disable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
               <name>PWMPERIODEND</name>
               <description>Write '1' to disable interrupt for event PWMPERIODEND</description>
               <lsb>27</lsb>
@@ -84084,25 +83997,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </enumeratedValues>
             </field>
             <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Read pending status of interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>NotPending</name>
-                  <description>Read: Not pending</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Pending</name>
-                  <description>Read: Pending</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
               <name>PWMPERIODEND</name>
               <description>Read pending status of interrupt for event PWMPERIODEND</description>
               <lsb>27</lsb>
@@ -84352,24 +84246,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Enable or disable interrupt for event RTCOMPARESYNC</description>
               <lsb>25</lsb>
               <msb>25</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Disable</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Enable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Enable or disable interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -84740,33 +84616,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Write '1' to enable interrupt for event RTCOMPARESYNC</description>
               <lsb>25</lsb>
               <msb>25</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Set</name>
-                  <description>Enable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Write '1' to enable interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -85178,33 +85027,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </enumeratedValues>
             </field>
             <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Write '1' to disable interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Clear</name>
-                  <description>Disable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
               <name>PWMPERIODEND</name>
               <description>Write '1' to disable interrupt for event PWMPERIODEND</description>
               <lsb>27</lsb>
@@ -85474,25 +85296,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Read pending status of interrupt for event RTCOMPARESYNC</description>
               <lsb>25</lsb>
               <msb>25</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>NotPending</name>
-                  <description>Read: Not pending</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Pending</name>
-                  <description>Read: Pending</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>SYSCOUNTERVALID</name>
-              <description>Read pending status of interrupt for event SYSCOUNTERVALID</description>
-              <lsb>26</lsb>
-              <msb>26</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -85780,88 +85583,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           </register>
         </cluster>
         <register>
-          <name>KEEPRUNNING</name>
-          <description>Request to keep the SYSCOUNTER in the active state and prevent going to sleep</description>
-          <addressOffset>0x6A0</addressOffset>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>REQUEST_0</name>
-              <description>Request from index [0]</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>NotActive</name>
-                  <description>Allow SYSCOUNTER to go to sleep</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Active</name>
-                  <description>Keep SYSCOUNTER active</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>REQUEST_1</name>
-              <description>Request from index [1]</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>NotActive</name>
-                  <description>Allow SYSCOUNTER to go to sleep</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Active</name>
-                  <description>Keep SYSCOUNTER active</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>REQUEST_2</name>
-              <description>Request from index [2]</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>NotActive</name>
-                  <description>Allow SYSCOUNTER to go to sleep</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Active</name>
-                  <description>Keep SYSCOUNTER active</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>REQUEST_3</name>
-              <description>Request from index [3]</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>NotActive</name>
-                  <description>Allow SYSCOUNTER to go to sleep</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Active</name>
-                  <description>Keep SYSCOUNTER active</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-          </fields>
-        </register>
-        <register>
           <name>TIMEOUT</name>
           <description>Timeout after all CPUs gone into sleep state to stop the SYSCOUNTER</description>
           <addressOffset>0x6A4</addressOffset>
@@ -85990,6 +85711,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>GRTC LFCLK clock source selection</description>
               <lsb>16</lsb>
               <msb>17</msb>
+              <access>write-only</access>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>LFXO</name>

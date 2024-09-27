@@ -1276,10 +1276,29 @@ POSSIBILITY OF SUCH DAMAGE.
 /* From nrf51_deprecated.h */
 
 /* NVMC */
-/* The register ERASEPROTECTEDPAGE changed name to ERASEPCR0 in the documentation. */
+/* The register ERASEPROTECTEDPAGE changed name to ERASEPCR0 in the documentation. ERASEPCR0 and ERASEPCR1 have been deprecated for some time and are removed, since they are equivalent to ERASEPAGE. */
 #ifndef ERASEPROTECTEDPAGE
-    #define ERASEPROTECTEDPAGE      ERASEPCR0
-#endif    
+    #define ERASEPROTECTEDPAGE      ERASEPAGE
+#endif
+#ifndef ERASEPCR1
+    #define ERASEPCR1               ERASEPAGE
+#endif
+#ifndef ERASEPCR0
+    #define ERASEPCR0               ERASEPAGE
+#endif
+
+#ifndef NVMC_ERASEPCR1_ERASEPCR1_Pos
+    #define NVMC_ERASEPCR1_ERASEPCR1_Pos      NVMC_ERASEPAGE_ERASEPAGE_Pos
+#endif
+#ifndef NVMC_ERASEPCR1_ERASEPCR1_Msk
+    #define NVMC_ERASEPCR1_ERASEPCR1_Msk      NVMC_ERASEPAGE_ERASEPAGE_Msk
+#endif
+#ifndef NVMC_ERASEPCR0_ERASEPCR0_Pos
+    #define NVMC_ERASEPCR0_ERASEPCR0_Pos      NVMC_ERASEPAGE_ERASEPAGE_Pos
+#endif
+#ifndef NVMC_ERASEPCR0_ERASEPCR0_Msk
+    #define NVMC_ERASEPCR0_ERASEPCR0_Msk      NVMC_ERASEPAGE_ERASEPAGE_Msk
+#endif
 
 
 /* IRQ */

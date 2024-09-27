@@ -48,31 +48,45 @@ extern "C" {
  *          and Status Registers for VPR IO (VPR CSR VIO).
  */
 
-/** @brief Shift sizes for output. */
+/** @brief Maximum number of frames to be shifted from buffered input before new data is required. */
+#define NRF_VPR_CSR_VIO_SHIFT_CNT_IN_MAX VPRCSR_NORDIC_SHIFTCNTIN_VALUE_Max
+
+/** @brief Maximum number of frames to be shifted from buffered output before new data is required. */
+#define NRF_VPR_CSR_VIO_SHIFT_CNT_OUT_MAX VPRCSR_NORDIC_SHIFTCNTOUT_VALUE_Max
+
+/** @brief Maximum buffered number of frames to be shifted from buffered interrupt before new data is required. */
+#define NRF_VPR_CSR_VIO_SHIFT_CNT_OUT_BUFFERED_MAX VPRCSR_NORDIC_SHIFTCNTB_VALUE_Max
+
+/** @brief Shift mode. */
 typedef enum
 {
-    NRF_VPR_CSR_VIO_OUT_SHIFT_1  = VPRCSR_NORDIC_OUTMODE_SHIFSIZE_SHIFT1,  ///< Shift OUT by 1 bit.
-    NRF_VPR_CSR_VIO_OUT_SHIFT_2  = VPRCSR_NORDIC_OUTMODE_SHIFSIZE_SHIFT2,  ///< Shift OUT by 2 bits.
-    NRF_VPR_CSR_VIO_OUT_SHIFT_4  = VPRCSR_NORDIC_OUTMODE_SHIFSIZE_SHIFT4,  ///< Shift OUT by 4 bits.
-    NRF_VPR_CSR_VIO_OUT_SHIFT_8  = VPRCSR_NORDIC_OUTMODE_SHIFSIZE_SHIFT8,  ///< Shift OUT by 8 bits.
-    NRF_VPR_CSR_VIO_OUT_SHIFT_16 = VPRCSR_NORDIC_OUTMODE_SHIFSIZE_SHIFT16, ///< Shift OUT by 16 bits.
-} nrf_vpr_csr_vio_out_shift_t;
+    NRF_VPR_CSR_VIO_SHIFT_NONE        = VPRCSR_NORDIC_OUTMODE_MODE_NoShifting,       ///< No shifting.
+    NRF_VPR_CSR_VIO_SHIFT_OUTB        = VPRCSR_NORDIC_OUTMODE_MODE_OutBBuf,          ///< OUTB used for buffering.
+    NRF_VPR_CSR_VIO_SHIFT_OUTB_TOGGLE = VPRCSR_NORDIC_OUTMODE_MODE_OutBBufToggleClk, ///< OUTB used for buffering, auto-toggle clock line.
+} nrf_vpr_csr_vio_shift_t;
 
 /** @brief Output mode structure. */
 typedef struct
 {
-    bool                        shift_enable; ///< Enable shift mode.
-    nrf_vpr_csr_vio_out_shift_t shift_size;   ///< Shift size.
+    nrf_vpr_csr_vio_shift_t mode;        ///< Shift mode.
+    uint16_t                frame_width; ///< Frame width in bits.
 } nrf_vpr_csr_vio_mode_out_t;
 
-#if !defined(NRF54H20_ENGA_XXAA)
 /** @brief Input modes. */
 typedef enum
 {
     NRF_VPR_CSR_VIO_MODE_IN_CONTINUOUS = VPRCSR_NORDIC_INMODE_MODE_CONTINUOUS, ///< Continuous sampling (if CPU is not sleeping).
     NRF_VPR_CSR_VIO_MODE_IN_EVENT      = VPRCSR_NORDIC_INMODE_MODE_EVENT,      ///< Sampling on Counter 1 event.
+    NRF_VPR_CSR_VIO_MODE_IN_SHIFT      = VPRCSR_NORDIC_INMODE_MODE_SHIFT,      ///< Sampling and shifting on Counter 1 event.
 } nrf_vpr_csr_vio_mode_in_t;
-#endif
+
+/** @brief VIO configuration. */
+typedef struct
+{
+    bool clk_polarity; ///< Clock polarity. True if high, false if low.
+    bool stop_cnt;     ///< Stop counters CNT0 and CNT1 on OUTB under-run.
+    bool input_sel;    ///< Input pin selection. True if sample on separate pin, false if sample on same OUT pin.
+} nrf_vpr_csr_vio_config_t;
 
 /**
  * @brief Function for getting the pin directions mask.
@@ -131,7 +145,20 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_buffered_toggle_set(uint16_t mask);
  */
 NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_in_get(void);
 
-#if !defined(NRF54H20_ENGA_XXAA)
+/**
+ * @brief Function for getting the buffered input values.
+ *
+ * @return Mask of input states. 0 is low, 1 is high.
+ */
+NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_in_buffered_get(void);
+
+/**
+ * @brief Function for getting the buffered input values, reversed in each byte.
+ *
+ * @return Mask of input states. 0 is low, 1 is high.
+ */
+NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_in_buffered_reversed_byte_get(void);
+
 /**
  * @brief Function for getting the input mode.
  *
@@ -145,21 +172,20 @@ NRF_STATIC_INLINE nrf_vpr_csr_vio_mode_in_t nrf_vpr_csr_vio_mode_in_get(void);
  * @param[in] mode Input mode to be set.
  */
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_in_set(nrf_vpr_csr_vio_mode_in_t mode);
-#else
-/**
- * @brief Function for getting the input mode.
- *
- * @return Mask of input modes. 0 is continous sampling, 1 is sampling on event.
- */
-NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_mode_in_get(void);
 
 /**
- * @brief Function for setting the input mode.
+ * @brief Function for getting the buffered input mode.
  *
- * @param[in] value Mask of input modes to be set. 0 is continous sampling, 1 is sampling on event.
+ * @return Input mode.
  */
-NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_in_set(uint16_t mode);
-#endif
+NRF_STATIC_INLINE nrf_vpr_csr_vio_mode_in_t nrf_vpr_csr_vio_mode_in_buffered_get(void);
+
+/**
+ * @brief Function for setting the buffered input mode.
+ *
+ * @param[in] mode Input mode to be set.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_in_buffered_set(nrf_vpr_csr_vio_mode_in_t mode);
 
 /**
  * @brief Function for getting the output values.
@@ -188,6 +214,34 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_get(void);
  * @param[in] value Mask of output states to be set. 0 is low, 1 is high.
  */
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_set(uint32_t value);
+
+/**
+ * @brief Function for getting the buffered output values, reversed in each byte.
+ *
+ * @return Mask of output states. 0 is low, 1 is high.
+ */
+NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_reversed_byte_get(void);
+
+/**
+ * @brief Function for setting the buffered output values, reversed in each byte.
+ *
+ * @param[in] value Mask of output states to be set. 0 is low, 1 is high.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_byte_set(uint32_t value);
+
+/**
+ * @brief Function for getting the buffered output values, reversed in each word.
+ *
+ * @return Mask of output states. 0 is low, 1 is high.
+ */
+NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_reversed_word_get(void);
+
+/**
+ * @brief Function for setting the buffered output values, reversed in the whole word.
+ *
+ * @param[in] value Mask of output states to be set. 0 is low, 1 is high.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_word_set(uint32_t value);
 
 /**
  * @brief Function for retrieving the dirty status of buffered output values.
@@ -252,6 +306,34 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_get(nrf_vpr_csr_vio_mode_out_t *
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_set(nrf_vpr_csr_vio_mode_out_t const * p_mode);
 
 /**
+ * @brief Function for getting the buffered configuration of output mode.
+ *
+ * @param[out] p_mode Pointer to the structure to be filled with buffered output mode.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_buffered_get(nrf_vpr_csr_vio_mode_out_t * p_mode);
+
+/**
+ * @brief Function for setting the buffered configuration of output mode.
+ *
+ * @param[in] p_mode Pointer to the structure with buffered output mode to be set.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_buffered_set(nrf_vpr_csr_vio_mode_out_t const * p_mode);
+
+/**
+ * @brief Function for getting the VIO configuration.
+ *
+ * @param[out] p_config Pointer to the structure to be filled with VIO configuration.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_get(nrf_vpr_csr_vio_config_t * p_config);
+
+/**
+ * @brief Function for setting the VIO configuration.
+ *
+ * @param[in] p_config Pointer to the structure with VIO configuration to be set.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_set(nrf_vpr_csr_vio_config_t const * p_config);
+
+/**
  * @brief Function for getting the combined pin directions mask and output values.
  *
  * @note Lower 16 bits determine the output state, while higher 16 bits determine the pin directions.
@@ -291,7 +373,7 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_buffered_set(uint32_t value);
  * @brief Function for retrieving the dirty status of combined buffered pin directions mask and buffered output values.
  *
  * @retval true  Buffer is dirty.
- * @retval fasle Buffer is clean.
+ * @retval false Buffer is clean.
  */
 NRF_STATIC_INLINE bool nrf_vpr_csr_vio_dirout_buffered_dirty_check(void);
 
@@ -312,6 +394,48 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_toggle_set(uint32_t mask);
  * @param[in] mask Mask of values to be toggled.
  */
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_toggle_buffered_set(uint32_t mask);
+
+/**
+ * @brief Function for getting the number of frames to be shifted from buffered input before new data is required.
+ *
+ * @return Number of frames to be shifted from buffered input before new data is required.
+ */
+NRF_STATIC_INLINE uint8_t nrf_vpr_csr_vio_shift_cnt_in_get(void);
+
+/**
+ * @brief Function for setting the number of frames to be shifted from buffered input before new data is required.
+ *
+ * @param[in] cnt Number for frames to be set.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_shift_cnt_in_set(uint8_t cnt);
+
+/**
+ * @brief Function for getting the number of frames to be shifted from buffered output before new data is required.
+ *
+ * @return Number of frames to be shifted from buffered output before new data is required.
+ */
+NRF_STATIC_INLINE uint8_t nrf_vpr_csr_vio_shift_cnt_out_get(void);
+
+/**
+ * @brief Function for setting the number of frames to be shifted from buffered output before new data is required.
+ *
+ * @param[in] cnt Number for frames to be set.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_shift_cnt_out_set(uint8_t cnt);
+
+/**
+ * @brief Function for getting the buffered number of frames to be shifted from buffered output before new data is required.
+ *
+ * @return Buffered number of frames to be shifted from buffered output before new data is required.
+ */
+NRF_STATIC_INLINE uint8_t nrf_vpr_csr_vio_shift_cnt_out_buffered_get(void);
+
+/**
+ * @brief Function for setting the buffered number of frames to be shifted from buffered output before new data is required.
+ *
+ * @param[in] cnt Number for frames to be set.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_shift_cnt_out_buffered_set(uint8_t cnt);
 
 #ifndef NRF_DECLARE_ONLY
 
@@ -356,7 +480,16 @@ NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_in_get(void)
     return (uint16_t)nrf_csr_read(VPRCSR_NORDIC_IN);
 }
 
-#if !defined(NRF54H20_ENGA_XXAA)
+NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_in_buffered_get(void)
+{
+    return (uint16_t)nrf_csr_read(VPRCSR_NORDIC_INB);
+}
+
+NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_in_buffered_reversed_byte_get(void)
+{
+    return (uint16_t)nrf_csr_read(VPRCSR_NORDIC_INBRB);
+}
+
 NRF_STATIC_INLINE nrf_vpr_csr_vio_mode_in_t nrf_vpr_csr_vio_mode_in_get(void)
 {
     return nrf_csr_read(VPRCSR_NORDIC_INMODE);
@@ -366,17 +499,16 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_in_set(nrf_vpr_csr_vio_mode_in_t mod
 {
     nrf_csr_write(VPRCSR_NORDIC_INMODE, mode);
 }
-#else
-NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_mode_in_get(void)
+
+NRF_STATIC_INLINE nrf_vpr_csr_vio_mode_in_t nrf_vpr_csr_vio_mode_in_buffered_get(void)
 {
-    return (uint16_t)nrf_csr_read(VPRCSR_NORDIC_INMODE);
+    return nrf_csr_read(VPRCSR_NORDIC_INMODEB);
 }
 
-NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_in_set(uint16_t value)
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_in_buffered_set(nrf_vpr_csr_vio_mode_in_t mode)
 {
-    nrf_csr_write(VPRCSR_NORDIC_INMODE, value);
+    nrf_csr_write(VPRCSR_NORDIC_INMODEB, mode);
 }
-#endif
 
 NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_out_get(void)
 {
@@ -396,6 +528,26 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_get(void)
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_set(uint32_t value)
 {
     nrf_csr_write(VPRCSR_NORDIC_OUTB, value);
+}
+
+NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_reversed_byte_get(void)
+{
+    return nrf_csr_read(VPRCSR_NORDIC_OUTBRB);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_byte_set(uint32_t value)
+{
+    nrf_csr_write(VPRCSR_NORDIC_OUTBRB, value);
+}
+
+NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_reversed_word_get(void)
+{
+    return nrf_csr_read(VPRCSR_NORDIC_OUTBRW);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_word_set(uint32_t value)
+{
+    nrf_csr_write(VPRCSR_NORDIC_OUTBRW, value);
 }
 
 NRF_STATIC_INLINE bool nrf_vpr_csr_vio_out_buffered_dirty_check(void)
@@ -434,22 +586,59 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_get(nrf_vpr_csr_vio_mode_out_t *
 {
     uint32_t reg = nrf_csr_read(VPRCSR_NORDIC_OUTMODE);
 
-    p_mode->shift_enable = ((reg & VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Msk)
-                            >> VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Pos)
-                           == VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Enabled ? true : false;
-    p_mode->shift_size   = (reg & VPRCSR_NORDIC_OUTMODE_SHIFSIZE_Msk)
-                           >> VPRCSR_NORDIC_OUTMODE_SHIFSIZE_Pos;
+    p_mode->mode = (nrf_vpr_csr_vio_shift_t)((reg & VPRCSR_NORDIC_OUTMODE_MODE_Msk)
+                                             >> VPRCSR_NORDIC_OUTMODE_MODE_Pos);
+    p_mode->frame_width = (reg & VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Msk)
+                          >> VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Pos;
 }
 
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_set(nrf_vpr_csr_vio_mode_out_t const * p_mode)
 {
-    uint32_t reg = ((p_mode->shift_enable ? VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Enabled :
-                                            VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Disabled)
-                    << VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Pos) |
-                   ((p_mode->shift_size << VPRCSR_NORDIC_OUTMODE_SHIFSIZE_Pos)
-                    & VPRCSR_NORDIC_OUTMODE_SHIFSIZE_Msk);
+    uint32_t reg = ((uint32_t)p_mode->mode << VPRCSR_NORDIC_OUTMODE_MODE_Pos) |
+                   (((uint32_t)p_mode->frame_width << VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Pos)
+                    & VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Msk);
 
     nrf_csr_write(VPRCSR_NORDIC_OUTMODE, reg);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_buffered_get(nrf_vpr_csr_vio_mode_out_t * p_mode)
+{
+    uint32_t reg = nrf_csr_read(VPRCSR_NORDIC_OUTMODEB);
+
+    p_mode->mode = (nrf_vpr_csr_vio_shift_t)((reg & VPRCSR_NORDIC_OUTMODEB_MODE_Msk)
+                                             >> VPRCSR_NORDIC_OUTMODEB_MODE_Pos);
+    p_mode->frame_width = (reg & VPRCSR_NORDIC_OUTMODEB_FRAMEWIDTH_Msk)
+                          >> VPRCSR_NORDIC_OUTMODEB_FRAMEWIDTH_Pos;
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_buffered_set(nrf_vpr_csr_vio_mode_out_t const * p_mode)
+{
+    uint32_t reg = ((uint32_t)p_mode->mode << VPRCSR_NORDIC_OUTMODEB_MODE_Pos) |
+                   (((uint32_t)p_mode->frame_width << VPRCSR_NORDIC_OUTMODEB_FRAMEWIDTH_Pos)
+                    & VPRCSR_NORDIC_OUTMODEB_FRAMEWIDTH_Msk);
+
+    nrf_csr_write(VPRCSR_NORDIC_OUTMODE, reg);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_get(nrf_vpr_csr_vio_config_t * p_config)
+{
+    uint32_t reg = nrf_csr_read(VPRCSR_NORDIC_RTPERIPHCTRL);
+
+    p_config->clk_polarity = (reg & VPRCSR_NORDIC_RTPERIPHCTRL_CLOCKPOLARITY_Msk)
+                             >> VPRCSR_NORDIC_RTPERIPHCTRL_CLOCKPOLARITY_Pos;
+    p_config->stop_cnt     = (reg & VPRCSR_NORDIC_RTPERIPHCTRL_STOPCOUNTERS_Msk)
+                             >> VPRCSR_NORDIC_RTPERIPHCTRL_STOPCOUNTERS_Pos;
+    p_config->input_sel    = (reg & VPRCSR_NORDIC_RTPERIPHCTRL_INSEL_Msk)
+                             >> VPRCSR_NORDIC_RTPERIPHCTRL_INSEL_Pos;
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_set(nrf_vpr_csr_vio_config_t const * p_config)
+{
+    uint32_t reg = (p_config->clk_polarity << VPRCSR_NORDIC_RTPERIPHCTRL_CLOCKPOLARITY_Pos) |
+                   (p_config->stop_cnt << VPRCSR_NORDIC_RTPERIPHCTRL_STOPCOUNTERS_Pos) |
+                   (p_config->input_sel << VPRCSR_NORDIC_RTPERIPHCTRL_INSEL_Pos);
+
+    nrf_csr_write(VPRCSR_NORDIC_RTPERIPHCTRL, reg);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_dirout_get(void)
@@ -486,6 +675,39 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_toggle_set(uint32_t mask)
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_toggle_buffered_set(uint32_t mask)
 {
     nrf_csr_write(VPRCSR_NORDIC_DIROUTBTGL, mask);
+}
+
+NRF_STATIC_INLINE uint8_t nrf_vpr_csr_vio_shift_cnt_in_get(void)
+{
+    return (uint8_t)nrf_csr_read(VPRCSR_NORDIC_SHIFTCNTIN);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_shift_cnt_in_set(uint8_t cnt)
+{
+    NRFX_ASSERT(cnt <= NRF_VPR_CSR_VIO_SHIFT_CNT_IN_MAX);
+    nrf_csr_write(VPRCSR_NORDIC_SHIFTCNTIN, cnt);
+}
+
+NRF_STATIC_INLINE uint8_t nrf_vpr_csr_vio_shift_cnt_out_get(void)
+{
+    return (uint8_t)nrf_csr_read(VPRCSR_NORDIC_SHIFTCNTOUT);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_shift_cnt_out_set(uint8_t cnt)
+{
+    NRFX_ASSERT(cnt <= NRF_VPR_CSR_VIO_SHIFT_CNT_OUT_MAX);
+    nrf_csr_write(VPRCSR_NORDIC_SHIFTCNTOUT, cnt);
+}
+
+NRF_STATIC_INLINE uint8_t nrf_vpr_csr_vio_shift_cnt_out_buffered_get(void)
+{
+    return (uint8_t)nrf_csr_read(VPRCSR_NORDIC_SHIFTCNTB);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_shift_cnt_out_buffered_set(uint8_t cnt)
+{
+    NRFX_ASSERT(cnt <= NRF_VPR_CSR_VIO_SHIFT_CNT_OUT_BUFFERED_MAX);
+    nrf_csr_write(VPRCSR_NORDIC_SHIFTCNTB, cnt);
 }
 
 #endif // NRF_DECLARE_ONLY

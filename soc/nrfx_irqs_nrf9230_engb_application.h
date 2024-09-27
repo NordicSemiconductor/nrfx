@@ -150,7 +150,7 @@ extern "C" {
 #define nrfx_i2s_130_irq_handler        I2S130_IRQHandler
 
 // PDM_IRQHandler
-#define nrfx_pdm_irq_handler            PDM_IRQHandler
+#define nrfx_pdm_0_irq_handler          PDM_IRQHandler
 
 // QDEC130_IRQHandler
 #define nrfx_qdec_130_irq_handler       QDEC130_IRQHandler

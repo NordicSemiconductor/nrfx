@@ -77,6 +77,13 @@ extern "C" {
 #define NRF_PWM_HAS_SEQ_CNT 0
 #endif
 
+#if defined(PWM_IDLEOUT_ResetValue) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether PWM has IDLEOUT register. */
+#define NRF_PWM_HAS_IDLEOUT 1
+#else
+#define NRF_PWM_HAS_IDLEOUT 0
+#endif
+
 /**
  * @brief Macro getting pointer to the structure of registers of the PWM peripheral.
  *
@@ -616,6 +623,32 @@ NRF_STATIC_INLINE nrf_pwm_task_t nrf_pwm_seqstart_task_get(uint8_t seq_id);
  */
 NRF_STATIC_INLINE nrf_pwm_event_t nrf_pwm_seqend_event_get(uint8_t seq_id);
 
+#if NRF_PWM_HAS_IDLEOUT
+/**
+ * @brief Function for setting the output value of specified channel while
+ *        PDM is idle.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] channel PWM output channel.
+ * @param[in] value   If true, idle output will be high. If false, it will be low.
+ */
+NRF_STATIC_INLINE void nrf_pwm_channel_idle_set(NRF_PWM_Type * p_reg,
+                                                uint8_t        channel,
+                                                bool           value);
+
+/**
+ * @brief Function for getting the output value of specified channel while
+ *        PDM is idle.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] channel PWM output channel.
+ *
+ * @retval true  Idle output value is high.
+ * @retval false Idle output value is low.
+ */
+NRF_STATIC_INLINE bool nrf_pwm_channel_idle_get(NRF_PWM_Type const * p_reg,
+                                                uint8_t              channel);
+#endif // NRF_PWM_HAS_IDLEOUT
 
 #ifndef NRF_DECLARE_ONLY
 
@@ -849,6 +882,28 @@ NRF_STATIC_INLINE nrf_pwm_event_t nrf_pwm_seqend_event_get(uint8_t seq_id)
     return (nrf_pwm_event_t)NRFX_OFFSETOF(NRF_PWM_Type, EVENTS_SEQEND[seq_id]);
 #endif
 }
+
+#if NRF_PWM_HAS_IDLEOUT
+NRF_STATIC_INLINE void nrf_pwm_channel_idle_set(NRF_PWM_Type * p_reg,
+                                                uint8_t        channel,
+                                                bool           value)
+{
+    if (value)
+    {
+        p_reg->IDLEOUT |= (1UL << channel); 
+    }
+    else
+    {
+        p_reg->IDLEOUT &= ~(1UL << channel);
+    }
+}
+
+NRF_STATIC_INLINE bool nrf_pwm_channel_idle_get(NRF_PWM_Type const * p_reg,
+                                                uint8_t              channel)
+{
+    return ((p_reg->IDLEOUT >> channel) & 1UL);
+}
+#endif // NRF_PWM_HAS_IDLEOUT
 
 #endif // NRF_DECLARE_ONLY
 

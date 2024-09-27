@@ -250,8 +250,10 @@ extern "C" {
 #define nrfx_timer_24_irq_handler       TIMER24_IRQHandler
 
 // PDM20_IRQHandler
+#define nrfx_pdm_20_irq_handler         PDM20_IRQHandler
 
 // PDM21_IRQHandler
+#define nrfx_pdm_21_irq_handler         PDM21_IRQHandler
 
 // PWM20_IRQHandler
 #define nrfx_pwm_20_irq_handler         PWM20_IRQHandler

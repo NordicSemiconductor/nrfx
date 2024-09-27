@@ -162,6 +162,16 @@ static void pwm_configure(nrfx_pwm_t const * p_instance, nrfx_pwm_config_t const
                         NRF_PWM_EVENT_SEQEND1 | NRF_PWM_EVENT_STOPPED;
     nrfy_pwm_int_init(p_instance->p_reg, to_clear, p_config->irq_priority, false);
 
+#if NRF_PWM_HAS_IDLEOUT
+    for (uint8_t channel = 0; channel < NRF_PWM_CHANNEL_COUNT; ++channel)
+    {
+        nrfy_pwm_channel_idle_set(p_instance->p_reg, channel, 
+                                  p_config->count_mode == NRF_PWM_MODE_UP ?
+                                  !p_config->pin_inverted[channel]        :
+                                  p_config->pin_inverted[channel]);
+    }
+#endif
+
 #if defined(USE_DMA_ISSUE_WORKAROUND)
     apply_errata_109(p_config);
 #endif

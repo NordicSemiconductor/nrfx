@@ -130,7 +130,11 @@ __STATIC_INLINE void nrfx_ram_ctrl_section_retention_mask_enable_set(uint8_t  bl
                                                                      bool     enable)
 {
 #if defined(MEMCONF_PRESENT)
+    NRFX_ASSERT(block_idx < NRF_MEMCONF_POWERBLOCK_COUNT);
     nrf_memconf_ramblock_ret_mask_enable_set(NRF_MEMCONF, block_idx, section_mask, enable);
+#if NRF_MEMCONF_HAS_RET2
+    nrf_memconf_ramblock_ret2_mask_enable_set(NRF_MEMCONF, block_idx, section_mask, enable);
+#endif
 
 #elif defined(NRF_VMC)
     if (enable)

@@ -83,7 +83,11 @@ typedef struct
     nrf_pdm_mode_t    mode;          ///< Interface operation mode.
     nrf_pdm_edge_t    edge;          ///< Sampling mode.
     nrfy_pdm_pins_t   pins;          ///< Pin configuration structure.
+#if NRF_PDM_HAS_PDMCLKCTRL
     nrf_pdm_freq_t    clock_freq;    ///< Clock frequency.
+#elif NRF_PDM_HAS_PRESCALER
+    uint32_t          prescaler;     ///< Prescaler divisior.
+#endif
     nrf_pdm_gain_t    gain_l;        ///< Left channel gain.
     nrf_pdm_gain_t    gain_r;        ///< Right channel gain.
 #if NRF_PDM_HAS_RATIO_CONFIG
@@ -119,7 +123,11 @@ NRFY_STATIC_INLINE void nrfy_pdm_periph_configure(NRF_PDM_Type *            p_re
 #if NRF_PDM_HAS_MCLKCONFIG
     nrf_pdm_mclksrc_configure(p_reg, p_config->mclksrc);
 #endif
+#if NRF_PDM_HAS_PDMCLKCTRL
     nrf_pdm_clock_set(p_reg, p_config->clock_freq);
+#elif NRF_PDM_HAS_PRESCALER
+    nrf_pdm_prescaler_set(p_reg, p_config->prescaler);
+#endif
     nrf_pdm_mode_set(p_reg, p_config->mode, p_config->edge);
     nrf_pdm_gain_set(p_reg, p_config->gain_l, p_config->gain_r);
     if (!p_config->skip_psel_cfg)
@@ -413,6 +421,7 @@ NRFY_STATIC_INLINE void nrfy_pdm_mode_get(NRF_PDM_Type const * p_reg,
     nrf_barrier_r();
 }
 
+#if NRF_PDM_HAS_PDMCLKCTRL
 /** @refhal{nrf_pdm_clock_set} */
 NRFY_STATIC_INLINE void nrfy_pdm_clock_set(NRF_PDM_Type * p_reg,
                                            nrf_pdm_freq_t pdm_freq)
@@ -429,6 +438,25 @@ NRFY_STATIC_INLINE nrf_pdm_freq_t nrfy_pdm_clock_get(NRF_PDM_Type const * p_reg)
     nrf_barrier_r();
     return clock;
 }
+#endif
+
+#if NRF_PDM_HAS_PRESCALER
+/** @refhal{nrf_pdm_prescaler_set} */
+NRFY_STATIC_INLINE void nrfy_pdm_prescaler_set(NRF_PDM_Type * p_reg, uint32_t prescaler)
+{
+    nrf_pdm_prescaler_set(p_reg, prescaler);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_pdm_prescaler_get} */
+NRFY_STATIC_INLINE uint32_t nrfy_pdm_prescaler_get(NRF_PDM_Type const * p_reg)
+{
+    nrf_barrier_rw();
+    uint32_t prescaler = nrf_pdm_prescaler_get(p_reg);
+    nrf_barrier_r();
+    return prescaler;
+}
+#endif
 
 /** @refhal{nrf_pdm_psel_disconnect} */
 NRFY_STATIC_INLINE void nrfy_pdm_pin_disconnect(NRF_PDM_Type * p_reg)

@@ -35,10 +35,10 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #define __SYSTEM_CLOCK_DEFAULT      (64000000ul)
 
 /* Trace configuration */
-#define TRACE_TRACECLK_PIN          (06ul)
-#define TRACE_TRACEDATA0_PIN        (07ul)
-#define TRACE_TRACEDATA1_PIN        (08ul)
-#define TRACE_TRACEDATA2_PIN        (09ul)
+#define TRACE_TRACECLK_PIN          (6ul)
+#define TRACE_TRACEDATA0_PIN        (7ul)
+#define TRACE_TRACEDATA1_PIN        (8ul)
+#define TRACE_TRACEDATA2_PIN        (9ul)
 #define TRACE_TRACEDATA3_PIN        (10ul)
 
 #define TRACE_PIN_CLEAR             (~(GPIO_PIN_CNF_CTRLSEL_Msk | GPIO_PIN_CNF_DRIVE0_Msk | GPIO_PIN_CNF_DRIVE1_Msk))
@@ -94,22 +94,29 @@ void SystemInit(void)
             #ifndef NRF_SKIP_SAU_CONFIGURATION   
                 configure_default_sau();
             #endif          
-        #endif
 
-        #if !defined (NRF_DISABLE_FICR_TRIMCNF)
-            /* Trimming of the device. Copy all the trimming values from FICR into the target addresses. Trim
-               until one ADDR is not initialized. */
-            uint32_t index = 0ul;
-            for (index = 0ul; index < FICR_TRIMCNF_MaxCount && NRF_FICR_NS->TRIMCNF[index].ADDR != 0xFFFFFFFFul && NRF_FICR_NS->TRIMCNF[index].ADDR != 0x00000000ul; index++) {
-            #if defined ( __ICCARM__ )
-                /* IAR will complain about the order of volatile pointer accesses. */
-                #pragma diag_suppress=Pa082
+            #if !defined (NRF_DISABLE_FICR_TRIMCNF)
+                /* Trimming of the device. Copy all the trimming values from FICR into the target addresses. Trim
+                until one ADDR is not initialized. */
+                uint32_t index = 0ul;
+                for (index = 0ul; index < FICR_TRIMCNF_MaxCount && NRF_FICR_NS->TRIMCNF[index].ADDR != 0xFFFFFFFFul && NRF_FICR_NS->TRIMCNF[index].ADDR != 0x00000000ul; index++) {
+                #if defined ( __ICCARM__ )
+                    /* IAR will complain about the order of volatile pointer accesses. */
+                    #pragma diag_suppress=Pa082
+                #endif
+                * ((volatile uint32_t*)NRF_FICR_NS->TRIMCNF[index].ADDR) = NRF_FICR_NS->TRIMCNF[index].DATA;
+                #if defined ( __ICCARM__ )
+                    #pragma diag_default=Pa082
+                #endif
+                }
             #endif
-            * ((volatile uint32_t*)NRF_FICR_NS->TRIMCNF[index].ADDR) = NRF_FICR_NS->TRIMCNF[index].DATA;
-            #if defined ( __ICCARM__ )
-                #pragma diag_default=Pa082
+
+            /* Device configuration for ES PDK */
+            #if defined (NRF54L15_XXAA)
+                if (*((volatile uint32_t *)0x50120440) == 0x00ul) {
+                    *((volatile uint32_t *)0x50120440) = 0xC8ul;
+                }
             #endif
-            }
         #endif
 
         /* Enable the FPU if the compiler used floating point unit instructions. __FPU_USED is a MACRO defined by the

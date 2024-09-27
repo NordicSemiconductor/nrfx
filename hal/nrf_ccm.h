@@ -43,6 +43,14 @@
 extern "C" {
 #endif
 
+#if defined(CCM_MODE_DATARATE_125Kbps)
+#define NRF_CCM_MODE_DATARATE_125K CCM_MODE_DATARATE_125Kbps
+#define NRF_CCM_MODE_DATARATE_500K CCM_MODE_DATARATE_500Kbps
+#else
+#define NRF_CCM_MODE_DATARATE_125K CCM_MODE_DATARATE_125Kbit
+#define NRF_CCM_MODE_DATARATE_500K CCM_MODE_DATARATE_500Kbit
+#endif
+
 /**
  * @defgroup nrf_ccm_hal AES CCM HAL
  * @{
@@ -62,13 +70,6 @@ extern "C" {
 #define NRF_CCM_HAS_TASK_CRYPT 1
 #else
 #define NRF_CCM_HAS_TASK_CRYPT 0
-#endif
-
-#if defined(CCM_TASKS_START_TASKS_START_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Presence of the START task. */
-#define NRF_CCM_HAS_TASK_START 1
-#else
-#define NRF_CCM_HAS_TASK_START 0
 #endif
 
 #if defined(CCM_TASKS_RATEOVERRIDE_TASKS_RATEOVERRIDE_Msk) || defined(__NRFX_DOXYGEN__)
@@ -92,13 +93,6 @@ extern "C" {
 #define NRF_CCM_HAS_EVENT_ENDCRYPT 1
 #else
 #define NRF_CCM_HAS_EVENT_ENDCRYPT 0
-#endif
-
-#if defined(CCM_EVENTS_END_EVENTS_END_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Presence of the END event. */
-#define NRF_CCM_HAS_EVENT_END 1
-#else
-#define NRF_CCM_HAS_EVENT_END 0
 #endif
 
 #if defined(CCM_ADATAMASK_ADATAMASK_Msk) || defined(__NRFX_DOXYGEN__)
@@ -248,48 +242,34 @@ extern "C" {
 #define NRF_CCM_HAS_MODE_LENGTH 0
 #endif
 
-#if defined(CCM_MODE_DATARATE_125Kbps) || defined(__NRFX_DOXYGEN__)
-/** @brief Support for 125 Kbps radio data rate. */
-#define NRF_CCM_HAS_MODE_DATARATE_125KBPS 1
-#else
-#define NRF_CCM_HAS_MODE_DATARATE_125KBPS 0
-#endif
-
-#if (!NRF_CCM_HAS_MODE_DATARATE_125KBPS && \
-     defined(CCM_MODE_DATARATE_125Kbit)) || defined(__NRFX_DOXYGEN__)
+#if defined(CCM_MODE_DATARATE_125Kbit) || defined(CCM_MODE_DATARATE_125Kbps) || \
+    defined(__NRFX_DOXYGEN__)
 /** @brief Support for 125 Kbit radio data rate. */
-#define NRF_CCM_HAS_MODE_DATARATE_125KBIT 1
+#define NRF_CCM_HAS_MODE_DATARATE_125K 1
 #else
-#define NRF_CCM_HAS_MODE_DATARATE_125KBIT 0
+#define NRF_CCM_HAS_MODE_DATARATE_125K 0
 #endif
 
 #if defined(CCM_MODE_DATARATE_250Kbit) || defined(__NRFX_DOXYGEN__)
 /** @brief Support for 250 Kbit radio data rate. */
-#define NRF_CCM_HAS_MODE_DATARATE_250KBIT 1
+#define NRF_CCM_HAS_MODE_DATARATE_250K 1
 #else
-#define NRF_CCM_HAS_MODE_DATARATE_250KBIT 0
+#define NRF_CCM_HAS_MODE_DATARATE_250K 0
 #endif
 
-#if defined(CCM_MODE_DATARATE_500Kbps) || defined(__NRFX_DOXYGEN__)
-/** @brief Support for 500 Kbps radio data rate. */
-#define NRF_CCM_HAS_MODE_DATARATE_500KBPS 1
-#else
-#define NRF_CCM_HAS_MODE_DATARATE_500KBPS 0
-#endif
-
-#if (!NRF_CCM_HAS_MODE_DATARATE_500KBPS && \
-     defined(CCM_MODE_DATARATE_500Kbit)) || defined(__NRFX_DOXYGEN__)
+#if defined(CCM_MODE_DATARATE_500Kbit) || defined(CCM_MODE_DATARATE_500Kbps) || \
+    defined(__NRFX_DOXYGEN__)
 /** @brief Support for 500 Kbit radio data rate. */
-#define NRF_CCM_HAS_MODE_DATARATE_500KBIT 1
+#define NRF_CCM_HAS_MODE_DATARATE_500K 1
 #else
-#define NRF_CCM_HAS_MODE_DATARATE_500KBIT 0
+#define NRF_CCM_HAS_MODE_DATARATE_500K 0
 #endif
 
 #if defined(CCM_MODE_DATARATE_4Mbit) || defined(__NRFX_DOXYGEN__)
 /** @brief Support for 4 Mbit radio data rate. */
-#define NRF_CCM_HAS_MODE_DATARATE_4MBIT 1
+#define NRF_CCM_HAS_MODE_DATARATE_4M 1
 #else
-#define NRF_CCM_HAS_MODE_DATARATE_4MBIT 0
+#define NRF_CCM_HAS_MODE_DATARATE_4M 0
 #endif
 
 #if defined(CCM_MODE_MACLEN_Msk) || defined(__NRFX_DOXYGEN__)
@@ -337,12 +317,11 @@ typedef enum
     NRF_CCM_TASK_KSGEN        = offsetof(NRF_CCM_Type, TASKS_KSGEN),        ///< Start generation of key-stream.
 #endif
 #if NRF_CCM_HAS_TASK_CRYPT
-    NRF_CCM_TASK_CRYPT        = offsetof(NRF_CCM_Type, TASKS_CRYPT),        ///< Start encryption/decryption.
-#endif
-    NRF_CCM_TASK_STOP         = offsetof(NRF_CCM_Type, TASKS_STOP),         ///< Stop encryption/decryption.
-#if NRF_CCM_HAS_TASK_START
+    NRF_CCM_TASK_START        = offsetof(NRF_CCM_Type, TASKS_CRYPT),        ///< Start encryption/decryption.
+#else
     NRF_CCM_TASK_START        = offsetof(NRF_CCM_Type, TASKS_START),        ///< Start encryption/decryption.
 #endif
+    NRF_CCM_TASK_STOP         = offsetof(NRF_CCM_Type, TASKS_STOP),         ///< Stop encryption/decryption.
 #if NRF_CCM_HAS_TASK_RATEOVERRIDE
     NRF_CCM_TASK_RATEOVERRIDE = offsetof(NRF_CCM_Type, TASKS_RATEOVERRIDE), ///< Override DATARATE setting in MODE register.
 #endif
@@ -352,22 +331,21 @@ typedef enum
 typedef enum
 {
 #if NRF_CCM_HAS_EVENT_ENDKSGEN
-    NRF_CCM_EVENT_ENDKSGEN  = offsetof(NRF_CCM_Type, EVENTS_ENDKSGEN),  ///< Keystream generation complete.
+    NRF_CCM_EVENT_ENDKSGEN = offsetof(NRF_CCM_Type, EVENTS_ENDKSGEN),  ///< Keystream generation complete.
 #endif
 #if NRF_CCM_HAS_EVENT_ENDCRYPT
-    NRF_CCM_EVENT_ENDCRYPT  = offsetof(NRF_CCM_Type, EVENTS_ENDCRYPT),  ///< Encrypt/decrypt complete.
+    NRF_CCM_EVENT_END      = offsetof(NRF_CCM_Type, EVENTS_ENDCRYPT),  ///< Encrypt/decrypt complete.
+#else
+    NRF_CCM_EVENT_END      = offsetof(NRF_CCM_Type, EVENTS_END),       ///< Encrypt/decrypt complete.
 #endif
-    NRF_CCM_EVENT_ERROR     = offsetof(NRF_CCM_Type, EVENTS_ERROR),     ///< CCM error event.
-#if NRF_CCM_HAS_EVENT_END
-    NRF_CCM_EVENT_END       = offsetof(NRF_CCM_Type, EVENTS_END),       ///< Encrypt/decrypt complete.
-#endif
+    NRF_CCM_EVENT_ERROR    = offsetof(NRF_CCM_Type, EVENTS_ERROR),     ///< CCM error event.
 } nrf_ccm_event_t;
 
 #if NRF_CCM_HAS_EVENT_ENDKSGEN
 /** @brief Types of CCM shorts. */
 typedef enum
 {
-    NRF_CCM_SHORT_ENDKSGEN_CRYPT_MASK = CCM_SHORTS_ENDKSGEN_CRYPT_Msk, ///< Shortcut for starting encryption/decryption when the key-stream generation is complete.
+    NRF_CCM_SHORT_ENDKSGEN_START_MASK = CCM_SHORTS_ENDKSGEN_CRYPT_Msk, ///< Shortcut for starting encryption/decryption when the key-stream generation is complete.
 } nrf_ccm_short_mask_t;
 #endif // NRF_CCM_HAS_EVENT_ENDKSGEN
 
@@ -375,15 +353,14 @@ typedef enum
 typedef enum
 {
 #if NRF_CCM_HAS_EVENT_ENDKSGEN
-    NRF_CCM_INT_ENDKSGEN_MASK  = CCM_INTENSET_ENDKSGEN_Msk,  ///< Interrupt on ENDKSGEN event.
+    NRF_CCM_INT_ENDKSGEN_MASK = CCM_INTENSET_ENDKSGEN_Msk,  ///< Interrupt on ENDKSGEN event.
 #endif
 #if NRF_CCM_HAS_EVENT_ENDCRYPT
-    NRF_CCM_INT_ENDCRYPT_MASK  = CCM_INTENSET_ENDCRYPT_Msk,  ///< Interrupt on ENDCRYPT event.
+    NRF_CCM_INT_END_MASK      = CCM_INTENSET_ENDCRYPT_Msk,  ///< Interrupt on encrypt/decrypt complete event.
+#else
+    NRF_CCM_INT_END_MASK      = CCM_INTENSET_END_Msk,       ///< Interrupt on encrypt/decrypt complete event.
 #endif
-    NRF_CCM_INT_ERROR_MASK     = CCM_INTENSET_ERROR_Msk,     ///< Interrupt on ERROR event.
-#if NRF_CCM_HAS_EVENT_END
-    NRF_CCM_INT_END_MASK       = CCM_INTENSET_END_Msk,       ///< Interrupt on END event.
-#endif
+    NRF_CCM_INT_ERROR_MASK    = CCM_INTENSET_ERROR_Msk,     ///< Interrupt on ERROR event.
 } nrf_ccm_int_mask_t;
 
 #if NRF_CCM_HAS_ERRORSTATUS
@@ -411,24 +388,19 @@ typedef enum
 /** @brief CCM data rates. */
 typedef enum
 {
-
-#if NRF_CCM_HAS_MODE_DATARATE_125KBPS
-    NRF_CCM_DATARATE_125K = CCM_MODE_DATARATE_125Kbps, ///< 125 Kbps.
-#elif NRF_CCM_HAS_MODE_DATARATE_125KBIT
-    NRF_CCM_DATARATE_125K = CCM_MODE_DATARATE_125Kbit, ///< 125 Kbps.
+#if NRF_CCM_HAS_MODE_DATARATE_125K
+    NRF_CCM_DATARATE_125K = NRF_CCM_MODE_DATARATE_125K, ///< 125 Kbps.
 #endif
-#if NRF_CCM_HAS_MODE_DATARATE_250KBIT
-    NRF_CCM_DATARATE_250K = CCM_MODE_DATARATE_250Kbit, ///< 250 Kbps.
+#if NRF_CCM_HAS_MODE_DATARATE_250K
+    NRF_CCM_DATARATE_250K = CCM_MODE_DATARATE_250Kbit,  ///< 250 Kbps.
 #endif
-#if NRF_CCM_HAS_MODE_DATARATE_500KBPS
-    NRF_CCM_DATARATE_500K = CCM_MODE_DATARATE_500Kbps, ///< 500 Kbps.
-#elif NRF_CCM_HAS_MODE_DATARATE_500KBIT
-    NRF_CCM_DATARATE_500K = CCM_MODE_DATARATE_500Kbit, ///< 500 Kbit.
+#if NRF_CCM_HAS_MODE_DATARATE_500K
+    NRF_CCM_DATARATE_500K = NRF_CCM_MODE_DATARATE_500K, ///< 500 Kbps.
 #endif
-    NRF_CCM_DATARATE_1M   = CCM_MODE_DATARATE_1Mbit,   ///< 1 Mbps.
-    NRF_CCM_DATARATE_2M   = CCM_MODE_DATARATE_2Mbit,   ///< 2 Mbps.
-#if NRF_CCM_HAS_MODE_DATARATE_4MBIT
-    NRF_CCM_DATARATE_4M   = CCM_MODE_DATARATE_4Mbit,   ///< 4 Mbps.
+    NRF_CCM_DATARATE_1M   = CCM_MODE_DATARATE_1Mbit,    ///< 1 Mbps.
+    NRF_CCM_DATARATE_2M   = CCM_MODE_DATARATE_2Mbit,    ///< 2 Mbps.
+#if NRF_CCM_HAS_MODE_DATARATE_4M
+    NRF_CCM_DATARATE_4M   = CCM_MODE_DATARATE_4Mbit,    ///< 4 Mbps.
 #endif
 } nrf_ccm_datarate_t;
 #endif // NRF_CCM_HAS_DATARATE

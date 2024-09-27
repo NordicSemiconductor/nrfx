@@ -473,9 +473,23 @@ static void spis_state_entry_action_execute(NRF_SPIS_Type * p_spis,
             break;
 
         case SPIS_XFER_COMPLETED:
-            event.evt_type  = NRFX_SPIS_XFER_DONE;
-            event.rx_amount = nrf_spis_rx_amount_get(p_spis);
-            event.tx_amount = nrf_spis_tx_amount_get(p_spis);
+            event.evt_type    = NRFX_SPIS_XFER_DONE;
+            event.rx_amount   = nrf_spis_rx_amount_get(p_spis);
+            event.tx_amount   = nrf_spis_tx_amount_get(p_spis);
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#endif
+            event.p_tx_buf    = (void *)p_cb->tx_buffer;
+            event.p_rx_buf    = (void *)p_cb->rx_buffer;
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
+            event.tx_buf_size = p_cb->tx_buffer_size;
+            event.rx_buf_size = p_cb->rx_buffer_size;
+
             NRFX_LOG_INFO("Transfer rx_len:%d.", event.rx_amount);
             NRFX_LOG_DEBUG("Rx data:");
             NRFX_LOG_HEXDUMP_DEBUG((uint8_t const *)p_cb->rx_buffer,

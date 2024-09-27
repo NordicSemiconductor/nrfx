@@ -481,13 +481,13 @@ NRF_STATIC_INLINE void nrf_comp_th_set(NRF_COMP_Type * p_reg, nrf_comp_th_t thre
 NRF_STATIC_INLINE void nrf_comp_main_mode_set(NRF_COMP_Type *      p_reg,
                                               nrf_comp_main_mode_t main_mode)
 {
-    p_reg->MODE |= (main_mode << COMP_MODE_MAIN_Pos);
+    p_reg->MODE = (p_reg->MODE & ~(COMP_MODE_MAIN_Msk)) | (main_mode << COMP_MODE_MAIN_Pos);
 }
 
 NRF_STATIC_INLINE void nrf_comp_speed_mode_set(NRF_COMP_Type *    p_reg,
                                                nrf_comp_sp_mode_t speed_mode)
 {
-    p_reg->MODE |= (speed_mode << COMP_MODE_SP_Pos);
+    p_reg->MODE = (p_reg->MODE & ~(COMP_MODE_SP_Msk)) | (speed_mode << COMP_MODE_SP_Pos);
 }
 
 NRF_STATIC_INLINE void nrf_comp_hysteresis_set(NRF_COMP_Type * p_reg, nrf_comp_hyst_t hyst)

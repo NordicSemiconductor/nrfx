@@ -80,6 +80,8 @@ For a complete overview, see @ref nrfx_drv_supp_matrix.
 
 @ref nrf_tbm
 
+@ref nrf_tddconf
+
 @ref nrf_tdm
 
 @ref nrf_timer

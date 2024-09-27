@@ -121,6 +121,8 @@
 
 @defgroup nrf_tbm TBM
 
+@defgroup nrf_tddconf TDDCONF
+
 @defgroup nrf_tdm TDM
 
 @defgroup nrf_temp TEMP

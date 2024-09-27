@@ -59,6 +59,13 @@ extern "C" {
 #define NRF_LRCCONF_HAS_HFXO 0
 #endif
 
+#if defined(LRCCONF_CLKCTRL_SRC_BYPASS_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether clock source bypassing is present. */
+#define NRF_LRCCONF_HAS_BYPASS 1
+#else
+#define NRF_LRCCONF_HAS_BYPASS 0
+#endif
+
 /** @brief Tasks. */
 typedef enum
 {
@@ -266,10 +273,13 @@ NRF_STATIC_INLINE bool nrf_lrcconf_clock_always_run_check(NRF_LRCCONF_Type const
  * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
  * @param[in] clock  Clock index.
  * @param[in] source Clock source to be set.
+ * @param[in] bypass True if clock source bypass is to be set, false otherwise.
+ *                   Ignored for unsupported devices.
  */
 NRF_STATIC_INLINE void nrf_lrcconf_clock_source_set(NRF_LRCCONF_Type *    p_reg,
                                                     uint8_t               clock,
-                                                    nrf_lrcconf_clk_src_t source);
+                                                    nrf_lrcconf_clk_src_t source,
+                                                    bool                  bypass);
 
 /**
  * @brief Function for checking the status of constant latency.
@@ -445,11 +455,20 @@ NRF_STATIC_INLINE bool nrf_lrcconf_clock_always_run_check(NRF_LRCCONF_Type const
 
 NRF_STATIC_INLINE void nrf_lrcconf_clock_source_set(NRF_LRCCONF_Type *    p_reg,
                                                     uint8_t               clock,
-                                                    nrf_lrcconf_clk_src_t source)
+                                                    nrf_lrcconf_clk_src_t source,
+                                                    bool                  bypass)
 {
     NRFX_ASSERT(clock < NRF_LRCCONF_CLK_COUNT);
-    p_reg->CLKCTRL[clock].SRC = ((p_reg->CLKCTRL[clock].SRC & ~LRCCONF_CLKCTRL_SRC_SRC_Msk) |
-                  ((source << LRCCONF_CLKCTRL_SRC_SRC_Pos) & LRCCONF_CLKCTRL_SRC_SRC_Msk));
+    uint32_t clkmsk = LRCCONF_CLKCTRL_SRC_SRC_Msk |
+        NRFX_COND_CODE_1(NRF_LRCCONF_HAS_BYPASS, (LRCCONF_CLKCTRL_SRC_BYPASS_Msk), (0));
+    p_reg->CLKCTRL[clock].SRC = (p_reg->CLKCTRL[clock].SRC & ~clkmsk) |
+#if NRF_LRCCONF_HAS_BYPASS
+                          ((bypass ? LRCCONF_CLKCTRL_SRC_BYPASS_Enable :
+                                     LRCCONF_CLKCTRL_SRC_BYPASS_Disable)
+                                  << LRCCONF_CLKCTRL_SRC_BYPASS_Pos) |
+#endif
+                          ((source << LRCCONF_CLKCTRL_SRC_SRC_Pos) & LRCCONF_CLKCTRL_SRC_SRC_Msk);
+    (void)bypass;
 }
 
 NRF_STATIC_INLINE bool nrf_lrcconf_constlatstat_check(NRF_LRCCONF_Type const * p_reg)

@@ -389,67 +389,91 @@ typedef enum
 typedef enum
 {
 #if defined(RADIO_TXPOWER_TXPOWER_Pos10dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_POS10DBM = RADIO_TXPOWER_TXPOWER_Pos10dBm, /**< 10 dBm. */
+    NRF_RADIO_TXPOWER_POS10DBM  = RADIO_TXPOWER_TXPOWER_Pos10dBm,  /**< 10 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Pos9dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_POS9DBM  = RADIO_TXPOWER_TXPOWER_Pos9dBm,  /**< 9 dBm. */
+    NRF_RADIO_TXPOWER_POS9DBM   = RADIO_TXPOWER_TXPOWER_Pos9dBm,   /**< 9 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Pos8dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_POS8DBM  = RADIO_TXPOWER_TXPOWER_Pos8dBm,  /**< 8 dBm. */
+    NRF_RADIO_TXPOWER_POS8DBM   = RADIO_TXPOWER_TXPOWER_Pos8dBm,   /**< 8 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Pos7dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_POS7DBM  = RADIO_TXPOWER_TXPOWER_Pos7dBm,  /**< 7 dBm. */
+    NRF_RADIO_TXPOWER_POS7DBM   = RADIO_TXPOWER_TXPOWER_Pos7dBm,   /**< 7 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Pos6dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_POS6DBM  = RADIO_TXPOWER_TXPOWER_Pos6dBm,  /**< 6 dBm. */
+    NRF_RADIO_TXPOWER_POS6DBM   = RADIO_TXPOWER_TXPOWER_Pos6dBm,   /**< 6 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Pos5dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_POS5DBM  = RADIO_TXPOWER_TXPOWER_Pos5dBm,  /**< 5 dBm. */
+    NRF_RADIO_TXPOWER_POS5DBM   = RADIO_TXPOWER_TXPOWER_Pos5dBm,   /**< 5 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Pos4dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_POS4DBM  = RADIO_TXPOWER_TXPOWER_Pos4dBm,  /**< 4 dBm. */
+    NRF_RADIO_TXPOWER_POS4DBM   = RADIO_TXPOWER_TXPOWER_Pos4dBm,   /**< 4 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Pos3dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_POS3DBM  = RADIO_TXPOWER_TXPOWER_Pos3dBm,  /**< 3 dBm. */
+    NRF_RADIO_TXPOWER_POS3DBM   = RADIO_TXPOWER_TXPOWER_Pos3dBm,   /**< 3 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Pos2dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_POS2DBM  = RADIO_TXPOWER_TXPOWER_Pos2dBm,  /**< 2 dBm. */
+    NRF_RADIO_TXPOWER_POS2DBM    = RADIO_TXPOWER_TXPOWER_Pos2dBm,  /**< 2 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Pos1dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_POS1DBM  = RADIO_TXPOWER_TXPOWER_Pos1dBm,  /**< 1 dBm. */
+    NRF_RADIO_TXPOWER_POS1DBM   = RADIO_TXPOWER_TXPOWER_Pos1dBm,   /**< 1 dBm. */
 #endif
-    NRF_RADIO_TXPOWER_0DBM     = RADIO_TXPOWER_TXPOWER_0dBm,     /**< 0 dBm. */
+    NRF_RADIO_TXPOWER_0DBM      = RADIO_TXPOWER_TXPOWER_0dBm,      /**< 0 dBm. */
 #if defined(RADIO_TXPOWER_TXPOWER_Neg1dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_NEG1DBM  = RADIO_TXPOWER_TXPOWER_Neg1dBm,  /**< -1 dBm. */
+    NRF_RADIO_TXPOWER_NEG1DBM   = RADIO_TXPOWER_TXPOWER_Neg1dBm,   /**< -1 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Neg2dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_NEG2DBM  = RADIO_TXPOWER_TXPOWER_Neg2dBm,  /**< -2 dBm. */
+    NRF_RADIO_TXPOWER_NEG2DBM   = RADIO_TXPOWER_TXPOWER_Neg2dBm,   /**< -2 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Neg3dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_NEG3DBM  = RADIO_TXPOWER_TXPOWER_Neg3dBm,  /**< -3 dBm. */
+    NRF_RADIO_TXPOWER_NEG3DBM   = RADIO_TXPOWER_TXPOWER_Neg3dBm,   /**< -3 dBm. */
 #endif
-    NRF_RADIO_TXPOWER_NEG4DBM  = RADIO_TXPOWER_TXPOWER_Neg4dBm,  /**< -4 dBm. */
+    NRF_RADIO_TXPOWER_NEG4DBM   = RADIO_TXPOWER_TXPOWER_Neg4dBm,   /**< -4 dBm. */
 #if defined(RADIO_TXPOWER_TXPOWER_Neg5dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_NEG5DBM  = RADIO_TXPOWER_TXPOWER_Neg5dBm,  /**< -5 dBm. */
+    NRF_RADIO_TXPOWER_NEG5DBM   = RADIO_TXPOWER_TXPOWER_Neg5dBm,   /**< -5 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Neg6dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_NEG6DBM  = RADIO_TXPOWER_TXPOWER_Neg6dBm,  /**< -6 dBm. */
+    NRF_RADIO_TXPOWER_NEG6DBM   = RADIO_TXPOWER_TXPOWER_Neg6dBm,   /**< -6 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Neg7dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_NEG7DBM  = RADIO_TXPOWER_TXPOWER_Neg7dBm,  /**< -7 dBm. */
+    NRF_RADIO_TXPOWER_NEG7DBM   = RADIO_TXPOWER_TXPOWER_Neg7dBm,   /**< -7 dBm. */
 #endif
-    NRF_RADIO_TXPOWER_NEG8DBM  = RADIO_TXPOWER_TXPOWER_Neg8dBm,  /**< -8 dBm. */
-    NRF_RADIO_TXPOWER_NEG12DBM = RADIO_TXPOWER_TXPOWER_Neg12dBm, /**< -12 dBm. */
-    NRF_RADIO_TXPOWER_NEG16DBM = RADIO_TXPOWER_TXPOWER_Neg16dBm, /**< -16 dBm. */
-    NRF_RADIO_TXPOWER_NEG20DBM = RADIO_TXPOWER_TXPOWER_Neg20dBm, /**< -20 dBm. */
+    NRF_RADIO_TXPOWER_NEG8DBM   = RADIO_TXPOWER_TXPOWER_Neg8dBm,   /**< -8 dBm. */
+#if defined(RADIO_TXPOWER_TXPOWER_Neg9dBm) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TXPOWER_NEG9DBM   = RADIO_TXPOWER_TXPOWER_Neg9dBm,   /**< -9 dBm. */
+#endif
+#if defined(RADIO_TXPOWER_TXPOWER_Neg10dBm) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TXPOWER_NEG10DBM  = RADIO_TXPOWER_TXPOWER_Neg10dBm,  /**< -10 dBm. */
+#endif
+    NRF_RADIO_TXPOWER_NEG12DBM  = RADIO_TXPOWER_TXPOWER_Neg12dBm,  /**< -12 dBm. */
+#if defined(RADIO_TXPOWER_TXPOWER_Neg14dBm) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TXPOWER_NEG14DBM  = RADIO_TXPOWER_TXPOWER_Neg14dBm,  /**< -14 dBm. */
+#endif
+    NRF_RADIO_TXPOWER_NEG16DBM  = RADIO_TXPOWER_TXPOWER_Neg16dBm,  /**< -16 dBm. */
+#if defined(RADIO_TXPOWER_TXPOWER_Neg18dBm) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TXPOWER_NEG18DBM  = RADIO_TXPOWER_TXPOWER_Neg18dBm,  /**< -18 dBm. */
+#endif
+    NRF_RADIO_TXPOWER_NEG20DBM  = RADIO_TXPOWER_TXPOWER_Neg20dBm,  /**< -20 dBm. */
+#if defined(RADIO_TXPOWER_TXPOWER_Neg22dBm) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TXPOWER_NEG22DBM  = RADIO_TXPOWER_TXPOWER_Neg22dBm,  /**< -22 dBm. */
+#endif
+#if defined(RADIO_TXPOWER_TXPOWER_Neg28dBm) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TXPOWER_NEG28DBM  = RADIO_TXPOWER_TXPOWER_Neg28dBm,  /**< -28 dBm. */
+#endif
 #if defined(RADIO_TXPOWER_TXPOWER_Neg30dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_NEG30DBM = RADIO_TXPOWER_TXPOWER_Neg30dBm, /**< -30 dBm. */
+    NRF_RADIO_TXPOWER_NEG30DBM  = RADIO_TXPOWER_TXPOWER_Neg30dBm,  /**< -30 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Neg40dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_NEG40DBM = RADIO_TXPOWER_TXPOWER_Neg40dBm, /**< -40 dBm. */
+    NRF_RADIO_TXPOWER_NEG40DBM  = RADIO_TXPOWER_TXPOWER_Neg40dBm,  /**< -40 dBm. */
+#endif
+#if defined(RADIO_TXPOWER_TXPOWER_Neg46dBm) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TXPOWER_NEG46DBM  = RADIO_TXPOWER_TXPOWER_Neg46dBm,  /**< -46 dBm. */
 #endif
 #if defined(RADIO_TXPOWER_TXPOWER_Neg70dBm) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TXPOWER_NEG70DBM = RADIO_TXPOWER_TXPOWER_Neg70dBm, /**< -70 dBm. */
+    NRF_RADIO_TXPOWER_NEG70DBM  = RADIO_TXPOWER_TXPOWER_Neg70dBm,  /**< -70 dBm. */
+#endif
+#if defined(RADIO_TXPOWER_TXPOWER_Neg100dBm) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TXPOWER_NEG100DBM = RADIO_TXPOWER_TXPOWER_Neg100dBm, /**< -100 dBm. */
 #endif
 } nrf_radio_txpower_t;
 
@@ -466,6 +490,12 @@ typedef enum
 #endif
 #if defined(RADIO_MODE_MODE_Nrf_4Mbit0_25) || defined(__NRFX_DOXYGEN__)
     NRF_RADIO_MODE_NRF_4MBIT_H_0_25   = RADIO_MODE_MODE_Nrf_4Mbit0_25,      /*!< 4Mbit/s Nordic proprietary radio mode (BT=0.5/h=0.25). */
+#endif
+#if defined(RADIO_MODE_MODE_Nrf_4Mbit_0BT6) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_MODE_NRF_4MBIT_BT_0_6   = RADIO_MODE_MODE_Nrf_4Mbit_0BT6,     /*!< 4Mbit/s Nordic proprietary radio mode (BT=0.6/h=0.5). */
+#endif
+#if defined(RADIO_MODE_MODE_Nrf_4Mbit_0BT4) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_MODE_NRF_4MBIT_BT_0_4   = RADIO_MODE_MODE_Nrf_4Mbit_0BT4,     /*!< 4Mbit/s Nordic proprietary radio mode (BT=0.4/h=0.5). */
 #endif
     NRF_RADIO_MODE_BLE_1MBIT          = RADIO_MODE_MODE_Ble_1Mbit,          /**< 1 Mbit/s Bluetooth Low Energy. */
 #if defined(RADIO_MODE_MODE_Ble_2Mbit) || defined(__NRFX_DOXYGEN__)

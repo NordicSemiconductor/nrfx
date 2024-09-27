@@ -112,10 +112,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CRACENCORE_PKUCODEREGS 1                     /*!< (unspecified)                                                        */
 #define CRACENCORE_CRACENRESETVALUES 1               /*!< (unspecified)                                                        */
 #define CRACENCORE_SHA3RESETVALUES 0                 /*!< (unspecified)                                                        */
-#define CRACENCORE_PKE_DATA_MEMORY 0x51808000        /*!< (unspecified)                                                        */
-#define CRACENCORE_PKE_DATA_MEMORY_SIZE 17408        /*!< (unspecified)                                                        */
-#define CRACENCORE_PKE_CODE_MEMORY 0x5180C000        /*!< (unspecified)                                                        */
-#define CRACENCORE_PKE_CODE_MEMORY_SIZE 5120         /*!< (unspecified)                                                        */
+#define CRACENCORE_PKE_DATA_MEMORY 0x50018000        /*!< (unspecified)                                                        */
+#define CRACENCORE_PKE_DATA_MEMORY_SIZE 16384        /*!< (unspecified)                                                        */
+#define CRACENCORE_PKE_CODE_MEMORY 0x5001C000        /*!< (unspecified)                                                        */
+#define CRACENCORE_PKE_CODE_MEMORY_SIZE 8192         /*!< (unspecified)                                                        */
 
 /*System protection unit*/
 #define SPU_PRESENT 1
@@ -293,6 +293,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define AAR_COUNT 1
 
 #define AAR00_DMAERROR 1                             /*!< (unspecified)                                                        */
+#define AAR00_ERRORSTATUS 1                          /*!< (unspecified)                                                        */
+#define AAR00_ERROREVENT 1                           /*!< (unspecified)                                                        */
 
 /*AES CCM Mode Encryption*/
 #define CCM_PRESENT 1
@@ -308,6 +310,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define ECB00_AMOUNTREG 0                            /*!< (unspecified)                                                        */
 #define ECB00_DMAERROR 1                             /*!< (unspecified)                                                        */
+#define ECB00_ERRORSTATUS 1                          /*!< (unspecified)                                                        */
 
 /*VPR peripheral registers*/
 #define VPR_PRESENT 1
@@ -742,9 +745,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P2_CTRLSEL_MAP2 1                            /*!< (unspecified)                                                        */
 #define P2_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P2_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
-#define P2_PIN_NUM_MAX 15                            /*!< (unspecified)                                                        */
-#define P2_PIN_NUM_SIZE 16                           /*!< (unspecified)                                                        */
-#define P2_FEATURE_PINS_PRESENT 65535                /*!< (unspecified)                                                        */
+#define P2_PIN_NUM_MAX 10                            /*!< (unspecified)                                                        */
+#define P2_PIN_NUM_SIZE 11                           /*!< (unspecified)                                                        */
+#define P2_FEATURE_PINS_PRESENT 2047                 /*!< (unspecified)                                                        */
 #define P2_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P2_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P2_PWRCTRL 0                                 /*!< (unspecified)                                                        */
@@ -768,9 +771,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P3_CTRLSEL_MAP2 1                            /*!< (unspecified)                                                        */
 #define P3_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P3_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
-#define P3_PIN_NUM_MAX 23                            /*!< (unspecified)                                                        */
-#define P3_PIN_NUM_SIZE 24                           /*!< (unspecified)                                                        */
-#define P3_FEATURE_PINS_PRESENT 16777215             /*!< (unspecified)                                                        */
+#define P3_PIN_NUM_MAX 15                            /*!< (unspecified)                                                        */
+#define P3_PIN_NUM_SIZE 16                           /*!< (unspecified)                                                        */
+#define P3_FEATURE_PINS_PRESENT 65535                /*!< (unspecified)                                                        */
 #define P3_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P3_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P3_PWRCTRL 0                                 /*!< (unspecified)                                                        */
@@ -912,11 +915,11 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CRACEN_PROTECTED_RAM_SM4_KEY3_SIZE 16        /*!< (unspecified)                                                        */
 #define CRACEN_PROTECTED_RAM_RESERVED 0x518100C0     /*!< (unspecified)                                                        */
 #define CRACEN_PROTECTED_RAM_RESERVED_SIZE 64        /*!< (unspecified)                                                        */
-#define CRACEN_PKEDATA 0x51808000                    /*!< PKE data (address 0x51808000) must be read and written using aligned
+#define CRACEN_PKEDATA 0x50018000                    /*!< PKE data (address 0x50018000) must be read and written using aligned
                                                           access, i.e. using an operation where a word-aligned address is used
                                                           for a word, or a halfword-aligned address is used for a halfword
                                                           access.*/
-#define CRACEN_PKECODE 0x5180C000                    /*!< PKE code (address 0x5180C000) must be read and written using aligned
+#define CRACEN_PKECODE 0x5001C000                    /*!< PKE code (address 0x5001C000) must be read and written using aligned
                                                           access, i.e. using an operation where a word-aligned address is used
                                                           for a word, or a halfword-aligned address is used for a halfword
                                                           access.*/
@@ -1015,13 +1018,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define PDM20_SAMPLE16 0                             /*!< (unspecified)                                                        */
 #define PDM20_SAMPLE48 1                             /*!< (unspecified)                                                        */
-#define PDM20_MCLKCONFIG_TEMPADDRESS 1               /*!< (unspecified)                                                        */
 #define PDM20_PRESCALER_PRESENT 1                    /*!< (unspecified)                                                        */
 #define PDM20_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                    */
 
 #define PDM21_SAMPLE16 0                             /*!< (unspecified)                                                        */
 #define PDM21_SAMPLE48 1                             /*!< (unspecified)                                                        */
-#define PDM21_MCLKCONFIG_TEMPADDRESS 1               /*!< (unspecified)                                                        */
 #define PDM21_PRESCALER_PRESENT 1                    /*!< (unspecified)                                                        */
 #define PDM21_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                    */
 
@@ -1123,9 +1124,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GRTC_NTIMEOUT_MIN 0                          /*!< Width of the TIMEOUT register : 0..15                                */
 #define GRTC_NTIMEOUT_MAX 15                         /*!< Width of the TIMEOUT register : 0..15                                */
 #define GRTC_NTIMEOUT_SIZE 16                        /*!< Width of the TIMEOUT register : 0..15                                */
-#define GRTC_NDOMAIN_MIN 0                           /*!< Number of domains at the KEEPRUNNING register: 0..15                 */
-#define GRTC_NDOMAIN_MAX 15                          /*!< Number of domains at the KEEPRUNNING register: 0..15                 */
-#define GRTC_NDOMAIN_SIZE 16                         /*!< Number of domains at the KEEPRUNNING register: 0..15                 */
 #define GRTC_GRTC_NINTERRUPTS_MIN 0                  /*!< Number of GRTC interrupts : 0..3                                     */
 #define GRTC_GRTC_NINTERRUPTS_MAX 3                  /*!< Number of GRTC interrupts : 0..3                                     */
 #define GRTC_GRTC_NINTERRUPTS_SIZE 4                 /*!< Number of GRTC interrupts : 0..3                                     */
@@ -1134,6 +1132,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GRTC_CLKSELREG 1                             /*!< (unspecified)                                                        */
 #define GRTC_CLKSELLFLPRC 1                          /*!< (unspecified)                                                        */
 #define GRTC_CCADD_WRITE_ONLY 0                      /*!< (unspecified)                                                        */
+#define GRTC_READY_STATUS_AND_EVENTS 0               /*!< (unspecified)                                                        */
+#define GRTC_SYSCOUNTER_LOADED_STATUS 0              /*!< (unspecified)                                                        */
+#define GRTC_CC_PAST_STATUS 0                        /*!< (unspecified)                                                        */
+#define GRTC_SYSCOUNTER_WRITEABLE 0                  /*!< (unspecified)                                                        */
 
 /*Time division multiplexed audio interface*/
 #define TDM_PRESENT 1

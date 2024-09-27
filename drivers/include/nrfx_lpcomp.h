@@ -126,6 +126,17 @@ nrfx_err_t nrfx_lpcomp_init(nrfx_lpcomp_config_t const * p_config,
                             nrfx_lpcomp_event_handler_t  event_handler);
 
 /**
+ * @brief Function for reconfiguring the LPCOMP driver.
+ *
+ * @param[in] p_config Pointer to the structure with the configuration.
+ *
+ * @retval NRFX_SUCCESS             Reconfiguration was successful.
+ * @retval NRFX_ERROR_BUSY          The driver is running and cannot be reconfigured.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is uninitialized.
+ */
+nrfx_err_t nrfx_lpcomp_reconfigure(nrfx_lpcomp_config_t const * p_config);
+
+/**
  * @brief Function for uninitializing the LPCOMP driver.
  *
  * This function uninitializes the LPCOMP driver. The LPCOMP peripheral and
@@ -146,24 +157,75 @@ void  nrfx_lpcomp_uninit(void);
 bool nrfx_lpcomp_init_check(void);
 
 /**
+ * @brief Function for starting the LPCOMP peripheral and interrupts.
+ *
+ * Before calling this function, the driver must be initialized. This function
+ * enables the LPCOMP peripheral and its interrupts.
+ *
+ * @param[in] lpcomp_evt_en_mask Mask of events to be enabled. This parameter is to be built as
+ *                               an OR of elements from @ref nrf_lpcomp_int_mask_t.
+ * @param[in] lpcomp_shorts_mask Mask of shortcuts to be enabled. This parameter is to be built as
+ *                               an OR of elements from @ref nrf_lpcomp_short_mask_t.
+ *
+ * @sa nrfx_lpcomp_init
+ */
+void nrfx_lpcomp_start(uint32_t lpcomp_evt_en_mask, uint32_t lpcomp_shorts_mask);
+
+/**
  * @brief Function for enabling the LPCOMP peripheral and interrupts.
+ *
+ * @deprecated Use @ref nrfx_lpcomp_start instead.
  *
  * Before calling this function, the driver must be initialized. This function
  * enables the LPCOMP peripheral and its interrupts.
  *
  * @sa nrfx_lpcomp_disable
  */
-void nrfx_lpcomp_enable(void);
+NRFX_STATIC_INLINE void nrfx_lpcomp_enable(void);
+
+/**
+ * @brief Function for stopping the LPCOMP peripheral.
+ *
+ * Before calling this function, the driver must be enabled. This function disables the LPCOMP
+ * peripheral and its interrupts.
+ *
+ * @sa nrfx_lpcomp_uninit
+ */
+void nrfx_lpcomp_stop(void);
 
 /**
  * @brief Function for disabling the LPCOMP peripheral.
+ *
+ * @deprecated Use @ref nrfx_lpcomp_stop instead.
  *
  * Before calling this function, the driver must be initialized. This function disables the LPCOMP
  * peripheral and its interrupts.
  *
  * @sa nrfx_lpcomp_enable
  */
-void nrfx_lpcomp_disable(void);
+NRFX_STATIC_INLINE void nrfx_lpcomp_disable(void);
+
+/**
+ * @brief Function for copying the current state of the low power comparator result to the RESULT register.
+ *
+ * @retval 0 The input voltage is below the threshold (VIN+ < VIN-).
+ * @retval 1 The input voltage is above the threshold (VIN+ > VIN-).
+ */
+uint32_t nrfx_lpcomp_sample(void);
+
+#ifndef NRFX_DECLARE_ONLY
+
+NRFX_STATIC_INLINE void nrfx_lpcomp_enable(void)
+{
+    nrfx_lpcomp_start(0, 0);
+}
+
+NRFX_STATIC_INLINE void nrfx_lpcomp_disable(void)
+{
+    nrfx_lpcomp_stop();
+}
+
+#endif // NRFX_DECLARE_ONLY
 
 /** @} */
 

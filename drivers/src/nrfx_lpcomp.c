@@ -183,6 +183,38 @@ nrfx_err_t nrfx_lpcomp_init(nrfx_lpcomp_config_t const * p_config,
     return err_code;
 }
 
+nrfx_err_t nrfx_lpcomp_reconfigure(nrfx_lpcomp_config_t const * p_config)
+{
+    NRFX_ASSERT(p_config);
+    nrfx_err_t err_code;
+
+    if (m_state == NRFX_DRV_STATE_POWERED_ON)
+    {
+        err_code = NRFX_ERROR_BUSY;
+        NRFX_LOG_WARNING("Function: %s, error code: %s.",
+                         __func__,
+                         NRFX_LOG_ERROR_STRING_GET(err_code));
+        return err_code;
+    }
+    else if (m_state == NRFX_DRV_STATE_INITIALIZED)
+    {
+        nrfy_lpcomp_disable(NRF_LPCOMP);
+        lpcomp_configure(p_config);
+        nrfy_lpcomp_enable(NRF_LPCOMP);
+        return NRFX_SUCCESS;
+    }
+    else
+    {
+        NRFX_ASSERT(m_state == NRFX_DRV_STATE_UNINITIALIZED);
+
+        err_code = NRFX_ERROR_INVALID_STATE;
+        NRFX_LOG_WARNING("Function: %s, error code: %s.",
+                         __func__,
+                         NRFX_LOG_ERROR_STRING_GET(err_code));
+        return err_code;
+    }
+}
+
 void nrfx_lpcomp_uninit(void)
 {
     NRFX_ASSERT(m_state != NRFX_DRV_STATE_UNINITIALIZED);
@@ -201,22 +233,32 @@ bool nrfx_lpcomp_init_check(void)
     return (m_state != NRFX_DRV_STATE_UNINITIALIZED);
 }
 
-void nrfx_lpcomp_enable(void)
+void nrfx_lpcomp_start(uint32_t lpcomp_evt_en_mask, uint32_t lpcomp_shorts_mask)
 {
     NRFX_ASSERT(m_state == NRFX_DRV_STATE_INITIALIZED);
     nrfy_lpcomp_enable(NRF_LPCOMP);
-    nrfy_lpcomp_task_trigger(NRF_LPCOMP, NRF_LPCOMP_TASK_START);
+    (void)nrfy_lpcomp_events_process(NRF_LPCOMP, lpcomp_evt_en_mask);
+    nrfy_lpcomp_int_enable(NRF_LPCOMP, lpcomp_evt_en_mask);
+    nrfy_lpcomp_shorts_enable(NRF_LPCOMP, lpcomp_shorts_mask);
     m_state = NRFX_DRV_STATE_POWERED_ON;
+    nrfy_lpcomp_task_trigger(NRF_LPCOMP, NRF_LPCOMP_TASK_START);
     NRFX_LOG_INFO("Enabled.");
 }
 
-void nrfx_lpcomp_disable(void)
+void nrfx_lpcomp_stop(void)
 {
     NRFX_ASSERT(m_state == NRFX_DRV_STATE_POWERED_ON);
     nrfy_lpcomp_disable(NRF_LPCOMP);
     nrfy_lpcomp_task_trigger(NRF_LPCOMP, NRF_LPCOMP_TASK_STOP);
     m_state = NRFX_DRV_STATE_INITIALIZED;
     NRFX_LOG_INFO("Disabled.");
+}
+
+uint32_t nrfx_lpcomp_sample(void)
+{
+    NRFX_ASSERT(m_state == NRFX_DRV_STATE_POWERED_ON);
+
+    return nrfy_lpcomp_sample(NRF_LPCOMP);
 }
 
 #endif // NRFX_CHECK(NRFX_LPCOMP_ENABLED)

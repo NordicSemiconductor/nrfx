@@ -121,6 +121,19 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_FLPR)
         #include "nrf54h20_enga_flpr_vectors.h"
     #endif
+#elif defined(NRF54H20_ENGB_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf54h20_engb_application_vectors.h"
+    #endif
+    #if defined(NRF_RADIOCORE)
+        #include "nrf54h20_engb_radiocore_vectors.h"
+    #endif
+    #if defined(NRF_PPR)
+        #include "nrf54h20_engb_ppr_vectors.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf54h20_engb_flpr_vectors.h"
+    #endif
 #elif defined(NRF9120_XXAA)
     #include "nrf9120_vectors.h"
 #elif defined(NRF9160_XXAA)

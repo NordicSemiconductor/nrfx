@@ -163,7 +163,7 @@ extern "C" {
 #define nrfx_pwm_3_irq_handler      PWM3_IRQHandler
 
 // PDM0_IRQn
-#define nrfx_pdm_irq_handler        PDM0_IRQHandler
+#define nrfx_pdm_0_irq_handler        PDM0_IRQHandler
 
 // I2S0_IRQn
 #define nrfx_i2s_0_irq_handler      I2S0_IRQHandler

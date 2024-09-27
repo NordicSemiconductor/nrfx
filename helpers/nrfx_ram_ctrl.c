@@ -127,6 +127,16 @@ typedef union
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 1
 #define RAM_UNIFORM_SECTIONS_TOTAL     1
+#elif (defined(NRF54H20_ENGB_XXAA) || defined(NRF54H20_XXAA)) && defined(NRF_APPLICATION)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 1
+#define RAM_UNIFORM_SECTIONS_TOTAL     1
+#elif (defined(NRF54H20_ENGB_XXAA) || defined(NRF54H20_XXAA)) && defined(NRF_RADIOCORE)
+#define RAM_SECTION_UNIT_SIZE          (2UL * 16UL * 1024UL) /* Consider both banks as single unit */
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 6
+#define RAM_UNIFORM_SECTIONS_TOTAL     6
 #elif defined(NRF54L15_XXAA) || defined(NRF54L15_ENGA_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (16UL * 1024UL)
 #define RAM_NON_UNIFORM_SECTIONS                                      \
@@ -253,8 +263,8 @@ static void ram_ctrl_block_section_iterate(void const *                p_object,
             continue;
         }
 #else
-        block   = (uint8_t)idx / RAM_UNIFORM_SECTIONS_PER_BLOCK;
-        section = idx % RAM_UNIFORM_SECTIONS_PER_BLOCK;
+        block   = (uint8_t)(idx / RAM_UNIFORM_SECTIONS_PER_BLOCK);
+        section = (uint8_t)(idx % RAM_UNIFORM_SECTIONS_PER_BLOCK);
         (void)prev_ram_unit;
 #endif
         handler(block, 1UL << section, enable);

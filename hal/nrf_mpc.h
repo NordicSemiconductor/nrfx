@@ -489,7 +489,8 @@ NRF_STATIC_INLINE void nrf_mpc_override_ownerid_set(NRF_MPC_Type * p_reg,
  *
  * @return Owner ID of the overridde region.
  */
-NRF_STATIC_INLINE nrf_owner_t nrf_mpc_override_ownerid_get(NRF_MPC_Type * p_reg, uint8_t index);
+NRF_STATIC_INLINE nrf_owner_t nrf_mpc_override_ownerid_get(NRF_MPC_Type const * p_reg,
+                                                           uint8_t              index);
 
 /**
  * @brief Function for enabling the specified master ports of the override region.
@@ -961,7 +962,8 @@ NRF_STATIC_INLINE void nrf_mpc_override_ownerid_set(NRF_MPC_Type * p_reg,
                                    MPC_OVERRIDE_OWNER_OWNERID_Msk;
 }
 
-NRF_STATIC_INLINE nrf_owner_t nrf_mpc_override_ownerid_get(NRF_MPC_Type * p_reg, uint8_t index)
+NRF_STATIC_INLINE nrf_owner_t nrf_mpc_override_ownerid_get(NRF_MPC_Type const * p_reg,
+                                                           uint8_t              index)
 {
     NRFX_ASSERT(index < NRF_MPC_OVERRIDE_COUNT);
 

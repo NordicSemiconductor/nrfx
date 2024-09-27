@@ -90,11 +90,11 @@ __isr_vector:
     .long   SysTick_Handler
 
   /* External Interrupts */
-    .long   POWER_CLOCK_IRQHandler
+    .long   CLOCK_POWER_IRQHandler
     .long   RADIO_IRQHandler
-    .long   UARTE0_UART0_IRQHandler
-    .long   SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler
-    .long   SPIM1_SPIS1_TWIM1_TWIS1_SPI1_TWI1_IRQHandler
+    .long   UART0_UARTE0_IRQHandler
+    .long   SPI0_SPIM0_SPIS0_TWI0_TWIM0_TWIS0_IRQHandler
+    .long   SPI1_SPIM1_SPIS1_TWI1_TWIM1_TWIS1_IRQHandler
     .long   NFCT_IRQHandler
     .long   GPIOTE_IRQHandler
     .long   SAADC_IRQHandler
@@ -105,17 +105,17 @@ __isr_vector:
     .long   TEMP_IRQHandler
     .long   RNG_IRQHandler
     .long   ECB_IRQHandler
-    .long   CCM_AAR_IRQHandler
+    .long   AAR_CCM_IRQHandler
     .long   WDT_IRQHandler
     .long   RTC1_IRQHandler
     .long   QDEC_IRQHandler
     .long   COMP_LPCOMP_IRQHandler
-    .long   SWI0_EGU0_IRQHandler
-    .long   SWI1_EGU1_IRQHandler
-    .long   SWI2_EGU2_IRQHandler
-    .long   SWI3_EGU3_IRQHandler
-    .long   SWI4_EGU4_IRQHandler
-    .long   SWI5_EGU5_IRQHandler
+    .long   EGU0_SWI0_IRQHandler
+    .long   EGU1_SWI1_IRQHandler
+    .long   EGU2_SWI2_IRQHandler
+    .long   EGU3_SWI3_IRQHandler
+    .long   EGU4_SWI4_IRQHandler
+    .long   EGU5_SWI5_IRQHandler
     .long   TIMER3_IRQHandler
     .long   TIMER4_IRQHandler
     .long   PWM0_IRQHandler
@@ -125,7 +125,7 @@ __isr_vector:
     .long   MWU_IRQHandler
     .long   PWM1_IRQHandler
     .long   PWM2_IRQHandler
-    .long   SPIM2_SPIS2_SPI2_IRQHandler
+    .long   SPI2_SPIM2_SPIS2_IRQHandler
     .long   RTC2_IRQHandler
     .long   I2S_IRQHandler
     .long   FPU_IRQHandler
@@ -413,11 +413,11 @@ Default_Handler:
     .set    \handler, Default_Handler
     .endm
 
-    IRQ  POWER_CLOCK_IRQHandler
+    IRQ  CLOCK_POWER_IRQHandler
     IRQ  RADIO_IRQHandler
-    IRQ  UARTE0_UART0_IRQHandler
-    IRQ  SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler
-    IRQ  SPIM1_SPIS1_TWIM1_TWIS1_SPI1_TWI1_IRQHandler
+    IRQ  UART0_UARTE0_IRQHandler
+    IRQ  SPI0_SPIM0_SPIS0_TWI0_TWIM0_TWIS0_IRQHandler
+    IRQ  SPI1_SPIM1_SPIS1_TWI1_TWIM1_TWIS1_IRQHandler
     IRQ  NFCT_IRQHandler
     IRQ  GPIOTE_IRQHandler
     IRQ  SAADC_IRQHandler
@@ -428,17 +428,17 @@ Default_Handler:
     IRQ  TEMP_IRQHandler
     IRQ  RNG_IRQHandler
     IRQ  ECB_IRQHandler
-    IRQ  CCM_AAR_IRQHandler
+    IRQ  AAR_CCM_IRQHandler
     IRQ  WDT_IRQHandler
     IRQ  RTC1_IRQHandler
     IRQ  QDEC_IRQHandler
     IRQ  COMP_LPCOMP_IRQHandler
-    IRQ  SWI0_EGU0_IRQHandler
-    IRQ  SWI1_EGU1_IRQHandler
-    IRQ  SWI2_EGU2_IRQHandler
-    IRQ  SWI3_EGU3_IRQHandler
-    IRQ  SWI4_EGU4_IRQHandler
-    IRQ  SWI5_EGU5_IRQHandler
+    IRQ  EGU0_SWI0_IRQHandler
+    IRQ  EGU1_SWI1_IRQHandler
+    IRQ  EGU2_SWI2_IRQHandler
+    IRQ  EGU3_SWI3_IRQHandler
+    IRQ  EGU4_SWI4_IRQHandler
+    IRQ  EGU5_SWI5_IRQHandler
     IRQ  TIMER3_IRQHandler
     IRQ  TIMER4_IRQHandler
     IRQ  PWM0_IRQHandler
@@ -446,7 +446,7 @@ Default_Handler:
     IRQ  MWU_IRQHandler
     IRQ  PWM1_IRQHandler
     IRQ  PWM2_IRQHandler
-    IRQ  SPIM2_SPIS2_SPI2_IRQHandler
+    IRQ  SPI2_SPIM2_SPIS2_IRQHandler
     IRQ  RTC2_IRQHandler
     IRQ  I2S_IRQHandler
     IRQ  FPU_IRQHandler

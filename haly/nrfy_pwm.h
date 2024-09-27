@@ -426,6 +426,24 @@ NRFY_STATIC_INLINE nrf_pwm_event_t nrfy_pwm_seqend_event_get(uint8_t seq_id)
     return nrf_pwm_seqend_event_get(seq_id);
 }
 
+#if NRF_PWM_HAS_IDLEOUT
+/** @refhal{nrf_pwm_channel_idle_set} */
+NRFY_STATIC_INLINE void nrfy_pwm_channel_idle_set(NRF_PWM_Type * p_reg,
+                                                  uint8_t        channel,
+                                                  bool           value)
+{
+    nrf_pwm_channel_idle_set(p_reg, channel, value);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_pwm_channel_idle_get} */
+NRFY_STATIC_INLINE bool nrfy_pwm_channel_idle_get(NRF_PWM_Type const * p_reg,
+                                                  uint8_t              channel)
+{
+    return nrf_pwm_channel_idle_get(p_reg, channel);
+}
+#endif // NRF_PWM_HAS_IDLEOUT
+
 /** @} */
 
 NRFY_STATIC_INLINE bool __nrfy_internal_pwm_event_handle(NRF_PWM_Type *  p_reg,

@@ -74,7 +74,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_FICR_NS_BASE                  0x00FFC000UL
 #define NRF_UICR_S_BASE                   0x00FFD000UL
 #define NRF_SICR_S_BASE                   0x00FFE000UL
-#define NRF_CRACENCORE_S_BASE             0x50100000UL
+#define NRF_CRACENCORE_S_BASE             0x50010000UL
 #define NRF_SPU00_S_BASE                  0x50040000UL
 #define NRF_MPC00_S_BASE                  0x50041000UL
 #define NRF_DPPIC00_NS_BASE               0x40042000UL

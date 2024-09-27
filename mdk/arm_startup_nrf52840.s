@@ -84,11 +84,11 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     SysTick_Handler
 
                 ; External Interrupts
-                DCD     POWER_CLOCK_IRQHandler
+                DCD     CLOCK_POWER_IRQHandler
                 DCD     RADIO_IRQHandler
-                DCD     UARTE0_UART0_IRQHandler
-                DCD     SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler
-                DCD     SPIM1_SPIS1_TWIM1_TWIS1_SPI1_TWI1_IRQHandler
+                DCD     UART0_UARTE0_IRQHandler
+                DCD     SPI0_SPIM0_SPIS0_TWI0_TWIM0_TWIS0_IRQHandler
+                DCD     SPI1_SPIM1_SPIS1_TWI1_TWIM1_TWIS1_IRQHandler
                 DCD     NFCT_IRQHandler
                 DCD     GPIOTE_IRQHandler
                 DCD     SAADC_IRQHandler
@@ -99,17 +99,17 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     TEMP_IRQHandler
                 DCD     RNG_IRQHandler
                 DCD     ECB_IRQHandler
-                DCD     CCM_AAR_IRQHandler
+                DCD     AAR_CCM_IRQHandler
                 DCD     WDT_IRQHandler
                 DCD     RTC1_IRQHandler
                 DCD     QDEC_IRQHandler
                 DCD     COMP_LPCOMP_IRQHandler
-                DCD     SWI0_EGU0_IRQHandler
-                DCD     SWI1_EGU1_IRQHandler
-                DCD     SWI2_EGU2_IRQHandler
-                DCD     SWI3_EGU3_IRQHandler
-                DCD     SWI4_EGU4_IRQHandler
-                DCD     SWI5_EGU5_IRQHandler
+                DCD     EGU0_SWI0_IRQHandler
+                DCD     EGU1_SWI1_IRQHandler
+                DCD     EGU2_SWI2_IRQHandler
+                DCD     EGU3_SWI3_IRQHandler
+                DCD     EGU4_SWI4_IRQHandler
+                DCD     EGU5_SWI5_IRQHandler
                 DCD     TIMER3_IRQHandler
                 DCD     TIMER4_IRQHandler
                 DCD     PWM0_IRQHandler
@@ -119,7 +119,7 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     MWU_IRQHandler
                 DCD     PWM1_IRQHandler
                 DCD     PWM2_IRQHandler
-                DCD     SPIM2_SPIS2_SPI2_IRQHandler
+                DCD     SPI2_SPIM2_SPIS2_IRQHandler
                 DCD     RTC2_IRQHandler
                 DCD     I2S_IRQHandler
                 DCD     FPU_IRQHandler
@@ -264,11 +264,11 @@ SysTick_Handler PROC
 
 Default_Handler PROC
 
-                EXPORT   POWER_CLOCK_IRQHandler [WEAK]
+                EXPORT   CLOCK_POWER_IRQHandler [WEAK]
                 EXPORT   RADIO_IRQHandler [WEAK]
-                EXPORT   UARTE0_UART0_IRQHandler [WEAK]
-                EXPORT   SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler [WEAK]
-                EXPORT   SPIM1_SPIS1_TWIM1_TWIS1_SPI1_TWI1_IRQHandler [WEAK]
+                EXPORT   UART0_UARTE0_IRQHandler [WEAK]
+                EXPORT   SPI0_SPIM0_SPIS0_TWI0_TWIM0_TWIS0_IRQHandler [WEAK]
+                EXPORT   SPI1_SPIM1_SPIS1_TWI1_TWIM1_TWIS1_IRQHandler [WEAK]
                 EXPORT   NFCT_IRQHandler [WEAK]
                 EXPORT   GPIOTE_IRQHandler [WEAK]
                 EXPORT   SAADC_IRQHandler [WEAK]
@@ -279,17 +279,17 @@ Default_Handler PROC
                 EXPORT   TEMP_IRQHandler [WEAK]
                 EXPORT   RNG_IRQHandler [WEAK]
                 EXPORT   ECB_IRQHandler [WEAK]
-                EXPORT   CCM_AAR_IRQHandler [WEAK]
+                EXPORT   AAR_CCM_IRQHandler [WEAK]
                 EXPORT   WDT_IRQHandler [WEAK]
                 EXPORT   RTC1_IRQHandler [WEAK]
                 EXPORT   QDEC_IRQHandler [WEAK]
                 EXPORT   COMP_LPCOMP_IRQHandler [WEAK]
-                EXPORT   SWI0_EGU0_IRQHandler [WEAK]
-                EXPORT   SWI1_EGU1_IRQHandler [WEAK]
-                EXPORT   SWI2_EGU2_IRQHandler [WEAK]
-                EXPORT   SWI3_EGU3_IRQHandler [WEAK]
-                EXPORT   SWI4_EGU4_IRQHandler [WEAK]
-                EXPORT   SWI5_EGU5_IRQHandler [WEAK]
+                EXPORT   EGU0_SWI0_IRQHandler [WEAK]
+                EXPORT   EGU1_SWI1_IRQHandler [WEAK]
+                EXPORT   EGU2_SWI2_IRQHandler [WEAK]
+                EXPORT   EGU3_SWI3_IRQHandler [WEAK]
+                EXPORT   EGU4_SWI4_IRQHandler [WEAK]
+                EXPORT   EGU5_SWI5_IRQHandler [WEAK]
                 EXPORT   TIMER3_IRQHandler [WEAK]
                 EXPORT   TIMER4_IRQHandler [WEAK]
                 EXPORT   PWM0_IRQHandler [WEAK]
@@ -297,7 +297,7 @@ Default_Handler PROC
                 EXPORT   MWU_IRQHandler [WEAK]
                 EXPORT   PWM1_IRQHandler [WEAK]
                 EXPORT   PWM2_IRQHandler [WEAK]
-                EXPORT   SPIM2_SPIS2_SPI2_IRQHandler [WEAK]
+                EXPORT   SPI2_SPIM2_SPIS2_IRQHandler [WEAK]
                 EXPORT   RTC2_IRQHandler [WEAK]
                 EXPORT   I2S_IRQHandler [WEAK]
                 EXPORT   FPU_IRQHandler [WEAK]
@@ -307,11 +307,11 @@ Default_Handler PROC
                 EXPORT   CRYPTOCELL_IRQHandler [WEAK]
                 EXPORT   PWM3_IRQHandler [WEAK]
                 EXPORT   SPIM3_IRQHandler [WEAK]
-POWER_CLOCK_IRQHandler
+CLOCK_POWER_IRQHandler
 RADIO_IRQHandler
-UARTE0_UART0_IRQHandler
-SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler
-SPIM1_SPIS1_TWIM1_TWIS1_SPI1_TWI1_IRQHandler
+UART0_UARTE0_IRQHandler
+SPI0_SPIM0_SPIS0_TWI0_TWIM0_TWIS0_IRQHandler
+SPI1_SPIM1_SPIS1_TWI1_TWIM1_TWIS1_IRQHandler
 NFCT_IRQHandler
 GPIOTE_IRQHandler
 SAADC_IRQHandler
@@ -322,17 +322,17 @@ RTC0_IRQHandler
 TEMP_IRQHandler
 RNG_IRQHandler
 ECB_IRQHandler
-CCM_AAR_IRQHandler
+AAR_CCM_IRQHandler
 WDT_IRQHandler
 RTC1_IRQHandler
 QDEC_IRQHandler
 COMP_LPCOMP_IRQHandler
-SWI0_EGU0_IRQHandler
-SWI1_EGU1_IRQHandler
-SWI2_EGU2_IRQHandler
-SWI3_EGU3_IRQHandler
-SWI4_EGU4_IRQHandler
-SWI5_EGU5_IRQHandler
+EGU0_SWI0_IRQHandler
+EGU1_SWI1_IRQHandler
+EGU2_SWI2_IRQHandler
+EGU3_SWI3_IRQHandler
+EGU4_SWI4_IRQHandler
+EGU5_SWI5_IRQHandler
 TIMER3_IRQHandler
 TIMER4_IRQHandler
 PWM0_IRQHandler
@@ -340,7 +340,7 @@ PDM_IRQHandler
 MWU_IRQHandler
 PWM1_IRQHandler
 PWM2_IRQHandler
-SPIM2_SPIS2_SPI2_IRQHandler
+SPI2_SPIM2_SPIS2_IRQHandler
 RTC2_IRQHandler
 I2S_IRQHandler
 FPU_IRQHandler

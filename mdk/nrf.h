@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* MDK version */
 #define MDK_MAJOR_VERSION   8 
-#define MDK_MINOR_VERSION   66 
+#define MDK_MINOR_VERSION   67 
 #define MDK_MICRO_VERSION   0 
 
    
@@ -113,7 +113,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 /* Define NRF54H_SERIES for common use in nRF54H series devices */
-#if defined (NRF54H20_ENGA_XXAA) || defined (NRF54H20_XXAA)
+#if defined (NRF54H20_ENGA_XXAA) || defined (NRF54H20_ENGB_XXAA) ||defined (NRF54H20_XXAA)
     #ifndef NRF54H_SERIES
         #define NRF54H_SERIES
     #endif
@@ -194,6 +194,7 @@ POSSIBILITY OF SUCH DAMAGE.
     #include "nrf52840_bitfields.h"
     #include "nrf51_to_nrf52840.h"
     #include "nrf52_to_nrf52840.h"
+    #include "nrf52840_name_change.h"
 
 #elif defined (NRF5340_XXAA)
     #if defined(NRF_APPLICATION)
@@ -216,6 +217,11 @@ POSSIBILITY OF SUCH DAMAGE.
     #include "nrf54h20_enga.h"
     #include "nrf54h20_enga_interim.h"
     #include "nrf54h20_enga_name_change.h"
+
+#elif defined (NRF54H20_ENGB_XXAA)
+    #include "nrf54h20_engb.h"
+    #include "nrf54h20_engb_interim.h"
+    #include "nrf54h20_engb_name_change.h"
 
 #elif defined (NRF54H20_XXAA)
     #include "nrf54h20.h"

@@ -263,6 +263,7 @@ void nrfx_grtc_rtcounter_cc_int_disable(void);
 #endif // NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
 
 #if NRFY_GRTC_HAS_EXTENDED || defined(__NRFX_DOXYGEN__)
+#if NRFY_GRTC_HAS_SYSCOUNTERVALID || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for enabling the SYSCOUNTERVALID interrupt.
  *
@@ -274,6 +275,7 @@ void nrfx_grtc_syscountervalid_int_enable(nrfx_grtc_syscountervalid_handler_t ha
 
 /** @brief Function for disabling the SYSCOUNTERVALID interrupt. */
 void nrfx_grtc_syscountervalid_int_disable(void);
+#endif // NRFY_GRTC_HAS_SYSCOUNTERVALID || defined(__NRFX_DOXYGEN__)
 
 /**
  * @brief Function for starting the 1 MHz SYSCOUNTER.
@@ -290,6 +292,7 @@ void nrfx_grtc_syscountervalid_int_disable(void);
  * @retval NRFX_SUCCESS       Starting was successful.
  * @retval NRFX_ERROR_NO_MEM  No resource available to allocate main channel.
  * @retval NRFX_ERROR_ALREADY The GRTC is already running.
+ * @retval NRFX_ERROR_TIMEOUT The SYSCOUNTER failed to start due to a timeout.
  */
 
 nrfx_err_t nrfx_grtc_syscounter_start(bool busy_wait, uint8_t * p_main_cc_channel);
@@ -441,6 +444,25 @@ nrfx_err_t nrfx_grtc_syscounter_capture(uint8_t channel);
  * @retval NRFX_ERROR_INTERNAL      The SYSCOUNTER (1 MHz) is not running.
  */
 nrfx_err_t nrfx_grtc_syscounter_cc_value_read(uint8_t channel, uint64_t * p_val);
+
+
+/**
+ * @brief Function for checking whether the SYSCOUNTER is in ready state.
+ *
+ * @note When the SYSCOUNTER is not ready its value may be corrupted.
+ *
+ * @retval true  The SYSCOUNTER is in ready state.
+ * @retval false The SYSCOUNTER is not in ready state.
+ */
+bool nrfx_grtc_ready_check(void);
+
+/**
+ * @brief Function for checking the current request for the SYSCOUNTER state.
+ *
+ * @retval true  The SYSCOUNTER is requested to be enabled.
+ * @retval false The SYSCOUNTER is requested to be disabled.
+ */
+bool nrfx_grtc_active_request_check(void);
 
 /**
  * @brief Function for requesting the SYSCOUNTER state.

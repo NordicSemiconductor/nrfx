@@ -1,6 +1,25 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.7.0] - 2024-09-27
+### Added
+- Added support for nRF54H20 Eng B.
+- Added multi-instance support in the PDM driver.
+- Added option to keep SYSCOUNTER active whenever any of SoC CPUs is not sleeping in the GRTC driver.
+- Added new functions in the LPCOMP driver to better match COMP driver. Previous functions are deprecated.
+- Added support for the IDLEOUT mechanism in the PWM driver.
+- Added support for configuring clock using prescaler in the PDM driver.
+- Added missing decimation ratios in the PDM HAL.
+- Added missing TX power settings in the RADIO HAL.
+- Added temperature coefficient trim setting in the HSFLL HAL.
+- Added HAL for the TDDCONF peripheral.
+
+### Changed
+- Updated MDK to version 8.67.0.
+
+### Fixed
+- Fixed capacitance calculation macros in the OSCILLATORS HAL. Now they are aligned with the Product Specification.
+
 ## [3.6.0] - 2024-07-26
 ### Added
 - Added support for nRF54L20 Eng A and nRF9230 Eng B.
