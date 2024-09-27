@@ -246,7 +246,7 @@ NRFY_STATIC_INLINE void nrfy_uarte_stop(NRF_UARTE_Type *            p_reg,
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] wait  True for blocking transmission, false otherwise.
  *
- * @return Mask of events occured, created by @ref NRFY_EVENT_TO_INT_BITMASK().
+ * @return Mask of events occurred, created by @ref NRFY_EVENT_TO_INT_BITMASK().
  *         Always 0 for non-blocking transmission.
  */
 NRFY_STATIC_INLINE uint32_t nrfy_uarte_tx_start(NRF_UARTE_Type * p_reg,
@@ -274,7 +274,7 @@ NRFY_STATIC_INLINE uint32_t nrfy_uarte_tx_start(NRF_UARTE_Type * p_reg,
  * @param[in] p_xfer Pointer to the structure containing reception buffer if the
  *                   reception is to be blocking. NULL for non-blocking reception.
  *
- * @return Mask of events occured, created by @ref NRFY_EVENT_TO_INT_BITMASK().
+ * @return Mask of events occurred, created by @ref NRFY_EVENT_TO_INT_BITMASK().
  *         Always 0 for non-blocking reception.
  */
 NRFY_STATIC_INLINE uint32_t nrfy_uarte_rx_start(NRF_UARTE_Type *            p_reg,
