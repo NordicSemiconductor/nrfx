@@ -250,6 +250,11 @@ void nrfx_lpcomp_stop(void)
     NRFX_ASSERT(m_state == NRFX_DRV_STATE_POWERED_ON);
     nrfy_lpcomp_disable(NRF_LPCOMP);
     nrfy_lpcomp_task_trigger(NRF_LPCOMP, NRF_LPCOMP_TASK_STOP);
+    nrfy_lpcomp_int_disable(NRF_LPCOMP,
+                            NRF_LPCOMP_INT_READY_MASK |
+                            NRF_LPCOMP_INT_DOWN_MASK |
+                            NRF_LPCOMP_INT_UP_MASK |
+                            NRF_LPCOMP_INT_CROSS_MASK);
     m_state = NRFX_DRV_STATE_INITIALIZED;
     NRFX_LOG_INFO("Disabled.");
 }

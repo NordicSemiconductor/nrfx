@@ -40,6 +40,18 @@
 extern "C" {
 #endif
 
+/*
+ * Macro for generating if statement code blocks that allow extracting
+ * the number of channels associated with the specific PPIB instance.
+ */
+#define NRF_INTERNAL_PPIB_CHAN_NUM_EXTRACT(chan_num, p_reg)                                                    \
+    if (0) {}                                                                                                  \
+    NRFX_FOREACH_PRESENT(PPIB, NRF_INTERNAL_ELSE_IF_EXTRACT_1, (), (), chan_num, _NTASKSEVENTS_MAX + 1, p_reg) \
+    else                                                                                                       \
+    {                                                                                                          \
+        chan_num = 0;                                                                                          \
+    }
+
 /**
 * @defgroup nrf_ppib_hal PPIB HAL
 * @{
@@ -174,6 +186,15 @@ typedef enum
 #endif
 
 /**
+ * @brief Function for getting the total number of available channels for the given PPIB instance.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Number of available channels.
+ */
+NRF_STATIC_INLINE uint8_t nrf_ppib_channel_number_get(NRF_PPIB_Type const * p_reg);
+
+/**
  * @brief Function for returning the specified PPIB SEND task.
  *
  * @param[in] index Task index.
@@ -181,6 +202,17 @@ typedef enum
  * @return The specified PPIB SEND task.
  */
 NRF_STATIC_INLINE nrf_ppib_task_t nrf_ppib_send_task_get(uint8_t index);
+
+/**
+ * @brief Function for getting the address of the specified PPIB task.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] task  Task.
+ *
+ * @return Address of the specified task.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ppib_task_address_get(NRF_PPIB_Type const * p_reg,
+                                                     nrf_ppib_task_t       task);
 
 /**
  * @brief Function for returning the specified PPIB RECEIVE event.
@@ -192,11 +224,22 @@ NRF_STATIC_INLINE nrf_ppib_task_t nrf_ppib_send_task_get(uint8_t index);
 NRF_STATIC_INLINE nrf_ppib_event_t nrf_ppib_receive_event_get(uint8_t index);
 
 /**
+ * @brief Function for getting the address of the specified PPIB event.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] event Event.
+ *
+ * @return Address of the specified event.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ppib_event_address_get(NRF_PPIB_Type const * p_reg,
+                                                      nrf_ppib_event_t      event);
+
+/**
  * @brief Function for setting the subscribe configuration for a given task.
  *
  * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
  * @param[in] task    Task for which to set the configuration.
- * @param[in] channel DPPI channel through which to subscribe events.
+ * @param[in] channel PPIB channel through which to subscribe events.
  */
 NRF_STATIC_INLINE void nrf_ppib_subscribe_set(NRF_PPIB_Type * p_reg,
                                               nrf_ppib_task_t task,
@@ -215,7 +258,7 @@ NRF_STATIC_INLINE void nrf_ppib_subscribe_clear(NRF_PPIB_Type * p_reg, nrf_ppib_
  *
  * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
  * @param[in] event   Event for which to set the configuration.
- * @param[in] channel DPPI channel through which to publish the event.
+ * @param[in] channel PPIB channel through which to publish the event.
  */
 NRF_STATIC_INLINE void nrf_ppib_publish_set(NRF_PPIB_Type *  p_reg,
                                             nrf_ppib_event_t event,
@@ -252,16 +295,37 @@ NRF_STATIC_INLINE bool nrf_ppib_overflow_check(NRF_PPIB_Type const * p_reg, uint
 
 #ifndef NRF_DECLARE_ONLY
 
+NRF_STATIC_INLINE uint8_t nrf_ppib_channel_number_get(NRF_PPIB_Type const * p_reg)
+{
+    (void)p_reg;
+
+    uint8_t chan_num = 0;
+    NRF_INTERNAL_PPIB_CHAN_NUM_EXTRACT(chan_num, p_reg);
+    return chan_num;
+}
+
 NRF_STATIC_INLINE nrf_ppib_task_t nrf_ppib_send_task_get(uint8_t index)
 {
     NRFX_ASSERT(index < NRF_PPIB_TASKS_SEND_COUNT);
     return (nrf_ppib_task_t)NRFX_OFFSETOF(NRF_PPIB_Type, TASKS_SEND[index]);
 }
 
+NRF_STATIC_INLINE uint32_t nrf_ppib_task_address_get(NRF_PPIB_Type const * p_reg,
+                                                     nrf_ppib_task_t       task)
+{
+    return ((uint32_t)p_reg + task);
+}
+
 NRF_STATIC_INLINE nrf_ppib_event_t nrf_ppib_receive_event_get(uint8_t index)
 {
     NRFX_ASSERT(index < NRF_PPIB_EVENTS_RECEIVE_COUNT);
     return (nrf_ppib_event_t)NRFX_OFFSETOF(NRF_PPIB_Type, EVENTS_RECEIVE[index]);
+}
+
+NRF_STATIC_INLINE uint32_t nrf_ppib_event_address_get(NRF_PPIB_Type const * p_reg,
+                                                      nrf_ppib_event_t      event)
+{
+    return ((uint32_t)p_reg + event);
 }
 
 NRF_STATIC_INLINE void nrf_ppib_subscribe_set(NRF_PPIB_Type * p_reg,

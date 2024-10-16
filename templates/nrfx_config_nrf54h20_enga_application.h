@@ -290,6 +290,78 @@
 #endif
 
 /**
+ * @brief NRFX_DPPI120_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_DPPI120_ENABLED
+#define NRFX_DPPI120_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_DPPI130_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_DPPI130_ENABLED
+#define NRFX_DPPI130_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_DPPI131_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_DPPI131_ENABLED
+#define NRFX_DPPI131_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_DPPI132_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_DPPI132_ENABLED
+#define NRFX_DPPI132_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_DPPI133_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_DPPI133_ENABLED
+#define NRFX_DPPI133_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_DPPI134_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_DPPI134_ENABLED
+#define NRFX_DPPI134_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_DPPI135_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_DPPI135_ENABLED
+#define NRFX_DPPI135_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_DPPI136_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_DPPI136_ENABLED
+#define NRFX_DPPI136_ENABLED 0
+#endif
+
+/**
  * @brief NRFX_GPIOTE_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.

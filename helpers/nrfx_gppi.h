@@ -111,7 +111,7 @@ typedef enum
 } nrfx_gppi_task_t;
 
 #elif defined(DPPI_PRESENT)
-#include <haly/nrfy_dppi.h>
+#include <nrfx_dppi.h>
 
 #define NRFX_GPPI_GROUP_NUM              NRF_DPPI_GROUP_NUM_MAX
 #define NRFX_GPPI_GROUPS_USED            NRFX_DPPI_GROUPS_USED
@@ -430,6 +430,37 @@ nrfx_err_t nrfx_gppi_group_alloc(nrfx_gppi_channel_group_t * p_group);
  */
 nrfx_err_t nrfx_gppi_group_free(nrfx_gppi_channel_group_t group);
 /** @} */
+
+#if defined DPPI_PRESENT
+
+/**
+ * @brief Function for creating a connection between two edge DPPIs.
+ *
+ * This function takes a pair of edge DPPIs and creates an interconnect
+ * between them using a provided GPPI channel. The GPPI channel must be
+ * allocated with @ref nrfx_gppi_channel_alloc.
+ * The configuration of the edge DPPIs is not affected by this function
+ * or when the GPPI channel is freed with @ref nrfx_gppi_channel_free.
+ *
+ * @param[in] channel     GPPI channel used to make the connection.
+ * @param[in] p_src_dppi  Instance of the source DPPI.
+ * @param[in] src_channel Source DPPI channel.
+ * @param[in] p_dst_dppi  Instance of the destination DPPI.
+ * @param[in] dst_channel Destination DPPI channel.
+ *
+ * @retval NRFX_SUCCESS             The channel was successfully freed.
+ * @retval NRFX_ERROR_INVALID_PARAM The specified channel is not allocated or
+ *                                  is not user-configurable.
+ * @retval NRFX_ERROR_NOT_SUPPORTED Driver is not enabled.
+ * @retval NRFX_ERROR_NO_MEM        Necessary DPPI resources could not be acquired.
+ */
+nrfx_err_t nrfx_gppi_edge_connection_setup(uint8_t             channel,
+                                           nrfx_dppi_t const * p_src_dppi,
+                                           uint8_t             src_channel,
+                                           nrfx_dppi_t const * p_dst_dppi,
+                                           uint8_t             dst_channel);
+
+#endif
 
 #ifdef __cplusplus
 }

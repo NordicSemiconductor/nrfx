@@ -35,6 +35,10 @@
 
 #if NRFX_CHECK(NRFX_DPPI_ENABLED) && (!defined(DPPIC_COUNT) || (DPPIC_COUNT == 1))
 #include <nrfx_dppi.h>
+
+#if NRFX_API_VER_AT_LEAST(3, 8, 0)
+static nrfx_dppi_t dppi = NRFX_DPPI_INSTANCE(0);
+#endif
 #endif
 
 #if defined(DPPI_PRESENT) && (defined(NRF53_SERIES) || defined(NRF91_SERIES))
@@ -168,7 +172,11 @@ nrfx_gppi_task_t nrfx_gppi_group_enable_task_get(nrfx_gppi_channel_group_t group
 nrfx_err_t nrfx_gppi_channel_alloc(uint8_t * p_channel)
 {
 #if NRFX_CHECK(NRFX_DPPI_ENABLED) && (!defined(DPPIC_COUNT) || (DPPIC_COUNT == 1))
+#if NRFX_API_VER_AT_LEAST(3, 8, 0)
+    return nrfx_dppi_channel_alloc(&dppi, p_channel);
+#else
     return nrfx_dppi_channel_alloc(p_channel);
+#endif
 #else
     (void)p_channel;
     return NRFX_ERROR_NOT_SUPPORTED;
@@ -178,7 +186,11 @@ nrfx_err_t nrfx_gppi_channel_alloc(uint8_t * p_channel)
 nrfx_err_t nrfx_gppi_channel_free(uint8_t channel)
 {
 #if NRFX_CHECK(NRFX_DPPI_ENABLED) && (!defined(DPPIC_COUNT) || (DPPIC_COUNT == 1))
+#if NRFX_API_VER_AT_LEAST(3, 8, 0)
+    return nrfx_dppi_channel_free(&dppi, channel);
+#else
     return nrfx_dppi_channel_free(channel);
+#endif
 #else
     (void)channel;
     return NRFX_ERROR_NOT_SUPPORTED;
@@ -188,7 +200,11 @@ nrfx_err_t nrfx_gppi_channel_free(uint8_t channel)
 nrfx_err_t nrfx_gppi_group_alloc(nrfx_gppi_channel_group_t * p_group)
 {
 #if NRFX_CHECK(NRFX_DPPI_ENABLED) && (!defined(DPPIC_COUNT) || (DPPIC_COUNT == 1))
+#if NRFX_API_VER_AT_LEAST(3, 8, 0)
+    return nrfx_dppi_group_alloc(&dppi, (nrf_dppi_channel_group_t *)p_group);
+#else
     return nrfx_dppi_group_alloc((nrf_dppi_channel_group_t *)p_group);
+#endif
 #else
     (void)p_group;
     return NRFX_ERROR_NOT_SUPPORTED;
@@ -198,10 +214,30 @@ nrfx_err_t nrfx_gppi_group_alloc(nrfx_gppi_channel_group_t * p_group)
 nrfx_err_t nrfx_gppi_group_free(nrfx_gppi_channel_group_t group)
 {
 #if NRFX_CHECK(NRFX_DPPI_ENABLED) && (!defined(DPPIC_COUNT) || (DPPIC_COUNT == 1))
+#if NRFX_API_VER_AT_LEAST(3, 8, 0)
+    return nrfx_dppi_group_free(&dppi, (nrf_dppi_channel_group_t)group);
+#else
     return nrfx_dppi_group_free((nrf_dppi_channel_group_t)group);
+#endif
 #else
     (void)group;
     return NRFX_ERROR_NOT_SUPPORTED;
 #endif
 }
+
+nrfx_err_t nrfx_gppi_edge_connection_setup(uint8_t             channel,
+                                           nrfx_dppi_t const * p_src_dppi,
+                                           uint8_t             src_channel,
+                                           nrfx_dppi_t const * p_dst_dppi,
+                                           uint8_t             dst_channel)
+{
+    (void)channel;
+    (void)p_src_dppi;
+    (void)src_channel;
+    (void)p_dst_dppi;
+    (void)dst_channel;
+
+    return NRFX_SUCCESS; /* No operation as there is only one DPPIC instance. */
+}
+
 #endif // defined(DPPI_PRESENT) && (defined(NRF53_SERIES) || defined(NRF91_SERIES))

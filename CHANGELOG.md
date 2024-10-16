@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.8.0] - 2024-10-17
+### Added
+- Added multi-instance support in the DPPI driver.
+- Added multi-instance driver for the PPIB.
+- Added a function for interconnecting two DPPI domains in the GPPI helper.
+
 ## [3.7.0] - 2024-09-27
 ### Added
 - Added support for nRF54H20 Eng B.

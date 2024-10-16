@@ -40,6 +40,20 @@
 extern "C" {
 #endif
 
+#if !defined(NRF_DPPIC0) && defined(NRF_DPPIC)
+#define NRF_DPPIC0 NRF_DPPIC
+#endif
+
+#if !defined(DPPIC0_CH_NUM) && defined(DPPIC_CH_NUM) && \
+    (defined(NRF_DPPIC) || defined(NRF_DPPIC0))
+#define DPPIC0_CH_NUM DPPIC_CH_NUM
+#endif
+
+#if !defined(DPPIC0_GROUP_NUM) && defined(DPPIC_GROUP_NUM) && \
+    (defined(NRF_DPPIC) || defined(NRF_DPPIC0))
+#define DPPIC0_GROUP_NUM DPPIC_GROUP_NUM
+#endif
+
 /*
  * Macro for generating if statement code blocks that allow extracting
  * the number of channels associated with the specific DPPIC instance.

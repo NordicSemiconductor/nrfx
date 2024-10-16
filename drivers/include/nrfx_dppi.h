@@ -37,6 +37,11 @@
 #include <nrfx.h>
 #include <haly/nrfy_dppi.h>
 
+/* On devices with single instance (with no ID) use instance 0. */
+#if defined(NRF_DPPIC) && defined(NRFX_DPPI_ENABLED) && !defined(NRFX_DPPI0_ENABLED)
+#define NRFX_DPPI0_ENABLED 1
+#endif
+
 /**
  * @defgroup nrfx_dppi DPPI allocator
  * @{
@@ -44,12 +49,40 @@
  * @brief   Distributed Programmable Peripheral Interconnect (DPPI) allocator.
  */
 
+/** @brief Data structure of the Distributed programmable peripheral interconnect (DPPI) driver instance. */
+typedef struct
+{
+    NRF_DPPIC_Type * p_reg;        ///< Pointer to a structure containing DPPIC registers.
+    uint8_t          drv_inst_idx; ///< Index of the driver instance. For internal use only.
+} nrfx_dppi_t;
+
+#ifndef __NRFX_DOXYGEN__
+enum {
+    /* List all enabled driver instances (in the format NRFX_\<instance_name\>_INST_IDX). */
+    NRFX_INSTANCE_ENUM_LIST(DPPI)
+    NRFX_DPPI_ENABLED_COUNT
+};
+#endif
+
+/** @brief Macro for creating an instance of the DPPIC driver. */
+#define NRFX_DPPI_INSTANCE(id)                            \
+{                                                          \
+    .p_reg        = NRFX_CONCAT(NRF_, DPPIC, id),          \
+    .drv_inst_idx = NRFX_CONCAT(NRFX_DPPI, id, _INST_IDX), \
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/** @brief Function for freeing all allocated channels and groups. */
-void nrfx_dppi_free(void);
+#if NRFX_API_VER_AT_LEAST(3, 8, 0) || defined(__NRFX_DOXYGEN__)
+
+/**
+ * @brief Function for freeing all allocated channels and groups.
+ *
+ * @param[in]  p_instance Pointer to the driver instance structure.
+ */
+void nrfx_dppi_free(nrfx_dppi_t const * p_instance);
 
 /**
  * @brief Function for allocating a DPPI channel.
@@ -57,12 +90,13 @@ void nrfx_dppi_free(void);
  *
  * @note Function is thread safe as it uses @ref nrfx_flag32_alloc.
  *
- * @param[out] p_channel Pointer to the DPPI channel number that has been allocated.
+ * @param[in]  p_instance Pointer to the driver instance structure.
+ * @param[out] p_channel  Pointer to the DPPI channel number that has been allocated.
  *
  * @retval NRFX_SUCCESS      The channel was successfully allocated.
  * @retval NRFX_ERROR_NO_MEM There is no available channel to be used.
  */
-nrfx_err_t nrfx_dppi_channel_alloc(uint8_t * p_channel);
+nrfx_err_t nrfx_dppi_channel_alloc(nrfx_dppi_t const * p_instance, uint8_t * p_channel);
 
 /**
  * @brief Function for freeing a DPPI channel.
@@ -71,22 +105,24 @@ nrfx_err_t nrfx_dppi_channel_alloc(uint8_t * p_channel);
  *
  * @note Function is thread safe as it uses @ref nrfx_flag32_free.
  *
- * @param[in] channel DPPI channel to be freed.
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] channel    DPPI channel to be freed.
  *
  * @retval NRFX_SUCCESS             The channel was successfully freed.
  * @retval NRFX_ERROR_INVALID_PARAM The specified channel is not allocated.
  */
-nrfx_err_t nrfx_dppi_channel_free(uint8_t channel);
+nrfx_err_t nrfx_dppi_channel_free(nrfx_dppi_t const * p_instance, uint8_t channel);
 
 /**
  * @brief Function for enabling a DPPI channel.
  *
- * @param[in] channel DPPI channel to be enabled.
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] channel    DPPI channel to be enabled.
  *
  * @retval NRFX_SUCCESS             The channel was successfully enabled.
  * @retval NRFX_ERROR_INVALID_PARAM The specified channel is not allocated.
  */
-nrfx_err_t nrfx_dppi_channel_enable(uint8_t channel);
+nrfx_err_t nrfx_dppi_channel_enable(nrfx_dppi_t const * p_instance, uint8_t channel);
 
 /**
  * @brief Function for disabling a DPPI channel.
@@ -94,12 +130,13 @@ nrfx_err_t nrfx_dppi_channel_enable(uint8_t channel);
  * @note Disabling channel does not modify PUBLISH/SUBSCRIBE registers configured to use
  *       that channel.
  *
- * @param[in] channel DPPI channel to be disabled.
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] channel    DPPI channel to be disabled.
  *
  * @retval NRFX_SUCCESS             The channel was successfully disabled.
  * @retval NRFX_ERROR_INVALID_PARAM The specified channel is not allocated.
  */
-nrfx_err_t nrfx_dppi_channel_disable(uint8_t channel);
+nrfx_err_t nrfx_dppi_channel_disable(nrfx_dppi_t const * p_instance, uint8_t channel);
 
 /**
  * @brief Function for allocating a DPPI channel group.
@@ -107,12 +144,14 @@ nrfx_err_t nrfx_dppi_channel_disable(uint8_t channel);
  *
  * @note Function is thread safe as it uses @ref nrfx_flag32_alloc.
  *
- * @param[out] p_group Pointer to the DPPI channel group that has been allocated.
+ * @param[in]  p_instance Pointer to the driver instance structure.
+ * @param[out] p_group    Pointer to the DPPI channel group that has been allocated.
  *
  * @retval NRFX_SUCCESS      The channel group was successfully allocated.
  * @retval NRFX_ERROR_NO_MEM There is no available channel group to be used.
  */
-nrfx_err_t nrfx_dppi_group_alloc(nrf_dppi_channel_group_t * p_group);
+nrfx_err_t nrfx_dppi_group_alloc(nrfx_dppi_t const *        p_instance,
+                                 nrf_dppi_channel_group_t * p_group);
 
 /**
  * @brief Function for freeing a DPPI channel group.
@@ -120,18 +159,20 @@ nrfx_err_t nrfx_dppi_group_alloc(nrf_dppi_channel_group_t * p_group);
  *
  * @note Function is thread safe as it uses @ref nrfx_flag32_free.
  *
- * @param[in] group DPPI channel group to be freed.
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] group      DPPI channel group to be freed.
  *
  * @retval NRFX_SUCCESS             The channel group was successfully freed.
  * @retval NRFX_ERROR_INVALID_PARAM The specified group is not allocated.
  */
-nrfx_err_t nrfx_dppi_group_free(nrf_dppi_channel_group_t group);
+nrfx_err_t nrfx_dppi_group_free(nrfx_dppi_t const * p_instance, nrf_dppi_channel_group_t group);
 
 /**
  * @brief Function for including a DPPI channel in a channel group.
  *
- * @param[in] channel DPPI channel to be added.
- * @param[in] group   Channel group in which to include the channel.
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] channel    DPPI channel to be added.
+ * @param[in] group      Channel group in which to include the channel.
  *
  * @warning Channel group configuration can be modified only if subscriptions for tasks
  *          associated with this group are disabled.
@@ -139,14 +180,16 @@ nrfx_err_t nrfx_dppi_group_free(nrf_dppi_channel_group_t group);
  * @retval NRFX_SUCCESS             The channel was successfully included.
  * @retval NRFX_ERROR_INVALID_PARAM The specified group or channel is not allocated.
  */
-nrfx_err_t nrfx_dppi_channel_include_in_group(uint8_t                  channel,
+nrfx_err_t nrfx_dppi_channel_include_in_group(nrfx_dppi_t const *      p_instance,
+                                              uint8_t                  channel,
                                               nrf_dppi_channel_group_t group);
 
 /**
  * @brief Function for removing a DPPI channel from a channel group.
  *
- * @param[in] channel DPPI channel to be removed.
- * @param[in] group   Channel group from which to remove the channel.
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] channel    DPPI channel to be removed.
+ * @param[in] group      Channel group from which to remove the channel.
  *
  * @warning Channel group configuration can be modified only if subscriptions for tasks
  *          associated with this group are disabled.
@@ -154,13 +197,15 @@ nrfx_err_t nrfx_dppi_channel_include_in_group(uint8_t                  channel,
  * @retval NRFX_SUCCESS             The channel was successfully removed.
  * @retval NRFX_ERROR_INVALID_PARAM The specified group or channel is not allocated.
  */
-nrfx_err_t nrfx_dppi_channel_remove_from_group(uint8_t                  channel,
+nrfx_err_t nrfx_dppi_channel_remove_from_group(nrfx_dppi_t const *      p_instance,
+                                               uint8_t                  channel,
                                                nrf_dppi_channel_group_t group);
 
 /**
  * @brief Function for clearing a DPPI channel group.
  *
- * @param[in] group Channel group to be cleared.
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] group      Channel group to be cleared.
  *
  * @warning Channel group configuration can be modified only if subscriptions for tasks
  *          associated with this group are disabled.
@@ -168,27 +213,72 @@ nrfx_err_t nrfx_dppi_channel_remove_from_group(uint8_t                  channel,
  * @retval NRFX_SUCCESS             The group was successfully cleared.
  * @retval NRFX_ERROR_INVALID_PARAM The specified group is not allocated.
  */
-nrfx_err_t nrfx_dppi_group_clear(nrf_dppi_channel_group_t group);
+nrfx_err_t nrfx_dppi_group_clear(nrfx_dppi_t const * p_instance, nrf_dppi_channel_group_t group);
 
 /**
  * @brief Function for enabling a DPPI channel group.
  *
- * @param[in] group Channel group to be enabled.
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] group      Channel group to be enabled.
  *
  * @retval NRFX_SUCCESS             The group was successfully enabled.
  * @retval NRFX_ERROR_INVALID_PARAM The specified group is not allocated.
  */
-nrfx_err_t nrfx_dppi_group_enable(nrf_dppi_channel_group_t group);
+nrfx_err_t nrfx_dppi_group_enable(nrfx_dppi_t const *      p_instance,
+                                  nrf_dppi_channel_group_t group);
 
 /**
  * @brief Function for disabling a DPPI channel group.
  *
- * @param[in] group Channel group to be disabled.
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] group      Channel group to be disabled.
  *
  * @retval NRFX_SUCCESS             The group was successfully disabled.
  * @retval NRFX_ERROR_INVALID_PARAM The specified group is not allocated.
  */
+nrfx_err_t nrfx_dppi_group_disable(nrfx_dppi_t const *      p_instance,
+                                   nrf_dppi_channel_group_t group);
+
+#else
+
+#if !defined(NRF_DPPIC_INDEX)
+/* Choose the instance to use in case of using deprecated single-instance driver variant. */
+#if defined(HALTIUM_XXAA)
+#define NRF_DPPIC_INDEX 130
+#elif defined(LUMOS_XXAA)
+#define NRF_DPPIC_INDEX 20
+#else
+#define NRF_DPPIC_INDEX 0
+#endif
+#endif
+
+void nrfx_dppi_free(void);
+
+nrfx_err_t nrfx_dppi_channel_alloc(uint8_t * p_channel);
+
+nrfx_err_t nrfx_dppi_channel_free(uint8_t channel);
+
+nrfx_err_t nrfx_dppi_channel_enable(uint8_t channel);
+
+nrfx_err_t nrfx_dppi_channel_disable(uint8_t channel);
+
+nrfx_err_t nrfx_dppi_group_alloc(nrf_dppi_channel_group_t * p_group);
+
+nrfx_err_t nrfx_dppi_group_free(nrf_dppi_channel_group_t group);
+
+nrfx_err_t nrfx_dppi_channel_include_in_group(uint8_t                  channel,
+                                              nrf_dppi_channel_group_t group);
+
+nrfx_err_t nrfx_dppi_channel_remove_from_group(uint8_t                  channel,
+                                               nrf_dppi_channel_group_t group);
+
+nrfx_err_t nrfx_dppi_group_clear(nrf_dppi_channel_group_t group);
+
+nrfx_err_t nrfx_dppi_group_enable(nrf_dppi_channel_group_t group);
+
 nrfx_err_t nrfx_dppi_group_disable(nrf_dppi_channel_group_t group);
+
+#endif
 
 /** @} */
 

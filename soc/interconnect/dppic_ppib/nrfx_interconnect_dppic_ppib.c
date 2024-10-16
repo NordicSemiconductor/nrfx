@@ -96,7 +96,13 @@ bool nrfx_interconnect_direct_connection_check(nrfx_interconnect_dppic_to_dppic_
 
     for (uint8_t i = 0; i < NRFX_INTERCONNECT_DPPIC_PPIB_COUNT; i++)
     {
-        if (interconnect_dppic_ppib[i].dppic != p_path->src_dppic->dppic)
+        NRF_DPPIC_Type *p_reg;
+#if NRFX_API_VER_AT_LEAST(3, 8, 0) && !defined(NRF54L15_ENGA_XXAA)
+        p_reg = p_path->src_dppic->dppic.p_reg;
+#else
+        p_reg = p_path->src_dppic->dppic;
+#endif
+        if (interconnect_dppic_ppib[i].dppic != p_reg)
         {
             continue;
         }
@@ -105,18 +111,18 @@ bool nrfx_interconnect_direct_connection_check(nrfx_interconnect_dppic_to_dppic_
         {
             NRF_PPIB_Type * p_dst_ppib = NULL;
 
-            if (interconnect_ppib[j].p_ppib1 == interconnect_dppic_ppib[i].ppib)
+            if (interconnect_ppib[j].ppib.left.p_reg == interconnect_dppic_ppib[i].ppib)
             {
                 p_path->ppib          = &interconnect_ppib[j];
                 p_path->ppib_inverted = false;
-                p_dst_ppib            = interconnect_ppib[j].p_ppib2;
+                p_dst_ppib            = interconnect_ppib[j].ppib.right.p_reg;
             }
 
-            if (interconnect_ppib[j].p_ppib2 == interconnect_dppic_ppib[i].ppib)
+            if (interconnect_ppib[j].ppib.right.p_reg == interconnect_dppic_ppib[i].ppib)
             {
                 p_path->ppib          = &interconnect_ppib[j];
                 p_path->ppib_inverted = true;
-                p_dst_ppib            = interconnect_ppib[j].p_ppib1;
+                p_dst_ppib            = interconnect_ppib[j].ppib.left.p_reg;
             }
 
             if (p_dst_ppib == NULL)
@@ -126,8 +132,14 @@ bool nrfx_interconnect_direct_connection_check(nrfx_interconnect_dppic_to_dppic_
 
             for (uint8_t k = 0; k < NRFX_ARRAY_SIZE(interconnect_dppic_ppib); k++)
             {
+                NRF_DPPIC_Type *p_dst_reg;
+#if NRFX_API_VER_AT_LEAST(3, 8, 0) && !defined(NRF54L15_ENGA_XXAA)
+                p_dst_reg = p_path->dst_dppic->dppic.p_reg;
+#else
+                p_dst_reg = p_path->dst_dppic->dppic;
+#endif
                 if ((interconnect_dppic_ppib[k].ppib == p_dst_ppib) &&
-                    (interconnect_dppic_ppib[k].dppic == p_path->dst_dppic->dppic))
+                    (interconnect_dppic_ppib[k].dppic == p_dst_reg))
                 {
                     return true;
                 }
@@ -145,7 +157,13 @@ nrf_apb_index_t nrfx_interconnect_apb_index_get(uint32_t addr)
         nrfx_interconnect_dppic_t const * p_dppic = &interconnect_dppic[i];
         uint8_t bus_address_area = nrf_address_bus_get(addr, p_dppic->apb_size);
 
-        if (bus_address_area == nrf_address_bus_get((uint32_t)p_dppic->dppic, p_dppic->apb_size))
+        NRF_DPPIC_Type *p_reg;
+#if NRFX_API_VER_AT_LEAST(3, 8, 0) && !defined(NRF54L15_ENGA_XXAA)
+        p_reg = p_dppic->dppic.p_reg;
+#else
+        p_reg = p_dppic->dppic;
+#endif
+        if (bus_address_area == nrf_address_bus_get((uint32_t)p_reg, p_dppic->apb_size))
         {
             return (nrf_apb_index_t)bus_address_area;
         }
