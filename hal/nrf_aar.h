@@ -444,7 +444,7 @@ NRF_STATIC_INLINE uint8_t * nrf_aar_scratch_pointer_get(NRF_AAR_Type const * p_r
  *        the last time an address was resolved.
  *
  * This function can be used to get the IRK index that matched the resolvable address,
- * provided that @ref NRF_AAR_EVENT_RESOLVED occured. Otherwise, it will return
+ * provided that @ref NRF_AAR_EVENT_RESOLVED occurred. Otherwise, it will return
  * the index of the last IRK stored in the IRK data structure.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
