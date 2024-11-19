@@ -324,7 +324,7 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     SERIAL23_IRQHandler
         DCD     SERIAL24_IRQHandler
-        DCD     0                         ; Reserved
+        DCD     TAMPC_IRQHandler
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
@@ -356,9 +356,6 @@ __vector_table
         DCD     GPIOTE30_0_IRQHandler
         DCD     GPIOTE30_1_IRQHandler
         DCD     CLOCK_POWER_IRQHandler
-        DCD     0                         ; Reserved
-        DCD     0                         ; Reserved
-        DCD     TAMPC_IRQHandler
 
 __Vectors_End
 __Vectors                           EQU   __vector_table
@@ -688,6 +685,11 @@ SERIAL23_IRQHandler
 SERIAL24_IRQHandler
         B .
 
+        PUBWEAK  TAMPC_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+TAMPC_IRQHandler
+        B .
+
         PUBWEAK  SPU30_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 SPU30_IRQHandler
@@ -726,11 +728,6 @@ GPIOTE30_1_IRQHandler
         PUBWEAK  CLOCK_POWER_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 CLOCK_POWER_IRQHandler
-        B .
-
-        PUBWEAK  TAMPC_IRQHandler
-        SECTION .text:CODE:REORDER:NOROOT(1)
-TAMPC_IRQHandler
         B .
 
         END

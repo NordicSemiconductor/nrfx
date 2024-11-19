@@ -153,7 +153,12 @@ void nrfx_power_uninit(void)
     if (!nrfx_clock_irq_enabled)
 #endif
     {
-        NRFX_IRQ_DISABLE(nrfx_get_irq_number(NRF_POWER));
+#if defined(NRF54L05_XXAA) || defined(NRF54L10_XXAA) || defined(NRF54L15_XXAA)
+        IRQn_Type irqn = CLOCK_POWER_IRQn;
+#else
+        IRQn_Type irqn = nrfx_get_irq_number(NRF_POWER);
+#endif
+        NRFX_IRQ_DISABLE(irqn);
     }
 #if NRFX_POWER_SUPPORTS_POFCON
     nrfx_power_pof_uninit();

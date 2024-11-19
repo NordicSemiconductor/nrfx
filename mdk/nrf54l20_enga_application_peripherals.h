@@ -137,6 +137,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CRACENCORE_PKE_CODE_MEMORY 0x5001C000        /*!< (unspecified)                                                        */
 #define CRACENCORE_PKE_CODE_MEMORY_SIZE 8192         /*!< (unspecified)                                                        */
 
+/*USBHSCORE*/
+#define USBHSCORE_PRESENT 1
+#define USBHSCORE_COUNT 1
+
 /*System protection unit*/
 #define SPU_PRESENT 1
 #define SPU_COUNT 4
@@ -147,7 +151,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPU00_GPIOTE 0                               /*!< (unspecified)                                                        */
 #define SPU00_GRTC 0                                 /*!< (unspecified)                                                        */
 #define SPU00_GPIO 1                                 /*!< (unspecified)                                                        */
-#define SPU00_CRACEN 1                               /*!< (unspecified)                                                        */
+#define SPU00_CRACEN 0                               /*!< (unspecified)                                                        */
 #define SPU00_MRAMC 0                                /*!< (unspecified)                                                        */
 #define SPU00_COEXC 0                                /*!< (unspecified)                                                        */
 #define SPU00_ANTSWC 0                               /*!< (unspecified)                                                        */
@@ -207,23 +211,15 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /*Distributed programmable peripheral interconnect controller*/
 #define DPPIC_PRESENT 1
-#define DPPIC_COUNT 5
+#define DPPIC_COUNT 4
 
 #define DPPIC00_HASCHANNELGROUPS 1                   /*!< (unspecified)                                                        */
 #define DPPIC00_CH_NUM_MIN 0                         /*!< (unspecified)                                                        */
-#define DPPIC00_CH_NUM_MAX 7                         /*!< (unspecified)                                                        */
-#define DPPIC00_CH_NUM_SIZE 8                        /*!< (unspecified)                                                        */
+#define DPPIC00_CH_NUM_MAX 15                        /*!< (unspecified)                                                        */
+#define DPPIC00_CH_NUM_SIZE 16                       /*!< (unspecified)                                                        */
 #define DPPIC00_GROUP_NUM_MIN 0                      /*!< (unspecified)                                                        */
 #define DPPIC00_GROUP_NUM_MAX 1                      /*!< (unspecified)                                                        */
 #define DPPIC00_GROUP_NUM_SIZE 2                     /*!< (unspecified)                                                        */
-
-#define DPPIC01_HASCHANNELGROUPS 1                   /*!< (unspecified)                                                        */
-#define DPPIC01_CH_NUM_MIN 0                         /*!< (unspecified)                                                        */
-#define DPPIC01_CH_NUM_MAX 7                         /*!< (unspecified)                                                        */
-#define DPPIC01_CH_NUM_SIZE 8                        /*!< (unspecified)                                                        */
-#define DPPIC01_GROUP_NUM_MIN 0                      /*!< (unspecified)                                                        */
-#define DPPIC01_GROUP_NUM_MAX 1                      /*!< (unspecified)                                                        */
-#define DPPIC01_GROUP_NUM_SIZE 2                     /*!< (unspecified)                                                        */
 
 #define DPPIC10_HASCHANNELGROUPS 1                   /*!< (unspecified)                                                        */
 #define DPPIC10_CH_NUM_MIN 0                         /*!< (unspecified)                                                        */
@@ -251,7 +247,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /*PPIB APB registers*/
 #define PPIB_PRESENT 1
-#define PPIB_COUNT 12
+#define PPIB_COUNT 8
 
 #define PPIB00_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
 #define PPIB00_NTASKSEVENTS_MAX 7                    /*!< (unspecified)                                                        */
@@ -261,18 +257,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PPIB01_NTASKSEVENTS_MAX 7                    /*!< (unspecified)                                                        */
 #define PPIB01_NTASKSEVENTS_SIZE 8                   /*!< (unspecified)                                                        */
 
-#define PPIB02_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
-#define PPIB02_NTASKSEVENTS_MAX 3                    /*!< (unspecified)                                                        */
-#define PPIB02_NTASKSEVENTS_SIZE 4                   /*!< (unspecified)                                                        */
-
-#define PPIB03_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
-#define PPIB03_NTASKSEVENTS_MAX 3                    /*!< (unspecified)                                                        */
-#define PPIB03_NTASKSEVENTS_SIZE 4                   /*!< (unspecified)                                                        */
-
-#define PPIB04_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
-#define PPIB04_NTASKSEVENTS_MAX 3                    /*!< (unspecified)                                                        */
-#define PPIB04_NTASKSEVENTS_SIZE 4                   /*!< (unspecified)                                                        */
-
 #define PPIB10_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
 #define PPIB10_NTASKSEVENTS_MAX 7                    /*!< (unspecified)                                                        */
 #define PPIB10_NTASKSEVENTS_SIZE 8                   /*!< (unspecified)                                                        */
@@ -280,10 +264,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PPIB11_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
 #define PPIB11_NTASKSEVENTS_MAX 7                    /*!< (unspecified)                                                        */
 #define PPIB11_NTASKSEVENTS_SIZE 8                   /*!< (unspecified)                                                        */
-
-#define PPIB12_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
-#define PPIB12_NTASKSEVENTS_MAX 3                    /*!< (unspecified)                                                        */
-#define PPIB12_NTASKSEVENTS_SIZE 4                   /*!< (unspecified)                                                        */
 
 #define PPIB20_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
 #define PPIB20_NTASKSEVENTS_MAX 7                    /*!< (unspecified)                                                        */
@@ -305,8 +285,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define KMU_PRESENT 1
 #define KMU_COUNT 1
 
-#define KMU_KEYSLOTNUM 256                           /*!< Number of keyslots is 256                                            */
+#define KMU_KEYSLOTNUM 250                           /*!< Number of keyslots is 250                                            */
 #define KMU_KEYSLOTBITS 128                          /*!< Number of bits per keyslot is 128                                    */
+#define KMU_PUSHBLOCK 1                              /*!< (unspecified)                                                        */
+#define KMU_BLOCK 1                                  /*!< (unspecified)                                                        */
 
 /*Accelerated Address Resolver*/
 #define AAR_PRESENT 1
@@ -837,6 +819,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER00_MAX_SIZE_SIZE 32                     /*!< (unspecified)                                                        */
 #define TIMER00_PCLK_MHZ 128                         /*!< Peripheral clock frequency (PCLK) is 128 MHz                         */
 #define TIMER00_PCLK_VARIABLE 1                      /*!< (unspecified)                                                        */
+#define TIMER00_SHUTDOWN_TASK 0                      /*!< (unspecified)                                                        */
 
 #define TIMER10_CC_NUM_MIN 0                         /*!< (unspecified)                                                        */
 #define TIMER10_CC_NUM_MAX 7                         /*!< (unspecified)                                                        */
@@ -846,6 +829,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER10_MAX_SIZE_SIZE 32                     /*!< (unspecified)                                                        */
 #define TIMER10_PCLK_MHZ 32                          /*!< Peripheral clock frequency (PCLK) is 32 MHz                          */
 #define TIMER10_PCLK_VARIABLE 0                      /*!< (unspecified)                                                        */
+#define TIMER10_SHUTDOWN_TASK 0                      /*!< (unspecified)                                                        */
 
 #define TIMER20_CC_NUM_MIN 0                         /*!< (unspecified)                                                        */
 #define TIMER20_CC_NUM_MAX 5                         /*!< (unspecified)                                                        */
@@ -855,6 +839,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER20_MAX_SIZE_SIZE 32                     /*!< (unspecified)                                                        */
 #define TIMER20_PCLK_MHZ 16                          /*!< Peripheral clock frequency (PCLK) is 16 MHz                          */
 #define TIMER20_PCLK_VARIABLE 0                      /*!< (unspecified)                                                        */
+#define TIMER20_SHUTDOWN_TASK 0                      /*!< (unspecified)                                                        */
 
 #define TIMER21_CC_NUM_MIN 0                         /*!< (unspecified)                                                        */
 #define TIMER21_CC_NUM_MAX 5                         /*!< (unspecified)                                                        */
@@ -864,6 +849,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER21_MAX_SIZE_SIZE 32                     /*!< (unspecified)                                                        */
 #define TIMER21_PCLK_MHZ 16                          /*!< Peripheral clock frequency (PCLK) is 16 MHz                          */
 #define TIMER21_PCLK_VARIABLE 0                      /*!< (unspecified)                                                        */
+#define TIMER21_SHUTDOWN_TASK 0                      /*!< (unspecified)                                                        */
 
 #define TIMER22_CC_NUM_MIN 0                         /*!< (unspecified)                                                        */
 #define TIMER22_CC_NUM_MAX 5                         /*!< (unspecified)                                                        */
@@ -873,6 +859,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER22_MAX_SIZE_SIZE 32                     /*!< (unspecified)                                                        */
 #define TIMER22_PCLK_MHZ 16                          /*!< Peripheral clock frequency (PCLK) is 16 MHz                          */
 #define TIMER22_PCLK_VARIABLE 0                      /*!< (unspecified)                                                        */
+#define TIMER22_SHUTDOWN_TASK 0                      /*!< (unspecified)                                                        */
 
 #define TIMER23_CC_NUM_MIN 0                         /*!< (unspecified)                                                        */
 #define TIMER23_CC_NUM_MAX 5                         /*!< (unspecified)                                                        */
@@ -882,6 +869,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER23_MAX_SIZE_SIZE 32                     /*!< (unspecified)                                                        */
 #define TIMER23_PCLK_MHZ 16                          /*!< Peripheral clock frequency (PCLK) is 16 MHz                          */
 #define TIMER23_PCLK_VARIABLE 0                      /*!< (unspecified)                                                        */
+#define TIMER23_SHUTDOWN_TASK 0                      /*!< (unspecified)                                                        */
 
 #define TIMER24_CC_NUM_MIN 0                         /*!< (unspecified)                                                        */
 #define TIMER24_CC_NUM_MAX 5                         /*!< (unspecified)                                                        */
@@ -891,6 +879,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER24_MAX_SIZE_SIZE 32                     /*!< (unspecified)                                                        */
 #define TIMER24_PCLK_MHZ 16                          /*!< Peripheral clock frequency (PCLK) is 16 MHz                          */
 #define TIMER24_PCLK_VARIABLE 0                      /*!< (unspecified)                                                        */
+#define TIMER24_SHUTDOWN_TASK 0                      /*!< (unspecified)                                                        */
 
 /*Event generator unit*/
 #define EGU_PRESENT 1
@@ -947,6 +936,9 @@ POSSIBILITY OF SUCH DAMAGE.
 /*USBHS*/
 #define USBHS_PRESENT 1
 #define USBHS_COUNT 1
+
+#define USBHS_HAS_SOF_EVENT 1                        /*!< (unspecified)                                                        */
+#define USBHS_RTUNE_AVAILABLE 1                      /*!< (unspecified)                                                        */
 
 /*2.4 GHz radio*/
 #define RADIO_PRESENT 1
@@ -1166,6 +1158,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TDM_NUM_CHANNELS_SIZE 8                      /*!< (unspecified)                                                        */
 #define TDM_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                      */
 
+/*Tamper controller*/
+#define TAMPC_PRESENT 1
+#define TAMPC_COUNT 1
+
+#define TAMPC_APSPIDEN 0                             /*!< (unspecified)                                                        */
+#define TAMPC_PROTECT_INTRESETEN_CTRL_VALUE_RESET 1  /*!< Reset value of field VALUE in register PROTECT.INTRESETEN.CTRL: 1    */
+#define TAMPC_TAMPERSWITCH 0                         /*!< (unspecified)                                                        */
+
 /*Comparator*/
 #define COMP_PRESENT 1
 #define COMP_COUNT 1
@@ -1189,6 +1189,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_COUNT 1
 
 #define CLOCK_XOTUNE 1                               /*!< (unspecified)                                                        */
+#define CLOCK_PLL24M 1                               /*!< (unspecified)                                                        */
 
 /*Power control*/
 #define POWER_PRESENT 1
@@ -1199,14 +1200,6 @@ POSSIBILITY OF SUCH DAMAGE.
 /*Reset control*/
 #define RESET_PRESENT 1
 #define RESET_COUNT 1
-
-/*Tamper controller*/
-#define TAMPC_PRESENT 1
-#define TAMPC_COUNT 1
-
-#define TAMPC_APSPIDEN 0                             /*!< (unspecified)                                                        */
-#define TAMPC_PROTECT_INTRESETEN_CTRL_VALUE_RESET 1  /*!< Reset value of field VALUE in register PROTECT.INTRESETEN.CTRL: 1    */
-#define TAMPC_TAMPERSWITCH 0                         /*!< (unspecified)                                                        */
 
 /*Oscillator control*/
 #define OSCILLATORS_PRESENT 1
@@ -1220,7 +1213,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define VREGUSB_PRESENT 1
 #define VREGUSB_COUNT 1
 
-#define USBREG_PROLONGED_WAKEUP 0                    /*!< (unspecified)                                                        */
+#define VREGUSB_PROLONGED_WAKEUP 0                   /*!< (unspecified)                                                        */
 
 /* ==================================================== Baudrate settings ==================================================== */
 /**

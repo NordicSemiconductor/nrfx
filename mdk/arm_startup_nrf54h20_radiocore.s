@@ -136,7 +136,7 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
-                DCD     VPR_IRQHandler
+                DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
@@ -150,8 +150,8 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     IPCT_0_IRQHandler
                 DCD     IPCT_1_IRQHandler
-                DCD     0                         ; Reserved
-                DCD     0                         ; Reserved
+                DCD     CTI_0_IRQHandler
+                DCD     CTI_1_IRQHandler
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
@@ -654,13 +654,14 @@ Default_Handler PROC
                 EXPORT   RADIO_0_IRQHandler [WEAK]
                 EXPORT   RADIO_1_IRQHandler [WEAK]
                 EXPORT   SPU030_IRQHandler [WEAK]
-                EXPORT   VPR_IRQHandler [WEAK]
                 EXPORT   AAR030_CCM030_IRQHandler [WEAK]
                 EXPORT   ECB030_IRQHandler [WEAK]
                 EXPORT   AAR031_CCM031_IRQHandler [WEAK]
                 EXPORT   ECB031_IRQHandler [WEAK]
                 EXPORT   IPCT_0_IRQHandler [WEAK]
                 EXPORT   IPCT_1_IRQHandler [WEAK]
+                EXPORT   CTI_0_IRQHandler [WEAK]
+                EXPORT   CTI_1_IRQHandler [WEAK]
                 EXPORT   SWI0_IRQHandler [WEAK]
                 EXPORT   SWI1_IRQHandler [WEAK]
                 EXPORT   SWI2_IRQHandler [WEAK]
@@ -746,13 +747,14 @@ RTC_IRQHandler
 RADIO_0_IRQHandler
 RADIO_1_IRQHandler
 SPU030_IRQHandler
-VPR_IRQHandler
 AAR030_CCM030_IRQHandler
 ECB030_IRQHandler
 AAR031_CCM031_IRQHandler
 ECB031_IRQHandler
 IPCT_0_IRQHandler
 IPCT_1_IRQHandler
+CTI_0_IRQHandler
+CTI_1_IRQHandler
 SWI0_IRQHandler
 SWI1_IRQHandler
 SWI2_IRQHandler

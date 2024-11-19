@@ -76,8 +76,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_USBHSCORE0_S_BASE             0x2F700000UL
 #define NRF_I3CCORE120_NS_BASE            0x2FBE0000UL
 #define NRF_I3CCORE121_NS_BASE            0x2FBE1000UL
-#define NRF_DMU120_NS_BASE                0x2FBEF800UL
 #define NRF_MCAN120_NS_BASE               0x2FBEF800UL
+#define NRF_DMU120_NS_BASE                0x2FBEFBC0UL
 #define NRF_STMDATA_NS_BASE               0xA0000000UL
 #define NRF_STMDATA_S_BASE                0xA0000000UL
 #define NRF_TDDCONF_NS_BASE               0xBF001000UL
@@ -318,8 +318,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_USBHSCORE0_S                  ((NRF_USBHSCORE_Type*)                NRF_USBHSCORE0_S_BASE)
 #define NRF_I3CCORE120_NS                 ((NRF_I3CCORE_Type*)                  NRF_I3CCORE120_NS_BASE)
 #define NRF_I3CCORE121_NS                 ((NRF_I3CCORE_Type*)                  NRF_I3CCORE121_NS_BASE)
-#define NRF_DMU120_NS                     ((NRF_DMU_Type*)                      NRF_DMU120_NS_BASE)
 #define NRF_MCAN120_NS                    ((NRF_MCAN_Type*)                     NRF_MCAN120_NS_BASE)
+#define NRF_DMU120_NS                     ((NRF_DMU_Type*)                      NRF_DMU120_NS_BASE)
 #define NRF_STMDATA_NS                    ((NRF_STMDATA_Type*)                  NRF_STMDATA_NS_BASE)
 #define NRF_STMDATA_S                     ((NRF_STMDATA_Type*)                  NRF_STMDATA_S_BASE)
 #define NRF_TDDCONF_NS                    ((NRF_TDDCONF_Type*)                  NRF_TDDCONF_NS_BASE)
@@ -560,8 +560,8 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_USBHSCORE0                          NRF_USBHSCORE0_NS
   #define NRF_I3CCORE120                          NRF_I3CCORE120_NS
   #define NRF_I3CCORE121                          NRF_I3CCORE121_NS
-  #define NRF_DMU120                              NRF_DMU120_NS
   #define NRF_MCAN120                             NRF_MCAN120_NS
+  #define NRF_DMU120                              NRF_DMU120_NS
   #define NRF_STMDATA                             NRF_STMDATA_NS
   #define NRF_TDDCONF                             NRF_TDDCONF_NS
   #define NRF_STM                                 NRF_STM_NS
@@ -690,8 +690,8 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_USBHSCORE0                          NRF_USBHSCORE0_S
   #define NRF_I3CCORE120                          NRF_I3CCORE120_NS
   #define NRF_I3CCORE121                          NRF_I3CCORE121_NS
-  #define NRF_DMU120                              NRF_DMU120_NS
   #define NRF_MCAN120                             NRF_MCAN120_NS
+  #define NRF_DMU120                              NRF_DMU120_NS
   #define NRF_STMDATA                             NRF_STMDATA_S
   #define NRF_TDDCONF                             NRF_TDDCONF_S
   #define NRF_STM                                 NRF_STM_NS

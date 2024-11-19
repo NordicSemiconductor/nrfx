@@ -137,7 +137,27 @@ typedef union
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 6
 #define RAM_UNIFORM_SECTIONS_TOTAL     6
-#elif defined(NRF54L15_XXAA) || defined(NRF54L15_ENGA_XXAA)
+#elif defined(NRF54L05_XXAA)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 3
+#define RAM_UNIFORM_SECTIONS_TOTAL     3
+#elif defined(NRF54L09_ENGA_XXAA)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 6
+#define RAM_UNIFORM_SECTIONS_TOTAL     6
+#elif defined(NRF54L10_XXAA)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 6
+#define RAM_UNIFORM_SECTIONS_TOTAL     6
+#elif defined(NRF54L15_XXAA)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 8
+#define RAM_UNIFORM_SECTIONS_TOTAL     8
+#elif defined(NRF54L15_ENGA_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (16UL * 1024UL)
 #define RAM_NON_UNIFORM_SECTIONS                                      \
     NRFX_LISTIFY(4, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \

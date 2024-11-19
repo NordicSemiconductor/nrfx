@@ -206,15 +206,6 @@
 #endif
 
 /**
- * @brief NRFX_DPPI01_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_DPPI01_ENABLED
-#define NRFX_DPPI01_ENABLED 0
-#endif
-
-/**
  * @brief NRFX_DPPI10_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
@@ -645,33 +636,6 @@
 #endif
 
 /**
- * @brief NRFX_PPIB02_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_PPIB02_ENABLED
-#define NRFX_PPIB02_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_PPIB03_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_PPIB03_ENABLED
-#define NRFX_PPIB03_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_PPIB04_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_PPIB04_ENABLED
-#define NRFX_PPIB04_ENABLED 0
-#endif
-
-/**
  * @brief NRFX_PPIB10_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
@@ -687,15 +651,6 @@
  */
 #ifndef NRFX_PPIB11_ENABLED
 #define NRFX_PPIB11_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_PPIB12_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_PPIB12_ENABLED
-#define NRFX_PPIB12_ENABLED 0
 #endif
 
 /**
@@ -1644,15 +1599,6 @@
  */
 #ifndef NRFX_UARTE_CONFIG_TX_LINK
 #define NRFX_UARTE_CONFIG_TX_LINK 1
-#endif
-
-/**
- * @brief NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE
- *
- * Integer value. Minimum: 0. Maximum: 255.
- */
-#ifndef NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE
-#define NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE 171
 #endif
 
 /**

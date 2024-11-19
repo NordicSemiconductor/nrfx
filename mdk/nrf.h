@@ -37,8 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* MDK version */
 #define MDK_MAJOR_VERSION   8 
-#define MDK_MINOR_VERSION   67 
-#define MDK_MICRO_VERSION   0 
+#define MDK_MINOR_VERSION   68 
+#define MDK_MICRO_VERSION   1 
 
    
 /* Define coprocessor domains */
@@ -113,7 +113,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 /* Define NRF54H_SERIES for common use in nRF54H series devices */
-#if defined (NRF54H20_ENGA_XXAA) || defined (NRF54H20_ENGB_XXAA) ||defined (NRF54H20_XXAA)
+#if defined (NRF54H20_XXAA)
     #ifndef NRF54H_SERIES
         #define NRF54H_SERIES
     #endif
@@ -123,7 +123,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 /* Define NRF54L_SERIES for common use in nRF54L series devices */
-#if defined (NRF54L15_ENGA_XXAA) || defined (NRF54L15_XXAA) ||  defined (NRF54L20_ENGA_XXAA)
+#if defined (NRF54L05_XXAA) || defined (NRF54L09_ENGA_XXAA) || defined (NRF54L10_XXAA) || defined (NRF54L15_XXAA) ||  defined (NRF54L20_ENGA_XXAA)
     #ifndef NRF54L_SERIES
         #define NRF54L_SERIES
     #endif
@@ -213,25 +213,25 @@ POSSIBILITY OF SUCH DAMAGE.
         #include "nrf5340_network_name_change.h"
     #endif
 
-#elif defined (NRF54H20_ENGA_XXAA)
-    #include "nrf54h20_enga.h"
-    #include "nrf54h20_enga_interim.h"
-    #include "nrf54h20_enga_name_change.h"
-
-#elif defined (NRF54H20_ENGB_XXAA)
-    #include "nrf54h20_engb.h"
-    #include "nrf54h20_engb_interim.h"
-    #include "nrf54h20_engb_name_change.h"
-
 #elif defined (NRF54H20_XXAA)
     #include "nrf54h20.h"
     #include "nrf54h20_interim.h"
     #include "nrf54h20_name_change.h"
 
-#elif defined (NRF54L15_ENGA_XXAA)
-    #include "nrf54l15_enga.h"
-    #include "nrf54l15_enga_interim.h"
-    #include "nrf54l15_enga_name_change.h"
+#elif defined (NRF54L05_XXAA)
+    #include "nrf54l05.h"
+    #include "nrf54l05_interim.h"
+    #include "nrf54l05_name_change.h"
+
+#elif defined (NRF54L09_ENGA_XXAA)
+    #include "nrf54l09_enga.h"
+    #include "nrf54l09_enga_interim.h"
+    #include "nrf54l09_enga_name_change.h"  
+
+#elif defined (NRF54L10_XXAA)
+    #include "nrf54l10.h"
+    #include "nrf54l10_interim.h"
+    #include "nrf54l10_name_change.h"
 
 #elif defined (NRF54L15_XXAA)
     #include "nrf54l15.h"

@@ -128,13 +128,12 @@ typedef enum {
   GRTC_3_IRQn                            = 229,      /*!< 229 GRTC_3                                                           */
   SPU30_IRQn                             = 256,      /*!< 256 SPU30                                                            */
   SERIAL30_IRQn                          = 260,      /*!< 260 SERIAL30                                                         */
-  RTC30_IRQn                             = 261,      /*!< 261 RTC30                                                            */
+  CLOCK_POWER_IRQn                       = 261,      /*!< 261 CLOCK_POWER                                                      */
   COMP_LPCOMP_IRQn                       = 262,      /*!< 262 COMP_LPCOMP                                                      */
   WDT30_IRQn                             = 264,      /*!< 264 WDT30                                                            */
   WDT31_IRQn                             = 265,      /*!< 265 WDT31                                                            */
   GPIOTE30_0_IRQn                        = 268,      /*!< 268 GPIOTE30_0                                                       */
   GPIOTE30_1_IRQn                        = 269,      /*!< 269 GPIOTE30_1                                                       */
-  CLOCK_POWER_IRQn                       = 270,      /*!< 270 CLOCK_POWER                                                      */
 } IRQn_Type;
 
 /* ==================================================== Interrupt Aliases ==================================================== */
@@ -188,14 +187,16 @@ typedef enum {
 #define TWIS30_IRQHandler             SERIAL30_IRQHandler
 #define UARTE30_IRQn                  SERIAL30_IRQn
 #define UARTE30_IRQHandler            SERIAL30_IRQHandler
-#define COMP_IRQn                     COMP_LPCOMP_IRQn
-#define COMP_IRQHandler               COMP_LPCOMP_IRQHandler
-#define LPCOMP_IRQn                   COMP_LPCOMP_IRQn
-#define LPCOMP_IRQHandler             COMP_LPCOMP_IRQHandler
 #define CLOCK_IRQn                    CLOCK_POWER_IRQn
 #define CLOCK_IRQHandler              CLOCK_POWER_IRQHandler
 #define POWER_IRQn                    CLOCK_POWER_IRQn
 #define POWER_IRQHandler              CLOCK_POWER_IRQHandler
+#define RTC30_IRQn                    CLOCK_POWER_IRQn
+#define RTC30_IRQHandler              CLOCK_POWER_IRQHandler
+#define COMP_IRQn                     COMP_LPCOMP_IRQn
+#define COMP_IRQHandler               COMP_LPCOMP_IRQHandler
+#define LPCOMP_IRQn                   COMP_LPCOMP_IRQn
+#define LPCOMP_IRQHandler             COMP_LPCOMP_IRQHandler
 
 /* =========================================================================================================================== */
 /* ================                           Processor and Core Peripheral Section                           ================ */

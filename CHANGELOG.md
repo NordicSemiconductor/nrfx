@@ -1,6 +1,25 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.9.0] - 2024-11-19
+### Added
+- Added support for nRF54L05, nRF54L09 Eng A, and nRF54L10.
+- Added NRFX_RELEASE_VER_AT_LEAST() macro for conditional statements based on current nrfx release version.
+- Added functions for handling pin retention in the GPIO HAL.
+- Added HAL for the BICR peripheral.
+- Added support for nRF54H20 in the nrfx_reset_reason helper.
+
+### Changed
+- Updated MDK to version 8.68.1.
+- Removed support for nRF54H20 Eng A, nRF54H20 Eng B, and nRF54L15 Eng A.
+- Removed event clearing in the initialization of the USBREG driver. Now, the USB stack built upon the driver can react to the cable being attached when the device is powered from the USB bus.
+- Changed the default driver configuration for the COMP driver. Now, the description and code matches.
+- Improved RX FIFO flush handling in the UARTE driver.
+
+### Fixed
+- Fixed the nRF54L15 memory map description in the nrfx_ram_ctrl helper. Now, it corresponds to the actual memory sections layout.
+- Fixed the LIMIT events interrupt bitmask definition in the SAADC HAL. Now, the LIMIT events 4 to 7 are working properly.
+
 ## [3.8.0] - 2024-10-17
 ### Added
 - Added multi-instance support in the DPPI driver.

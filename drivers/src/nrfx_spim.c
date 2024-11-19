@@ -379,6 +379,7 @@ static bool spim_frequency_valid_check(nrfx_spim_t const * p_instance, uint32_t 
 
 static uint32_t spim_prescaler_calculate(nrfx_spim_t const * p_instance, uint32_t frequency)
 {
+    (void)p_instance;
     return NRF_SPIM_PRESCALER_CALCULATE(p_instance->p_reg, frequency);
 }
 #else

@@ -331,7 +331,12 @@ void nrfx_clock_disable(void)
         if (!nrfx_power_irq_enabled)
 #endif
         {
-            NRFX_IRQ_DISABLE(nrfx_get_irq_number(NRF_CLOCK));
+#if defined(NRF54L05_XXAA) || defined(NRF54L10_XXAA) || defined(NRF54L15_XXAA)
+            IRQn_Type irqn = CLOCK_POWER_IRQn;
+#else
+            IRQn_Type irqn = nrfx_get_irq_number(NRF_CLOCK);
+#endif
+            NRFX_IRQ_DISABLE(irqn);
         }
     }
     nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_HF_STARTED_MASK |

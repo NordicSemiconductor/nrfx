@@ -75,6 +75,20 @@ extern "C" {
 #define NRF_RESETINFO_HAS_LOCAL_CROSSDOMAIN 0
 #endif
 
+#if defined(RESETINFO_RESETREAS_LOCAL_DOG_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether DOG local reset reason is present. */
+#define NRF_RESETINFO_HAS_LOCAL_DOG 1
+#else
+#define NRF_RESETINFO_HAS_LOCAL_DOG 0
+#endif
+
+#if defined(RESETINFO_RESETREAS_LOCAL_WDT0_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether WDT local reset reason is present. */
+#define NRF_RESETINFO_HAS_LOCAL_WDT 1
+#else
+#define NRF_RESETINFO_HAS_LOCAL_WDT 0
+#endif
+
 #if defined(RESETINFO_ERROR_STATUS_ERRORSTATUS_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Maximum value of error status. */
 #define NRF_RESETINFO_ERROR_STATUS_MAX RESETINFO_ERROR_STATUS_ERRORSTATUS_Msk
@@ -109,8 +123,14 @@ typedef enum
 /** @brief Local reset reason mask. */
 typedef enum
 {
+#if NRF_RESETINFO_HAS_LOCAL_WDT
+    NRF_RESETINFO_RESETREAS_LOCAL_WDT0_MASK        = RESETINFO_RESETREAS_LOCAL_WDT0_Msk,           /**< Reset from the local watchdog timer 0. */
+    NRF_RESETINFO_RESETREAS_LOCAL_WDT1_MASK        = RESETINFO_RESETREAS_LOCAL_WDT1_Msk,           /**< Reset from the local watchdog timer 1. */
+#endif
+#if NRF_RESETINFO_HAS_LOCAL_DOG
     NRF_RESETINFO_RESETREAS_LOCAL_DOG_MASK         = RESETINFO_RESETREAS_LOCAL_DOG_Msk,            /**< Reset from the local watchdog timer. */
     NRF_RESETINFO_RESETREAS_LOCAL_DOGNS_MASK       = RESETINFO_RESETREAS_LOCAL_DOGNS_Msk,          /**< Reset from the local non-secure watchdog timer. */
+#endif
     NRF_RESETINFO_RESETREAS_LOCAL_SREQ_MASK        = RESETINFO_RESETREAS_LOCAL_SREQ_Msk,           /**< Reset from the local soft reset request. */
     NRF_RESETINFO_RESETREAS_LOCAL_LOCKUP_MASK      = RESETINFO_RESETREAS_LOCAL_LOCKUP_Msk,         /**< Reset from local CPU lockup. */
 #if NRF_RESETINFO_HAS_LOCAL_CROSSDOMAIN

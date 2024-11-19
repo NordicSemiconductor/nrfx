@@ -48,10 +48,6 @@
 #define NRFX_LOG_MODULE UARTE
 #include <nrfx_log.h>
 
-#if !defined(NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE)
-#define NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE 171
-#endif
-
 #define UARTEX_LENGTH_VALIDATE(periph_name, prefix, i, drv_inst_idx, len1, len2) \
     (((drv_inst_idx) == NRFX_CONCAT(NRFX_, periph_name, prefix, i, _INST_IDX)) && \
      NRFX_EASYDMA_LENGTH_VALIDATE(NRFX_CONCAT(periph_name, prefix, i), len1, len2))
@@ -1537,20 +1533,12 @@ static void rx_flush(NRF_UARTE_Type * p_uarte, uarte_control_block_t * p_cb)
         return;
     }
 
-    /* Flushing RX fifo requires buffer bigger than 4 bytes to empty fifo*/
-    uint32_t prev_rx_amount = nrfy_uarte_rx_amount_get(p_uarte);
-    uint32_t check_content = prev_rx_amount <= UARTE_HW_RX_FIFO_SIZE;
-
-    if (USE_WORKAROUND_FOR_FLUSHRX_ANOMALY && check_content)
+    if (USE_WORKAROUND_FOR_FLUSHRX_ANOMALY)
     {
         /* There is a HW bug which results in rx amount value not being updated
-         * when fifo was empty. It is then hard to determine if fifo contained
-         * number of bytes equal to the last transfer or was empty. We try to
-         * determine that by watermarking flush buffer to check if it was overwritten.
-         * However, if fifo contained amount of bytes equal to last transfer and
-         * bytes are equal to watermarking it will be dropped. */
-        memset(p_cb->rx.flush.p_buffer,
-               NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE, UARTE_HW_RX_FIFO_SIZE);
+         * when fifo was empty. However, RXSTARTED event is only set if there was any data in
+         * the FIFO. */
+        nrfy_uarte_event_clear(p_uarte, NRF_UARTE_EVENT_RXSTARTED);
     }
 
     nrfy_uarte_rx_buffer_set(p_uarte, p_cb->rx.flush.p_buffer, UARTE_HW_RX_FIFO_SIZE);
@@ -1563,30 +1551,18 @@ static void rx_flush(NRF_UARTE_Type * p_uarte, uarte_control_block_t * p_cb)
     {
         /* empty */
     }
-    nrfy_uarte_event_clear(p_uarte, NRF_UARTE_EVENT_RXSTARTED);
     nrfy_uarte_event_clear(p_uarte, NRF_UARTE_EVENT_ENDRX);
-
-    p_cb->rx.flush.length = nrfy_uarte_rx_amount_get(p_uarte);
 
     if (USE_WORKAROUND_FOR_FLUSHRX_ANOMALY)
     {
-        if ((uint32_t)p_cb->rx.flush.length == prev_rx_amount)
-        {
-            if (!check_content) {
-                p_cb->rx.flush.length = 0;
-                return;
-            }
-
-            for (size_t i = 0; i < UARTE_HW_RX_FIFO_SIZE; i++)
-            {
-                if (p_cb->rx.flush.p_buffer[i] != NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE)
-                {
-                    return;
-                }
-            }
-            p_cb->rx.flush.length = 0;
-        }
+        p_cb->rx.flush.length = nrfy_uarte_event_check(p_uarte, NRF_UARTE_EVENT_RXSTARTED) ?
+                                nrfy_uarte_rx_amount_get(p_uarte) : 0;
     }
+    else
+    {
+        p_cb->rx.flush.length = nrfy_uarte_rx_amount_get(p_uarte);
+    }
+    nrfy_uarte_event_clear(p_uarte, NRF_UARTE_EVENT_RXSTARTED);
 }
 
 static void wait_for_rx_completion(NRF_UARTE_Type *        p_uarte,

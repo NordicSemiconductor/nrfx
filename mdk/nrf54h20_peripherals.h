@@ -48,7 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #elif defined(NRF_RADIOCORE)
   #include "nrf54h20_radiocore_peripherals.h"
 #else
-  #error No processor selected
+  #error "No processor selected"
 #endif
 
 #ifdef __cplusplus

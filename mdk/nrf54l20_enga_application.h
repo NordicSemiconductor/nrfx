@@ -114,6 +114,7 @@ typedef enum {
   TDM_IRQn                               = 232,      /*!< 232 TDM                                                              */
   SERIAL23_IRQn                          = 237,      /*!< 237 SERIAL23                                                         */
   SERIAL24_IRQn                          = 238,      /*!< 238 SERIAL24                                                         */
+  TAMPC_IRQn                             = 239,      /*!< 239 TAMPC                                                            */
   SPU30_IRQn                             = 256,      /*!< 256 SPU30                                                            */
   SERIAL30_IRQn                          = 260,      /*!< 260 SERIAL30                                                         */
   COMP_LPCOMP_IRQn                       = 262,      /*!< 262 COMP_LPCOMP                                                      */
@@ -122,7 +123,6 @@ typedef enum {
   GPIOTE30_0_IRQn                        = 268,      /*!< 268 GPIOTE30_0                                                       */
   GPIOTE30_1_IRQn                        = 269,      /*!< 269 GPIOTE30_1                                                       */
   CLOCK_POWER_IRQn                       = 270,      /*!< 270 CLOCK_POWER                                                      */
-  TAMPC_IRQn                             = 273,      /*!< 273 TAMPC                                                            */
 } IRQn_Type;
 
 /* ==================================================== Interrupt Aliases ==================================================== */
@@ -267,8 +267,8 @@ typedef enum {
 /* ================                                  Peripheral Address Map                                  ================ */
 /* =========================================================================================================================== */
 
-#define NRF_APPLICATION_ICACHEDATA_S_BASE 0x12F00000UL
-#define NRF_APPLICATION_ICACHEINFO_S_BASE 0x12F10000UL
+#define NRF_APPLICATION_ICACHEDATA_S_BASE 0x02F00000UL
+#define NRF_APPLICATION_ICACHEINFO_S_BASE 0x02F10000UL
 #define NRF_APPLICATION_TPIU_NS_BASE      0xE0040000UL
 #define NRF_APPLICATION_ETM_NS_BASE       0xE0041000UL
 #define NRF_APPLICATION_CPUC_S_BASE       0xE0080000UL

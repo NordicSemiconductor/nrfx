@@ -72,6 +72,8 @@ typedef enum {
   WDT011_IRQn                            = 21,       /*!< 21 WDT011                                                            */
   IPCT_0_IRQn                            = 64,       /*!< 64 IPCT_0                                                            */
   IPCT_1_IRQn                            = 65,       /*!< 65 IPCT_1                                                            */
+  CTI_0_IRQn                             = 66,       /*!< 66 CTI_0                                                             */
+  CTI_1_IRQn                             = 67,       /*!< 67 CTI_1                                                             */
   SWI0_IRQn                              = 88,       /*!< 88 SWI0                                                              */
   SWI1_IRQn                              = 89,       /*!< 89 SWI1                                                              */
   SWI2_IRQn                              = 90,       /*!< 90 SWI2                                                              */

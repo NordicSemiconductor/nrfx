@@ -98,6 +98,8 @@ __WEAK void SysTick_Handler(void)
  __HANDLER("Default_Handler") void WDT011_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void IPCT_0_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void IPCT_1_IRQHandler                                           (void);
+ __HANDLER("Default_Handler") void CTI_0_IRQHandler                                            (void);
+ __HANDLER("Default_Handler") void CTI_1_IRQHandler                                            (void);
  __HANDLER("Default_Handler") void SWI0_IRQHandler                                             (void);
  __HANDLER("Default_Handler") void SWI1_IRQHandler                                             (void);
  __HANDLER("Default_Handler") void SWI2_IRQHandler                                             (void);
@@ -261,8 +263,8 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     IPCT_0_IRQHandler,
     IPCT_1_IRQHandler,
-    0,
-    0,
+    CTI_0_IRQHandler,
+    CTI_1_IRQHandler,
     0,
     0,
     0,

@@ -43,7 +43,8 @@
 
 #if !defined(__NRFX_DOXYGEN__)
 
-#if defined(NRF54L15_ENGA_XXAA) || defined(NRF54L15_XXAA) || defined(NRF54L20_ENGA_XXAA)
+#if defined(NRF54L15_ENGA_XXAA) || defined(NRF54L05_XXAA) || defined(NRF54L09_ENGA_XXAA) || \
+    defined(NRF54L10_XXAA) || defined(NRF54L15_XXAA) || defined(NRF54L20_ENGA_XXAA)
 
 #if !defined(NRFX_PPIB_INTERCONNECT_00_10_CHANNELS_USED)
 /**
@@ -137,7 +138,8 @@ typedef struct
     },
 
 static ppib_control_block_t m_cb[NRFX_PPIB_INTERCONNECT_COUNT] = {
-#if defined(NRF54L15_ENGA_XXAA) || defined(NRF54L15_XXAA) || defined(NRF54L20_ENGA_XXAA)
+#if defined(NRF54L15_ENGA_XXAA) || defined(NRF54L05_XXAA) || defined(NRF54L09_ENGA_XXAA) || \
+    defined(NRF54L10_XXAA) || defined(NRF54L15_XXAA) || defined(NRF54L20_ENGA_XXAA)
 #if NRFX_CHECK(NRFX_PPIB00_ENABLED) && NRFX_CHECK(NRFX_PPIB10_ENABLED)
     _NRFX_PPIBC_CB_INITIALIZER(00, 10)
 #endif

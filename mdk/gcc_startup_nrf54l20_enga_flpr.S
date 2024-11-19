@@ -514,7 +514,7 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   SERIAL23_IRQHandler
     .long   SERIAL24_IRQHandler
-    .long   0                           /*Reserved */
+    .long   TAMPC_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -546,9 +546,6 @@ __isr_vector:
     .long   GPIOTE30_0_IRQHandler
     .long   GPIOTE30_1_IRQHandler
     .long   CLOCK_POWER_IRQHandler
-    .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
-    .long   TAMPC_IRQHandler
 
     .size __isr_vector, . - __isr_vector
 
@@ -717,6 +714,7 @@ Default_Handler:
     IRQ  TDM_IRQHandler
     IRQ  SERIAL23_IRQHandler
     IRQ  SERIAL24_IRQHandler
+    IRQ  TAMPC_IRQHandler
     IRQ  SPU30_IRQHandler
     IRQ  SERIAL30_IRQHandler
     IRQ  COMP_LPCOMP_IRQHandler
@@ -725,6 +723,5 @@ Default_Handler:
     IRQ  GPIOTE30_0_IRQHandler
     IRQ  GPIOTE30_1_IRQHandler
     IRQ  CLOCK_POWER_IRQHandler
-    IRQ  TAMPC_IRQHandler
 
   .end

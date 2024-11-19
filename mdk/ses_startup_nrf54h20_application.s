@@ -221,8 +221,8 @@ _vectors:
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_HANDLER   IPCT_0_IRQHandler
   ISR_HANDLER   IPCT_1_IRQHandler
-  ISR_RESERVED_DUMMY                           /* Reserved */
-  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_HANDLER   CTI_0_IRQHandler
+  ISR_HANDLER   CTI_1_IRQHandler
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */

@@ -12,9 +12,10 @@ Driver support overview
    nrf52833
    nrf52840
    nrf5340
-   nrf54h20_engb
    nrf54h20
-   nrf54l15_enga
+   nrf54l05
+   nrf54l09_enga
+   nrf54l10
    nrf54l15
    nrf54l20_enga
    nrf91_series

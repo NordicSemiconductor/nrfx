@@ -67,7 +67,8 @@ enum {
 
 enum {
     /* List all enabled interconnects. Smaller PPIB idx are always on the left. */
-#if defined(NRF54L15_ENGA_XXAA) || defined(NRF54L15_XXAA) || defined(NRF54L20_ENGA_XXAA)
+#if defined(NRF54L15_ENGA_XXAA) || defined(NRF54L05_XXAA) || defined(NRF54L09_ENGA_XXAA) || \
+    defined(NRF54L10_XXAA) || defined(NRF54L15_XXAA) || defined(NRF54L20_ENGA_XXAA)
 #if NRFX_CHECK(NRFX_PPIB00_ENABLED) && NRFX_CHECK(NRFX_PPIB10_ENABLED)
     NRFX_PPIB_INTERCONNECT_00_10_INST_IDX,
 #endif

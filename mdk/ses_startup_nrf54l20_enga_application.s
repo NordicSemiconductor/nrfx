@@ -394,7 +394,7 @@ _vectors:
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_HANDLER   SERIAL23_IRQHandler
   ISR_HANDLER   SERIAL24_IRQHandler
-  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_HANDLER   TAMPC_IRQHandler
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */
@@ -426,9 +426,6 @@ _vectors:
   ISR_HANDLER   GPIOTE30_0_IRQHandler
   ISR_HANDLER   GPIOTE30_1_IRQHandler
   ISR_HANDLER   CLOCK_POWER_IRQHandler
-  ISR_RESERVED_DUMMY                           /* Reserved */
-  ISR_RESERVED_DUMMY                           /* Reserved */
-  ISR_HANDLER   TAMPC_IRQHandler
 _vectors_end:
 
 #ifdef VECTORS_IN_RAM

@@ -110,13 +110,6 @@ void SystemInit(void)
         #endif
     #endif
 
-    #if defined(NFCT_PRESENT)
-        #if defined(NRF_CONFIG_NFCT_PINS_AS_GPIOS)
-            NRF_NFCT->PADCONFIG = NFCT_PADCONFIG_ENABLE_Disabled << NFCT_PADCONFIG_ENABLE_Pos;
-        #else
-            NRF_NFCT->PADCONFIG = NFCT_PADCONFIG_ENABLE_Enabled << NFCT_PADCONFIG_ENABLE_Pos;
-        #endif
-    #endif
 }
 
 /*lint --flb "Leave library region" */

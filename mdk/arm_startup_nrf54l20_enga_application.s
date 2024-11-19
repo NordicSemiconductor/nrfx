@@ -323,7 +323,7 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     SERIAL23_IRQHandler
                 DCD     SERIAL24_IRQHandler
-                DCD     0                         ; Reserved
+                DCD     TAMPC_IRQHandler
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
@@ -355,9 +355,6 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     GPIOTE30_0_IRQHandler
                 DCD     GPIOTE30_1_IRQHandler
                 DCD     CLOCK_POWER_IRQHandler
-                DCD     0                         ; Reserved
-                DCD     0                         ; Reserved
-                DCD     TAMPC_IRQHandler
 
 __Vectors_End
 
@@ -482,6 +479,7 @@ Default_Handler PROC
                 EXPORT   TDM_IRQHandler [WEAK]
                 EXPORT   SERIAL23_IRQHandler [WEAK]
                 EXPORT   SERIAL24_IRQHandler [WEAK]
+                EXPORT   TAMPC_IRQHandler [WEAK]
                 EXPORT   SPU30_IRQHandler [WEAK]
                 EXPORT   SERIAL30_IRQHandler [WEAK]
                 EXPORT   COMP_LPCOMP_IRQHandler [WEAK]
@@ -490,7 +488,6 @@ Default_Handler PROC
                 EXPORT   GPIOTE30_0_IRQHandler [WEAK]
                 EXPORT   GPIOTE30_1_IRQHandler [WEAK]
                 EXPORT   CLOCK_POWER_IRQHandler [WEAK]
-                EXPORT   TAMPC_IRQHandler [WEAK]
 SWI00_IRQHandler
 SWI01_IRQHandler
 SWI02_IRQHandler
@@ -542,6 +539,7 @@ GRTC_3_IRQHandler
 TDM_IRQHandler
 SERIAL23_IRQHandler
 SERIAL24_IRQHandler
+TAMPC_IRQHandler
 SPU30_IRQHandler
 SERIAL30_IRQHandler
 COMP_LPCOMP_IRQHandler
@@ -550,7 +548,6 @@ WDT31_IRQHandler
 GPIOTE30_0_IRQHandler
 GPIOTE30_1_IRQHandler
 CLOCK_POWER_IRQHandler
-TAMPC_IRQHandler
                 B .
                 ENDP
                 ALIGN

@@ -44,7 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #elif defined(NRF_FLPR)
   #include "nrf54l15_flpr_peripherals.h"
 #else
-  #error No processor selected
+  #error "No processor selected"
 #endif
 
 #ifdef __cplusplus

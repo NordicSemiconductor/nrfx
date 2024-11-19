@@ -150,8 +150,8 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     IPCT_0_IRQHandler
                 DCD     IPCT_1_IRQHandler
-                DCD     0                         ; Reserved
-                DCD     0                         ; Reserved
+                DCD     CTI_0_IRQHandler
+                DCD     CTI_1_IRQHandler
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
@@ -646,6 +646,8 @@ Default_Handler PROC
                 EXPORT   WDT011_IRQHandler [WEAK]
                 EXPORT   IPCT_0_IRQHandler [WEAK]
                 EXPORT   IPCT_1_IRQHandler [WEAK]
+                EXPORT   CTI_0_IRQHandler [WEAK]
+                EXPORT   CTI_1_IRQHandler [WEAK]
                 EXPORT   SWI0_IRQHandler [WEAK]
                 EXPORT   SWI1_IRQHandler [WEAK]
                 EXPORT   SWI2_IRQHandler [WEAK]
@@ -723,6 +725,8 @@ WDT010_IRQHandler
 WDT011_IRQHandler
 IPCT_0_IRQHandler
 IPCT_1_IRQHandler
+CTI_0_IRQHandler
+CTI_1_IRQHandler
 SWI0_IRQHandler
 SWI1_IRQHandler
 SWI2_IRQHandler

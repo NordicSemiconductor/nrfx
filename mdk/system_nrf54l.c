@@ -26,6 +26,7 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include <stdint.h>
 #include <stdbool.h>
 #include "nrf.h"
+#include "nrf54l_erratas.h"
 #include "system_nrf54l.h"
 #include "system_nrf54l_approtect.h"
 #include "system_config_sau.h"
@@ -117,6 +118,17 @@ void SystemInit(void)
                     *((volatile uint32_t *)0x50120440) = 0xC8ul;
                 }
             #endif
+
+            #if NRF54L_ERRATA_32_ENABLE_WORKAROUND
+               /* Workaround for Errata 32 */
+                if (nrf54l_errata_32())
+                {
+                    if (*((volatile uint32_t *)0x00FFC334ul) <= 0x180A1D00ul){
+                        *((volatile uint32_t *)0x50120640ul) = 0x1EA9E040ul;
+                    }
+                }
+            #endif
+
         #endif
 
         /* Enable the FPU if the compiler used floating point unit instructions. __FPU_USED is a MACRO defined by the
@@ -136,7 +148,7 @@ void SystemInit(void)
         #if !defined(NRF_TRUSTZONE_NONSECURE) && defined(__ARM_FEATURE_CMSE)
             #if defined(NRF_CONFIG_NFCT_PINS_AS_GPIOS)
                 NRF_NFCT_S->PADCONFIG = (NFCT_PADCONFIG_ENABLE_Disabled << NFCT_PADCONFIG_ENABLE_Pos);
-            #endif 
+            #endif
 
             /* Enable SWO trace functionality. If ENABLE_SWO is not defined, SWO pin will be used as GPIO (see Product
             Specification to see which one). */

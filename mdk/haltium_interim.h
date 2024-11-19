@@ -117,8 +117,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
     #define MVDMA_AXI_BUS_WIDTH 8
 
-    #define RADIO_TIMING_RU_Legacy  0
-    #define RADIO_TIMING_RU_Fast    1
 
     #define MPC_MASTER_PORTS_MaxCount (32UL)
 #endif

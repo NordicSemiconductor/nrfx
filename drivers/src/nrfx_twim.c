@@ -619,6 +619,10 @@ static nrfx_err_t twim_xfer(twim_control_block_t        * p_cb,
             }
         }
     }
+
+    NRFX_LOG_INFO("Function: %s, error code: %s.",
+                  __func__,
+                  NRFX_LOG_ERROR_STRING_GET(err_code));
     return err_code;
 }
 
@@ -631,7 +635,6 @@ nrfx_err_t nrfx_twim_xfer(nrfx_twim_t           const * p_instance,
                                      p_xfer_desc->primary_length,
                                      p_xfer_desc->secondary_length));
 
-    nrfx_err_t err_code = NRFX_SUCCESS;
     twim_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
@@ -653,11 +656,7 @@ nrfx_err_t nrfx_twim_xfer(nrfx_twim_t           const * p_instance,
                            p_xfer_desc->secondary_length *
                            sizeof(p_xfer_desc->p_secondary_buf[0]));
 
-    err_code = twim_xfer(p_cb, (NRF_TWIM_Type *)p_instance->p_twim, p_xfer_desc, flags);
-    NRFX_LOG_WARNING("Function: %s, error code: %s.",
-                     __func__,
-                     NRFX_LOG_ERROR_STRING_GET(err_code));
-    return err_code;
+    return twim_xfer(p_cb, p_instance->p_twim, p_xfer_desc, flags);
 }
 
 uint32_t nrfx_twim_start_task_address_get(nrfx_twim_t const *   p_instance,

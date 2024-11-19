@@ -131,6 +131,10 @@ NRFY_STATIC_INLINE bool __nrfy_internal_grtc_sys_counter_ready_check(NRF_GRTC_Ty
 #define NRFY_GRTC_SYSCOUNTER_RETRY_MASK ((uint64_t)(NRF_GRTC_SYSCOUNTERH_OVERFLOW_MASK) << 32)
 #endif
 
+/** @brief Mask of the SYSCOUNTER value. */
+#define NRFY_GRTC_SYSCOUNTER_MASK ((uint64_t)(NRF_GRTC_SYSCOUNTERL_VALUE_MASK) + \
+                                   ((uint64_t)(NRF_GRTC_SYSCOUNTERH_VALUE_MASK) << 32))
+
 /**
  * @brief Function for initializing the specified GRTC interrupts.
  *
@@ -315,7 +319,7 @@ NRFY_STATIC_INLINE uint64_t nrfy_grtc_sys_counter_get(NRF_GRTC_Type const * p_re
     do {
         counter = nrf_grtc_sys_counter_get(p_reg);
     } while (counter & NRFY_GRTC_SYSCOUNTER_RETRY_MASK);
-    return counter;
+    return (counter & NRFY_GRTC_SYSCOUNTER_MASK);
 }
 
 /**

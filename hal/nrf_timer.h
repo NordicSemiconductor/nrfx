@@ -98,6 +98,13 @@ extern "C" {
 #define NRF_TIMER_HAS_ONE_SHOT 0
 #endif
 
+#if defined(TIMER_TASKS_SHUTDOWN_TASKS_SHUTDOWN_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether timer supports shutdown task. */
+#define NRF_TIMER_HAS_SHUTDOWN 1
+#else
+#define NRF_TIMER_HAS_SHUTDOWN 0
+#endif
+
 /** @brief Base frequency value 320 MHz for TIMER. */
 #define NRF_TIMER_BASE_FREQUENCY_320MHZ (NRFX_MHZ_TO_HZ(320UL))
 /** @brief Base frequency value 128 MHz for TIMER. */
@@ -298,7 +305,9 @@ typedef enum
     NRF_TIMER_TASK_STOP     = offsetof(NRF_TIMER_Type, TASKS_STOP),       ///< Task for stopping the timer.
     NRF_TIMER_TASK_COUNT    = offsetof(NRF_TIMER_Type, TASKS_COUNT),      ///< Task for incrementing the timer (in counter mode).
     NRF_TIMER_TASK_CLEAR    = offsetof(NRF_TIMER_Type, TASKS_CLEAR),      ///< Task for resetting the timer value.
+#if NRF_TIMER_HAS_SHUTDOWN
     NRF_TIMER_TASK_SHUTDOWN = offsetof(NRF_TIMER_Type, TASKS_SHUTDOWN),   ///< Task for powering off the timer.
+#endif
     NRF_TIMER_TASK_CAPTURE0 = offsetof(NRF_TIMER_Type, TASKS_CAPTURE[0]), ///< Task for capturing the timer value on channel 0.
     NRF_TIMER_TASK_CAPTURE1 = offsetof(NRF_TIMER_Type, TASKS_CAPTURE[1]), ///< Task for capturing the timer value on channel 1.
     NRF_TIMER_TASK_CAPTURE2 = offsetof(NRF_TIMER_Type, TASKS_CAPTURE[2]), ///< Task for capturing the timer value on channel 2.

@@ -142,6 +142,16 @@ POSSIBILITY OF SUCH DAMAGE.
                     <value>0x00054B15</value>
                   </enumeratedValue>
                   <enumeratedValue>
+                    <name>N54L10</name>
+                    <description>nRF54L10</description>
+                    <value>0x00054B10</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>N54L05</name>
+                    <description>nRF54L05</description>
+                    <value>0x00054B05</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
                     <name>Unspecified</name>
                     <description>Unspecified</description>
                     <value>0xFFFFFFFF</value>
@@ -216,6 +226,16 @@ POSSIBILITY OF SUCH DAMAGE.
                     <value>0x00000100</value>
                   </enumeratedValue>
                   <enumeratedValue>
+                    <name>K192</name>
+                    <description>192 kByte RAM</description>
+                    <value>0x000000C0</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>K96</name>
+                    <description>96 kByte RAM</description>
+                    <value>0x00000060</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
                     <name>Unspecified</name>
                     <description>Unspecified</description>
                     <value>0xFFFFFFFF</value>
@@ -242,6 +262,16 @@ POSSIBILITY OF SUCH DAMAGE.
                     <name>K1524</name>
                     <description>1524 KByte RRAM</description>
                     <value>0x000005F4</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>K1012</name>
+                    <description>1012 KByte RRAM</description>
+                    <value>0x000003F4</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>K500</name>
+                    <description>500 KByte RRAM</description>
+                    <value>0x000001F4</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Unspecified</name>
@@ -761,9 +791,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 <msb>31</msb>
                 <enumeratedValues>
                   <enumeratedValue>
-                    <name>Unprotected</name>
+                    <name>Protected</name>
                     <description>The device can be erased using the CTRL-AP Erase all function and TAMPC PROTECT.ERASEPROTECT signal protector is unlocked.</description>
-                    <value>0xFFFFFFFF</value>
+                    <value>0x50FA50FA</value>
                   </enumeratedValue>
                 </enumeratedValues>
               </field>
@@ -783,9 +813,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 <msb>31</msb>
                 <enumeratedValues>
                   <enumeratedValue>
-                    <name>Unprotected</name>
-                    <description>The device canbe erased using the CTRL-AP Erase all function and TAMPC PROTECT.ERASEPROTECT signal protector is unlocked.</description>
-                    <value>0xFFFFFFFF</value>
+                    <name>Protected</name>
+                    <description>The device can be erased using the CTRL-AP Erase all function and TAMPC PROTECT.ERASEPROTECT signal protector is unlocked.</description>
+                    <value>0x50FA50FA</value>
                   </enumeratedValue>
                 </enumeratedValues>
               </field>
@@ -9360,7 +9390,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>TASKS_READMETADATA</name>
-          <description>Read key slot metedata into METADATA register</description>
+          <description>Read key slot metadata into METADATA register</description>
           <addressOffset>0x000C</addressOffset>
           <access>write-only</access>
           <resetValue>0x00000000</resetValue>
@@ -9368,7 +9398,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>TASKS_READMETADATA</name>
-              <description>Read key slot metedata into METADATA register</description>
+              <description>Read key slot metadata into METADATA register</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -9383,7 +9413,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>TASKS_PUSHBLOCK</name>
-          <description>Block the PUSH operation of key slot, preventing the key slot being PUSH until next reset</description>
+          <description>Block only the PUSH operation of a key slot, preventing the key slot from being PUSHED until next reset. The task is kept for backwards compatibility.</description>
           <addressOffset>0x0010</addressOffset>
           <access>write-only</access>
           <resetValue>0x00000000</resetValue>
@@ -9391,7 +9421,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>TASKS_PUSHBLOCK</name>
-              <description>Block the PUSH operation of key slot, preventing the key slot being PUSH until next reset</description>
+              <description>Block only the PUSH operation of a key slot, preventing the key slot from being PUSHED until next reset. The task is kept for backwards compatibility.</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -9490,7 +9520,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>EVENTS_ERROR</name>
-          <description>Error during PROVISION, PUSH, or REVOKE operations</description>
+          <description>Error generated during PROVISION, PUSH, READMETADATA or REVOKE operations. Triggering the PROVISION, PUSH and REVOKE tasks on a BLOCKED keyslot will also generate this event.</description>
           <addressOffset>0x10C</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -9498,7 +9528,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>EVENTS_ERROR</name>
-              <description>Error during PROVISION, PUSH, or REVOKE operations</description>
+              <description>Error generated during PROVISION, PUSH, READMETADATA or REVOKE operations. Triggering the PROVISION, PUSH and REVOKE tasks on a BLOCKED keyslot will also generate this event.</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -9518,7 +9548,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>EVENTS_METADATAREAD</name>
-          <description>Key slot metedata has been read into METADATA register</description>
+          <description>Key slot metadata has been read into METADATA register</description>
           <addressOffset>0x110</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -9526,7 +9556,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>EVENTS_METADATAREAD</name>
-              <description>Key slot metedata has been read into METADATA register</description>
+              <description>Key slot metadata has been read into METADATA register</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -9546,7 +9576,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>EVENTS_PUSHBLOCKED</name>
-          <description>The PUSHBLOCK operation was succesful</description>
+          <description>The PUSHBLOCK operation was successful. The event is kept for backwards compatibility.</description>
           <addressOffset>0x114</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -9554,7 +9584,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>EVENTS_PUSHBLOCKED</name>
-              <description>The PUSHBLOCK operation was succesful</description>
+              <description>The PUSHBLOCK operation was successful. The event is kept for backwards compatibility.</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -9610,8 +9640,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>ID</name>
-              <description>Select key slot ID to provision, read, or push when TASKS_PROVISION, TASKS_PUSH,
-                TASKS_READMETADATA, or TASKS_REVOKE, is triggered.</description>
+              <description>Select key slot ID to provision, push, read METADATA, revoke or block when the corresponding task is triggered.</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -32023,29 +32052,6 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
-          <name>TASKS_SHUTDOWN</name>
-          <description>Deprecated register - Shut down timer</description>
-          <addressOffset>0x010</addressOffset>
-          <access>write-only</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>TASKS_SHUTDOWN</name>
-              <description>Deprecated field -  Shut down timer</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Trigger</name>
-                  <description>Trigger task</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-          </fields>
-        </register>
-        <register>
           <dim>0x8</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>TASKS_CAPTURE[%s]</name>
@@ -32180,39 +32186,6 @@ POSSIBILITY OF SUCH DAMAGE.
             <field>
               <name>CHIDX</name>
               <description>DPPI channel that task CLEAR will subscribe to</description>
-              <lsb>0</lsb>
-              <msb>7</msb>
-            </field>
-            <field>
-              <name>EN</name>
-              <lsb>31</lsb>
-              <msb>31</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Disable subscription</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Enable subscription</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>SUBSCRIBE_SHUTDOWN</name>
-          <description>Deprecated register - Subscribe configuration for task SHUTDOWN</description>
-          <addressOffset>0x090</addressOffset>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>CHIDX</name>
-              <description>DPPI channel that task SHUTDOWN will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -41378,6 +41351,19 @@ POSSIBILITY OF SUCH DAMAGE.
               <lsb>0</lsb>
               <msb>20</msb>
             </field>
+            <field>
+              <name>EDPERIOD</name>
+              <description>IEEE 802.15.4 energy detect period, 4us resolution, no averaging except the IEEE 802.15.4 ED range 128us (32)</description>
+              <lsb>24</lsb>
+              <msb>29</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Default</name>
+                  <description>Unspecified</description>
+                  <value>0x20</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
           </fields>
         </register>
         <register>
@@ -41544,6 +41530,11 @@ POSSIBILITY OF SUCH DAMAGE.
               <msb>10</msb>
               <enumeratedValues>
                 <enumeratedValue>
+                  <name>MaxdBm</name>
+                  <description>+8 dBm</description>
+                  <value>0x03F</value>
+                </enumeratedValue>
+                <enumeratedValue>
                   <name>Pos8dBm</name>
                   <description>+8 dBm</description>
                   <value>0x03F</value>
@@ -41680,6 +41671,11 @@ POSSIBILITY OF SUCH DAMAGE.
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Neg46dBm</name>
+                  <description>-46 dBm</description>
+                  <value>0x110</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>MindBm</name>
                   <description>-46 dBm</description>
                   <value>0x110</value>
                 </enumeratedValue>
@@ -53781,7 +53777,7 @@ POSSIBILITY OF SUCH DAMAGE.
           </register>
           <register>
             <name>MAXCNT</name>
-            <description>Number of samples to allocate memory for in EasyDMA mode</description>
+            <description>Number of bytes to allocate memory for in EasyDMA mode</description>
             <addressOffset>0x004</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
@@ -53789,7 +53785,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>BUFFSIZE</name>
-                <description>Length of DMA RAM allocation in number of samples</description>
+                <description>Length of DMA RAM allocation in number of bytes</description>
                 <lsb>0</lsb>
                 <msb>14</msb>
               </field>
@@ -77235,7 +77231,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <!--Security dma=NA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>RTC30</name>
+        <name>CLOCK_POWER</name>
         <value>261</value>
       </interrupt>
     </peripheral>
@@ -77246,7 +77242,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <!--Security dma=NA-->
       <!--Security securemapping=US-->
       <interrupt>
-        <name>RTC30</name>
+        <name>CLOCK_POWER</name>
         <value>261</value>
       </interrupt>
     </peripheral>
@@ -80736,10 +80732,6 @@ POSSIBILITY OF SUCH DAMAGE.
         <size>0x1000</size>
         <usage>registers</usage>
       </addressBlock>
-      <interrupt>
-        <name>CLOCK_POWER</name>
-        <value>270</value>
-      </interrupt>
       <groupName>CLOCK</groupName>
       <size>0x20</size>
       <registers>
@@ -82670,10 +82662,6 @@ POSSIBILITY OF SUCH DAMAGE.
         <size>0x1000</size>
         <usage>registers</usage>
       </addressBlock>
-      <interrupt>
-        <name>CLOCK_POWER</name>
-        <value>270</value>
-      </interrupt>
       <groupName>POWER</groupName>
       <size>0x20</size>
       <registers>
@@ -83552,10 +83540,6 @@ POSSIBILITY OF SUCH DAMAGE.
       <baseAddress>0x5010E000</baseAddress>
       <!--Security dma=NA-->
       <!--Security securemapping=US-->
-      <interrupt>
-        <name>CLOCK_POWER</name>
-        <value>270</value>
-      </interrupt>
     </peripheral>
     <peripheral derivedFrom="GLOBAL_POWER_NS">
       <name>GLOBAL_POWER_S</name>
@@ -83564,10 +83548,6 @@ POSSIBILITY OF SUCH DAMAGE.
       <alternatePeripheral>GLOBAL_CLOCK_S</alternatePeripheral>
       <!--Security dma=NA-->
       <!--Security securemapping=US-->
-      <interrupt>
-        <name>CLOCK_POWER</name>
-        <value>270</value>
-      </interrupt>
     </peripheral>
     <peripheral derivedFrom="GLOBAL_RESET_NS">
       <name>GLOBAL_RESET_S</name>

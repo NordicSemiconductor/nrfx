@@ -61,6 +61,12 @@ extern "C" {
  */
 #define NRF_TDM_PIN_NOT_CONNECTED  0xFFFFFFFF
 
+/** @brief TDM SCK pin selection mask. */
+#define NRF_TDM_PSEL_SCK_PIN_MASK  TDM_PSEL_SCK_PIN_Msk
+
+/** @brief TDM SCK port selection mask. */
+#define NRF_TDM_PSEL_SCK_PORT_MASK TDM_PSEL_SCK_PORT_Msk
+
 /** @brief TDM tasks. */
 typedef enum
 {

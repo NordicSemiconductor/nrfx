@@ -146,6 +146,9 @@ POSSIBILITY OF SUCH DAMAGE.
     #define EGU020_CH_NUM EGU020_CH_NUM_SIZE
     #define EGU130_CH_NUM EGU130_CH_NUM_SIZE
 
+    #define RADIO_TIMING_RU_Legacy  0
+    #define RADIO_TIMING_RU_Fast    1
+
 #endif
 
 #endif // NRF9230_ENGB_INTERIM_H__

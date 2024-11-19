@@ -156,8 +156,8 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   IPCT_0_IRQHandler
     .long   IPCT_1_IRQHandler
-    .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
+    .long   CTI_0_IRQHandler
+    .long   CTI_1_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -797,6 +797,8 @@ Default_Handler:
     IRQ  WDT011_IRQHandler
     IRQ  IPCT_0_IRQHandler
     IRQ  IPCT_1_IRQHandler
+    IRQ  CTI_0_IRQHandler
+    IRQ  CTI_1_IRQHandler
     IRQ  SWI0_IRQHandler
     IRQ  SWI1_IRQHandler
     IRQ  SWI2_IRQHandler

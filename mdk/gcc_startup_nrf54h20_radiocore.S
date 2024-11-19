@@ -142,7 +142,7 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
-    .long   VPR_IRQHandler
+    .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -156,8 +156,8 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   IPCT_0_IRQHandler
     .long   IPCT_1_IRQHandler
-    .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
+    .long   CTI_0_IRQHandler
+    .long   CTI_1_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -805,13 +805,14 @@ Default_Handler:
     IRQ  RADIO_0_IRQHandler
     IRQ  RADIO_1_IRQHandler
     IRQ  SPU030_IRQHandler
-    IRQ  VPR_IRQHandler
     IRQ  AAR030_CCM030_IRQHandler
     IRQ  ECB030_IRQHandler
     IRQ  AAR031_CCM031_IRQHandler
     IRQ  ECB031_IRQHandler
     IRQ  IPCT_0_IRQHandler
     IRQ  IPCT_1_IRQHandler
+    IRQ  CTI_0_IRQHandler
+    IRQ  CTI_1_IRQHandler
     IRQ  SWI0_IRQHandler
     IRQ  SWI1_IRQHandler
     IRQ  SWI2_IRQHandler

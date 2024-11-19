@@ -137,7 +137,7 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
-        DCD     VPR_IRQHandler
+        DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
@@ -151,8 +151,8 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     IPCT_0_IRQHandler
         DCD     IPCT_1_IRQHandler
-        DCD     0                         ; Reserved
-        DCD     0                         ; Reserved
+        DCD     CTI_0_IRQHandler
+        DCD     CTI_1_IRQHandler
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
@@ -724,11 +724,6 @@ RADIO_1_IRQHandler
 SPU030_IRQHandler
         B .
 
-        PUBWEAK  VPR_IRQHandler
-        SECTION .text:CODE:REORDER:NOROOT(1)
-VPR_IRQHandler
-        B .
-
         PUBWEAK  AAR030_CCM030_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 AAR030_CCM030_IRQHandler
@@ -757,6 +752,16 @@ IPCT_0_IRQHandler
         PUBWEAK  IPCT_1_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 IPCT_1_IRQHandler
+        B .
+
+        PUBWEAK  CTI_0_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+CTI_0_IRQHandler
+        B .
+
+        PUBWEAK  CTI_1_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+CTI_1_IRQHandler
         B .
 
         PUBWEAK  SWI0_IRQHandler

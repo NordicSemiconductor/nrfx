@@ -106,13 +106,14 @@ __WEAK void SysTick_Handler(void)
  __HANDLER("Default_Handler") void RADIO_0_IRQHandler                                          (void);
  __HANDLER("Default_Handler") void RADIO_1_IRQHandler                                          (void);
  __HANDLER("Default_Handler") void SPU030_IRQHandler                                           (void);
- __HANDLER("Default_Handler") void VPR_IRQHandler                                              (void);
  __HANDLER("Default_Handler") void AAR030_CCM030_IRQHandler                                    (void);
  __HANDLER("Default_Handler") void ECB030_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void AAR031_CCM031_IRQHandler                                    (void);
  __HANDLER("Default_Handler") void ECB031_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void IPCT_0_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void IPCT_1_IRQHandler                                           (void);
+ __HANDLER("Default_Handler") void CTI_0_IRQHandler                                            (void);
+ __HANDLER("Default_Handler") void CTI_1_IRQHandler                                            (void);
  __HANDLER("Default_Handler") void SWI0_IRQHandler                                             (void);
  __HANDLER("Default_Handler") void SWI1_IRQHandler                                             (void);
  __HANDLER("Default_Handler") void SWI2_IRQHandler                                             (void);
@@ -262,7 +263,7 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     0,
     0,
-    VPR_IRQHandler,
+    0,
     0,
     0,
     0,
@@ -276,8 +277,8 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     IPCT_0_IRQHandler,
     IPCT_1_IRQHandler,
-    0,
-    0,
+    CTI_0_IRQHandler,
+    CTI_1_IRQHandler,
     0,
     0,
     0,

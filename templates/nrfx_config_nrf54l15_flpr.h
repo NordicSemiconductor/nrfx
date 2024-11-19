@@ -370,7 +370,7 @@
  * Boolean. Accepted values: 0 and 1.
  */
 #ifndef NRFX_GRTC_CONFIG_AUTOSTART
-#define NRFX_GRTC_CONFIG_AUTOSTART 1
+#define NRFX_GRTC_CONFIG_AUTOSTART 0
 #endif
 
 /**
@@ -1647,15 +1647,6 @@
  */
 #ifndef NRFX_UARTE_CONFIG_TX_LINK
 #define NRFX_UARTE_CONFIG_TX_LINK 1
-#endif
-
-/**
- * @brief NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE
- *
- * Integer value. Minimum: 0. Maximum: 255.
- */
-#ifndef NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE
-#define NRFX_UARTE_RX_FIFO_FLUSH_WORKAROUND_MAGIC_BYTE 171
 #endif
 
 /**

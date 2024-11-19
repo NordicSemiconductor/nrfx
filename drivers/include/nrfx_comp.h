@@ -110,8 +110,8 @@ typedef struct
 /** @brief COMP threshold default configuration. */
 #define NRFX_COMP_CONFIG_TH                                  \
 {                                                            \
-    .th_down = NRFX_COMP_VOLTAGE_THRESHOLD_TO_INT(0.5, 1.8), \
-    .th_up   = NRFX_COMP_VOLTAGE_THRESHOLD_TO_INT(1.5, 1.8)  \
+    .th_down = NRFX_COMP_VOLTAGE_THRESHOLD_TO_INT(0.5, 1.2), \
+    .th_up   = NRFX_COMP_VOLTAGE_THRESHOLD_TO_INT(1.0, 1.2)  \
 }
 
 /**
@@ -119,9 +119,9 @@ typedef struct
  *
  * This configuration sets up COMP with the following options:
  * - single-ended mode
- * - reference voltage: internal 1.8 V
+ * - reference voltage: internal 1.2 V
  * - lower threshold: 0.5 V
- * - upper threshold: 1.5 V
+ * - upper threshold: 1.0 V
  * - high speed mode
  * - hysteresis disabled
  * - current source disabled
