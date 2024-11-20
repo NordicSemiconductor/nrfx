@@ -499,7 +499,7 @@ uint32_t nrfx_gpiote_set_task_address_get(nrfx_gpiote_t const * p_instance, nrfx
 nrf_gpiote_task_t nrfx_gpiote_clr_task_get(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin);
 
 /**
- * @brief Function for getting the address of the SET task for the specified output pin.
+ * @brief Function for getting the address of the CLR task for the specified output pin.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  * @param[in] pin        Pin number.
