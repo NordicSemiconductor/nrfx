@@ -50,7 +50,7 @@ PROJECT_NAME           = "nrfx"
 
 ### EDIT THIS ###
 
-PROJECT_NUMBER         = "3.9"
+PROJECT_NUMBER         = "3.10"
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -2300,7 +2300,8 @@ INCLUDE_FILE_PATTERNS  =
 
 PREDEFINED             = SUPPRESS_INLINE_IMPLEMENTATION \
                          __NRFX_DOXYGEN__ \
-                         __PACKED=
+                         __PACKED= \
+                         __ALIGN=
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The

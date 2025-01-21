@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -129,10 +129,10 @@ __WEAK void CLICSoftware_Handler(void)
  __HANDLER("Default_Handler") void RRAMC_IRQHandler                                            (void);
  __HANDLER("Default_Handler") void VPR00_IRQHandler                                            (void);
  __HANDLER("Default_Handler") void CTRLAP_IRQHandler                                           (void);
+ __HANDLER("Default_Handler") void CM33SS_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void TIMER00_IRQHandler                                          (void);
  __HANDLER("Default_Handler") void SPU10_IRQHandler                                            (void);
  __HANDLER("Default_Handler") void TIMER10_IRQHandler                                          (void);
- __HANDLER("Default_Handler") void RTC10_IRQHandler                                            (void);
  __HANDLER("Default_Handler") void EGU10_IRQHandler                                            (void);
  __HANDLER("Default_Handler") void RADIO_0_IRQHandler                                          (void);
  __HANDLER("Default_Handler") void RADIO_1_IRQHandler                                          (void);
@@ -286,7 +286,7 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     CTRLAP_IRQHandler,
     0,
-    0,
+    CM33SS_IRQHandler,
     TIMER00_IRQHandler,
     0,
     0,
@@ -336,7 +336,7 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     0,
     TIMER10_IRQHandler,
-    RTC10_IRQHandler,
+    0,
     EGU10_IRQHandler,
     0,
     0,

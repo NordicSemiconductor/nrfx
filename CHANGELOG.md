@@ -1,6 +1,28 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.10.0] - 2025-01-21
+### Added
+- Added support for nRF7120 Eng A.
+- Added support for XO tuning in the CLOCK driver.
+- Added HALs and driver for the CryptoMaster and RNG components of the CRACEN peripheral.
+- Added the workaround for nRF54L anomaly 8 and nRF54H20 anomaly 212 in the SPIM driver.
+- Added functions for buffered input and output shift control in the VPR CSR VIO HAL.
+- Added functions for setting and clearing bits in the VPR CSR VIO HAL.
+- Added functions for setting and getting individual peripheral pins in the following HALs: I2S, PDM, PWM, QDEC, QSPI, SPI, SPIM, SPIS, TWI, TWIM, TWIS, UART, UARTE.
+- Added functions for accessing memory contents in the RRAMC HAL.
+- Added function for handling data whitening polynomial configuration in the RADIO HAL.
+
+### Changed
+- Updated MDK to version 8.69.1.
+- Changed the system counter reading procedure for VPR cores in the GRTC driver. Now, individual high and low 32-bit parts are read separately to preserve the order of accessing the registers. ARM cores retained existing procedure based on double-word read instruction.
+- Removed remaining references to obsolete nRF54H20 Eng A, nRF54H20 Eng B, and nRF54L15 Eng A.
+
+### Fixed
+- Fixed the local reset reason handling for nRF54H20 in the nrfx_reset_reason helper. Now, the local reset reasons can be cleared.
+- Fixed the missing bitshift of retention mask for VMC peripheral in the nrfx_ram_ctrl helper.
+- Fixed the configuration of data whitening initialization vector in the RADIO HAL.
+
 ## [3.9.0] - 2024-11-19
 ### Added
 - Added support for nRF54L05, nRF54L09 Eng A, and nRF54L10.

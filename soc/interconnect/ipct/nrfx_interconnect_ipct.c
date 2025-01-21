@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2022 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -68,7 +68,7 @@ nrf_domain_t nrfx_interconnect_ipct_domain_get(nrfx_interconnect_ipct_t const * 
  */
 #define _IPCT_STRUCT_ELEM(periph_name, prefix, inst_num, _) \
     NRFX_COND_CODE_1(NRFX_IS_EMPTY(inst_num), (), \
-            (NRFX_COND_CODE_1(NRFX_IPCT_PUB_OR_SUB_MASK(inst_num), \
+            (NRFX_COND_CODE_1(NRFX_IPCT_OWNED_MASK(inst_num), \
                               (uint8_t NRFX_CONCAT(dummy, inst_num);), ())))
 
 #define IPCT_IDX_STRUCT() \
@@ -77,7 +77,7 @@ nrf_domain_t nrfx_interconnect_ipct_domain_get(nrfx_interconnect_ipct_t const * 
     }
 
 #define IPCT_IDX(inst_num) \
-    NRFX_COND_CODE_1(NRFX_IPCT_PUB_OR_SUB_MASK(inst_num), \
+    NRFX_COND_CODE_1(NRFX_IPCT_OWNED_MASK(inst_num), \
             (offsetof(struct ipct_idx_dummy_struct, NRFX_CONCAT(dummy, inst_num))), \
             (-1))
 

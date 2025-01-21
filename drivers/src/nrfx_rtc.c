@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -225,7 +225,7 @@ nrfx_err_t nrfx_rtc_cc_set(nrfx_rtc_t const * p_instance,
 
 void nrfx_rtc_tick_enable(nrfx_rtc_t const * p_instance, bool enable_irq)
 {
-    NRFX_ASSERT(m_cb[p_instance->instance_id].state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(m_cb[p_instance->instance_id].state != NRFX_DRV_STATE_UNINITIALIZED);
 
     nrfy_rtc_event_int_clear_enable(p_instance->p_reg,
                                     NRF_RTC_EVENT_TICK,
@@ -244,7 +244,7 @@ void nrfx_rtc_tick_disable(nrfx_rtc_t const * p_instance)
 
 void nrfx_rtc_overflow_enable(nrfx_rtc_t const * p_instance, bool enable_irq)
 {
-    NRFX_ASSERT(m_cb[p_instance->instance_id].state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(m_cb[p_instance->instance_id].state != NRFX_DRV_STATE_UNINITIALIZED);
 
     nrfy_rtc_event_int_clear_enable(p_instance->p_reg,
                                     NRF_RTC_EVENT_OVERFLOW,

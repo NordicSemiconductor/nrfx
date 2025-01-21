@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -57,6 +57,7 @@ typedef enum
     NRF_BELLBOARD_EVENT_TRIGGERED_1  = offsetof(NRF_BELLBOARD_Type, EVENTS_TRIGGERED[1]),  /**< Triggered 1 event.*/
     NRF_BELLBOARD_EVENT_TRIGGERED_2  = offsetof(NRF_BELLBOARD_Type, EVENTS_TRIGGERED[2]),  /**< Triggered 2 event.*/
     NRF_BELLBOARD_EVENT_TRIGGERED_3  = offsetof(NRF_BELLBOARD_Type, EVENTS_TRIGGERED[3]),  /**< Triggered 3 event.*/
+#if NRF_BELLBOARD_EVENTS_TRIGGERED_COUNT > 4
     NRF_BELLBOARD_EVENT_TRIGGERED_4  = offsetof(NRF_BELLBOARD_Type, EVENTS_TRIGGERED[4]),  /**< Triggered 4 event.*/
     NRF_BELLBOARD_EVENT_TRIGGERED_5  = offsetof(NRF_BELLBOARD_Type, EVENTS_TRIGGERED[5]),  /**< Triggered 5 event.*/
     NRF_BELLBOARD_EVENT_TRIGGERED_6  = offsetof(NRF_BELLBOARD_Type, EVENTS_TRIGGERED[6]),  /**< Triggered 6 event.*/
@@ -85,6 +86,7 @@ typedef enum
     NRF_BELLBOARD_EVENT_TRIGGERED_29 = offsetof(NRF_BELLBOARD_Type, EVENTS_TRIGGERED[29]), /**< Triggered 29 event.*/
     NRF_BELLBOARD_EVENT_TRIGGERED_30 = offsetof(NRF_BELLBOARD_Type, EVENTS_TRIGGERED[30]), /**< Triggered 30 event.*/
     NRF_BELLBOARD_EVENT_TRIGGERED_31 = offsetof(NRF_BELLBOARD_Type, EVENTS_TRIGGERED[31]), /**< Triggered 31 event.*/
+#endif // BELLBOARD_TASKS_TRIGGER_MaxCount > 4
 } nrf_bellboard_event_t;
 
 /** @brief BELLBOARD interrupts. */
@@ -94,6 +96,7 @@ typedef enum
     NRF_BELLBOARD_INT_TRIGGERED_1_MASK  = BELLBOARD_INTENSET0_TRIGGERED1_Msk,  /**< Triggered 1 interrupt mask. */
     NRF_BELLBOARD_INT_TRIGGERED_2_MASK  = BELLBOARD_INTENSET0_TRIGGERED2_Msk,  /**< Triggered 2 interrupt mask. */
     NRF_BELLBOARD_INT_TRIGGERED_3_MASK  = BELLBOARD_INTENSET0_TRIGGERED3_Msk,  /**< Triggered 3 interrupt mask. */
+#if NRF_BELLBOARD_EVENTS_TRIGGERED_COUNT > 4
     NRF_BELLBOARD_INT_TRIGGERED_4_MASK  = BELLBOARD_INTENSET0_TRIGGERED4_Msk,  /**< Triggered 4 interrupt mask. */
     NRF_BELLBOARD_INT_TRIGGERED_5_MASK  = BELLBOARD_INTENSET0_TRIGGERED5_Msk,  /**< Triggered 5 interrupt mask. */
     NRF_BELLBOARD_INT_TRIGGERED_6_MASK  = BELLBOARD_INTENSET0_TRIGGERED6_Msk,  /**< Triggered 6 interrupt mask. */
@@ -122,6 +125,7 @@ typedef enum
     NRF_BELLBOARD_INT_TRIGGERED_29_MASK = BELLBOARD_INTENSET0_TRIGGERED29_Msk, /**< Triggered 29 interrupt mask. */
     NRF_BELLBOARD_INT_TRIGGERED_30_MASK = BELLBOARD_INTENSET0_TRIGGERED30_Msk, /**< Triggered 30 interrupt mask. */
     NRF_BELLBOARD_INT_TRIGGERED_31_MASK = BELLBOARD_INTENSET0_TRIGGERED31_Msk, /**< Triggered 31 interrupt mask. */
+#endif // BELLBOARD_TASKS_TRIGGER_MaxCount > 4
 } nrf_bellboard_int_mask_t;
 
 /** @brief BELLBOARD tasks. */
@@ -132,6 +136,7 @@ typedef enum
     NRF_BELLBOARD_TASK_TRIGGER_2  = offsetof(NRF_BELLBOARD_Type, TASKS_TRIGGER[2]),  /**< Trigger 2 task. */
     NRF_BELLBOARD_TASK_TRIGGER_3  = offsetof(NRF_BELLBOARD_Type, TASKS_TRIGGER[3]),  /**< Trigger 3 task. */
     NRF_BELLBOARD_TASK_TRIGGER_4  = offsetof(NRF_BELLBOARD_Type, TASKS_TRIGGER[4]),  /**< Trigger 4 task. */
+#if NRF_BELLBOARD_EVENTS_TRIGGERED_COUNT > 4
     NRF_BELLBOARD_TASK_TRIGGER_5  = offsetof(NRF_BELLBOARD_Type, TASKS_TRIGGER[5]),  /**< Trigger 5 task. */
     NRF_BELLBOARD_TASK_TRIGGER_6  = offsetof(NRF_BELLBOARD_Type, TASKS_TRIGGER[6]),  /**< Trigger 6 task. */
     NRF_BELLBOARD_TASK_TRIGGER_7  = offsetof(NRF_BELLBOARD_Type, TASKS_TRIGGER[7]),  /**< Trigger 7 task. */
@@ -159,6 +164,7 @@ typedef enum
     NRF_BELLBOARD_TASK_TRIGGER_29 = offsetof(NRF_BELLBOARD_Type, TASKS_TRIGGER[29]), /**< Trigger 29 task. */
     NRF_BELLBOARD_TASK_TRIGGER_30 = offsetof(NRF_BELLBOARD_Type, TASKS_TRIGGER[30]), /**< Trigger 30 task. */
     NRF_BELLBOARD_TASK_TRIGGER_31 = offsetof(NRF_BELLBOARD_Type, TASKS_TRIGGER[31]), /**< Trigger 31 task. */
+#endif // BELLBOARD_TASKS_TRIGGER_MaxCount > 4
 } nrf_bellboard_task_t;
 
 /**

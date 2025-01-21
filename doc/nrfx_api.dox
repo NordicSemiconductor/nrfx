@@ -23,6 +23,8 @@
 
 @defgroup nrf_comp COMP
 
+@defgroup nrf_cracen CRACEN
+
 @defgroup nrf_systick Cortex-M Systick
 
 @defgroup nrf_cracen CRACEN

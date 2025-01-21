@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2022 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -50,6 +50,13 @@ extern "C" {
 #error "Invalid set of configuration for IPCT."
 #endif
 
+#ifndef NRFX_IPCTx_CONFIG_OWNED_CHANNELS_MASK_BY_INST_NUM
+#define NRFX_IPCTx_CONFIG_OWNED_CHANNELS_MASK_BY_INST_NUM(inst_num) \
+        NRFX_CONCAT(NRFX_IPCT, inst_num, _CONFIG_OWNED_CHANNELS_MASK)
+#else
+#error Invalid set of configuration for IPCT.
+#endif
+
 #ifndef NRFX_IPCTx_PUB_CONFIG_ALLOWED_CHANNELS_MASK_BY_INST_NUM
 #define NRFX_IPCTx_PUB_CONFIG_ALLOWED_CHANNELS_MASK_BY_INST_NUM(inst_num) \
         NRFX_CONCAT(NRFX_IPCT, inst_num, _PUB_CONFIG_ALLOWED_CHANNELS_MASK)
@@ -64,18 +71,16 @@ extern "C" {
 #error "Invalid set of configuration for IPCT."
 #endif
 
-/* Macro checks if any inst_num mask (PUB or SUB) is not zero and then returns 1, else 0 */
+/* Macro checks if owned inst_num mask is not zero and then returns 1, else 0 */
 #ifdef NRF_SECURE
-#define NRFX_IPCT_PUB_OR_SUB_MASK(inst_num) 1
+#define NRFX_IPCT_OWNED_MASK(inst_num) 1
 #else
-#define NRFX_IPCT_PUB_OR_SUB_MASK(inst_num) \
-    NRFX_COND_CODE_0(NRFX_IPCTx_PUB_CONFIG_ALLOWED_CHANNELS_MASK_BY_INST_NUM(inst_num), \
-        (NRFX_COND_CODE_0(NRFX_IPCTx_SUB_CONFIG_ALLOWED_CHANNELS_MASK_BY_INST_NUM(inst_num), \
-                          (0), (1))), (1))
+#define NRFX_IPCT_OWNED_MASK(inst_num) \
+    NRFX_COND_CODE_0(NRFX_IPCTx_CONFIG_OWNED_CHANNELS_MASK_BY_INST_NUM(inst_num), (0), (1))
 #endif
 
 #define NRFX_IPCT_CHANNELS_ENTRY(inst_num)                                               \
-    NRFX_COND_CODE_1(NRFX_IPCT_PUB_OR_SUB_MASK(inst_num), \
+    NRFX_COND_CODE_1(NRFX_IPCT_OWNED_MASK(inst_num), \
             ( \
               NRFX_CONCAT(static nrfx_atomic_t m_ipct, inst_num, _channels __attribute__((used)) = \
                 NRFX_IPCTx_PUB_CONFIG_ALLOWED_CHANNELS_MASK_BY_INST_NUM(inst_num) |      \
@@ -90,13 +95,16 @@ extern "C" {
 
 #define NRFX_INTERCONNECT_IPCT_GLOBAL_DEFINE \
         NRFX_FOREACH_PRESENT(IPCT, _NRFX_IPCT_CHANNELS_ENTRY, (), (), _)
-
+#else
+#ifndef NRFX_IPCT_OWNED_MASK
+#define NRFX_IPCT_OWNED_MASK NRFX_IPCT_PUB_OR_SUB_MASK
+#endif
 #endif // NRFX_INTERCONNECT_IPCT_GLOBAL_DEFINE
 
 #define _NRFX_IPCT_INSTANCE(inst_num) NRFX_CONCAT(NRF_, IPCT, inst_num)
 
 #define NRFX_INTERCONNECT_IPCT_PROP_ENTRY(inst_num)                                               \
-    NRFX_COND_CODE_1(NRFX_IPCT_PUB_OR_SUB_MASK(inst_num), \
+    NRFX_COND_CODE_1(NRFX_IPCT_OWNED_MASK(inst_num), \
     ({                                                                                             \
             .p_ipct                 = _NRFX_IPCT_INSTANCE(inst_num),                               \
             .p_ipct_channels        = &NRFX_IPCTx_CHANNELS_SINGLE_VAR_NAME_BY_INST_NUM(inst_num),  \

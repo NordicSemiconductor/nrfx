@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -122,17 +122,12 @@ typedef union
 #define RAM_UNIFORM_BLOCKS             4
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 4
 #define RAM_UNIFORM_SECTIONS_TOTAL     16
-#elif defined(NRF54H20_ENGA_XXAA)
+#elif defined(NRF54H20_XXAA) && defined(NRF_APPLICATION)
 #define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 1
 #define RAM_UNIFORM_SECTIONS_TOTAL     1
-#elif (defined(NRF54H20_ENGB_XXAA) || defined(NRF54H20_XXAA)) && defined(NRF_APPLICATION)
-#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
-#define RAM_UNIFORM_BLOCKS             1
-#define RAM_UNIFORM_SECTIONS_PER_BLOCK 1
-#define RAM_UNIFORM_SECTIONS_TOTAL     1
-#elif (defined(NRF54H20_ENGB_XXAA) || defined(NRF54H20_XXAA)) && defined(NRF_RADIOCORE)
+#elif defined(NRF54H20_XXAA) && defined(NRF_RADIOCORE)
 #define RAM_SECTION_UNIT_SIZE          (2UL * 16UL * 1024UL) /* Consider both banks as single unit */
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 6
@@ -157,21 +152,6 @@ typedef union
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 8
 #define RAM_UNIFORM_SECTIONS_TOTAL     8
-#elif defined(NRF54L15_ENGA_XXAA)
-#define RAM_SECTION_UNIT_SIZE          (16UL * 1024UL)
-#define RAM_NON_UNIFORM_SECTIONS                                      \
-    NRFX_LISTIFY(4, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 0, 0), /* Section 0 of block 0 - 4 * 16 kB units. */ \
-    NRFX_LISTIFY(4, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 0, 1), /* Section 1 of block 0 - 4 * 16 kB units. */ \
-    NRFX_LISTIFY(2, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 1, 0), /* Section 0 of block 1 - 2 * 16 kB units. */ \
-    NRFX_LISTIFY(2, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 1, 1), /* Section 1 of block 1 - 2 * 16 kB units. */ \
-    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 1, 2), /* Section 2 of block 1 - 1 * 16 kB units. */ \
-    NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 1, 3)  /* Section 3 of block 1 - 1 * 16 kB units. */
 #elif defined(NRF54L20_ENGA_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
 #define RAM_NON_UNIFORM_SECTIONS                                      \

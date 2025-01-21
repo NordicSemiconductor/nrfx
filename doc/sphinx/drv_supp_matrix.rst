@@ -18,6 +18,7 @@ Driver support overview
    nrf54l10
    nrf54l15
    nrf54l20_enga
+   nrf7120_enga
    nrf91_series
    nrf9230_engb
 

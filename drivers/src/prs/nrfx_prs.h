@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -100,7 +100,7 @@ extern "C" {
 #elif defined(NRF5340_XXAA_NETWORK)
     // SPIM0, SPIS0, TWIM0, TWIS0, UARTE0
     #define NRFX_PRS_BOX_0_ADDR     NRF_UARTE0
-#elif defined(NRF54H20_ENGA_XXAA) || defined(NRF54H20_ENGB_XXAA) || defined(NRF54H20_XXAA)
+#elif defined(NRF54H20_XXAA)
     // SPIM130, SPIS130, TWIM130, TWIS130, UARTE130
     #define NRFX_PRS_BOX_0_ADDR     NRF_UARTE130
     // SPIM131, SPIS131, TWIM131, TWIS131, UARTE131
@@ -130,8 +130,7 @@ extern "C" {
     #define NRFX_PRS_BOX_2_ADDR     NRF_UARTE30
     // COMP, LPCOMP
     #define NRFX_PRS_BOX_3_ADDR     NRF_COMP
-#elif defined(NRF54L05_XXAA) || defined(NRF54L10_XXAA) || defined(NRF54L15_XXAA) || \
-    defined(NRF54L15_ENGA_XXAA)
+#elif defined(NRF54L05_XXAA) || defined(NRF54L10_XXAA) || defined(NRF54L15_XXAA)
     // SPIM00, SPIS00, UARTE00
     #define NRFX_PRS_BOX_0_ADDR     NRF_UARTE00
     // SPIM20, SPIS20, TWIM20, TWIS20, UARTE20
@@ -161,6 +160,27 @@ extern "C" {
     #define NRFX_PRS_BOX_6_ADDR     NRF_UARTE30
     // COMP, LPCOMP
     #define NRFX_PRS_BOX_7_ADDR     NRF_COMP
+#elif defined(NRF7120_ENGA_XXAA)
+    // SPIM00, UARTE00
+    #define NRFX_PRS_BOX_0_ADDR     NRF_UARTE00
+    // SPIM01
+    #define NRFX_PRS_BOX_1_ADDR     NRF_SPIM01
+    // SPIM02
+    #define NRFX_PRS_BOX_2_ADDR     NRF_SPIM02
+    // SPIM20, SPIS20, TWIM20, TWIS20, UARTE20
+    #define NRFX_PRS_BOX_3_ADDR     NRF_UARTE20
+    // SPIM21, SPIS21, TWIM21, TWIS21, UARTE21
+    #define NRFX_PRS_BOX_4_ADDR     NRF_UARTE21
+    // SPIM22, SPIS22, TWIM22, TWIS22, UARTE22
+    #define NRFX_PRS_BOX_5_ADDR     NRF_UARTE22
+    // SPIM23, SPIS23, TWIM23, TWIS23, UARTE23
+    #define NRFX_PRS_BOX_6_ADDR     NRF_UARTE23
+    // SPIM24, SPIS24, TWIM24, TWIS24, UARTE24
+    #define NRFX_PRS_BOX_7_ADDR     NRF_UARTE24
+    // SPIM30, SPIS30, TWIM30, TWIS30, UARTE30
+    #define NRFX_PRS_BOX_8_ADDR     NRF_UARTE30
+    // COMP, LPCOMP
+    #define NRFX_PRS_BOX_9_ADDR     NRF_COMP
 #elif defined(NRF91_SERIES)
     // UARTE0, SPIM0, SPIS0, TWIM0, TWIS0
     #define NRFX_PRS_BOX_0_ADDR     NRF_UARTE0

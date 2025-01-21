@@ -1,0 +1,20 @@
+LOAD 0x00000000 0x002C0000
+{
+    FLASH 0x00000000 0x002C0000
+    {
+    
+        .ANY (+RO)
+        .ANY (+XO)
+    }
+
+    RAM0 0x20000000 0x000E0000
+    {
+    .ANY(+RW, +ZI) ; RW data and ZI data
+    }
+
+    RAM1 0x200E0000 0x00020000
+    {
+    .ANY(+RW, +ZI) ; RW data and ZI data
+    }
+
+}

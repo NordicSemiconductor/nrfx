@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -126,6 +126,19 @@ extern "C" {
 #define NRF_TAMPC_HAS_EXTERNAL_TAMPERSWITCH_DETECTOR 0
 #endif
 
+#if NRF_TAMPC_HAS_ACTIVE_SHIELD_CHANNELS
+#if defined(NRF_TAMPC_ACTIVESHIELD_CHANNEL_3_MASK) || defined(__NRFX_DOXYGEN__)
+/** @brief Number of active shield channels. */
+#define NRF_TAMPC_ACTIVESHIELD_CHANNEL_COUNT 4
+#elif defined(NRF_TAMPC_ACTIVESHIELD_CHANNEL_2_MASK)
+#define NRF_TAMPC_ACTIVESHIELD_CHANNEL_COUNT 3
+#elif defined(NRF_TAMPC_ACTIVESHIELD_CHANNEL_1_MASK)
+#define NRF_TAMPC_ACTIVESHIELD_CHANNEL_COUNT 2
+#else
+#define NRF_TAMPC_ACTIVESHIELD_CHANNEL_COUNT 1
+#endif
+#endif
+
 /** @brief TAMPC events. */
 typedef enum
 {
@@ -154,12 +167,16 @@ typedef enum
 {
     NRF_TAMPC_ACTIVESHIELD_CHANNEL_0_MASK    = TAMPC_ACTIVESHIELD_CHEN_CH0_Msk,      ///< Enable active shield channel 0.
     NRF_TAMPC_ACTIVESHIELD_CHANNEL_1_MASK    = TAMPC_ACTIVESHIELD_CHEN_CH1_Msk,      ///< Enable active shield channel 1.
+#if NRF_TAMPC_ACTIVESHIELD_CHANNEL_COUNT > 2
     NRF_TAMPC_ACTIVESHIELD_CHANNEL_2_MASK    = TAMPC_ACTIVESHIELD_CHEN_CH2_Msk,      ///< Enable active shield channel 2.
     NRF_TAMPC_ACTIVESHIELD_CHANNEL_3_MASK    = TAMPC_ACTIVESHIELD_CHEN_CH3_Msk,      ///< Enable active shield channel 3.
+#endif
     NRF_TAMPC_ALL_ACTIVESHIELD_CHANNELS_MASK = NRF_TAMPC_ACTIVESHIELD_CHANNEL_0_MASK
                                              | NRF_TAMPC_ACTIVESHIELD_CHANNEL_1_MASK
+#if NRF_TAMPC_ACTIVESHIELD_CHANNEL_COUNT > 2
                                              | NRF_TAMPC_ACTIVESHIELD_CHANNEL_2_MASK
                                              | NRF_TAMPC_ACTIVESHIELD_CHANNEL_3_MASK ///< All TAMPC active shield channels.
+#endif
 } nrf_tampc_activeshield_mask_t;
 #endif
 

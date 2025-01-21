@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -47,6 +47,20 @@ extern "C" {
  * @brief   Hardware access layer for managing the Control Access Port (CTRL-AP) peripheral.
  */
 
+#if defined(CTRLAPPERI_MAILBOX_BOOTMODE_MODE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the BOOTMODE register is present. */
+#define NRF_CTRLAP_HAS_BOOTMODE 1
+#else
+#define NRF_CTRLAP_HAS_BOOTMODE 0
+#endif
+
+#if defined(CTRLAPPERI_INFO_READY_READY_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the READY register is present. */
+#define NRF_CTRLAP_HAS_READY 1
+#else
+#define NRF_CTRLAP_HAS_READY 0
+#endif
+
 /** @brief CTRLAP events. */
 typedef enum
 {
@@ -66,15 +80,19 @@ typedef struct
 {
     uint32_t partno;      ///< Part number of the device, this information is retained on system on idle.
     uint32_t hw_revision; ///< Hardware Revision of the device, this information is retained on system on idle.
+#if NRF_CTRLAP_HAS_READY
     bool     ready;       ///< Set when INFO registers update is completed.
+#endif
 } nrf_ctrlap_info_t;
 
+#if NRF_CTRLAP_HAS_BOOTMODE
 /** @brief CTRLAP secure domain boot mode. */
 typedef enum
 {
     NRF_CTRLAP_MODE_NORMAL        = CTRLAPPERI_MAILBOX_BOOTMODE_MODE_Normal,       ///< Normal mode of operation.
     NRF_CTRLAP_MODE_ROM_OPERATION = CTRLAPPERI_MAILBOX_BOOTMODE_MODE_ROMOperation, ///< ROM operation mode.
 } nrf_ctrlap_bootmode_t;
+#endif
 
 /**
  * @brief Function for clearing the specified CTRLAP event.
@@ -202,6 +220,7 @@ NRF_STATIC_INLINE void nrf_ctrlap_mailbox_txdata_set(NRF_CTRLAPPERI_Type * p_reg
  */
 NRF_STATIC_INLINE bool nrf_ctrlap_mailbox_txstatus_pending_check(NRF_CTRLAPPERI_Type const * p_reg);
 
+#if NRF_CTRLAP_HAS_BOOTMODE
 /**
  * @brief Function for checking boot mode.
  *
@@ -213,6 +232,7 @@ NRF_STATIC_INLINE bool nrf_ctrlap_mailbox_txstatus_pending_check(NRF_CTRLAPPERI_
  */
 NRF_STATIC_INLINE nrf_ctrlap_bootmode_t
 nrf_ctrlap_mailbox_bootmode_get(NRF_CTRLAPPERI_Type const * p_reg);
+#endif
 
 /**
  * @brief Function for setting the CTRLAP device information.
@@ -299,18 +319,22 @@ NRF_STATIC_INLINE bool nrf_ctrlap_mailbox_txstatus_pending_check(NRF_CTRLAPPERI_
     return (bool)p_reg->MAILBOX.TXSTATUS;
 }
 
+#if NRF_CTRLAP_HAS_BOOTMODE
 NRF_STATIC_INLINE nrf_ctrlap_bootmode_t
 nrf_ctrlap_mailbox_bootmode_get(NRF_CTRLAPPERI_Type const * p_reg)
 {
     return (nrf_ctrlap_bootmode_t)p_reg->MAILBOX.BOOTMODE;
 }
+#endif
 
 NRF_STATIC_INLINE void nrf_ctrlap_info_set(NRF_CTRLAPPERI_Type *     p_reg,
                                            nrf_ctrlap_info_t const * p_data)
 {
     p_reg->INFO.PARTNO     = p_data->partno;
     p_reg->INFO.HWREVISION = p_data->hw_revision;
+#if NRF_CTRLAP_HAS_READY
     p_reg->INFO.READY      = !p_data->ready;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_ctrlap_info_get(NRF_CTRLAPPERI_Type const * p_reg,
@@ -318,7 +342,9 @@ NRF_STATIC_INLINE void nrf_ctrlap_info_get(NRF_CTRLAPPERI_Type const * p_reg,
 {
     p_data->partno      = p_reg->INFO.PARTNO;
     p_data->hw_revision = p_reg->INFO.HWREVISION;
+#if NRF_CTRLAP_HAS_READY
     p_data->ready       = !p_reg->INFO.READY;
+#endif
 }
 
 #endif // NRF_DECLARE_ONLY

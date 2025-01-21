@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* MDK version */
 #define MDK_MAJOR_VERSION   8 
-#define MDK_MINOR_VERSION   68 
+#define MDK_MINOR_VERSION   69 
 #define MDK_MICRO_VERSION   1 
 
    
@@ -126,6 +126,16 @@ POSSIBILITY OF SUCH DAMAGE.
 #if defined (NRF54L05_XXAA) || defined (NRF54L09_ENGA_XXAA) || defined (NRF54L10_XXAA) || defined (NRF54L15_XXAA) ||  defined (NRF54L20_ENGA_XXAA)
     #ifndef NRF54L_SERIES
         #define NRF54L_SERIES
+    #endif
+    #ifndef LUMOS_XXAA
+        #define LUMOS_XXAA
+    #endif
+#endif
+
+/* Define NRF71_SERIES for common use in nRF71 series devices. */
+#if defined (NRF7120_ENGA_XXAA)
+    #ifndef NRF71_SERIES
+        #define NRF71_SERIES
     #endif
     #ifndef LUMOS_XXAA
         #define LUMOS_XXAA
@@ -242,6 +252,11 @@ POSSIBILITY OF SUCH DAMAGE.
     #include "nrf54l20_enga.h"
     #include "nrf54l20_enga_interim.h"
     #include "nrf54l20_enga_name_change.h"
+
+#elif defined (NRF7120_ENGA_XXAA)
+    #include "nrf7120_enga.h"
+    #include "nrf7120_enga_interim.h"
+    #include "nrf7120_enga_name_change.h"
 
 #elif defined (NRF9160_XXAA)
     #include "nrf9160.h"

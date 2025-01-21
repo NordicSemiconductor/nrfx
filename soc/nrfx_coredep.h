@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -81,12 +81,10 @@
 #elif defined(NRF5340_XXAA_NETWORK)
     #define NRFX_DELAY_CPU_FREQ_MHZ 64
     #define NRFX_DELAY_DWT_PRESENT  1
-#elif defined(NRF54H20_XXAA) || defined(NRF54H20_ENGA_XXAA) || defined(NRF54H20_ENGB_XXAA) || \
-      defined(NRF9230_ENGB_XXAA)
+#elif defined(NRF54H20_XXAA) || defined(NRF9230_ENGB_XXAA)
     #define NRFX_DELAY_CPU_FREQ_MHZ (SystemCoreClock / 1000000)
     #define NRFX_DELAY_DWT_PRESENT  0
-#elif defined(NRF54L05_XXAA) || defined(NRF54L09_ENGA_XXAA) || defined(NRF54L10_XXAA) || \
-      defined(NRF54L15_XXAA) || defined(NRF54L15_ENGA_XXAA) || defined(NRF54L20_ENGA_XXAA)
+#elif defined(LUMOS_XXAA) || defined(NRF7120_ENGA_XXAA)
     #define NRFX_DELAY_CPU_FREQ_MHZ (SystemCoreClock / 1000000)
     #define NRFX_DELAY_DWT_PRESENT  1
 #else
@@ -193,8 +191,7 @@ NRF_STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
     nrf_vpr_csr_vtim_combined_wait_trigger();
 #else
     #if !defined(NRFX_DELAY_RISCV_SLOWDOWN)
-        #if defined(NRF54L05_XXAA) || defined(NRF54L09_ENGA_XXAA) || defined(NRF54L10_XXAA) || \
-            defined(NRF54L15_XXAA) || defined(NRF54L15_ENGA_XXAA) || defined(NRF54L20_ENGA_XXAA)
+        #if defined(NRF54L_SERIES) || defined(NRF7120_ENGA_XXAA)
             #define NRFX_DELAY_RISCV_SLOWDOWN 15
         #else
             #define NRFX_DELAY_RISCV_SLOWDOWN 50

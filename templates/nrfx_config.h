@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -63,22 +63,6 @@
     #include <nrfx_config_nrf54h20_ppr.h>
 #elif defined(NRF54H20_XXAA) && defined(NRF_FLPR)
     #include <nrfx_config_nrf54h20_flpr.h>
-#elif defined(NRF54H20_ENGA_XXAA) && defined(NRF_APPLICATION)
-    #include <nrfx_config_nrf54h20_enga_application.h>
-#elif defined(NRF54H20_ENGA_XXAA) && defined(NRF_RADIOCORE)
-    #include <nrfx_config_nrf54h20_enga_radiocore.h>
-#elif defined(NRF54H20_ENGA_XXAA) && defined(NRF_PPR)
-    #include <nrfx_config_nrf54h20_enga_ppr.h>
-#elif defined(NRF54H20_ENGA_XXAA) && defined(NRF_FLPR)
-    #include <nrfx_config_nrf54h20_enga_flpr.h>
-#elif defined(NRF54H20_ENGB_XXAA) && defined(NRF_APPLICATION)
-    #include <nrfx_config_nrf54h20_engb_application.h>
-#elif defined(NRF54H20_ENGB_XXAA) && defined(NRF_RADIOCORE)
-    #include <nrfx_config_nrf54h20_engb_radiocore.h>
-#elif defined(NRF54H20_ENGB_XXAA) && defined(NRF_PPR)
-    #include <nrfx_config_nrf54h20_engb_ppr.h>
-#elif defined(NRF54H20_ENGB_XXAA) && defined(NRF_FLPR)
-    #include <nrfx_config_nrf54h20_engb_flpr.h>
 #elif defined(NRF54L05_XXAA) && defined(NRF_APPLICATION)
     #include <nrfx_config_nrf54l05_application.h>
 #elif defined(NRF54L05_XXAA) && defined(NRF_FLPR)
@@ -95,14 +79,18 @@
     #include <nrfx_config_nrf54l15_application.h>
 #elif defined(NRF54L15_XXAA) && defined(NRF_FLPR)
     #include <nrfx_config_nrf54l15_flpr.h>
-#elif defined(NRF54L15_ENGA_XXAA) && defined(NRF_APPLICATION)
-    #include <nrfx_config_nrf54l15_enga_application.h>
-#elif defined(NRF54L15_ENGA_XXAA) && defined(NRF_FLPR)
-    #include <nrfx_config_nrf54l15_enga_flpr.h>
 #elif defined(NRF54L20_ENGA_XXAA) && defined(NRF_APPLICATION)
     #include <nrfx_config_nrf54l20_enga_application.h>
 #elif defined(NRF54L20_ENGA_XXAA) && defined(NRF_FLPR)
     #include <nrfx_config_nrf54l20_enga_flpr.h>
+#elif defined(NRF7120_ENGA_XXAA) && defined(NRF_APPLICATION)
+    #include <nrfx_config_nrf7120_application.h>
+#elif defined(NRF7120_ENGA_XXAA) && defined(NRF_FLPR)
+    #include <nrfx_config_nrf7120_flpr.h>
+#elif defined(NRF7120_ENGA_XXAA) && defined(NRF_LMAC)
+    #include <nrfx_config_nrf7120_lmac.h>
+#elif defined(NRF7120_ENGA_XXAA) && defined(NRF_UMAC)
+    #include <nrfx_config_nrf7120_umac.h>
 #elif defined(NRF9120_XXAA) || defined(NRF9160_XXAA)
     #include <nrfx_config_nrf91.h>
 #elif defined(NRF9230_ENGB_XXAA) && defined(NRF_APPLICATION)

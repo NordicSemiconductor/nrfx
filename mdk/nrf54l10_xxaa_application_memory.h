@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -49,11 +49,11 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_MEMORY_UICR_SIZE 0x00001000
 
 /* Device memory RAM: */
-#define NRF_MEMORY_RAM_BASE 0x20020000
+#define NRF_MEMORY_RAM_BASE 0x20000000
 #define NRF_MEMORY_RAM_SIZE 0x00020000
 
 /* Device memory RAM2: */
-#define NRF_MEMORY_RAM2_BASE 0x20000000
+#define NRF_MEMORY_RAM2_BASE 0x20020000
 #define NRF_MEMORY_RAM2_SIZE 0x00010000
 
 /* Device memory PeripheralsAPBS: */

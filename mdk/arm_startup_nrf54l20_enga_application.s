@@ -1,4 +1,4 @@
-; Copyright (c) 2009-2024 ARM Limited. All rights reserved.
+; Copyright (c) 2009-2025 ARM Limited. All rights reserved.
 ; 
 ;     SPDX-License-Identifier: Apache-2.0
 ; 
@@ -167,8 +167,8 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     CTRLAP_IRQHandler
-                DCD     CM33SS_IRQHandler
                 DCD     0                         ; Reserved
+                DCD     CM33SS_IRQHandler
                 DCD     TIMER00_IRQHandler
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
@@ -355,6 +355,25 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     GPIOTE30_0_IRQHandler
                 DCD     GPIOTE30_1_IRQHandler
                 DCD     CLOCK_POWER_IRQHandler
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     VREGUSB_IRQHandler
 
 __Vectors_End
 
@@ -488,6 +507,7 @@ Default_Handler PROC
                 EXPORT   GPIOTE30_0_IRQHandler [WEAK]
                 EXPORT   GPIOTE30_1_IRQHandler [WEAK]
                 EXPORT   CLOCK_POWER_IRQHandler [WEAK]
+                EXPORT   VREGUSB_IRQHandler [WEAK]
 SWI00_IRQHandler
 SWI01_IRQHandler
 SWI02_IRQHandler
@@ -548,6 +568,7 @@ WDT31_IRQHandler
 GPIOTE30_0_IRQHandler
 GPIOTE30_1_IRQHandler
 CLOCK_POWER_IRQHandler
+VREGUSB_IRQHandler
                 B .
                 ENDP
                 ALIGN

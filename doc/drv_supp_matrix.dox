@@ -28,6 +28,7 @@ The following table presents MDK symbol used for a specific device.
 | nRF54L10           | NRF54L10_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                  |
 | nRF54L15           | NRF54L15_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                  |
 | nRF54L20 Eng A     | NRF54L20_ENGA_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                             |
+| nRF7120 Eng A      | NRF7120_ENGA_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                   |
 | nRF9131<br>nRF9161 | NRF9120_XXAA                                                                  |
 | nRF9160            | NRF9160_XXAA                                                                  |
 | nRF9230 Eng B      | NRF9230_ENGB_XXAA<br>NRF_APPLICATION<br>NRF_RADIOCORE<br>NRF_PPR<br>NRF_FLPR  |
@@ -132,6 +133,7 @@ The following pages list the drivers supported by respective SoCs and SiPs:
 - @subpage nrf54l10_drivers
 - @subpage nrf54l15_drivers
 - @subpage nrf54l20_enga_drivers
+- @subpage nrf7120_enga_drivers
 - @subpage nrf91_series_drivers
 - @subpage nrf9230_engb_drivers
 

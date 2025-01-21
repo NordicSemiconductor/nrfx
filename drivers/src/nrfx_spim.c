@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -146,6 +146,15 @@ static const uint8_t easydma_support_bits[] __UNUSED =
 #define USE_WORKAROUND_FOR_ANOMALY_195 1
 #endif
 
+#if NRFX_CHECK(NRF54L_ERRATA_8_PRESENT) || NRFX_CHECK(NRF54H_ERRATA_212_PRESENT)
+#define USE_WORKAROUND_FOR_ANOMALY_NRF54L_8_NRF54H_212 1
+static inline bool apply_errata_nrf54l_8_nrf54h_212(void)
+{
+    return (NRFX_COND_CODE_1(NRF54L_ERRATA_8_PRESENT, (nrf54l_errata_8()), (false)) ||
+            NRFX_COND_CODE_1(NRF54H_ERRATA_212_PRESENT, (nrf54h_errata_212()), (false)));
+}
+#endif
+
 // Control block - driver instance local data.
 typedef struct
 {
@@ -157,6 +166,9 @@ typedef struct
     bool                    skip_gpio_cfg       : 1;
     bool                    ss_active_high      : 1;
     bool                    disable_on_xfer_end : 1;
+#ifdef USE_WORKAROUND_FOR_ANOMALY_NRF54L_8_NRF54H_212
+    bool                    apply_errata_8_212  : 1;
+#endif
     uint32_t                ss_pin;
 } spim_control_block_t;
 static spim_control_block_t m_cb[NRFX_SPIM_ENABLED_COUNT];
@@ -455,7 +467,14 @@ static nrfx_err_t spim_configuration_verify(nrfx_spim_t const *        p_instanc
 static void spim_configure(nrfx_spim_t const *        p_instance,
                            nrfx_spim_config_t const * p_config)
 {
+#if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED)
+    bool hw_csn_supported = SPIM_HW_CSN_PRESENT_VALIDATE(p_instance->drv_inst_idx);
+    bool use_csn = hw_csn_supported && p_config->use_hw_ss;
+#endif
     spim_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
+    uint8_t csn_duration = NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED,
+                                (use_csn ? p_config->ss_duration : NRF_SPIM_CSNDUR_DEFAULT),
+                                (0));
 
 #if NRF_SPIM_HAS_FREQUENCY
     nrf_spim_frequency_t frequency = spim_frequency_bit_decode(p_config->frequency);
@@ -463,12 +482,30 @@ static void spim_configure(nrfx_spim_t const *        p_instance,
     uint32_t prescaler = spim_prescaler_calculate(p_instance, p_config->frequency);
 #endif
 
+#ifdef USE_WORKAROUND_FOR_ANOMALY_NRF54L_8_NRF54H_212
+    if (apply_errata_nrf54l_8_nrf54h_212())
+    {
+        /* Workaround must be applied only if PRESCALER is larger than 2 and CPHA=0 */
+        if ((prescaler > 2) &&
+            ((p_config->mode == NRF_SPIM_MODE_0) || (p_config->mode == NRF_SPIM_MODE_2)))
+        {
+            uint8_t min_dur = (uint8_t)((prescaler / 2) + 1);
+            csn_duration = NRFX_MAX(csn_duration, min_dur);
+            p_cb->apply_errata_8_212 = 1;
+        }
+        else
+        {
+            p_cb->apply_errata_8_212 = 0;
+        }
+    }
+#else
+    (void)csn_duration;
+#endif
+
     p_cb->skip_gpio_cfg = p_config->skip_gpio_cfg;
     configure_pins(p_instance, p_config);
 
 #if NRFX_CHECK(NRFX_SPIM_EXTENDED_ENABLED)
-    bool hw_csn_supported = SPIM_HW_CSN_PRESENT_VALIDATE(p_instance->drv_inst_idx);
-    bool use_csn = hw_csn_supported && p_config->use_hw_ss;
     if (use_csn)
     {
         p_cb->ss_pin = NRF_SPIM_PIN_NOT_CONNECTED;
@@ -522,10 +559,7 @@ static void spim_configure(nrfx_spim_t const *        p_instance,
                                                NRF_SPIM_CSN_POL_HIGH : NRF_SPIM_CSN_POL_LOW) :
                                                (nrf_spim_csn_pol_t)NRF_SPIM_CSNPOL_DEFAULT,),
                                               ((nrf_spim_csn_pol_t)NRF_SPIM_CSNPOL_DEFAULT,))
-            .csn_duration = NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED,
-                                             (use_csn ?
-                                              p_config->ss_duration : NRF_SPIM_CSNDUR_DEFAULT,),
-                                             (NRF_SPIM_CSNDUR_DEFAULT,))
+            .csn_duration = csn_duration,
 #endif
 #if NRFY_SPIM_HAS_RXDELAY
             .rx_delay = NRFX_COND_CODE_1(NRFX_SPIM_EXTENDED_ENABLED,
@@ -816,6 +850,17 @@ static nrfx_err_t spim_xfer(NRF_SPIM_Type               * p_spim,
                                 true : !nrfy_spim_enable_check(p_spim);
 #endif
     nrfy_spim_enable(p_spim);
+#ifdef USE_WORKAROUND_FOR_ANOMALY_NRF54L_8_NRF54H_212
+    if (apply_errata_nrf54l_8_nrf54h_212() && p_cb->apply_errata_8_212)
+    {
+        *(volatile uint32_t *)((uintptr_t)p_spim + 0xc84) = 0x82;
+        if (p_cb->handler)
+        {
+            nrfy_spim_event_clear(p_spim, NRF_SPIM_EVENT_STARTED);
+            nrfy_spim_int_enable(p_spim, NRF_SPIM_INT_STARTED_MASK);
+        }
+    }
+#endif
 
     if (!(flags & NRFX_SPIM_FLAG_HOLD_XFER))
     {
@@ -824,6 +869,13 @@ static nrfx_err_t spim_xfer(NRF_SPIM_Type               * p_spim,
 
     if (!p_cb->handler)
     {
+#ifdef USE_WORKAROUND_FOR_ANOMALY_NRF54L_8_NRF54H_212
+        if (apply_errata_nrf54l_8_nrf54h_212() && p_cb->apply_errata_8_212)
+        {
+            *(volatile uint32_t *)((uintptr_t)p_spim + 0xc84) = 0;
+        }
+#endif
+
 #if NRFX_CHECK(NRFX_SPIM3_NRF52840_ANOMALY_198_WORKAROUND_ENABLED)
         if (p_spim == NRF_SPIM3)
         {
@@ -915,6 +967,19 @@ void nrfx_spim_abort(nrfx_spim_t const * p_instance)
 
 static void irq_handler(NRF_SPIM_Type * p_spim, spim_control_block_t * p_cb)
 {
+#ifdef USE_WORKAROUND_FOR_ANOMALY_NRF54L_8_NRF54H_212
+    if (apply_errata_nrf54l_8_nrf54h_212() && p_cb->apply_errata_8_212)
+    {
+        if (nrfy_spim_int_enable_check(p_spim, NRF_SPIM_INT_STARTED_MASK) &&
+            nrfy_spim_event_check(p_spim, NRF_SPIM_EVENT_STARTED))
+        {
+            nrfy_spim_event_clear(p_spim, NRF_SPIM_EVENT_STARTED);
+            *(volatile uint32_t *)((uintptr_t)p_spim + 0xc84) = 0;
+            nrfy_spim_int_disable(p_spim, NRF_SPIM_INT_STARTED_MASK);
+        }
+    }
+#endif
+
 #if NRFX_CHECK(NRFX_SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED)
     if (nrfy_spim_int_enable_check(p_spim, NRF_SPIM_INT_STARTED_MASK) &&
         nrfy_spim_event_check(p_spim, NRF_SPIM_EVENT_STARTED))

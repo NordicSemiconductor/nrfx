@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -428,6 +428,103 @@ NRF_STATIC_INLINE void nrf_rramc_region_config_get(NRF_RRAMC_Type const *      p
 NRF_STATIC_INLINE uint32_t nrf_rramc_region_config_raw_get(NRF_RRAMC_Type const * p_reg,
                                                            uint8_t                region);
 
+/**
+ * @brief Function for writing a byte to RRAM memory.
+ *
+ * @note If write buffer is enabled, new data might not be immediately committed 
+ *       to the target memory.
+ *
+ * @warning Before calling this function, the caller must ensure that write mode 
+ *          is enabled using @ref nrf_rramc_config_set.
+ * 
+ * @param[in] address Address of the byte to write.
+ * @param[in] value   Value to write.
+ */
+NRF_STATIC_INLINE void nrf_rramc_byte_write(uint32_t address, uint8_t value);
+
+/**
+ * @brief Function for writing a halfword to RRAM memory.
+ *
+ * @note If write buffer is enabled, new data might not be immediately committed 
+ *       to the target memory.
+ *
+ * @warning Before calling this function, the caller must ensure that write mode 
+ *          is enabled using @ref nrf_rramc_config_set.
+ *
+ * @param[in] address Address of the halfword to write.
+ * @param[in] value   Value to write.
+ */
+NRF_STATIC_INLINE void nrf_rramc_halfword_write(uint32_t address, uint16_t value);
+
+/**
+ * @brief Function for writing a word to RRAM memory.
+ *
+ * @note If write buffer is enabled, new data might not be immediately committed 
+ *       to the target memory.
+ *
+ * @warning Before calling this function, the caller must ensure that write mode 
+ *          is enabled using @ref nrf_rramc_config_set.
+ *
+ * @param[in] address Address of the word to write.
+ * @param[in] value   Value to write.
+ */
+NRF_STATIC_INLINE void nrf_rramc_word_write(uint32_t address, uint32_t value);
+
+/**
+ * @brief Function for writing a given number of bytes from a specified buffer
+ *        into RRAM memory.
+ *
+ * @note If write buffer is enabled, new data might not be immediately committed 
+ *       to the target memory.
+ *
+ * @warning Before calling this function, the caller must ensure that write mode 
+ *          is enabled using @ref nrf_rramc_config_set.
+ *
+ * @param[in] address   Destination address in RRAM.
+ * @param[in] src       Pointer to the buffer from where data will be copied.
+ * @param[in] num_bytes Number of bytes to write.
+ *
+ */
+NRF_STATIC_INLINE void nrf_rramc_buffer_write(uint32_t address, void * src, uint32_t num_bytes);
+
+/**
+ * @brief Function for reading a byte from the RRAM memory.
+ *
+ * @param[in] address Address of the byte to read.
+ *
+ * @return Value read from RRAM memory.
+ */
+NRF_STATIC_INLINE uint8_t nrf_rramc_byte_read(uint32_t address);
+
+/**
+ * @brief Function for reading a halfword from the RRAM memory.
+ *
+ * @param[in] address Address of the halfword to read.
+ *
+ * @return Value read from RRAM memory.
+ */
+NRF_STATIC_INLINE uint16_t nrf_rramc_halfword_read(uint32_t address);
+
+/**
+ * @brief Function for reading a word from the RRAM memory.
+ *
+ * @param[in] address Address of the word to read.
+ *
+ * @return Value read from RRAM memory.
+ */
+NRF_STATIC_INLINE uint32_t nrf_rramc_word_read(uint32_t address);
+
+/**
+ * @brief Function for reading a given number of bytes from RRAM memory
+ *        into a specified buffer.
+ *
+ * @param[in] dst       Pointer to the buffer to store the data.
+ * @param[in] address   Address of the first byte to read.
+ * @param[in] num_bytes Number of bytes to read.
+ *
+ */
+NRF_STATIC_INLINE void nrf_rramc_buffer_read(void * dst, uint32_t address, uint32_t num_bytes);
+
 #ifndef NRF_DECLARE_ONLY
 
 NRF_STATIC_INLINE void nrf_rramc_task_trigger(NRF_RRAMC_Type * p_reg, nrf_rramc_task_t task)
@@ -640,6 +737,46 @@ NRF_STATIC_INLINE uint32_t nrf_rramc_region_config_raw_get(NRF_RRAMC_Type const 
                                                            uint8_t                region)
 {
     return p_reg->REGION[region].CONFIG;
+}
+
+NRF_STATIC_INLINE void nrf_rramc_byte_write(uint32_t address, uint8_t value)
+{
+    *(volatile uint8_t *)address = value;
+}
+
+NRF_STATIC_INLINE void nrf_rramc_halfword_write(uint32_t address, uint16_t value)
+{
+    *(volatile uint16_t *)address = value;
+}
+
+NRF_STATIC_INLINE void nrf_rramc_word_write(uint32_t address, uint32_t value)
+{
+    *(volatile uint32_t *)address = value;
+}
+
+NRF_STATIC_INLINE void nrf_rramc_buffer_write(uint32_t address, void * src, uint32_t num_bytes)
+{
+    memcpy((void *)address, src, num_bytes);
+}
+
+NRF_STATIC_INLINE uint8_t nrf_rramc_byte_read(uint32_t address)
+{
+    return *(volatile uint8_t *)address;
+}
+
+NRF_STATIC_INLINE uint16_t nrf_rramc_halfword_read(uint32_t address)
+{
+    return *(volatile uint16_t *)address;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_rramc_word_read(uint32_t address)
+{
+    return *(volatile uint32_t *)address;
+}
+
+NRF_STATIC_INLINE void nrf_rramc_buffer_read(void * dst, uint32_t address, uint32_t num_bytes)
+{
+    memcpy(dst, (void *)address, num_bytes);
 }
 
 #endif // NRF_DECLARE_ONLY

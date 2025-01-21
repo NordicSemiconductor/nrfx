@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -401,6 +401,54 @@ NRF_STATIC_INLINE void nrf_qspi_pins_set(NRF_QSPI_Type *         p_reg,
                                          nrf_qspi_pins_t const * p_pins);
 
 /**
+ * @brief Function for setting the SCK pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   SCK pin number.
+ */
+NRF_STATIC_INLINE void nrf_qspi_pin_sck_set(NRF_QSPI_Type * p_reg, uint32_t pin);
+
+/**
+ * @brief Function for setting the CSN pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   CSN pin number.
+ */
+NRF_STATIC_INLINE void nrf_qspi_pin_csn_set(NRF_QSPI_Type * p_reg, uint32_t pin);
+
+/**
+ * @brief Function for setting the IO0 pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   IO0 pin number.
+ */
+NRF_STATIC_INLINE void nrf_qspi_pin_io0_set(NRF_QSPI_Type * p_reg, uint32_t pin);
+
+/**
+ * @brief Function for setting the IO1 pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   IO1 pin number.
+ */
+NRF_STATIC_INLINE void nrf_qspi_pin_io1_set(NRF_QSPI_Type * p_reg, uint32_t pin);
+
+/**
+ * @brief Function for setting the IO2 pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   IO2 pin number.
+ */
+NRF_STATIC_INLINE void nrf_qspi_pin_io2_set(NRF_QSPI_Type * p_reg, uint32_t pin);
+
+/**
+ * @brief Function for setting the IO3 pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   IO3 pin number.
+ */
+NRF_STATIC_INLINE void nrf_qspi_pin_io3_set(NRF_QSPI_Type * p_reg, uint32_t pin);
+
+/**
  * @brief Function for getting the currently configured QSPI pins.
  *
  * @param[in]  p_reg  Pointer to the structure of registers of the peripheral.
@@ -749,6 +797,36 @@ NRF_STATIC_INLINE void nrf_qspi_pins_set(NRF_QSPI_Type * p_reg, nrf_qspi_pins_t 
     p_reg->PSEL.IO1 = NRF_QSPI_PIN_VAL(p_pins->io1_pin);
     p_reg->PSEL.IO2 = NRF_QSPI_PIN_VAL(p_pins->io2_pin);
     p_reg->PSEL.IO3 = NRF_QSPI_PIN_VAL(p_pins->io3_pin);
+}
+
+NRF_STATIC_INLINE void nrf_qspi_pin_sck_set(NRF_QSPI_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.SCK = NRF_QSPI_PIN_VAL(pin);
+}
+
+NRF_STATIC_INLINE void nrf_qspi_pin_csn_set(NRF_QSPI_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.CSN = NRF_QSPI_PIN_VAL(pin);
+}
+
+NRF_STATIC_INLINE void nrf_qspi_pin_io0_set(NRF_QSPI_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.IO0 = NRF_QSPI_PIN_VAL(pin);
+}
+
+NRF_STATIC_INLINE void nrf_qspi_pin_io1_set(NRF_QSPI_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.IO1 = NRF_QSPI_PIN_VAL(pin);
+}
+
+NRF_STATIC_INLINE void nrf_qspi_pin_io2_set(NRF_QSPI_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.IO2 = NRF_QSPI_PIN_VAL(pin);
+}
+
+NRF_STATIC_INLINE void nrf_qspi_pin_io3_set(NRF_QSPI_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.IO3 = NRF_QSPI_PIN_VAL(pin);
 }
 
 NRF_STATIC_INLINE void nrf_qspi_pins_get(NRF_QSPI_Type const * p_reg,

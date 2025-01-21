@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -40,12 +40,8 @@
 extern "C" {
 #endif
 
-#if defined(NRF54H20_XXAA) || defined(NRF54H20_ENGB_XXAA) || defined(NRF92_SERIES)
+#if defined(NRF54H20_XXAA) || defined(NRF92_SERIES)
 #define NRF_UARTE_CLOCKPIN_TXD_NEEDED 1
-#endif
-
-#if defined(NRF54H20_ENGA_XXAA)
-#define NRF_UARTE_CLOCKPIN_RTS_NEEDED 1
 #endif
 
 #define NRF_UARTE_PSEL_DISCONNECTED 0xFFFFFFFF
@@ -532,6 +528,14 @@ NRF_STATIC_INLINE void nrf_uarte_txrx_pins_set(NRF_UARTE_Type * p_reg,
 NRF_STATIC_INLINE void nrf_uarte_txrx_pins_disconnect(NRF_UARTE_Type * p_reg);
 
 /**
+ * @brief Function for configuring TX pin.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] pseltxd TXD pin number.
+ */
+NRF_STATIC_INLINE void nrf_uarte_tx_pin_set(NRF_UARTE_Type * p_reg, uint32_t pseltxd);
+
+/**
  * @brief Function for getting TX pin selection.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -539,6 +543,14 @@ NRF_STATIC_INLINE void nrf_uarte_txrx_pins_disconnect(NRF_UARTE_Type * p_reg);
  * @return TX pin selection.
  */
 NRF_STATIC_INLINE uint32_t nrf_uarte_tx_pin_get(NRF_UARTE_Type const * p_reg);
+
+/**
+ * @brief Function for configuring RX pin.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] pselrxd RXD pin number.
+ */
+NRF_STATIC_INLINE void nrf_uarte_rx_pin_set(NRF_UARTE_Type * p_reg, uint32_t pselrxd);
 
 /**
  * @brief Function for getting RX pin selection.
@@ -550,6 +562,14 @@ NRF_STATIC_INLINE uint32_t nrf_uarte_tx_pin_get(NRF_UARTE_Type const * p_reg);
 NRF_STATIC_INLINE uint32_t nrf_uarte_rx_pin_get(NRF_UARTE_Type const * p_reg);
 
 /**
+ * @brief Function for configuring RTS pin.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] pselrts RTS pin number.
+ */
+NRF_STATIC_INLINE void nrf_uarte_rts_pin_set(NRF_UARTE_Type * p_reg, uint32_t pselrts);
+
+/**
  * @brief Function for getting RTS pin selection.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -557,6 +577,14 @@ NRF_STATIC_INLINE uint32_t nrf_uarte_rx_pin_get(NRF_UARTE_Type const * p_reg);
  * @return RTS pin selection.
  */
 NRF_STATIC_INLINE uint32_t nrf_uarte_rts_pin_get(NRF_UARTE_Type const * p_reg);
+
+/**
+ * @brief Function for configuring CTS pin.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] pselcts CTS pin number.
+ */
+NRF_STATIC_INLINE void nrf_uarte_cts_pin_set(NRF_UARTE_Type * p_reg, uint32_t pselcts);
 
 /**
  * @brief Function for getting CTS pin selection.
@@ -819,9 +847,19 @@ NRF_STATIC_INLINE void nrf_uarte_txrx_pins_disconnect(NRF_UARTE_Type * p_reg)
     nrf_uarte_txrx_pins_set(p_reg, NRF_UARTE_PSEL_DISCONNECTED, NRF_UARTE_PSEL_DISCONNECTED);
 }
 
+NRF_STATIC_INLINE void nrf_uarte_tx_pin_set(NRF_UARTE_Type * p_reg, uint32_t pseltxd)
+{
+    p_reg->PSEL.TXD = pseltxd;
+}
+
 NRF_STATIC_INLINE uint32_t nrf_uarte_tx_pin_get(NRF_UARTE_Type const * p_reg)
 {
     return p_reg->PSEL.TXD;
+}
+
+NRF_STATIC_INLINE void nrf_uarte_rx_pin_set(NRF_UARTE_Type * p_reg, uint32_t pselrxd)
+{
+    p_reg->PSEL.RXD = pselrxd;
 }
 
 NRF_STATIC_INLINE uint32_t nrf_uarte_rx_pin_get(NRF_UARTE_Type const * p_reg)
@@ -829,9 +867,19 @@ NRF_STATIC_INLINE uint32_t nrf_uarte_rx_pin_get(NRF_UARTE_Type const * p_reg)
     return p_reg->PSEL.RXD;
 }
 
+NRF_STATIC_INLINE void nrf_uarte_rts_pin_set(NRF_UARTE_Type * p_reg, uint32_t pselrts)
+{
+    p_reg->PSEL.RTS = pselrts;
+}
+
 NRF_STATIC_INLINE uint32_t nrf_uarte_rts_pin_get(NRF_UARTE_Type const * p_reg)
 {
     return p_reg->PSEL.RTS;
+}
+
+NRF_STATIC_INLINE void nrf_uarte_cts_pin_set(NRF_UARTE_Type * p_reg, uint32_t pselcts)
+{
+    p_reg->PSEL.CTS = pselcts;
 }
 
 NRF_STATIC_INLINE uint32_t nrf_uarte_cts_pin_get(NRF_UARTE_Type const * p_reg)

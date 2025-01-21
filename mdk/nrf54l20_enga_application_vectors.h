@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -149,6 +149,7 @@ __WEAK void SysTick_Handler(void)
  __HANDLER("Default_Handler") void GPIOTE30_0_IRQHandler                                       (void);
  __HANDLER("Default_Handler") void GPIOTE30_1_IRQHandler                                       (void);
  __HANDLER("Default_Handler") void CLOCK_POWER_IRQHandler                                      (void);
+ __HANDLER("Default_Handler") void VREGUSB_IRQHandler                                          (void);
 
 /*----------------------------------------------------------------------------
   Exception / Interrupt Vector table
@@ -261,8 +262,8 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     0,
     CTRLAP_IRQHandler,
-    CM33SS_IRQHandler,
     0,
+    CM33SS_IRQHandler,
     TIMER00_IRQHandler,
     0,
     0,
@@ -449,6 +450,25 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     GPIOTE30_0_IRQHandler,
     GPIOTE30_1_IRQHandler,
     CLOCK_POWER_IRQHandler,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    VREGUSB_IRQHandler,
 };
 
 #if defined(__GNUC__)

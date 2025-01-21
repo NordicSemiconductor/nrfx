@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -121,6 +121,19 @@ POSSIBILITY OF SUCH DAMAGE.
     #endif
     #if defined(NRF_FLPR)
         #include "nrf54h20_xxaa_flpr_memory.h"
+    #endif
+#elif defined(NRF7120_ENGA_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf7120_enga_xxaa_application_memory.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf7120_enga_xxaa_flpr_memory.h"
+    #endif
+    #if defined(NRF_UMAC)
+        #include "nrf7120_enga_xxaa_umac_memory.h"
+    #endif
+    #if defined(NRF_LMAC)
+        #include "nrf7120_enga_xxaa_lmac_memory.h"
     #endif
 #elif defined(NRF9120_XXAA)
     #include "nrf9120_xxaa_memory.h"

@@ -8,7 +8,7 @@
   <version>1</version>
   <description>nRF52840 reference description for radio MCU with ARM 32-bit Cortex-M4 Microcontroller</description>
   <licenseText>
-Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 

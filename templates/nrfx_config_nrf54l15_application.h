@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2024 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -161,6 +161,15 @@
  */
 #ifndef NRFX_COMP_CONFIG_LOG_LEVEL
 #define NRFX_COMP_CONFIG_LOG_LEVEL 3
+#endif
+
+/**
+ * @brief NRFX_CRACEN_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_CRACEN_ENABLED
+#define NRFX_CRACEN_ENABLED 0
 #endif
 
 /**
@@ -1005,66 +1014,6 @@
  */
 #ifndef NRFX_RRAMC_CONFIG_LOG_LEVEL
 #define NRFX_RRAMC_CONFIG_LOG_LEVEL 3
-#endif
-
-/**
- * @brief NRFX_RTC_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_RTC_ENABLED
-#define NRFX_RTC_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_RTC_DEFAULT_CONFIG_IRQ_PRIORITY
- *
- * Integer value. Minimum: 0. Maximum: 7.
- */
-#ifndef NRFX_RTC_DEFAULT_CONFIG_IRQ_PRIORITY
-#define NRFX_RTC_DEFAULT_CONFIG_IRQ_PRIORITY NRFX_DEFAULT_IRQ_PRIORITY
-#endif
-
-/**
- * @brief NRFX_RTC_CONFIG_LOG_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_RTC_CONFIG_LOG_ENABLED
-#define NRFX_RTC_CONFIG_LOG_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_RTC_CONFIG_LOG_LEVEL
- *
- * Integer value.
- * Supported values:
- * - Off     = 0
- * - Error   = 1
- * - Warning = 2
- * - Info    = 3
- * - Debug   = 4
- */
-#ifndef NRFX_RTC_CONFIG_LOG_LEVEL
-#define NRFX_RTC_CONFIG_LOG_LEVEL 3
-#endif
-
-/**
- * @brief NRFX_RTC10_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_RTC10_ENABLED
-#define NRFX_RTC10_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_RTC30_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_RTC30_ENABLED
-#define NRFX_RTC30_ENABLED 0
 #endif
 
 /**

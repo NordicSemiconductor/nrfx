@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -159,6 +159,28 @@ typedef uint32_t nrf_saadc_input_t;
 #if defined(SAADC_CH_PSELP_INTERNAL_Vdd) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol specifying VDD as input. */
 #define NRF_SAADC_INPUT_VDD ((SAADC_CH_PSELP_INTERNAL_Vdd + 1) << SAADC_CH_PSELP_INTERNAL_Pos)
+#endif
+
+#if defined(SAADC_CH_PSELP_INTERNAL_VDDAO1V8) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol specifying AVDD_AO_1V8 as input. */
+#define NRF_SAADC_INPUT_VDDAO1V8 ((SAADC_CH_PSELP_INTERNAL_VDDAO1V8 + 1) \
+                                    << SAADC_CH_PSELP_INTERNAL_Pos)
+#endif
+
+#if defined(SAADC_CH_PSELP_INTERNAL_VDDAO0V8) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol specifying VDD_AO_0V8 as input. */
+#define NRF_SAADC_INPUT_VDDAO0V8 ((SAADC_CH_PSELP_INTERNAL_VDDAO0V8 + 1) \
+                                    << SAADC_CH_PSELP_INTERNAL_Pos)
+#endif
+
+#if defined(SAADC_CH_PSELP_INTERNAL_VDDRF) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol specifying VDDRF as input. */
+#define NRF_SAADC_INPUT_VDDRF ((SAADC_CH_PSELP_INTERNAL_VDDRF + 1) << SAADC_CH_PSELP_INTERNAL_Pos)
+#endif
+
+#if defined(SAADC_CH_PSELP_INTERNAL_VBAT) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol specifying VBat as input. */
+#define NRF_SAADC_INPUT_VBAT ((SAADC_CH_PSELP_INTERNAL_VBAT + 1) << SAADC_CH_PSELP_INTERNAL_Pos)
 #endif
 
 /** @brief Symbol specifying disconnected analog input. */

@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -263,9 +263,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PWM2_EASYDMA_MAXCNT_SIZE 15
 #define PWM3_EASYDMA_MAXCNT_SIZE 15
 
-/* ARM TrustZone Cryptocell 310 */
-#define CRYPTOCELL_PRESENT
-#define CRYPTOCELL_COUNT 1
 
 /* Quad SPI */
 #define QSPI_PRESENT
@@ -306,5 +303,66 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Oscillators */
 #define OSCILLATORS_PRESENT
 #define OSCILLATORS_COUNT 1
+
+/*CRYPTOCELL register interface*/
+#define CRYPTOCELL_PRESENT 1
+#define CRYPTOCELL_COUNT 1
+#define CRYPTOCELL_VERSION 312
+
+/*CRYPTOCELL AES engine*/
+#define CC_AES_PRESENT 1
+#define CC_AES_COUNT 1
+
+/*CRYPTOCELL AHB interface*/
+#define CC_AHB_PRESENT 1
+#define CC_AHB_COUNT 1
+
+/*CryptoCell AO*/
+#define CC_AO_PRESENT 1
+#define CC_AO_COUNT 1
+
+/*CRYPTOCELL CHACHA engine*/
+#define CC_CHACHA_PRESENT 1
+#define CC_CHACHA_COUNT 1
+
+/*CRYPTOCELL CTL interface*/
+#define CC_CTL_PRESENT 1
+#define CC_CTL_COUNT 1
+
+/*CRYPTOCELL Data IN interface*/
+#define CC_DIN_PRESENT 1
+#define CC_DIN_COUNT 1
+
+/*CRYPTOCELL Data OUT interface*/
+#define CC_DOUT_PRESENT 1
+#define CC_DOUT_COUNT 1
+
+/*CRYPTOCELL GHASH engine*/
+#define CC_GHASH_PRESENT 1
+#define CC_GHASH_COUNT 1
+
+/*CRYPTOCELL HASH engine*/
+#define CC_HASH_PRESENT 1
+#define CC_HASH_COUNT 1
+
+/*CRYPTOCELL HOST register interface*/
+#define CC_HOST_RGF_PRESENT 1
+#define CC_HOST_RGF_COUNT 1
+
+/*CRYPTOCELL MISC interface*/
+#define CC_MISC_PRESENT 1
+#define CC_MISC_COUNT 1
+
+/*CRYPTOCELL PKA engine*/
+#define CC_PKA_PRESENT 1
+#define CC_PKA_COUNT 1
+
+/*CRYPTOCELL RNG engine*/
+#define CC_RNG_PRESENT 1
+#define CC_RNG_COUNT 1
+
+/*CRYPTOCELL RNG SRAM interface*/
+#define CC_RNG_SRAM_PRESENT 1
+#define CC_RNG_SRAM_COUNT 1
 
 #endif      // _NRF5340_PERIPHERALS_H

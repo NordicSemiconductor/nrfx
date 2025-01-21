@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2009-2024 ARM Limited. All rights reserved.
+Copyright (c) 2009-2025 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -113,7 +113,7 @@ void SystemInit(void)
             #endif
 
             /* Device configuration for ES PDK */
-            #if defined (NRF54L15_XXAA)
+            #if defined (NRF54L05_XXAA) || defined (NRF54L10_XXAA) || defined (NRF54L15_XXAA)
                 if (*((volatile uint32_t *)0x50120440) == 0x00ul) {
                     *((volatile uint32_t *)0x50120440) = 0xC8ul;
                 }
@@ -127,6 +127,32 @@ void SystemInit(void)
                         *((volatile uint32_t *)0x50120640ul) = 0x1EA9E040ul;
                     }
                 }
+            #endif
+
+            #if NRF54L_ERRATA_31_ENABLE_WORKAROUND
+                /* Workaround for Errata 31 */
+                if (nrf54l_errata_31())
+                {
+                    *((volatile uint32_t *)0x50120624ul) = (20 | (1<<5));
+                    *((volatile uint32_t *)0x5012063Cul) &= ~(1ul << 19);
+                }
+            #endif
+
+            #ifndef NRF_DISABLE_RRAM_POWER_OFF
+                /* Allow RRAMC to go into poweroff mode during System on idle for lower power consumption at a penalty of 9us extra RRAM ready time */
+                NRF_RRAMC->POWER.LOWPOWERCONFIG = (RRAMC_POWER_LOWPOWERCONFIG_MODE_PowerOff << RRAMC_POWER_LOWPOWERCONFIG_MODE_Pos);
+            #endif
+
+            #if defined (DEVELOP_IN_NRF54L15) && defined(NRF54L10_XXAA)
+                // When developing for NRF54L10 on a NRF54L15, make sure top of RAM is not retained in System OFF.
+                NRF_MEMCONF->POWER[0].RET = 0xFFFFFF3Ful;
+                NRF_MEMCONF->POWER[0].RET2 = 0xFFFFFF00ul;
+            #endif
+
+            #if defined (DEVELOP_IN_NRF54L15) && defined(NRF54L05_XXAA)
+                // When developing for NRF54L05 on a NRF54L15, make sure top of RAM is not retained in System OFF.
+                NRF_MEMCONF->POWER[0].RET = 0xFFFFFF07ul;
+                NRF_MEMCONF->POWER[0].RET2 = 0xFFFFFF00ul;
             #endif
 
         #endif
@@ -146,8 +172,10 @@ void SystemInit(void)
         #endif
 
         #if !defined(NRF_TRUSTZONE_NONSECURE) && defined(__ARM_FEATURE_CMSE)
-            #if defined(NRF_CONFIG_NFCT_PINS_AS_GPIOS)
-                NRF_NFCT_S->PADCONFIG = (NFCT_PADCONFIG_ENABLE_Disabled << NFCT_PADCONFIG_ENABLE_Pos);
+            #if !defined (NRF54L09_ENGA_XXAA)
+                #if defined(NRF_CONFIG_NFCT_PINS_AS_GPIOS)
+                    NRF_NFCT_S->PADCONFIG = (NFCT_PADCONFIG_ENABLE_Disabled << NFCT_PADCONFIG_ENABLE_Pos);
+                #endif
             #endif
 
             /* Enable SWO trace functionality. If ENABLE_SWO is not defined, SWO pin will be used as GPIO (see Product

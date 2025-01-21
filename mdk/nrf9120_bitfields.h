@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -73,11 +73,1761 @@ POSSIBILITY OF SUCH DAMAGE.
 #define APPROTECT_APPROTECT_FORCEPROTECT_FORCEPROTECT_Force (0x1UL) /*!< Software force enable APPROTECT mechanism */
 
 
+/* Peripheral: ATBFUNNEL */
+/* Description: ATB funnel module 0 */
+
+/* Register: ATBFUNNEL_CTRLREG */
+/* Description: The IDFILTER0 register enables the programming of ID filtering for master port 0. */
+
+/* Bits 11..8 : Hold Time. The formatting scheme can become inefficient when fast switching occurs, and you can use this setting to minimize switching. 
+          When a source has nothing to transmit, then another source is selected irrespective of the minimum number of transactions. 
+          The ATB funnel holds for the minimum hold time and one additional transaction. The actual hold time is the register value plus 1. 
+          The maximum value that can be entered is 0b1110 and this equates to 15 transactions. 0b1111 is reserved. */
+#define ATBFUNNEL_CTRLREG_HT_Pos (8UL) /*!< Position of HT field. */
+#define ATBFUNNEL_CTRLREG_HT_Msk (0xFUL << ATBFUNNEL_CTRLREG_HT_Pos) /*!< Bit mask of HT field. */
+
+/* Bit 7 : Enable slave port 7. */
+#define ATBFUNNEL_CTRLREG_ENS_7_Pos (7UL) /*!< Position of ENS_7 field. */
+#define ATBFUNNEL_CTRLREG_ENS_7_Msk (0x1UL << ATBFUNNEL_CTRLREG_ENS_7_Pos) /*!< Bit mask of ENS_7 field. */
+#define ATBFUNNEL_CTRLREG_ENS_7_Disabled (0x0UL) /*!< Slave port disabled. This excludes the port from the priority selection scheme. */
+#define ATBFUNNEL_CTRLREG_ENS_7_Enabled (0x1UL) /*!< Slave port enabled. */
+
+/* Bit 6 : Enable slave port 6. */
+#define ATBFUNNEL_CTRLREG_ENS_6_Pos (6UL) /*!< Position of ENS_6 field. */
+#define ATBFUNNEL_CTRLREG_ENS_6_Msk (0x1UL << ATBFUNNEL_CTRLREG_ENS_6_Pos) /*!< Bit mask of ENS_6 field. */
+#define ATBFUNNEL_CTRLREG_ENS_6_Disabled (0x0UL) /*!< Slave port disabled. This excludes the port from the priority selection scheme. */
+#define ATBFUNNEL_CTRLREG_ENS_6_Enabled (0x1UL) /*!< Slave port enabled. */
+
+/* Bit 5 : Enable slave port 5. */
+#define ATBFUNNEL_CTRLREG_ENS_5_Pos (5UL) /*!< Position of ENS_5 field. */
+#define ATBFUNNEL_CTRLREG_ENS_5_Msk (0x1UL << ATBFUNNEL_CTRLREG_ENS_5_Pos) /*!< Bit mask of ENS_5 field. */
+#define ATBFUNNEL_CTRLREG_ENS_5_Disabled (0x0UL) /*!< Slave port disabled. This excludes the port from the priority selection scheme. */
+#define ATBFUNNEL_CTRLREG_ENS_5_Enabled (0x1UL) /*!< Slave port enabled. */
+
+/* Bit 4 : Enable slave port 4. */
+#define ATBFUNNEL_CTRLREG_ENS_4_Pos (4UL) /*!< Position of ENS_4 field. */
+#define ATBFUNNEL_CTRLREG_ENS_4_Msk (0x1UL << ATBFUNNEL_CTRLREG_ENS_4_Pos) /*!< Bit mask of ENS_4 field. */
+#define ATBFUNNEL_CTRLREG_ENS_4_Disabled (0x0UL) /*!< Slave port disabled. This excludes the port from the priority selection scheme. */
+#define ATBFUNNEL_CTRLREG_ENS_4_Enabled (0x1UL) /*!< Slave port enabled. */
+
+/* Bit 3 : Enable slave port 3. */
+#define ATBFUNNEL_CTRLREG_ENS_3_Pos (3UL) /*!< Position of ENS_3 field. */
+#define ATBFUNNEL_CTRLREG_ENS_3_Msk (0x1UL << ATBFUNNEL_CTRLREG_ENS_3_Pos) /*!< Bit mask of ENS_3 field. */
+#define ATBFUNNEL_CTRLREG_ENS_3_Disabled (0x0UL) /*!< Slave port disabled. This excludes the port from the priority selection scheme. */
+#define ATBFUNNEL_CTRLREG_ENS_3_Enabled (0x1UL) /*!< Slave port enabled. */
+
+/* Bit 2 : Enable slave port 2. */
+#define ATBFUNNEL_CTRLREG_ENS_2_Pos (2UL) /*!< Position of ENS_2 field. */
+#define ATBFUNNEL_CTRLREG_ENS_2_Msk (0x1UL << ATBFUNNEL_CTRLREG_ENS_2_Pos) /*!< Bit mask of ENS_2 field. */
+#define ATBFUNNEL_CTRLREG_ENS_2_Disabled (0x0UL) /*!< Slave port disabled. This excludes the port from the priority selection scheme. */
+#define ATBFUNNEL_CTRLREG_ENS_2_Enabled (0x1UL) /*!< Slave port enabled. */
+
+/* Bit 1 : Enable slave port 1. */
+#define ATBFUNNEL_CTRLREG_ENS_1_Pos (1UL) /*!< Position of ENS_1 field. */
+#define ATBFUNNEL_CTRLREG_ENS_1_Msk (0x1UL << ATBFUNNEL_CTRLREG_ENS_1_Pos) /*!< Bit mask of ENS_1 field. */
+#define ATBFUNNEL_CTRLREG_ENS_1_Disabled (0x0UL) /*!< Slave port disabled. This excludes the port from the priority selection scheme. */
+#define ATBFUNNEL_CTRLREG_ENS_1_Enabled (0x1UL) /*!< Slave port enabled. */
+
+/* Bit 0 : Enable slave port 0. */
+#define ATBFUNNEL_CTRLREG_ENS_0_Pos (0UL) /*!< Position of ENS_0 field. */
+#define ATBFUNNEL_CTRLREG_ENS_0_Msk (0x1UL << ATBFUNNEL_CTRLREG_ENS_0_Pos) /*!< Bit mask of ENS_0 field. */
+#define ATBFUNNEL_CTRLREG_ENS_0_Disabled (0x0UL) /*!< Slave port disabled. This excludes the port from the priority selection scheme. */
+#define ATBFUNNEL_CTRLREG_ENS_0_Enabled (0x1UL) /*!< Slave port enabled. */
+
+/* Register: ATBFUNNEL_PRIORITYCTRLREG */
+/* Description: The Priority_Ctrl_Reg register defines the order in which inputs are selected. Each 3-bit field is a priority for each particular slave interface. */
+
+/* Bits 23..21 : Priority value of port number 7. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT7_Pos (21UL) /*!< Position of PRIPORT7 field. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT7_Msk (0x7UL << ATBFUNNEL_PRIORITYCTRLREG_PRIPORT7_Pos) /*!< Bit mask of PRIPORT7 field. */
+
+/* Bits 20..18 : Priority value of port number 6. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT6_Pos (18UL) /*!< Position of PRIPORT6 field. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT6_Msk (0x7UL << ATBFUNNEL_PRIORITYCTRLREG_PRIPORT6_Pos) /*!< Bit mask of PRIPORT6 field. */
+
+/* Bits 17..15 : Priority value of port number 5. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT5_Pos (15UL) /*!< Position of PRIPORT5 field. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT5_Msk (0x7UL << ATBFUNNEL_PRIORITYCTRLREG_PRIPORT5_Pos) /*!< Bit mask of PRIPORT5 field. */
+
+/* Bits 14..12 : Priority value of port number 4. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT4_Pos (12UL) /*!< Position of PRIPORT4 field. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT4_Msk (0x7UL << ATBFUNNEL_PRIORITYCTRLREG_PRIPORT4_Pos) /*!< Bit mask of PRIPORT4 field. */
+
+/* Bits 11..9 : Priority value of port number 3. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT3_Pos (9UL) /*!< Position of PRIPORT3 field. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT3_Msk (0x7UL << ATBFUNNEL_PRIORITYCTRLREG_PRIPORT3_Pos) /*!< Bit mask of PRIPORT3 field. */
+
+/* Bits 8..6 : Priority value of port number 2. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT2_Pos (6UL) /*!< Position of PRIPORT2 field. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT2_Msk (0x7UL << ATBFUNNEL_PRIORITYCTRLREG_PRIPORT2_Pos) /*!< Bit mask of PRIPORT2 field. */
+
+/* Bits 5..3 : Priority value of port number 1. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT1_Pos (3UL) /*!< Position of PRIPORT1 field. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT1_Msk (0x7UL << ATBFUNNEL_PRIORITYCTRLREG_PRIPORT1_Pos) /*!< Bit mask of PRIPORT1 field. */
+
+/* Bits 2..0 : Priority value of port number 0. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT0_Pos (0UL) /*!< Position of PRIPORT0 field. */
+#define ATBFUNNEL_PRIORITYCTRLREG_PRIPORT0_Msk (0x7UL << ATBFUNNEL_PRIORITYCTRLREG_PRIPORT0_Pos) /*!< Bit mask of PRIPORT0 field. */
+
+/* Register: ATBFUNNEL_ITATBDATA0 */
+/* Description: The ITATBDATA0 register performs different functions depending on whether the access is a read or a write. */
+
+/* Bit 16 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_16_Pos (16UL) /*!< Position of ATDATA_16 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_16_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_16_Pos) /*!< Bit mask of ATDATA_16 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_16_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_16_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 15 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_15_Pos (15UL) /*!< Position of ATDATA_15 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_15_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_15_Pos) /*!< Bit mask of ATDATA_15 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_15_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_15_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 14 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_14_Pos (14UL) /*!< Position of ATDATA_14 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_14_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_14_Pos) /*!< Bit mask of ATDATA_14 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_14_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_14_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 13 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_13_Pos (13UL) /*!< Position of ATDATA_13 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_13_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_13_Pos) /*!< Bit mask of ATDATA_13 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_13_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_13_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 12 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_12_Pos (12UL) /*!< Position of ATDATA_12 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_12_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_12_Pos) /*!< Bit mask of ATDATA_12 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_12_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_12_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 11 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_11_Pos (11UL) /*!< Position of ATDATA_11 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_11_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_11_Pos) /*!< Bit mask of ATDATA_11 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_11_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_11_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 10 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_10_Pos (10UL) /*!< Position of ATDATA_10 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_10_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_10_Pos) /*!< Bit mask of ATDATA_10 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_10_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_10_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 9 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_9_Pos (9UL) /*!< Position of ATDATA_9 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_9_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_9_Pos) /*!< Bit mask of ATDATA_9 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_9_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_9_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 8 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_8_Pos (8UL) /*!< Position of ATDATA_8 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_8_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_8_Pos) /*!< Bit mask of ATDATA_8 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_8_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_8_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 7 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_7_Pos (7UL) /*!< Position of ATDATA_7 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_7_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_7_Pos) /*!< Bit mask of ATDATA_7 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_7_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_7_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 6 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_6_Pos (6UL) /*!< Position of ATDATA_6 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_6_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_6_Pos) /*!< Bit mask of ATDATA_6 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_6_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_6_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 5 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_5_Pos (5UL) /*!< Position of ATDATA_5 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_5_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_5_Pos) /*!< Bit mask of ATDATA_5 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_5_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_5_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 4 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_4_Pos (4UL) /*!< Position of ATDATA_4 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_4_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_4_Pos) /*!< Bit mask of ATDATA_4 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_4_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_4_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 3 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_3_Pos (3UL) /*!< Position of ATDATA_3 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_3_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_3_Pos) /*!< Bit mask of ATDATA_3 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_3_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_3_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 2 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_2_Pos (2UL) /*!< Position of ATDATA_2 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_2_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_2_Pos) /*!< Bit mask of ATDATA_2 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_2_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_2_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 1 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_1_Pos (1UL) /*!< Position of ATDATA_1 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_1_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_1_Pos) /*!< Bit mask of ATDATA_1 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_1_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_1_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 0 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_0_Pos (0UL) /*!< Position of ATDATA_0 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_0_Msk (0x1UL << ATBFUNNEL_ITATBDATA0_ATDATA_0_Pos) /*!< Bit mask of ATDATA_0 field. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_0_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBDATA0_ATDATA_0_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Register: ATBFUNNEL_ITATBCTR2 */
+/* Description: The ITATBCTR2 register performs different functions depending on whether the access is a read or a write. */
+
+/* Bit 1 : A read access returns the value of afvalidm.
+        A write access outputs the data to atreadys[n], where the value of the CTRLREG at 0x000 defines n. */
+#define ATBFUNNEL_ITATBCTR2_AFVALID_Pos (1UL) /*!< Position of AFVALID field. */
+#define ATBFUNNEL_ITATBCTR2_AFVALID_Msk (0x1UL << ATBFUNNEL_ITATBCTR2_AFVALID_Pos) /*!< Bit mask of AFVALID field. */
+#define ATBFUNNEL_ITATBCTR2_AFVALID_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBCTR2_AFVALID_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 0 : A read access returns the value of atreadym.
+        A write access outputs the data to afvalids[n], where the value of the CTRLREG at 0x000 defines n. */
+#define ATBFUNNEL_ITATBCTR2_ATREADY_Pos (0UL) /*!< Position of ATREADY field. */
+#define ATBFUNNEL_ITATBCTR2_ATREADY_Msk (0x1UL << ATBFUNNEL_ITATBCTR2_ATREADY_Pos) /*!< Bit mask of ATREADY field. */
+#define ATBFUNNEL_ITATBCTR2_ATREADY_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBCTR2_ATREADY_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Register: ATBFUNNEL_ITATBCTR1 */
+/* Description: The ITATBCTR1 register performs different functions depending on whether the access is a read or a write. */
+
+/* Bits 6..0 : A read returns the value of the atids[n] signals, where the value of the Control Register at 0x000 defines n.
+A write outputs the value to the atidm port. */
+#define ATBFUNNEL_ITATBCTR1_ATVALIDM0_Pos (0UL) /*!< Position of ATVALIDM0 field. */
+#define ATBFUNNEL_ITATBCTR1_ATVALIDM0_Msk (0x7FUL << ATBFUNNEL_ITATBCTR1_ATVALIDM0_Pos) /*!< Bit mask of ATVALIDM0 field. */
+#define ATBFUNNEL_ITATBCTR1_ATVALIDM0_Low (0x00UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBCTR1_ATVALIDM0_High (0x01UL) /*!< Pin is logic 1. */
+
+/* Register: ATBFUNNEL_ITATBCTR0 */
+/* Description: The ITATBCTR0 register performs different functions depending on whether the access is a read or a write. */
+
+/* Bits 9..8 : A read returns the value of the atbytess[n] signal, where the value of the Ctrl_Reg at 0x000 defines n.
+A write outputs the value to atbytesm. */
+#define ATBFUNNEL_ITATBCTR0_ATBYTES_Pos (8UL) /*!< Position of ATBYTES field. */
+#define ATBFUNNEL_ITATBCTR0_ATBYTES_Msk (0x3UL << ATBFUNNEL_ITATBCTR0_ATBYTES_Pos) /*!< Bit mask of ATBYTES field. */
+#define ATBFUNNEL_ITATBCTR0_ATBYTES_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBCTR0_ATBYTES_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 2 : A read returns the value of the afreadys[n] signal, where the value of the Ctrl_Reg at 0x000 defines n.
+A write outputs the value to afreadym. */
+#define ATBFUNNEL_ITATBCTR0_AFREADY_Pos (2UL) /*!< Position of AFREADY field. */
+#define ATBFUNNEL_ITATBCTR0_AFREADY_Msk (0x1UL << ATBFUNNEL_ITATBCTR0_AFREADY_Pos) /*!< Bit mask of AFREADY field. */
+#define ATBFUNNEL_ITATBCTR0_AFREADY_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBCTR0_AFREADY_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 0 : A read returns the value of the atvalids[n] signal, where the value of the CTRLREG at 0x000 defines n.
+A write outputs the value to atvalidm. */
+#define ATBFUNNEL_ITATBCTR0_ATVALID_Pos (0UL) /*!< Position of ATVALID field. */
+#define ATBFUNNEL_ITATBCTR0_ATVALID_Msk (0x1UL << ATBFUNNEL_ITATBCTR0_ATVALID_Pos) /*!< Bit mask of ATVALID field. */
+#define ATBFUNNEL_ITATBCTR0_ATVALID_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBFUNNEL_ITATBCTR0_ATVALID_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Register: ATBFUNNEL_ITCTRL */
+/* Description: The ITCTRL register enables the component to switch from a functional mode, which is the default behavior, 
+      to integration mode where the inputs and outputs of the component can be directly controlled for the purposes of integration testing and topology detection. */
+
+/* Bit 0 : Integration Mode Enable. */
+#define ATBFUNNEL_ITCTRL_IME_Pos (0UL) /*!< Position of IME field. */
+#define ATBFUNNEL_ITCTRL_IME_Msk (0x1UL << ATBFUNNEL_ITCTRL_IME_Pos) /*!< Bit mask of IME field. */
+#define ATBFUNNEL_ITCTRL_IME_Disabled (0x0UL) /*!< Integration mode disabled. */
+#define ATBFUNNEL_ITCTRL_IME_Enabled (0x1UL) /*!< Integration mode enabled. */
+
+/* Register: ATBFUNNEL_CLAIMSET */
+/* Description: Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
+      The claim tags have no effect on the operation of the component. The CLAIMSET register sets bits in the claim tag, and determines the number of claim bits implemented. */
+
+/* Bit 3 : Set claim bit 3 and check if bit is implemented or not. */
+#define ATBFUNNEL_CLAIMSET_BIT_3_Pos (3UL) /*!< Position of BIT_3 field. */
+#define ATBFUNNEL_CLAIMSET_BIT_3_Msk (0x1UL << ATBFUNNEL_CLAIMSET_BIT_3_Pos) /*!< Bit mask of BIT_3 field. */
+#define ATBFUNNEL_CLAIMSET_BIT_3_NotImplemented (0x0UL) /*!< Claim bit 3 is not implemented. */
+#define ATBFUNNEL_CLAIMSET_BIT_3_Implemented (0x1UL) /*!< Claim bit 3 is implemented. */
+#define ATBFUNNEL_CLAIMSET_BIT_3_Set (0x1UL) /*!< Set claim bit 3. */
+
+/* Bit 2 : Set claim bit 2 and check if bit is implemented or not. */
+#define ATBFUNNEL_CLAIMSET_BIT_2_Pos (2UL) /*!< Position of BIT_2 field. */
+#define ATBFUNNEL_CLAIMSET_BIT_2_Msk (0x1UL << ATBFUNNEL_CLAIMSET_BIT_2_Pos) /*!< Bit mask of BIT_2 field. */
+#define ATBFUNNEL_CLAIMSET_BIT_2_NotImplemented (0x0UL) /*!< Claim bit 2 is not implemented. */
+#define ATBFUNNEL_CLAIMSET_BIT_2_Implemented (0x1UL) /*!< Claim bit 2 is implemented. */
+#define ATBFUNNEL_CLAIMSET_BIT_2_Set (0x1UL) /*!< Set claim bit 2. */
+
+/* Bit 1 : Set claim bit 1 and check if bit is implemented or not. */
+#define ATBFUNNEL_CLAIMSET_BIT_1_Pos (1UL) /*!< Position of BIT_1 field. */
+#define ATBFUNNEL_CLAIMSET_BIT_1_Msk (0x1UL << ATBFUNNEL_CLAIMSET_BIT_1_Pos) /*!< Bit mask of BIT_1 field. */
+#define ATBFUNNEL_CLAIMSET_BIT_1_NotImplemented (0x0UL) /*!< Claim bit 1 is not implemented. */
+#define ATBFUNNEL_CLAIMSET_BIT_1_Implemented (0x1UL) /*!< Claim bit 1 is implemented. */
+#define ATBFUNNEL_CLAIMSET_BIT_1_Set (0x1UL) /*!< Set claim bit 1. */
+
+/* Bit 0 : Set claim bit 0 and check if bit is implemented or not. */
+#define ATBFUNNEL_CLAIMSET_BIT_0_Pos (0UL) /*!< Position of BIT_0 field. */
+#define ATBFUNNEL_CLAIMSET_BIT_0_Msk (0x1UL << ATBFUNNEL_CLAIMSET_BIT_0_Pos) /*!< Bit mask of BIT_0 field. */
+#define ATBFUNNEL_CLAIMSET_BIT_0_NotImplemented (0x0UL) /*!< Claim bit 0 is not implemented. */
+#define ATBFUNNEL_CLAIMSET_BIT_0_Implemented (0x1UL) /*!< Claim bit 0 is implemented. */
+#define ATBFUNNEL_CLAIMSET_BIT_0_Set (0x1UL) /*!< Set claim bit 0. */
+
+/* Register: ATBFUNNEL_CLAIMCLR */
+/* Description: Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
+      The claim tags have no effect on the operation of the component. 
+      The CLAIMCLR register sets the bits in the claim tag to 0 and determines the current value of the claim tag. */
+
+/* Bit 3 : Read or clear claim bit 3. */
+#define ATBFUNNEL_CLAIMCLR_BIT_3_Pos (3UL) /*!< Position of BIT_3 field. */
+#define ATBFUNNEL_CLAIMCLR_BIT_3_Msk (0x1UL << ATBFUNNEL_CLAIMCLR_BIT_3_Pos) /*!< Bit mask of BIT_3 field. */
+#define ATBFUNNEL_CLAIMCLR_BIT_3_Cleared (0x0UL) /*!< Claim bit 3 is not set. */
+#define ATBFUNNEL_CLAIMCLR_BIT_3_Set (0x1UL) /*!< Claim bit 3 is set. */
+#define ATBFUNNEL_CLAIMCLR_BIT_3_Clear (0x1UL) /*!< Clear claim bit 3. */
+
+/* Bit 2 : Read or clear claim bit 2. */
+#define ATBFUNNEL_CLAIMCLR_BIT_2_Pos (2UL) /*!< Position of BIT_2 field. */
+#define ATBFUNNEL_CLAIMCLR_BIT_2_Msk (0x1UL << ATBFUNNEL_CLAIMCLR_BIT_2_Pos) /*!< Bit mask of BIT_2 field. */
+#define ATBFUNNEL_CLAIMCLR_BIT_2_Cleared (0x0UL) /*!< Claim bit 2 is not set. */
+#define ATBFUNNEL_CLAIMCLR_BIT_2_Set (0x1UL) /*!< Claim bit 2 is set. */
+#define ATBFUNNEL_CLAIMCLR_BIT_2_Clear (0x1UL) /*!< Clear claim bit 2. */
+
+/* Bit 1 : Read or clear claim bit 1. */
+#define ATBFUNNEL_CLAIMCLR_BIT_1_Pos (1UL) /*!< Position of BIT_1 field. */
+#define ATBFUNNEL_CLAIMCLR_BIT_1_Msk (0x1UL << ATBFUNNEL_CLAIMCLR_BIT_1_Pos) /*!< Bit mask of BIT_1 field. */
+#define ATBFUNNEL_CLAIMCLR_BIT_1_Cleared (0x0UL) /*!< Claim bit 1 is not set. */
+#define ATBFUNNEL_CLAIMCLR_BIT_1_Set (0x1UL) /*!< Claim bit 1 is set. */
+#define ATBFUNNEL_CLAIMCLR_BIT_1_Clear (0x1UL) /*!< Clear claim bit 1. */
+
+/* Bit 0 : Read or clear claim bit 0. */
+#define ATBFUNNEL_CLAIMCLR_BIT_0_Pos (0UL) /*!< Position of BIT_0 field. */
+#define ATBFUNNEL_CLAIMCLR_BIT_0_Msk (0x1UL << ATBFUNNEL_CLAIMCLR_BIT_0_Pos) /*!< Bit mask of BIT_0 field. */
+#define ATBFUNNEL_CLAIMCLR_BIT_0_Cleared (0x0UL) /*!< Claim bit 0 is not set. */
+#define ATBFUNNEL_CLAIMCLR_BIT_0_Set (0x1UL) /*!< Claim bit 0 is set. */
+#define ATBFUNNEL_CLAIMCLR_BIT_0_Clear (0x1UL) /*!< Clear claim bit 0. */
+
+/* Register: ATBFUNNEL_LAR */
+/* Description: This is used to enable write access to device registers. */
+
+/* Bits 31..0 : A write of 0xC5ACCE55 enables further write access to this device. Any other write removes write access. */
+#define ATBFUNNEL_LAR_ACCESS_Pos (0UL) /*!< Position of ACCESS field. */
+#define ATBFUNNEL_LAR_ACCESS_Msk (0xFFFFFFFFUL << ATBFUNNEL_LAR_ACCESS_Pos) /*!< Bit mask of ACCESS field. */
+#define ATBFUNNEL_LAR_ACCESS_UnLock (0xC5ACCE55UL) /*!< Unlock register interface. */
+
+/* Register: ATBFUNNEL_LSR */
+/* Description: This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug. 
+      Accesses to the extended stimulus port registers are not affected by the lock mechanism. 
+      This register must always be present although there might not be any lock access control mechanism. 
+      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register. 
+      For most components this covers all registers except for the Lock Access Register. */
+
+/* Bit 2 : Indicates if the Lock Access Register is implemented as 8-bit or 32-bit. */
+#define ATBFUNNEL_LSR_TYPE_Pos (2UL) /*!< Position of TYPE field. */
+#define ATBFUNNEL_LSR_TYPE_Msk (0x1UL << ATBFUNNEL_LSR_TYPE_Pos) /*!< Bit mask of TYPE field. */
+#define ATBFUNNEL_LSR_TYPE_Bits32 (0x0UL) /*!< This component implements a 32-bit Lock Access Register. */
+#define ATBFUNNEL_LSR_TYPE_Bits8 (0x1UL) /*!< This component implements an 8-bit Lock Access Register. */
+
+/* Bit 1 : Returns the current status of the Lock. */
+#define ATBFUNNEL_LSR_LOCKED_Pos (1UL) /*!< Position of LOCKED field. */
+#define ATBFUNNEL_LSR_LOCKED_Msk (0x1UL << ATBFUNNEL_LSR_LOCKED_Pos) /*!< Bit mask of LOCKED field. */
+#define ATBFUNNEL_LSR_LOCKED_UnLocked (0x0UL) /*!< Write access is allowed to this device. */
+#define ATBFUNNEL_LSR_LOCKED_Locked (0x1UL) /*!< Write access to the component is blocked. All writes to control registers are ignored. Reads are permitted. */
+
+/* Bit 0 : Indicates that a lock control mechanism exists for this device. */
+#define ATBFUNNEL_LSR_PRESENT_Pos (0UL) /*!< Position of PRESENT field. */
+#define ATBFUNNEL_LSR_PRESENT_Msk (0x1UL << ATBFUNNEL_LSR_PRESENT_Pos) /*!< Bit mask of PRESENT field. */
+#define ATBFUNNEL_LSR_PRESENT_NotImplemented (0x0UL) /*!< No lock control mechanism exists, writes to the Lock Access Register are ignored. */
+#define ATBFUNNEL_LSR_PRESENT_Implemented (0x1UL) /*!< Lock control mechanism is present. */
+
+/* Register: ATBFUNNEL_AUTHSTATUS */
+/* Description: Indicates the current level of tracing permitted by the system */
+
+/* Bits 7..6 : Secure Non-Invasive Debug */
+#define ATBFUNNEL_AUTHSTATUS_SNID_Pos (6UL) /*!< Position of SNID field. */
+#define ATBFUNNEL_AUTHSTATUS_SNID_Msk (0x3UL << ATBFUNNEL_AUTHSTATUS_SNID_Pos) /*!< Bit mask of SNID field. */
+#define ATBFUNNEL_AUTHSTATUS_SNID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define ATBFUNNEL_AUTHSTATUS_SNID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Bits 5..4 : Secure Invasive Debug */
+#define ATBFUNNEL_AUTHSTATUS_SID_Pos (4UL) /*!< Position of SID field. */
+#define ATBFUNNEL_AUTHSTATUS_SID_Msk (0x3UL << ATBFUNNEL_AUTHSTATUS_SID_Pos) /*!< Bit mask of SID field. */
+#define ATBFUNNEL_AUTHSTATUS_SID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define ATBFUNNEL_AUTHSTATUS_SID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Bits 3..2 : Non-secure Non-Invasive Debug */
+#define ATBFUNNEL_AUTHSTATUS_NSNID_Pos (2UL) /*!< Position of NSNID field. */
+#define ATBFUNNEL_AUTHSTATUS_NSNID_Msk (0x3UL << ATBFUNNEL_AUTHSTATUS_NSNID_Pos) /*!< Bit mask of NSNID field. */
+#define ATBFUNNEL_AUTHSTATUS_NSNID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define ATBFUNNEL_AUTHSTATUS_NSNID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Bits 1..0 : Non-secure Invasive Debug */
+#define ATBFUNNEL_AUTHSTATUS_NSID_Pos (0UL) /*!< Position of NSID field. */
+#define ATBFUNNEL_AUTHSTATUS_NSID_Msk (0x3UL << ATBFUNNEL_AUTHSTATUS_NSID_Pos) /*!< Bit mask of NSID field. */
+#define ATBFUNNEL_AUTHSTATUS_NSID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define ATBFUNNEL_AUTHSTATUS_NSID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Register: ATBFUNNEL_DEVID */
+/* Description: Indicates the capabilities of the component. */
+
+/* Bits 3..0 : Indicates the number of input ports connected. 0x0 and 0x1 are illegal values. */
+#define ATBFUNNEL_DEVID_PORTCOUNT_Pos (0UL) /*!< Position of PORTCOUNT field. */
+#define ATBFUNNEL_DEVID_PORTCOUNT_Msk (0xFUL << ATBFUNNEL_DEVID_PORTCOUNT_Pos) /*!< Bit mask of PORTCOUNT field. */
+
+/* Register: ATBFUNNEL_DEVTYPE */
+/* Description: The DEVTYPE register provides a debugger with information about the component when the Part Number field is not recognized. The debugger can then report this information. */
+
+/* Bits 7..4 : The sub-type of the component */
+#define ATBFUNNEL_DEVTYPE_SUB_Pos (4UL) /*!< Position of SUB field. */
+#define ATBFUNNEL_DEVTYPE_SUB_Msk (0xFUL << ATBFUNNEL_DEVTYPE_SUB_Pos) /*!< Bit mask of SUB field. */
+#define ATBFUNNEL_DEVTYPE_SUB_Replicator (0x1UL) /*!< This component arbitrates ATB inputs mapping to ATB outputs. */
+
+/* Bits 3..0 : The main type of the component */
+#define ATBFUNNEL_DEVTYPE_MAJOR_Pos (0UL) /*!< Position of MAJOR field. */
+#define ATBFUNNEL_DEVTYPE_MAJOR_Msk (0xFUL << ATBFUNNEL_DEVTYPE_MAJOR_Pos) /*!< Bit mask of MAJOR field. */
+#define ATBFUNNEL_DEVTYPE_MAJOR_InputOutputDevice (0x2UL) /*!< Indicates that this component has ATB inputs and outputs. */
+
+
+/* Peripheral: ATBREPLICATOR */
+/* Description: ATB Replicator module */
+
+/* Register: ATBREPLICATOR_IDFILTER0 */
+/* Description: The IDFILTER0 register enables the programming of ID filtering for master port 0. */
+
+/* Bit 7 : Enable or disable ID filtering for IDs 0x70_0x7F. */
+#define ATBREPLICATOR_IDFILTER0_ID0_70_7F_Pos (7UL) /*!< Position of ID0_70_7F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_70_7F_Msk (0x1UL << ATBREPLICATOR_IDFILTER0_ID0_70_7F_Pos) /*!< Bit mask of ID0_70_7F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_70_7F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 0. */
+#define ATBREPLICATOR_IDFILTER0_ID0_70_7F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 6 : Enable or disable ID filtering for IDs 0x60_0x6F. */
+#define ATBREPLICATOR_IDFILTER0_ID0_60_6F_Pos (6UL) /*!< Position of ID0_60_6F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_60_6F_Msk (0x1UL << ATBREPLICATOR_IDFILTER0_ID0_60_6F_Pos) /*!< Bit mask of ID0_60_6F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_60_6F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 0. */
+#define ATBREPLICATOR_IDFILTER0_ID0_60_6F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 5 : Enable or disable ID filtering for IDs 0x50_0x5F. */
+#define ATBREPLICATOR_IDFILTER0_ID0_50_5F_Pos (5UL) /*!< Position of ID0_50_5F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_50_5F_Msk (0x1UL << ATBREPLICATOR_IDFILTER0_ID0_50_5F_Pos) /*!< Bit mask of ID0_50_5F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_50_5F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 0. */
+#define ATBREPLICATOR_IDFILTER0_ID0_50_5F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 4 : Enable or disable ID filtering for IDs 0x40_0x4F. */
+#define ATBREPLICATOR_IDFILTER0_ID0_40_4F_Pos (4UL) /*!< Position of ID0_40_4F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_40_4F_Msk (0x1UL << ATBREPLICATOR_IDFILTER0_ID0_40_4F_Pos) /*!< Bit mask of ID0_40_4F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_40_4F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 0. */
+#define ATBREPLICATOR_IDFILTER0_ID0_40_4F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 3 : Enable or disable ID filtering for IDs 0x30_0x3F. */
+#define ATBREPLICATOR_IDFILTER0_ID0_30_3F_Pos (3UL) /*!< Position of ID0_30_3F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_30_3F_Msk (0x1UL << ATBREPLICATOR_IDFILTER0_ID0_30_3F_Pos) /*!< Bit mask of ID0_30_3F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_30_3F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 0. */
+#define ATBREPLICATOR_IDFILTER0_ID0_30_3F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 2 : Enable or disable ID filtering for IDs 0x20_0x2F. */
+#define ATBREPLICATOR_IDFILTER0_ID0_20_2F_Pos (2UL) /*!< Position of ID0_20_2F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_20_2F_Msk (0x1UL << ATBREPLICATOR_IDFILTER0_ID0_20_2F_Pos) /*!< Bit mask of ID0_20_2F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_20_2F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 0. */
+#define ATBREPLICATOR_IDFILTER0_ID0_20_2F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 1 : Enable or disable ID filtering for IDs 0x10_0x1F. */
+#define ATBREPLICATOR_IDFILTER0_ID0_10_1F_Pos (1UL) /*!< Position of ID0_10_1F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_10_1F_Msk (0x1UL << ATBREPLICATOR_IDFILTER0_ID0_10_1F_Pos) /*!< Bit mask of ID0_10_1F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_10_1F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 0. */
+#define ATBREPLICATOR_IDFILTER0_ID0_10_1F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 0 : Enable or disable ID filtering for IDs 0x00_0x0F. */
+#define ATBREPLICATOR_IDFILTER0_ID0_00_0F_Pos (0UL) /*!< Position of ID0_00_0F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_00_0F_Msk (0x1UL << ATBREPLICATOR_IDFILTER0_ID0_00_0F_Pos) /*!< Bit mask of ID0_00_0F field. */
+#define ATBREPLICATOR_IDFILTER0_ID0_00_0F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 0. */
+#define ATBREPLICATOR_IDFILTER0_ID0_00_0F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Register: ATBREPLICATOR_IDFILTER1 */
+/* Description: The IDFILTER1 register enables the programming of ID filtering for master port 1. */
+
+/* Bit 7 : Enable or disable ID filtering for IDs 0x70_0x7F. */
+#define ATBREPLICATOR_IDFILTER1_ID1_70_7F_Pos (7UL) /*!< Position of ID1_70_7F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_70_7F_Msk (0x1UL << ATBREPLICATOR_IDFILTER1_ID1_70_7F_Pos) /*!< Bit mask of ID1_70_7F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_70_7F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 1. */
+#define ATBREPLICATOR_IDFILTER1_ID1_70_7F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 6 : Enable or disable ID filtering for IDs 0x60_0x6F. */
+#define ATBREPLICATOR_IDFILTER1_ID1_60_6F_Pos (6UL) /*!< Position of ID1_60_6F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_60_6F_Msk (0x1UL << ATBREPLICATOR_IDFILTER1_ID1_60_6F_Pos) /*!< Bit mask of ID1_60_6F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_60_6F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 1. */
+#define ATBREPLICATOR_IDFILTER1_ID1_60_6F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 5 : Enable or disable ID filtering for IDs 0x50_0x5F. */
+#define ATBREPLICATOR_IDFILTER1_ID1_50_5F_Pos (5UL) /*!< Position of ID1_50_5F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_50_5F_Msk (0x1UL << ATBREPLICATOR_IDFILTER1_ID1_50_5F_Pos) /*!< Bit mask of ID1_50_5F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_50_5F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 1. */
+#define ATBREPLICATOR_IDFILTER1_ID1_50_5F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 4 : Enable or disable ID filtering for IDs 0x40_0x4F. */
+#define ATBREPLICATOR_IDFILTER1_ID1_40_4F_Pos (4UL) /*!< Position of ID1_40_4F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_40_4F_Msk (0x1UL << ATBREPLICATOR_IDFILTER1_ID1_40_4F_Pos) /*!< Bit mask of ID1_40_4F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_40_4F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 1. */
+#define ATBREPLICATOR_IDFILTER1_ID1_40_4F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 3 : Enable or disable ID filtering for IDs 0x30_0x3F. */
+#define ATBREPLICATOR_IDFILTER1_ID1_30_3F_Pos (3UL) /*!< Position of ID1_30_3F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_30_3F_Msk (0x1UL << ATBREPLICATOR_IDFILTER1_ID1_30_3F_Pos) /*!< Bit mask of ID1_30_3F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_30_3F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 1. */
+#define ATBREPLICATOR_IDFILTER1_ID1_30_3F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 2 : Enable or disable ID filtering for IDs 0x20_0x2F. */
+#define ATBREPLICATOR_IDFILTER1_ID1_20_2F_Pos (2UL) /*!< Position of ID1_20_2F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_20_2F_Msk (0x1UL << ATBREPLICATOR_IDFILTER1_ID1_20_2F_Pos) /*!< Bit mask of ID1_20_2F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_20_2F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 1. */
+#define ATBREPLICATOR_IDFILTER1_ID1_20_2F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 1 : Enable or disable ID filtering for IDs 0x10_0x1F. */
+#define ATBREPLICATOR_IDFILTER1_ID1_10_1F_Pos (1UL) /*!< Position of ID1_10_1F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_10_1F_Msk (0x1UL << ATBREPLICATOR_IDFILTER1_ID1_10_1F_Pos) /*!< Bit mask of ID1_10_1F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_10_1F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 1. */
+#define ATBREPLICATOR_IDFILTER1_ID1_10_1F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Bit 0 : Enable or disable ID filtering for IDs 0x00_0x0F. */
+#define ATBREPLICATOR_IDFILTER1_ID1_00_0F_Pos (0UL) /*!< Position of ID1_00_0F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_00_0F_Msk (0x1UL << ATBREPLICATOR_IDFILTER1_ID1_00_0F_Pos) /*!< Bit mask of ID1_00_0F field. */
+#define ATBREPLICATOR_IDFILTER1_ID1_00_0F_NotFiltered (0x0UL) /*!< Transactions with these IDs are passed on to ATB master port 1. */
+#define ATBREPLICATOR_IDFILTER1_ID1_00_0F_Selected (0x1UL) /*!< Transactions with these IDs are discarded by the replicator. */
+
+/* Register: ATBREPLICATOR_ITATBCTR1 */
+/* Description: The ITATBCTR1 register returns the value of the atreadym0, atreadym1, and atvalids inputs in integration mode. */
+
+/* Bit 3 : Reads the value of the atvalids input. */
+#define ATBREPLICATOR_ITATBCTR1_ATVALIDS_Pos (3UL) /*!< Position of ATVALIDS field. */
+#define ATBREPLICATOR_ITATBCTR1_ATVALIDS_Msk (0x1UL << ATBREPLICATOR_ITATBCTR1_ATVALIDS_Pos) /*!< Bit mask of ATVALIDS field. */
+#define ATBREPLICATOR_ITATBCTR1_ATVALIDS_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBREPLICATOR_ITATBCTR1_ATVALIDS_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 1 : Reads the value of the atreadym1 input. */
+#define ATBREPLICATOR_ITATBCTR1_ATREADYM1_Pos (1UL) /*!< Position of ATREADYM1 field. */
+#define ATBREPLICATOR_ITATBCTR1_ATREADYM1_Msk (0x1UL << ATBREPLICATOR_ITATBCTR1_ATREADYM1_Pos) /*!< Bit mask of ATREADYM1 field. */
+#define ATBREPLICATOR_ITATBCTR1_ATREADYM1_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBREPLICATOR_ITATBCTR1_ATREADYM1_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 0 : Reads the value of the atreadym0 input. */
+#define ATBREPLICATOR_ITATBCTR1_ATREADYM0_Pos (0UL) /*!< Position of ATREADYM0 field. */
+#define ATBREPLICATOR_ITATBCTR1_ATREADYM0_Msk (0x1UL << ATBREPLICATOR_ITATBCTR1_ATREADYM0_Pos) /*!< Bit mask of ATREADYM0 field. */
+#define ATBREPLICATOR_ITATBCTR1_ATREADYM0_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBREPLICATOR_ITATBCTR1_ATREADYM0_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Register: ATBREPLICATOR_ITATBCTR0 */
+/* Description: The ITATBCTR0 register controls the value of the atvalidm0, atvalidm1, and atreadys outputs in integration mode. */
+
+/* Bit 3 : Sets the value of the atreadys output. */
+#define ATBREPLICATOR_ITATBCTR0_ATREADYS_Pos (3UL) /*!< Position of ATREADYS field. */
+#define ATBREPLICATOR_ITATBCTR0_ATREADYS_Msk (0x1UL << ATBREPLICATOR_ITATBCTR0_ATREADYS_Pos) /*!< Bit mask of ATREADYS field. */
+#define ATBREPLICATOR_ITATBCTR0_ATREADYS_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBREPLICATOR_ITATBCTR0_ATREADYS_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 2 : Sets the value of the atvalidm1 output. */
+#define ATBREPLICATOR_ITATBCTR0_ATVALIDM1_Pos (2UL) /*!< Position of ATVALIDM1 field. */
+#define ATBREPLICATOR_ITATBCTR0_ATVALIDM1_Msk (0x1UL << ATBREPLICATOR_ITATBCTR0_ATVALIDM1_Pos) /*!< Bit mask of ATVALIDM1 field. */
+#define ATBREPLICATOR_ITATBCTR0_ATVALIDM1_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBREPLICATOR_ITATBCTR0_ATVALIDM1_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 0 : Sets the value of the atvalidm0 output. */
+#define ATBREPLICATOR_ITATBCTR0_ATVALIDM0_Pos (0UL) /*!< Position of ATVALIDM0 field. */
+#define ATBREPLICATOR_ITATBCTR0_ATVALIDM0_Msk (0x1UL << ATBREPLICATOR_ITATBCTR0_ATVALIDM0_Pos) /*!< Bit mask of ATVALIDM0 field. */
+#define ATBREPLICATOR_ITATBCTR0_ATVALIDM0_Low (0x0UL) /*!< Pin is logic 0. */
+#define ATBREPLICATOR_ITATBCTR0_ATVALIDM0_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Register: ATBREPLICATOR_ITCTRL */
+/* Description: The ITCTRL register enables the component to switch from a functional mode, which is the default behavior, 
+      to integration mode where the inputs and outputs of the component can be directly controlled for the purposes of integration testing and topology detection. */
+
+/* Bit 0 : Integration Mode Enable. */
+#define ATBREPLICATOR_ITCTRL_IME_Pos (0UL) /*!< Position of IME field. */
+#define ATBREPLICATOR_ITCTRL_IME_Msk (0x1UL << ATBREPLICATOR_ITCTRL_IME_Pos) /*!< Bit mask of IME field. */
+#define ATBREPLICATOR_ITCTRL_IME_Disabled (0x0UL) /*!< Integration mode disabled. */
+#define ATBREPLICATOR_ITCTRL_IME_Enabled (0x1UL) /*!< Integration mode enabled. */
+
+/* Register: ATBREPLICATOR_CLAIMSET */
+/* Description: Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
+      The claim tags have no effect on the operation of the component. The CLAIMSET register sets bits in the claim tag, and determines the number of claim bits implemented. */
+
+/* Bit 3 : Set claim bit 3 and check if bit is implemented or not. */
+#define ATBREPLICATOR_CLAIMSET_BIT_3_Pos (3UL) /*!< Position of BIT_3 field. */
+#define ATBREPLICATOR_CLAIMSET_BIT_3_Msk (0x1UL << ATBREPLICATOR_CLAIMSET_BIT_3_Pos) /*!< Bit mask of BIT_3 field. */
+#define ATBREPLICATOR_CLAIMSET_BIT_3_NotImplemented (0x0UL) /*!< Claim bit 3 is not implemented. */
+#define ATBREPLICATOR_CLAIMSET_BIT_3_Implemented (0x1UL) /*!< Claim bit 3 is implemented. */
+#define ATBREPLICATOR_CLAIMSET_BIT_3_Set (0x1UL) /*!< Set claim bit 3. */
+
+/* Bit 2 : Set claim bit 2 and check if bit is implemented or not. */
+#define ATBREPLICATOR_CLAIMSET_BIT_2_Pos (2UL) /*!< Position of BIT_2 field. */
+#define ATBREPLICATOR_CLAIMSET_BIT_2_Msk (0x1UL << ATBREPLICATOR_CLAIMSET_BIT_2_Pos) /*!< Bit mask of BIT_2 field. */
+#define ATBREPLICATOR_CLAIMSET_BIT_2_NotImplemented (0x0UL) /*!< Claim bit 2 is not implemented. */
+#define ATBREPLICATOR_CLAIMSET_BIT_2_Implemented (0x1UL) /*!< Claim bit 2 is implemented. */
+#define ATBREPLICATOR_CLAIMSET_BIT_2_Set (0x1UL) /*!< Set claim bit 2. */
+
+/* Bit 1 : Set claim bit 1 and check if bit is implemented or not. */
+#define ATBREPLICATOR_CLAIMSET_BIT_1_Pos (1UL) /*!< Position of BIT_1 field. */
+#define ATBREPLICATOR_CLAIMSET_BIT_1_Msk (0x1UL << ATBREPLICATOR_CLAIMSET_BIT_1_Pos) /*!< Bit mask of BIT_1 field. */
+#define ATBREPLICATOR_CLAIMSET_BIT_1_NotImplemented (0x0UL) /*!< Claim bit 1 is not implemented. */
+#define ATBREPLICATOR_CLAIMSET_BIT_1_Implemented (0x1UL) /*!< Claim bit 1 is implemented. */
+#define ATBREPLICATOR_CLAIMSET_BIT_1_Set (0x1UL) /*!< Set claim bit 1. */
+
+/* Bit 0 : Set claim bit 0 and check if bit is implemented or not. */
+#define ATBREPLICATOR_CLAIMSET_BIT_0_Pos (0UL) /*!< Position of BIT_0 field. */
+#define ATBREPLICATOR_CLAIMSET_BIT_0_Msk (0x1UL << ATBREPLICATOR_CLAIMSET_BIT_0_Pos) /*!< Bit mask of BIT_0 field. */
+#define ATBREPLICATOR_CLAIMSET_BIT_0_NotImplemented (0x0UL) /*!< Claim bit 0 is not implemented. */
+#define ATBREPLICATOR_CLAIMSET_BIT_0_Implemented (0x1UL) /*!< Claim bit 0 is implemented. */
+#define ATBREPLICATOR_CLAIMSET_BIT_0_Set (0x1UL) /*!< Set claim bit 0. */
+
+/* Register: ATBREPLICATOR_CLAIMCLR */
+/* Description: Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
+      The claim tags have no effect on the operation of the component. 
+      The CLAIMCLR register sets the bits in the claim tag to 0 and determines the current value of the claim tag. */
+
+/* Bit 3 : Read or clear claim bit 3. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_3_Pos (3UL) /*!< Position of BIT_3 field. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_3_Msk (0x1UL << ATBREPLICATOR_CLAIMCLR_BIT_3_Pos) /*!< Bit mask of BIT_3 field. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_3_Cleared (0x0UL) /*!< Claim bit 3 is not set. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_3_Set (0x1UL) /*!< Claim bit 3 is set. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_3_Clear (0x1UL) /*!< Clear claim bit 3. */
+
+/* Bit 2 : Read or clear claim bit 2. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_2_Pos (2UL) /*!< Position of BIT_2 field. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_2_Msk (0x1UL << ATBREPLICATOR_CLAIMCLR_BIT_2_Pos) /*!< Bit mask of BIT_2 field. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_2_Cleared (0x0UL) /*!< Claim bit 2 is not set. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_2_Set (0x1UL) /*!< Claim bit 2 is set. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_2_Clear (0x1UL) /*!< Clear claim bit 2. */
+
+/* Bit 1 : Read or clear claim bit 1. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_1_Pos (1UL) /*!< Position of BIT_1 field. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_1_Msk (0x1UL << ATBREPLICATOR_CLAIMCLR_BIT_1_Pos) /*!< Bit mask of BIT_1 field. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_1_Cleared (0x0UL) /*!< Claim bit 1 is not set. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_1_Set (0x1UL) /*!< Claim bit 1 is set. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_1_Clear (0x1UL) /*!< Clear claim bit 1. */
+
+/* Bit 0 : Read or clear claim bit 0. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_0_Pos (0UL) /*!< Position of BIT_0 field. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_0_Msk (0x1UL << ATBREPLICATOR_CLAIMCLR_BIT_0_Pos) /*!< Bit mask of BIT_0 field. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_0_Cleared (0x0UL) /*!< Claim bit 0 is not set. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_0_Set (0x1UL) /*!< Claim bit 0 is set. */
+#define ATBREPLICATOR_CLAIMCLR_BIT_0_Clear (0x1UL) /*!< Clear claim bit 0. */
+
+/* Register: ATBREPLICATOR_LAR */
+/* Description: This is used to enable write access to device registers. */
+
+/* Bits 31..0 : A write of 0xC5ACCE55 enables further write access to this device. Any other write removes write access. */
+#define ATBREPLICATOR_LAR_ACCESS_Pos (0UL) /*!< Position of ACCESS field. */
+#define ATBREPLICATOR_LAR_ACCESS_Msk (0xFFFFFFFFUL << ATBREPLICATOR_LAR_ACCESS_Pos) /*!< Bit mask of ACCESS field. */
+#define ATBREPLICATOR_LAR_ACCESS_UnLock (0xC5ACCE55UL) /*!< Unlock register interface. */
+
+/* Register: ATBREPLICATOR_LSR */
+/* Description: This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug. 
+      Accesses to the extended stimulus port registers are not affected by the lock mechanism. 
+      This register must always be present although there might not be any lock access control mechanism. 
+      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register. 
+      For most components this covers all registers except for the Lock Access Register. */
+
+/* Bit 2 : Indicates if the Lock Access Register is implemented as 8-bit or 32-bit. */
+#define ATBREPLICATOR_LSR_TYPE_Pos (2UL) /*!< Position of TYPE field. */
+#define ATBREPLICATOR_LSR_TYPE_Msk (0x1UL << ATBREPLICATOR_LSR_TYPE_Pos) /*!< Bit mask of TYPE field. */
+#define ATBREPLICATOR_LSR_TYPE_Bits32 (0x0UL) /*!< This component implements a 32-bit Lock Access Register. */
+#define ATBREPLICATOR_LSR_TYPE_Bits8 (0x1UL) /*!< This component implements an 8-bit Lock Access Register. */
+
+/* Bit 1 : Returns the current status of the Lock. */
+#define ATBREPLICATOR_LSR_LOCKED_Pos (1UL) /*!< Position of LOCKED field. */
+#define ATBREPLICATOR_LSR_LOCKED_Msk (0x1UL << ATBREPLICATOR_LSR_LOCKED_Pos) /*!< Bit mask of LOCKED field. */
+#define ATBREPLICATOR_LSR_LOCKED_UnLocked (0x0UL) /*!< Write access is allowed to this device. */
+#define ATBREPLICATOR_LSR_LOCKED_Locked (0x1UL) /*!< Write access to the component is blocked. All writes to control registers are ignored. Reads are permitted. */
+
+/* Bit 0 : Indicates that a lock control mechanism exists for this device. */
+#define ATBREPLICATOR_LSR_PRESENT_Pos (0UL) /*!< Position of PRESENT field. */
+#define ATBREPLICATOR_LSR_PRESENT_Msk (0x1UL << ATBREPLICATOR_LSR_PRESENT_Pos) /*!< Bit mask of PRESENT field. */
+#define ATBREPLICATOR_LSR_PRESENT_NotImplemented (0x0UL) /*!< No lock control mechanism exists, writes to the Lock Access Register are ignored. */
+#define ATBREPLICATOR_LSR_PRESENT_Implemented (0x1UL) /*!< Lock control mechanism is present. */
+
+/* Register: ATBREPLICATOR_AUTHSTATUS */
+/* Description: Indicates the current level of tracing permitted by the system */
+
+/* Bits 7..6 : Secure Non-Invasive Debug */
+#define ATBREPLICATOR_AUTHSTATUS_SNID_Pos (6UL) /*!< Position of SNID field. */
+#define ATBREPLICATOR_AUTHSTATUS_SNID_Msk (0x3UL << ATBREPLICATOR_AUTHSTATUS_SNID_Pos) /*!< Bit mask of SNID field. */
+#define ATBREPLICATOR_AUTHSTATUS_SNID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define ATBREPLICATOR_AUTHSTATUS_SNID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Bits 5..4 : Secure Invasive Debug */
+#define ATBREPLICATOR_AUTHSTATUS_SID_Pos (4UL) /*!< Position of SID field. */
+#define ATBREPLICATOR_AUTHSTATUS_SID_Msk (0x3UL << ATBREPLICATOR_AUTHSTATUS_SID_Pos) /*!< Bit mask of SID field. */
+#define ATBREPLICATOR_AUTHSTATUS_SID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define ATBREPLICATOR_AUTHSTATUS_SID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Bits 3..2 : Non-secure Non-Invasive Debug */
+#define ATBREPLICATOR_AUTHSTATUS_NSNID_Pos (2UL) /*!< Position of NSNID field. */
+#define ATBREPLICATOR_AUTHSTATUS_NSNID_Msk (0x3UL << ATBREPLICATOR_AUTHSTATUS_NSNID_Pos) /*!< Bit mask of NSNID field. */
+#define ATBREPLICATOR_AUTHSTATUS_NSNID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define ATBREPLICATOR_AUTHSTATUS_NSNID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Bits 1..0 : Non-secure Invasive Debug */
+#define ATBREPLICATOR_AUTHSTATUS_NSID_Pos (0UL) /*!< Position of NSID field. */
+#define ATBREPLICATOR_AUTHSTATUS_NSID_Msk (0x3UL << ATBREPLICATOR_AUTHSTATUS_NSID_Pos) /*!< Bit mask of NSID field. */
+#define ATBREPLICATOR_AUTHSTATUS_NSID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define ATBREPLICATOR_AUTHSTATUS_NSID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Register: ATBREPLICATOR_DEVID */
+/* Description: Indicates the capabilities of the component. */
+
+/* Bits 3..0 : Indicates the number of master ports implemented. */
+#define ATBREPLICATOR_DEVID_PORTNUM_Pos (0UL) /*!< Position of PORTNUM field. */
+#define ATBREPLICATOR_DEVID_PORTNUM_Msk (0xFUL << ATBREPLICATOR_DEVID_PORTNUM_Pos) /*!< Bit mask of PORTNUM field. */
+
+/* Register: ATBREPLICATOR_DEVTYPE */
+/* Description: The DEVTYPE register provides a debugger with information about the component when the Part Number field is not recognized. The debugger can then report this information. */
+
+/* Bits 7..4 : The sub-type of the component */
+#define ATBREPLICATOR_DEVTYPE_SUB_Pos (4UL) /*!< Position of SUB field. */
+#define ATBREPLICATOR_DEVTYPE_SUB_Msk (0xFUL << ATBREPLICATOR_DEVTYPE_SUB_Pos) /*!< Bit mask of SUB field. */
+#define ATBREPLICATOR_DEVTYPE_SUB_Replicator (0x2UL) /*!< Indicates that this component replicates trace from a single source to multiple targets. */
+
+/* Bits 3..0 : The main type of the component */
+#define ATBREPLICATOR_DEVTYPE_MAJOR_Pos (0UL) /*!< Position of MAJOR field. */
+#define ATBREPLICATOR_DEVTYPE_MAJOR_Msk (0xFUL << ATBREPLICATOR_DEVTYPE_MAJOR_Pos) /*!< Bit mask of MAJOR field. */
+#define ATBREPLICATOR_DEVTYPE_MAJOR_InputOutputDevice (0x2UL) /*!< Indicates that this component has ATB inputs and outputs. */
+
+
+/* Peripheral: CC_AES */
+/* Description: CRYPTOCELL AES engine */
+
+/* Register: CC_AES_AES_KEY_0 */
+/* Description: Description collection: AES key value to use.
+        The initial AES_KEY_0[0] register holds the least significant bits [31:0] of the key value. */
+
+/* Bits 31..0 : AES key value. */
+#define CC_AES_AES_KEY_0_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_AES_AES_KEY_0_VALUE_Msk (0xFFFFFFFFUL << CC_AES_AES_KEY_0_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_AES_AES_IV_0 */
+/* Description: Description collection: AES Initialization Vector (IV) to use.
+        The initial AES_IV_0[0] register holds the least significant bits [31:0] of the IV. */
+
+/* Bits 31..0 : AES non-tunneling or first tunnel stage IV value. */
+#define CC_AES_AES_IV_0_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_AES_AES_IV_0_VALUE_Msk (0xFFFFFFFFUL << CC_AES_AES_IV_0_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_AES_AES_CTR */
+/* Description: Description collection: AES counter (CTR) to use.
+        The initial AES_CTR[0] register holds the least significant bits [31:0] of the CTR. */
+
+/* Bits 31..0 : AES CTR value. */
+#define CC_AES_AES_CTR_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_AES_AES_CTR_VALUE_Msk (0xFFFFFFFFUL << CC_AES_AES_CTR_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_AES_AES_BUSY */
+/* Description: Status register for AES engine activity. */
+
+/* Bit 0 : AES engine status. */
+#define CC_AES_AES_BUSY_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_AES_AES_BUSY_STATUS_Msk (0x1UL << CC_AES_AES_BUSY_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_AES_AES_BUSY_STATUS_Idle (0x0UL) /*!< AES engine is idle */
+#define CC_AES_AES_BUSY_STATUS_Busy (0x1UL) /*!< AES engine is busy */
+
+/* Register: CC_AES_AES_SK */
+/* Description: Writing to this address trigger sampling of the HW key to the AES_KEY_0 register */
+
+/* Bit 0 : Sample HW key to AES_KEY_0 registers. */
+#define CC_AES_AES_SK_AES_SK_Pos (0UL) /*!< Position of AES_SK field. */
+#define CC_AES_AES_SK_AES_SK_Msk (0x1UL << CC_AES_AES_SK_AES_SK_Pos) /*!< Bit mask of AES_SK field. */
+
+/* Register: CC_AES_AES_CMAC_INIT */
+/* Description: Writing to this address triggers the AES engine to generate K1 and K2 for AES-CMAC operations. */
+
+/* Bit 0 : Generate K1 and K2 for the AES-CMAC operations. */
+#define CC_AES_AES_CMAC_INIT_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
+#define CC_AES_AES_CMAC_INIT_ENABLE_Msk (0x1UL << CC_AES_AES_CMAC_INIT_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_AES_AES_CMAC_INIT_ENABLE_Enable (0x1UL) /*!< Initialize AES-CMAC operations. */
+
+/* Register: CC_AES_AES_REMAINING_BYTES */
+/* Description: This register should be set with the amount of remaining bytes until the end of the current AES operation. */
+
+/* Bits 31..0 : Remaining bytes util the end of the current AES operation. */
+#define CC_AES_AES_REMAINING_BYTES_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_AES_AES_REMAINING_BYTES_VALUE_Msk (0xFFFFFFFFUL << CC_AES_AES_REMAINING_BYTES_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_AES_AES_CONTROL */
+/* Description: Control the AES engine behavior. */
+
+/* Bit 31 : Using direct access and not the DIN-DOUT DMA interface */
+#define CC_AES_AES_CONTROL_DIRECT_ACCESS_Pos (31UL) /*!< Position of DIRECT_ACCESS field. */
+#define CC_AES_AES_CONTROL_DIRECT_ACCESS_Msk (0x1UL << CC_AES_AES_CONTROL_DIRECT_ACCESS_Pos) /*!< Bit mask of DIRECT_ACCESS field. */
+#define CC_AES_AES_CONTROL_DIRECT_ACCESS_Disable (0x0UL) /*!< Access using the DIN-DOUT DMA interface */
+#define CC_AES_AES_CONTROL_DIRECT_ACCESS_Enable (0x1UL) /*!< Access using direct access */
+
+/* Bit 29 : This field determines the value that is written to AES_KEY_0, when AES_SK is kicked. */
+#define CC_AES_AES_CONTROL_AES_XOR_CRYPTOKEY_Pos (29UL) /*!< Position of AES_XOR_CRYPTOKEY field. */
+#define CC_AES_AES_CONTROL_AES_XOR_CRYPTOKEY_Msk (0x1UL << CC_AES_AES_CONTROL_AES_XOR_CRYPTOKEY_Pos) /*!< Bit mask of AES_XOR_CRYPTOKEY field. */
+#define CC_AES_AES_CONTROL_AES_XOR_CRYPTOKEY_Disable (0x0UL) /*!< The value that is written to AES_KEY_0 is the value of the HW cryptokey as is. */
+#define CC_AES_AES_CONTROL_AES_XOR_CRYPTOKEY_Enable (0x1UL) /*!< The value that is written to AES_KEY_0 is the value of the HW cryptokey XOR with the current value of AES_KEY_0. */
+
+/* Bits 13..12 : Set the AES key length. */
+#define CC_AES_AES_CONTROL_NK_KEY0_Pos (12UL) /*!< Position of NK_KEY0 field. */
+#define CC_AES_AES_CONTROL_NK_KEY0_Msk (0x3UL << CC_AES_AES_CONTROL_NK_KEY0_Pos) /*!< Bit mask of NK_KEY0 field. */
+#define CC_AES_AES_CONTROL_NK_KEY0_128Bits (0x0UL) /*!< 128 bits key length */
+
+/* Bits 4..2 : Set the AES mode. */
+#define CC_AES_AES_CONTROL_MODE_KEY0_Pos (2UL) /*!< Position of MODE_KEY0 field. */
+#define CC_AES_AES_CONTROL_MODE_KEY0_Msk (0x7UL << CC_AES_AES_CONTROL_MODE_KEY0_Pos) /*!< Bit mask of MODE_KEY0 field. */
+#define CC_AES_AES_CONTROL_MODE_KEY0_ECB (0x0UL) /*!< Electronic codebook mode */
+#define CC_AES_AES_CONTROL_MODE_KEY0_CBC (0x1UL) /*!< Cipher block chaining mode */
+#define CC_AES_AES_CONTROL_MODE_KEY0_CTR (0x2UL) /*!< Counter mode */
+#define CC_AES_AES_CONTROL_MODE_KEY0_CBC_MAC (0x3UL) /*!< Cipher Block Chaining Message Authentication Code */
+#define CC_AES_AES_CONTROL_MODE_KEY0_CMAC (0x7UL) /*!< Cipher-based Message Authentication Code */
+
+/* Bit 0 : Set AES encrypt or decrypt mode in non-tunneling operations. */
+#define CC_AES_AES_CONTROL_DEC_KEY0_Pos (0UL) /*!< Position of DEC_KEY0 field. */
+#define CC_AES_AES_CONTROL_DEC_KEY0_Msk (0x1UL << CC_AES_AES_CONTROL_DEC_KEY0_Pos) /*!< Bit mask of DEC_KEY0 field. */
+#define CC_AES_AES_CONTROL_DEC_KEY0_Encrypt (0x0UL) /*!< Perform AES encryption */
+#define CC_AES_AES_CONTROL_DEC_KEY0_Decrypt (0x1UL) /*!< Perform AES decryption */
+
+/* Register: CC_AES_AES_HW_FLAGS */
+/* Description: Hardware configuration of the AES engine. Reset value holds the supported features. */
+
+/* Bit 12 : If this flag is set, the engine support DFA countermeasures. */
+#define CC_AES_AES_HW_FLAGS_DFA_CNTRMSR_EXIST_Pos (12UL) /*!< Position of DFA_CNTRMSR_EXIST field. */
+#define CC_AES_AES_HW_FLAGS_DFA_CNTRMSR_EXIST_Msk (0x1UL << CC_AES_AES_HW_FLAGS_DFA_CNTRMSR_EXIST_Pos) /*!< Bit mask of DFA_CNTRMSR_EXIST field. */
+
+/* Bit 11 : If this flag is set, the engine support a second register set for tunneling operations. */
+#define CC_AES_AES_HW_FLAGS_SECOND_REGS_SET_EXIST_Pos (11UL) /*!< Position of SECOND_REGS_SET_EXIST field. */
+#define CC_AES_AES_HW_FLAGS_SECOND_REGS_SET_EXIST_Msk (0x1UL << CC_AES_AES_HW_FLAGS_SECOND_REGS_SET_EXIST_Pos) /*!< Bit mask of SECOND_REGS_SET_EXIST field. */
+
+/* Bit 10 : If this flag is set, the engine support tunneling operations. */
+#define CC_AES_AES_HW_FLAGS_AES_TUNNEL_EXIST_Pos (10UL) /*!< Position of AES_TUNNEL_EXIST field. */
+#define CC_AES_AES_HW_FLAGS_AES_TUNNEL_EXIST_Msk (0x1UL << CC_AES_AES_HW_FLAGS_AES_TUNNEL_EXIST_Pos) /*!< Bit mask of AES_TUNNEL_EXIST field. */
+
+/* Bit 9 : If this flag is set, the engine contains the PREV_IV register for faster AES XCBC MAC calculation. */
+#define CC_AES_AES_HW_FLAGS_AES_SUPPORT_PREV_IV_Pos (9UL) /*!< Position of AES_SUPPORT_PREV_IV field. */
+#define CC_AES_AES_HW_FLAGS_AES_SUPPORT_PREV_IV_Msk (0x1UL << CC_AES_AES_HW_FLAGS_AES_SUPPORT_PREV_IV_Pos) /*!< Bit mask of AES_SUPPORT_PREV_IV field. */
+
+/* Bit 8 : If this flag is set, the engine uses 5 SBOX where each AES round takes 4 cycles. */
+#define CC_AES_AES_HW_FLAGS_USE_5_SBOXES_Pos (8UL) /*!< Position of USE_5_SBOXES field. */
+#define CC_AES_AES_HW_FLAGS_USE_5_SBOXES_Msk (0x1UL << CC_AES_AES_HW_FLAGS_USE_5_SBOXES_Pos) /*!< Bit mask of USE_5_SBOXES field. */
+
+/* Bit 5 : If this flag is set, the engine uses SBOX tables. */
+#define CC_AES_AES_HW_FLAGS_USE_SBOX_TABLE_Pos (5UL) /*!< Position of USE_SBOX_TABLE field. */
+#define CC_AES_AES_HW_FLAGS_USE_SBOX_TABLE_Msk (0x1UL << CC_AES_AES_HW_FLAGS_USE_SBOX_TABLE_Pos) /*!< Bit mask of USE_SBOX_TABLE field. */
+
+/* Bit 4 : If this flag is set, the engine only support encrypt operations. */
+#define CC_AES_AES_HW_FLAGS_ONLY_ENCRYPT_Pos (4UL) /*!< Position of ONLY_ENCRYPT field. */
+#define CC_AES_AES_HW_FLAGS_ONLY_ENCRYPT_Msk (0x1UL << CC_AES_AES_HW_FLAGS_ONLY_ENCRYPT_Pos) /*!< Bit mask of ONLY_ENCRYPT field. */
+
+/* Bit 3 : If this flag is set, the engine support AES CTR mode. */
+#define CC_AES_AES_HW_FLAGS_CTR_EXIST_Pos (3UL) /*!< Position of CTR_EXIST field. */
+#define CC_AES_AES_HW_FLAGS_CTR_EXIST_Msk (0x1UL << CC_AES_AES_HW_FLAGS_CTR_EXIST_Pos) /*!< Bit mask of CTR_EXIST field. */
+
+/* Bit 2 : If this flag is set, the engine support DPA countermeasures. */
+#define CC_AES_AES_HW_FLAGS_DPA_CNTRMSR_EXIST_Pos (2UL) /*!< Position of DPA_CNTRMSR_EXIST field. */
+#define CC_AES_AES_HW_FLAGS_DPA_CNTRMSR_EXIST_Msk (0x1UL << CC_AES_AES_HW_FLAGS_DPA_CNTRMSR_EXIST_Pos) /*!< Bit mask of DPA_CNTRMSR_EXIST field. */
+
+/* Bit 1 : If this flag is set, the engine support AES_LARGE_RKEK. */
+#define CC_AES_AES_HW_FLAGS_AES_LARGE_RKEK_Pos (1UL) /*!< Position of AES_LARGE_RKEK field. */
+#define CC_AES_AES_HW_FLAGS_AES_LARGE_RKEK_Msk (0x1UL << CC_AES_AES_HW_FLAGS_AES_LARGE_RKEK_Pos) /*!< Bit mask of AES_LARGE_RKEK field. */
+
+/* Bit 0 : If this flag is set, the engine support 192 bits and 256 bits key size. */
+#define CC_AES_AES_HW_FLAGS_SUPPORT_256_192_KEY_Pos (0UL) /*!< Position of SUPPORT_256_192_KEY field. */
+#define CC_AES_AES_HW_FLAGS_SUPPORT_256_192_KEY_Msk (0x1UL << CC_AES_AES_HW_FLAGS_SUPPORT_256_192_KEY_Pos) /*!< Bit mask of SUPPORT_256_192_KEY field. */
+
+/* Register: CC_AES_AES_CTR_NO_INCREMENT */
+/* Description: This register enables the AES CTR no increment mode in which the counter mode is not incremented between two blocks */
+
+/* Bit 0 : This field enables the AES CTR no increment mode in which the counter mode is not incremented between two blocks */
+#define CC_AES_AES_CTR_NO_INCREMENT_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
+#define CC_AES_AES_CTR_NO_INCREMENT_ENABLE_Msk (0x1UL << CC_AES_AES_CTR_NO_INCREMENT_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_AES_AES_CTR_NO_INCREMENT_ENABLE_Disable (0x0UL) /*!< Counter always incremented between blocks */
+#define CC_AES_AES_CTR_NO_INCREMENT_ENABLE_Enable (0x1UL) /*!< Do not increment counter between blocks */
+
+/* Register: CC_AES_AES_SW_RESET */
+/* Description: Reset the AES engine. */
+
+/* Bit 0 : Writing any value to this address resets the AES engine. The reset takes 4 CPU clock cycles to complete. */
+#define CC_AES_AES_SW_RESET_RESET_Pos (0UL) /*!< Position of RESET field. */
+#define CC_AES_AES_SW_RESET_RESET_Msk (0x1UL << CC_AES_AES_SW_RESET_RESET_Pos) /*!< Bit mask of RESET field. */
+#define CC_AES_AES_SW_RESET_RESET_Enable (0x1UL) /*!< Reset AES engine. */
+
+/* Register: CC_AES_AES_CMAC_SIZE0_KICK */
+/* Description: Writing to this address triggers the AES engine to perform a CMAC operation with size 0. The CMAC result can be read from the AES_IV_0 register. */
+
+/* Bit 0 : Force AES CMAC operation with size 0. */
+#define CC_AES_AES_CMAC_SIZE0_KICK_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
+#define CC_AES_AES_CMAC_SIZE0_KICK_ENABLE_Msk (0x1UL << CC_AES_AES_CMAC_SIZE0_KICK_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_AES_AES_CMAC_SIZE0_KICK_ENABLE_Disable (0x0UL) /*!< Normal AES CMAC operation */
+#define CC_AES_AES_CMAC_SIZE0_KICK_ENABLE_Enable (0x1UL) /*!< Force CMAC operation with size 0 */
+
+
+/* Peripheral: CC_AHB */
+/* Description: CRYPTOCELL AHB interface */
+
+/* Register: CC_AHB_AHBM_SINGLES */
+/* Description: This register forces the AHB transactions from CRYPTOCELL master to be always singles. */
+
+/* Bit 0 : Force AHB singles */
+#define CC_AHB_AHBM_SINGLES_AHB_SINGLES_Pos (0UL) /*!< Position of AHB_SINGLES field. */
+#define CC_AHB_AHBM_SINGLES_AHB_SINGLES_Msk (0x1UL << CC_AHB_AHBM_SINGLES_AHB_SINGLES_Pos) /*!< Bit mask of AHB_SINGLES field. */
+
+/* Register: CC_AHB_AHBM_HPROT */
+/* Description: This register holds the AHB HPROT value */
+
+/* Bits 3..0 : The AHB HPROT value */
+#define CC_AHB_AHBM_HPROT_AHB_HPROT_Pos (0UL) /*!< Position of AHB_HPROT field. */
+#define CC_AHB_AHBM_HPROT_AHB_HPROT_Msk (0xFUL << CC_AHB_AHBM_HPROT_AHB_HPROT_Pos) /*!< Bit mask of AHB_HPROT field. */
+
+/* Register: CC_AHB_AHBM_HMASTLOCK */
+/* Description: This register holds AHB HMASTLOCK value */
+
+/* Bit 0 : The AHB HMASTLOCK value. */
+#define CC_AHB_AHBM_HMASTLOCK_AHB_HMASTLOCK_Pos (0UL) /*!< Position of AHB_HMASTLOCK field. */
+#define CC_AHB_AHBM_HMASTLOCK_AHB_HMASTLOCK_Msk (0x1UL << CC_AHB_AHBM_HMASTLOCK_AHB_HMASTLOCK_Pos) /*!< Bit mask of AHB_HMASTLOCK field. */
+
+/* Register: CC_AHB_AHBM_HNONSEC */
+/* Description: This register holds AHB HNONSEC value */
+
+/* Bit 1 : The AHB HNONSEC value for read transaction. */
+#define CC_AHB_AHBM_HNONSEC_AHB_READ_HNONSEC_Pos (1UL) /*!< Position of AHB_READ_HNONSEC field. */
+#define CC_AHB_AHBM_HNONSEC_AHB_READ_HNONSEC_Msk (0x1UL << CC_AHB_AHBM_HNONSEC_AHB_READ_HNONSEC_Pos) /*!< Bit mask of AHB_READ_HNONSEC field. */
+
+/* Bit 0 : The AHB HNONSEC value for write transaction. */
+#define CC_AHB_AHBM_HNONSEC_AHB_WRITE_HNONSEC_Pos (0UL) /*!< Position of AHB_WRITE_HNONSEC field. */
+#define CC_AHB_AHBM_HNONSEC_AHB_WRITE_HNONSEC_Msk (0x1UL << CC_AHB_AHBM_HNONSEC_AHB_WRITE_HNONSEC_Pos) /*!< Bit mask of AHB_WRITE_HNONSEC field. */
+
+
+/* Peripheral: CC_CHACHA */
+/* Description: CRYPTOCELL CHACHA engine */
+
+/* Register: CC_CHACHA_CHACHA_CONTROL */
+/* Description: Control the CHACHA engine behavior. */
+
+/* Bit 10 : Use 96 bits Initialization Vector (IV) */
+#define CC_CHACHA_CHACHA_CONTROL_USE_IV_96BIT_Pos (10UL) /*!< Position of USE_IV_96BIT field. */
+#define CC_CHACHA_CHACHA_CONTROL_USE_IV_96BIT_Msk (0x1UL << CC_CHACHA_CHACHA_CONTROL_USE_IV_96BIT_Pos) /*!< Bit mask of USE_IV_96BIT field. */
+#define CC_CHACHA_CHACHA_CONTROL_USE_IV_96BIT_Disable (0x0UL) /*!< Use default size IV of 64 bit */
+#define CC_CHACHA_CHACHA_CONTROL_USE_IV_96BIT_Enable (0x1UL) /*!< The IV is 96 bits */
+
+/* Bit 9 : Reset block counter for new messages */
+#define CC_CHACHA_CHACHA_CONTROL_RESET_BLOCK_CNT_Pos (9UL) /*!< Position of RESET_BLOCK_CNT field. */
+#define CC_CHACHA_CHACHA_CONTROL_RESET_BLOCK_CNT_Msk (0x1UL << CC_CHACHA_CHACHA_CONTROL_RESET_BLOCK_CNT_Pos) /*!< Bit mask of RESET_BLOCK_CNT field. */
+#define CC_CHACHA_CHACHA_CONTROL_RESET_BLOCK_CNT_Disable (0x0UL) /*!< Use current block counter value */
+#define CC_CHACHA_CHACHA_CONTROL_RESET_BLOCK_CNT_Enable (0x1UL) /*!< Reset block counter value to zero */
+
+/* Bits 5..4 : Set number of permutation rounds, default value is 20. */
+#define CC_CHACHA_CHACHA_CONTROL_NUM_OF_ROUNDS_Pos (4UL) /*!< Position of NUM_OF_ROUNDS field. */
+#define CC_CHACHA_CHACHA_CONTROL_NUM_OF_ROUNDS_Msk (0x3UL << CC_CHACHA_CHACHA_CONTROL_NUM_OF_ROUNDS_Pos) /*!< Bit mask of NUM_OF_ROUNDS field. */
+#define CC_CHACHA_CHACHA_CONTROL_NUM_OF_ROUNDS_Default (0x0UL) /*!< Use 20 rounds of rotation (default) */
+#define CC_CHACHA_CHACHA_CONTROL_NUM_OF_ROUNDS_12Rounds (0x1UL) /*!< Use 12 rounds of rotation */
+#define CC_CHACHA_CHACHA_CONTROL_NUM_OF_ROUNDS_8Rounds (0x2UL) /*!< Use 8 rounds of rotation */
+
+/* Bit 3 : Key length selection. */
+#define CC_CHACHA_CHACHA_CONTROL_KEY_LEN_Pos (3UL) /*!< Position of KEY_LEN field. */
+#define CC_CHACHA_CHACHA_CONTROL_KEY_LEN_Msk (0x1UL << CC_CHACHA_CHACHA_CONTROL_KEY_LEN_Pos) /*!< Bit mask of KEY_LEN field. */
+#define CC_CHACHA_CHACHA_CONTROL_KEY_LEN_256Bits (0x0UL) /*!< Use 256 bits key length */
+#define CC_CHACHA_CHACHA_CONTROL_KEY_LEN_128Bits (0x1UL) /*!< Use 128 bits key length */
+
+/* Bit 2 : Generate the key to use in Poly1305 message authentication code calculation. */
+#define CC_CHACHA_CHACHA_CONTROL_GEN_KEY_POLY1305_Pos (2UL) /*!< Position of GEN_KEY_POLY1305 field. */
+#define CC_CHACHA_CHACHA_CONTROL_GEN_KEY_POLY1305_Msk (0x1UL << CC_CHACHA_CHACHA_CONTROL_GEN_KEY_POLY1305_Pos) /*!< Bit mask of GEN_KEY_POLY1305 field. */
+#define CC_CHACHA_CHACHA_CONTROL_GEN_KEY_POLY1305_Disable (0x0UL) /*!< Do not generate Poly1305 key */
+#define CC_CHACHA_CHACHA_CONTROL_GEN_KEY_POLY1305_Enable (0x1UL) /*!< Generate Poly1305 key */
+
+/* Bit 1 : Perform initialization for a new message */
+#define CC_CHACHA_CHACHA_CONTROL_INIT_Pos (1UL) /*!< Position of INIT field. */
+#define CC_CHACHA_CHACHA_CONTROL_INIT_Msk (0x1UL << CC_CHACHA_CHACHA_CONTROL_INIT_Pos) /*!< Bit mask of INIT field. */
+#define CC_CHACHA_CHACHA_CONTROL_INIT_Disable (0x0UL) /*!< Message already initialized */
+#define CC_CHACHA_CHACHA_CONTROL_INIT_Enable (0x1UL) /*!< Initialize new message */
+
+/* Bit 0 : Run engine in ChaCha or Salsa mode */
+#define CC_CHACHA_CHACHA_CONTROL_CHACHA_OR_SALSA_Pos (0UL) /*!< Position of CHACHA_OR_SALSA field. */
+#define CC_CHACHA_CHACHA_CONTROL_CHACHA_OR_SALSA_Msk (0x1UL << CC_CHACHA_CHACHA_CONTROL_CHACHA_OR_SALSA_Pos) /*!< Bit mask of CHACHA_OR_SALSA field. */
+#define CC_CHACHA_CHACHA_CONTROL_CHACHA_OR_SALSA_ChaCha (0x0UL) /*!< Run engine in ChaCha mode */
+#define CC_CHACHA_CHACHA_CONTROL_CHACHA_OR_SALSA_Salsa (0x1UL) /*!< Run engine in Salsa mode */
+
+/* Register: CC_CHACHA_CHACHA_VERSION */
+/* Description: CHACHA engine HW version */
+
+/* Bits 31..0 :   */
+#define CC_CHACHA_CHACHA_VERSION_CHACHA_VERSION_Pos (0UL) /*!< Position of CHACHA_VERSION field. */
+#define CC_CHACHA_CHACHA_VERSION_CHACHA_VERSION_Msk (0xFFFFFFFFUL << CC_CHACHA_CHACHA_VERSION_CHACHA_VERSION_Pos) /*!< Bit mask of CHACHA_VERSION field. */
+
+/* Register: CC_CHACHA_CHACHA_KEY */
+/* Description: Description collection: CHACHA key value to use. The initial CHACHA_KEY[0] register holds the least significant bits [31:0] of the key value. */
+
+/* Bits 31..0 : CHACHA key value. */
+#define CC_CHACHA_CHACHA_KEY_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_CHACHA_CHACHA_KEY_VALUE_Msk (0xFFFFFFFFUL << CC_CHACHA_CHACHA_KEY_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_CHACHA_CHACHA_IV */
+/* Description: Description collection: CHACHA Initialization Vector (IV) to use. The IV is also known as the nonce. */
+
+/* Bits 31..0 : CHACHA IV value. */
+#define CC_CHACHA_CHACHA_IV_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_CHACHA_CHACHA_IV_VALUE_Msk (0xFFFFFFFFUL << CC_CHACHA_CHACHA_IV_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_CHACHA_CHACHA_BUSY */
+/* Description: Status register for CHACHA engine activity. */
+
+/* Bit 0 : CHACHA engine status. */
+#define CC_CHACHA_CHACHA_BUSY_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_CHACHA_CHACHA_BUSY_STATUS_Msk (0x1UL << CC_CHACHA_CHACHA_BUSY_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_CHACHA_CHACHA_BUSY_STATUS_Idle (0x0UL) /*!< CHACHA engine is idle */
+#define CC_CHACHA_CHACHA_BUSY_STATUS_Busy (0x1UL) /*!< CHACHA engine is busy */
+
+/* Register: CC_CHACHA_CHACHA_HW_FLAGS */
+/* Description: Hardware configuration of the CHACHA engine. Reset value holds the supported features. */
+
+/* Bit 2 : If this flag is set, the next matrix calculated when the current one is written to data output path. */
+#define CC_CHACHA_CHACHA_HW_FLAGS_FAST_CHACHA_Pos (2UL) /*!< Position of FAST_CHACHA field. */
+#define CC_CHACHA_CHACHA_HW_FLAGS_FAST_CHACHA_Msk (0x1UL << CC_CHACHA_CHACHA_HW_FLAGS_FAST_CHACHA_Pos) /*!< Bit mask of FAST_CHACHA field. */
+
+/* Bit 1 : If this flag is set, the engine include Salsa support */
+#define CC_CHACHA_CHACHA_HW_FLAGS_SALSA_EXISTS_Pos (1UL) /*!< Position of SALSA_EXISTS field. */
+#define CC_CHACHA_CHACHA_HW_FLAGS_SALSA_EXISTS_Msk (0x1UL << CC_CHACHA_CHACHA_HW_FLAGS_SALSA_EXISTS_Pos) /*!< Bit mask of SALSA_EXISTS field. */
+
+/* Bit 0 : If this flag is set, the engine include ChaCha support */
+#define CC_CHACHA_CHACHA_HW_FLAGS_CHACHA_EXISTS_Pos (0UL) /*!< Position of CHACHA_EXISTS field. */
+#define CC_CHACHA_CHACHA_HW_FLAGS_CHACHA_EXISTS_Msk (0x1UL << CC_CHACHA_CHACHA_HW_FLAGS_CHACHA_EXISTS_Pos) /*!< Bit mask of CHACHA_EXISTS field. */
+
+/* Register: CC_CHACHA_CHACHA_BLOCK_CNT_LSB */
+/* Description: Store the LSB value of the block counter, in order to support suspend/resume of operation */
+
+/* Bits 31..0 : This register holds the ChaCha block counter bits [31:0] and must be read and written during respectively suspend and resume operations. */
+#define CC_CHACHA_CHACHA_BLOCK_CNT_LSB_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_CHACHA_CHACHA_BLOCK_CNT_LSB_VALUE_Msk (0xFFFFFFFFUL << CC_CHACHA_CHACHA_BLOCK_CNT_LSB_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_CHACHA_CHACHA_BLOCK_CNT_MSB */
+/* Description: Store the MSB value of the block counter, in order to support suspend/resume of operation */
+
+/* Bits 31..0 : This register holds the ChaCha block counter bits [63:32] and must be read and written during respectively suspend and resume operations. */
+#define CC_CHACHA_CHACHA_BLOCK_CNT_MSB_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_CHACHA_CHACHA_BLOCK_CNT_MSB_VALUE_Msk (0xFFFFFFFFUL << CC_CHACHA_CHACHA_BLOCK_CNT_MSB_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_CHACHA_CHACHA_SW_RESET */
+/* Description: Reset the CHACHA engine. */
+
+/* Bit 0 : Writing any value to this address resets the CHACHA engine. The reset takes 4 CPU clock cycles to complete. */
+#define CC_CHACHA_CHACHA_SW_RESET_RESET_Pos (0UL) /*!< Position of RESET field. */
+#define CC_CHACHA_CHACHA_SW_RESET_RESET_Msk (0x1UL << CC_CHACHA_CHACHA_SW_RESET_RESET_Pos) /*!< Bit mask of RESET field. */
+#define CC_CHACHA_CHACHA_SW_RESET_RESET_Enable (0x1UL) /*!< Reset CHACHA engine. */
+
+/* Register: CC_CHACHA_CHACHA_POLY1305_KEY */
+/* Description: Description collection: The auto-generated key to use in Poly1305 MAC calculation. The initial CHACHA_POLY1305_KEY[0] register holds the least significant bits [31:0] of the key value. */
+
+/* Bits 31..0 : Poly1305 key value. */
+#define CC_CHACHA_CHACHA_POLY1305_KEY_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_CHACHA_CHACHA_POLY1305_KEY_VALUE_Msk (0xFFFFFFFFUL << CC_CHACHA_CHACHA_POLY1305_KEY_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_CHACHA_CHACHA_ENDIANNESS */
+/* Description: CHACHA engine data order configuration. */
+
+/* Bit 4 : Change the byte order of the output data. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DOUT_BYTE_ORDER_Pos (4UL) /*!< Position of CHACHA_DOUT_BYTE_ORDER field. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DOUT_BYTE_ORDER_Msk (0x1UL << CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DOUT_BYTE_ORDER_Pos) /*!< Bit mask of CHACHA_DOUT_BYTE_ORDER field. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DOUT_BYTE_ORDER_Default (0x0UL) /*!< Use default byte order within each output word, where bytes are ordered as follows: B0, B1, B2, B3. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DOUT_BYTE_ORDER_Reverse (0x1UL) /*!< Reverse the byte order within each output word, where bytes are re-ordered as follows: B3, B2, B1, B0. */
+
+/* Bit 3 : Change the word order of the output data. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DOUT_WORD_ORDER_Pos (3UL) /*!< Position of CHACHA_DOUT_WORD_ORDER field. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DOUT_WORD_ORDER_Msk (0x1UL << CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DOUT_WORD_ORDER_Pos) /*!< Bit mask of CHACHA_DOUT_WORD_ORDER field. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DOUT_WORD_ORDER_Default (0x0UL) /*!< Uses default word order for 128-bits output, where words are ordered as follows: w0, w1, w2, w3. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DOUT_WORD_ORDER_Reverse (0x1UL) /*!< Reverse the word order for 128-bits output, where words are re-ordered as follows: w3, w2, w1, w0. */
+
+/* Bit 2 : Change the quarter of a matrix order in the engine. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_CORE_MATRIX_LBE_ORDER_Pos (2UL) /*!< Position of CHACHA_CORE_MATRIX_LBE_ORDER field. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_CORE_MATRIX_LBE_ORDER_Msk (0x1UL << CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_CORE_MATRIX_LBE_ORDER_Pos) /*!< Bit mask of CHACHA_CORE_MATRIX_LBE_ORDER field. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_CORE_MATRIX_LBE_ORDER_Default (0x0UL) /*!< Use default quarter of matrix order, where quarters are ordered as follows: q0, q1, q2, q3. Each quarter represents a 128-bits section of the matrix. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_CORE_MATRIX_LBE_ORDER_Reverse (0x1UL) /*!< Reverse the order of matrix quarters, where quarters are re-ordered as follows: q3, q2, q1, q0. Each quarter represents a 128-bits section of the matrix. */
+
+/* Bit 1 : Change the byte order of the input data. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DIN_BYTE_ORDER_Pos (1UL) /*!< Position of CHACHA_DIN_BYTE_ORDER field. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DIN_BYTE_ORDER_Msk (0x1UL << CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DIN_BYTE_ORDER_Pos) /*!< Bit mask of CHACHA_DIN_BYTE_ORDER field. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DIN_BYTE_ORDER_Default (0x0UL) /*!< Use default byte order within each input word, where bytes are ordered as follows: B0, B1, B2, B3. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DIN_BYTE_ORDER_Reverse (0x1UL) /*!< Reverse the byte order within each input word, where bytes are re-ordered as follows: B3, B2, B1, B0. */
+
+/* Bit 0 : Change the word order of the input data. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DIN_WORD_ORDER_Pos (0UL) /*!< Position of CHACHA_DIN_WORD_ORDER field. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DIN_WORD_ORDER_Msk (0x1UL << CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DIN_WORD_ORDER_Pos) /*!< Bit mask of CHACHA_DIN_WORD_ORDER field. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DIN_WORD_ORDER_Default (0x0UL) /*!< Use default word order for 128-bits input, where words are ordered as follows: w0, w1, w2, w3. */
+#define CC_CHACHA_CHACHA_ENDIANNESS_CHACHA_DIN_WORD_ORDER_Reverse (0x1UL) /*!< Reverses the word order for 128-bits input, where words are re-ordered as follows: w3, w2, w1, w0. */
+
+/* Register: CC_CHACHA_CHACHA_DEBUG */
+/* Description: Debug register for the CHACHA engine */
+
+/* Bits 1..0 : Reflects the debug state of the CHACHA FSM. */
+#define CC_CHACHA_CHACHA_DEBUG_FSM_STATE_Pos (0UL) /*!< Position of FSM_STATE field. */
+#define CC_CHACHA_CHACHA_DEBUG_FSM_STATE_Msk (0x3UL << CC_CHACHA_CHACHA_DEBUG_FSM_STATE_Pos) /*!< Bit mask of FSM_STATE field. */
+#define CC_CHACHA_CHACHA_DEBUG_FSM_STATE_IDLE_STATE (0x0UL) /*!< CHACHA FSM is in idle state */
+#define CC_CHACHA_CHACHA_DEBUG_FSM_STATE_INIT_STATE (0x1UL) /*!< CHACHA FSM is in init state */
+#define CC_CHACHA_CHACHA_DEBUG_FSM_STATE_ROUNDS_STATE (0x2UL) /*!< CHACHA FSM is in rounds state */
+#define CC_CHACHA_CHACHA_DEBUG_FSM_STATE_FINAL_STATE (0x3UL) /*!< CHACHA FSM is in final state */
+
+
+/* Peripheral: CC_CTL */
+/* Description: CRYPTOCELL CTL interface */
+
+/* Register: CC_CTL_CRYPTO_CTL */
+/* Description: Defines the cryptographic flow. */
+
+/* Bits 4..0 : Configure the cryptographic engine mode. */
+#define CC_CTL_CRYPTO_CTL_MODE_Pos (0UL) /*!< Position of MODE field. */
+#define CC_CTL_CRYPTO_CTL_MODE_Msk (0x1FUL << CC_CTL_CRYPTO_CTL_MODE_Pos) /*!< Bit mask of MODE field. */
+#define CC_CTL_CRYPTO_CTL_MODE_Bypass (0x00UL) /*!< Bypass cryptographic engine */
+#define CC_CTL_CRYPTO_CTL_MODE_AESActive (0x01UL) /*!< Use AES engine */
+#define CC_CTL_CRYPTO_CTL_MODE_AESToHashActive (0x02UL) /*!< Pipe AES engine output to HASH engine input */
+#define CC_CTL_CRYPTO_CTL_MODE_AESAndHashActive (0x03UL) /*!< Process input using both AES and HASH engine in parallell */
+#define CC_CTL_CRYPTO_CTL_MODE_HashActive (0x07UL) /*!< Use HASH engine */
+#define CC_CTL_CRYPTO_CTL_MODE_AESMACAndBypassActive (0x09UL) /*!< Calculate AES MAC and bypass */
+#define CC_CTL_CRYPTO_CTL_MODE_AESToHashAndDOUTActive (0x0AUL) /*!< Pipe AES engine output to HASH engine input. The resulting digest output is piped to DOUT buffer. */
+#define CC_CTL_CRYPTO_CTL_MODE_ChaChaActive (0x10UL) /*!< Use CHACHA engine */
+
+/* Register: CC_CTL_CRYPTO_BUSY */
+/* Description: Status register for cryptographic cores engine activity. */
+
+/* Bit 0 : Cryptographic core engines status. */
+#define CC_CTL_CRYPTO_BUSY_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_CTL_CRYPTO_BUSY_STATUS_Msk (0x1UL << CC_CTL_CRYPTO_BUSY_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_CTL_CRYPTO_BUSY_STATUS_Idle (0x0UL) /*!< Cryptographic core engines are idle */
+#define CC_CTL_CRYPTO_BUSY_STATUS_Busy (0x1UL) /*!< Cryptographic core engines are busy */
+
+/* Register: CC_CTL_HASH_BUSY */
+/* Description: Status register for HASH engine activity. */
+
+/* Bit 0 : Hash engine status. */
+#define CC_CTL_HASH_BUSY_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_CTL_HASH_BUSY_STATUS_Msk (0x1UL << CC_CTL_HASH_BUSY_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_CTL_HASH_BUSY_STATUS_Idle (0x0UL) /*!< HASH engine is idle */
+#define CC_CTL_HASH_BUSY_STATUS_Busy (0x1UL) /*!< HASH engine is busy */
+
+/* Register: CC_CTL_CONTEXT_ID */
+/* Description: A general-purpose read/write register. */
+
+/* Bits 7..0 : Context ID */
+#define CC_CTL_CONTEXT_ID_CONTEXT_ID_Pos (0UL) /*!< Position of CONTEXT_ID field. */
+#define CC_CTL_CONTEXT_ID_CONTEXT_ID_Msk (0xFFUL << CC_CTL_CONTEXT_ID_CONTEXT_ID_Pos) /*!< Bit mask of CONTEXT_ID field. */
+
+
+/* Peripheral: CC_DIN */
+/* Description: CRYPTOCELL Data IN interface */
+
+/* Register: CC_DIN_DIN_BUFFER */
+/* Description: Used by CPU to write data directly to the DIN buffer, which is then sent to the cryptographic engines for processing. */
+
+/* Bits 31..0 : This register is mapped into 8 addresses in order to enable a CPU burst. */
+#define CC_DIN_DIN_BUFFER_DATA_Pos (0UL) /*!< Position of DATA field. */
+#define CC_DIN_DIN_BUFFER_DATA_Msk (0xFFFFFFFFUL << CC_DIN_DIN_BUFFER_DATA_Pos) /*!< Bit mask of DATA field. */
+
+/* Register: CC_DIN_DIN_DMA_MEM_BUSY */
+/* Description: Status register for DIN DMA engine activity when accessing memory. */
+
+/* Bit 0 : DIN memory DMA engine status. */
+#define CC_DIN_DIN_DMA_MEM_BUSY_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_DIN_DIN_DMA_MEM_BUSY_STATUS_Msk (0x1UL << CC_DIN_DIN_DMA_MEM_BUSY_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_DIN_DIN_DMA_MEM_BUSY_STATUS_Idle (0x0UL) /*!< DIN memory DMA engine is idle */
+#define CC_DIN_DIN_DMA_MEM_BUSY_STATUS_Busy (0x1UL) /*!< DIN memory DMA engine is busy */
+
+/* Register: CC_DIN_SRC_MEM_ADDR */
+/* Description: Data source address in memory. */
+
+/* Bits 31..0 : Source address in memory. */
+#define CC_DIN_SRC_MEM_ADDR_ADDR_Pos (0UL) /*!< Position of ADDR field. */
+#define CC_DIN_SRC_MEM_ADDR_ADDR_Msk (0xFFFFFFFFUL << CC_DIN_SRC_MEM_ADDR_ADDR_Pos) /*!< Bit mask of ADDR field. */
+
+/* Register: CC_DIN_SRC_MEM_SIZE */
+/* Description: The number of bytes to be read from memory. Writing to this register triggers the DMA operation. */
+
+/* Bit 31 : This field is reserved */
+#define CC_DIN_SRC_MEM_SIZE_LAST_Pos (31UL) /*!< Position of LAST field. */
+#define CC_DIN_SRC_MEM_SIZE_LAST_Msk (0x1UL << CC_DIN_SRC_MEM_SIZE_LAST_Pos) /*!< Bit mask of LAST field. */
+
+/* Bit 30 : This field is reserved */
+#define CC_DIN_SRC_MEM_SIZE_FIRST_Pos (30UL) /*!< Position of FIRST field. */
+#define CC_DIN_SRC_MEM_SIZE_FIRST_Msk (0x1UL << CC_DIN_SRC_MEM_SIZE_FIRST_Pos) /*!< Bit mask of FIRST field. */
+
+/* Bits 29..0 : Total number of bytes to read from memory. */
+#define CC_DIN_SRC_MEM_SIZE_SIZE_Pos (0UL) /*!< Position of SIZE field. */
+#define CC_DIN_SRC_MEM_SIZE_SIZE_Msk (0x3FFFFFFFUL << CC_DIN_SRC_MEM_SIZE_SIZE_Pos) /*!< Bit mask of SIZE field. */
+
+/* Register: CC_DIN_SRC_SRAM_ADDR */
+/* Description: Data source address in RNG SRAM. */
+
+/* Bits 31..0 : Source address in RNG SRAM. */
+#define CC_DIN_SRC_SRAM_ADDR_ADDR_Pos (0UL) /*!< Position of ADDR field. */
+#define CC_DIN_SRC_SRAM_ADDR_ADDR_Msk (0xFFFFFFFFUL << CC_DIN_SRC_SRAM_ADDR_ADDR_Pos) /*!< Bit mask of ADDR field. */
+
+/* Register: CC_DIN_SRC_SRAM_SIZE */
+/* Description: The number of bytes to be read from RNG SRAM. Writing to this register triggers the DMA operation. */
+
+/* Bits 31..0 : Total number of bytes to read from RNG SRAM. */
+#define CC_DIN_SRC_SRAM_SIZE_SIZE_Pos (0UL) /*!< Position of SIZE field. */
+#define CC_DIN_SRC_SRAM_SIZE_SIZE_Msk (0xFFFFFFFFUL << CC_DIN_SRC_SRAM_SIZE_SIZE_Pos) /*!< Bit mask of SIZE field. */
+
+/* Register: CC_DIN_DIN_DMA_SRAM_BUSY */
+/* Description: Status register for DIN DMA engine activity when accessing RNG SRAM. */
+
+/* Bit 0 : DIN RNG SRAM DMA engine status. */
+#define CC_DIN_DIN_DMA_SRAM_BUSY_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_DIN_DIN_DMA_SRAM_BUSY_STATUS_Msk (0x1UL << CC_DIN_DIN_DMA_SRAM_BUSY_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_DIN_DIN_DMA_SRAM_BUSY_STATUS_Idle (0x0UL) /*!< DIN RNG SRAM DMA engine is idle */
+#define CC_DIN_DIN_DMA_SRAM_BUSY_STATUS_Busy (0x1UL) /*!< DIN RNG SRAM DMA engine is busy */
+
+/* Register: CC_DIN_DIN_DMA_SRAM_ENDIANNESS */
+/* Description: Configure the endianness of DIN DMA transactions towards RNG SRAM. */
+
+/* Bit 0 : Endianness of DIN DMA transactions towards RNG SRAM. The default value is little-endian. */
+#define CC_DIN_DIN_DMA_SRAM_ENDIANNESS_ENDIAN_Pos (0UL) /*!< Position of ENDIAN field. */
+#define CC_DIN_DIN_DMA_SRAM_ENDIANNESS_ENDIAN_Msk (0x1UL << CC_DIN_DIN_DMA_SRAM_ENDIANNESS_ENDIAN_Pos) /*!< Bit mask of ENDIAN field. */
+#define CC_DIN_DIN_DMA_SRAM_ENDIANNESS_ENDIAN_LittleEndian (0x0UL) /*!< Use little-endian format for RNG SRAM DMA transactions */
+#define CC_DIN_DIN_DMA_SRAM_ENDIANNESS_ENDIAN_BigEndian (0x1UL) /*!< Use big-endian format for RNG SRAM DMA transactions */
+
+/* Register: CC_DIN_DIN_SW_RESET */
+/* Description: Reset the DIN DMA engine. */
+
+/* Bit 0 : Writing any value to this address resets the DIN DMA engine. The reset takes 4 CPU clock cycles to complete. */
+#define CC_DIN_DIN_SW_RESET_RESET_Pos (0UL) /*!< Position of RESET field. */
+#define CC_DIN_DIN_SW_RESET_RESET_Msk (0x1UL << CC_DIN_DIN_SW_RESET_RESET_Pos) /*!< Bit mask of RESET field. */
+#define CC_DIN_DIN_SW_RESET_RESET_Enable (0x1UL) /*!< Reset DIN DMA engine. */
+
+/* Register: CC_DIN_DIN_CPU_DATA */
+/* Description: Specifies the number of bytes the CPU will write to the DIN_BUFFER, ensuring the cryptographic engine processes the correct amount of data. */
+
+/* Bits 15..0 : When using CPU direct write to the DIN_BUFFER, the size of input data in bytes should be written to this register. */
+#define CC_DIN_DIN_CPU_DATA_SIZE_Pos (0UL) /*!< Position of SIZE field. */
+#define CC_DIN_DIN_CPU_DATA_SIZE_Msk (0xFFFFUL << CC_DIN_DIN_CPU_DATA_SIZE_Pos) /*!< Bit mask of SIZE field. */
+
+/* Register: CC_DIN_DIN_WRITE_ALIGN */
+/* Description: Indicates that the next CPU write to the DIN_BUFFER is the last in the sequence. This is needed only when the data size is NOT modulo 4 (e.g. HASH padding). */
+
+/* Bit 0 : Next CPU write to the DIN_BUFFER is the last word. */
+#define CC_DIN_DIN_WRITE_ALIGN_LAST_Pos (0UL) /*!< Position of LAST field. */
+#define CC_DIN_DIN_WRITE_ALIGN_LAST_Msk (0x1UL << CC_DIN_DIN_WRITE_ALIGN_LAST_Pos) /*!< Bit mask of LAST field. */
+#define CC_DIN_DIN_WRITE_ALIGN_LAST_Confirm (0x1UL) /*!< The next CPU write is the last in the sequence. */
+
+/* Register: CC_DIN_DIN_FIFO_EMPTY */
+/* Description: Register indicating if DIN FIFO is empty and if more data can be accepted. */
+
+/* Bit 0 : DIN FIFO status */
+#define CC_DIN_DIN_FIFO_EMPTY_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_DIN_DIN_FIFO_EMPTY_STATUS_Msk (0x1UL << CC_DIN_DIN_FIFO_EMPTY_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_DIN_DIN_FIFO_EMPTY_STATUS_NotEmpty (0x0UL) /*!< DIN FIFO is not empty */
+#define CC_DIN_DIN_FIFO_EMPTY_STATUS_Empty (0x1UL) /*!< DIN FIFO is empty, and more data can be accepted */
+
+/* Register: CC_DIN_DIN_FIFO_RESET */
+/* Description: Reset the DIN FIFO, effectively clearing the FIFO for new data. */
+
+/* Bit 0 : Writing any value to this address resets the DIN FIFO. */
+#define CC_DIN_DIN_FIFO_RESET_RESET_Pos (0UL) /*!< Position of RESET field. */
+#define CC_DIN_DIN_FIFO_RESET_RESET_Msk (0x1UL << CC_DIN_DIN_FIFO_RESET_RESET_Pos) /*!< Bit mask of RESET field. */
+#define CC_DIN_DIN_FIFO_RESET_RESET_Enable (0x1UL) /*!< Reset DIN FIFO. */
+
+
+/* Peripheral: CC_DOUT */
+/* Description: CRYPTOCELL Data OUT interface */
+
+/* Register: CC_DOUT_DOUT_BUFFER */
+/* Description: Cryptographic results directly accessible by the CPU. */
+
+/* Bits 31..0 : This address can be used by the CPU to read data directly from the DOUT buffer. */
+#define CC_DOUT_DOUT_BUFFER_DATA_Pos (0UL) /*!< Position of DATA field. */
+#define CC_DOUT_DOUT_BUFFER_DATA_Msk (0xFFFFFFFFUL << CC_DOUT_DOUT_BUFFER_DATA_Pos) /*!< Bit mask of DATA field. */
+
+/* Register: CC_DOUT_DOUT_DMA_MEM_BUSY */
+/* Description: Status register for DOUT DMA engine activity when accessing memory. */
+
+/* Bit 0 : DOUT memory DMA engine status. */
+#define CC_DOUT_DOUT_DMA_MEM_BUSY_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_DOUT_DOUT_DMA_MEM_BUSY_STATUS_Msk (0x1UL << CC_DOUT_DOUT_DMA_MEM_BUSY_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_DOUT_DOUT_DMA_MEM_BUSY_STATUS_Idle (0x0UL) /*!< DOUT memory DMA engine is idle */
+#define CC_DOUT_DOUT_DMA_MEM_BUSY_STATUS_Busy (0x1UL) /*!< DOUT memory DMA engine is busy */
+
+/* Register: CC_DOUT_DST_MEM_ADDR */
+/* Description: Data destination address in memory. */
+
+/* Bits 31..0 : Destination address in memory. */
+#define CC_DOUT_DST_MEM_ADDR_ADDR_Pos (0UL) /*!< Position of ADDR field. */
+#define CC_DOUT_DST_MEM_ADDR_ADDR_Msk (0xFFFFFFFFUL << CC_DOUT_DST_MEM_ADDR_ADDR_Pos) /*!< Bit mask of ADDR field. */
+
+/* Register: CC_DOUT_DST_MEM_SIZE */
+/* Description: The number of bytes to be written to memory. */
+
+/* Bit 31 : This field is reserved */
+#define CC_DOUT_DST_MEM_SIZE_LAST_Pos (31UL) /*!< Position of LAST field. */
+#define CC_DOUT_DST_MEM_SIZE_LAST_Msk (0x1UL << CC_DOUT_DST_MEM_SIZE_LAST_Pos) /*!< Bit mask of LAST field. */
+
+/* Bit 30 : This field is reserved */
+#define CC_DOUT_DST_MEM_SIZE_FIRST_Pos (30UL) /*!< Position of FIRST field. */
+#define CC_DOUT_DST_MEM_SIZE_FIRST_Msk (0x1UL << CC_DOUT_DST_MEM_SIZE_FIRST_Pos) /*!< Bit mask of FIRST field. */
+
+/* Bits 29..0 : Total number of bytes to write to memory. */
+#define CC_DOUT_DST_MEM_SIZE_SIZE_Pos (0UL) /*!< Position of SIZE field. */
+#define CC_DOUT_DST_MEM_SIZE_SIZE_Msk (0x3FFFFFFFUL << CC_DOUT_DST_MEM_SIZE_SIZE_Pos) /*!< Bit mask of SIZE field. */
+
+/* Register: CC_DOUT_DST_SRAM_ADDR */
+/* Description: Data destination address in RNG SRAM. */
+
+/* Bits 31..0 : Destination address in RNG SRAM. */
+#define CC_DOUT_DST_SRAM_ADDR_ADDR_Pos (0UL) /*!< Position of ADDR field. */
+#define CC_DOUT_DST_SRAM_ADDR_ADDR_Msk (0xFFFFFFFFUL << CC_DOUT_DST_SRAM_ADDR_ADDR_Pos) /*!< Bit mask of ADDR field. */
+
+/* Register: CC_DOUT_DST_SRAM_SIZE */
+/* Description: The number of bytes to be written to RNG SRAM. */
+
+/* Bits 31..0 : Total number of bytes to write to RNG SRAM. */
+#define CC_DOUT_DST_SRAM_SIZE_SIZE_Pos (0UL) /*!< Position of SIZE field. */
+#define CC_DOUT_DST_SRAM_SIZE_SIZE_Msk (0xFFFFFFFFUL << CC_DOUT_DST_SRAM_SIZE_SIZE_Pos) /*!< Bit mask of SIZE field. */
+
+/* Register: CC_DOUT_DOUT_DMA_SRAM_BUSY */
+/* Description: Status register for DOUT DMA engine activity when accessing RNG SRAM. */
+
+/* Bit 0 : DOUT RNG SRAM DMA engine status. */
+#define CC_DOUT_DOUT_DMA_SRAM_BUSY_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_DOUT_DOUT_DMA_SRAM_BUSY_STATUS_Msk (0x1UL << CC_DOUT_DOUT_DMA_SRAM_BUSY_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_DOUT_DOUT_DMA_SRAM_BUSY_STATUS_Idle (0x0UL) /*!< DOUT RNG SRAM DMA engine is idle */
+#define CC_DOUT_DOUT_DMA_SRAM_BUSY_STATUS_Busy (0x1UL) /*!< DOUT RNG SRAM DMA engine is busy */
+
+/* Register: CC_DOUT_DOUT_DMA_SRAM_ENDIANNESS */
+/* Description: Configure the endianness of DOUT DMA transactions towards RNG SRAM. */
+
+/* Bit 0 : Endianness of DOUT DMA transactions towards RNG SRAM. The default value is little-endian. */
+#define CC_DOUT_DOUT_DMA_SRAM_ENDIANNESS_ENDIAN_Pos (0UL) /*!< Position of ENDIAN field. */
+#define CC_DOUT_DOUT_DMA_SRAM_ENDIANNESS_ENDIAN_Msk (0x1UL << CC_DOUT_DOUT_DMA_SRAM_ENDIANNESS_ENDIAN_Pos) /*!< Bit mask of ENDIAN field. */
+#define CC_DOUT_DOUT_DMA_SRAM_ENDIANNESS_ENDIAN_LittleEndian (0x0UL) /*!< Use little-endian format for RNG SRAM DMA transactions */
+#define CC_DOUT_DOUT_DMA_SRAM_ENDIANNESS_ENDIAN_BigEndian (0x1UL) /*!< Use big-endian format for RNG SRAM DMA transactions */
+
+/* Register: CC_DOUT_DOUT_READ_ALIGN */
+/* Description: Indication that the next CPU read from the DOUT_BUFFER is the last in the sequence. This is needed only when the data size is NOT modulo 4 (e.g. HASH padding). */
+
+/* Bit 0 : Next CPU read from the DOUT_BUFFER is the last word, and the remaining read aligned content can be flushed. */
+#define CC_DOUT_DOUT_READ_ALIGN_LAST_Pos (0UL) /*!< Position of LAST field. */
+#define CC_DOUT_DOUT_READ_ALIGN_LAST_Msk (0x1UL << CC_DOUT_DOUT_READ_ALIGN_LAST_Pos) /*!< Bit mask of LAST field. */
+#define CC_DOUT_DOUT_READ_ALIGN_LAST_Flush (0x1UL) /*!< Flush the remaining read aligned content. */
+
+/* Register: CC_DOUT_DOUT_FIFO_EMPTY */
+/* Description: Register indicating if DOUT FIFO is empty or if more data will come. */
+
+/* Bit 0 : DOUT FIFO status */
+#define CC_DOUT_DOUT_FIFO_EMPTY_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_DOUT_DOUT_FIFO_EMPTY_STATUS_Msk (0x1UL << CC_DOUT_DOUT_FIFO_EMPTY_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_DOUT_DOUT_FIFO_EMPTY_STATUS_NotEmpty (0x0UL) /*!< DOUT FIFO is not empty, and more data will come */
+#define CC_DOUT_DOUT_FIFO_EMPTY_STATUS_Empty (0x1UL) /*!< DOUT FIFO is empty */
+
+/* Register: CC_DOUT_DOUT_SW_RESET */
+/* Description: Reset the DOUT DMA engine. */
+
+/* Bit 0 : Writing any value to this address resets the DOUT DMA engine. The reset takes 4 CPU clock cycles to complete. */
+#define CC_DOUT_DOUT_SW_RESET_RESET_Pos (0UL) /*!< Position of RESET field. */
+#define CC_DOUT_DOUT_SW_RESET_RESET_Msk (0x1UL << CC_DOUT_DOUT_SW_RESET_RESET_Pos) /*!< Bit mask of RESET field. */
+#define CC_DOUT_DOUT_SW_RESET_RESET_Enable (0x1UL) /*!< Reset DOUT DMA engine. */
+
+
+/* Peripheral: CC_HASH */
+/* Description: CRYPTOCELL HASH engine */
+
+/* Register: CC_HASH_HASH_H */
+/* Description: Description collection: HASH_H value registers. The initial HASH_H[0] register holds the least significant bits [31:0] of the value. */
+
+/* Bits 31..0 : Write the initial hash value before start of digest operation, and read the final hash value result after 
+          the digest operation has been completed. */
+#define CC_HASH_HASH_H_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_HASH_HASH_H_VALUE_Msk (0xFFFFFFFFUL << CC_HASH_HASH_H_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_HASH_HASH_PAD_AUTO */
+/* Description: Configure the HASH engine to automatically pad data at the end of the DMA transfer to complete the digest operation. */
+
+/* Bit 0 : Enable automatic padding in hardware. */
+#define CC_HASH_HASH_PAD_AUTO_HWPAD_Pos (0UL) /*!< Position of HWPAD field. */
+#define CC_HASH_HASH_PAD_AUTO_HWPAD_Msk (0x1UL << CC_HASH_HASH_PAD_AUTO_HWPAD_Pos) /*!< Bit mask of HWPAD field. */
+#define CC_HASH_HASH_PAD_AUTO_HWPAD_Disable (0x0UL) /*!< Do not enable automatic hardware padding. */
+#define CC_HASH_HASH_PAD_AUTO_HWPAD_Enable (0x1UL) /*!< Enable automatic hardware padding. */
+
+/* Register: CC_HASH_HASH_INIT_STATE */
+/* Description: Configure HASH engine initial state registers. */
+
+/* Bit 0 : Enable loading of data to initial state registers. Digest/IV for HASH/AES_MAC. */
+#define CC_HASH_HASH_INIT_STATE_LOAD_Pos (0UL) /*!< Position of LOAD field. */
+#define CC_HASH_HASH_INIT_STATE_LOAD_Msk (0x1UL << CC_HASH_HASH_INIT_STATE_LOAD_Pos) /*!< Bit mask of LOAD field. */
+#define CC_HASH_HASH_INIT_STATE_LOAD_Disable (0x0UL) /*!< Disable loading of data to initial state registers. */
+#define CC_HASH_HASH_INIT_STATE_LOAD_Enable (0x1UL) /*!< Enable loading of data to initial state registers. */
+
+/* Register: CC_HASH_HASH_VERSION */
+/* Description: HASH engine HW version */
+
+/* Bits 15..12 : Major version number */
+#define CC_HASH_HASH_VERSION_MAJOR_VERSION_NUMBER_Pos (12UL) /*!< Position of MAJOR_VERSION_NUMBER field. */
+#define CC_HASH_HASH_VERSION_MAJOR_VERSION_NUMBER_Msk (0xFUL << CC_HASH_HASH_VERSION_MAJOR_VERSION_NUMBER_Pos) /*!< Bit mask of MAJOR_VERSION_NUMBER field. */
+
+/* Bits 11..8 : Minor version number */
+#define CC_HASH_HASH_VERSION_MINOR_VERSION_NUMBER_Pos (8UL) /*!< Position of MINOR_VERSION_NUMBER field. */
+#define CC_HASH_HASH_VERSION_MINOR_VERSION_NUMBER_Msk (0xFUL << CC_HASH_HASH_VERSION_MINOR_VERSION_NUMBER_Pos) /*!< Bit mask of MINOR_VERSION_NUMBER field. */
+
+/* Bits 7..0 :   */
+#define CC_HASH_HASH_VERSION_PATCH_Pos (0UL) /*!< Position of PATCH field. */
+#define CC_HASH_HASH_VERSION_PATCH_Msk (0xFFUL << CC_HASH_HASH_VERSION_PATCH_Pos) /*!< Bit mask of PATCH field. */
+
+/* Register: CC_HASH_HASH_CONTROL */
+/* Description: Control the HASH engine behavior. */
+
+/* Bits 3..0 : Select HASH mode to execute */
+#define CC_HASH_HASH_CONTROL_MODE_Pos (0UL) /*!< Position of MODE field. */
+#define CC_HASH_HASH_CONTROL_MODE_Msk (0xFUL << CC_HASH_HASH_CONTROL_MODE_Pos) /*!< Bit mask of MODE field. */
+#define CC_HASH_HASH_CONTROL_MODE_SHA1 (0x1UL) /*!< Select SHA1 mode */
+#define CC_HASH_HASH_CONTROL_MODE_SHA256 (0x2UL) /*!< Select SHA256 mode */
+#define CC_HASH_HASH_CONTROL_MODE_SHA224 (0xAUL) /*!< Select SHA224 mode */
+
+/* Register: CC_HASH_HASH_PAD */
+/* Description: Enable the hardware padding feature of the HASH engine. */
+
+/* Bit 0 : Configure hardware padding feature. */
+#define CC_HASH_HASH_PAD_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
+#define CC_HASH_HASH_PAD_ENABLE_Msk (0x1UL << CC_HASH_HASH_PAD_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_HASH_HASH_PAD_ENABLE_Disable (0x0UL) /*!< Disable hardware padding feature. */
+#define CC_HASH_HASH_PAD_ENABLE_Enable (0x1UL) /*!< Enable hardware padding feature. */
+
+/* Register: CC_HASH_HASH_PAD_FORCE */
+/* Description: Force the hardware padding operation to trigger if the input data length is zero bytes. */
+
+/* Bit 2 : Trigger hardware padding operation. */
+#define CC_HASH_HASH_PAD_FORCE_ENABLE_Pos (2UL) /*!< Position of ENABLE field. */
+#define CC_HASH_HASH_PAD_FORCE_ENABLE_Msk (0x1UL << CC_HASH_HASH_PAD_FORCE_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_HASH_HASH_PAD_FORCE_ENABLE_Disable (0x0UL) /*!< Do not force hardware padding to trigger. */
+#define CC_HASH_HASH_PAD_FORCE_ENABLE_Enable (0x1UL) /*!< Force hardware padding to trigger. */
+
+/* Register: CC_HASH_HASH_CUR_LEN_0 */
+/* Description: Bits [31:0] of the number of bytes that have been digested so far. */
+
+/* Bits 31..0 : Bits [31:0] of current length of digested data in bytes. */
+#define CC_HASH_HASH_CUR_LEN_0_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_HASH_HASH_CUR_LEN_0_VALUE_Msk (0xFFFFFFFFUL << CC_HASH_HASH_CUR_LEN_0_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_HASH_HASH_CUR_LEN_1 */
+/* Description: Bits [63:32] of the number of bytes that have been digested so far. */
+
+/* Bits 31..0 : Bits [63:32] of current length of digested data in bytes. */
+#define CC_HASH_HASH_CUR_LEN_1_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_HASH_HASH_CUR_LEN_1_VALUE_Msk (0xFFFFFFFFUL << CC_HASH_HASH_CUR_LEN_1_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_HASH_HASH_HW_FLAGS */
+/* Description: Hardware configuration of the HASH engine. Reset value holds the supported features. */
+
+/* Bit 18 : If this flag is set, the engine include HASH to DOUT support. */
+#define CC_HASH_HASH_HW_FLAGS_DUMP_HASH_TO_DOUT_EXISTS_Pos (18UL) /*!< Position of DUMP_HASH_TO_DOUT_EXISTS field. */
+#define CC_HASH_HASH_HW_FLAGS_DUMP_HASH_TO_DOUT_EXISTS_Msk (0x1UL << CC_HASH_HASH_HW_FLAGS_DUMP_HASH_TO_DOUT_EXISTS_Pos) /*!< Bit mask of DUMP_HASH_TO_DOUT_EXISTS field. */
+
+/* Bit 17 : If this flag is set, the engine include compare digest logic. */
+#define CC_HASH_HASH_HW_FLAGS_HASH_COMPARE_EXISTS_Pos (17UL) /*!< Position of HASH_COMPARE_EXISTS field. */
+#define CC_HASH_HASH_HW_FLAGS_HASH_COMPARE_EXISTS_Msk (0x1UL << CC_HASH_HASH_HW_FLAGS_HASH_COMPARE_EXISTS_Pos) /*!< Bit mask of HASH_COMPARE_EXISTS field. */
+
+/* Bit 16 : If this flag is set, the engine include SHA-256 support. */
+#define CC_HASH_HASH_HW_FLAGS_SHA_256_EXISTS_Pos (16UL) /*!< Position of SHA_256_EXISTS field. */
+#define CC_HASH_HASH_HW_FLAGS_SHA_256_EXISTS_Msk (0x1UL << CC_HASH_HASH_HW_FLAGS_SHA_256_EXISTS_Pos) /*!< Bit mask of SHA_256_EXISTS field. */
+
+/* Bit 15 : If this flag is set, the engine include HMAC support. */
+#define CC_HASH_HASH_HW_FLAGS_HMAC_EXISTS_Pos (15UL) /*!< Position of HMAC_EXISTS field. */
+#define CC_HASH_HASH_HW_FLAGS_HMAC_EXISTS_Msk (0x1UL << CC_HASH_HASH_HW_FLAGS_HMAC_EXISTS_Pos) /*!< Bit mask of HMAC_EXISTS field. */
+
+/* Bit 14 : If this flag is set, the engine include MD5 support. */
+#define CC_HASH_HASH_HW_FLAGS_MD5_EXISTS_Pos (14UL) /*!< Position of MD5_EXISTS field. */
+#define CC_HASH_HASH_HW_FLAGS_MD5_EXISTS_Msk (0x1UL << CC_HASH_HASH_HW_FLAGS_MD5_EXISTS_Pos) /*!< Bit mask of MD5_EXISTS field. */
+
+/* Bit 13 : If this flag is set, the engine include pad block support. */
+#define CC_HASH_HASH_HW_FLAGS_PAD_EXISTS_Pos (13UL) /*!< Position of PAD_EXISTS field. */
+#define CC_HASH_HASH_HW_FLAGS_PAD_EXISTS_Msk (0x1UL << CC_HASH_HASH_HW_FLAGS_PAD_EXISTS_Pos) /*!< Bit mask of PAD_EXISTS field. */
+
+/* Bit 12 : If this flag is set, the engine include SHA-512 support. */
+#define CC_HASH_HASH_HW_FLAGS_SHA_512_EXISTS_Pos (12UL) /*!< Position of SHA_512_EXISTS field. */
+#define CC_HASH_HASH_HW_FLAGS_SHA_512_EXISTS_Msk (0x1UL << CC_HASH_HASH_HW_FLAGS_SHA_512_EXISTS_Pos) /*!< Bit mask of SHA_512_EXISTS field. */
+
+/* Bits 11..8 : Determine the granularity of word size. */
+#define CC_HASH_HASH_HW_FLAGS_DW_Pos (8UL) /*!< Position of DW field. */
+#define CC_HASH_HASH_HW_FLAGS_DW_Msk (0xFUL << CC_HASH_HASH_HW_FLAGS_DW_Pos) /*!< Bit mask of DW field. */
+#define CC_HASH_HASH_HW_FLAGS_DW_32Bits (0x0UL) /*!< 32 bits word data. */
+#define CC_HASH_HASH_HW_FLAGS_DW_64Bits (0x1UL) /*!< 64 bits word data. */
+
+/* Bits 7..4 : Indicate if Hi adders are present for each Hi value or 1 adder is shared for all Hi. */
+#define CC_HASH_HASH_HW_FLAGS_CH_Pos (4UL) /*!< Position of CH field. */
+#define CC_HASH_HASH_HW_FLAGS_CH_Msk (0xFUL << CC_HASH_HASH_HW_FLAGS_CH_Pos) /*!< Bit mask of CH field. */
+#define CC_HASH_HASH_HW_FLAGS_CH_One (0x0UL) /*!< One Hi value is updated at a time. */
+#define CC_HASH_HASH_HW_FLAGS_CH_All (0x1UL) /*!< All Hi values are updated at the same time. */
+
+/* Bits 3..0 : Indicates the number of concurrent words the hash is using to compute signature. */
+#define CC_HASH_HASH_HW_FLAGS_CW_Pos (0UL) /*!< Position of CW field. */
+#define CC_HASH_HASH_HW_FLAGS_CW_Msk (0xFUL << CC_HASH_HASH_HW_FLAGS_CW_Pos) /*!< Bit mask of CW field. */
+#define CC_HASH_HASH_HW_FLAGS_CW_One (0x1UL) /*!< One concurrent word used by hash during signature generation */
+#define CC_HASH_HASH_HW_FLAGS_CW_Two (0x2UL) /*!< Two concurrent words used by hash during signature generation */
+
+/* Register: CC_HASH_HASH_SW_RESET */
+/* Description: Reset the HASH engine. */
+
+/* Bit 0 : Writing any value to this address resets the HASH engine. The reset takes 4 CPU clock cycles to complete. */
+#define CC_HASH_HASH_SW_RESET_RESET_Pos (0UL) /*!< Position of RESET field. */
+#define CC_HASH_HASH_SW_RESET_RESET_Msk (0x1UL << CC_HASH_HASH_SW_RESET_RESET_Pos) /*!< Bit mask of RESET field. */
+#define CC_HASH_HASH_SW_RESET_RESET_Enable (0x1UL) /*!< Reset HASH engine. */
+
+/* Register: CC_HASH_HASH_ENDIANNESS */
+/* Description: Configure the endianness of HASH data and padding generation. */
+
+/* Bit 0 : Endianness of HASH data and padding generation. The default value is little-endian. */
+#define CC_HASH_HASH_ENDIANNESS_ENDIAN_Pos (0UL) /*!< Position of ENDIAN field. */
+#define CC_HASH_HASH_ENDIANNESS_ENDIAN_Msk (0x1UL << CC_HASH_HASH_ENDIANNESS_ENDIAN_Pos) /*!< Bit mask of ENDIAN field. */
+#define CC_HASH_HASH_ENDIANNESS_ENDIAN_LittleEndian (0x0UL) /*!< Use little-endian format for data and padding */
+#define CC_HASH_HASH_ENDIANNESS_ENDIAN_BigEndian (0x1UL) /*!< Use big-endian format for data and padding */
+
+
 /* Peripheral: CC_HOST_RGF */
-/* Description: CRYPTOCELL HOST_RGF interface */
+/* Description: CRYPTOCELL HOST register interface */
+
+/* Register: CC_HOST_RGF_IRR */
+/* Description: Interrupt request register. Each bit of this register holds the interrupt
+        status of a single interrupt source. If corresponding IMR bit is
+        unmasked, an interrupt is generated. */
+
+/* Bit 10 : The RNG interrupt status. */
+#define CC_HOST_RGF_IRR_RNG_INT_Pos (10UL) /*!< Position of RNG_INT field. */
+#define CC_HOST_RGF_IRR_RNG_INT_Msk (0x1UL << CC_HOST_RGF_IRR_RNG_INT_Pos) /*!< Bit mask of RNG_INT field. */
+
+/* Bit 9 : The PKA end of operation interrupt status. */
+#define CC_HOST_RGF_IRR_PKA_INT_Pos (9UL) /*!< Position of PKA_INT field. */
+#define CC_HOST_RGF_IRR_PKA_INT_Msk (0x1UL << CC_HOST_RGF_IRR_PKA_INT_Pos) /*!< Bit mask of PKA_INT field. */
+
+/* Bit 8 : The AHB error interrupt status. */
+#define CC_HOST_RGF_IRR_AHB_ERR_INT_Pos (8UL) /*!< Position of AHB_ERR_INT field. */
+#define CC_HOST_RGF_IRR_AHB_ERR_INT_Msk (0x1UL << CC_HOST_RGF_IRR_AHB_ERR_INT_Pos) /*!< Bit mask of AHB_ERR_INT field. */
+
+/* Bit 7 : The DOUT to memory DMA done interrupt status. This interrupt is asserted when all data was delivered from DOUT buffer to memory. */
+#define CC_HOST_RGF_IRR_DOUT_TO_MEM_INT_Pos (7UL) /*!< Position of DOUT_TO_MEM_INT field. */
+#define CC_HOST_RGF_IRR_DOUT_TO_MEM_INT_Msk (0x1UL << CC_HOST_RGF_IRR_DOUT_TO_MEM_INT_Pos) /*!< Bit mask of DOUT_TO_MEM_INT field. */
+
+/* Bit 6 : The memory to DIN DMA done interrupt status. This interrupt is asserted when all data was delivered from memory to DIN buffer. */
+#define CC_HOST_RGF_IRR_MEM_TO_DIN_INT_Pos (6UL) /*!< Position of MEM_TO_DIN_INT field. */
+#define CC_HOST_RGF_IRR_MEM_TO_DIN_INT_Msk (0x1UL << CC_HOST_RGF_IRR_MEM_TO_DIN_INT_Pos) /*!< Bit mask of MEM_TO_DIN_INT field. */
+
+/* Bit 5 : The DOUT to RNG SRAM DMA done interrupt status. This interrupt is asserted when all data was delivered from DOUT buffer to RNG SRAM. */
+#define CC_HOST_RGF_IRR_DOUT_TO_SRAM_INT_Pos (5UL) /*!< Position of DOUT_TO_SRAM_INT field. */
+#define CC_HOST_RGF_IRR_DOUT_TO_SRAM_INT_Msk (0x1UL << CC_HOST_RGF_IRR_DOUT_TO_SRAM_INT_Pos) /*!< Bit mask of DOUT_TO_SRAM_INT field. */
+
+/* Bit 4 : The RNG SRAM to DIN DMA done interrupt status. This interrupt is asserted when all data was delivered from RNG SRAM to DIN buffer. */
+#define CC_HOST_RGF_IRR_SRAM_TO_DIN_INT_Pos (4UL) /*!< Position of SRAM_TO_DIN_INT field. */
+#define CC_HOST_RGF_IRR_SRAM_TO_DIN_INT_Msk (0x1UL << CC_HOST_RGF_IRR_SRAM_TO_DIN_INT_Pos) /*!< Bit mask of SRAM_TO_DIN_INT field. */
+
+/* Register: CC_HOST_RGF_IMR */
+/* Description: Interrupt mask register. Each bit of this register holds the mask of a single interrupt source. */
+
+/* Bit 10 : The RNG interrupt mask. */
+#define CC_HOST_RGF_IMR_RNG_MASK_Pos (10UL) /*!< Position of RNG_MASK field. */
+#define CC_HOST_RGF_IMR_RNG_MASK_Msk (0x1UL << CC_HOST_RGF_IMR_RNG_MASK_Pos) /*!< Bit mask of RNG_MASK field. */
+#define CC_HOST_RGF_IMR_RNG_MASK_IRQEnable (0x0UL) /*!< Do not mask RNG interrupt i.e. interrupt is generated */
+#define CC_HOST_RGF_IMR_RNG_MASK_IRQDisable (0x1UL) /*!< Mask RNG interrupt i.e. no interrupt is generated */
+
+/* Bit 9 : The PKA end of operation interrupt mask. */
+#define CC_HOST_RGF_IMR_PKA_MASK_Pos (9UL) /*!< Position of PKA_MASK field. */
+#define CC_HOST_RGF_IMR_PKA_MASK_Msk (0x1UL << CC_HOST_RGF_IMR_PKA_MASK_Pos) /*!< Bit mask of PKA_MASK field. */
+#define CC_HOST_RGF_IMR_PKA_MASK_IRQEnable (0x0UL) /*!< Do not mask PKA end of operation interrupt i.e. interrupt is generated */
+#define CC_HOST_RGF_IMR_PKA_MASK_IRQDisable (0x1UL) /*!< Mask PKA end of operation interrupt i.e. no interrupt is generated */
+
+/* Bit 8 : The AHB error interrupt mask. */
+#define CC_HOST_RGF_IMR_AHB_ERR_MASK_Pos (8UL) /*!< Position of AHB_ERR_MASK field. */
+#define CC_HOST_RGF_IMR_AHB_ERR_MASK_Msk (0x1UL << CC_HOST_RGF_IMR_AHB_ERR_MASK_Pos) /*!< Bit mask of AHB_ERR_MASK field. */
+#define CC_HOST_RGF_IMR_AHB_ERR_MASK_IRQEnable (0x0UL) /*!< Do not mask AHB error interrupt i.e. interrupt is generated */
+#define CC_HOST_RGF_IMR_AHB_ERR_MASK_IRQDisable (0x1UL) /*!< Mask AHB error interrupt i.e. no interrupt is generated */
+
+/* Bit 7 : The DOUT to memory DMA done interrupt mask. */
+#define CC_HOST_RGF_IMR_DOUT_TO_MEM_MASK_Pos (7UL) /*!< Position of DOUT_TO_MEM_MASK field. */
+#define CC_HOST_RGF_IMR_DOUT_TO_MEM_MASK_Msk (0x1UL << CC_HOST_RGF_IMR_DOUT_TO_MEM_MASK_Pos) /*!< Bit mask of DOUT_TO_MEM_MASK field. */
+#define CC_HOST_RGF_IMR_DOUT_TO_MEM_MASK_IRQEnable (0x0UL) /*!< Do not mask DOUT to memory DMA done interrupt i.e. interrupt is generated */
+#define CC_HOST_RGF_IMR_DOUT_TO_MEM_MASK_IRQDisable (0x1UL) /*!< Mask DOUT to memory DMA done interrupt i.e. no interrupt is generated */
+
+/* Bit 6 : The memory to DIN DMA done interrupt mask. */
+#define CC_HOST_RGF_IMR_MEM_TO_DIN_MASK_Pos (6UL) /*!< Position of MEM_TO_DIN_MASK field. */
+#define CC_HOST_RGF_IMR_MEM_TO_DIN_MASK_Msk (0x1UL << CC_HOST_RGF_IMR_MEM_TO_DIN_MASK_Pos) /*!< Bit mask of MEM_TO_DIN_MASK field. */
+#define CC_HOST_RGF_IMR_MEM_TO_DIN_MASK_IRQEnable (0x0UL) /*!< Do not mask memory to DIN DMA done interrupt i.e. interrupt is generated */
+#define CC_HOST_RGF_IMR_MEM_TO_DIN_MASK_IRQDisable (0x1UL) /*!< Mask memory to DIN DMA done interrupt i.e. no interrupt is generated */
+
+/* Bit 5 : The DOUT to RNG SRAM DMA done interrupt mask. */
+#define CC_HOST_RGF_IMR_DOUT_TO_SRAM_MASK_Pos (5UL) /*!< Position of DOUT_TO_SRAM_MASK field. */
+#define CC_HOST_RGF_IMR_DOUT_TO_SRAM_MASK_Msk (0x1UL << CC_HOST_RGF_IMR_DOUT_TO_SRAM_MASK_Pos) /*!< Bit mask of DOUT_TO_SRAM_MASK field. */
+#define CC_HOST_RGF_IMR_DOUT_TO_SRAM_MASK_IRQEnable (0x0UL) /*!< Do not mask DOUT to RNG SRAM DMA done interrupt i.e. interrupt is generated */
+#define CC_HOST_RGF_IMR_DOUT_TO_SRAM_MASK_IRQDisable (0x1UL) /*!< Mask DOUT to RNG SRAM DMA done interrupt i.e. no interrupt is generated */
+
+/* Bit 4 : The RNG SRAM to DIN DMA done interrupt mask. */
+#define CC_HOST_RGF_IMR_SRAM_TO_DIN_MASK_Pos (4UL) /*!< Position of SRAM_TO_DIN_MASK field. */
+#define CC_HOST_RGF_IMR_SRAM_TO_DIN_MASK_Msk (0x1UL << CC_HOST_RGF_IMR_SRAM_TO_DIN_MASK_Pos) /*!< Bit mask of SRAM_TO_DIN_MASK field. */
+#define CC_HOST_RGF_IMR_SRAM_TO_DIN_MASK_IRQEnable (0x0UL) /*!< Do not mask RNG SRAM to DIN DMA done interrupt i.e. interrupt is generated */
+#define CC_HOST_RGF_IMR_SRAM_TO_DIN_MASK_IRQDisable (0x1UL) /*!< Mask RNG SRAM to DIN DMA done interrupt i.e. no interrupt is generated */
+
+/* Register: CC_HOST_RGF_ICR */
+/* Description: Interrupt clear register. Writing a 1 bit into a field in this register will clear the corresponding bit in IRR. */
+
+/* Bit 10 : The RNG interrupt clear. Register RNG_ISR in the RNG engine must be cleared before this interrupt can be cleared. */
+#define CC_HOST_RGF_ICR_RNG_CLEAR_Pos (10UL) /*!< Position of RNG_CLEAR field. */
+#define CC_HOST_RGF_ICR_RNG_CLEAR_Msk (0x1UL << CC_HOST_RGF_ICR_RNG_CLEAR_Pos) /*!< Bit mask of RNG_CLEAR field. */
+
+/* Bit 9 : The PKA end of operation interrupt clear. */
+#define CC_HOST_RGF_ICR_PKA_CLEAR_Pos (9UL) /*!< Position of PKA_CLEAR field. */
+#define CC_HOST_RGF_ICR_PKA_CLEAR_Msk (0x1UL << CC_HOST_RGF_ICR_PKA_CLEAR_Pos) /*!< Bit mask of PKA_CLEAR field. */
+
+/* Bit 8 : The AHB error interrupt clear. */
+#define CC_HOST_RGF_ICR_AHB_ERR_CLEAR_Pos (8UL) /*!< Position of AHB_ERR_CLEAR field. */
+#define CC_HOST_RGF_ICR_AHB_ERR_CLEAR_Msk (0x1UL << CC_HOST_RGF_ICR_AHB_ERR_CLEAR_Pos) /*!< Bit mask of AHB_ERR_CLEAR field. */
+
+/* Bit 7 : The DOUT to memory DMA done interrupt clear. */
+#define CC_HOST_RGF_ICR_DOUT_TO_MEM_CLEAR_Pos (7UL) /*!< Position of DOUT_TO_MEM_CLEAR field. */
+#define CC_HOST_RGF_ICR_DOUT_TO_MEM_CLEAR_Msk (0x1UL << CC_HOST_RGF_ICR_DOUT_TO_MEM_CLEAR_Pos) /*!< Bit mask of DOUT_TO_MEM_CLEAR field. */
+
+/* Bit 6 : The memory to DIN DMA done interrupt clear. */
+#define CC_HOST_RGF_ICR_MEM_TO_DIN_CLEAR_Pos (6UL) /*!< Position of MEM_TO_DIN_CLEAR field. */
+#define CC_HOST_RGF_ICR_MEM_TO_DIN_CLEAR_Msk (0x1UL << CC_HOST_RGF_ICR_MEM_TO_DIN_CLEAR_Pos) /*!< Bit mask of MEM_TO_DIN_CLEAR field. */
+
+/* Bit 5 : The DOUT to RNG SRAM DMA done interrupt clear. */
+#define CC_HOST_RGF_ICR_DOUT_TO_SRAM_CLEAR_Pos (5UL) /*!< Position of DOUT_TO_SRAM_CLEAR field. */
+#define CC_HOST_RGF_ICR_DOUT_TO_SRAM_CLEAR_Msk (0x1UL << CC_HOST_RGF_ICR_DOUT_TO_SRAM_CLEAR_Pos) /*!< Bit mask of DOUT_TO_SRAM_CLEAR field. */
+
+/* Bit 4 : The RNG SRAM to DIN DMA done interrupt clear. */
+#define CC_HOST_RGF_ICR_SRAM_TO_DIN_CLEAR_Pos (4UL) /*!< Position of SRAM_TO_DIN_CLEAR field. */
+#define CC_HOST_RGF_ICR_SRAM_TO_DIN_CLEAR_Msk (0x1UL << CC_HOST_RGF_ICR_SRAM_TO_DIN_CLEAR_Pos) /*!< Bit mask of SRAM_TO_DIN_CLEAR field. */
+
+/* Register: CC_HOST_RGF_ENDIANNESS */
+/* Description: This register defines the endianness of the Host-accessible registers, and can only be written once. */
+
+/* Bit 15 : DIN read word endianness. */
+#define CC_HOST_RGF_ENDIANNESS_DIN_RD_WBG_Pos (15UL) /*!< Position of DIN_RD_WBG field. */
+#define CC_HOST_RGF_ENDIANNESS_DIN_RD_WBG_Msk (0x1UL << CC_HOST_RGF_ENDIANNESS_DIN_RD_WBG_Pos) /*!< Bit mask of DIN_RD_WBG field. */
+#define CC_HOST_RGF_ENDIANNESS_DIN_RD_WBG_LittleEndian (0x0UL) /*!< Configure DIN read word as little-endian */
+#define CC_HOST_RGF_ENDIANNESS_DIN_RD_WBG_BigEndian (0x1UL) /*!< Configure DIN read word as big-endian */
+
+/* Bit 11 : DOUT write word endianness. */
+#define CC_HOST_RGF_ENDIANNESS_DOUT_WR_WBG_Pos (11UL) /*!< Position of DOUT_WR_WBG field. */
+#define CC_HOST_RGF_ENDIANNESS_DOUT_WR_WBG_Msk (0x1UL << CC_HOST_RGF_ENDIANNESS_DOUT_WR_WBG_Pos) /*!< Bit mask of DOUT_WR_WBG field. */
+#define CC_HOST_RGF_ENDIANNESS_DOUT_WR_WBG_LittleEndian (0x0UL) /*!< Configure DOUT write word as little-endian */
+#define CC_HOST_RGF_ENDIANNESS_DOUT_WR_WBG_BigEndian (0x1UL) /*!< Configure DOUT write word as big-endian */
+
+/* Bit 7 : DIN read endianness. */
+#define CC_HOST_RGF_ENDIANNESS_DIN_RD_BG_Pos (7UL) /*!< Position of DIN_RD_BG field. */
+#define CC_HOST_RGF_ENDIANNESS_DIN_RD_BG_Msk (0x1UL << CC_HOST_RGF_ENDIANNESS_DIN_RD_BG_Pos) /*!< Bit mask of DIN_RD_BG field. */
+#define CC_HOST_RGF_ENDIANNESS_DIN_RD_BG_LittleEndian (0x0UL) /*!< Configure DIN read as little-endian */
+#define CC_HOST_RGF_ENDIANNESS_DIN_RD_BG_BigEndian (0x1UL) /*!< Configure DIN read as big-endian */
+
+/* Bit 3 : DOUT write endianness. */
+#define CC_HOST_RGF_ENDIANNESS_DOUT_WR_BG_Pos (3UL) /*!< Position of DOUT_WR_BG field. */
+#define CC_HOST_RGF_ENDIANNESS_DOUT_WR_BG_Msk (0x1UL << CC_HOST_RGF_ENDIANNESS_DOUT_WR_BG_Pos) /*!< Bit mask of DOUT_WR_BG field. */
+#define CC_HOST_RGF_ENDIANNESS_DOUT_WR_BG_LittleEndian (0x0UL) /*!< Configure DOUT write as little-endian */
+#define CC_HOST_RGF_ENDIANNESS_DOUT_WR_BG_BigEndian (0x1UL) /*!< Configure DOUT write as big-endian */
+
+/* Register: CC_HOST_RGF_HOST_SIGNATURE */
+/* Description: This register holds the CRYPTOCELL subsystem signature. See reset value. */
+
+/* Bits 31..0 : Fixed-value identification signature used by host driver to verify CRYPTOCELL presence at this address. */
+#define CC_HOST_RGF_HOST_SIGNATURE_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_HOST_RGF_HOST_SIGNATURE_VALUE_Msk (0xFFFFFFFFUL << CC_HOST_RGF_HOST_SIGNATURE_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_HOST_RGF_HOST_BOOT */
+/* Description: Hardware configuration of the CRYPTOCELL subsystem. Reset value holds the supported features. */
+
+/* Bit 30 : If this flag is set, the AES engine is present */
+#define CC_HOST_RGF_HOST_BOOT_AES_EXISTS_LOCAL_Pos (30UL) /*!< Position of AES_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_AES_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_AES_EXISTS_LOCAL_Pos) /*!< Bit mask of AES_EXISTS_LOCAL field. */
+
+/* Bit 29 : If this flag is set, the AES engine only support encryption */
+#define CC_HOST_RGF_HOST_BOOT_ONLY_ENCRYPT_LOCAL_Pos (29UL) /*!< Position of ONLY_ENCRYPT_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_ONLY_ENCRYPT_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_ONLY_ENCRYPT_LOCAL_Pos) /*!< Bit mask of ONLY_ENCRYPT_LOCAL field. */
+
+/* Bit 28 : If this flag is set, the AES engine supports 192/256 bits key sizes */
+#define CC_HOST_RGF_HOST_BOOT_SUPPORT_256_192_KEY_LOCAL_Pos (28UL) /*!< Position of SUPPORT_256_192_KEY_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_SUPPORT_256_192_KEY_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_SUPPORT_256_192_KEY_LOCAL_Pos) /*!< Bit mask of SUPPORT_256_192_KEY_LOCAL field. */
+
+/* Bit 27 : If this flag is set, the AES engine supports tunneling operations */
+#define CC_HOST_RGF_HOST_BOOT_TUNNELING_ENB_LOCAL_Pos (27UL) /*!< Position of TUNNELING_ENB_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_TUNNELING_ENB_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_TUNNELING_ENB_LOCAL_Pos) /*!< Bit mask of TUNNELING_ENB_LOCAL field. */
+
+/* Bit 26 : If this flag is set, the AES engine data input support byte size resolution */
+#define CC_HOST_RGF_HOST_BOOT_AES_DIN_BYTE_RESOLUTION_LOCAL_Pos (26UL) /*!< Position of AES_DIN_BYTE_RESOLUTION_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_AES_DIN_BYTE_RESOLUTION_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_AES_DIN_BYTE_RESOLUTION_LOCAL_Pos) /*!< Bit mask of AES_DIN_BYTE_RESOLUTION_LOCAL field. */
+
+/* Bit 25 : If this flag is set, AES CTR mode is supported */
+#define CC_HOST_RGF_HOST_BOOT_CTR_EXISTS_LOCAL_Pos (25UL) /*!< Position of CTR_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_CTR_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_CTR_EXISTS_LOCAL_Pos) /*!< Bit mask of CTR_EXISTS_LOCAL field. */
+
+/* Bit 24 : If this flag is set, AES XEX mode is supported */
+#define CC_HOST_RGF_HOST_BOOT_AES_XEX_EXISTS_LOCAL_Pos (24UL) /*!< Position of AES_XEX_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_AES_XEX_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_AES_XEX_EXISTS_LOCAL_Pos) /*!< Bit mask of AES_XEX_EXISTS_LOCAL field. */
+
+/* Bit 23 : If this flag is set, AES XEX mode T-value calculation in HW is supported */
+#define CC_HOST_RGF_HOST_BOOT_AES_XEX_HW_T_CALC_LOCAL_Pos (23UL) /*!< Position of AES_XEX_HW_T_CALC_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_AES_XEX_HW_T_CALC_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_AES_XEX_HW_T_CALC_LOCAL_Pos) /*!< Bit mask of AES_XEX_HW_T_CALC_LOCAL field. */
+
+/* Bit 22 : If this flag is set, AES CCM mode is supported */
+#define CC_HOST_RGF_HOST_BOOT_AES_CCM_EXISTS_LOCAL_Pos (22UL) /*!< Position of AES_CCM_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_AES_CCM_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_AES_CCM_EXISTS_LOCAL_Pos) /*!< Bit mask of AES_CCM_EXISTS_LOCAL field. */
+
+/* Bit 21 : If this flag is set, AES CMAC mode is supported */
+#define CC_HOST_RGF_HOST_BOOT_AES_CMAC_EXISTS_LOCAL_Pos (21UL) /*!< Position of AES_CMAC_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_AES_CMAC_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_AES_CMAC_EXISTS_LOCAL_Pos) /*!< Bit mask of AES_CMAC_EXISTS_LOCAL field. */
+
+/* Bit 20 : If this flag is set, AES XCBC-MAC mode is supported */
+#define CC_HOST_RGF_HOST_BOOT_AES_XCBC_MAC_EXISTS_LOCAL_Pos (20UL) /*!< Position of AES_XCBC_MAC_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_AES_XCBC_MAC_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_AES_XCBC_MAC_EXISTS_LOCAL_Pos) /*!< Bit mask of AES_XCBC_MAC_EXISTS_LOCAL field. */
+
+/* Bit 19 : If this flag is set, the DES engine is present */
+#define CC_HOST_RGF_HOST_BOOT_DES_EXISTS_LOCAL_Pos (19UL) /*!< Position of DES_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_DES_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_DES_EXISTS_LOCAL_Pos) /*!< Bit mask of DES_EXISTS_LOCAL field. */
+
+/* Bit 18 : If this flag is set, the C2 engine is present */
+#define CC_HOST_RGF_HOST_BOOT_C2_EXISTS_LOCAL_Pos (18UL) /*!< Position of C2_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_C2_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_C2_EXISTS_LOCAL_Pos) /*!< Bit mask of C2_EXISTS_LOCAL field. */
+
+/* Bit 17 : If this flag is set, the HASH engine is present */
+#define CC_HOST_RGF_HOST_BOOT_HASH_EXISTS_LOCAL_Pos (17UL) /*!< Position of HASH_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_HASH_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_HASH_EXISTS_LOCAL_Pos) /*!< Bit mask of HASH_EXISTS_LOCAL field. */
+
+/* Bit 16 : If this flag is set, the HASH engine supports MD5 */
+#define CC_HOST_RGF_HOST_BOOT_MD5_PRSNT_LOCAL_Pos (16UL) /*!< Position of MD5_PRSNT_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_MD5_PRSNT_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_MD5_PRSNT_LOCAL_Pos) /*!< Bit mask of MD5_PRSNT_LOCAL field. */
+
+/* Bit 15 : If this flag is set, the HASH engine supports SHA256 */
+#define CC_HOST_RGF_HOST_BOOT_SHA_256_PRSNT_LOCAL_Pos (15UL) /*!< Position of SHA_256_PRSNT_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_SHA_256_PRSNT_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_SHA_256_PRSNT_LOCAL_Pos) /*!< Bit mask of SHA_256_PRSNT_LOCAL field. */
+
+/* Bit 14 : If this flag is set, the HASH engine supports SHA512 */
+#define CC_HOST_RGF_HOST_BOOT_SHA_512_PRSNT_LOCAL_Pos (14UL) /*!< Position of SHA_512_PRSNT_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_SHA_512_PRSNT_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_SHA_512_PRSNT_LOCAL_Pos) /*!< Bit mask of SHA_512_PRSNT_LOCAL field. */
+
+/* Bit 13 : If this flag is set, the RC4 engine is present */
+#define CC_HOST_RGF_HOST_BOOT_RC4_EXISTS_LOCAL_Pos (13UL) /*!< Position of RC4_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_RC4_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_RC4_EXISTS_LOCAL_Pos) /*!< Bit mask of RC4_EXISTS_LOCAL field. */
+
+/* Bit 12 : If this flag is set, the PKA engine is present */
+#define CC_HOST_RGF_HOST_BOOT_PKA_EXISTS_LOCAL_Pos (12UL) /*!< Position of PKA_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_PKA_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_PKA_EXISTS_LOCAL_Pos) /*!< Bit mask of PKA_EXISTS_LOCAL field. */
+
+/* Bit 11 : If this flag is set, the RNG engine is present */
+#define CC_HOST_RGF_HOST_BOOT_RNG_EXISTS_LOCAL_Pos (11UL) /*!< Position of RNG_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_RNG_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_RNG_EXISTS_LOCAL_Pos) /*!< Bit mask of RNG_EXISTS_LOCAL field. */
+
+/* Bit 10 : If this flag is set, PAU is supported */
+#define CC_HOST_RGF_HOST_BOOT_PAU_EXISTS_LOCAL_Pos (10UL) /*!< Position of PAU_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_PAU_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_PAU_EXISTS_LOCAL_Pos) /*!< Bit mask of PAU_EXISTS_LOCAL field. */
+
+/* Bit 9 : If this flag is set, Descriptors are supported */
+#define CC_HOST_RGF_HOST_BOOT_DSCRPTR_EXISTS_LOCAL_Pos (9UL) /*!< Position of DSCRPTR_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_DSCRPTR_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_DSCRPTR_EXISTS_LOCAL_Pos) /*!< Bit mask of DSCRPTR_EXISTS_LOCAL field. */
+
+/* Bits 8..6 : SRAM size */
+#define CC_HOST_RGF_HOST_BOOT_SRAM_SIZE_LOCAL_Pos (6UL) /*!< Position of SRAM_SIZE_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_SRAM_SIZE_LOCAL_Msk (0x7UL << CC_HOST_RGF_HOST_BOOT_SRAM_SIZE_LOCAL_Pos) /*!< Bit mask of SRAM_SIZE_LOCAL field. */
+
+/* Bit 5 : If this flag is set, RKEK ECC is supported */
+#define CC_HOST_RGF_HOST_BOOT_RKEK_ECC_EXISTS_LOCAL_N_Pos (5UL) /*!< Position of RKEK_ECC_EXISTS_LOCAL_N field. */
+#define CC_HOST_RGF_HOST_BOOT_RKEK_ECC_EXISTS_LOCAL_N_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_RKEK_ECC_EXISTS_LOCAL_N_Pos) /*!< Bit mask of RKEK_ECC_EXISTS_LOCAL_N field. */
+
+/* Bit 3 : If this flag is set, external secure memory is supported */
+#define CC_HOST_RGF_HOST_BOOT_EXT_MEM_SECURED_LOCAL_Pos (3UL) /*!< Position of EXT_MEM_SECURED_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_EXT_MEM_SECURED_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_EXT_MEM_SECURED_LOCAL_Pos) /*!< Bit mask of EXT_MEM_SECURED_LOCAL field. */
+
+/* Bit 2 : If this flag is set, HASH in fuses is supported */
+#define CC_HOST_RGF_HOST_BOOT_HASH_IN_FUSES_LOCAL_Pos (2UL) /*!< Position of HASH_IN_FUSES_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_HASH_IN_FUSES_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_HASH_IN_FUSES_LOCAL_Pos) /*!< Bit mask of HASH_IN_FUSES_LOCAL field. */
+
+/* Bit 1 : If this flag is set, large RKEK is supported */
+#define CC_HOST_RGF_HOST_BOOT_LARGE_RKEK_LOCAL_Pos (1UL) /*!< Position of LARGE_RKEK_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_LARGE_RKEK_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_LARGE_RKEK_LOCAL_Pos) /*!< Bit mask of LARGE_RKEK_LOCAL field. */
+
+/* Bit 0 : If this flag is set, full power gating is implemented */
+#define CC_HOST_RGF_HOST_BOOT_POWER_GATING_EXISTS_LOCAL_Pos (0UL) /*!< Position of POWER_GATING_EXISTS_LOCAL field. */
+#define CC_HOST_RGF_HOST_BOOT_POWER_GATING_EXISTS_LOCAL_Msk (0x1UL << CC_HOST_RGF_HOST_BOOT_POWER_GATING_EXISTS_LOCAL_Pos) /*!< Bit mask of POWER_GATING_EXISTS_LOCAL field. */
 
 /* Register: CC_HOST_RGF_HOST_CRYPTOKEY_SEL */
-/* Description: AES hardware key select */
+/* Description: AES hardware key select. */
 
 /* Bits 1..0 : Select the source of the HW key that is used by the AES engine */
 #define CC_HOST_RGF_HOST_CRYPTOKEY_SEL_HOST_CRYPTOKEY_SEL_Pos (0UL) /*!< Position of HOST_CRYPTOKEY_SEL field. */
@@ -98,9 +1848,11 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Register: CC_HOST_RGF_HOST_IOT_KDR0 */
 /* Description: This register holds bits 31:0 of K_DR. The value of this register is saved in the CRYPTOCELL AO power domain. Reading from this address returns the K_DR valid status indicating if K_DR is successfully retained. */
 
-/* Bits 31..0 : Write: K_DR bits 31:0. Read: 0x00000000 when 128-bit K_DR key value is not yet retained in the CRYPTOCELL AO power domain. Read: 0x00000001 when 128-bit K_DR key value is successfully retained in the CRYPTOCELL AO power domain. */
+/* Bits 31..0 : This register holds bits 31:0 of K_DR. The value of this register is saved in the CRYPTOCELL AO power domain. Reading from this address returns the K_DR valid status indicating if K_DR is successfully retained. Write: K_DR bits 31:0. */
 #define CC_HOST_RGF_HOST_IOT_KDR0_HOST_IOT_KDR0_Pos (0UL) /*!< Position of HOST_IOT_KDR0 field. */
 #define CC_HOST_RGF_HOST_IOT_KDR0_HOST_IOT_KDR0_Msk (0xFFFFFFFFUL << CC_HOST_RGF_HOST_IOT_KDR0_HOST_IOT_KDR0_Pos) /*!< Bit mask of HOST_IOT_KDR0 field. */
+#define CC_HOST_RGF_HOST_IOT_KDR0_HOST_IOT_KDR0_NotRetained (0x00000000UL) /*!< Read: 128 bits K_DR key value is not yet retained in the CRYPTOCELL AO power domain. */
+#define CC_HOST_RGF_HOST_IOT_KDR0_HOST_IOT_KDR0_Retained (0x00000001UL) /*!< Read: 128 bits K_DR key value is successfully retained in the CRYPTOCELL AO power domain. */
 
 /* Register: CC_HOST_RGF_HOST_IOT_KDR1 */
 /* Description: This register holds bits 63:32 of K_DR. The value of this register is saved in the CRYPTOCELL AO power domain. */
@@ -124,7 +1876,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CC_HOST_RGF_HOST_IOT_KDR3_HOST_IOT_KDR3_Msk (0xFFFFFFFFUL << CC_HOST_RGF_HOST_IOT_KDR3_HOST_IOT_KDR3_Pos) /*!< Bit mask of HOST_IOT_KDR3 field. */
 
 /* Register: CC_HOST_RGF_HOST_IOT_LCS */
-/* Description: Controls lifecycle state (LCS) for CRYPTOCELL subsystem */
+/* Description: Controls life-cycle state (LCS) for CRYPTOCELL subsystem */
 
 /* Bit 8 : Read-only field. Indicates if CRYPTOCELL LCS has been successfully configured since last reset. */
 #define CC_HOST_RGF_HOST_IOT_LCS_LCS_IS_VALID_Pos (8UL) /*!< Position of LCS_IS_VALID field. */
@@ -132,11 +1884,672 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CC_HOST_RGF_HOST_IOT_LCS_LCS_IS_VALID_Invalid (0x0UL) /*!< Valid LCS not yet retained in the CRYPTOCELL AO power domain */
 #define CC_HOST_RGF_HOST_IOT_LCS_LCS_IS_VALID_Valid (0x1UL) /*!< Valid LCS successfully retained in the CRYPTOCELL AO power domain */
 
-/* Bits 2..0 : Lifecycle state value. This field is write-once per reset. */
+/* Bits 2..0 : Life-cycle state value. This field is write-once per reset. */
 #define CC_HOST_RGF_HOST_IOT_LCS_LCS_Pos (0UL) /*!< Position of LCS field. */
 #define CC_HOST_RGF_HOST_IOT_LCS_LCS_Msk (0x7UL << CC_HOST_RGF_HOST_IOT_LCS_LCS_Pos) /*!< Bit mask of LCS field. */
-#define CC_HOST_RGF_HOST_IOT_LCS_LCS_Debug (0x0UL) /*!< CC310 operates in debug mode */
+#define CC_HOST_RGF_HOST_IOT_LCS_LCS_DebugEnable (0x0UL) /*!< CC310 operates in debug mode */
 #define CC_HOST_RGF_HOST_IOT_LCS_LCS_Secure (0x2UL) /*!< CC310 operates in secure mode */
+
+
+/* Peripheral: CC_MISC */
+/* Description: CRYPTOCELL MISC interface */
+
+/* Register: CC_MISC_AES_CLK */
+/* Description: Clock control for the AES engine. */
+
+/* Bit 0 : Enables clock for the AES engine. */
+#define CC_MISC_AES_CLK_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
+#define CC_MISC_AES_CLK_ENABLE_Msk (0x1UL << CC_MISC_AES_CLK_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_MISC_AES_CLK_ENABLE_Disable (0x0UL) /*!< Disable clock for the AES engine. */
+#define CC_MISC_AES_CLK_ENABLE_Enable (0x1UL) /*!< Enable clock for the AES engine. */
+
+/* Register: CC_MISC_HASH_CLK */
+/* Description: Clock control for the HASH engine. */
+
+/* Bit 0 : Enables clock for the HASH engine. */
+#define CC_MISC_HASH_CLK_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
+#define CC_MISC_HASH_CLK_ENABLE_Msk (0x1UL << CC_MISC_HASH_CLK_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_MISC_HASH_CLK_ENABLE_Disable (0x0UL) /*!< Disable clock for the HASH engine. */
+#define CC_MISC_HASH_CLK_ENABLE_Enable (0x1UL) /*!< Enable clock for the HASH engine. */
+
+/* Register: CC_MISC_PKA_CLK */
+/* Description: Clock control for the PKA engine. */
+
+/* Bit 0 : Enables clock for the PKA engine. */
+#define CC_MISC_PKA_CLK_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
+#define CC_MISC_PKA_CLK_ENABLE_Msk (0x1UL << CC_MISC_PKA_CLK_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_MISC_PKA_CLK_ENABLE_Disable (0x0UL) /*!< Disable clock for the PKA engine. */
+#define CC_MISC_PKA_CLK_ENABLE_Enable (0x1UL) /*!< Enable clock for the PKA engine. */
+
+/* Register: CC_MISC_DMA_CLK */
+/* Description: Clock control for the DMA engines. */
+
+/* Bit 0 : Enables clock for the DMA engines. */
+#define CC_MISC_DMA_CLK_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
+#define CC_MISC_DMA_CLK_ENABLE_Msk (0x1UL << CC_MISC_DMA_CLK_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_MISC_DMA_CLK_ENABLE_Disable (0x0UL) /*!< Disable clock for the DMA engines. */
+#define CC_MISC_DMA_CLK_ENABLE_Enable (0x1UL) /*!< Enable clock for the DMA engines. */
+
+/* Register: CC_MISC_CLK_STATUS */
+/* Description: CRYPTOCELL clocks status register. */
+
+/* Bit 8 : Status of DMA engines clock. */
+#define CC_MISC_CLK_STATUS_DMA_CLK_Pos (8UL) /*!< Position of DMA_CLK field. */
+#define CC_MISC_CLK_STATUS_DMA_CLK_Msk (0x1UL << CC_MISC_CLK_STATUS_DMA_CLK_Pos) /*!< Bit mask of DMA_CLK field. */
+#define CC_MISC_CLK_STATUS_DMA_CLK_Disabled (0x0UL) /*!< Clocks for DMA engines are disabled */
+#define CC_MISC_CLK_STATUS_DMA_CLK_Enabled (0x1UL) /*!< Clocks for DMA engines are enabled */
+
+/* Bit 7 : Status of CHACHA engine clock. */
+#define CC_MISC_CLK_STATUS_CHACHA_CLK_Pos (7UL) /*!< Position of CHACHA_CLK field. */
+#define CC_MISC_CLK_STATUS_CHACHA_CLK_Msk (0x1UL << CC_MISC_CLK_STATUS_CHACHA_CLK_Pos) /*!< Bit mask of CHACHA_CLK field. */
+#define CC_MISC_CLK_STATUS_CHACHA_CLK_Disabled (0x0UL) /*!< Clock for CHACHA engine is disabled */
+#define CC_MISC_CLK_STATUS_CHACHA_CLK_Enabled (0x1UL) /*!< Clock for CHACHA engine is enabled */
+
+/* Bit 3 : Status of PKA engine clock. */
+#define CC_MISC_CLK_STATUS_PKA_CLK_Pos (3UL) /*!< Position of PKA_CLK field. */
+#define CC_MISC_CLK_STATUS_PKA_CLK_Msk (0x1UL << CC_MISC_CLK_STATUS_PKA_CLK_Pos) /*!< Bit mask of PKA_CLK field. */
+#define CC_MISC_CLK_STATUS_PKA_CLK_Disabled (0x0UL) /*!< Clock for PKA engine is disabled */
+#define CC_MISC_CLK_STATUS_PKA_CLK_Enabled (0x1UL) /*!< Clock for PKA engine is enabled */
+
+/* Bit 2 : Status of HASH engine clock. */
+#define CC_MISC_CLK_STATUS_HASH_CLK_Pos (2UL) /*!< Position of HASH_CLK field. */
+#define CC_MISC_CLK_STATUS_HASH_CLK_Msk (0x1UL << CC_MISC_CLK_STATUS_HASH_CLK_Pos) /*!< Bit mask of HASH_CLK field. */
+#define CC_MISC_CLK_STATUS_HASH_CLK_Disabled (0x0UL) /*!< Clock for HASH engine is disabled */
+#define CC_MISC_CLK_STATUS_HASH_CLK_Enabled (0x1UL) /*!< Clock for HASH engine is enabled */
+
+/* Bit 0 : Status of AES engine clock. */
+#define CC_MISC_CLK_STATUS_AES_CLK_Pos (0UL) /*!< Position of AES_CLK field. */
+#define CC_MISC_CLK_STATUS_AES_CLK_Msk (0x1UL << CC_MISC_CLK_STATUS_AES_CLK_Pos) /*!< Bit mask of AES_CLK field. */
+#define CC_MISC_CLK_STATUS_AES_CLK_Disabled (0x0UL) /*!< Clock for AES engine is disabled */
+#define CC_MISC_CLK_STATUS_AES_CLK_Enabled (0x1UL) /*!< Clock for AES engine is enabled */
+
+/* Register: CC_MISC_CHACHA_CLK */
+/* Description: Clock control for the CHACHA engine. */
+
+/* Bit 0 : Enables clock for the CHACHA engine. */
+#define CC_MISC_CHACHA_CLK_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
+#define CC_MISC_CHACHA_CLK_ENABLE_Msk (0x1UL << CC_MISC_CHACHA_CLK_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_MISC_CHACHA_CLK_ENABLE_Disable (0x0UL) /*!< Disable clock for the CHACHA engine. */
+#define CC_MISC_CHACHA_CLK_ENABLE_Enable (0x1UL) /*!< Enable clock for the CHACHA engine. */
+
+
+/* Peripheral: CC_PKA */
+/* Description: CRYPTOCELL PKA engine */
+
+/* Register: CC_PKA_MEMORY_MAP */
+/* Description: Description collection: Register for mapping the virtual register R[n] to a physical address in the PKA SRAM. */
+
+/* Bits 9..1 : The physical word address used for the virtual register. */
+#define CC_PKA_MEMORY_MAP_ADDR_Pos (1UL) /*!< Position of ADDR field. */
+#define CC_PKA_MEMORY_MAP_ADDR_Msk (0x1FFUL << CC_PKA_MEMORY_MAP_ADDR_Pos) /*!< Bit mask of ADDR field. */
+
+/* Register: CC_PKA_OPCODE */
+/* Description: Operation code to be executed by the PKA engine. Writing to this register triggers the PKA operation. */
+
+/* Bits 31..27 : Operation code to be executed by the PKA engine */
+#define CC_PKA_OPCODE_OPCODE_Pos (27UL) /*!< Position of OPCODE field. */
+#define CC_PKA_OPCODE_OPCODE_Msk (0x1FUL << CC_PKA_OPCODE_OPCODE_Pos) /*!< Bit mask of OPCODE field. */
+#define CC_PKA_OPCODE_OPCODE_Terminate (0x00UL) /*!< Terminate operation */
+#define CC_PKA_OPCODE_OPCODE_AddInc (0x04UL) /*!< Add or Increment */
+#define CC_PKA_OPCODE_OPCODE_SubDecNeg (0x05UL) /*!< Subtract, Decrement, or Negate */
+#define CC_PKA_OPCODE_OPCODE_ModAddInc (0x06UL) /*!< Modular Add or Modular Increment */
+#define CC_PKA_OPCODE_OPCODE_ModSubDecNeg (0x07UL) /*!< Modular Subtract, Modular Decrement, or Modular Negate */
+#define CC_PKA_OPCODE_OPCODE_ANDTST0CLR0 (0x08UL) /*!< Perform AND, test, or clear */
+#define CC_PKA_OPCODE_OPCODE_ORCOPYSET0 (0x09UL) /*!< Perform OR, copy, or set bits */
+#define CC_PKA_OPCODE_OPCODE_XORFLP0INVCMP (0x0AUL) /*!< Perform XOR, flip bits, invert, or compare */
+#define CC_PKA_OPCODE_OPCODE_SHR0 (0x0CUL) /*!< Shift right 0 operation */
+#define CC_PKA_OPCODE_OPCODE_SHR1 (0x0DUL) /*!< Shift right 1 operation */
+#define CC_PKA_OPCODE_OPCODE_SHL0 (0x0EUL) /*!< Shift left 0 operation */
+#define CC_PKA_OPCODE_OPCODE_SHL1 (0x0FUL) /*!< Shift left 1 operation */
+#define CC_PKA_OPCODE_OPCODE_MulLow (0x10UL) /*!< Multiply low operation */
+#define CC_PKA_OPCODE_OPCODE_ModMul (0x11UL) /*!< Modular multiply operation */
+#define CC_PKA_OPCODE_OPCODE_ModMulN (0x12UL) /*!< Modular multiply N operation */
+#define CC_PKA_OPCODE_OPCODE_ModExp (0x13UL) /*!< Modular exponentiation operation */
+#define CC_PKA_OPCODE_OPCODE_Division (0x14UL) /*!< Division operation */
+#define CC_PKA_OPCODE_OPCODE_ModInv (0x15UL) /*!< Modular inversion operation */
+#define CC_PKA_OPCODE_OPCODE_ModDiv (0x16UL) /*!< Modular division operation */
+#define CC_PKA_OPCODE_OPCODE_MulHigh (0x17UL) /*!< Multiply high operation */
+#define CC_PKA_OPCODE_OPCODE_ModMLAC (0x18UL) /*!< Modular multiplication acceleration */
+#define CC_PKA_OPCODE_OPCODE_ModMLACNR (0x19UL) /*!< Modular multiplication acceleration where final reduction is omitted */
+#define CC_PKA_OPCODE_OPCODE_Reduction (0x1BUL) /*!< Reduction operation */
+
+/* Bits 26..24 : The length of the operands. This value serves as an PKA length register index. E.g.: if LEN field value is set to 0, PKA_L[0] holds the size of the operands. */
+#define CC_PKA_OPCODE_LEN_Pos (24UL) /*!< Position of LEN field. */
+#define CC_PKA_OPCODE_LEN_Msk (0x7UL << CC_PKA_OPCODE_LEN_Pos) /*!< Bit mask of LEN field. */
+
+/* Bit 23 : This field controls the interpretation of REG_A. */
+#define CC_PKA_OPCODE_CONST_A_Pos (23UL) /*!< Position of CONST_A field. */
+#define CC_PKA_OPCODE_CONST_A_Msk (0x1UL << CC_PKA_OPCODE_CONST_A_Pos) /*!< Bit mask of CONST_A field. */
+#define CC_PKA_OPCODE_CONST_A_Register (0x0UL) /*!< REG_A is intepreted as a register index. */
+#define CC_PKA_OPCODE_CONST_A_Constant (0x1UL) /*!< REG_A is intepreted as a constant. */
+
+/* Bits 22..18 : Operand A virtual register index. */
+#define CC_PKA_OPCODE_REG_A_Pos (18UL) /*!< Position of REG_A field. */
+#define CC_PKA_OPCODE_REG_A_Msk (0x1FUL << CC_PKA_OPCODE_REG_A_Pos) /*!< Bit mask of REG_A field. */
+
+/* Bit 17 : This field controls the interpretation of REG_B. */
+#define CC_PKA_OPCODE_CONST_B_Pos (17UL) /*!< Position of CONST_B field. */
+#define CC_PKA_OPCODE_CONST_B_Msk (0x1UL << CC_PKA_OPCODE_CONST_B_Pos) /*!< Bit mask of CONST_B field. */
+#define CC_PKA_OPCODE_CONST_B_Register (0x0UL) /*!< REG_B is intepreted as a register index. */
+#define CC_PKA_OPCODE_CONST_B_Constant (0x1UL) /*!< REG_B is intepreted as a constant. */
+
+/* Bits 16..12 : Operand B virtual register index. */
+#define CC_PKA_OPCODE_REG_B_Pos (12UL) /*!< Position of REG_B field. */
+#define CC_PKA_OPCODE_REG_B_Msk (0x1FUL << CC_PKA_OPCODE_REG_B_Pos) /*!< Bit mask of REG_B field. */
+
+/* Bit 11 : This field controls the interpretation of REG_R. */
+#define CC_PKA_OPCODE_DISCARD_R_Pos (11UL) /*!< Position of DISCARD_R field. */
+#define CC_PKA_OPCODE_DISCARD_R_Msk (0x1UL << CC_PKA_OPCODE_DISCARD_R_Pos) /*!< Bit mask of DISCARD_R field. */
+#define CC_PKA_OPCODE_DISCARD_R_Register (0x0UL) /*!< REG_R is intepreted as a register index. */
+#define CC_PKA_OPCODE_DISCARD_R_Discard (0x1UL) /*!< Result is discarded. */
+
+/* Bits 10..6 : Result register virtual register index. */
+#define CC_PKA_OPCODE_REG_R_Pos (6UL) /*!< Position of REG_R field. */
+#define CC_PKA_OPCODE_REG_R_Msk (0x1FUL << CC_PKA_OPCODE_REG_R_Pos) /*!< Bit mask of REG_R field. */
+
+/* Bits 5..0 : Holds the operation tag or the operand C virtual register index. */
+#define CC_PKA_OPCODE_TAG_Pos (0UL) /*!< Position of TAG field. */
+#define CC_PKA_OPCODE_TAG_Msk (0x3FUL << CC_PKA_OPCODE_TAG_Pos) /*!< Bit mask of TAG field. */
+
+/* Register: CC_PKA_N_NP_T0_T1_ADDR */
+/* Description: This register defines the N, Np, T0, and T1 virtual register index. */
+
+/* Bits 19..15 : Temporary register 1 virtual register index. Default is R31. */
+#define CC_PKA_N_NP_T0_T1_ADDR_T1_VIRTUAL_ADDR_Pos (15UL) /*!< Position of T1_VIRTUAL_ADDR field. */
+#define CC_PKA_N_NP_T0_T1_ADDR_T1_VIRTUAL_ADDR_Msk (0x1FUL << CC_PKA_N_NP_T0_T1_ADDR_T1_VIRTUAL_ADDR_Pos) /*!< Bit mask of T1_VIRTUAL_ADDR field. */
+
+/* Bits 14..10 : Temporary register 0 virtual register index. Default is R30. */
+#define CC_PKA_N_NP_T0_T1_ADDR_T0_VIRTUAL_ADDR_Pos (10UL) /*!< Position of T0_VIRTUAL_ADDR field. */
+#define CC_PKA_N_NP_T0_T1_ADDR_T0_VIRTUAL_ADDR_Msk (0x1FUL << CC_PKA_N_NP_T0_T1_ADDR_T0_VIRTUAL_ADDR_Pos) /*!< Bit mask of T0_VIRTUAL_ADDR field. */
+
+/* Bits 9..5 : Register Np virtual register index. Default is R1. */
+#define CC_PKA_N_NP_T0_T1_ADDR_NP_VIRTUAL_ADDR_Pos (5UL) /*!< Position of NP_VIRTUAL_ADDR field. */
+#define CC_PKA_N_NP_T0_T1_ADDR_NP_VIRTUAL_ADDR_Msk (0x1FUL << CC_PKA_N_NP_T0_T1_ADDR_NP_VIRTUAL_ADDR_Pos) /*!< Bit mask of NP_VIRTUAL_ADDR field. */
+
+/* Bits 4..0 : Register N virtual register index. Default is R0. */
+#define CC_PKA_N_NP_T0_T1_ADDR_N_VIRTUAL_ADDR_Pos (0UL) /*!< Position of N_VIRTUAL_ADDR field. */
+#define CC_PKA_N_NP_T0_T1_ADDR_N_VIRTUAL_ADDR_Msk (0x1FUL << CC_PKA_N_NP_T0_T1_ADDR_N_VIRTUAL_ADDR_Pos) /*!< Bit mask of N_VIRTUAL_ADDR field. */
+
+/* Register: CC_PKA_PKA_STATUS */
+/* Description: This register holds the status for the PKA pipeline. */
+
+/* Bits 20..16 : Opcode of the last operation */
+#define CC_PKA_PKA_STATUS_OPCODE_Pos (16UL) /*!< Position of OPCODE field. */
+#define CC_PKA_PKA_STATUS_OPCODE_Msk (0x1FUL << CC_PKA_PKA_STATUS_OPCODE_Pos) /*!< Bit mask of OPCODE field. */
+
+/* Bit 15 : Indicates the modular inverse of zero. */
+#define CC_PKA_PKA_STATUS_MODINV_OF_ZERO_Pos (15UL) /*!< Position of MODINV_OF_ZERO field. */
+#define CC_PKA_PKA_STATUS_MODINV_OF_ZERO_Msk (0x1UL << CC_PKA_PKA_STATUS_MODINV_OF_ZERO_Pos) /*!< Bit mask of MODINV_OF_ZERO field. */
+
+/* Bit 14 : Indication if the division is done by zero. */
+#define CC_PKA_PKA_STATUS_DIV_BY_ZERO_Pos (14UL) /*!< Position of DIV_BY_ZERO field. */
+#define CC_PKA_PKA_STATUS_DIV_BY_ZERO_Msk (0x1UL << CC_PKA_PKA_STATUS_DIV_BY_ZERO_Pos) /*!< Bit mask of DIV_BY_ZERO field. */
+
+/* Bit 13 : Modular overflow flag. */
+#define CC_PKA_PKA_STATUS_ALU_MODOVRFLW_Pos (13UL) /*!< Position of ALU_MODOVRFLW field. */
+#define CC_PKA_PKA_STATUS_ALU_MODOVRFLW_Msk (0x1UL << CC_PKA_PKA_STATUS_ALU_MODOVRFLW_Pos) /*!< Bit mask of ALU_MODOVRFLW field. */
+
+/* Bit 12 : Indicates if the result of ALU OUT is zero. */
+#define CC_PKA_PKA_STATUS_ALU_OUT_ZERO_Pos (12UL) /*!< Position of ALU_OUT_ZERO field. */
+#define CC_PKA_PKA_STATUS_ALU_OUT_ZERO_Msk (0x1UL << CC_PKA_PKA_STATUS_ALU_OUT_ZERO_Pos) /*!< Bit mask of ALU_OUT_ZERO field. */
+
+/* Bit 11 : Indicates the last subtraction operation sign. */
+#define CC_PKA_PKA_STATUS_ALU_SUB_IS_ZERO_Pos (11UL) /*!< Position of ALU_SUB_IS_ZERO field. */
+#define CC_PKA_PKA_STATUS_ALU_SUB_IS_ZERO_Msk (0x1UL << CC_PKA_PKA_STATUS_ALU_SUB_IS_ZERO_Pos) /*!< Bit mask of ALU_SUB_IS_ZERO field. */
+
+/* Bit 10 : Holds the carry of the last modular operation. */
+#define CC_PKA_PKA_STATUS_ALU_CARRY_MOD_Pos (10UL) /*!< Position of ALU_CARRY_MOD field. */
+#define CC_PKA_PKA_STATUS_ALU_CARRY_MOD_Msk (0x1UL << CC_PKA_PKA_STATUS_ALU_CARRY_MOD_Pos) /*!< Bit mask of ALU_CARRY_MOD field. */
+
+/* Bit 9 : Holds the carry of the last ALU operation. */
+#define CC_PKA_PKA_STATUS_ALU_CARRY_Pos (9UL) /*!< Position of ALU_CARRY field. */
+#define CC_PKA_PKA_STATUS_ALU_CARRY_Msk (0x1UL << CC_PKA_PKA_STATUS_ALU_CARRY_Pos) /*!< Bit mask of ALU_CARRY field. */
+
+/* Bit 8 : Indicates the MSB sign of the last operation. */
+#define CC_PKA_PKA_STATUS_ALU_SIGN_OUT_Pos (8UL) /*!< Position of ALU_SIGN_OUT field. */
+#define CC_PKA_PKA_STATUS_ALU_SIGN_OUT_Msk (0x1UL << CC_PKA_PKA_STATUS_ALU_SIGN_OUT_Pos) /*!< Bit mask of ALU_SIGN_OUT field. */
+
+/* Bits 7..4 : The least significant 4-bits of the operand updated in shift operation. */
+#define CC_PKA_PKA_STATUS_ALU_LSB_4BITS_Pos (4UL) /*!< Position of ALU_LSB_4BITS field. */
+#define CC_PKA_PKA_STATUS_ALU_LSB_4BITS_Msk (0xFUL << CC_PKA_PKA_STATUS_ALU_LSB_4BITS_Pos) /*!< Bit mask of ALU_LSB_4BITS field. */
+
+/* Bits 3..0 : The most significant 4-bits of the operand updated in shift operation. */
+#define CC_PKA_PKA_STATUS_ALU_MSB_4BITS_Pos (0UL) /*!< Position of ALU_MSB_4BITS field. */
+#define CC_PKA_PKA_STATUS_ALU_MSB_4BITS_Msk (0xFUL << CC_PKA_PKA_STATUS_ALU_MSB_4BITS_Pos) /*!< Bit mask of ALU_MSB_4BITS field. */
+
+/* Register: CC_PKA_PKA_SW_RESET */
+/* Description: Reset the PKA engine. */
+
+/* Bit 0 : Writing any value to this address resets the PKA engine. The reset takes 4 CPU clock cycles to complete. */
+#define CC_PKA_PKA_SW_RESET_RESET_Pos (0UL) /*!< Position of RESET field. */
+#define CC_PKA_PKA_SW_RESET_RESET_Msk (0x1UL << CC_PKA_PKA_SW_RESET_RESET_Pos) /*!< Bit mask of RESET field. */
+#define CC_PKA_PKA_SW_RESET_RESET_Enable (0x1UL) /*!< Reset PKA engine. */
+
+/* Register: CC_PKA_PKA_L */
+/* Description: Description collection: This register holds the operands bit size. */
+
+/* Bits 12..0 : Operand bit size. */
+#define CC_PKA_PKA_L_OpSize_Pos (0UL) /*!< Position of OpSize field. */
+#define CC_PKA_PKA_L_OpSize_Msk (0x1FFFUL << CC_PKA_PKA_L_OpSize_Pos) /*!< Bit mask of OpSize field. */
+
+/* Register: CC_PKA_PKA_PIPE */
+/* Description: Status register indicating if the PKA pipeline is ready to receive a new OPCODE. */
+
+/* Bit 0 : PKA pipeline status. */
+#define CC_PKA_PKA_PIPE_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_PKA_PKA_PIPE_STATUS_Msk (0x1UL << CC_PKA_PKA_PIPE_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_PKA_PKA_PIPE_STATUS_NotReady (0x0UL) /*!< PKA pipeline is not ready for a new OPCODE */
+#define CC_PKA_PKA_PIPE_STATUS_Ready (0x1UL) /*!< PKA pipeline is ready for a new OPCODE */
+
+/* Register: CC_PKA_PKA_DONE */
+/* Description: Status register indicating if the PKA operation has been completed. */
+
+/* Bit 0 : PKA operation status. */
+#define CC_PKA_PKA_DONE_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_PKA_PKA_DONE_STATUS_Msk (0x1UL << CC_PKA_PKA_DONE_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_PKA_PKA_DONE_STATUS_Processing (0x0UL) /*!< PKA operation is processing */
+#define CC_PKA_PKA_DONE_STATUS_Completed (0x1UL) /*!< PKA operation is completed and pipeline is empty */
+
+/* Register: CC_PKA_PKA_VERSION */
+/* Description: PKA engine HW version. Reset value holds the version. */
+
+/* Bits 31..0 :   */
+#define CC_PKA_PKA_VERSION_PKA_VERSION_Pos (0UL) /*!< Position of PKA_VERSION field. */
+#define CC_PKA_PKA_VERSION_PKA_VERSION_Msk (0xFFFFFFFFUL << CC_PKA_PKA_VERSION_PKA_VERSION_Pos) /*!< Bit mask of PKA_VERSION field. */
+
+/* Register: CC_PKA_PKA_SRAM_WADDR */
+/* Description: Start address in PKA SRAM for subsequent write transactions. */
+
+/* Bits 31..0 : PKA SRAM start address for write transaction */
+#define CC_PKA_PKA_SRAM_WADDR_ADDR_Pos (0UL) /*!< Position of ADDR field. */
+#define CC_PKA_PKA_SRAM_WADDR_ADDR_Msk (0xFFFFFFFFUL << CC_PKA_PKA_SRAM_WADDR_ADDR_Pos) /*!< Bit mask of ADDR field. */
+
+/* Register: CC_PKA_PKA_SRAM_WDATA */
+/* Description: Write data to PKA SRAM. Writing to this register triggers a DMA transaction writing data into PKA SRAM. The DMA address offset is automatically incremented during write. */
+
+/* Bits 31..0 : Data to write to PKA SRAM. */
+#define CC_PKA_PKA_SRAM_WDATA_DATA_Pos (0UL) /*!< Position of DATA field. */
+#define CC_PKA_PKA_SRAM_WDATA_DATA_Msk (0xFFFFFFFFUL << CC_PKA_PKA_SRAM_WDATA_DATA_Pos) /*!< Bit mask of DATA field. */
+
+/* Register: CC_PKA_PKA_SRAM_RDATA */
+/* Description: Read data from PKA SRAM. Reading from this register triggers a DMA transaction read data from PKA SRAM. The DMA address offset is automatically incremented during read. */
+
+/* Bits 31..0 : Data to read from PKA SRAM */
+#define CC_PKA_PKA_SRAM_RDATA_DATA_Pos (0UL) /*!< Position of DATA field. */
+#define CC_PKA_PKA_SRAM_RDATA_DATA_Msk (0xFFFFFFFFUL << CC_PKA_PKA_SRAM_RDATA_DATA_Pos) /*!< Bit mask of DATA field. */
+
+/* Register: CC_PKA_PKA_SRAM_WCLEAR */
+/* Description: Register for clearing PKA SRAM write buffer. */
+
+/* Bits 31..0 : Clear the PKA SRAM write buffer. */
+#define CC_PKA_PKA_SRAM_WCLEAR_CLEAR_Pos (0UL) /*!< Position of CLEAR field. */
+#define CC_PKA_PKA_SRAM_WCLEAR_CLEAR_Msk (0xFFFFFFFFUL << CC_PKA_PKA_SRAM_WCLEAR_CLEAR_Pos) /*!< Bit mask of CLEAR field. */
+
+/* Register: CC_PKA_PKA_SRAM_RADDR */
+/* Description: Start address in PKA SRAM for subsequent read transactions. */
+
+/* Bits 31..0 : PKA SRAM start address for read transaction */
+#define CC_PKA_PKA_SRAM_RADDR_ADDR_Pos (0UL) /*!< Position of ADDR field. */
+#define CC_PKA_PKA_SRAM_RADDR_ADDR_Msk (0xFFFFFFFFUL << CC_PKA_PKA_SRAM_RADDR_ADDR_Pos) /*!< Bit mask of ADDR field. */
+
+
+/* Peripheral: CC_RNG */
+/* Description: CRYPTOCELL RNG engine */
+
+/* Register: CC_RNG_RNG_IMR */
+/* Description: Interrupt mask register. Each bit of this register holds the mask of a single interrupt source. */
+
+/* Bit 5 : See RNG_ISR for explanation on this interrupt. */
+#define CC_RNG_RNG_IMR_DMA_DONE_MASK_Pos (5UL) /*!< Position of DMA_DONE_MASK field. */
+#define CC_RNG_RNG_IMR_DMA_DONE_MASK_Msk (0x1UL << CC_RNG_RNG_IMR_DMA_DONE_MASK_Pos) /*!< Bit mask of DMA_DONE_MASK field. */
+#define CC_RNG_RNG_IMR_DMA_DONE_MASK_IRQEnable (0x0UL) /*!< Do not mask the RNG DMA completion interrupt i.e. interrupt is generated */
+#define CC_RNG_RNG_IMR_DMA_DONE_MASK_IRQDisable (0x1UL) /*!< Mask the RNG DMA completion interrupt i.e. no interrupt is generated */
+
+/* Bit 4 : See RNG_ISR for explanation on this interrupt. */
+#define CC_RNG_RNG_IMR_WATCHDOG_MASK_Pos (4UL) /*!< Position of WATCHDOG_MASK field. */
+#define CC_RNG_RNG_IMR_WATCHDOG_MASK_Msk (0x1UL << CC_RNG_RNG_IMR_WATCHDOG_MASK_Pos) /*!< Bit mask of WATCHDOG_MASK field. */
+#define CC_RNG_RNG_IMR_WATCHDOG_MASK_IRQEnable (0x0UL) /*!< Do not mask the watchdog interrupt i.e. interrupt is generated */
+#define CC_RNG_RNG_IMR_WATCHDOG_MASK_IRQDisable (0x1UL) /*!< Mask the watchdog interrupt i.e. no interrupt is generated */
+
+/* Bit 3 : See RNG_ISR for explanation on this interrupt. */
+#define CC_RNG_RNG_IMR_VNC_ERR_MASK_Pos (3UL) /*!< Position of VNC_ERR_MASK field. */
+#define CC_RNG_RNG_IMR_VNC_ERR_MASK_Msk (0x1UL << CC_RNG_RNG_IMR_VNC_ERR_MASK_Pos) /*!< Bit mask of VNC_ERR_MASK field. */
+#define CC_RNG_RNG_IMR_VNC_ERR_MASK_IRQEnable (0x0UL) /*!< Do not mask the von Neumann corrector error interrupt i.e. interrupt is generated */
+#define CC_RNG_RNG_IMR_VNC_ERR_MASK_IRQDisable (0x1UL) /*!< Mask the von Neumann corrector error interrupt i.e. no interrupt is generated */
+
+/* Bit 2 : See RNG_ISR for explanation on this interrupt. */
+#define CC_RNG_RNG_IMR_CRNGT_ERR_MASK_Pos (2UL) /*!< Position of CRNGT_ERR_MASK field. */
+#define CC_RNG_RNG_IMR_CRNGT_ERR_MASK_Msk (0x1UL << CC_RNG_RNG_IMR_CRNGT_ERR_MASK_Pos) /*!< Bit mask of CRNGT_ERR_MASK field. */
+#define CC_RNG_RNG_IMR_CRNGT_ERR_MASK_IRQEnable (0x0UL) /*!< Do not mask the CRNGT error interrupt i.e. interrupt is generated */
+#define CC_RNG_RNG_IMR_CRNGT_ERR_MASK_IRQDisable (0x1UL) /*!< Mask the CRNGT error interrupt i.e. no interrupt is generated */
+
+/* Bit 1 : See RNG_ISR for explanation on this interrupt. */
+#define CC_RNG_RNG_IMR_AUTOCORR_ERR_MASK_Pos (1UL) /*!< Position of AUTOCORR_ERR_MASK field. */
+#define CC_RNG_RNG_IMR_AUTOCORR_ERR_MASK_Msk (0x1UL << CC_RNG_RNG_IMR_AUTOCORR_ERR_MASK_Pos) /*!< Bit mask of AUTOCORR_ERR_MASK field. */
+#define CC_RNG_RNG_IMR_AUTOCORR_ERR_MASK_IRQEnable (0x0UL) /*!< Do not mask autocorrelation interrupt i.e. interrupt is generated */
+#define CC_RNG_RNG_IMR_AUTOCORR_ERR_MASK_IRQDisable (0x1UL) /*!< Mask autocorrelation interrupt i.e. no interrupt is generated */
+
+/* Bit 0 : See RNG_ISR for explanation on this interrupt. */
+#define CC_RNG_RNG_IMR_EHR_VALID_MASK_Pos (0UL) /*!< Position of EHR_VALID_MASK field. */
+#define CC_RNG_RNG_IMR_EHR_VALID_MASK_Msk (0x1UL << CC_RNG_RNG_IMR_EHR_VALID_MASK_Pos) /*!< Bit mask of EHR_VALID_MASK field. */
+#define CC_RNG_RNG_IMR_EHR_VALID_MASK_IRQEnable (0x0UL) /*!< Do not mask EHR interrupt i.e. interrupt is generated */
+#define CC_RNG_RNG_IMR_EHR_VALID_MASK_IRQDisable (0x1UL) /*!< Mask EHR interrupt i.e. no interrupt is generated */
+
+/* Register: CC_RNG_RNG_ISR */
+/* Description: Interrupt status register. Each bit of this register holds the interrupt
+        status of a single interrupt source. If corresponding RNG_IMR bit is
+        unmasked, an interrupt is generated. */
+
+/* Bit 5 : RNG DMA to SRAM is completed. */
+#define CC_RNG_RNG_ISR_DMA_DONE_INT_Pos (5UL) /*!< Position of DMA_DONE_INT field. */
+#define CC_RNG_RNG_ISR_DMA_DONE_INT_Msk (0x1UL << CC_RNG_RNG_ISR_DMA_DONE_INT_Pos) /*!< Bit mask of DMA_DONE_INT field. */
+
+/* Bit 4 : Maximum number of CPU clock cycles per sample have been exceeded. See RNG_WATCHDOG_VAL for more information. */
+#define CC_RNG_RNG_ISR_WATCHDOG_INT_Pos (4UL) /*!< Position of WATCHDOG_INT field. */
+#define CC_RNG_RNG_ISR_WATCHDOG_INT_Msk (0x1UL << CC_RNG_RNG_ISR_WATCHDOG_INT_Pos) /*!< Bit mask of WATCHDOG_INT field. */
+
+/* Bit 3 : von Neumann corrector error. Failure occurs if 32 consecutive collected bits are identical, ZERO, or ONE. */
+#define CC_RNG_RNG_ISR_VNC_ERR_INT_Pos (3UL) /*!< Position of VNC_ERR_INT field. */
+#define CC_RNG_RNG_ISR_VNC_ERR_INT_Msk (0x1UL << CC_RNG_RNG_ISR_VNC_ERR_INT_Pos) /*!< Bit mask of VNC_ERR_INT field. */
+
+/* Bit 2 : Continuous random number generator test error. Failure occurs when two consecutive blocks of 16 collected bits are equal. */
+#define CC_RNG_RNG_ISR_CRNGT_ERR_INT_Pos (2UL) /*!< Position of CRNGT_ERR_INT field. */
+#define CC_RNG_RNG_ISR_CRNGT_ERR_INT_Msk (0x1UL << CC_RNG_RNG_ISR_CRNGT_ERR_INT_Pos) /*!< Bit mask of CRNGT_ERR_INT field. */
+
+/* Bit 1 : Autocorrelation error. Failure occurs when autocorrelation test has failed four times in a row. Once set, the TRNG ceases to function until next reset. */
+#define CC_RNG_RNG_ISR_AUTOCORR_ERR_INT_Pos (1UL) /*!< Position of AUTOCORR_ERR_INT field. */
+#define CC_RNG_RNG_ISR_AUTOCORR_ERR_INT_Msk (0x1UL << CC_RNG_RNG_ISR_AUTOCORR_ERR_INT_Pos) /*!< Bit mask of AUTOCORR_ERR_INT field. */
+
+/* Bit 0 : 192-bits have been collected and are ready to be read. */
+#define CC_RNG_RNG_ISR_EHR_VALID_INT_Pos (0UL) /*!< Position of EHR_VALID_INT field. */
+#define CC_RNG_RNG_ISR_EHR_VALID_INT_Msk (0x1UL << CC_RNG_RNG_ISR_EHR_VALID_INT_Pos) /*!< Bit mask of EHR_VALID_INT field. */
+
+/* Register: CC_RNG_RNG_ICR */
+/* Description: Interrupt clear register. Writing a 1 bit into a field in this register
+        will clear the corresponding bit in RNG_ISR. */
+
+/* Bit 5 : Writing value '1' clears corresponding bit in RNG_ISR */
+#define CC_RNG_RNG_ICR_DMA_DONE_CLEAR_Pos (5UL) /*!< Position of DMA_DONE_CLEAR field. */
+#define CC_RNG_RNG_ICR_DMA_DONE_CLEAR_Msk (0x1UL << CC_RNG_RNG_ICR_DMA_DONE_CLEAR_Pos) /*!< Bit mask of DMA_DONE_CLEAR field. */
+
+/* Bit 4 : Writing value '1' clears corresponding bit in RNG_ISR */
+#define CC_RNG_RNG_ICR_WATCHDOG_CLEAR_Pos (4UL) /*!< Position of WATCHDOG_CLEAR field. */
+#define CC_RNG_RNG_ICR_WATCHDOG_CLEAR_Msk (0x1UL << CC_RNG_RNG_ICR_WATCHDOG_CLEAR_Pos) /*!< Bit mask of WATCHDOG_CLEAR field. */
+
+/* Bit 3 : Writing value '1' clears corresponding bit in RNG_ISR */
+#define CC_RNG_RNG_ICR_VNC_ERR_CLEAR_Pos (3UL) /*!< Position of VNC_ERR_CLEAR field. */
+#define CC_RNG_RNG_ICR_VNC_ERR_CLEAR_Msk (0x1UL << CC_RNG_RNG_ICR_VNC_ERR_CLEAR_Pos) /*!< Bit mask of VNC_ERR_CLEAR field. */
+
+/* Bit 2 : Writing value '1' clears corresponding bit in RNG_ISR */
+#define CC_RNG_RNG_ICR_CRNGT_ERR_CLEAR_Pos (2UL) /*!< Position of CRNGT_ERR_CLEAR field. */
+#define CC_RNG_RNG_ICR_CRNGT_ERR_CLEAR_Msk (0x1UL << CC_RNG_RNG_ICR_CRNGT_ERR_CLEAR_Pos) /*!< Bit mask of CRNGT_ERR_CLEAR field. */
+
+/* Bit 1 : Cannot be cleared by software! Only RNG reset clears this bit. */
+#define CC_RNG_RNG_ICR_AUTOCORR_ERR_CLEAR_Pos (1UL) /*!< Position of AUTOCORR_ERR_CLEAR field. */
+#define CC_RNG_RNG_ICR_AUTOCORR_ERR_CLEAR_Msk (0x1UL << CC_RNG_RNG_ICR_AUTOCORR_ERR_CLEAR_Pos) /*!< Bit mask of AUTOCORR_ERR_CLEAR field. */
+
+/* Bit 0 : Writing value '1' clears corresponding bit in RNG_ISR */
+#define CC_RNG_RNG_ICR_EHR_VALID_CLEAR_Pos (0UL) /*!< Position of EHR_VALID_CLEAR field. */
+#define CC_RNG_RNG_ICR_EHR_VALID_CLEAR_Msk (0x1UL << CC_RNG_RNG_ICR_EHR_VALID_CLEAR_Pos) /*!< Bit mask of EHR_VALID_CLEAR field. */
+
+/* Register: CC_RNG_TRNG_CONFIG */
+/* Description: TRNG ring oscillator length configuration */
+
+/* Bits 1..0 : Set the length of the oscillator ring (= the number of inverters) out of four possible configurations. */
+#define CC_RNG_TRNG_CONFIG_ROSC_LEN_Pos (0UL) /*!< Position of ROSC_LEN field. */
+#define CC_RNG_TRNG_CONFIG_ROSC_LEN_Msk (0x3UL << CC_RNG_TRNG_CONFIG_ROSC_LEN_Pos) /*!< Bit mask of ROSC_LEN field. */
+#define CC_RNG_TRNG_CONFIG_ROSC_LEN_ROSC1 (0x0UL) /*!< Use shortest ROSC1 ring oscillator configuration. */
+#define CC_RNG_TRNG_CONFIG_ROSC_LEN_ROSC2 (0x1UL) /*!< Use ROSC2 ring oscillator configuration. */
+#define CC_RNG_TRNG_CONFIG_ROSC_LEN_ROSC3 (0x2UL) /*!< Use ROSC3 ring oscillator configuration. */
+#define CC_RNG_TRNG_CONFIG_ROSC_LEN_ROSC4 (0x3UL) /*!< Use longest ROSC4 ring oscillator configuration. */
+
+/* Register: CC_RNG_TRNG_VALID */
+/* Description: This register indicates if TRNG entropy collection is valid. */
+
+/* Bit 0 : A value of 1 indicates that collection of bits in the TRNG is completed, and data can be read from EHR_DATA registers. */
+#define CC_RNG_TRNG_VALID_EHR_DATA_Pos (0UL) /*!< Position of EHR_DATA field. */
+#define CC_RNG_TRNG_VALID_EHR_DATA_Msk (0x1UL << CC_RNG_TRNG_VALID_EHR_DATA_Pos) /*!< Bit mask of EHR_DATA field. */
+#define CC_RNG_TRNG_VALID_EHR_DATA_NotValid (0x0UL) /*!< Collection of bits not valid. */
+#define CC_RNG_TRNG_VALID_EHR_DATA_Valid (0x1UL) /*!< Collection of bits valid. */
+
+/* Register: CC_RNG_EHR_DATA */
+/* Description: Description collection: The entropy holding registers (EHR) hold 192-bits random data collected by the TRNG. The initial EHR_DATA[0] register holds the least significant bits [31:0] of the random data value. */
+
+/* Bits 31..0 : Random data value. */
+#define CC_RNG_EHR_DATA_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_RNG_EHR_DATA_VALUE_Msk (0xFFFFFFFFUL << CC_RNG_EHR_DATA_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_RNG_NOISE_SOURCE */
+/* Description: This register controls the ring oscillator circuit used as a noise source. */
+
+/* Bit 0 : Enable or disable the noise source. */
+#define CC_RNG_NOISE_SOURCE_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
+#define CC_RNG_NOISE_SOURCE_ENABLE_Msk (0x1UL << CC_RNG_NOISE_SOURCE_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_RNG_NOISE_SOURCE_ENABLE_Disabled (0x0UL) /*!< Noise source is disabled */
+#define CC_RNG_NOISE_SOURCE_ENABLE_Enabled (0x1UL) /*!< Noise source is enabled */
+
+/* Register: CC_RNG_SAMPLE_CNT */
+/* Description: Sample count defining the number of CPU clock cycles between two consecutive noise source samples. */
+
+/* Bits 31..0 : Number of CPU clock cycles between two consecutive noise source samples. */
+#define CC_RNG_SAMPLE_CNT_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define CC_RNG_SAMPLE_CNT_VALUE_Msk (0xFFFFFFFFUL << CC_RNG_SAMPLE_CNT_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: CC_RNG_AUTOCORR_STATISTIC */
+/* Description: Statistics counter for autocorrelation test activations. Statistics collection is stopped if one of the counters reach its limit of all ones. */
+
+/* Bits 21..14 : Count each time an autocorrelation test fails. Any write to the field resets the counter. */
+#define CC_RNG_AUTOCORR_STATISTIC_AUTOCORR_FAILS_Pos (14UL) /*!< Position of AUTOCORR_FAILS field. */
+#define CC_RNG_AUTOCORR_STATISTIC_AUTOCORR_FAILS_Msk (0xFFUL << CC_RNG_AUTOCORR_STATISTIC_AUTOCORR_FAILS_Pos) /*!< Bit mask of AUTOCORR_FAILS field. */
+
+/* Bits 13..0 : Count each time an autocorrelation test starts. Any write to the field resets the counter. */
+#define CC_RNG_AUTOCORR_STATISTIC_AUTOCORR_TRYS_Pos (0UL) /*!< Position of AUTOCORR_TRYS field. */
+#define CC_RNG_AUTOCORR_STATISTIC_AUTOCORR_TRYS_Msk (0x3FFFUL << CC_RNG_AUTOCORR_STATISTIC_AUTOCORR_TRYS_Pos) /*!< Bit mask of AUTOCORR_TRYS field. */
+
+/* Register: CC_RNG_TRNG_DEBUG */
+/* Description: Debug register for the TRNG. This register is used to bypass TRNG tests in hardware. */
+
+/* Bit 3 : Bypass the autocorrelation test. */
+#define CC_RNG_TRNG_DEBUG_AUTOCORR_BYPASS_Pos (3UL) /*!< Position of AUTOCORR_BYPASS field. */
+#define CC_RNG_TRNG_DEBUG_AUTOCORR_BYPASS_Msk (0x1UL << CC_RNG_TRNG_DEBUG_AUTOCORR_BYPASS_Pos) /*!< Bit mask of AUTOCORR_BYPASS field. */
+#define CC_RNG_TRNG_DEBUG_AUTOCORR_BYPASS_Disabled (0x0UL) /*!< Autocorrelation test is active */
+#define CC_RNG_TRNG_DEBUG_AUTOCORR_BYPASS_Enabled (0x1UL) /*!< Bypass the autocorrelation test */
+
+/* Bit 2 : Bypass the Continuous Random Number Generator Test (CRNGT). */
+#define CC_RNG_TRNG_DEBUG_CRNGT_BYPASS_Pos (2UL) /*!< Position of CRNGT_BYPASS field. */
+#define CC_RNG_TRNG_DEBUG_CRNGT_BYPASS_Msk (0x1UL << CC_RNG_TRNG_DEBUG_CRNGT_BYPASS_Pos) /*!< Bit mask of CRNGT_BYPASS field. */
+#define CC_RNG_TRNG_DEBUG_CRNGT_BYPASS_Disabled (0x0UL) /*!< CRNGT is active */
+#define CC_RNG_TRNG_DEBUG_CRNGT_BYPASS_Enabled (0x1UL) /*!< Bypass CRNGT */
+
+/* Bit 1 : Bypass the von Neumann corrector post-processing test, including the 32 consecutive bits test. */
+#define CC_RNG_TRNG_DEBUG_VNC_BYPASS_Pos (1UL) /*!< Position of VNC_BYPASS field. */
+#define CC_RNG_TRNG_DEBUG_VNC_BYPASS_Msk (0x1UL << CC_RNG_TRNG_DEBUG_VNC_BYPASS_Pos) /*!< Bit mask of VNC_BYPASS field. */
+#define CC_RNG_TRNG_DEBUG_VNC_BYPASS_Disabled (0x0UL) /*!< von Neumann corrector post-processing is active */
+#define CC_RNG_TRNG_DEBUG_VNC_BYPASS_Enabled (0x1UL) /*!< Bypass the von Neumann corrector */
+
+/* Register: CC_RNG_RNG_SW_RESET */
+/* Description: Reset the RNG engine. */
+
+/* Bit 0 : Writing any value to this address resets the RNG engine. The reset takes 4 CPU clock cycles to complete. */
+#define CC_RNG_RNG_SW_RESET_RESET_Pos (0UL) /*!< Position of RESET field. */
+#define CC_RNG_RNG_SW_RESET_RESET_Msk (0x1UL << CC_RNG_RNG_SW_RESET_RESET_Pos) /*!< Bit mask of RESET field. */
+#define CC_RNG_RNG_SW_RESET_RESET_Enable (0x1UL) /*!< Reset RNG engine. */
+
+/* Register: CC_RNG_RNG_BUSY */
+/* Description: Status register for RNG engine activity. */
+
+/* Bit 1 : TRNG status. */
+#define CC_RNG_RNG_BUSY_TRNG_STATUS_Pos (1UL) /*!< Position of TRNG_STATUS field. */
+#define CC_RNG_RNG_BUSY_TRNG_STATUS_Msk (0x1UL << CC_RNG_RNG_BUSY_TRNG_STATUS_Pos) /*!< Bit mask of TRNG_STATUS field. */
+#define CC_RNG_RNG_BUSY_TRNG_STATUS_Idle (0x0UL) /*!< TRNG is idle */
+#define CC_RNG_RNG_BUSY_TRNG_STATUS_Busy (0x1UL) /*!< TRNG is busy */
+
+/* Bit 0 : RNG engine status. */
+#define CC_RNG_RNG_BUSY_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_RNG_RNG_BUSY_STATUS_Msk (0x1UL << CC_RNG_RNG_BUSY_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_RNG_RNG_BUSY_STATUS_Idle (0x0UL) /*!< RNG engine is idle */
+#define CC_RNG_RNG_BUSY_STATUS_Busy (0x1UL) /*!< RNG engine is busy */
+
+/* Register: CC_RNG_TRNG_RESET */
+/* Description: Reset the TRNG, including internal counter of collected bits and registers EHR_DATA and TRNG_VALID. */
+
+/* Bit 0 : Writing any value to this address resets the internal bits counter and registers EHR_DATA and TRNG_VALID. Register NOISE_SOURCE must be disabled in order for the reset to take place. */
+#define CC_RNG_TRNG_RESET_RESET_Pos (0UL) /*!< Position of RESET field. */
+#define CC_RNG_TRNG_RESET_RESET_Msk (0x1UL << CC_RNG_TRNG_RESET_RESET_Pos) /*!< Bit mask of RESET field. */
+#define CC_RNG_TRNG_RESET_RESET_Enable (0x1UL) /*!< Reset TRNG. */
+
+/* Register: CC_RNG_RNG_HW_FLAGS */
+/* Description: Hardware configuration of RNG engine. Reset value holds the supported features. */
+
+/* Bit 7 :   */
+#define CC_RNG_RNG_HW_FLAGS_RNG_USE_5_SBOXES_Pos (7UL) /*!< Position of RNG_USE_5_SBOXES field. */
+#define CC_RNG_RNG_HW_FLAGS_RNG_USE_5_SBOXES_Msk (0x1UL << CC_RNG_RNG_HW_FLAGS_RNG_USE_5_SBOXES_Pos) /*!< Bit mask of RNG_USE_5_SBOXES field. */
+#define CC_RNG_RNG_HW_FLAGS_RNG_USE_5_SBOXES_Disable (0x0UL) /*!< 20 SBOX AES */
+#define CC_RNG_RNG_HW_FLAGS_RNG_USE_5_SBOXES_Enable (0x1UL) /*!< 5 SBOX AES */
+
+/* Bit 6 : If this flag is set, the engine include support for automatic reseeding. */
+#define CC_RNG_RNG_HW_FLAGS_RESEEDING_EXISTS_Pos (6UL) /*!< Position of RESEEDING_EXISTS field. */
+#define CC_RNG_RNG_HW_FLAGS_RESEEDING_EXISTS_Msk (0x1UL << CC_RNG_RNG_HW_FLAGS_RESEEDING_EXISTS_Pos) /*!< Bit mask of RESEEDING_EXISTS field. */
+
+/* Bit 5 : If this flag is set, the engine include support for known answer tests. */
+#define CC_RNG_RNG_HW_FLAGS_KAT_EXISTS_Pos (5UL) /*!< Position of KAT_EXISTS field. */
+#define CC_RNG_RNG_HW_FLAGS_KAT_EXISTS_Msk (0x1UL << CC_RNG_RNG_HW_FLAGS_KAT_EXISTS_Pos) /*!< Bit mask of KAT_EXISTS field. */
+
+/* Bit 4 : If this flag is set, the engine include a pseudo-random number generator. */
+#define CC_RNG_RNG_HW_FLAGS_PRNG_EXISTS_Pos (4UL) /*!< Position of PRNG_EXISTS field. */
+#define CC_RNG_RNG_HW_FLAGS_PRNG_EXISTS_Msk (0x1UL << CC_RNG_RNG_HW_FLAGS_PRNG_EXISTS_Pos) /*!< Bit mask of PRNG_EXISTS field. */
+
+/* Bit 3 : If this flag is set, the engine include support for bypassing TRNG tests. */
+#define CC_RNG_RNG_HW_FLAGS_BYPASS_EXISTS_Pos (3UL) /*!< Position of BYPASS_EXISTS field. */
+#define CC_RNG_RNG_HW_FLAGS_BYPASS_EXISTS_Msk (0x1UL << CC_RNG_RNG_HW_FLAGS_BYPASS_EXISTS_Pos) /*!< Bit mask of BYPASS_EXISTS field. */
+
+/* Bit 2 : If this flag is set, the engine include support for autocorrelation test. */
+#define CC_RNG_RNG_HW_FLAGS_AUTOCORR_EXISTS_Pos (2UL) /*!< Position of AUTOCORR_EXISTS field. */
+#define CC_RNG_RNG_HW_FLAGS_AUTOCORR_EXISTS_Msk (0x1UL << CC_RNG_RNG_HW_FLAGS_AUTOCORR_EXISTS_Pos) /*!< Bit mask of AUTOCORR_EXISTS field. */
+
+/* Bit 1 : If this flag is set, the engine include support for continuous random number generator test. */
+#define CC_RNG_RNG_HW_FLAGS_CRNGT_EXISTS_Pos (1UL) /*!< Position of CRNGT_EXISTS field. */
+#define CC_RNG_RNG_HW_FLAGS_CRNGT_EXISTS_Msk (0x1UL << CC_RNG_RNG_HW_FLAGS_CRNGT_EXISTS_Pos) /*!< Bit mask of CRNGT_EXISTS field. */
+
+/* Bit 0 : Data width supported by the entropy collector */
+#define CC_RNG_RNG_HW_FLAGS_EHR_WIDTH_Pos (0UL) /*!< Position of EHR_WIDTH field. */
+#define CC_RNG_RNG_HW_FLAGS_EHR_WIDTH_Msk (0x1UL << CC_RNG_RNG_HW_FLAGS_EHR_WIDTH_Pos) /*!< Bit mask of EHR_WIDTH field. */
+#define CC_RNG_RNG_HW_FLAGS_EHR_WIDTH_128Bits (0x0UL) /*!< 128 bits EHR width */
+#define CC_RNG_RNG_HW_FLAGS_EHR_WIDTH_192Bits (0x1UL) /*!< 192 bits EHR width */
+
+/* Register: CC_RNG_RNG_CLK */
+/* Description: Control clock for the RNG engine. */
+
+/* Bit 0 : Enables clock for the RNG engine. */
+#define CC_RNG_RNG_CLK_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
+#define CC_RNG_RNG_CLK_ENABLE_Msk (0x1UL << CC_RNG_RNG_CLK_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_RNG_RNG_CLK_ENABLE_Disable (0x0UL) /*!< Disable clock for RNG engine. */
+#define CC_RNG_RNG_CLK_ENABLE_Enable (0x1UL) /*!< Enable clock for RNG engine. */
+
+/* Register: CC_RNG_RNG_DMA */
+/* Description: Writing to this register enables the RNG DMA engine. */
+
+/* Bit 0 :   */
+#define CC_RNG_RNG_DMA_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
+#define CC_RNG_RNG_DMA_ENABLE_Msk (0x1UL << CC_RNG_RNG_DMA_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
+#define CC_RNG_RNG_DMA_ENABLE_Disable (0x0UL) /*!< Disable RNG DMA engine */
+#define CC_RNG_RNG_DMA_ENABLE_Enable (0x1UL) /*!< Enable RNG DMA engine This value is cleared when the RNG DMA engine completes its operation. */
+
+/* Register: CC_RNG_RNG_DMA_ROSC_LEN */
+/* Description: This register defines which ring oscillator length configuration should be used when using the RNG DMA engine. */
+
+/* Bit 3 : Use longest ROSC4 ring oscillator configuration. */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC4_Pos (3UL) /*!< Position of ROSC4 field. */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC4_Msk (0x1UL << CC_RNG_RNG_DMA_ROSC_LEN_ROSC4_Pos) /*!< Bit mask of ROSC4 field. */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC4_Disable (0x0UL) /*!< Disable ROSC4 */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC4_Enable (0x1UL) /*!< Enable ROSC4 */
+
+/* Bit 2 : Use ROSC3 ring oscillator configuration. */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC3_Pos (2UL) /*!< Position of ROSC3 field. */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC3_Msk (0x1UL << CC_RNG_RNG_DMA_ROSC_LEN_ROSC3_Pos) /*!< Bit mask of ROSC3 field. */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC3_Disable (0x0UL) /*!< Disable ROSC3 */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC3_Enable (0x1UL) /*!< Enable ROSC3 */
+
+/* Bit 1 : Use ROSC2 ring oscillator configuration. */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC2_Pos (1UL) /*!< Position of ROSC2 field. */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC2_Msk (0x1UL << CC_RNG_RNG_DMA_ROSC_LEN_ROSC2_Pos) /*!< Bit mask of ROSC2 field. */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC2_Disable (0x0UL) /*!< Disable ROSC2 */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC2_Enable (0x1UL) /*!< Enable ROSC2 */
+
+/* Bit 0 : Use shortest ROSC1 ring oscillator configuration. */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC1_Pos (0UL) /*!< Position of ROSC1 field. */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC1_Msk (0x1UL << CC_RNG_RNG_DMA_ROSC_LEN_ROSC1_Pos) /*!< Bit mask of ROSC1 field. */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC1_Disable (0x0UL) /*!< Disable ROSC1 */
+#define CC_RNG_RNG_DMA_ROSC_LEN_ROSC1_Enable (0x1UL) /*!< Enable ROSC1 */
+
+/* Register: CC_RNG_RNG_DMA_SRAM_ADDR */
+/* Description: This register defines the start address in TRNG SRAM for the TRNG data to be collected by the RNG DMA engine. */
+
+/* Bits 10..0 : Start address of the TRNG data in TRNG SRAM. */
+#define CC_RNG_RNG_DMA_SRAM_ADDR_RNG_SRAM_DMA_ADDR_Pos (0UL) /*!< Position of RNG_SRAM_DMA_ADDR field. */
+#define CC_RNG_RNG_DMA_SRAM_ADDR_RNG_SRAM_DMA_ADDR_Msk (0x7FFUL << CC_RNG_RNG_DMA_SRAM_ADDR_RNG_SRAM_DMA_ADDR_Pos) /*!< Bit mask of RNG_SRAM_DMA_ADDR field. */
+
+/* Register: CC_RNG_RNG_DMA_SAMPLES_NUM */
+/* Description: This register defines the number of 192-bits samples that the RNG DMA engine collects per run. */
+
+/* Bits 7..0 : Defines the number of 192-bits samples that the DMA engine collects per run. */
+#define CC_RNG_RNG_DMA_SAMPLES_NUM_RNG_SAMPLES_NUM_Pos (0UL) /*!< Position of RNG_SAMPLES_NUM field. */
+#define CC_RNG_RNG_DMA_SAMPLES_NUM_RNG_SAMPLES_NUM_Msk (0xFFUL << CC_RNG_RNG_DMA_SAMPLES_NUM_RNG_SAMPLES_NUM_Pos) /*!< Bit mask of RNG_SAMPLES_NUM field. */
+
+/* Register: CC_RNG_RNG_WATCHDOG_VAL */
+/* Description: This register defines the maximum number of CPU clock cycles per TRNG collection of 192-bits samples. If the number of cycles for a collection exceeds this threshold the WATCHDOG interrupt is triggered. */
+
+/* Bits 31..0 : Defines the maximum number of CPU clock cycles per TRNG collection of 192-bits samples. If the number of cycles for a collection exceeds this threshold the WATCHDOG interrupt is triggered. */
+#define CC_RNG_RNG_WATCHDOG_VAL_RNG_WATCHDOG_VAL_Pos (0UL) /*!< Position of RNG_WATCHDOG_VAL field. */
+#define CC_RNG_RNG_WATCHDOG_VAL_RNG_WATCHDOG_VAL_Msk (0xFFFFFFFFUL << CC_RNG_RNG_WATCHDOG_VAL_RNG_WATCHDOG_VAL_Pos) /*!< Bit mask of RNG_WATCHDOG_VAL field. */
+
+/* Register: CC_RNG_RNG_DMA_BUSY */
+/* Description: Status register for RNG DMA engine activity. */
+
+/* Bits 10..3 : Number of samples already collected using the current ring oscillator configuration. */
+#define CC_RNG_RNG_DMA_BUSY_NUM_OF_SAMPLES_Pos (3UL) /*!< Position of NUM_OF_SAMPLES field. */
+#define CC_RNG_RNG_DMA_BUSY_NUM_OF_SAMPLES_Msk (0xFFUL << CC_RNG_RNG_DMA_BUSY_NUM_OF_SAMPLES_Pos) /*!< Bit mask of NUM_OF_SAMPLES field. */
+
+/* Bits 2..1 : The active ring oscillator length configuration used by the RNG DMA engine. */
+#define CC_RNG_RNG_DMA_BUSY_ROSC_LEN_Pos (1UL) /*!< Position of ROSC_LEN field. */
+#define CC_RNG_RNG_DMA_BUSY_ROSC_LEN_Msk (0x3UL << CC_RNG_RNG_DMA_BUSY_ROSC_LEN_Pos) /*!< Bit mask of ROSC_LEN field. */
+#define CC_RNG_RNG_DMA_BUSY_ROSC_LEN_ROSC1 (0x0UL) /*!< Shortest ROSC1 ring oscillator configuration used. */
+#define CC_RNG_RNG_DMA_BUSY_ROSC_LEN_ROSC2 (0x1UL) /*!< ROSC2 ring oscillator configuration used. */
+#define CC_RNG_RNG_DMA_BUSY_ROSC_LEN_ROSC3 (0x2UL) /*!< ROSC3 ring oscillator configuration used. */
+#define CC_RNG_RNG_DMA_BUSY_ROSC_LEN_ROSC4 (0x3UL) /*!< Longest ROSC4 ring oscillator configuration used. */
+
+/* Bit 0 : RNG DMA engine status. */
+#define CC_RNG_RNG_DMA_BUSY_STATUS_Pos (0UL) /*!< Position of STATUS field. */
+#define CC_RNG_RNG_DMA_BUSY_STATUS_Msk (0x1UL << CC_RNG_RNG_DMA_BUSY_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define CC_RNG_RNG_DMA_BUSY_STATUS_Idle (0x0UL) /*!< RNG DMA engine is idle */
+#define CC_RNG_RNG_DMA_BUSY_STATUS_Busy (0x1UL) /*!< RNG DMA engine is busy */
+
+
+/* Peripheral: CC_RNG_SRAM */
+/* Description: CRYPTOCELL RNG SRAM interface */
+
+/* Register: CC_RNG_SRAM_SRAM_DATA */
+/* Description: Read/Write data from RNG SRAM */
+
+/* Bits 31..0 : 32 bits DMA read/write from/to RNG SRAM. A 'read' or 'write' operation to this register will trigger the DMA address to be automatically incremented. */
+#define CC_RNG_SRAM_SRAM_DATA_SRAM_DATA_Pos (0UL) /*!< Position of SRAM_DATA field. */
+#define CC_RNG_SRAM_SRAM_DATA_SRAM_DATA_Msk (0xFFFFFFFFUL << CC_RNG_SRAM_SRAM_DATA_SRAM_DATA_Pos) /*!< Bit mask of SRAM_DATA field. */
+
+/* Register: CC_RNG_SRAM_SRAM_ADDR */
+/* Description: First address given to RNG SRAM DMA for read/write transactions from/to RNG SRAM. */
+
+/* Bits 14..0 : RNG SRAM starting address */
+#define CC_RNG_SRAM_SRAM_ADDR_SRAM_ADDR_Pos (0UL) /*!< Position of SRAM_ADDR field. */
+#define CC_RNG_SRAM_SRAM_ADDR_SRAM_ADDR_Msk (0x7FFFUL << CC_RNG_SRAM_SRAM_ADDR_SRAM_ADDR_Pos) /*!< Bit mask of SRAM_ADDR field. */
+
+/* Register: CC_RNG_SRAM_SRAM_DATA_READY */
+/* Description: RNG SRAM DMA engine is ready to read/write from/to RNG SRAM. */
+
+/* Bit 0 : RNG SRAM DMA status. */
+#define CC_RNG_SRAM_SRAM_DATA_READY_SRAM_READY_Pos (0UL) /*!< Position of SRAM_READY field. */
+#define CC_RNG_SRAM_SRAM_DATA_READY_SRAM_READY_Msk (0x1UL << CC_RNG_SRAM_SRAM_DATA_READY_SRAM_READY_Pos) /*!< Bit mask of SRAM_READY field. */
+#define CC_RNG_SRAM_SRAM_DATA_READY_SRAM_READY_Busy (0x0UL) /*!< DMA is busy */
+#define CC_RNG_SRAM_SRAM_DATA_READY_SRAM_READY_Idle (0x1UL) /*!< DMA is idle */
 
 
 /* Peripheral: CLOCK */
@@ -344,7 +2757,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_HFCLKRUN_STATUS_Triggered (0x1UL) /*!< Task triggered */
 
 /* Register: CLOCK_HFCLKSTAT */
-/* Description: The register shows if HFXO has been requested by triggering HFCLKSTART task and if it has been started (STATE) */
+/* Description: The register shows if HFXO has been requested by triggering HFCLKSTART task and if it has been started (STATE). */
 
 /* Bit 16 : HFCLK state */
 #define CLOCK_HFCLKSTAT_STATE_Pos (16UL) /*!< Position of STATE field. */
@@ -368,7 +2781,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_LFCLKRUN_STATUS_Triggered (0x1UL) /*!< Task triggered */
 
 /* Register: CLOCK_LFCLKSTAT */
-/* Description: The register shows which LFCLK source has been requested (SRC) when triggering LFCLKSTART task and if the source has been started (STATE) */
+/* Description: The register shows which LFCLK source has been requested (SRC) when triggering LFCLKSTART task and if the source has been started (STATE). */
 
 /* Bit 16 : LFCLK state */
 #define CLOCK_LFCLKSTAT_STATE_Pos (16UL) /*!< Position of STATE field. */
@@ -394,7 +2807,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_LFCLKSRCCOPY_SRC_LFXO (0x2UL) /*!< 32.768 kHz crystal oscillator */
 
 /* Register: CLOCK_LFCLKSRC */
-/* Description: Clock source for the LFCLK. LFCLKSTART task starts starts a clock source selected with this register. */
+/* Description: Clock source for the LFCLK. LFCLKSTART task starts a clock source selected with this register. */
 
 /* Bits 1..0 : Clock source */
 #define CLOCK_LFCLKSRC_SRC_Pos (0UL) /*!< Position of SRC field. */
@@ -405,15 +2818,15 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 /* Peripheral: CRYPTOCELL */
-/* Description: ARM TrustZone CryptoCell register interface */
+/* Description: CRYPTOCELL register interface */
 
 /* Register: CRYPTOCELL_ENABLE */
-/* Description: Enable CRYPTOCELL subsystem */
+/* Description: Enable CRYPTOCELL subsystem. */
 
-/* Bit 0 : Enable or disable the CRYPTOCELL subsystem */
+/* Bit 0 : Enable or disable the CRYPTOCELL subsystem. */
 #define CRYPTOCELL_ENABLE_ENABLE_Pos (0UL) /*!< Position of ENABLE field. */
 #define CRYPTOCELL_ENABLE_ENABLE_Msk (0x1UL << CRYPTOCELL_ENABLE_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
-#define CRYPTOCELL_ENABLE_ENABLE_Disabled (0x0UL) /*!< CRYPTOCELL subsystem disabled */
+#define CRYPTOCELL_ENABLE_ENABLE_Disabled (0x0UL) /*!< CRYPTOCELL subsystem disabled. */
 #define CRYPTOCELL_ENABLE_ENABLE_Enabled (0x1UL) /*!< CRYPTOCELL subsystem enabled. */
 
 
@@ -1319,30 +3732,1883 @@ POSSIBILITY OF SUCH DAMAGE.
 #define EGU_INTENCLR_TRIGGERED0_Clear (0x1UL) /*!< Disable */
 
 
+/* Peripheral: ETB */
+/* Description: Embedded Trace Buffer */
+
+/* Register: ETB_RDP */
+/* Description: ETB RAM Depth Register */
+
+/* Bits 31..0 : Defines the depth, in words, of the trace RAM. */
+#define ETB_RDP_ETB_RAM_DEPTH_Pos (0UL) /*!< Position of ETB_RAM_DEPTH field. */
+#define ETB_RDP_ETB_RAM_DEPTH_Msk (0xFFFFFFFFUL << ETB_RDP_ETB_RAM_DEPTH_Pos) /*!< Bit mask of ETB_RAM_DEPTH field. */
+
+/* Register: ETB_STS */
+/* Description: ETB Status Register */
+
+/* Bit 3 : Formatter pipeline empty. All data stored to RAM. */
+#define ETB_STS_FTEMPTY_Pos (3UL) /*!< Position of FTEMPTY field. */
+#define ETB_STS_FTEMPTY_Msk (0x1UL << ETB_STS_FTEMPTY_Pos) /*!< Bit mask of FTEMPTY field. */
+
+/* Bit 2 : The acquisition complete flag indicates that capture has been completed when the formatter stops because of any of the methods defined in the Formatter and Flush Control Register, or TraceCaptEn = 0. This also results in FtStopped in the Formatter and Flush Status Register going HIGH. */
+#define ETB_STS_ACQCOMP_Pos (2UL) /*!< Position of ACQCOMP field. */
+#define ETB_STS_ACQCOMP_Msk (0x1UL << ETB_STS_ACQCOMP_Pos) /*!< Bit mask of ACQCOMP field. */
+
+/* Bit 1 : The Triggered bit is set when a trigger has been observed. This does not indicate that a trigger has been embedded in the trace data by the formatter, but is determined by the programming of the Formatter and Flush Control Register. */
+#define ETB_STS_TRIGGERED_Pos (1UL) /*!< Position of TRIGGERED field. */
+#define ETB_STS_TRIGGERED_Msk (0x1UL << ETB_STS_TRIGGERED_Pos) /*!< Bit mask of TRIGGERED field. */
+
+/* Bit 0 : RAM Full. The flag indicates when the RAM write pointer has wrapped around. */
+#define ETB_STS_FULL_Pos (0UL) /*!< Position of FULL field. */
+#define ETB_STS_FULL_Msk (0x1UL << ETB_STS_FULL_Pos) /*!< Bit mask of FULL field. */
+
+/* Register: ETB_RRD */
+/* Description: ETB RAM Read Data Register */
+
+/* Bits 31..0 : Data read from the ETB Trace RAM. */
+#define ETB_RRD_RAM_READ_DATA_Pos (0UL) /*!< Position of RAM_READ_DATA field. */
+#define ETB_RRD_RAM_READ_DATA_Msk (0xFFFFFFFFUL << ETB_RRD_RAM_READ_DATA_Pos) /*!< Bit mask of RAM_READ_DATA field. */
+
+/* Register: ETB_RRP */
+/* Description: ETB RAM Read Pointer Register */
+
+/* Bits 9..0 : Sets the read pointer used to read entries from the Trace RAM over the APB interface. */
+#define ETB_RRP_RAM_READ_POINTER_Pos (0UL) /*!< Position of RAM_READ_POINTER field. */
+#define ETB_RRP_RAM_READ_POINTER_Msk (0x3FFUL << ETB_RRP_RAM_READ_POINTER_Pos) /*!< Bit mask of RAM_READ_POINTER field. */
+
+/* Register: ETB_RWP */
+/* Description: ETB RAM Write Pointer Register */
+
+/* Bits 9..0 : Sets the write pointer used to write entries from the CoreSight bus into the Trace RAM. */
+#define ETB_RWP_RAM_WRITE_POINTER_Pos (0UL) /*!< Position of RAM_WRITE_POINTER field. */
+#define ETB_RWP_RAM_WRITE_POINTER_Msk (0x3FFUL << ETB_RWP_RAM_WRITE_POINTER_Pos) /*!< Bit mask of RAM_WRITE_POINTER field. */
+
+/* Register: ETB_TRG */
+/* Description: ETB Trigger Counter Register */
+
+/* Bits 9..0 : The counter is used as follows:Trace after - The counter is set to a large value, slightly less than the number of entries in the RAM. Trace before - The counter is set to a small value. Trace about - The counter is set to half the depth of the Trace RAM. This register must not be written to when trace capture is enabled (FtStopped=0, TraceCaptEn=1). If a write is attempted, the register is not updated. A read access is permitted with trace capture enabled. */
+#define ETB_TRG_TRIGGER_COUNTER_Pos (0UL) /*!< Position of TRIGGER_COUNTER field. */
+#define ETB_TRG_TRIGGER_COUNTER_Msk (0x3FFUL << ETB_TRG_TRIGGER_COUNTER_Pos) /*!< Bit mask of TRIGGER_COUNTER field. */
+
+/* Register: ETB_CTL */
+/* Description: ETB Control Register */
+
+/* Bit 0 : ETB Trace Capture Enable. This is the master enable bit forcing FtStopped HIGH when TraceCaptEn is LOW. When capture is disabled, any remaining data in the ATB formatter is stored to RAM. When all data is stored the formatter outputs FtStopped. Capture is fully disabled, or complete, when FtStopped goes HIGH. See ETB Formatter and Flush Status Register, FFSR, 0x300. */
+#define ETB_CTL_TRACECAPTEN_Pos (0UL) /*!< Position of TRACECAPTEN field. */
+#define ETB_CTL_TRACECAPTEN_Msk (0x1UL << ETB_CTL_TRACECAPTEN_Pos) /*!< Bit mask of TRACECAPTEN field. */
+
+/* Register: ETB_RWD */
+/* Description: ETB RAM Write Data Register */
+
+/* Bits 31..0 : Data written to the ETB Trace RAM. When trace capture is disabled, the contents of this register are placed into the ETB Trace RAM when this register is written to. Writing to this register increments the RAM Write Pointer Register. If trace capture is enabled, and this register is accessed, then a read from this register outputs 0xFFFFFFFF. Reads of this register never increment the RAM Write Pointer Register. A constant stream of 1s being output corresponds to a synchronization output from the ETB. If a write access is attempted, the data is not written into Trace RAM. */
+#define ETB_RWD_RAM_WRITE_DATA_Pos (0UL) /*!< Position of RAM_WRITE_DATA field. */
+#define ETB_RWD_RAM_WRITE_DATA_Msk (0xFFFFFFFFUL << ETB_RWD_RAM_WRITE_DATA_Pos) /*!< Bit mask of RAM_WRITE_DATA field. */
+
+/* Register: ETB_FFSR */
+/* Description: ETB Formatter and Flush Status Register */
+
+/* Bit 1 : Formatter stopped. The formatter has received a stop request signal and all trace data and post-amble has been output. Any more trace data on the ATB interface is ignored and atreadys goes HIGH. */
+#define ETB_FFSR_FTSTOPPED_Pos (1UL) /*!< Position of FTSTOPPED field. */
+#define ETB_FFSR_FTSTOPPED_Msk (0x1UL << ETB_FFSR_FTSTOPPED_Pos) /*!< Bit mask of FTSTOPPED field. */
+
+/* Bit 0 : Flush In Progress. This is an indication of the current state of afvalids. */
+#define ETB_FFSR_FLINPROG_Pos (0UL) /*!< Position of FLINPROG field. */
+#define ETB_FFSR_FLINPROG_Msk (0x1UL << ETB_FFSR_FLINPROG_Pos) /*!< Bit mask of FLINPROG field. */
+
+/* Register: ETB_FFCR */
+/* Description: ETB Formatter and Flush Control Register */
+
+/* Bit 13 : Stop the formatter after a Trigger Event is observed. Reset to disabled (zero). */
+#define ETB_FFCR_STOPTRIG_Pos (13UL) /*!< Position of STOPTRIG field. */
+#define ETB_FFCR_STOPTRIG_Msk (0x1UL << ETB_FFCR_STOPTRIG_Pos) /*!< Bit mask of STOPTRIG field. */
+
+/* Bit 12 : This forces the FIFO to drain off any part-completed packets. Setting this bit enables this function but this is clear on reset (disabled). */
+#define ETB_FFCR_STOPFL_Pos (12UL) /*!< Position of STOPFL field. */
+#define ETB_FFCR_STOPFL_Msk (0x1UL << ETB_FFCR_STOPFL_Pos) /*!< Bit mask of STOPFL field. */
+
+/* Bit 10 : Indicates a trigger on Flush completion (afreadys being returned). */
+#define ETB_FFCR_TRIGFL_Pos (10UL) /*!< Position of TRIGFL field. */
+#define ETB_FFCR_TRIGFL_Msk (0x1UL << ETB_FFCR_TRIGFL_Pos) /*!< Bit mask of TRIGFL field. */
+
+/* Bit 9 : Indicate a trigger on a Trigger Event. */
+#define ETB_FFCR_TRIGEVT_Pos (9UL) /*!< Position of TRIGEVT field. */
+#define ETB_FFCR_TRIGEVT_Msk (0x1UL << ETB_FFCR_TRIGEVT_Pos) /*!< Bit mask of TRIGEVT field. */
+
+/* Bit 8 : Indicate a trigger on trigin being asserted. */
+#define ETB_FFCR_TRIGIN_Pos (8UL) /*!< Position of TRIGIN field. */
+#define ETB_FFCR_TRIGIN_Msk (0x1UL << ETB_FFCR_TRIGIN_Pos) /*!< Bit mask of TRIGIN field. */
+
+/* Bit 6 : Setting this bit causes a flush to be generated. This is cleared when this flush has been serviced. This bit is clear on reset. */
+#define ETB_FFCR_FONMAN_Pos (6UL) /*!< Position of FONMAN field. */
+#define ETB_FFCR_FONMAN_Msk (0x1UL << ETB_FFCR_FONMAN_Pos) /*!< Bit mask of FONMAN field. */
+
+/* Bit 5 : Generate flush using Trigger event. Set this bit to cause a flush of data in the system when a Trigger Event occurs. This bit is clear on reset. A Trigger Event is defined as when the Trigger counter reaches zero (where fitted) or, in the case of the trigger counter being zero (or not fitted), when trigin is HIGH. */
+#define ETB_FFCR_FONTRIG_Pos (5UL) /*!< Position of FONTRIG field. */
+#define ETB_FFCR_FONTRIG_Msk (0x1UL << ETB_FFCR_FONTRIG_Pos) /*!< Bit mask of FONTRIG field. */
+
+/* Bit 4 : Set this bit to enable use of the flushin connection. This is clear on reset. */
+#define ETB_FFCR_FONFLIN_Pos (4UL) /*!< Position of FONFLIN field. */
+#define ETB_FFCR_FONFLIN_Msk (0x1UL << ETB_FFCR_FONFLIN_Pos) /*!< Bit mask of FONFLIN field. */
+
+/* Bit 1 : Continuous mode in the ETB corresponds to normal mode with the embedding of triggers. Can only be changed when FtStopped is HIGH. This bit is clear on reset. */
+#define ETB_FFCR_ENFCONT_Pos (1UL) /*!< Position of ENFCONT field. */
+#define ETB_FFCR_ENFCONT_Msk (0x1UL << ETB_FFCR_ENFCONT_Pos) /*!< Bit mask of ENFCONT field. */
+
+/* Bit 0 : Do not embed Triggers into the formatted stream. Trace disable cycles and triggers are indicated by TRACECTL, where fitted. Can only be changed when FtStopped is HIGH. This bit is clear on reset. */
+#define ETB_FFCR_ENFTC_Pos (0UL) /*!< Position of ENFTC field. */
+#define ETB_FFCR_ENFTC_Msk (0x1UL << ETB_FFCR_ENFTC_Pos) /*!< Bit mask of ENFTC field. */
+
+/* Register: ETB_ITMISCOP0 */
+/* Description: Integration Test Miscellaneous Output Register 0 */
+
+/* Bit 1 : Set the value of full output port. */
+#define ETB_ITMISCOP0_FULL_Pos (1UL) /*!< Position of FULL field. */
+#define ETB_ITMISCOP0_FULL_Msk (0x1UL << ETB_ITMISCOP0_FULL_Pos) /*!< Bit mask of FULL field. */
+
+/* Bit 0 : Set the value of acqcomp. */
+#define ETB_ITMISCOP0_ACQCOMP_Pos (0UL) /*!< Position of ACQCOMP field. */
+#define ETB_ITMISCOP0_ACQCOMP_Msk (0x1UL << ETB_ITMISCOP0_ACQCOMP_Pos) /*!< Bit mask of ACQCOMP field. */
+
+/* Register: ETB_ITTRFLINACK */
+/* Description: Integration Test Trigger In and Flush In Acknowledge Register */
+
+/* Bit 1 : Set the value of flushinack. */
+#define ETB_ITTRFLINACK_FLUSHINACK_Pos (1UL) /*!< Position of FLUSHINACK field. */
+#define ETB_ITTRFLINACK_FLUSHINACK_Msk (0x1UL << ETB_ITTRFLINACK_FLUSHINACK_Pos) /*!< Bit mask of FLUSHINACK field. */
+
+/* Bit 0 : Set the value of triginack. */
+#define ETB_ITTRFLINACK_TRIGINACK_Pos (0UL) /*!< Position of TRIGINACK field. */
+#define ETB_ITTRFLINACK_TRIGINACK_Msk (0x1UL << ETB_ITTRFLINACK_TRIGINACK_Pos) /*!< Bit mask of TRIGINACK field. */
+
+/* Register: ETB_ITTRFLIN */
+/* Description: Integration Test Trigger In and Flush In Register */
+
+/* Bit 1 : Read the value of flushin. */
+#define ETB_ITTRFLIN_FLUSHIN_Pos (1UL) /*!< Position of FLUSHIN field. */
+#define ETB_ITTRFLIN_FLUSHIN_Msk (0x1UL << ETB_ITTRFLIN_FLUSHIN_Pos) /*!< Bit mask of FLUSHIN field. */
+
+/* Bit 0 : Read the value of trigin. */
+#define ETB_ITTRFLIN_TRIGIN_Pos (0UL) /*!< Position of TRIGIN field. */
+#define ETB_ITTRFLIN_TRIGIN_Msk (0x1UL << ETB_ITTRFLIN_TRIGIN_Pos) /*!< Bit mask of TRIGIN field. */
+
+/* Register: ETB_ITATBDATA0 */
+/* Description: Integration Test ATB Data Register 0 */
+
+/* Bit 4 : Read the value of atdatas[31]. */
+#define ETB_ITATBDATA0_ATDATA_31_Pos (4UL) /*!< Position of ATDATA_31 field. */
+#define ETB_ITATBDATA0_ATDATA_31_Msk (0x1UL << ETB_ITATBDATA0_ATDATA_31_Pos) /*!< Bit mask of ATDATA_31 field. */
+
+/* Bit 3 : Read the value of atdatas[23]. */
+#define ETB_ITATBDATA0_ATDATA_23_Pos (3UL) /*!< Position of ATDATA_23 field. */
+#define ETB_ITATBDATA0_ATDATA_23_Msk (0x1UL << ETB_ITATBDATA0_ATDATA_23_Pos) /*!< Bit mask of ATDATA_23 field. */
+
+/* Bit 2 : Read the value of atdatas[15]. */
+#define ETB_ITATBDATA0_ATDATA_15_Pos (2UL) /*!< Position of ATDATA_15 field. */
+#define ETB_ITATBDATA0_ATDATA_15_Msk (0x1UL << ETB_ITATBDATA0_ATDATA_15_Pos) /*!< Bit mask of ATDATA_15 field. */
+
+/* Bit 1 : Read the value of atdatas[7]. */
+#define ETB_ITATBDATA0_ATDATA_7_Pos (1UL) /*!< Position of ATDATA_7 field. */
+#define ETB_ITATBDATA0_ATDATA_7_Msk (0x1UL << ETB_ITATBDATA0_ATDATA_7_Pos) /*!< Bit mask of ATDATA_7 field. */
+
+/* Bit 0 : Read the value of atdatas[0]. */
+#define ETB_ITATBDATA0_ATDATA_0_Pos (0UL) /*!< Position of ATDATA_0 field. */
+#define ETB_ITATBDATA0_ATDATA_0_Msk (0x1UL << ETB_ITATBDATA0_ATDATA_0_Pos) /*!< Bit mask of ATDATA_0 field. */
+
+/* Register: ETB_ITATBCTR2 */
+/* Description: Integration Test ATB Control Register 2 */
+
+/* Bit 1 : Set the value of afvalids. */
+#define ETB_ITATBCTR2_AFVALIDS_Pos (1UL) /*!< Position of AFVALIDS field. */
+#define ETB_ITATBCTR2_AFVALIDS_Msk (0x1UL << ETB_ITATBCTR2_AFVALIDS_Pos) /*!< Bit mask of AFVALIDS field. */
+
+/* Bit 0 : Set the value of atreadys. */
+#define ETB_ITATBCTR2_ATREADYS_Pos (0UL) /*!< Position of ATREADYS field. */
+#define ETB_ITATBCTR2_ATREADYS_Msk (0x1UL << ETB_ITATBCTR2_ATREADYS_Pos) /*!< Bit mask of ATREADYS field. */
+
+/* Register: ETB_ITATBCTR1 */
+/* Description: Integration Test ATB Control Register 1 */
+
+/* Bits 6..0 : Read the value of atids. */
+#define ETB_ITATBCTR1_ATID_Pos (0UL) /*!< Position of ATID field. */
+#define ETB_ITATBCTR1_ATID_Msk (0x7FUL << ETB_ITATBCTR1_ATID_Pos) /*!< Bit mask of ATID field. */
+
+/* Register: ETB_ITATBCTR0 */
+/* Description: Integration Test ATB Control Register 0 */
+
+/* Bits 9..8 : Read the value of atbytess. */
+#define ETB_ITATBCTR0_ATBYTES_Pos (8UL) /*!< Position of ATBYTES field. */
+#define ETB_ITATBCTR0_ATBYTES_Msk (0x3UL << ETB_ITATBCTR0_ATBYTES_Pos) /*!< Bit mask of ATBYTES field. */
+
+/* Bit 1 : Read the value of afreadys. */
+#define ETB_ITATBCTR0_AFREADY_Pos (1UL) /*!< Position of AFREADY field. */
+#define ETB_ITATBCTR0_AFREADY_Msk (0x1UL << ETB_ITATBCTR0_AFREADY_Pos) /*!< Bit mask of AFREADY field. */
+
+/* Bit 0 : Read the value of atvalids. */
+#define ETB_ITATBCTR0_ATVALID_Pos (0UL) /*!< Position of ATVALID field. */
+#define ETB_ITATBCTR0_ATVALID_Msk (0x1UL << ETB_ITATBCTR0_ATVALID_Pos) /*!< Bit mask of ATVALID field. */
+
+/* Register: ETB_ITCTRL */
+/* Description: Integration Mode Control Register */
+
+/* Bit 0 : Allows the component to switch from functional mode to integration mode or back. */
+#define ETB_ITCTRL_INTEGRATION_MODE_Pos (0UL) /*!< Position of INTEGRATION_MODE field. */
+#define ETB_ITCTRL_INTEGRATION_MODE_Msk (0x1UL << ETB_ITCTRL_INTEGRATION_MODE_Pos) /*!< Bit mask of INTEGRATION_MODE field. */
+
+/* Register: ETB_CLAIMSET */
+/* Description: Claim Tag Set Register */
+
+/* Bits 3..0 : This claim tag bit is implemented */
+#define ETB_CLAIMSET_CLAIMSET_Pos (0UL) /*!< Position of CLAIMSET field. */
+#define ETB_CLAIMSET_CLAIMSET_Msk (0xFUL << ETB_CLAIMSET_CLAIMSET_Pos) /*!< Bit mask of CLAIMSET field. */
+
+/* Register: ETB_CLAIMCLR */
+/* Description: Claim Tag Clear Register */
+
+/* Bits 3..0 : The value present reflects the current setting of the Claim Tag. */
+#define ETB_CLAIMCLR_CLAIMCLR_Pos (0UL) /*!< Position of CLAIMCLR field. */
+#define ETB_CLAIMCLR_CLAIMCLR_Msk (0xFUL << ETB_CLAIMCLR_CLAIMCLR_Pos) /*!< Bit mask of CLAIMCLR field. */
+
+/* Register: ETB_LAR */
+/* Description: Lock Access Register */
+
+/* Bits 31..0 : A write of 0xC5ACCE55 enables further write access to this device. A write of any value other than 0xC5ACCE55 will have the affect of removing write access. */
+#define ETB_LAR_ACCESS_W_Pos (0UL) /*!< Position of ACCESS_W field. */
+#define ETB_LAR_ACCESS_W_Msk (0xFFFFFFFFUL << ETB_LAR_ACCESS_W_Pos) /*!< Bit mask of ACCESS_W field. */
+
+/* Register: ETB_LSR */
+/* Description: Lock Status Register */
+
+/* Bit 2 : Indicates if the Lock Access Register (0xFB0) is implemented as 8-bit or 32-bit */
+#define ETB_LSR_LOCKTYPE_Pos (2UL) /*!< Position of LOCKTYPE field. */
+#define ETB_LSR_LOCKTYPE_Msk (0x1UL << ETB_LSR_LOCKTYPE_Pos) /*!< Bit mask of LOCKTYPE field. */
+
+/* Bit 1 : Returns the current status of the Lock. This bit reads as 0 when read from an external debugger (paddrdbg31 = 1) since external debugger accesses are not subject to Lock Registers. */
+#define ETB_LSR_LOCKGRANT_Pos (1UL) /*!< Position of LOCKGRANT field. */
+#define ETB_LSR_LOCKGRANT_Msk (0x1UL << ETB_LSR_LOCKGRANT_Pos) /*!< Bit mask of LOCKGRANT field. */
+
+/* Bit 0 : Indicates that a lock control mechanism exists for this device. This bit reads as 0 when read from an external debugger (paddrdbg31 = 1) since external debugger accesses are not subject to Lock Registers. */
+#define ETB_LSR_LOCKEXIST_Pos (0UL) /*!< Position of LOCKEXIST field. */
+#define ETB_LSR_LOCKEXIST_Msk (0x1UL << ETB_LSR_LOCKEXIST_Pos) /*!< Bit mask of LOCKEXIST field. */
+
+/* Register: ETB_AUTHSTATUS */
+/* Description: Authentication Status Register */
+
+/* Bits 7..6 : Indicates the security level for secure non-invasive debug */
+#define ETB_AUTHSTATUS_SNID_Pos (6UL) /*!< Position of SNID field. */
+#define ETB_AUTHSTATUS_SNID_Msk (0x3UL << ETB_AUTHSTATUS_SNID_Pos) /*!< Bit mask of SNID field. */
+
+/* Bits 5..4 : Indicates the security level for secure invasive debug */
+#define ETB_AUTHSTATUS_SID_Pos (4UL) /*!< Position of SID field. */
+#define ETB_AUTHSTATUS_SID_Msk (0x3UL << ETB_AUTHSTATUS_SID_Pos) /*!< Bit mask of SID field. */
+
+/* Bits 3..2 : Indicates the security level for non-secure non-invasive debug */
+#define ETB_AUTHSTATUS_NSNID_Pos (2UL) /*!< Position of NSNID field. */
+#define ETB_AUTHSTATUS_NSNID_Msk (0x3UL << ETB_AUTHSTATUS_NSNID_Pos) /*!< Bit mask of NSNID field. */
+
+/* Bits 1..0 : Indicates the security level for non-secure invasive debug */
+#define ETB_AUTHSTATUS_NSID_Pos (0UL) /*!< Position of NSID field. */
+#define ETB_AUTHSTATUS_NSID_Msk (0x3UL << ETB_AUTHSTATUS_NSID_Pos) /*!< Bit mask of NSID field. */
+
+/* Register: ETB_DEVID */
+/* Description: Device Configuration Register */
+
+/* Bit 5 : This bit returns 0 on reads indicating that the ETB RAM operates synchronously to atclk. */
+#define ETB_DEVID_RAMCLK_Pos (5UL) /*!< Position of RAMCLK field. */
+#define ETB_DEVID_RAMCLK_Msk (0x1UL << ETB_DEVID_RAMCLK_Pos) /*!< Bit mask of RAMCLK field. */
+
+/* Bits 4..0 : When non-zero this value indicates the type/number of ATB multiplexing present on the input to the ATB. */
+#define ETB_DEVID_EXTMUXNUM_Pos (0UL) /*!< Position of EXTMUXNUM field. */
+#define ETB_DEVID_EXTMUXNUM_Msk (0x1FUL << ETB_DEVID_EXTMUXNUM_Pos) /*!< Bit mask of EXTMUXNUM field. */
+
+/* Register: ETB_DEVTYPE */
+/* Description: Device Type Identifier Register */
+
+/* Bits 7..4 : Sub-classification within the major category */
+#define ETB_DEVTYPE_SUB_TYPE_Pos (4UL) /*!< Position of SUB_TYPE field. */
+#define ETB_DEVTYPE_SUB_TYPE_Msk (0xFUL << ETB_DEVTYPE_SUB_TYPE_Pos) /*!< Bit mask of SUB_TYPE field. */
+
+/* Bits 3..0 : Major classification grouping for this debug/trace component */
+#define ETB_DEVTYPE_MAJOR_TYPE_Pos (0UL) /*!< Position of MAJOR_TYPE field. */
+#define ETB_DEVTYPE_MAJOR_TYPE_Msk (0xFUL << ETB_DEVTYPE_MAJOR_TYPE_Pos) /*!< Bit mask of MAJOR_TYPE field. */
+
+/* Register: ETB_PERIPHID4 */
+/* Description: Peripheral ID4 Register */
+
+/* Bits 7..4 : This is a 4-bit value that indicates the total contiguous size of the memory window used by this component in powers of 2 from the standard 4KB. If a component only requires the standard 4KB then this should read as 0x0, 4KB only, for 8KB set to 0x1, 16KB == 0x2, 32KB == 0x3, and so on. */
+#define ETB_PERIPHID4_SIZE_Pos (4UL) /*!< Position of SIZE field. */
+#define ETB_PERIPHID4_SIZE_Msk (0xFUL << ETB_PERIPHID4_SIZE_Pos) /*!< Bit mask of SIZE field. */
+
+/* Bits 3..0 : JEDEC continuation code indicating the designer of the component (along with the identity code) */
+#define ETB_PERIPHID4_DES_2_Pos (0UL) /*!< Position of DES_2 field. */
+#define ETB_PERIPHID4_DES_2_Msk (0xFUL << ETB_PERIPHID4_DES_2_Pos) /*!< Bit mask of DES_2 field. */
+
+/* Register: ETB_PERIPHID0 */
+/* Description: Peripheral ID0 Register */
+
+/* Bits 7..0 : Bits [7:0] of the component's part number. This is selected by the designer of the component. */
+#define ETB_PERIPHID0_PART_0_Pos (0UL) /*!< Position of PART_0 field. */
+#define ETB_PERIPHID0_PART_0_Msk (0xFFUL << ETB_PERIPHID0_PART_0_Pos) /*!< Bit mask of PART_0 field. */
+
+/* Register: ETB_PERIPHID1 */
+/* Description: Peripheral ID1 Register */
+
+/* Bits 7..4 : Bits 3:0 of the JEDEC identity code indicating the designer of the component (along with the continuation code) */
+#define ETB_PERIPHID1_DES_0_Pos (4UL) /*!< Position of DES_0 field. */
+#define ETB_PERIPHID1_DES_0_Msk (0xFUL << ETB_PERIPHID1_DES_0_Pos) /*!< Bit mask of DES_0 field. */
+
+/* Bits 3..0 : Bits [11:8] of the component's part number. This is selected by the designer of the component. */
+#define ETB_PERIPHID1_PART_1_Pos (0UL) /*!< Position of PART_1 field. */
+#define ETB_PERIPHID1_PART_1_Msk (0xFUL << ETB_PERIPHID1_PART_1_Pos) /*!< Bit mask of PART_1 field. */
+
+/* Register: ETB_PERIPHID2 */
+/* Description: Peripheral ID2 Register */
+
+/* Bits 7..4 : The Revision field is an incremental value starting at 0x0 for the first design of this component. This only increases by 1 for both major and minor revisions and is simply used as a look-up to establish the exact major/minor revision. */
+#define ETB_PERIPHID2_REVISION_Pos (4UL) /*!< Position of REVISION field. */
+#define ETB_PERIPHID2_REVISION_Msk (0xFUL << ETB_PERIPHID2_REVISION_Pos) /*!< Bit mask of REVISION field. */
+
+/* Bit 3 : Always set. Indicates that a JEDEC assigned value is used */
+#define ETB_PERIPHID2_JEDEC_Pos (3UL) /*!< Position of JEDEC field. */
+#define ETB_PERIPHID2_JEDEC_Msk (0x1UL << ETB_PERIPHID2_JEDEC_Pos) /*!< Bit mask of JEDEC field. */
+
+/* Bits 2..0 : Bits 6:4 of the JEDEC identity code indicating the designer of the component (along with the continuation code) */
+#define ETB_PERIPHID2_DES_1_Pos (0UL) /*!< Position of DES_1 field. */
+#define ETB_PERIPHID2_DES_1_Msk (0x7UL << ETB_PERIPHID2_DES_1_Pos) /*!< Bit mask of DES_1 field. */
+
+/* Register: ETB_PERIPHID3 */
+/* Description: Peripheral ID3 Register */
+
+/* Bits 7..4 : This field indicates minor errata fixes specific to this design, for example metal fixes after implementation. In most cases this field is zero. It is recommended that component designers ensure this field can be changed by a metal fix if required, for example by driving it from registers that reset to zero. */
+#define ETB_PERIPHID3_REVAND_Pos (4UL) /*!< Position of REVAND field. */
+#define ETB_PERIPHID3_REVAND_Msk (0xFUL << ETB_PERIPHID3_REVAND_Pos) /*!< Bit mask of REVAND field. */
+
+/* Bits 3..0 : Where the component is reusable IP, this value indicates if the customer has modified the behavior of the component. In most cases this field is zero. */
+#define ETB_PERIPHID3_CMOD_Pos (0UL) /*!< Position of CMOD field. */
+#define ETB_PERIPHID3_CMOD_Msk (0xFUL << ETB_PERIPHID3_CMOD_Pos) /*!< Bit mask of CMOD field. */
+
+/* Register: ETB_COMPID0 */
+/* Description: Component ID0 Register */
+
+/* Bits 7..0 : Contains bits [7:0] of the component identification */
+#define ETB_COMPID0_PRMBL_0_Pos (0UL) /*!< Position of PRMBL_0 field. */
+#define ETB_COMPID0_PRMBL_0_Msk (0xFFUL << ETB_COMPID0_PRMBL_0_Pos) /*!< Bit mask of PRMBL_0 field. */
+
+/* Register: ETB_COMPID1 */
+/* Description: Component ID1 Register */
+
+/* Bits 7..4 : Class of the component. E. g. ROM table, CoreSight component etc. Constitutes bits [15:12] of the component identification. */
+#define ETB_COMPID1_CLASS_Pos (4UL) /*!< Position of CLASS field. */
+#define ETB_COMPID1_CLASS_Msk (0xFUL << ETB_COMPID1_CLASS_Pos) /*!< Bit mask of CLASS field. */
+
+/* Bits 3..0 : Contains bits [11:8] of the component identification */
+#define ETB_COMPID1_PRMBL_1_Pos (0UL) /*!< Position of PRMBL_1 field. */
+#define ETB_COMPID1_PRMBL_1_Msk (0xFUL << ETB_COMPID1_PRMBL_1_Pos) /*!< Bit mask of PRMBL_1 field. */
+
+/* Register: ETB_COMPID2 */
+/* Description: Component ID2 Register */
+
+/* Bits 7..0 : Contains bits [23:16] of the component identification */
+#define ETB_COMPID2_PRMBL_2_Pos (0UL) /*!< Position of PRMBL_2 field. */
+#define ETB_COMPID2_PRMBL_2_Msk (0xFFUL << ETB_COMPID2_PRMBL_2_Pos) /*!< Bit mask of PRMBL_2 field. */
+
+/* Register: ETB_COMPID3 */
+/* Description: Component ID3 Register */
+
+/* Bits 7..0 : Contains bits [31:24] of the component identification */
+#define ETB_COMPID3_PRMBL_3_Pos (0UL) /*!< Position of PRMBL_3 field. */
+#define ETB_COMPID3_PRMBL_3_Msk (0xFFUL << ETB_COMPID3_PRMBL_3_Pos) /*!< Bit mask of PRMBL_3 field. */
+
+
+/* Peripheral: ETM */
+/* Description: Embedded Trace Macrocell */
+
+/* Register: ETM_TRCPRGCTLR */
+/* Description: Enables the trace unit. */
+
+/* Bit 0 : Trace unit enable bit */
+#define ETM_TRCPRGCTLR_EN_Pos (0UL) /*!< Position of EN field. */
+#define ETM_TRCPRGCTLR_EN_Msk (0x1UL << ETM_TRCPRGCTLR_EN_Pos) /*!< Bit mask of EN field. */
+#define ETM_TRCPRGCTLR_EN_Disabled (0x0UL) /*!< The trace unit is disabled. All trace resources are inactive and no trace is generated. */
+#define ETM_TRCPRGCTLR_EN_Enabled (0x1UL) /*!< The trace unit is enabled. */
+
+/* Register: ETM_TRCPROCSELR */
+/* Description: Controls which PE to trace. Might ignore writes when the trace unit is enabled or not idle. Before writing to this register, ensure that TRCSTATR.IDLE == 1 so that the trace unit can synchronize with the chosen PE. Implemented if TRCIDR3.NUMPROC is greater than zero. */
+
+/* Bits 4..0 : PE select bits that select the PE to trace. */
+#define ETM_TRCPROCSELR_PROCSEL_Pos (0UL) /*!< Position of PROCSEL field. */
+#define ETM_TRCPROCSELR_PROCSEL_Msk (0x1FUL << ETM_TRCPROCSELR_PROCSEL_Pos) /*!< Bit mask of PROCSEL field. */
+
+/* Register: ETM_TRCSTATR */
+/* Description: Idle status bit */
+
+/* Bit 1 : Programmers' model stable bit */
+#define ETM_TRCSTATR_PMSTABLE_Pos (1UL) /*!< Position of PMSTABLE field. */
+#define ETM_TRCSTATR_PMSTABLE_Msk (0x1UL << ETM_TRCSTATR_PMSTABLE_Pos) /*!< Bit mask of PMSTABLE field. */
+#define ETM_TRCSTATR_PMSTABLE_NotStable (0x0UL) /*!< The programmers' model is not stable. */
+#define ETM_TRCSTATR_PMSTABLE_Stable (0x1UL) /*!< The programmers' model is stable. */
+
+/* Bit 0 : Trace unit enable bit */
+#define ETM_TRCSTATR_IDLE_Pos (0UL) /*!< Position of IDLE field. */
+#define ETM_TRCSTATR_IDLE_Msk (0x1UL << ETM_TRCSTATR_IDLE_Pos) /*!< Bit mask of IDLE field. */
+#define ETM_TRCSTATR_IDLE_NotIdle (0x0UL) /*!< The trace unit is not idle. */
+#define ETM_TRCSTATR_IDLE_Idle (0x1UL) /*!< The trace unit is idle. */
+
+/* Register: ETM_TRCCONFIGR */
+/* Description: Controls the tracing options This register must always be programmed as part of trace unit initialization. Might ignore writes when the trace unit is enabled or not idle. */
+
+/* Bit 17 : Data value tracing bit. */
+#define ETM_TRCCONFIGR_DV_Pos (17UL) /*!< Position of DV field. */
+#define ETM_TRCCONFIGR_DV_Msk (0x1UL << ETM_TRCCONFIGR_DV_Pos) /*!< Bit mask of DV field. */
+#define ETM_TRCCONFIGR_DV_Disabled (0x0UL) /*!< Data value tracing is disabled. */
+#define ETM_TRCCONFIGR_DV_Enabled (0x1UL) /*!< Data value tracing is enabled. */
+
+/* Bit 16 : Data address tracing bit. */
+#define ETM_TRCCONFIGR_DA_Pos (16UL) /*!< Position of DA field. */
+#define ETM_TRCCONFIGR_DA_Msk (0x1UL << ETM_TRCCONFIGR_DA_Pos) /*!< Bit mask of DA field. */
+#define ETM_TRCCONFIGR_DA_Disabled (0x0UL) /*!< Data address tracing is disabled. */
+#define ETM_TRCCONFIGR_DA_Enabled (0x1UL) /*!< Data address tracing is enabled. */
+
+/* Bit 15 : Control bit to select the Virtual context identifier value used by the trace unit, both for trace generation and in the Virtual context identifier comparators. */
+#define ETM_TRCCONFIGR_VMIDOPT_Pos (15UL) /*!< Position of VMIDOPT field. */
+#define ETM_TRCCONFIGR_VMIDOPT_Msk (0x1UL << ETM_TRCCONFIGR_VMIDOPT_Pos) /*!< Bit mask of VMIDOPT field. */
+#define ETM_TRCCONFIGR_VMIDOPT_VTTBR_EL2 (0x0UL) /*!< VTTBR_EL2.VMID is used. If the trace unit supports a Virtual context
+identifier larger than the VTTBR_EL2.VMID, the upper unused bits are always
+zero. If the trace unit supports a Virtual context identifier larger than 8 bits and
+if the VTCR_EL2.VS bit forces use of an 8-bit Virtual context identifier, bits
+[15:8] of the trace unit Virtual context identifier are always zero. */
+#define ETM_TRCCONFIGR_VMIDOPT_CONTEXTIDR_EL2 (0x1UL) /*!< CONTEXTIDR_EL2 is used. */
+
+/* Bits 14..13 : Q element enable field. */
+#define ETM_TRCCONFIGR_QE_Pos (13UL) /*!< Position of QE field. */
+#define ETM_TRCCONFIGR_QE_Msk (0x3UL << ETM_TRCCONFIGR_QE_Pos) /*!< Bit mask of QE field. */
+#define ETM_TRCCONFIGR_QE_Disabled (0x0UL) /*!< Q elements are disabled. */
+#define ETM_TRCCONFIGR_QE_OnlyWithoutInstCounts (0x1UL) /*!< Q elements with instruction counts are enabled. Q elements without instruction counts are disabled. */
+#define ETM_TRCCONFIGR_QE_Enabled (0x3UL) /*!< Q elements with and without instruction counts are enabled. */
+
+/* Bit 12 : Return stack enable bit. */
+#define ETM_TRCCONFIGR_RS_Pos (12UL) /*!< Position of RS field. */
+#define ETM_TRCCONFIGR_RS_Msk (0x1UL << ETM_TRCCONFIGR_RS_Pos) /*!< Bit mask of RS field. */
+#define ETM_TRCCONFIGR_RS_Disabled (0x0UL) /*!< Return stack is disabled. */
+#define ETM_TRCCONFIGR_RS_Enabled (0x1UL) /*!< Return stack is enabled. */
+
+/* Bit 11 : Global timestamp tracing bit. */
+#define ETM_TRCCONFIGR_TS_Pos (11UL) /*!< Position of TS field. */
+#define ETM_TRCCONFIGR_TS_Msk (0x1UL << ETM_TRCCONFIGR_TS_Pos) /*!< Bit mask of TS field. */
+#define ETM_TRCCONFIGR_TS_Disabled (0x0UL) /*!< Global timestamp tracing is disabled. */
+#define ETM_TRCCONFIGR_TS_Enabled (0x1UL) /*!< Global timestamp tracing is enabled. */
+
+/* Bits 10..8 : Conditional instruction tracing bit. */
+#define ETM_TRCCONFIGR_COND_Pos (8UL) /*!< Position of COND field. */
+#define ETM_TRCCONFIGR_COND_Msk (0x7UL << ETM_TRCCONFIGR_COND_Pos) /*!< Bit mask of COND field. */
+#define ETM_TRCCONFIGR_COND_Disabled (0x0UL) /*!< Conditional instruction tracing is disabled. */
+#define ETM_TRCCONFIGR_COND_LoadOnly (0x1UL) /*!< Conditional load instructions are traced. */
+#define ETM_TRCCONFIGR_COND_StoreOnly (0x2UL) /*!< Conditional store instructions are traced. */
+#define ETM_TRCCONFIGR_COND_LoadAndStore (0x3UL) /*!< Conditional load and store instructions are traced. */
+#define ETM_TRCCONFIGR_COND_All (0x7UL) /*!< All conditional instructions are traced. */
+
+/* Bit 7 : Virtual context identifier tracing bit. */
+#define ETM_TRCCONFIGR_VMID_Pos (7UL) /*!< Position of VMID field. */
+#define ETM_TRCCONFIGR_VMID_Msk (0x1UL << ETM_TRCCONFIGR_VMID_Pos) /*!< Bit mask of VMID field. */
+#define ETM_TRCCONFIGR_VMID_Disabled (0x0UL) /*!< Virtual context identifier tracing is disabled. */
+#define ETM_TRCCONFIGR_VMID_Enabled (0x1UL) /*!< Virtual context identifier tracing is enabled. */
+
+/* Bit 6 : Context ID tracing bit. */
+#define ETM_TRCCONFIGR_CID_Pos (6UL) /*!< Position of CID field. */
+#define ETM_TRCCONFIGR_CID_Msk (0x1UL << ETM_TRCCONFIGR_CID_Pos) /*!< Bit mask of CID field. */
+#define ETM_TRCCONFIGR_CID_Disabled (0x0UL) /*!< Context ID tracing is disabled. */
+#define ETM_TRCCONFIGR_CID_Enabled (0x1UL) /*!< Context ID tracing is enabled. */
+
+/* Bit 4 : Cycle counting instruction trace bit. */
+#define ETM_TRCCONFIGR_CCI_Pos (4UL) /*!< Position of CCI field. */
+#define ETM_TRCCONFIGR_CCI_Msk (0x1UL << ETM_TRCCONFIGR_CCI_Pos) /*!< Bit mask of CCI field. */
+#define ETM_TRCCONFIGR_CCI_Disabled (0x0UL) /*!< Cycle counting in the instruction trace is disabled. */
+#define ETM_TRCCONFIGR_CCI_Enabled (0x1UL) /*!< Cycle counting in the instruction trace is enabled. */
+
+/* Bit 3 : Branch broadcast mode bit. */
+#define ETM_TRCCONFIGR_BB_Pos (3UL) /*!< Position of BB field. */
+#define ETM_TRCCONFIGR_BB_Msk (0x1UL << ETM_TRCCONFIGR_BB_Pos) /*!< Bit mask of BB field. */
+#define ETM_TRCCONFIGR_BB_Disabled (0x0UL) /*!< Branch broadcast mode is disabled. */
+#define ETM_TRCCONFIGR_BB_Enabled (0x1UL) /*!< Branch broadcast mode is enabled. */
+
+/* Bit 2 : Instruction P0 field. This field controls whether store instructions are traced as P0 instructions. */
+#define ETM_TRCCONFIGR_STOREASP0INST_Pos (2UL) /*!< Position of STOREASP0INST field. */
+#define ETM_TRCCONFIGR_STOREASP0INST_Msk (0x1UL << ETM_TRCCONFIGR_STOREASP0INST_Pos) /*!< Bit mask of STOREASP0INST field. */
+#define ETM_TRCCONFIGR_STOREASP0INST_No (0x0UL) /*!< Do not trace store instructions as P0 instructions. */
+#define ETM_TRCCONFIGR_STOREASP0INST_Yes (0x1UL) /*!< Trace store instructions as P0 instructions. */
+
+/* Bit 1 : Instruction P0 load field. This field controls whether load instructions are traced as P0 instructions. */
+#define ETM_TRCCONFIGR_LOADASP0INST_Pos (1UL) /*!< Position of LOADASP0INST field. */
+#define ETM_TRCCONFIGR_LOADASP0INST_Msk (0x1UL << ETM_TRCCONFIGR_LOADASP0INST_Pos) /*!< Bit mask of LOADASP0INST field. */
+#define ETM_TRCCONFIGR_LOADASP0INST_No (0x0UL) /*!< Do not trace load instructions as P0 instructions. */
+#define ETM_TRCCONFIGR_LOADASP0INST_Yes (0x1UL) /*!< Trace load instructions as P0 instructions. */
+
+/* Register: ETM_TRCEVENTCTL0R */
+/* Description: Controls the tracing of arbitrary events. If the selected event occurs a trace element is generated in the trace stream according to the settings in TRCEVENTCTL1R.DATAEN and TRCEVENTCTL1R.INSTEN. */
+
+/* Bits 7..0 : Select which event should generate trace elements. */
+#define ETM_TRCEVENTCTL0R_EVENT_Pos (0UL) /*!< Position of EVENT field. */
+#define ETM_TRCEVENTCTL0R_EVENT_Msk (0xFFUL << ETM_TRCEVENTCTL0R_EVENT_Pos) /*!< Bit mask of EVENT field. */
+
+/* Register: ETM_TRCEVENTCTL1R */
+/* Description: Controls the behavior of the events that TRCEVENTCTL0R selects. This register must always be programmed as part of trace unit initialization. Might ignore writes when the trace unit is enabled or not idle. */
+
+/* Bit 12 : Low-power state behavior override bit. Controls how a trace unit behaves in low-power state. */
+#define ETM_TRCEVENTCTL1R_LPOVERRIDE_Pos (12UL) /*!< Position of LPOVERRIDE field. */
+#define ETM_TRCEVENTCTL1R_LPOVERRIDE_Msk (0x1UL << ETM_TRCEVENTCTL1R_LPOVERRIDE_Pos) /*!< Bit mask of LPOVERRIDE field. */
+#define ETM_TRCEVENTCTL1R_LPOVERRIDE_Disabled (0x0UL) /*!< Trace unit low-power state behavior is not affected. That is, the trace unit is enabled to enter low-power state. */
+#define ETM_TRCEVENTCTL1R_LPOVERRIDE_Enabled (0x1UL) /*!< Trace unit low-power state behavior is overridden. That is, entry to a low-power state does not affect the trace unit resources or trace generation. */
+
+/* Bit 11 : AMBA Trace Bus (ATB) trigger enable bit. */
+#define ETM_TRCEVENTCTL1R_ATB_Pos (11UL) /*!< Position of ATB field. */
+#define ETM_TRCEVENTCTL1R_ATB_Msk (0x1UL << ETM_TRCEVENTCTL1R_ATB_Pos) /*!< Bit mask of ATB field. */
+#define ETM_TRCEVENTCTL1R_ATB_Disabled (0x0UL) /*!< ATB trigger is disabled. */
+#define ETM_TRCEVENTCTL1R_ATB_Enabled (0x1UL) /*!< ATB trigger is enabled. If a CoreSight ATB interface is implemented then when event 0 occurs the trace unit generates an ATB event. */
+
+/* Bit 4 : Data event enable bit. */
+#define ETM_TRCEVENTCTL1R_DATAEN_Pos (4UL) /*!< Position of DATAEN field. */
+#define ETM_TRCEVENTCTL1R_DATAEN_Msk (0x1UL << ETM_TRCEVENTCTL1R_DATAEN_Pos) /*!< Bit mask of DATAEN field. */
+#define ETM_TRCEVENTCTL1R_DATAEN_Disabled (0x0UL) /*!< The trace unit does not generate an Event element if event 0 occurs. */
+#define ETM_TRCEVENTCTL1R_DATAEN_Enabled (0x1UL) /*!< The trace unit generates an Event element in the data trace stream if event 0 occurs. */
+
+/* Bit 3 : Instruction event enable field. */
+#define ETM_TRCEVENTCTL1R_INSTEN_3_Pos (3UL) /*!< Position of INSTEN_3 field. */
+#define ETM_TRCEVENTCTL1R_INSTEN_3_Msk (0x1UL << ETM_TRCEVENTCTL1R_INSTEN_3_Pos) /*!< Bit mask of INSTEN_3 field. */
+#define ETM_TRCEVENTCTL1R_INSTEN_3_Disabled (0x0UL) /*!< The trace unit does not generate an Event element. */
+#define ETM_TRCEVENTCTL1R_INSTEN_3_Enabled (0x1UL) /*!< The trace unit generates an Event element for event 3, in the instruction trace stream. */
+
+/* Bit 2 : Instruction event enable field. */
+#define ETM_TRCEVENTCTL1R_INSTEN_2_Pos (2UL) /*!< Position of INSTEN_2 field. */
+#define ETM_TRCEVENTCTL1R_INSTEN_2_Msk (0x1UL << ETM_TRCEVENTCTL1R_INSTEN_2_Pos) /*!< Bit mask of INSTEN_2 field. */
+#define ETM_TRCEVENTCTL1R_INSTEN_2_Disabled (0x0UL) /*!< The trace unit does not generate an Event element. */
+#define ETM_TRCEVENTCTL1R_INSTEN_2_Enabled (0x1UL) /*!< The trace unit generates an Event element for event 2, in the instruction trace stream. */
+
+/* Bit 1 : Instruction event enable field. */
+#define ETM_TRCEVENTCTL1R_INSTEN_1_Pos (1UL) /*!< Position of INSTEN_1 field. */
+#define ETM_TRCEVENTCTL1R_INSTEN_1_Msk (0x1UL << ETM_TRCEVENTCTL1R_INSTEN_1_Pos) /*!< Bit mask of INSTEN_1 field. */
+#define ETM_TRCEVENTCTL1R_INSTEN_1_Disabled (0x0UL) /*!< The trace unit does not generate an Event element. */
+#define ETM_TRCEVENTCTL1R_INSTEN_1_Enabled (0x1UL) /*!< The trace unit generates an Event element for event 1, in the instruction trace stream. */
+
+/* Bit 0 : Instruction event enable field. */
+#define ETM_TRCEVENTCTL1R_INSTEN_0_Pos (0UL) /*!< Position of INSTEN_0 field. */
+#define ETM_TRCEVENTCTL1R_INSTEN_0_Msk (0x1UL << ETM_TRCEVENTCTL1R_INSTEN_0_Pos) /*!< Bit mask of INSTEN_0 field. */
+#define ETM_TRCEVENTCTL1R_INSTEN_0_Disabled (0x0UL) /*!< The trace unit does not generate an Event element. */
+#define ETM_TRCEVENTCTL1R_INSTEN_0_Enabled (0x1UL) /*!< The trace unit generates an Event element for event 0, in the instruction trace stream. */
+
+/* Register: ETM_TRCSTALLCTLR */
+/* Description: Enables trace unit functionality that prevents trace unit buffer overflows. Might ignore writes when the trace unit is enabled or not idle. Must be programmed if TRCIDR3.STALLCTL == 1. */
+
+/* Bit 13 : Trace overflow prevention bit. */
+#define ETM_TRCSTALLCTLR_NOOVERFLOW_Pos (13UL) /*!< Position of NOOVERFLOW field. */
+#define ETM_TRCSTALLCTLR_NOOVERFLOW_Msk (0x1UL << ETM_TRCSTALLCTLR_NOOVERFLOW_Pos) /*!< Bit mask of NOOVERFLOW field. */
+#define ETM_TRCSTALLCTLR_NOOVERFLOW_Disabled (0x0UL) /*!< Trace overflow prevention is disabled. */
+#define ETM_TRCSTALLCTLR_NOOVERFLOW_Enabled (0x1UL) /*!< Trace overflow prevention is enabled. This might cause a significant performance impact. */
+
+/* Bit 12 : Data discard field. Controls if a trace unit can discard data trace elements on a store when the data trace buffer space is less than LEVEL. */
+#define ETM_TRCSTALLCTLR_DATADISCARDSTORE_Pos (12UL) /*!< Position of DATADISCARDSTORE field. */
+#define ETM_TRCSTALLCTLR_DATADISCARDSTORE_Msk (0x1UL << ETM_TRCSTALLCTLR_DATADISCARDSTORE_Pos) /*!< Bit mask of DATADISCARDSTORE field. */
+#define ETM_TRCSTALLCTLR_DATADISCARDSTORE_Disabled (0x0UL) /*!< The trace unit must not discard any data trace elements. */
+#define ETM_TRCSTALLCTLR_DATADISCARDSTORE_Enabled (0x1UL) /*!< The trace unit can discard P1 and P2 elements associated with data stores. */
+
+/* Bit 11 : Data discard field. Controls if a trace unit can discard data trace elements on a load when the data trace buffer space is less than LEVEL. */
+#define ETM_TRCSTALLCTLR_DATADISCARDLOAD_Pos (11UL) /*!< Position of DATADISCARDLOAD field. */
+#define ETM_TRCSTALLCTLR_DATADISCARDLOAD_Msk (0x1UL << ETM_TRCSTALLCTLR_DATADISCARDLOAD_Pos) /*!< Bit mask of DATADISCARDLOAD field. */
+#define ETM_TRCSTALLCTLR_DATADISCARDLOAD_Disabled (0x0UL) /*!< The trace unit must not discard any data trace elements. */
+#define ETM_TRCSTALLCTLR_DATADISCARDLOAD_Enabled (0x1UL) /*!< The trace unit can discard P1 and P2 elements associated with data loads. */
+
+/* Bit 10 : Prioritize instruction trace bit. Controls if a trace unit can prioritize instruction trace when the instruction trace buffer space is less than LEVEL. */
+#define ETM_TRCSTALLCTLR_INSTPRIORITY_Pos (10UL) /*!< Position of INSTPRIORITY field. */
+#define ETM_TRCSTALLCTLR_INSTPRIORITY_Msk (0x1UL << ETM_TRCSTALLCTLR_INSTPRIORITY_Pos) /*!< Bit mask of INSTPRIORITY field. */
+#define ETM_TRCSTALLCTLR_INSTPRIORITY_Disabled (0x0UL) /*!< The trace unit must not prioritize instruction trace. */
+#define ETM_TRCSTALLCTLR_INSTPRIORITY_Enabled (0x1UL) /*!< The trace unit can prioritize instruction trace. A trace unit might prioritize
+instruction trace by preventing output of data trace, or other means which ensure
+that the instruction trace has a higher priority than the data trace. */
+
+/* Bit 9 : Data stall bit. Controls if a trace unit can stall the PE when the data trace buffer space is less than LEVEL. */
+#define ETM_TRCSTALLCTLR_DSTALL_Pos (9UL) /*!< Position of DSTALL field. */
+#define ETM_TRCSTALLCTLR_DSTALL_Msk (0x1UL << ETM_TRCSTALLCTLR_DSTALL_Pos) /*!< Bit mask of DSTALL field. */
+#define ETM_TRCSTALLCTLR_DSTALL_Disabled (0x0UL) /*!< The trace unit must not stall the PE. */
+#define ETM_TRCSTALLCTLR_DSTALL_Enabled (0x1UL) /*!< The trace unit can stall the PE. */
+
+/* Bit 8 : Instruction stall bit. Controls if a trace unit can stall the PE when the instruction trace buffer space is less than LEVEL. */
+#define ETM_TRCSTALLCTLR_ISTALL_Pos (8UL) /*!< Position of ISTALL field. */
+#define ETM_TRCSTALLCTLR_ISTALL_Msk (0x1UL << ETM_TRCSTALLCTLR_ISTALL_Pos) /*!< Bit mask of ISTALL field. */
+#define ETM_TRCSTALLCTLR_ISTALL_Disabled (0x0UL) /*!< The trace unit must not stall the PE. */
+#define ETM_TRCSTALLCTLR_ISTALL_Enabled (0x1UL) /*!< The trace unit can stall the PE. */
+
+/* Bits 3..0 : Threshold level field. If LEVEL is nonzero then a trace unit might suppress the generation of: Global timestamps in the instruction trace stream and the data trace stream. Cycle counting in the instruction trace stream, although the cumulative cycle count remains correct. */
+#define ETM_TRCSTALLCTLR_LEVEL_Pos (0UL) /*!< Position of LEVEL field. */
+#define ETM_TRCSTALLCTLR_LEVEL_Msk (0xFUL << ETM_TRCSTALLCTLR_LEVEL_Pos) /*!< Bit mask of LEVEL field. */
+#define ETM_TRCSTALLCTLR_LEVEL_Min (0x0UL) /*!< Zero invasion. This setting has a greater risk of a FIFO overflow */
+#define ETM_TRCSTALLCTLR_LEVEL_Max (0xFUL) /*!< Maximum invasion occurs but there is less risk of a FIFO overflow. */
+
+/* Register: ETM_TRCTSCTLR */
+/* Description: Controls the insertion of global timestamps in the trace streams. When the selected event is triggered, the trace unit inserts a global timestamp into the trace streams. Might ignore writes when the trace unit is enabled or not idle. Must be programmed if TRCCONFIGR.TS == 1. */
+
+/* Bits 7..0 : Select which event should generate time stamps. */
+#define ETM_TRCTSCTLR_EVENT_Pos (0UL) /*!< Position of EVENT field. */
+#define ETM_TRCTSCTLR_EVENT_Msk (0xFFUL << ETM_TRCTSCTLR_EVENT_Pos) /*!< Bit mask of EVENT field. */
+
+/* Register: ETM_TRCSYNCPR */
+/* Description: Controls how often trace synchronization requests occur. Might ignore writes when the trace unit is enabled or not idle. If writes are permitted then the register must be programmed. */
+
+/* Bits 4..0 : Controls how many bytes of trace, the sum of instruction and data, that a trace unit can
+generate before a trace synchronization request occurs. The number of bytes is always a power of two, calculated by 2^PERIOD */
+#define ETM_TRCSYNCPR_PERIOD_Pos (0UL) /*!< Position of PERIOD field. */
+#define ETM_TRCSYNCPR_PERIOD_Msk (0x1FUL << ETM_TRCSYNCPR_PERIOD_Pos) /*!< Bit mask of PERIOD field. */
+#define ETM_TRCSYNCPR_PERIOD_Disabled (0x00UL) /*!< Trace synchronization requests are disabled. This setting does not disable other types of trace synchronization request. */
+
+/* Register: ETM_TRCCCCTLR */
+/* Description: Sets the threshold value for cycle counting. Might ignore writes when the trace unit is enabled or not idle. Must be programmed if TRCCONFIGR.CCI==1. */
+
+/* Bits 11..0 : Sets the threshold value for instruction trace cycle counting. */
+#define ETM_TRCCCCTLR_THRESHOLD_Pos (0UL) /*!< Position of THRESHOLD field. */
+#define ETM_TRCCCCTLR_THRESHOLD_Msk (0xFFFUL << ETM_TRCCCCTLR_THRESHOLD_Pos) /*!< Bit mask of THRESHOLD field. */
+
+/* Register: ETM_TRCBBCTLR */
+/* Description: Controls which regions in the memory map are enabled to use branch broadcasting. Might ignore writes when the trace unit is enabled or not idle. Must be programmed if TRCCONFIGR.BB == 1. */
+
+/* Bit 7 : Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+        Each field represents an address range comparator pair, so field[7] controls the selection of address range comparator pair 7. */
+#define ETM_TRCBBCTLR_RANGE_7_Pos (7UL) /*!< Position of RANGE_7 field. */
+#define ETM_TRCBBCTLR_RANGE_7_Msk (0x1UL << ETM_TRCBBCTLR_RANGE_7_Pos) /*!< Bit mask of RANGE_7 field. */
+#define ETM_TRCBBCTLR_RANGE_7_Disabled (0x0UL) /*!< The address range that address range comparator pair 7 defines, is not selected. */
+#define ETM_TRCBBCTLR_RANGE_7_Enabled (0x1UL) /*!< The address range that address range comparator pair n defines, is selected. */
+
+/* Bit 6 : Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+        Each field represents an address range comparator pair, so field[6] controls the selection of address range comparator pair 6. */
+#define ETM_TRCBBCTLR_RANGE_6_Pos (6UL) /*!< Position of RANGE_6 field. */
+#define ETM_TRCBBCTLR_RANGE_6_Msk (0x1UL << ETM_TRCBBCTLR_RANGE_6_Pos) /*!< Bit mask of RANGE_6 field. */
+#define ETM_TRCBBCTLR_RANGE_6_Disabled (0x0UL) /*!< The address range that address range comparator pair 6 defines, is not selected. */
+#define ETM_TRCBBCTLR_RANGE_6_Enabled (0x1UL) /*!< The address range that address range comparator pair n defines, is selected. */
+
+/* Bit 5 : Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+        Each field represents an address range comparator pair, so field[5] controls the selection of address range comparator pair 5. */
+#define ETM_TRCBBCTLR_RANGE_5_Pos (5UL) /*!< Position of RANGE_5 field. */
+#define ETM_TRCBBCTLR_RANGE_5_Msk (0x1UL << ETM_TRCBBCTLR_RANGE_5_Pos) /*!< Bit mask of RANGE_5 field. */
+#define ETM_TRCBBCTLR_RANGE_5_Disabled (0x0UL) /*!< The address range that address range comparator pair 5 defines, is not selected. */
+#define ETM_TRCBBCTLR_RANGE_5_Enabled (0x1UL) /*!< The address range that address range comparator pair n defines, is selected. */
+
+/* Bit 4 : Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+        Each field represents an address range comparator pair, so field[4] controls the selection of address range comparator pair 4. */
+#define ETM_TRCBBCTLR_RANGE_4_Pos (4UL) /*!< Position of RANGE_4 field. */
+#define ETM_TRCBBCTLR_RANGE_4_Msk (0x1UL << ETM_TRCBBCTLR_RANGE_4_Pos) /*!< Bit mask of RANGE_4 field. */
+#define ETM_TRCBBCTLR_RANGE_4_Disabled (0x0UL) /*!< The address range that address range comparator pair 4 defines, is not selected. */
+#define ETM_TRCBBCTLR_RANGE_4_Enabled (0x1UL) /*!< The address range that address range comparator pair n defines, is selected. */
+
+/* Bit 3 : Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+        Each field represents an address range comparator pair, so field[3] controls the selection of address range comparator pair 3. */
+#define ETM_TRCBBCTLR_RANGE_3_Pos (3UL) /*!< Position of RANGE_3 field. */
+#define ETM_TRCBBCTLR_RANGE_3_Msk (0x1UL << ETM_TRCBBCTLR_RANGE_3_Pos) /*!< Bit mask of RANGE_3 field. */
+#define ETM_TRCBBCTLR_RANGE_3_Disabled (0x0UL) /*!< The address range that address range comparator pair 3 defines, is not selected. */
+#define ETM_TRCBBCTLR_RANGE_3_Enabled (0x1UL) /*!< The address range that address range comparator pair n defines, is selected. */
+
+/* Bit 2 : Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+        Each field represents an address range comparator pair, so field[2] controls the selection of address range comparator pair 2. */
+#define ETM_TRCBBCTLR_RANGE_2_Pos (2UL) /*!< Position of RANGE_2 field. */
+#define ETM_TRCBBCTLR_RANGE_2_Msk (0x1UL << ETM_TRCBBCTLR_RANGE_2_Pos) /*!< Bit mask of RANGE_2 field. */
+#define ETM_TRCBBCTLR_RANGE_2_Disabled (0x0UL) /*!< The address range that address range comparator pair 2 defines, is not selected. */
+#define ETM_TRCBBCTLR_RANGE_2_Enabled (0x1UL) /*!< The address range that address range comparator pair n defines, is selected. */
+
+/* Bit 1 : Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+        Each field represents an address range comparator pair, so field[1] controls the selection of address range comparator pair 1. */
+#define ETM_TRCBBCTLR_RANGE_1_Pos (1UL) /*!< Position of RANGE_1 field. */
+#define ETM_TRCBBCTLR_RANGE_1_Msk (0x1UL << ETM_TRCBBCTLR_RANGE_1_Pos) /*!< Bit mask of RANGE_1 field. */
+#define ETM_TRCBBCTLR_RANGE_1_Disabled (0x0UL) /*!< The address range that address range comparator pair 1 defines, is not selected. */
+#define ETM_TRCBBCTLR_RANGE_1_Enabled (0x1UL) /*!< The address range that address range comparator pair n defines, is selected. */
+
+/* Bit 0 : Address range field. Selects which address range comparator pairs are in use with branch broadcasting. 
+        Each field represents an address range comparator pair, so field[0] controls the selection of address range comparator pair 0. */
+#define ETM_TRCBBCTLR_RANGE_0_Pos (0UL) /*!< Position of RANGE_0 field. */
+#define ETM_TRCBBCTLR_RANGE_0_Msk (0x1UL << ETM_TRCBBCTLR_RANGE_0_Pos) /*!< Bit mask of RANGE_0 field. */
+#define ETM_TRCBBCTLR_RANGE_0_Disabled (0x0UL) /*!< The address range that address range comparator pair 0 defines, is not selected. */
+#define ETM_TRCBBCTLR_RANGE_0_Enabled (0x1UL) /*!< The address range that address range comparator pair n defines, is selected. */
+
+/* Register: ETM_TRCTRACEIDR */
+/* Description: Sets the trace ID for instruction trace. If data trace is enabled then it also sets the trace ID for data trace, to (trace ID for instruction trace) + 1. This register must always be programmed as part of trace unit initialization. Might ignore writes when the trace unit is enabled or not idle. */
+
+/* Bits 6..0 : Trace ID field. Sets the trace ID value for instruction trace. Bit[0] must be zero if data trace is enabled. If data trace is enabled then a trace unit sets the trace ID for data trace, to TRACEID+1. */
+#define ETM_TRCTRACEIDR_TRACEID_Pos (0UL) /*!< Position of TRACEID field. */
+#define ETM_TRCTRACEIDR_TRACEID_Msk (0x7FUL << ETM_TRCTRACEIDR_TRACEID_Pos) /*!< Bit mask of TRACEID field. */
+
+/* Register: ETM_TRCQCTLR */
+/* Description: Controls when Q elements are enabled. Might ignore writes when the trace unit is enabled or not idle. This register must be programmed if it is implemented and TRCCONFIGR.QE is set to any value other than 0b00. */
+
+/* Bit 8 : Selects whether the address range comparators selected by the RANGE field indicate
+address ranges where the trace unit is permitted to generate Q elements or address ranges
+where the trace unit is not permitted to generate Q elements: */
+#define ETM_TRCQCTLR_MODE_Pos (8UL) /*!< Position of MODE field. */
+#define ETM_TRCQCTLR_MODE_Msk (0x1UL << ETM_TRCQCTLR_MODE_Pos) /*!< Bit mask of MODE field. */
+#define ETM_TRCQCTLR_MODE_Exclude (0x0UL) /*!< Exclude mode. The address range comparators selected by the RANGE field
+indicate address ranges where the trace unit cannot generate Q elements. If no
+ranges are selected, Q elements are permitted across the entire memory map. */
+#define ETM_TRCQCTLR_MODE_Include (0x1UL) /*!< Include mode. The address range comparators selected by the RANGE field
+indicate address ranges where the trace unit can generate Q elements. If all the
+implemented bits in RANGE are set to 0 then Q elements are disabled. */
+
+/* Bit 7 : Specifies the address range comparators to be used for controlling Q elements. */
+#define ETM_TRCQCTLR_RANGE_7_Pos (7UL) /*!< Position of RANGE_7 field. */
+#define ETM_TRCQCTLR_RANGE_7_Msk (0x1UL << ETM_TRCQCTLR_RANGE_7_Pos) /*!< Bit mask of RANGE_7 field. */
+#define ETM_TRCQCTLR_RANGE_7_Disabled (0x0UL) /*!< Address range comparator 7 is disabled. */
+#define ETM_TRCQCTLR_RANGE_7_Enabled (0x1UL) /*!< Address range comparator 7 is selected for use. */
+
+/* Bit 6 : Specifies the address range comparators to be used for controlling Q elements. */
+#define ETM_TRCQCTLR_RANGE_6_Pos (6UL) /*!< Position of RANGE_6 field. */
+#define ETM_TRCQCTLR_RANGE_6_Msk (0x1UL << ETM_TRCQCTLR_RANGE_6_Pos) /*!< Bit mask of RANGE_6 field. */
+#define ETM_TRCQCTLR_RANGE_6_Disabled (0x0UL) /*!< Address range comparator 6 is disabled. */
+#define ETM_TRCQCTLR_RANGE_6_Enabled (0x1UL) /*!< Address range comparator 6 is selected for use. */
+
+/* Bit 5 : Specifies the address range comparators to be used for controlling Q elements. */
+#define ETM_TRCQCTLR_RANGE_5_Pos (5UL) /*!< Position of RANGE_5 field. */
+#define ETM_TRCQCTLR_RANGE_5_Msk (0x1UL << ETM_TRCQCTLR_RANGE_5_Pos) /*!< Bit mask of RANGE_5 field. */
+#define ETM_TRCQCTLR_RANGE_5_Disabled (0x0UL) /*!< Address range comparator 5 is disabled. */
+#define ETM_TRCQCTLR_RANGE_5_Enabled (0x1UL) /*!< Address range comparator 5 is selected for use. */
+
+/* Bit 4 : Specifies the address range comparators to be used for controlling Q elements. */
+#define ETM_TRCQCTLR_RANGE_4_Pos (4UL) /*!< Position of RANGE_4 field. */
+#define ETM_TRCQCTLR_RANGE_4_Msk (0x1UL << ETM_TRCQCTLR_RANGE_4_Pos) /*!< Bit mask of RANGE_4 field. */
+#define ETM_TRCQCTLR_RANGE_4_Disabled (0x0UL) /*!< Address range comparator 4 is disabled. */
+#define ETM_TRCQCTLR_RANGE_4_Enabled (0x1UL) /*!< Address range comparator 4 is selected for use. */
+
+/* Bit 3 : Specifies the address range comparators to be used for controlling Q elements. */
+#define ETM_TRCQCTLR_RANGE_3_Pos (3UL) /*!< Position of RANGE_3 field. */
+#define ETM_TRCQCTLR_RANGE_3_Msk (0x1UL << ETM_TRCQCTLR_RANGE_3_Pos) /*!< Bit mask of RANGE_3 field. */
+#define ETM_TRCQCTLR_RANGE_3_Disabled (0x0UL) /*!< Address range comparator 3 is disabled. */
+#define ETM_TRCQCTLR_RANGE_3_Enabled (0x1UL) /*!< Address range comparator 3 is selected for use. */
+
+/* Bit 2 : Specifies the address range comparators to be used for controlling Q elements. */
+#define ETM_TRCQCTLR_RANGE_2_Pos (2UL) /*!< Position of RANGE_2 field. */
+#define ETM_TRCQCTLR_RANGE_2_Msk (0x1UL << ETM_TRCQCTLR_RANGE_2_Pos) /*!< Bit mask of RANGE_2 field. */
+#define ETM_TRCQCTLR_RANGE_2_Disabled (0x0UL) /*!< Address range comparator 2 is disabled. */
+#define ETM_TRCQCTLR_RANGE_2_Enabled (0x1UL) /*!< Address range comparator 2 is selected for use. */
+
+/* Bit 1 : Specifies the address range comparators to be used for controlling Q elements. */
+#define ETM_TRCQCTLR_RANGE_1_Pos (1UL) /*!< Position of RANGE_1 field. */
+#define ETM_TRCQCTLR_RANGE_1_Msk (0x1UL << ETM_TRCQCTLR_RANGE_1_Pos) /*!< Bit mask of RANGE_1 field. */
+#define ETM_TRCQCTLR_RANGE_1_Disabled (0x0UL) /*!< Address range comparator 1 is disabled. */
+#define ETM_TRCQCTLR_RANGE_1_Enabled (0x1UL) /*!< Address range comparator 1 is selected for use. */
+
+/* Bit 0 : Specifies the address range comparators to be used for controlling Q elements. */
+#define ETM_TRCQCTLR_RANGE_0_Pos (0UL) /*!< Position of RANGE_0 field. */
+#define ETM_TRCQCTLR_RANGE_0_Msk (0x1UL << ETM_TRCQCTLR_RANGE_0_Pos) /*!< Bit mask of RANGE_0 field. */
+#define ETM_TRCQCTLR_RANGE_0_Disabled (0x0UL) /*!< Address range comparator 0 is disabled. */
+#define ETM_TRCQCTLR_RANGE_0_Enabled (0x1UL) /*!< Address range comparator 0 is selected for use. */
+
+/* Register: ETM_TRCVICTLR */
+/* Description: Controls instruction trace filtering. Might ignore writes when the trace unit is enabled or not idle. Only returns stable data when TRCSTATR.PMSTABLE == 1. Must be programmed, particularly to set the value of the SSSTATUS bit, which sets the state of the start/stop logic. */
+
+/* Bit 23 : In Non-secure state, each bit controls whether instruction tracing is enabled for the corresponding Exception level 3. */
+#define ETM_TRCVICTLR_EXLEVEL3_NS_Pos (23UL) /*!< Position of EXLEVEL3_NS field. */
+#define ETM_TRCVICTLR_EXLEVEL3_NS_Msk (0x1UL << ETM_TRCVICTLR_EXLEVEL3_NS_Pos) /*!< Bit mask of EXLEVEL3_NS field. */
+#define ETM_TRCVICTLR_EXLEVEL3_NS_Enabled (0x0UL) /*!< The trace unit generates instruction trace, in Non-secure state, for Exception level 3. */
+#define ETM_TRCVICTLR_EXLEVEL3_NS_Disabled (0x1UL) /*!< The trace unit does not generate instruction trace, in Non-secure state, for Exception level 3. */
+
+/* Bit 22 : In Non-secure state, each bit controls whether instruction tracing is enabled for the corresponding Exception level 2. */
+#define ETM_TRCVICTLR_EXLEVEL2_NS_Pos (22UL) /*!< Position of EXLEVEL2_NS field. */
+#define ETM_TRCVICTLR_EXLEVEL2_NS_Msk (0x1UL << ETM_TRCVICTLR_EXLEVEL2_NS_Pos) /*!< Bit mask of EXLEVEL2_NS field. */
+#define ETM_TRCVICTLR_EXLEVEL2_NS_Enabled (0x0UL) /*!< The trace unit generates instruction trace, in Non-secure state, for Exception level 2. */
+#define ETM_TRCVICTLR_EXLEVEL2_NS_Disabled (0x1UL) /*!< The trace unit does not generate instruction trace, in Non-secure state, for Exception level 2. */
+
+/* Bit 21 : In Non-secure state, each bit controls whether instruction tracing is enabled for the corresponding Exception level 1. */
+#define ETM_TRCVICTLR_EXLEVEL1_NS_Pos (21UL) /*!< Position of EXLEVEL1_NS field. */
+#define ETM_TRCVICTLR_EXLEVEL1_NS_Msk (0x1UL << ETM_TRCVICTLR_EXLEVEL1_NS_Pos) /*!< Bit mask of EXLEVEL1_NS field. */
+#define ETM_TRCVICTLR_EXLEVEL1_NS_Enabled (0x0UL) /*!< The trace unit generates instruction trace, in Non-secure state, for Exception level 1. */
+#define ETM_TRCVICTLR_EXLEVEL1_NS_Disabled (0x1UL) /*!< The trace unit does not generate instruction trace, in Non-secure state, for Exception level 1. */
+
+/* Bit 20 : In Non-secure state, each bit controls whether instruction tracing is enabled for the corresponding Exception level 0. */
+#define ETM_TRCVICTLR_EXLEVEL0_NS_Pos (20UL) /*!< Position of EXLEVEL0_NS field. */
+#define ETM_TRCVICTLR_EXLEVEL0_NS_Msk (0x1UL << ETM_TRCVICTLR_EXLEVEL0_NS_Pos) /*!< Bit mask of EXLEVEL0_NS field. */
+#define ETM_TRCVICTLR_EXLEVEL0_NS_Enabled (0x0UL) /*!< The trace unit generates instruction trace, in Non-secure state, for Exception level 0. */
+#define ETM_TRCVICTLR_EXLEVEL0_NS_Disabled (0x1UL) /*!< The trace unit does not generate instruction trace, in Non-secure state, for Exception level 0. */
+
+/* Bit 19 : In Secure state, each bit controls whether instruction tracing is enabled for the corresponding Exception level 3. */
+#define ETM_TRCVICTLR_EXLEVEL3_S_Pos (19UL) /*!< Position of EXLEVEL3_S field. */
+#define ETM_TRCVICTLR_EXLEVEL3_S_Msk (0x1UL << ETM_TRCVICTLR_EXLEVEL3_S_Pos) /*!< Bit mask of EXLEVEL3_S field. */
+#define ETM_TRCVICTLR_EXLEVEL3_S_Enabled (0x0UL) /*!< The trace unit generates instruction trace, in Secure state, for Exception level 3. */
+#define ETM_TRCVICTLR_EXLEVEL3_S_Disabled (0x1UL) /*!< The trace unit does not generate instruction trace, in Secure state, for Exception level 3. */
+
+/* Bit 18 : In Secure state, each bit controls whether instruction tracing is enabled for the corresponding Exception level 2. */
+#define ETM_TRCVICTLR_EXLEVEL2_S_Pos (18UL) /*!< Position of EXLEVEL2_S field. */
+#define ETM_TRCVICTLR_EXLEVEL2_S_Msk (0x1UL << ETM_TRCVICTLR_EXLEVEL2_S_Pos) /*!< Bit mask of EXLEVEL2_S field. */
+#define ETM_TRCVICTLR_EXLEVEL2_S_Enabled (0x0UL) /*!< The trace unit generates instruction trace, in Secure state, for Exception level 2. */
+#define ETM_TRCVICTLR_EXLEVEL2_S_Disabled (0x1UL) /*!< The trace unit does not generate instruction trace, in Secure state, for Exception level 2. */
+
+/* Bit 17 : In Secure state, each bit controls whether instruction tracing is enabled for the corresponding Exception level 1. */
+#define ETM_TRCVICTLR_EXLEVEL1_S_Pos (17UL) /*!< Position of EXLEVEL1_S field. */
+#define ETM_TRCVICTLR_EXLEVEL1_S_Msk (0x1UL << ETM_TRCVICTLR_EXLEVEL1_S_Pos) /*!< Bit mask of EXLEVEL1_S field. */
+#define ETM_TRCVICTLR_EXLEVEL1_S_Enabled (0x0UL) /*!< The trace unit generates instruction trace, in Secure state, for Exception level 1. */
+#define ETM_TRCVICTLR_EXLEVEL1_S_Disabled (0x1UL) /*!< The trace unit does not generate instruction trace, in Secure state, for Exception level 1. */
+
+/* Bit 16 : In Secure state, each bit controls whether instruction tracing is enabled for the corresponding Exception level 0. */
+#define ETM_TRCVICTLR_EXLEVEL0_S_Pos (16UL) /*!< Position of EXLEVEL0_S field. */
+#define ETM_TRCVICTLR_EXLEVEL0_S_Msk (0x1UL << ETM_TRCVICTLR_EXLEVEL0_S_Pos) /*!< Bit mask of EXLEVEL0_S field. */
+#define ETM_TRCVICTLR_EXLEVEL0_S_Enabled (0x0UL) /*!< The trace unit generates instruction trace, in Secure state, for Exception level 0. */
+#define ETM_TRCVICTLR_EXLEVEL0_S_Disabled (0x1UL) /*!< The trace unit does not generate instruction trace, in Secure state, for Exception level 0. */
+
+/* Bit 11 : When TRCIDR3.TRCERR==1, this bit controls whether a trace unit must trace a System error exception. */
+#define ETM_TRCVICTLR_TRCERR_Pos (11UL) /*!< Position of TRCERR field. */
+#define ETM_TRCVICTLR_TRCERR_Msk (0x1UL << ETM_TRCVICTLR_TRCERR_Pos) /*!< Bit mask of TRCERR field. */
+#define ETM_TRCVICTLR_TRCERR_Disabled (0x0UL) /*!< The trace unit does not trace a System error exception unless it traces the exception or instruction immediately prior to the System error exception. */
+#define ETM_TRCVICTLR_TRCERR_Enabled (0x1UL) /*!< The trace unit always traces a System error exception, regardless of the value of ViewInst. */
+
+/* Bit 10 : Controls whether a trace unit must trace a Reset exception. */
+#define ETM_TRCVICTLR_TRCRESET_Pos (10UL) /*!< Position of TRCRESET field. */
+#define ETM_TRCVICTLR_TRCRESET_Msk (0x1UL << ETM_TRCVICTLR_TRCRESET_Pos) /*!< Bit mask of TRCRESET field. */
+#define ETM_TRCVICTLR_TRCRESET_Disabled (0x0UL) /*!< The trace unit does not trace a Reset exception unless it traces the exception or instruction immediately prior to the Reset exception. */
+#define ETM_TRCVICTLR_TRCRESET_Enabled (0x1UL) /*!< The trace unit always traces a Reset exception. */
+
+/* Bit 9 : When TRCIDR4.NUMACPAIRS &gt; 0 or TRCIDR4.NUMPC &gt; 0, this bit returns the status of the start/stop logic. */
+#define ETM_TRCVICTLR_SSSTATUS_Pos (9UL) /*!< Position of SSSTATUS field. */
+#define ETM_TRCVICTLR_SSSTATUS_Msk (0x1UL << ETM_TRCVICTLR_SSSTATUS_Pos) /*!< Bit mask of SSSTATUS field. */
+#define ETM_TRCVICTLR_SSSTATUS_Stopped (0x0UL) /*!< The start/stop logic is in the stopped state. */
+#define ETM_TRCVICTLR_SSSTATUS_Started (0x1UL) /*!< The start/stop logic is in the started state. */
+
+/* Bits 4..0 : Select which resource number should be filtered. */
+#define ETM_TRCVICTLR_EVENT_SEL_Pos (0UL) /*!< Position of EVENT_SEL field. */
+#define ETM_TRCVICTLR_EVENT_SEL_Msk (0x1FUL << ETM_TRCVICTLR_EVENT_SEL_Pos) /*!< Bit mask of EVENT_SEL field. */
+#define ETM_TRCVICTLR_EVENT_SEL_Disabled (0x00UL) /*!< This event is not filtered. */
+#define ETM_TRCVICTLR_EVENT_SEL_Enabled (0x01UL) /*!< This event is filtered. */
+
+/* Register: ETM_TRCVIIECTLR */
+/* Description: ViewInst exclude control. Might ignore writes when the trace unit is enabled or not idle. This register must be programmed when one or more address comparators are implemented. */
+
+/* Bit 23 : Exclude range field. Selects which address range comparator pairs are in use with ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_7_Pos (23UL) /*!< Position of EXCLUDE_7 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_7_Msk (0x1UL << ETM_TRCVIIECTLR_EXCLUDE_7_Pos) /*!< Bit mask of EXCLUDE_7 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_7_Disabled (0x0UL) /*!< The address range that address range comparator pair 7 defines, is not selected for ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_7_Enabled (0x1UL) /*!< The address range that address range comparator pair 7 defines, is selected for ViewInst exclude control. */
+
+/* Bit 22 : Exclude range field. Selects which address range comparator pairs are in use with ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_6_Pos (22UL) /*!< Position of EXCLUDE_6 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_6_Msk (0x1UL << ETM_TRCVIIECTLR_EXCLUDE_6_Pos) /*!< Bit mask of EXCLUDE_6 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_6_Disabled (0x0UL) /*!< The address range that address range comparator pair 6 defines, is not selected for ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_6_Enabled (0x1UL) /*!< The address range that address range comparator pair 6 defines, is selected for ViewInst exclude control. */
+
+/* Bit 21 : Exclude range field. Selects which address range comparator pairs are in use with ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_5_Pos (21UL) /*!< Position of EXCLUDE_5 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_5_Msk (0x1UL << ETM_TRCVIIECTLR_EXCLUDE_5_Pos) /*!< Bit mask of EXCLUDE_5 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_5_Disabled (0x0UL) /*!< The address range that address range comparator pair 5 defines, is not selected for ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_5_Enabled (0x1UL) /*!< The address range that address range comparator pair 5 defines, is selected for ViewInst exclude control. */
+
+/* Bit 20 : Exclude range field. Selects which address range comparator pairs are in use with ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_4_Pos (20UL) /*!< Position of EXCLUDE_4 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_4_Msk (0x1UL << ETM_TRCVIIECTLR_EXCLUDE_4_Pos) /*!< Bit mask of EXCLUDE_4 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_4_Disabled (0x0UL) /*!< The address range that address range comparator pair 4 defines, is not selected for ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_4_Enabled (0x1UL) /*!< The address range that address range comparator pair 4 defines, is selected for ViewInst exclude control. */
+
+/* Bit 19 : Exclude range field. Selects which address range comparator pairs are in use with ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_3_Pos (19UL) /*!< Position of EXCLUDE_3 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_3_Msk (0x1UL << ETM_TRCVIIECTLR_EXCLUDE_3_Pos) /*!< Bit mask of EXCLUDE_3 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_3_Disabled (0x0UL) /*!< The address range that address range comparator pair 3 defines, is not selected for ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_3_Enabled (0x1UL) /*!< The address range that address range comparator pair 3 defines, is selected for ViewInst exclude control. */
+
+/* Bit 18 : Exclude range field. Selects which address range comparator pairs are in use with ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_2_Pos (18UL) /*!< Position of EXCLUDE_2 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_2_Msk (0x1UL << ETM_TRCVIIECTLR_EXCLUDE_2_Pos) /*!< Bit mask of EXCLUDE_2 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_2_Disabled (0x0UL) /*!< The address range that address range comparator pair 2 defines, is not selected for ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_2_Enabled (0x1UL) /*!< The address range that address range comparator pair 2 defines, is selected for ViewInst exclude control. */
+
+/* Bit 17 : Exclude range field. Selects which address range comparator pairs are in use with ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_1_Pos (17UL) /*!< Position of EXCLUDE_1 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_1_Msk (0x1UL << ETM_TRCVIIECTLR_EXCLUDE_1_Pos) /*!< Bit mask of EXCLUDE_1 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_1_Disabled (0x0UL) /*!< The address range that address range comparator pair 1 defines, is not selected for ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_1_Enabled (0x1UL) /*!< The address range that address range comparator pair 1 defines, is selected for ViewInst exclude control. */
+
+/* Bit 16 : Exclude range field. Selects which address range comparator pairs are in use with ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_0_Pos (16UL) /*!< Position of EXCLUDE_0 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_0_Msk (0x1UL << ETM_TRCVIIECTLR_EXCLUDE_0_Pos) /*!< Bit mask of EXCLUDE_0 field. */
+#define ETM_TRCVIIECTLR_EXCLUDE_0_Disabled (0x0UL) /*!< The address range that address range comparator pair 0 defines, is not selected for ViewInst exclude control. */
+#define ETM_TRCVIIECTLR_EXCLUDE_0_Enabled (0x1UL) /*!< The address range that address range comparator pair 0 defines, is selected for ViewInst exclude control. */
+
+/* Bit 7 : Include range field. Selects which address range comparator pairs are in use with ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_7_Pos (7UL) /*!< Position of INCLUDE_7 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_7_Msk (0x1UL << ETM_TRCVIIECTLR_INCLUDE_7_Pos) /*!< Bit mask of INCLUDE_7 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_7_Disabled (0x0UL) /*!< The address range that address range comparator pair 7 defines, is not selected for ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_7_Enabled (0x1UL) /*!< The address range that address range comparator pair 7 defines, is selected for ViewInst include control. */
+
+/* Bit 6 : Include range field. Selects which address range comparator pairs are in use with ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_6_Pos (6UL) /*!< Position of INCLUDE_6 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_6_Msk (0x1UL << ETM_TRCVIIECTLR_INCLUDE_6_Pos) /*!< Bit mask of INCLUDE_6 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_6_Disabled (0x0UL) /*!< The address range that address range comparator pair 6 defines, is not selected for ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_6_Enabled (0x1UL) /*!< The address range that address range comparator pair 6 defines, is selected for ViewInst include control. */
+
+/* Bit 5 : Include range field. Selects which address range comparator pairs are in use with ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_5_Pos (5UL) /*!< Position of INCLUDE_5 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_5_Msk (0x1UL << ETM_TRCVIIECTLR_INCLUDE_5_Pos) /*!< Bit mask of INCLUDE_5 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_5_Disabled (0x0UL) /*!< The address range that address range comparator pair 5 defines, is not selected for ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_5_Enabled (0x1UL) /*!< The address range that address range comparator pair 5 defines, is selected for ViewInst include control. */
+
+/* Bit 4 : Include range field. Selects which address range comparator pairs are in use with ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_4_Pos (4UL) /*!< Position of INCLUDE_4 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_4_Msk (0x1UL << ETM_TRCVIIECTLR_INCLUDE_4_Pos) /*!< Bit mask of INCLUDE_4 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_4_Disabled (0x0UL) /*!< The address range that address range comparator pair 4 defines, is not selected for ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_4_Enabled (0x1UL) /*!< The address range that address range comparator pair 4 defines, is selected for ViewInst include control. */
+
+/* Bit 3 : Include range field. Selects which address range comparator pairs are in use with ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_3_Pos (3UL) /*!< Position of INCLUDE_3 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_3_Msk (0x1UL << ETM_TRCVIIECTLR_INCLUDE_3_Pos) /*!< Bit mask of INCLUDE_3 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_3_Disabled (0x0UL) /*!< The address range that address range comparator pair 3 defines, is not selected for ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_3_Enabled (0x1UL) /*!< The address range that address range comparator pair 3 defines, is selected for ViewInst include control. */
+
+/* Bit 2 : Include range field. Selects which address range comparator pairs are in use with ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_2_Pos (2UL) /*!< Position of INCLUDE_2 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_2_Msk (0x1UL << ETM_TRCVIIECTLR_INCLUDE_2_Pos) /*!< Bit mask of INCLUDE_2 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_2_Disabled (0x0UL) /*!< The address range that address range comparator pair 2 defines, is not selected for ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_2_Enabled (0x1UL) /*!< The address range that address range comparator pair 2 defines, is selected for ViewInst include control. */
+
+/* Bit 1 : Include range field. Selects which address range comparator pairs are in use with ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_1_Pos (1UL) /*!< Position of INCLUDE_1 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_1_Msk (0x1UL << ETM_TRCVIIECTLR_INCLUDE_1_Pos) /*!< Bit mask of INCLUDE_1 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_1_Disabled (0x0UL) /*!< The address range that address range comparator pair 1 defines, is not selected for ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_1_Enabled (0x1UL) /*!< The address range that address range comparator pair 1 defines, is selected for ViewInst include control. */
+
+/* Bit 0 : Include range field. Selects which address range comparator pairs are in use with ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_0_Pos (0UL) /*!< Position of INCLUDE_0 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_0_Msk (0x1UL << ETM_TRCVIIECTLR_INCLUDE_0_Pos) /*!< Bit mask of INCLUDE_0 field. */
+#define ETM_TRCVIIECTLR_INCLUDE_0_Disabled (0x0UL) /*!< The address range that address range comparator pair 0 defines, is not selected for ViewInst include control. */
+#define ETM_TRCVIIECTLR_INCLUDE_0_Enabled (0x1UL) /*!< The address range that address range comparator pair 0 defines, is selected for ViewInst include control. */
+
+/* Register: ETM_TRCVISSCTLR */
+/* Description: Use this to set, or read, the single address comparators that control the ViewInst start/stop
+logic. The start/stop logic is active for an instruction which causes a start and remains active
+up to and including an instruction which causes a stop, and then the start/stop logic becomes
+inactive. Might ignore writes when the trace unit is enabled or not idle. If implemented then this register must be programmed. */
+
+/* Bit 23 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of stopping trace */
+#define ETM_TRCVISSCTLR_STOP_7_Pos (23UL) /*!< Position of STOP_7 field. */
+#define ETM_TRCVISSCTLR_STOP_7_Msk (0x1UL << ETM_TRCVISSCTLR_STOP_7_Pos) /*!< Bit mask of STOP_7 field. */
+#define ETM_TRCVISSCTLR_STOP_7_Disabled (0x0UL) /*!< The single address comparator 7, is not selected as a stop resource. */
+#define ETM_TRCVISSCTLR_STOP_7_Enabled (0x1UL) /*!< The single address comparator 7, is selected as a stop resource. */
+
+/* Bit 22 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of stopping trace */
+#define ETM_TRCVISSCTLR_STOP_6_Pos (22UL) /*!< Position of STOP_6 field. */
+#define ETM_TRCVISSCTLR_STOP_6_Msk (0x1UL << ETM_TRCVISSCTLR_STOP_6_Pos) /*!< Bit mask of STOP_6 field. */
+#define ETM_TRCVISSCTLR_STOP_6_Disabled (0x0UL) /*!< The single address comparator 6, is not selected as a stop resource. */
+#define ETM_TRCVISSCTLR_STOP_6_Enabled (0x1UL) /*!< The single address comparator 6, is selected as a stop resource. */
+
+/* Bit 21 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of stopping trace */
+#define ETM_TRCVISSCTLR_STOP_5_Pos (21UL) /*!< Position of STOP_5 field. */
+#define ETM_TRCVISSCTLR_STOP_5_Msk (0x1UL << ETM_TRCVISSCTLR_STOP_5_Pos) /*!< Bit mask of STOP_5 field. */
+#define ETM_TRCVISSCTLR_STOP_5_Disabled (0x0UL) /*!< The single address comparator 5, is not selected as a stop resource. */
+#define ETM_TRCVISSCTLR_STOP_5_Enabled (0x1UL) /*!< The single address comparator 5, is selected as a stop resource. */
+
+/* Bit 20 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of stopping trace */
+#define ETM_TRCVISSCTLR_STOP_4_Pos (20UL) /*!< Position of STOP_4 field. */
+#define ETM_TRCVISSCTLR_STOP_4_Msk (0x1UL << ETM_TRCVISSCTLR_STOP_4_Pos) /*!< Bit mask of STOP_4 field. */
+#define ETM_TRCVISSCTLR_STOP_4_Disabled (0x0UL) /*!< The single address comparator 4, is not selected as a stop resource. */
+#define ETM_TRCVISSCTLR_STOP_4_Enabled (0x1UL) /*!< The single address comparator 4, is selected as a stop resource. */
+
+/* Bit 19 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of stopping trace */
+#define ETM_TRCVISSCTLR_STOP_3_Pos (19UL) /*!< Position of STOP_3 field. */
+#define ETM_TRCVISSCTLR_STOP_3_Msk (0x1UL << ETM_TRCVISSCTLR_STOP_3_Pos) /*!< Bit mask of STOP_3 field. */
+#define ETM_TRCVISSCTLR_STOP_3_Disabled (0x0UL) /*!< The single address comparator 3, is not selected as a stop resource. */
+#define ETM_TRCVISSCTLR_STOP_3_Enabled (0x1UL) /*!< The single address comparator 3, is selected as a stop resource. */
+
+/* Bit 18 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of stopping trace */
+#define ETM_TRCVISSCTLR_STOP_2_Pos (18UL) /*!< Position of STOP_2 field. */
+#define ETM_TRCVISSCTLR_STOP_2_Msk (0x1UL << ETM_TRCVISSCTLR_STOP_2_Pos) /*!< Bit mask of STOP_2 field. */
+#define ETM_TRCVISSCTLR_STOP_2_Disabled (0x0UL) /*!< The single address comparator 2, is not selected as a stop resource. */
+#define ETM_TRCVISSCTLR_STOP_2_Enabled (0x1UL) /*!< The single address comparator 2, is selected as a stop resource. */
+
+/* Bit 17 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of stopping trace */
+#define ETM_TRCVISSCTLR_STOP_1_Pos (17UL) /*!< Position of STOP_1 field. */
+#define ETM_TRCVISSCTLR_STOP_1_Msk (0x1UL << ETM_TRCVISSCTLR_STOP_1_Pos) /*!< Bit mask of STOP_1 field. */
+#define ETM_TRCVISSCTLR_STOP_1_Disabled (0x0UL) /*!< The single address comparator 1, is not selected as a stop resource. */
+#define ETM_TRCVISSCTLR_STOP_1_Enabled (0x1UL) /*!< The single address comparator 1, is selected as a stop resource. */
+
+/* Bit 16 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of stopping trace */
+#define ETM_TRCVISSCTLR_STOP_0_Pos (16UL) /*!< Position of STOP_0 field. */
+#define ETM_TRCVISSCTLR_STOP_0_Msk (0x1UL << ETM_TRCVISSCTLR_STOP_0_Pos) /*!< Bit mask of STOP_0 field. */
+#define ETM_TRCVISSCTLR_STOP_0_Disabled (0x0UL) /*!< The single address comparator 0, is not selected as a stop resource. */
+#define ETM_TRCVISSCTLR_STOP_0_Enabled (0x1UL) /*!< The single address comparator 0, is selected as a stop resource. */
+
+/* Bit 7 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of starting trace. */
+#define ETM_TRCVISSCTLR_START_7_Pos (7UL) /*!< Position of START_7 field. */
+#define ETM_TRCVISSCTLR_START_7_Msk (0x1UL << ETM_TRCVISSCTLR_START_7_Pos) /*!< Bit mask of START_7 field. */
+#define ETM_TRCVISSCTLR_START_7_Disabled (0x0UL) /*!< The single address comparator 7, is not selected as a start resource. */
+#define ETM_TRCVISSCTLR_START_7_Enabled (0x1UL) /*!< The single address comparator 7, is selected as a start resource. */
+
+/* Bit 6 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of starting trace. */
+#define ETM_TRCVISSCTLR_START_6_Pos (6UL) /*!< Position of START_6 field. */
+#define ETM_TRCVISSCTLR_START_6_Msk (0x1UL << ETM_TRCVISSCTLR_START_6_Pos) /*!< Bit mask of START_6 field. */
+#define ETM_TRCVISSCTLR_START_6_Disabled (0x0UL) /*!< The single address comparator 6, is not selected as a start resource. */
+#define ETM_TRCVISSCTLR_START_6_Enabled (0x1UL) /*!< The single address comparator 6, is selected as a start resource. */
+
+/* Bit 5 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of starting trace. */
+#define ETM_TRCVISSCTLR_START_5_Pos (5UL) /*!< Position of START_5 field. */
+#define ETM_TRCVISSCTLR_START_5_Msk (0x1UL << ETM_TRCVISSCTLR_START_5_Pos) /*!< Bit mask of START_5 field. */
+#define ETM_TRCVISSCTLR_START_5_Disabled (0x0UL) /*!< The single address comparator 5, is not selected as a start resource. */
+#define ETM_TRCVISSCTLR_START_5_Enabled (0x1UL) /*!< The single address comparator 5, is selected as a start resource. */
+
+/* Bit 4 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of starting trace. */
+#define ETM_TRCVISSCTLR_START_4_Pos (4UL) /*!< Position of START_4 field. */
+#define ETM_TRCVISSCTLR_START_4_Msk (0x1UL << ETM_TRCVISSCTLR_START_4_Pos) /*!< Bit mask of START_4 field. */
+#define ETM_TRCVISSCTLR_START_4_Disabled (0x0UL) /*!< The single address comparator 4, is not selected as a start resource. */
+#define ETM_TRCVISSCTLR_START_4_Enabled (0x1UL) /*!< The single address comparator 4, is selected as a start resource. */
+
+/* Bit 3 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of starting trace. */
+#define ETM_TRCVISSCTLR_START_3_Pos (3UL) /*!< Position of START_3 field. */
+#define ETM_TRCVISSCTLR_START_3_Msk (0x1UL << ETM_TRCVISSCTLR_START_3_Pos) /*!< Bit mask of START_3 field. */
+#define ETM_TRCVISSCTLR_START_3_Disabled (0x0UL) /*!< The single address comparator 3, is not selected as a start resource. */
+#define ETM_TRCVISSCTLR_START_3_Enabled (0x1UL) /*!< The single address comparator 3, is selected as a start resource. */
+
+/* Bit 2 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of starting trace. */
+#define ETM_TRCVISSCTLR_START_2_Pos (2UL) /*!< Position of START_2 field. */
+#define ETM_TRCVISSCTLR_START_2_Msk (0x1UL << ETM_TRCVISSCTLR_START_2_Pos) /*!< Bit mask of START_2 field. */
+#define ETM_TRCVISSCTLR_START_2_Disabled (0x0UL) /*!< The single address comparator 2, is not selected as a start resource. */
+#define ETM_TRCVISSCTLR_START_2_Enabled (0x1UL) /*!< The single address comparator 2, is selected as a start resource. */
+
+/* Bit 1 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of starting trace. */
+#define ETM_TRCVISSCTLR_START_1_Pos (1UL) /*!< Position of START_1 field. */
+#define ETM_TRCVISSCTLR_START_1_Msk (0x1UL << ETM_TRCVISSCTLR_START_1_Pos) /*!< Bit mask of START_1 field. */
+#define ETM_TRCVISSCTLR_START_1_Disabled (0x0UL) /*!< The single address comparator 1, is not selected as a start resource. */
+#define ETM_TRCVISSCTLR_START_1_Enabled (0x1UL) /*!< The single address comparator 1, is selected as a start resource. */
+
+/* Bit 0 : Selects which single address comparators are in use with ViewInst start/stop control, for the purpose of starting trace. */
+#define ETM_TRCVISSCTLR_START_0_Pos (0UL) /*!< Position of START_0 field. */
+#define ETM_TRCVISSCTLR_START_0_Msk (0x1UL << ETM_TRCVISSCTLR_START_0_Pos) /*!< Bit mask of START_0 field. */
+#define ETM_TRCVISSCTLR_START_0_Disabled (0x0UL) /*!< The single address comparator 0, is not selected as a start resource. */
+#define ETM_TRCVISSCTLR_START_0_Enabled (0x1UL) /*!< The single address comparator 0, is selected as a start resource. */
+
+/* Register: ETM_TRCVIPCSSCTLR */
+/* Description: Use this to set, or read, which PE comparator inputs can control the ViewInst start/stop logic. Might ignore writes when the trace unit is enabled or not idle. If implemented then this register must be programmed. */
+
+/* Bit 23 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of stopping trace. */
+#define ETM_TRCVIPCSSCTLR_STOP_7_Pos (23UL) /*!< Position of STOP_7 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_7_Msk (0x1UL << ETM_TRCVIPCSSCTLR_STOP_7_Pos) /*!< Bit mask of STOP_7 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_7_Disabled (0x0UL) /*!< The single PE comparator input 7, is not selected as a stop resource. */
+#define ETM_TRCVIPCSSCTLR_STOP_7_Enabled (0x1UL) /*!< The single PE comparator input 7, is selected as a stop resource. */
+
+/* Bit 22 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of stopping trace. */
+#define ETM_TRCVIPCSSCTLR_STOP_6_Pos (22UL) /*!< Position of STOP_6 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_6_Msk (0x1UL << ETM_TRCVIPCSSCTLR_STOP_6_Pos) /*!< Bit mask of STOP_6 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_6_Disabled (0x0UL) /*!< The single PE comparator input 6, is not selected as a stop resource. */
+#define ETM_TRCVIPCSSCTLR_STOP_6_Enabled (0x1UL) /*!< The single PE comparator input 6, is selected as a stop resource. */
+
+/* Bit 21 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of stopping trace. */
+#define ETM_TRCVIPCSSCTLR_STOP_5_Pos (21UL) /*!< Position of STOP_5 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_5_Msk (0x1UL << ETM_TRCVIPCSSCTLR_STOP_5_Pos) /*!< Bit mask of STOP_5 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_5_Disabled (0x0UL) /*!< The single PE comparator input 5, is not selected as a stop resource. */
+#define ETM_TRCVIPCSSCTLR_STOP_5_Enabled (0x1UL) /*!< The single PE comparator input 5, is selected as a stop resource. */
+
+/* Bit 20 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of stopping trace. */
+#define ETM_TRCVIPCSSCTLR_STOP_4_Pos (20UL) /*!< Position of STOP_4 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_4_Msk (0x1UL << ETM_TRCVIPCSSCTLR_STOP_4_Pos) /*!< Bit mask of STOP_4 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_4_Disabled (0x0UL) /*!< The single PE comparator input 4, is not selected as a stop resource. */
+#define ETM_TRCVIPCSSCTLR_STOP_4_Enabled (0x1UL) /*!< The single PE comparator input 4, is selected as a stop resource. */
+
+/* Bit 19 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of stopping trace. */
+#define ETM_TRCVIPCSSCTLR_STOP_3_Pos (19UL) /*!< Position of STOP_3 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_3_Msk (0x1UL << ETM_TRCVIPCSSCTLR_STOP_3_Pos) /*!< Bit mask of STOP_3 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_3_Disabled (0x0UL) /*!< The single PE comparator input 3, is not selected as a stop resource. */
+#define ETM_TRCVIPCSSCTLR_STOP_3_Enabled (0x1UL) /*!< The single PE comparator input 3, is selected as a stop resource. */
+
+/* Bit 18 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of stopping trace. */
+#define ETM_TRCVIPCSSCTLR_STOP_2_Pos (18UL) /*!< Position of STOP_2 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_2_Msk (0x1UL << ETM_TRCVIPCSSCTLR_STOP_2_Pos) /*!< Bit mask of STOP_2 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_2_Disabled (0x0UL) /*!< The single PE comparator input 2, is not selected as a stop resource. */
+#define ETM_TRCVIPCSSCTLR_STOP_2_Enabled (0x1UL) /*!< The single PE comparator input 2, is selected as a stop resource. */
+
+/* Bit 17 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of stopping trace. */
+#define ETM_TRCVIPCSSCTLR_STOP_1_Pos (17UL) /*!< Position of STOP_1 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_1_Msk (0x1UL << ETM_TRCVIPCSSCTLR_STOP_1_Pos) /*!< Bit mask of STOP_1 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_1_Disabled (0x0UL) /*!< The single PE comparator input 1, is not selected as a stop resource. */
+#define ETM_TRCVIPCSSCTLR_STOP_1_Enabled (0x1UL) /*!< The single PE comparator input 1, is selected as a stop resource. */
+
+/* Bit 16 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of stopping trace. */
+#define ETM_TRCVIPCSSCTLR_STOP_0_Pos (16UL) /*!< Position of STOP_0 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_0_Msk (0x1UL << ETM_TRCVIPCSSCTLR_STOP_0_Pos) /*!< Bit mask of STOP_0 field. */
+#define ETM_TRCVIPCSSCTLR_STOP_0_Disabled (0x0UL) /*!< The single PE comparator input 0, is not selected as a stop resource. */
+#define ETM_TRCVIPCSSCTLR_STOP_0_Enabled (0x1UL) /*!< The single PE comparator input 0, is selected as a stop resource. */
+
+/* Bit 7 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of starting trace */
+#define ETM_TRCVIPCSSCTLR_START_7_Pos (7UL) /*!< Position of START_7 field. */
+#define ETM_TRCVIPCSSCTLR_START_7_Msk (0x1UL << ETM_TRCVIPCSSCTLR_START_7_Pos) /*!< Bit mask of START_7 field. */
+#define ETM_TRCVIPCSSCTLR_START_7_Disabled (0x0UL) /*!< The single PE comparator input 7, is not selected as a start resource. */
+#define ETM_TRCVIPCSSCTLR_START_7_Enabled (0x1UL) /*!< The single PE comparator input 7, is selected as a start resource. */
+
+/* Bit 6 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of starting trace */
+#define ETM_TRCVIPCSSCTLR_START_6_Pos (6UL) /*!< Position of START_6 field. */
+#define ETM_TRCVIPCSSCTLR_START_6_Msk (0x1UL << ETM_TRCVIPCSSCTLR_START_6_Pos) /*!< Bit mask of START_6 field. */
+#define ETM_TRCVIPCSSCTLR_START_6_Disabled (0x0UL) /*!< The single PE comparator input 6, is not selected as a start resource. */
+#define ETM_TRCVIPCSSCTLR_START_6_Enabled (0x1UL) /*!< The single PE comparator input 6, is selected as a start resource. */
+
+/* Bit 5 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of starting trace */
+#define ETM_TRCVIPCSSCTLR_START_5_Pos (5UL) /*!< Position of START_5 field. */
+#define ETM_TRCVIPCSSCTLR_START_5_Msk (0x1UL << ETM_TRCVIPCSSCTLR_START_5_Pos) /*!< Bit mask of START_5 field. */
+#define ETM_TRCVIPCSSCTLR_START_5_Disabled (0x0UL) /*!< The single PE comparator input 5, is not selected as a start resource. */
+#define ETM_TRCVIPCSSCTLR_START_5_Enabled (0x1UL) /*!< The single PE comparator input 5, is selected as a start resource. */
+
+/* Bit 4 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of starting trace */
+#define ETM_TRCVIPCSSCTLR_START_4_Pos (4UL) /*!< Position of START_4 field. */
+#define ETM_TRCVIPCSSCTLR_START_4_Msk (0x1UL << ETM_TRCVIPCSSCTLR_START_4_Pos) /*!< Bit mask of START_4 field. */
+#define ETM_TRCVIPCSSCTLR_START_4_Disabled (0x0UL) /*!< The single PE comparator input 4, is not selected as a start resource. */
+#define ETM_TRCVIPCSSCTLR_START_4_Enabled (0x1UL) /*!< The single PE comparator input 4, is selected as a start resource. */
+
+/* Bit 3 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of starting trace */
+#define ETM_TRCVIPCSSCTLR_START_3_Pos (3UL) /*!< Position of START_3 field. */
+#define ETM_TRCVIPCSSCTLR_START_3_Msk (0x1UL << ETM_TRCVIPCSSCTLR_START_3_Pos) /*!< Bit mask of START_3 field. */
+#define ETM_TRCVIPCSSCTLR_START_3_Disabled (0x0UL) /*!< The single PE comparator input 3, is not selected as a start resource. */
+#define ETM_TRCVIPCSSCTLR_START_3_Enabled (0x1UL) /*!< The single PE comparator input 3, is selected as a start resource. */
+
+/* Bit 2 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of starting trace */
+#define ETM_TRCVIPCSSCTLR_START_2_Pos (2UL) /*!< Position of START_2 field. */
+#define ETM_TRCVIPCSSCTLR_START_2_Msk (0x1UL << ETM_TRCVIPCSSCTLR_START_2_Pos) /*!< Bit mask of START_2 field. */
+#define ETM_TRCVIPCSSCTLR_START_2_Disabled (0x0UL) /*!< The single PE comparator input 2, is not selected as a start resource. */
+#define ETM_TRCVIPCSSCTLR_START_2_Enabled (0x1UL) /*!< The single PE comparator input 2, is selected as a start resource. */
+
+/* Bit 1 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of starting trace */
+#define ETM_TRCVIPCSSCTLR_START_1_Pos (1UL) /*!< Position of START_1 field. */
+#define ETM_TRCVIPCSSCTLR_START_1_Msk (0x1UL << ETM_TRCVIPCSSCTLR_START_1_Pos) /*!< Bit mask of START_1 field. */
+#define ETM_TRCVIPCSSCTLR_START_1_Disabled (0x0UL) /*!< The single PE comparator input 1, is not selected as a start resource. */
+#define ETM_TRCVIPCSSCTLR_START_1_Enabled (0x1UL) /*!< The single PE comparator input 1, is selected as a start resource. */
+
+/* Bit 0 : Selects which PE comparator inputs are in use with ViewInst start/stop control, for the purpose of starting trace */
+#define ETM_TRCVIPCSSCTLR_START_0_Pos (0UL) /*!< Position of START_0 field. */
+#define ETM_TRCVIPCSSCTLR_START_0_Msk (0x1UL << ETM_TRCVIPCSSCTLR_START_0_Pos) /*!< Bit mask of START_0 field. */
+#define ETM_TRCVIPCSSCTLR_START_0_Disabled (0x0UL) /*!< The single PE comparator input 0, is not selected as a start resource. */
+#define ETM_TRCVIPCSSCTLR_START_0_Enabled (0x1UL) /*!< The single PE comparator input 0, is selected as a start resource. */
+
+/* Register: ETM_TRCVDCTLR */
+/* Description: Controls data trace filtering. Might ignore writes when the trace unit is enabled or not idle. This register must be programmed when data tracing is enabled, that is, when either TRCCONFIGR.DA == 1 or TRCCONFIGR.DV == 1. */
+
+/* Bit 12 : Controls the tracing of data transfers for exceptions and exception returns on Armv6-M, Armv7-M, and Armv8-M PEs. */
+#define ETM_TRCVDCTLR_TRCEXDATA_Pos (12UL) /*!< Position of TRCEXDATA field. */
+#define ETM_TRCVDCTLR_TRCEXDATA_Msk (0x1UL << ETM_TRCVDCTLR_TRCEXDATA_Pos) /*!< Bit mask of TRCEXDATA field. */
+#define ETM_TRCVDCTLR_TRCEXDATA_Disabled (0x0UL) /*!< Exception and exception return data transfers are not traced. */
+#define ETM_TRCVDCTLR_TRCEXDATA_Enabled (0x1UL) /*!< Exception and exception return data transfers are traced if the other aspects of ViewData indicate that the data transfers must be traced. */
+
+/* Bit 11 : Controls which information a trace unit populates in bits[63:56] of the data address. */
+#define ETM_TRCVDCTLR_TBI_Pos (11UL) /*!< Position of TBI field. */
+#define ETM_TRCVDCTLR_TBI_Msk (0x1UL << ETM_TRCVDCTLR_TBI_Pos) /*!< Bit mask of TBI field. */
+#define ETM_TRCVDCTLR_TBI_SignExtend (0x0UL) /*!< The trace unit assigns bits[63:56] to have the same value as bit[55] of the data address, that is, it sign-extends the value. */
+#define ETM_TRCVDCTLR_TBI_Copy (0x1UL) /*!< The trace unit assigns bits[63:56] to have the same value as bits[63:56] of the data address. */
+
+/* Bit 10 : Controls whether a trace unit traces data for transfers that are relative to the Program Counter (PC). */
+#define ETM_TRCVDCTLR_PCREL_Pos (10UL) /*!< Position of PCREL field. */
+#define ETM_TRCVDCTLR_PCREL_Msk (0x1UL << ETM_TRCVDCTLR_PCREL_Pos) /*!< Bit mask of PCREL field. */
+#define ETM_TRCVDCTLR_PCREL_Enabled (0x0UL) /*!< The trace unit does not affect the tracing of PC-relative transfers. */
+#define ETM_TRCVDCTLR_PCREL_Disabled (0x1UL) /*!< The trace unit does not trace the address or value portions of PC-relative transfers. */
+
+/* Bits 9..8 : Controls whether a trace unit traces data for transfers that are relative to the Stack Pointer (SP). */
+#define ETM_TRCVDCTLR_SPREL_Pos (8UL) /*!< Position of SPREL field. */
+#define ETM_TRCVDCTLR_SPREL_Msk (0x3UL << ETM_TRCVDCTLR_SPREL_Pos) /*!< Bit mask of SPREL field. */
+#define ETM_TRCVDCTLR_SPREL_Enabled (0x0UL) /*!< The trace unit does not affect the tracing of SP-relative transfers. */
+#define ETM_TRCVDCTLR_SPREL_DataOnly (0x2UL) /*!< The trace unit does not trace the address portion of SP-relative transfers. If data value tracing is enabled then the trace unit generates a P1 data address element. */
+#define ETM_TRCVDCTLR_SPREL_Disabled (0x3UL) /*!< The trace unit does not trace the address or value portions of SP-relative transfers. */
+
+/* Bit 7 : Event unit enable bit. */
+#define ETM_TRCVDCTLR_EVENT_7_Pos (7UL) /*!< Position of EVENT_7 field. */
+#define ETM_TRCVDCTLR_EVENT_7_Msk (0x1UL << ETM_TRCVDCTLR_EVENT_7_Pos) /*!< Bit mask of EVENT_7 field. */
+#define ETM_TRCVDCTLR_EVENT_7_Disabled (0x0UL) /*!< The trace event is not selected for trace filtering. */
+#define ETM_TRCVDCTLR_EVENT_7_Enabled (0x1UL) /*!< The trace event is selected for trace filtering. */
+
+/* Bit 6 : Event unit enable bit. */
+#define ETM_TRCVDCTLR_EVENT_6_Pos (6UL) /*!< Position of EVENT_6 field. */
+#define ETM_TRCVDCTLR_EVENT_6_Msk (0x1UL << ETM_TRCVDCTLR_EVENT_6_Pos) /*!< Bit mask of EVENT_6 field. */
+#define ETM_TRCVDCTLR_EVENT_6_Disabled (0x0UL) /*!< The trace event is not selected for trace filtering. */
+#define ETM_TRCVDCTLR_EVENT_6_Enabled (0x1UL) /*!< The trace event is selected for trace filtering. */
+
+/* Bit 5 : Event unit enable bit. */
+#define ETM_TRCVDCTLR_EVENT_5_Pos (5UL) /*!< Position of EVENT_5 field. */
+#define ETM_TRCVDCTLR_EVENT_5_Msk (0x1UL << ETM_TRCVDCTLR_EVENT_5_Pos) /*!< Bit mask of EVENT_5 field. */
+#define ETM_TRCVDCTLR_EVENT_5_Disabled (0x0UL) /*!< The trace event is not selected for trace filtering. */
+#define ETM_TRCVDCTLR_EVENT_5_Enabled (0x1UL) /*!< The trace event is selected for trace filtering. */
+
+/* Bit 4 : Event unit enable bit. */
+#define ETM_TRCVDCTLR_EVENT_4_Pos (4UL) /*!< Position of EVENT_4 field. */
+#define ETM_TRCVDCTLR_EVENT_4_Msk (0x1UL << ETM_TRCVDCTLR_EVENT_4_Pos) /*!< Bit mask of EVENT_4 field. */
+#define ETM_TRCVDCTLR_EVENT_4_Disabled (0x0UL) /*!< The trace event is not selected for trace filtering. */
+#define ETM_TRCVDCTLR_EVENT_4_Enabled (0x1UL) /*!< The trace event is selected for trace filtering. */
+
+/* Bit 3 : Event unit enable bit. */
+#define ETM_TRCVDCTLR_EVENT_3_Pos (3UL) /*!< Position of EVENT_3 field. */
+#define ETM_TRCVDCTLR_EVENT_3_Msk (0x1UL << ETM_TRCVDCTLR_EVENT_3_Pos) /*!< Bit mask of EVENT_3 field. */
+#define ETM_TRCVDCTLR_EVENT_3_Disabled (0x0UL) /*!< The trace event is not selected for trace filtering. */
+#define ETM_TRCVDCTLR_EVENT_3_Enabled (0x1UL) /*!< The trace event is selected for trace filtering. */
+
+/* Bit 2 : Event unit enable bit. */
+#define ETM_TRCVDCTLR_EVENT_2_Pos (2UL) /*!< Position of EVENT_2 field. */
+#define ETM_TRCVDCTLR_EVENT_2_Msk (0x1UL << ETM_TRCVDCTLR_EVENT_2_Pos) /*!< Bit mask of EVENT_2 field. */
+#define ETM_TRCVDCTLR_EVENT_2_Disabled (0x0UL) /*!< The trace event is not selected for trace filtering. */
+#define ETM_TRCVDCTLR_EVENT_2_Enabled (0x1UL) /*!< The trace event is selected for trace filtering. */
+
+/* Bit 1 : Event unit enable bit. */
+#define ETM_TRCVDCTLR_EVENT_1_Pos (1UL) /*!< Position of EVENT_1 field. */
+#define ETM_TRCVDCTLR_EVENT_1_Msk (0x1UL << ETM_TRCVDCTLR_EVENT_1_Pos) /*!< Bit mask of EVENT_1 field. */
+#define ETM_TRCVDCTLR_EVENT_1_Disabled (0x0UL) /*!< The trace event is not selected for trace filtering. */
+#define ETM_TRCVDCTLR_EVENT_1_Enabled (0x1UL) /*!< The trace event is selected for trace filtering. */
+
+/* Bit 0 : Event unit enable bit. */
+#define ETM_TRCVDCTLR_EVENT_0_Pos (0UL) /*!< Position of EVENT_0 field. */
+#define ETM_TRCVDCTLR_EVENT_0_Msk (0x1UL << ETM_TRCVDCTLR_EVENT_0_Pos) /*!< Bit mask of EVENT_0 field. */
+#define ETM_TRCVDCTLR_EVENT_0_Disabled (0x0UL) /*!< The trace event is not selected for trace filtering. */
+#define ETM_TRCVDCTLR_EVENT_0_Enabled (0x1UL) /*!< The trace event is selected for trace filtering. */
+
+/* Register: ETM_TRCVDSACCTLR */
+/* Description: ViewData include / exclude control. Might ignore writes when the trace unit is enabled or not idle. This register must be programmed when one or more address comparators are implemented. */
+
+/* Bit 23 : Selects which single address comparators are in use with ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_7_Pos (23UL) /*!< Position of EXCLUDE_7 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_7_Msk (0x1UL << ETM_TRCVDSACCTLR_EXCLUDE_7_Pos) /*!< Bit mask of EXCLUDE_7 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_7_Disabled (0x0UL) /*!< The single address comparator 7, is not selected for ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_7_Enabled (0x1UL) /*!< The single address comparator 7, s selected for ViewData exclude control. */
+
+/* Bit 22 : Selects which single address comparators are in use with ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_6_Pos (22UL) /*!< Position of EXCLUDE_6 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_6_Msk (0x1UL << ETM_TRCVDSACCTLR_EXCLUDE_6_Pos) /*!< Bit mask of EXCLUDE_6 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_6_Disabled (0x0UL) /*!< The single address comparator 6, is not selected for ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_6_Enabled (0x1UL) /*!< The single address comparator 6, s selected for ViewData exclude control. */
+
+/* Bit 21 : Selects which single address comparators are in use with ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_5_Pos (21UL) /*!< Position of EXCLUDE_5 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_5_Msk (0x1UL << ETM_TRCVDSACCTLR_EXCLUDE_5_Pos) /*!< Bit mask of EXCLUDE_5 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_5_Disabled (0x0UL) /*!< The single address comparator 5, is not selected for ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_5_Enabled (0x1UL) /*!< The single address comparator 5, s selected for ViewData exclude control. */
+
+/* Bit 20 : Selects which single address comparators are in use with ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_4_Pos (20UL) /*!< Position of EXCLUDE_4 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_4_Msk (0x1UL << ETM_TRCVDSACCTLR_EXCLUDE_4_Pos) /*!< Bit mask of EXCLUDE_4 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_4_Disabled (0x0UL) /*!< The single address comparator 4, is not selected for ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_4_Enabled (0x1UL) /*!< The single address comparator 4, s selected for ViewData exclude control. */
+
+/* Bit 19 : Selects which single address comparators are in use with ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_3_Pos (19UL) /*!< Position of EXCLUDE_3 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_3_Msk (0x1UL << ETM_TRCVDSACCTLR_EXCLUDE_3_Pos) /*!< Bit mask of EXCLUDE_3 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_3_Disabled (0x0UL) /*!< The single address comparator 3, is not selected for ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_3_Enabled (0x1UL) /*!< The single address comparator 3, s selected for ViewData exclude control. */
+
+/* Bit 18 : Selects which single address comparators are in use with ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_2_Pos (18UL) /*!< Position of EXCLUDE_2 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_2_Msk (0x1UL << ETM_TRCVDSACCTLR_EXCLUDE_2_Pos) /*!< Bit mask of EXCLUDE_2 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_2_Disabled (0x0UL) /*!< The single address comparator 2, is not selected for ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_2_Enabled (0x1UL) /*!< The single address comparator 2, s selected for ViewData exclude control. */
+
+/* Bit 17 : Selects which single address comparators are in use with ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_1_Pos (17UL) /*!< Position of EXCLUDE_1 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_1_Msk (0x1UL << ETM_TRCVDSACCTLR_EXCLUDE_1_Pos) /*!< Bit mask of EXCLUDE_1 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_1_Disabled (0x0UL) /*!< The single address comparator 1, is not selected for ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_1_Enabled (0x1UL) /*!< The single address comparator 1, s selected for ViewData exclude control. */
+
+/* Bit 16 : Selects which single address comparators are in use with ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_0_Pos (16UL) /*!< Position of EXCLUDE_0 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_0_Msk (0x1UL << ETM_TRCVDSACCTLR_EXCLUDE_0_Pos) /*!< Bit mask of EXCLUDE_0 field. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_0_Disabled (0x0UL) /*!< The single address comparator 0, is not selected for ViewData exclude control. */
+#define ETM_TRCVDSACCTLR_EXCLUDE_0_Enabled (0x1UL) /*!< The single address comparator 0, s selected for ViewData exclude control. */
+
+/* Bit 7 : Selects which single address comparators are in use with ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_7_Pos (7UL) /*!< Position of INCLUDE_7 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_7_Msk (0x1UL << ETM_TRCVDSACCTLR_INCLUDE_7_Pos) /*!< Bit mask of INCLUDE_7 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_7_Disabled (0x0UL) /*!< The single address comparator 7, is not selected for ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_7_Enabled (0x1UL) /*!< The single address comparator 7, is selected for ViewData include control. */
+
+/* Bit 6 : Selects which single address comparators are in use with ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_6_Pos (6UL) /*!< Position of INCLUDE_6 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_6_Msk (0x1UL << ETM_TRCVDSACCTLR_INCLUDE_6_Pos) /*!< Bit mask of INCLUDE_6 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_6_Disabled (0x0UL) /*!< The single address comparator 6, is not selected for ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_6_Enabled (0x1UL) /*!< The single address comparator 6, is selected for ViewData include control. */
+
+/* Bit 5 : Selects which single address comparators are in use with ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_5_Pos (5UL) /*!< Position of INCLUDE_5 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_5_Msk (0x1UL << ETM_TRCVDSACCTLR_INCLUDE_5_Pos) /*!< Bit mask of INCLUDE_5 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_5_Disabled (0x0UL) /*!< The single address comparator 5, is not selected for ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_5_Enabled (0x1UL) /*!< The single address comparator 5, is selected for ViewData include control. */
+
+/* Bit 4 : Selects which single address comparators are in use with ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_4_Pos (4UL) /*!< Position of INCLUDE_4 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_4_Msk (0x1UL << ETM_TRCVDSACCTLR_INCLUDE_4_Pos) /*!< Bit mask of INCLUDE_4 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_4_Disabled (0x0UL) /*!< The single address comparator 4, is not selected for ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_4_Enabled (0x1UL) /*!< The single address comparator 4, is selected for ViewData include control. */
+
+/* Bit 3 : Selects which single address comparators are in use with ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_3_Pos (3UL) /*!< Position of INCLUDE_3 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_3_Msk (0x1UL << ETM_TRCVDSACCTLR_INCLUDE_3_Pos) /*!< Bit mask of INCLUDE_3 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_3_Disabled (0x0UL) /*!< The single address comparator 3, is not selected for ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_3_Enabled (0x1UL) /*!< The single address comparator 3, is selected for ViewData include control. */
+
+/* Bit 2 : Selects which single address comparators are in use with ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_2_Pos (2UL) /*!< Position of INCLUDE_2 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_2_Msk (0x1UL << ETM_TRCVDSACCTLR_INCLUDE_2_Pos) /*!< Bit mask of INCLUDE_2 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_2_Disabled (0x0UL) /*!< The single address comparator 2, is not selected for ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_2_Enabled (0x1UL) /*!< The single address comparator 2, is selected for ViewData include control. */
+
+/* Bit 1 : Selects which single address comparators are in use with ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_1_Pos (1UL) /*!< Position of INCLUDE_1 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_1_Msk (0x1UL << ETM_TRCVDSACCTLR_INCLUDE_1_Pos) /*!< Bit mask of INCLUDE_1 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_1_Disabled (0x0UL) /*!< The single address comparator 1, is not selected for ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_1_Enabled (0x1UL) /*!< The single address comparator 1, is selected for ViewData include control. */
+
+/* Bit 0 : Selects which single address comparators are in use with ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_0_Pos (0UL) /*!< Position of INCLUDE_0 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_0_Msk (0x1UL << ETM_TRCVDSACCTLR_INCLUDE_0_Pos) /*!< Bit mask of INCLUDE_0 field. */
+#define ETM_TRCVDSACCTLR_INCLUDE_0_Disabled (0x0UL) /*!< The single address comparator 0, is not selected for ViewData include control. */
+#define ETM_TRCVDSACCTLR_INCLUDE_0_Enabled (0x1UL) /*!< The single address comparator 0, is selected for ViewData include control. */
+
+/* Register: ETM_TRCVDARCCTLR */
+/* Description: ViewData include / exclude control. Might ignore writes when the trace unit is enabled or not idle. This register must be programmed when one or more address comparators are implemented. */
+
+/* Bit 23 : Exclude range field. Selects which address range comparator pairs are in use with ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_7_Pos (23UL) /*!< Position of EXCLUDE_7 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_7_Msk (0x1UL << ETM_TRCVDARCCTLR_EXCLUDE_7_Pos) /*!< Bit mask of EXCLUDE_7 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_7_Disabled (0x0UL) /*!< The address range that address range comparator 7 defines, is not selected for ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_7_Enabled (0x1UL) /*!< The address range that address range comparator 7 defines, s selected for ViewData exclude control. */
+
+/* Bit 22 : Exclude range field. Selects which address range comparator pairs are in use with ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_6_Pos (22UL) /*!< Position of EXCLUDE_6 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_6_Msk (0x1UL << ETM_TRCVDARCCTLR_EXCLUDE_6_Pos) /*!< Bit mask of EXCLUDE_6 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_6_Disabled (0x0UL) /*!< The address range that address range comparator 6 defines, is not selected for ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_6_Enabled (0x1UL) /*!< The address range that address range comparator 6 defines, s selected for ViewData exclude control. */
+
+/* Bit 21 : Exclude range field. Selects which address range comparator pairs are in use with ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_5_Pos (21UL) /*!< Position of EXCLUDE_5 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_5_Msk (0x1UL << ETM_TRCVDARCCTLR_EXCLUDE_5_Pos) /*!< Bit mask of EXCLUDE_5 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_5_Disabled (0x0UL) /*!< The address range that address range comparator 5 defines, is not selected for ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_5_Enabled (0x1UL) /*!< The address range that address range comparator 5 defines, s selected for ViewData exclude control. */
+
+/* Bit 20 : Exclude range field. Selects which address range comparator pairs are in use with ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_4_Pos (20UL) /*!< Position of EXCLUDE_4 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_4_Msk (0x1UL << ETM_TRCVDARCCTLR_EXCLUDE_4_Pos) /*!< Bit mask of EXCLUDE_4 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_4_Disabled (0x0UL) /*!< The address range that address range comparator 4 defines, is not selected for ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_4_Enabled (0x1UL) /*!< The address range that address range comparator 4 defines, s selected for ViewData exclude control. */
+
+/* Bit 19 : Exclude range field. Selects which address range comparator pairs are in use with ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_3_Pos (19UL) /*!< Position of EXCLUDE_3 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_3_Msk (0x1UL << ETM_TRCVDARCCTLR_EXCLUDE_3_Pos) /*!< Bit mask of EXCLUDE_3 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_3_Disabled (0x0UL) /*!< The address range that address range comparator 3 defines, is not selected for ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_3_Enabled (0x1UL) /*!< The address range that address range comparator 3 defines, s selected for ViewData exclude control. */
+
+/* Bit 18 : Exclude range field. Selects which address range comparator pairs are in use with ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_2_Pos (18UL) /*!< Position of EXCLUDE_2 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_2_Msk (0x1UL << ETM_TRCVDARCCTLR_EXCLUDE_2_Pos) /*!< Bit mask of EXCLUDE_2 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_2_Disabled (0x0UL) /*!< The address range that address range comparator 2 defines, is not selected for ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_2_Enabled (0x1UL) /*!< The address range that address range comparator 2 defines, s selected for ViewData exclude control. */
+
+/* Bit 17 : Exclude range field. Selects which address range comparator pairs are in use with ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_1_Pos (17UL) /*!< Position of EXCLUDE_1 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_1_Msk (0x1UL << ETM_TRCVDARCCTLR_EXCLUDE_1_Pos) /*!< Bit mask of EXCLUDE_1 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_1_Disabled (0x0UL) /*!< The address range that address range comparator 1 defines, is not selected for ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_1_Enabled (0x1UL) /*!< The address range that address range comparator 1 defines, s selected for ViewData exclude control. */
+
+/* Bit 16 : Exclude range field. Selects which address range comparator pairs are in use with ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_0_Pos (16UL) /*!< Position of EXCLUDE_0 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_0_Msk (0x1UL << ETM_TRCVDARCCTLR_EXCLUDE_0_Pos) /*!< Bit mask of EXCLUDE_0 field. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_0_Disabled (0x0UL) /*!< The address range that address range comparator 0 defines, is not selected for ViewData exclude control. */
+#define ETM_TRCVDARCCTLR_EXCLUDE_0_Enabled (0x1UL) /*!< The address range that address range comparator 0 defines, s selected for ViewData exclude control. */
+
+/* Bit 7 : Include range field. Selects which address range comparator pairs are in use with ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_7_Pos (7UL) /*!< Position of INCLUDE_7 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_7_Msk (0x1UL << ETM_TRCVDARCCTLR_INCLUDE_7_Pos) /*!< Bit mask of INCLUDE_7 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_7_Disabled (0x0UL) /*!< The address range that address range comparator 7 defines, is not selected for ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_7_Enabled (0x1UL) /*!< The address range that address range comparator 7 defines, is selected for ViewData include control. */
+
+/* Bit 6 : Include range field. Selects which address range comparator pairs are in use with ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_6_Pos (6UL) /*!< Position of INCLUDE_6 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_6_Msk (0x1UL << ETM_TRCVDARCCTLR_INCLUDE_6_Pos) /*!< Bit mask of INCLUDE_6 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_6_Disabled (0x0UL) /*!< The address range that address range comparator 6 defines, is not selected for ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_6_Enabled (0x1UL) /*!< The address range that address range comparator 6 defines, is selected for ViewData include control. */
+
+/* Bit 5 : Include range field. Selects which address range comparator pairs are in use with ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_5_Pos (5UL) /*!< Position of INCLUDE_5 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_5_Msk (0x1UL << ETM_TRCVDARCCTLR_INCLUDE_5_Pos) /*!< Bit mask of INCLUDE_5 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_5_Disabled (0x0UL) /*!< The address range that address range comparator 5 defines, is not selected for ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_5_Enabled (0x1UL) /*!< The address range that address range comparator 5 defines, is selected for ViewData include control. */
+
+/* Bit 4 : Include range field. Selects which address range comparator pairs are in use with ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_4_Pos (4UL) /*!< Position of INCLUDE_4 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_4_Msk (0x1UL << ETM_TRCVDARCCTLR_INCLUDE_4_Pos) /*!< Bit mask of INCLUDE_4 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_4_Disabled (0x0UL) /*!< The address range that address range comparator 4 defines, is not selected for ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_4_Enabled (0x1UL) /*!< The address range that address range comparator 4 defines, is selected for ViewData include control. */
+
+/* Bit 3 : Include range field. Selects which address range comparator pairs are in use with ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_3_Pos (3UL) /*!< Position of INCLUDE_3 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_3_Msk (0x1UL << ETM_TRCVDARCCTLR_INCLUDE_3_Pos) /*!< Bit mask of INCLUDE_3 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_3_Disabled (0x0UL) /*!< The address range that address range comparator 3 defines, is not selected for ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_3_Enabled (0x1UL) /*!< The address range that address range comparator 3 defines, is selected for ViewData include control. */
+
+/* Bit 2 : Include range field. Selects which address range comparator pairs are in use with ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_2_Pos (2UL) /*!< Position of INCLUDE_2 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_2_Msk (0x1UL << ETM_TRCVDARCCTLR_INCLUDE_2_Pos) /*!< Bit mask of INCLUDE_2 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_2_Disabled (0x0UL) /*!< The address range that address range comparator 2 defines, is not selected for ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_2_Enabled (0x1UL) /*!< The address range that address range comparator 2 defines, is selected for ViewData include control. */
+
+/* Bit 1 : Include range field. Selects which address range comparator pairs are in use with ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_1_Pos (1UL) /*!< Position of INCLUDE_1 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_1_Msk (0x1UL << ETM_TRCVDARCCTLR_INCLUDE_1_Pos) /*!< Bit mask of INCLUDE_1 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_1_Disabled (0x0UL) /*!< The address range that address range comparator 1 defines, is not selected for ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_1_Enabled (0x1UL) /*!< The address range that address range comparator 1 defines, is selected for ViewData include control. */
+
+/* Bit 0 : Include range field. Selects which address range comparator pairs are in use with ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_0_Pos (0UL) /*!< Position of INCLUDE_0 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_0_Msk (0x1UL << ETM_TRCVDARCCTLR_INCLUDE_0_Pos) /*!< Bit mask of INCLUDE_0 field. */
+#define ETM_TRCVDARCCTLR_INCLUDE_0_Disabled (0x0UL) /*!< The address range that address range comparator 0 defines, is not selected for ViewData include control. */
+#define ETM_TRCVDARCCTLR_INCLUDE_0_Enabled (0x1UL) /*!< The address range that address range comparator 0 defines, is selected for ViewData include control. */
+
+/* Register: ETM_TRCSEQEVR */
+/* Description: Description collection: Moves the sequencer state according to programmed events. Might ignore writes when the trace unit is enabled or not idle. When the sequencer is used, all sequencer state transitions must be programmed with a valid event. */
+
+/* Bit 15 : Backward field. */
+#define ETM_TRCSEQEVR_B_7_Pos (15UL) /*!< Position of B_7 field. */
+#define ETM_TRCSEQEVR_B_7_Msk (0x1UL << ETM_TRCSEQEVR_B_7_Pos) /*!< Bit mask of B_7 field. */
+#define ETM_TRCSEQEVR_B_7_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_B_7_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n+1 to state n. */
+
+/* Bit 14 : Backward field. */
+#define ETM_TRCSEQEVR_B_6_Pos (14UL) /*!< Position of B_6 field. */
+#define ETM_TRCSEQEVR_B_6_Msk (0x1UL << ETM_TRCSEQEVR_B_6_Pos) /*!< Bit mask of B_6 field. */
+#define ETM_TRCSEQEVR_B_6_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_B_6_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n+1 to state n. */
+
+/* Bit 13 : Backward field. */
+#define ETM_TRCSEQEVR_B_5_Pos (13UL) /*!< Position of B_5 field. */
+#define ETM_TRCSEQEVR_B_5_Msk (0x1UL << ETM_TRCSEQEVR_B_5_Pos) /*!< Bit mask of B_5 field. */
+#define ETM_TRCSEQEVR_B_5_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_B_5_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n+1 to state n. */
+
+/* Bit 12 : Backward field. */
+#define ETM_TRCSEQEVR_B_4_Pos (12UL) /*!< Position of B_4 field. */
+#define ETM_TRCSEQEVR_B_4_Msk (0x1UL << ETM_TRCSEQEVR_B_4_Pos) /*!< Bit mask of B_4 field. */
+#define ETM_TRCSEQEVR_B_4_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_B_4_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n+1 to state n. */
+
+/* Bit 11 : Backward field. */
+#define ETM_TRCSEQEVR_B_3_Pos (11UL) /*!< Position of B_3 field. */
+#define ETM_TRCSEQEVR_B_3_Msk (0x1UL << ETM_TRCSEQEVR_B_3_Pos) /*!< Bit mask of B_3 field. */
+#define ETM_TRCSEQEVR_B_3_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_B_3_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n+1 to state n. */
+
+/* Bit 10 : Backward field. */
+#define ETM_TRCSEQEVR_B_2_Pos (10UL) /*!< Position of B_2 field. */
+#define ETM_TRCSEQEVR_B_2_Msk (0x1UL << ETM_TRCSEQEVR_B_2_Pos) /*!< Bit mask of B_2 field. */
+#define ETM_TRCSEQEVR_B_2_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_B_2_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n+1 to state n. */
+
+/* Bit 9 : Backward field. */
+#define ETM_TRCSEQEVR_B_1_Pos (9UL) /*!< Position of B_1 field. */
+#define ETM_TRCSEQEVR_B_1_Msk (0x1UL << ETM_TRCSEQEVR_B_1_Pos) /*!< Bit mask of B_1 field. */
+#define ETM_TRCSEQEVR_B_1_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_B_1_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n+1 to state n. */
+
+/* Bit 8 : Backward field. */
+#define ETM_TRCSEQEVR_B_0_Pos (8UL) /*!< Position of B_0 field. */
+#define ETM_TRCSEQEVR_B_0_Msk (0x1UL << ETM_TRCSEQEVR_B_0_Pos) /*!< Bit mask of B_0 field. */
+#define ETM_TRCSEQEVR_B_0_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_B_0_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n+1 to state n. */
+
+/* Bit 7 : Forward field. */
+#define ETM_TRCSEQEVR_F_7_Pos (7UL) /*!< Position of F_7 field. */
+#define ETM_TRCSEQEVR_F_7_Msk (0x1UL << ETM_TRCSEQEVR_F_7_Pos) /*!< Bit mask of F_7 field. */
+#define ETM_TRCSEQEVR_F_7_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_F_7_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n to state n+1. */
+
+/* Bit 6 : Forward field. */
+#define ETM_TRCSEQEVR_F_6_Pos (6UL) /*!< Position of F_6 field. */
+#define ETM_TRCSEQEVR_F_6_Msk (0x1UL << ETM_TRCSEQEVR_F_6_Pos) /*!< Bit mask of F_6 field. */
+#define ETM_TRCSEQEVR_F_6_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_F_6_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n to state n+1. */
+
+/* Bit 5 : Forward field. */
+#define ETM_TRCSEQEVR_F_5_Pos (5UL) /*!< Position of F_5 field. */
+#define ETM_TRCSEQEVR_F_5_Msk (0x1UL << ETM_TRCSEQEVR_F_5_Pos) /*!< Bit mask of F_5 field. */
+#define ETM_TRCSEQEVR_F_5_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_F_5_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n to state n+1. */
+
+/* Bit 4 : Forward field. */
+#define ETM_TRCSEQEVR_F_4_Pos (4UL) /*!< Position of F_4 field. */
+#define ETM_TRCSEQEVR_F_4_Msk (0x1UL << ETM_TRCSEQEVR_F_4_Pos) /*!< Bit mask of F_4 field. */
+#define ETM_TRCSEQEVR_F_4_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_F_4_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n to state n+1. */
+
+/* Bit 3 : Forward field. */
+#define ETM_TRCSEQEVR_F_3_Pos (3UL) /*!< Position of F_3 field. */
+#define ETM_TRCSEQEVR_F_3_Msk (0x1UL << ETM_TRCSEQEVR_F_3_Pos) /*!< Bit mask of F_3 field. */
+#define ETM_TRCSEQEVR_F_3_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_F_3_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n to state n+1. */
+
+/* Bit 2 : Forward field. */
+#define ETM_TRCSEQEVR_F_2_Pos (2UL) /*!< Position of F_2 field. */
+#define ETM_TRCSEQEVR_F_2_Msk (0x1UL << ETM_TRCSEQEVR_F_2_Pos) /*!< Bit mask of F_2 field. */
+#define ETM_TRCSEQEVR_F_2_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_F_2_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n to state n+1. */
+
+/* Bit 1 : Forward field. */
+#define ETM_TRCSEQEVR_F_1_Pos (1UL) /*!< Position of F_1 field. */
+#define ETM_TRCSEQEVR_F_1_Msk (0x1UL << ETM_TRCSEQEVR_F_1_Pos) /*!< Bit mask of F_1 field. */
+#define ETM_TRCSEQEVR_F_1_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_F_1_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n to state n+1. */
+
+/* Bit 0 : Forward field. */
+#define ETM_TRCSEQEVR_F_0_Pos (0UL) /*!< Position of F_0 field. */
+#define ETM_TRCSEQEVR_F_0_Msk (0x1UL << ETM_TRCSEQEVR_F_0_Pos) /*!< Bit mask of F_0 field. */
+#define ETM_TRCSEQEVR_F_0_Disabled (0x0UL) /*!< The trace event does not affect the sequencer. */
+#define ETM_TRCSEQEVR_F_0_Enabled (0x1UL) /*!< When the event occurs then the sequencer state moves from state n to state n+1. */
+
+/* Register: ETM_TRCSEQRSTEVR */
+/* Description: Moves the sequencer to state 0 when a programmed event occurs. Might ignore writes when the trace unit is enabled or not idle. When the sequencer is used, all sequencer state transitions must be programmed with a valid event. */
+
+/* Bits 7..0 : Select which event should reset the sequencer. */
+#define ETM_TRCSEQRSTEVR_EVENT_Pos (0UL) /*!< Position of EVENT field. */
+#define ETM_TRCSEQRSTEVR_EVENT_Msk (0xFFUL << ETM_TRCSEQRSTEVR_EVENT_Pos) /*!< Bit mask of EVENT field. */
+
+/* Register: ETM_TRCSEQSTR */
+/* Description: Use this to set, or read, the sequencer state. Might ignore writes when the trace unit is enabled or not idle. Only returns stable data when TRCSTATR.PMSTABLE == 1. When the sequencer is used, all sequencer state transitions must be programmed with a valid event. */
+
+/* Bits 1..0 : Sets or returns the state of the sequencer. */
+#define ETM_TRCSEQSTR_STATE_Pos (0UL) /*!< Position of STATE field. */
+#define ETM_TRCSEQSTR_STATE_Msk (0x3UL << ETM_TRCSEQSTR_STATE_Pos) /*!< Bit mask of STATE field. */
+#define ETM_TRCSEQSTR_STATE_State0 (0x0UL) /*!< The sequencer is in state 0. */
+#define ETM_TRCSEQSTR_STATE_State1 (0x1UL) /*!< The sequencer is in state 1. */
+#define ETM_TRCSEQSTR_STATE_State2 (0x2UL) /*!< The sequencer is in state 2. */
+#define ETM_TRCSEQSTR_STATE_State3 (0x3UL) /*!< The sequencer is in state 3. */
+
+/* Register: ETM_TRCEXTINSELR */
+/* Description: Use this to set, or read, which external inputs are resources to the trace unit. Might ignore writes when the trace unit is enabled or not idle. Only returns stable data when TRCSTATR.PMSTABLE == 1. When the sequencer is used, all sequencer state transitions must be programmed with a valid event. */
+
+/* Bits 31..24 : Each field in this collection selects an external input as a resource for the trace unit. */
+#define ETM_TRCEXTINSELR_SEL_3_Pos (24UL) /*!< Position of SEL_3 field. */
+#define ETM_TRCEXTINSELR_SEL_3_Msk (0xFFUL << ETM_TRCEXTINSELR_SEL_3_Pos) /*!< Bit mask of SEL_3 field. */
+
+/* Bits 23..16 : Each field in this collection selects an external input as a resource for the trace unit. */
+#define ETM_TRCEXTINSELR_SEL_2_Pos (16UL) /*!< Position of SEL_2 field. */
+#define ETM_TRCEXTINSELR_SEL_2_Msk (0xFFUL << ETM_TRCEXTINSELR_SEL_2_Pos) /*!< Bit mask of SEL_2 field. */
+
+/* Bits 15..8 : Each field in this collection selects an external input as a resource for the trace unit. */
+#define ETM_TRCEXTINSELR_SEL_1_Pos (8UL) /*!< Position of SEL_1 field. */
+#define ETM_TRCEXTINSELR_SEL_1_Msk (0xFFUL << ETM_TRCEXTINSELR_SEL_1_Pos) /*!< Bit mask of SEL_1 field. */
+
+/* Bits 7..0 : Each field in this collection selects an external input as a resource for the trace unit. */
+#define ETM_TRCEXTINSELR_SEL_0_Pos (0UL) /*!< Position of SEL_0 field. */
+#define ETM_TRCEXTINSELR_SEL_0_Msk (0xFFUL << ETM_TRCEXTINSELR_SEL_0_Pos) /*!< Bit mask of SEL_0 field. */
+
+/* Register: ETM_TRCCNTRLDVR */
+/* Description: Description collection: This sets or returns the reload count value for counter n. Might ignore writes when the trace unit is enabled or not idle. */
+
+/* Bits 15..0 : Contains the reload value for counter n. When a reload event occurs for counter n then the trace unit copies the VALUEn field into counter n. */
+#define ETM_TRCCNTRLDVR_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define ETM_TRCCNTRLDVR_VALUE_Msk (0xFFFFUL << ETM_TRCCNTRLDVR_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: ETM_TRCCNTCTLR */
+/* Description: Description collection: Controls the operation of counter n. Might ignore writes when the trace unit is enabled or not idle. */
+
+/* Bit 17 : For TRCCNTCTLR3 and TRCCNTCTLR1, this bit controls whether counter n decrements when a reload event occurs for counter n-1. */
+#define ETM_TRCCNTCTLR_CNTCHAIN_Pos (17UL) /*!< Position of CNTCHAIN field. */
+#define ETM_TRCCNTCTLR_CNTCHAIN_Msk (0x1UL << ETM_TRCCNTCTLR_CNTCHAIN_Pos) /*!< Bit mask of CNTCHAIN field. */
+#define ETM_TRCCNTCTLR_CNTCHAIN_Disabled (0x0UL) /*!< Counter n does not decrement when a reload event for counter n-1 occurs. */
+#define ETM_TRCCNTCTLR_CNTCHAIN_Enabled (0x1UL) /*!< Counter n decrements when a reload event for counter n-1 occurs. This concatenates counter n and counter n-1, to provide a larger count value. */
+
+/* Bit 16 : Controls whether a reload event occurs for counter n, when counter n reaches zero. */
+#define ETM_TRCCNTCTLR_RLDSELF_Pos (16UL) /*!< Position of RLDSELF field. */
+#define ETM_TRCCNTCTLR_RLDSELF_Msk (0x1UL << ETM_TRCCNTCTLR_RLDSELF_Pos) /*!< Bit mask of RLDSELF field. */
+#define ETM_TRCCNTCTLR_RLDSELF_Disabled (0x0UL) /*!< The counter is in Normal mode. */
+#define ETM_TRCCNTCTLR_RLDSELF_Enabled (0x1UL) /*!< The counter is in Self-reload mode. */
+
+/* Bits 15..8 : Selects an event, that when it occurs causes a reload event for counter n. */
+#define ETM_TRCCNTCTLR_RLDEVENT_Pos (8UL) /*!< Position of RLDEVENT field. */
+#define ETM_TRCCNTCTLR_RLDEVENT_Msk (0xFFUL << ETM_TRCCNTCTLR_RLDEVENT_Pos) /*!< Bit mask of RLDEVENT field. */
+
+/* Bits 7..0 : Selects an event, that when it occurs causes counter n to decrement. */
+#define ETM_TRCCNTCTLR_CNTEVENT_Pos (0UL) /*!< Position of CNTEVENT field. */
+#define ETM_TRCCNTCTLR_CNTEVENT_Msk (0xFFUL << ETM_TRCCNTCTLR_CNTEVENT_Pos) /*!< Bit mask of CNTEVENT field. */
+
+/* Register: ETM_TRCCNTVR */
+/* Description: Description collection: This sets or returns the value of counter n. The count value is only stable when TRCSTATR.PMSTABLE == 1. If software uses counter n then it must write to this register to set the initial counter value. Might ignore writes when the trace unit is enabled or not idle. */
+
+/* Bits 15..0 : Contains the count value of counter n. */
+#define ETM_TRCCNTVR_VALUE_Pos (0UL) /*!< Position of VALUE field. */
+#define ETM_TRCCNTVR_VALUE_Msk (0xFFFFUL << ETM_TRCCNTVR_VALUE_Pos) /*!< Bit mask of VALUE field. */
+
+/* Register: ETM_TRCRSCTLR */
+/* Description: Description collection: Controls the selection of the resources in the trace unit. Might ignore writes when the trace unit is enabled or not idle. If software selects a non-implemented resource then CONSTRAINED UNPREDICTABLE
+behavior of the resource selector occurs, so the resource selector might fire
+unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN. */
+
+/* Bit 0 : Trace unit enable bit */
+#define ETM_TRCRSCTLR_EN_Pos (0UL) /*!< Position of EN field. */
+#define ETM_TRCRSCTLR_EN_Msk (0x1UL << ETM_TRCRSCTLR_EN_Pos) /*!< Bit mask of EN field. */
+#define ETM_TRCRSCTLR_EN_Disabled (0x0UL) /*!< The trace unit is disabled. All trace resources are inactive and no trace is generated. */
+#define ETM_TRCRSCTLR_EN_Enabled (0x1UL) /*!< The trace unit is enabled. */
+
+/* Register: ETM_TRCSSCCR0 */
+/* Description: Controls the single-shot comparator. */
+
+/* Bit 24 : Enables the single-shot comparator resource to be reset when it occurs, to enable another comparator match to be detected */
+#define ETM_TRCSSCCR0_RST_Pos (24UL) /*!< Position of RST field. */
+#define ETM_TRCSSCCR0_RST_Msk (0x1UL << ETM_TRCSSCCR0_RST_Pos) /*!< Bit mask of RST field. */
+#define ETM_TRCSSCCR0_RST_Disabled (0x0UL) /*!< Multiple matches can not be detected. */
+#define ETM_TRCSSCCR0_RST_Enabled (0x1UL) /*!< Multiple matches can occur. */
+
+/* Register: ETM_TRCSSCSR0 */
+/* Description: Indicates the status of the single-shot comparators. TRCSSCSR0 is sensitive toinstruction addresses. */
+
+/* Bit 31 : Single-shot status. This indicates whether any of the selected comparators have matched. */
+#define ETM_TRCSSCSR0_STATUS_Pos (31UL) /*!< Position of STATUS field. */
+#define ETM_TRCSSCSR0_STATUS_Msk (0x1UL << ETM_TRCSSCSR0_STATUS_Pos) /*!< Bit mask of STATUS field. */
+#define ETM_TRCSSCSR0_STATUS_NoMatch (0x0UL) /*!< Match has not occurred. */
+#define ETM_TRCSSCSR0_STATUS_Match (0x1UL) /*!< Match has occurred at least once. */
+
+/* Bit 3 : Process counter value comparator support */
+#define ETM_TRCSSCSR0_PC_Pos (3UL) /*!< Position of PC field. */
+#define ETM_TRCSSCSR0_PC_Msk (0x1UL << ETM_TRCSSCSR0_PC_Pos) /*!< Bit mask of PC field. */
+#define ETM_TRCSSCSR0_PC_False (0x0UL) /*!< Process counter value comparisons not supported. */
+#define ETM_TRCSSCSR0_PC_True (0x1UL) /*!< Process counter value comparisons supported. */
+
+/* Bit 2 : Data value comparator support */
+#define ETM_TRCSSCSR0_DV_Pos (2UL) /*!< Position of DV field. */
+#define ETM_TRCSSCSR0_DV_Msk (0x1UL << ETM_TRCSSCSR0_DV_Pos) /*!< Bit mask of DV field. */
+#define ETM_TRCSSCSR0_DV_False (0x0UL) /*!< Data value comparisons not supported. */
+#define ETM_TRCSSCSR0_DV_True (0x1UL) /*!< Data value comparisons supported. */
+
+/* Bit 1 : Data address comparator support */
+#define ETM_TRCSSCSR0_DA_Pos (1UL) /*!< Position of DA field. */
+#define ETM_TRCSSCSR0_DA_Msk (0x1UL << ETM_TRCSSCSR0_DA_Pos) /*!< Bit mask of DA field. */
+#define ETM_TRCSSCSR0_DA_False (0x0UL) /*!< Data address comparisons not supported. */
+#define ETM_TRCSSCSR0_DA_True (0x1UL) /*!< Data address comparisons supported. */
+
+/* Bit 0 : Instruction address comparator support */
+#define ETM_TRCSSCSR0_INST_Pos (0UL) /*!< Position of INST field. */
+#define ETM_TRCSSCSR0_INST_Msk (0x1UL << ETM_TRCSSCSR0_INST_Pos) /*!< Bit mask of INST field. */
+#define ETM_TRCSSCSR0_INST_False (0x0UL) /*!< Single-shot instruction address comparisons not supported. */
+#define ETM_TRCSSCSR0_INST_True (0x1UL) /*!< Single-shot instruction address comparisons supported. */
+
+/* Register: ETM_TRCSSPCICR0 */
+/* Description: Selects the processor comparator inputs for Single-shot control. */
+
+/* Bit 3 : Selects processor comparator 3 inputs for Single-shot control */
+#define ETM_TRCSSPCICR0_PC_3_Pos (3UL) /*!< Position of PC_3 field. */
+#define ETM_TRCSSPCICR0_PC_3_Msk (0x1UL << ETM_TRCSSPCICR0_PC_3_Pos) /*!< Bit mask of PC_3 field. */
+#define ETM_TRCSSPCICR0_PC_3_Disabled (0x0UL) /*!< Processor comparator 3 is not selected for Single-shot control. */
+#define ETM_TRCSSPCICR0_PC_3_Enabled (0x1UL) /*!< Processor comparator 3 is selected for Single-shot control. */
+
+/* Bit 2 : Selects processor comparator 2 inputs for Single-shot control */
+#define ETM_TRCSSPCICR0_PC_2_Pos (2UL) /*!< Position of PC_2 field. */
+#define ETM_TRCSSPCICR0_PC_2_Msk (0x1UL << ETM_TRCSSPCICR0_PC_2_Pos) /*!< Bit mask of PC_2 field. */
+#define ETM_TRCSSPCICR0_PC_2_Disabled (0x0UL) /*!< Processor comparator 2 is not selected for Single-shot control. */
+#define ETM_TRCSSPCICR0_PC_2_Enabled (0x1UL) /*!< Processor comparator 2 is selected for Single-shot control. */
+
+/* Bit 1 : Selects processor comparator 1 inputs for Single-shot control */
+#define ETM_TRCSSPCICR0_PC_1_Pos (1UL) /*!< Position of PC_1 field. */
+#define ETM_TRCSSPCICR0_PC_1_Msk (0x1UL << ETM_TRCSSPCICR0_PC_1_Pos) /*!< Bit mask of PC_1 field. */
+#define ETM_TRCSSPCICR0_PC_1_Disabled (0x0UL) /*!< Processor comparator 1 is not selected for Single-shot control. */
+#define ETM_TRCSSPCICR0_PC_1_Enabled (0x1UL) /*!< Processor comparator 1 is selected for Single-shot control. */
+
+/* Bit 0 : Selects processor comparator 0 inputs for Single-shot control */
+#define ETM_TRCSSPCICR0_PC_0_Pos (0UL) /*!< Position of PC_0 field. */
+#define ETM_TRCSSPCICR0_PC_0_Msk (0x1UL << ETM_TRCSSPCICR0_PC_0_Pos) /*!< Bit mask of PC_0 field. */
+#define ETM_TRCSSPCICR0_PC_0_Disabled (0x0UL) /*!< Processor comparator 0 is not selected for Single-shot control. */
+#define ETM_TRCSSPCICR0_PC_0_Enabled (0x1UL) /*!< Processor comparator 0 is selected for Single-shot control. */
+
+/* Register: ETM_TRCPDCR */
+/* Description: Controls the single-shot comparator. */
+
+/* Bit 24 : Power up request, to request that power to ETM and access to the trace registers is maintained. */
+#define ETM_TRCPDCR_PU_Pos (24UL) /*!< Position of PU field. */
+#define ETM_TRCPDCR_PU_Msk (0x1UL << ETM_TRCPDCR_PU_Pos) /*!< Bit mask of PU field. */
+#define ETM_TRCPDCR_PU_Disabled (0x0UL) /*!< Power not requested. */
+#define ETM_TRCPDCR_PU_Enabled (0x1UL) /*!< Power requested. */
+
+/* Register: ETM_TRCPDSR */
+/* Description: Indicates the power down status of the ETM. */
+
+/* Bit 1 : Sticky power down state. This bit is set to 1 when power to the ETM registers is removed, to indicate that programming state has been lost. It is cleared after a read of the TRCPDSR */
+#define ETM_TRCPDSR_STICKYPD_Pos (1UL) /*!< Position of STICKYPD field. */
+#define ETM_TRCPDSR_STICKYPD_Msk (0x1UL << ETM_TRCPDSR_STICKYPD_Pos) /*!< Bit mask of STICKYPD field. */
+#define ETM_TRCPDSR_STICKYPD_NotPoweredDown (0x0UL) /*!< Trace register power has not been removed since the TRCPDSR was last read. */
+#define ETM_TRCPDSR_STICKYPD_PoweredDown (0x1UL) /*!< Trace register power has been removed since the TRCPDSR was last read. */
+
+/* Bit 0 : Indicates ETM is powered up */
+#define ETM_TRCPDSR_POWER_Pos (0UL) /*!< Position of POWER field. */
+#define ETM_TRCPDSR_POWER_Msk (0x1UL << ETM_TRCPDSR_POWER_Pos) /*!< Bit mask of POWER field. */
+#define ETM_TRCPDSR_POWER_NotPoweredUp (0x0UL) /*!< ETM is not powered up. All registers are not accessible. */
+#define ETM_TRCPDSR_POWER_PoweredUp (0x1UL) /*!< ETM is powered up. All registers are accessible. */
+
+/* Register: ETM_TRCITATBIDR */
+/* Description: Sets the state of output pins. */
+
+/* Bit 6 : Drives the ATIDMI[6] output pin. */
+#define ETM_TRCITATBIDR_ID_6_Pos (6UL) /*!< Position of ID_6 field. */
+#define ETM_TRCITATBIDR_ID_6_Msk (0x1UL << ETM_TRCITATBIDR_ID_6_Pos) /*!< Bit mask of ID_6 field. */
+
+/* Bit 5 : Drives the ATIDMI[5] output pin. */
+#define ETM_TRCITATBIDR_ID_5_Pos (5UL) /*!< Position of ID_5 field. */
+#define ETM_TRCITATBIDR_ID_5_Msk (0x1UL << ETM_TRCITATBIDR_ID_5_Pos) /*!< Bit mask of ID_5 field. */
+
+/* Bit 4 : Drives the ATIDMI[4] output pin. */
+#define ETM_TRCITATBIDR_ID_4_Pos (4UL) /*!< Position of ID_4 field. */
+#define ETM_TRCITATBIDR_ID_4_Msk (0x1UL << ETM_TRCITATBIDR_ID_4_Pos) /*!< Bit mask of ID_4 field. */
+
+/* Bit 3 : Drives the ATIDMI[3] output pin. */
+#define ETM_TRCITATBIDR_ID_3_Pos (3UL) /*!< Position of ID_3 field. */
+#define ETM_TRCITATBIDR_ID_3_Msk (0x1UL << ETM_TRCITATBIDR_ID_3_Pos) /*!< Bit mask of ID_3 field. */
+
+/* Bit 2 : Drives the ATIDMI[2] output pin. */
+#define ETM_TRCITATBIDR_ID_2_Pos (2UL) /*!< Position of ID_2 field. */
+#define ETM_TRCITATBIDR_ID_2_Msk (0x1UL << ETM_TRCITATBIDR_ID_2_Pos) /*!< Bit mask of ID_2 field. */
+
+/* Bit 1 : Drives the ATIDMI[1] output pin. */
+#define ETM_TRCITATBIDR_ID_1_Pos (1UL) /*!< Position of ID_1 field. */
+#define ETM_TRCITATBIDR_ID_1_Msk (0x1UL << ETM_TRCITATBIDR_ID_1_Pos) /*!< Bit mask of ID_1 field. */
+
+/* Bit 0 : Drives the ATIDMI[0] output pin. */
+#define ETM_TRCITATBIDR_ID_0_Pos (0UL) /*!< Position of ID_0 field. */
+#define ETM_TRCITATBIDR_ID_0_Msk (0x1UL << ETM_TRCITATBIDR_ID_0_Pos) /*!< Bit mask of ID_0 field. */
+
+/* Register: ETM_TRCITIATBINR */
+/* Description: Reads the state of the input pins. */
+
+/* Bit 1 : Returns the value of the AFREADYMI input pin. */
+#define ETM_TRCITIATBINR_AFREADY_Pos (1UL) /*!< Position of AFREADY field. */
+#define ETM_TRCITIATBINR_AFREADY_Msk (0x1UL << ETM_TRCITIATBINR_AFREADY_Pos) /*!< Bit mask of AFREADY field. */
+
+/* Bit 0 : Returns the value of the ATVALIDMI input pin. */
+#define ETM_TRCITIATBINR_ATVALID_Pos (0UL) /*!< Position of ATVALID field. */
+#define ETM_TRCITIATBINR_ATVALID_Msk (0x1UL << ETM_TRCITIATBINR_ATVALID_Pos) /*!< Bit mask of ATVALID field. */
+
+/* Register: ETM_TRCITIATBOUTR */
+/* Description: Sets the state of the output pins. */
+
+/* Bit 1 : Drives the AFREADYMI output pin. */
+#define ETM_TRCITIATBOUTR_AFREADY_Pos (1UL) /*!< Position of AFREADY field. */
+#define ETM_TRCITIATBOUTR_AFREADY_Msk (0x1UL << ETM_TRCITIATBOUTR_AFREADY_Pos) /*!< Bit mask of AFREADY field. */
+
+/* Bit 0 : Drives the ATVALIDMI output pin. */
+#define ETM_TRCITIATBOUTR_ATVALID_Pos (0UL) /*!< Position of ATVALID field. */
+#define ETM_TRCITIATBOUTR_ATVALID_Msk (0x1UL << ETM_TRCITIATBOUTR_ATVALID_Pos) /*!< Bit mask of ATVALID field. */
+
+/* Register: ETM_TRCITCTRL */
+/* Description: Enables topology detection or integration testing, by putting ETM-M33 into integration mode. */
+
+/* Bit 0 : Integration mode enable */
+#define ETM_TRCITCTRL_IME_Pos (0UL) /*!< Position of IME field. */
+#define ETM_TRCITCTRL_IME_Msk (0x1UL << ETM_TRCITCTRL_IME_Pos) /*!< Bit mask of IME field. */
+#define ETM_TRCITCTRL_IME_Disabled (0x0UL) /*!< ETM is not in integration mode. */
+#define ETM_TRCITCTRL_IME_Enabled (0x1UL) /*!< ETM is in integration mode. */
+
+/* Register: ETM_TRCCLAIMSET */
+/* Description: Sets bits in the claim tag and determines the number of claim tag bits implemented. */
+
+/* Bit 3 : Claim tag set register */
+#define ETM_TRCCLAIMSET_SET_3_Pos (3UL) /*!< Position of SET_3 field. */
+#define ETM_TRCCLAIMSET_SET_3_Msk (0x1UL << ETM_TRCCLAIMSET_SET_3_Pos) /*!< Bit mask of SET_3 field. */
+#define ETM_TRCCLAIMSET_SET_3_NotSet (0x0UL) /*!< Claim tag 3 is not set. */
+#define ETM_TRCCLAIMSET_SET_3_Set (0x1UL) /*!< Claim tag 3 is set. */
+#define ETM_TRCCLAIMSET_SET_3_Claim (0x1UL) /*!< Set claim tag 3. */
+
+/* Bit 2 : Claim tag set register */
+#define ETM_TRCCLAIMSET_SET_2_Pos (2UL) /*!< Position of SET_2 field. */
+#define ETM_TRCCLAIMSET_SET_2_Msk (0x1UL << ETM_TRCCLAIMSET_SET_2_Pos) /*!< Bit mask of SET_2 field. */
+#define ETM_TRCCLAIMSET_SET_2_NotSet (0x0UL) /*!< Claim tag 2 is not set. */
+#define ETM_TRCCLAIMSET_SET_2_Set (0x1UL) /*!< Claim tag 2 is set. */
+#define ETM_TRCCLAIMSET_SET_2_Claim (0x1UL) /*!< Set claim tag 2. */
+
+/* Bit 1 : Claim tag set register */
+#define ETM_TRCCLAIMSET_SET_1_Pos (1UL) /*!< Position of SET_1 field. */
+#define ETM_TRCCLAIMSET_SET_1_Msk (0x1UL << ETM_TRCCLAIMSET_SET_1_Pos) /*!< Bit mask of SET_1 field. */
+#define ETM_TRCCLAIMSET_SET_1_NotSet (0x0UL) /*!< Claim tag 1 is not set. */
+#define ETM_TRCCLAIMSET_SET_1_Set (0x1UL) /*!< Claim tag 1 is set. */
+#define ETM_TRCCLAIMSET_SET_1_Claim (0x1UL) /*!< Set claim tag 1. */
+
+/* Bit 0 : Claim tag set register */
+#define ETM_TRCCLAIMSET_SET_0_Pos (0UL) /*!< Position of SET_0 field. */
+#define ETM_TRCCLAIMSET_SET_0_Msk (0x1UL << ETM_TRCCLAIMSET_SET_0_Pos) /*!< Bit mask of SET_0 field. */
+#define ETM_TRCCLAIMSET_SET_0_NotSet (0x0UL) /*!< Claim tag 0 is not set. */
+#define ETM_TRCCLAIMSET_SET_0_Set (0x1UL) /*!< Claim tag 0 is set. */
+#define ETM_TRCCLAIMSET_SET_0_Claim (0x1UL) /*!< Set claim tag 0. */
+
+/* Register: ETM_TRCCLAIMCLR */
+/* Description: Clears bits in the claim tag and determines the current value of the claim tag. */
+
+/* Bit 3 : Claim tag clear register */
+#define ETM_TRCCLAIMCLR_CLR_3_Pos (3UL) /*!< Position of CLR_3 field. */
+#define ETM_TRCCLAIMCLR_CLR_3_Msk (0x1UL << ETM_TRCCLAIMCLR_CLR_3_Pos) /*!< Bit mask of CLR_3 field. */
+#define ETM_TRCCLAIMCLR_CLR_3_NotSet (0x0UL) /*!< Claim tag 3 is not set. */
+#define ETM_TRCCLAIMCLR_CLR_3_Set (0x1UL) /*!< Claim tag 3 is set. */
+#define ETM_TRCCLAIMCLR_CLR_3_Clear (0x1UL) /*!< Clear claim tag 3. */
+
+/* Bit 2 : Claim tag clear register */
+#define ETM_TRCCLAIMCLR_CLR_2_Pos (2UL) /*!< Position of CLR_2 field. */
+#define ETM_TRCCLAIMCLR_CLR_2_Msk (0x1UL << ETM_TRCCLAIMCLR_CLR_2_Pos) /*!< Bit mask of CLR_2 field. */
+#define ETM_TRCCLAIMCLR_CLR_2_NotSet (0x0UL) /*!< Claim tag 2 is not set. */
+#define ETM_TRCCLAIMCLR_CLR_2_Set (0x1UL) /*!< Claim tag 2 is set. */
+#define ETM_TRCCLAIMCLR_CLR_2_Clear (0x1UL) /*!< Clear claim tag 2. */
+
+/* Bit 1 : Claim tag clear register */
+#define ETM_TRCCLAIMCLR_CLR_1_Pos (1UL) /*!< Position of CLR_1 field. */
+#define ETM_TRCCLAIMCLR_CLR_1_Msk (0x1UL << ETM_TRCCLAIMCLR_CLR_1_Pos) /*!< Bit mask of CLR_1 field. */
+#define ETM_TRCCLAIMCLR_CLR_1_NotSet (0x0UL) /*!< Claim tag 1 is not set. */
+#define ETM_TRCCLAIMCLR_CLR_1_Set (0x1UL) /*!< Claim tag 1 is set. */
+#define ETM_TRCCLAIMCLR_CLR_1_Clear (0x1UL) /*!< Clear claim tag 1. */
+
+/* Bit 0 : Claim tag clear register */
+#define ETM_TRCCLAIMCLR_CLR_0_Pos (0UL) /*!< Position of CLR_0 field. */
+#define ETM_TRCCLAIMCLR_CLR_0_Msk (0x1UL << ETM_TRCCLAIMCLR_CLR_0_Pos) /*!< Bit mask of CLR_0 field. */
+#define ETM_TRCCLAIMCLR_CLR_0_NotSet (0x0UL) /*!< Claim tag 0 is not set. */
+#define ETM_TRCCLAIMCLR_CLR_0_Set (0x1UL) /*!< Claim tag 0 is set. */
+#define ETM_TRCCLAIMCLR_CLR_0_Clear (0x1UL) /*!< Clear claim tag 0. */
+
+/* Register: ETM_TRCAUTHSTATUS */
+/* Description: Indicates the current level of tracing permitted by the system */
+
+/* Bits 7..6 : Secure Non-Invasive Debug */
+#define ETM_TRCAUTHSTATUS_SNID_Pos (6UL) /*!< Position of SNID field. */
+#define ETM_TRCAUTHSTATUS_SNID_Msk (0x3UL << ETM_TRCAUTHSTATUS_SNID_Pos) /*!< Bit mask of SNID field. */
+#define ETM_TRCAUTHSTATUS_SNID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define ETM_TRCAUTHSTATUS_SNID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Bits 5..4 : Secure Invasive Debug */
+#define ETM_TRCAUTHSTATUS_SID_Pos (4UL) /*!< Position of SID field. */
+#define ETM_TRCAUTHSTATUS_SID_Msk (0x3UL << ETM_TRCAUTHSTATUS_SID_Pos) /*!< Bit mask of SID field. */
+#define ETM_TRCAUTHSTATUS_SID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define ETM_TRCAUTHSTATUS_SID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Bits 3..2 : Non-secure Non-Invasive Debug */
+#define ETM_TRCAUTHSTATUS_NSNID_Pos (2UL) /*!< Position of NSNID field. */
+#define ETM_TRCAUTHSTATUS_NSNID_Msk (0x3UL << ETM_TRCAUTHSTATUS_NSNID_Pos) /*!< Bit mask of NSNID field. */
+#define ETM_TRCAUTHSTATUS_NSNID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define ETM_TRCAUTHSTATUS_NSNID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Bits 1..0 : Non-secure Invasive Debug */
+#define ETM_TRCAUTHSTATUS_NSID_Pos (0UL) /*!< Position of NSID field. */
+#define ETM_TRCAUTHSTATUS_NSID_Msk (0x3UL << ETM_TRCAUTHSTATUS_NSID_Pos) /*!< Bit mask of NSID field. */
+#define ETM_TRCAUTHSTATUS_NSID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define ETM_TRCAUTHSTATUS_NSID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Register: ETM_TRCDEVARCH */
+/* Description: The TRCDEVARCH identifies ETM-M33 as an ETMv4.2 component */
+
+/* Bits 31..21 : Defines the architect of the component */
+#define ETM_TRCDEVARCH_ARCHITECT_Pos (21UL) /*!< Position of ARCHITECT field. */
+#define ETM_TRCDEVARCH_ARCHITECT_Msk (0x7FFUL << ETM_TRCDEVARCH_ARCHITECT_Pos) /*!< Bit mask of ARCHITECT field. */
+#define ETM_TRCDEVARCH_ARCHITECT_Arm (0x23BUL) /*!< This peripheral was architected by Arm. */
+
+/* Bit 20 : This register is implemented */
+#define ETM_TRCDEVARCH_PRESENT_Pos (20UL) /*!< Position of PRESENT field. */
+#define ETM_TRCDEVARCH_PRESENT_Msk (0x1UL << ETM_TRCDEVARCH_PRESENT_Pos) /*!< Bit mask of PRESENT field. */
+#define ETM_TRCDEVARCH_PRESENT_Absent (0x0UL) /*!< The register is not implemented. */
+#define ETM_TRCDEVARCH_PRESENT_Present (0x1UL) /*!< The register is implemented. */
+
+/* Bits 19..16 : Architecture revision */
+#define ETM_TRCDEVARCH_REVISION_Pos (16UL) /*!< Position of REVISION field. */
+#define ETM_TRCDEVARCH_REVISION_Msk (0xFUL << ETM_TRCDEVARCH_REVISION_Pos) /*!< Bit mask of REVISION field. */
+#define ETM_TRCDEVARCH_REVISION_v2 (0x2UL) /*!< Component is part of architecture 4.2 */
+
+/* Bits 15..0 : Architecture ID */
+#define ETM_TRCDEVARCH_ARCHID_Pos (0UL) /*!< Position of ARCHID field. */
+#define ETM_TRCDEVARCH_ARCHID_Msk (0xFFFFUL << ETM_TRCDEVARCH_ARCHID_Pos) /*!< Bit mask of ARCHID field. */
+#define ETM_TRCDEVARCH_ARCHID_ETMv42 (0x4A13UL) /*!< Component is an ETMv4 component */
+
+/* Register: ETM_TRCDEVTYPE */
+/* Description: Controls the single-shot comparator. */
+
+/* Bits 7..4 : The sub-type of the component */
+#define ETM_TRCDEVTYPE_SUB_Pos (4UL) /*!< Position of SUB field. */
+#define ETM_TRCDEVTYPE_SUB_Msk (0xFUL << ETM_TRCDEVTYPE_SUB_Pos) /*!< Bit mask of SUB field. */
+#define ETM_TRCDEVTYPE_SUB_ProcessorTrace (0x1UL) /*!< Peripheral is a processor trace source. */
+
+/* Bits 3..0 : The main type of the component */
+#define ETM_TRCDEVTYPE_MAJOR_Pos (0UL) /*!< Position of MAJOR field. */
+#define ETM_TRCDEVTYPE_MAJOR_Msk (0xFUL << ETM_TRCDEVTYPE_MAJOR_Pos) /*!< Bit mask of MAJOR field. */
+#define ETM_TRCDEVTYPE_MAJOR_TraceSource (0x3UL) /*!< Peripheral is a trace source. */
+
+
 /* Peripheral: FICR */
 /* Description: Factory Information Configuration Registers */
-
-/* Register: FICR_SIPINFO_PARTNO */
-/* Description: SIP part number */
-
-/* Bits 31..0 :   */
-#define FICR_SIPINFO_PARTNO_PARTNO_Pos (0UL) /*!< Position of PARTNO field. */
-#define FICR_SIPINFO_PARTNO_PARTNO_Msk (0xFFFFFFFFUL << FICR_SIPINFO_PARTNO_PARTNO_Pos) /*!< Bit mask of PARTNO field. */
-#define FICR_SIPINFO_PARTNO_PARTNO_9160 (0x00009160UL) /*!< Device is an nRF9160 sip */
-
-/* Register: FICR_SIPINFO_HWREVISION */
-/* Description: Description collection: SIP hardware revision, encoded in ASCII, ex B0A or B1A */
-
-/* Bits 7..0 :   */
-#define FICR_SIPINFO_HWREVISION_HWREVISION_Pos (0UL) /*!< Position of HWREVISION field. */
-#define FICR_SIPINFO_HWREVISION_HWREVISION_Msk (0xFFUL << FICR_SIPINFO_HWREVISION_HWREVISION_Pos) /*!< Bit mask of HWREVISION field. */
-
-/* Register: FICR_SIPINFO_VARIANT */
-/* Description: Description collection: SIP VARIANT, encoded in ASCII, ex SIAA, SIBA or SICA */
-
-/* Bits 7..0 :   */
-#define FICR_SIPINFO_VARIANT_VARIANT_Pos (0UL) /*!< Position of VARIANT field. */
-#define FICR_SIPINFO_VARIANT_VARIANT_Msk (0xFFUL << FICR_SIPINFO_VARIANT_VARIANT_Pos) /*!< Bit mask of VARIANT field. */
 
 /* Register: FICR_INFO_DEVICEID */
 /* Description: Description collection: Device identifier */
@@ -1358,7 +5624,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define FICR_INFO_PART_PART_Pos (0UL) /*!< Position of PART field. */
 #define FICR_INFO_PART_PART_Msk (0xFFFFFFFFUL << FICR_INFO_PART_PART_Pos) /*!< Bit mask of PART field. */
 #define FICR_INFO_PART_PART_N9120 (0x00009120UL) /*!< nRF9120 */
+#define FICR_INFO_PART_PART_N9131 (0x00009131UL) /*!< nRF9131 */
+#define FICR_INFO_PART_PART_N9151 (0x00009151UL) /*!< nRF9151 */
 #define FICR_INFO_PART_PART_N9160 (0x00009160UL) /*!< nRF9160 */
+#define FICR_INFO_PART_PART_N9161 (0x00009161UL) /*!< nRF9161 */
 
 /* Register: FICR_INFO_VARIANT */
 /* Description: Part Variant, Hardware version and Production configuration */
@@ -1377,7 +5646,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Bits 31..0 : Package option */
 #define FICR_INFO_PACKAGE_PACKAGE_Pos (0UL) /*!< Position of PACKAGE field. */
 #define FICR_INFO_PACKAGE_PACKAGE_Msk (0xFFFFFFFFUL << FICR_INFO_PACKAGE_PACKAGE_Pos) /*!< Bit mask of PACKAGE field. */
-#define FICR_INFO_PACKAGE_PACKAGE_CF (0x00002002UL) /*!< CFxx - 236 ball wlCSP */
+#define FICR_INFO_PACKAGE_PACKAGE_CECF (0x00002002UL) /*!< CExx or CFxx - 236 ball WLCSP */
 
 /* Register: FICR_INFO_RAM */
 /* Description: RAM variant */
@@ -1464,30 +5733,30 @@ POSSIBILITY OF SUCH DAMAGE.
 #define FICR_TRNG90B_STARTUP_STARTUP_Msk (0xFFFFFFFFUL << FICR_TRNG90B_STARTUP_STARTUP_Pos) /*!< Bit mask of STARTUP field. */
 
 /* Register: FICR_TRNG90B_ROSC1 */
-/* Description: Sample count for ring oscillator 1 */
+/* Description: Sample count for ring oscillator configuration 1 */
 
-/* Bits 31..0 : Sample count for ring oscillator 1 */
+/* Bits 31..0 : Sample count for ring oscillator configuration 1 */
 #define FICR_TRNG90B_ROSC1_ROSC1_Pos (0UL) /*!< Position of ROSC1 field. */
 #define FICR_TRNG90B_ROSC1_ROSC1_Msk (0xFFFFFFFFUL << FICR_TRNG90B_ROSC1_ROSC1_Pos) /*!< Bit mask of ROSC1 field. */
 
 /* Register: FICR_TRNG90B_ROSC2 */
-/* Description: Sample count for ring oscillator 2 */
+/* Description: Sample count for ring oscillator configuration 2 */
 
-/* Bits 31..0 : Sample count for ring oscillator 2 */
+/* Bits 31..0 : Sample count for ring oscillator configuration 2 */
 #define FICR_TRNG90B_ROSC2_ROSC2_Pos (0UL) /*!< Position of ROSC2 field. */
 #define FICR_TRNG90B_ROSC2_ROSC2_Msk (0xFFFFFFFFUL << FICR_TRNG90B_ROSC2_ROSC2_Pos) /*!< Bit mask of ROSC2 field. */
 
 /* Register: FICR_TRNG90B_ROSC3 */
-/* Description: Sample count for ring oscillator 3 */
+/* Description: Sample count for ring oscillator configuration 3 */
 
-/* Bits 31..0 : Sample count for ring oscillator 3 */
+/* Bits 31..0 : Sample count for ring oscillator configuration 3 */
 #define FICR_TRNG90B_ROSC3_ROSC3_Pos (0UL) /*!< Position of ROSC3 field. */
 #define FICR_TRNG90B_ROSC3_ROSC3_Msk (0xFFFFFFFFUL << FICR_TRNG90B_ROSC3_ROSC3_Pos) /*!< Bit mask of ROSC3 field. */
 
 /* Register: FICR_TRNG90B_ROSC4 */
-/* Description: Sample count for ring oscillator 4 */
+/* Description: Sample count for ring oscillator configuration 4 */
 
-/* Bits 31..0 : Sample count for ring oscillator 4 */
+/* Bits 31..0 : Sample count for ring oscillator configuration 4 */
 #define FICR_TRNG90B_ROSC4_ROSC4_Pos (0UL) /*!< Position of ROSC4 field. */
 #define FICR_TRNG90B_ROSC4_ROSC4_Msk (0xFFFFFFFFUL << FICR_TRNG90B_ROSC4_ROSC4_Pos) /*!< Bit mask of ROSC4 field. */
 
@@ -4823,17 +9092,17 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Description: Power control 0 */
 
 /* Register: POWER_TASKS_PWMREQSTART */
-/* Description: Request forcing PWM mode in external DC/DC voltage regulator. (Drives FPWM_DCDC pin high or low depending on a setting in UICR). */
+/* Description: Request forcing PWM mode in PMIC DC/DC buck regulator. (Drives FPWM_DCDC pin high or low depending on a setting in UICR). */
 
-/* Bit 0 : Request forcing PWM mode in external DC/DC voltage regulator. (Drives FPWM_DCDC pin high or low depending on a setting in UICR). */
+/* Bit 0 : Request forcing PWM mode in PMIC DC/DC buck regulator. (Drives FPWM_DCDC pin high or low depending on a setting in UICR). */
 #define POWER_TASKS_PWMREQSTART_TASKS_PWMREQSTART_Pos (0UL) /*!< Position of TASKS_PWMREQSTART field. */
 #define POWER_TASKS_PWMREQSTART_TASKS_PWMREQSTART_Msk (0x1UL << POWER_TASKS_PWMREQSTART_TASKS_PWMREQSTART_Pos) /*!< Bit mask of TASKS_PWMREQSTART field. */
 #define POWER_TASKS_PWMREQSTART_TASKS_PWMREQSTART_Trigger (0x1UL) /*!< Trigger task */
 
 /* Register: POWER_TASKS_PWMREQSTOP */
-/* Description: Stop requesting forcing PWM mode in external DC/DC voltage regulator */
+/* Description: Stop requesting forcing PWM mode in PMIC DC/DC buck regulator */
 
-/* Bit 0 : Stop requesting forcing PWM mode in external DC/DC voltage regulator */
+/* Bit 0 : Stop requesting forcing PWM mode in PMIC DC/DC buck regulator */
 #define POWER_TASKS_PWMREQSTOP_TASKS_PWMREQSTOP_Pos (0UL) /*!< Position of TASKS_PWMREQSTOP field. */
 #define POWER_TASKS_PWMREQSTOP_TASKS_PWMREQSTOP_Msk (0x1UL << POWER_TASKS_PWMREQSTOP_TASKS_PWMREQSTOP_Pos) /*!< Bit mask of TASKS_PWMREQSTOP field. */
 #define POWER_TASKS_PWMREQSTOP_TASKS_PWMREQSTOP_Trigger (0x1UL) /*!< Trigger task */
@@ -5609,13 +9878,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #define REGULATORS_EXTPOFCON_POF_Enabled (0x1UL) /*!< Enable */
 
 /* Register: REGULATORS_DCDCEN */
-/* Description: Enable DC/DC mode of the main voltage regulator. */
+/* Description: Enable a step-down DC/DC voltage regulator. */
 
-/* Bit 0 : Enable DC/DC converter */
+/* Bit 0 : Enable DC/DC buck regulator */
 #define REGULATORS_DCDCEN_DCDCEN_Pos (0UL) /*!< Position of DCDCEN field. */
 #define REGULATORS_DCDCEN_DCDCEN_Msk (0x1UL << REGULATORS_DCDCEN_DCDCEN_Pos) /*!< Bit mask of DCDCEN field. */
-#define REGULATORS_DCDCEN_DCDCEN_Disabled (0x0UL) /*!< DC/DC mode is disabled */
-#define REGULATORS_DCDCEN_DCDCEN_Enabled (0x1UL) /*!< DC/DC mode is enabled */
+#define REGULATORS_DCDCEN_DCDCEN_Disabled (0x0UL) /*!< DC/DC buck regulator is disabled */
+#define REGULATORS_DCDCEN_DCDCEN_Enabled (0x1UL) /*!< DC/DC buck regulator is enabled */
 
 
 /* Peripheral: RTC */
@@ -8825,6 +13094,1070 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER_CC_CC_Msk (0xFFFFFFFFUL << TIMER_CC_CC_Pos) /*!< Bit mask of CC field. */
 
 
+/* Peripheral: TPIU */
+/* Description: Trace Port Interface Unit */
+
+/* Register: TPIU_SUPPORTEDPORTSIZES */
+/* Description: Each bit location is a single port size that is supported on the device. */
+
+/* Bit 31 : Indicates whether the TPIU supports port size of 32-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_32_Pos (31UL) /*!< Position of PORT_SIZE_32 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_32_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_32_Pos) /*!< Bit mask of PORT_SIZE_32 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_32_NotSupported (0x0UL) /*!< Port size 32 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_32_Supported (0x1UL) /*!< Port size 32 is supported. */
+
+/* Bit 30 : Indicates whether the TPIU supports port size of 31-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_31_Pos (30UL) /*!< Position of PORT_SIZE_31 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_31_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_31_Pos) /*!< Bit mask of PORT_SIZE_31 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_31_NotSupported (0x0UL) /*!< Port size 31 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_31_Supported (0x1UL) /*!< Port size 31 is supported. */
+
+/* Bit 29 : Indicates whether the TPIU supports port size of 30-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_30_Pos (29UL) /*!< Position of PORT_SIZE_30 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_30_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_30_Pos) /*!< Bit mask of PORT_SIZE_30 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_30_NotSupported (0x0UL) /*!< Port size 30 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_30_Supported (0x1UL) /*!< Port size 30 is supported. */
+
+/* Bit 28 : Indicates whether the TPIU supports port size of 29-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_29_Pos (28UL) /*!< Position of PORT_SIZE_29 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_29_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_29_Pos) /*!< Bit mask of PORT_SIZE_29 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_29_NotSupported (0x0UL) /*!< Port size 29 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_29_Supported (0x1UL) /*!< Port size 29 is supported. */
+
+/* Bit 27 : Indicates whether the TPIU supports port size of 28-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_28_Pos (27UL) /*!< Position of PORT_SIZE_28 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_28_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_28_Pos) /*!< Bit mask of PORT_SIZE_28 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_28_NotSupported (0x0UL) /*!< Port size 28 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_28_Supported (0x1UL) /*!< Port size 28 is supported. */
+
+/* Bit 26 : Indicates whether the TPIU supports port size of 27-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_27_Pos (26UL) /*!< Position of PORT_SIZE_27 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_27_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_27_Pos) /*!< Bit mask of PORT_SIZE_27 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_27_NotSupported (0x0UL) /*!< Port size 27 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_27_Supported (0x1UL) /*!< Port size 27 is supported. */
+
+/* Bit 25 : Indicates whether the TPIU supports port size of 26-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_26_Pos (25UL) /*!< Position of PORT_SIZE_26 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_26_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_26_Pos) /*!< Bit mask of PORT_SIZE_26 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_26_NotSupported (0x0UL) /*!< Port size 26 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_26_Supported (0x1UL) /*!< Port size 26 is supported. */
+
+/* Bit 24 : Indicates whether the TPIU supports port size of 25-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_25_Pos (24UL) /*!< Position of PORT_SIZE_25 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_25_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_25_Pos) /*!< Bit mask of PORT_SIZE_25 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_25_NotSupported (0x0UL) /*!< Port size 25 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_25_Supported (0x1UL) /*!< Port size 25 is supported. */
+
+/* Bit 23 : Indicates whether the TPIU supports port size of 24-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_24_Pos (23UL) /*!< Position of PORT_SIZE_24 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_24_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_24_Pos) /*!< Bit mask of PORT_SIZE_24 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_24_NotSupported (0x0UL) /*!< Port size 24 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_24_Supported (0x1UL) /*!< Port size 24 is supported. */
+
+/* Bit 22 : Indicates whether the TPIU supports port size of 23-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_23_Pos (22UL) /*!< Position of PORT_SIZE_23 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_23_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_23_Pos) /*!< Bit mask of PORT_SIZE_23 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_23_NotSupported (0x0UL) /*!< Port size 23 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_23_Supported (0x1UL) /*!< Port size 23 is supported. */
+
+/* Bit 21 : Indicates whether the TPIU supports port size of 22-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_22_Pos (21UL) /*!< Position of PORT_SIZE_22 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_22_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_22_Pos) /*!< Bit mask of PORT_SIZE_22 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_22_NotSupported (0x0UL) /*!< Port size 22 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_22_Supported (0x1UL) /*!< Port size 22 is supported. */
+
+/* Bit 20 : Indicates whether the TPIU supports port size of 21-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_21_Pos (20UL) /*!< Position of PORT_SIZE_21 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_21_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_21_Pos) /*!< Bit mask of PORT_SIZE_21 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_21_NotSupported (0x0UL) /*!< Port size 21 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_21_Supported (0x1UL) /*!< Port size 21 is supported. */
+
+/* Bit 19 : Indicates whether the TPIU supports port size of 20-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_20_Pos (19UL) /*!< Position of PORT_SIZE_20 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_20_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_20_Pos) /*!< Bit mask of PORT_SIZE_20 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_20_NotSupported (0x0UL) /*!< Port size 20 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_20_Supported (0x1UL) /*!< Port size 20 is supported. */
+
+/* Bit 18 : Indicates whether the TPIU supports port size of 19-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_19_Pos (18UL) /*!< Position of PORT_SIZE_19 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_19_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_19_Pos) /*!< Bit mask of PORT_SIZE_19 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_19_NotSupported (0x0UL) /*!< Port size 19 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_19_Supported (0x1UL) /*!< Port size 19 is supported. */
+
+/* Bit 17 : Indicates whether the TPIU supports port size of 18-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_18_Pos (17UL) /*!< Position of PORT_SIZE_18 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_18_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_18_Pos) /*!< Bit mask of PORT_SIZE_18 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_18_NotSupported (0x0UL) /*!< Port size 18 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_18_Supported (0x1UL) /*!< Port size 18 is supported. */
+
+/* Bit 16 : Indicates whether the TPIU supports port size of 17-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_17_Pos (16UL) /*!< Position of PORT_SIZE_17 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_17_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_17_Pos) /*!< Bit mask of PORT_SIZE_17 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_17_NotSupported (0x0UL) /*!< Port size 17 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_17_Supported (0x1UL) /*!< Port size 17 is supported. */
+
+/* Bit 15 : Indicates whether the TPIU supports port size of 16-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_16_Pos (15UL) /*!< Position of PORT_SIZE_16 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_16_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_16_Pos) /*!< Bit mask of PORT_SIZE_16 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_16_NotSupported (0x0UL) /*!< Port size 16 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_16_Supported (0x1UL) /*!< Port size 16 is supported. */
+
+/* Bit 14 : Indicates whether the TPIU supports port size of 15-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_15_Pos (14UL) /*!< Position of PORT_SIZE_15 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_15_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_15_Pos) /*!< Bit mask of PORT_SIZE_15 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_15_NotSupported (0x0UL) /*!< Port size 15 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_15_Supported (0x1UL) /*!< Port size 15 is supported. */
+
+/* Bit 13 : Indicates whether the TPIU supports port size of 14-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_14_Pos (13UL) /*!< Position of PORT_SIZE_14 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_14_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_14_Pos) /*!< Bit mask of PORT_SIZE_14 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_14_NotSupported (0x0UL) /*!< Port size 14 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_14_Supported (0x1UL) /*!< Port size 14 is supported. */
+
+/* Bit 12 : Indicates whether the TPIU supports port size of 13-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_13_Pos (12UL) /*!< Position of PORT_SIZE_13 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_13_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_13_Pos) /*!< Bit mask of PORT_SIZE_13 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_13_NotSupported (0x0UL) /*!< Port size 13 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_13_Supported (0x1UL) /*!< Port size 13 is supported. */
+
+/* Bit 11 : Indicates whether the TPIU supports port size of 12-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_12_Pos (11UL) /*!< Position of PORT_SIZE_12 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_12_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_12_Pos) /*!< Bit mask of PORT_SIZE_12 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_12_NotSupported (0x0UL) /*!< Port size 12 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_12_Supported (0x1UL) /*!< Port size 12 is supported. */
+
+/* Bit 10 : Indicates whether the TPIU supports port size of 11-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_11_Pos (10UL) /*!< Position of PORT_SIZE_11 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_11_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_11_Pos) /*!< Bit mask of PORT_SIZE_11 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_11_NotSupported (0x0UL) /*!< Port size 11 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_11_Supported (0x1UL) /*!< Port size 11 is supported. */
+
+/* Bit 9 : Indicates whether the TPIU supports port size of 10-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_10_Pos (9UL) /*!< Position of PORT_SIZE_10 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_10_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_10_Pos) /*!< Bit mask of PORT_SIZE_10 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_10_NotSupported (0x0UL) /*!< Port size 10 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_10_Supported (0x1UL) /*!< Port size 10 is supported. */
+
+/* Bit 8 : Indicates whether the TPIU supports port size of 9-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_9_Pos (8UL) /*!< Position of PORT_SIZE_9 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_9_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_9_Pos) /*!< Bit mask of PORT_SIZE_9 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_9_NotSupported (0x0UL) /*!< Port size 9 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_9_Supported (0x1UL) /*!< Port size 9 is supported. */
+
+/* Bit 7 : Indicates whether the TPIU supports port size of 8-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_8_Pos (7UL) /*!< Position of PORT_SIZE_8 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_8_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_8_Pos) /*!< Bit mask of PORT_SIZE_8 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_8_NotSupported (0x0UL) /*!< Port size 8 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_8_Supported (0x1UL) /*!< Port size 8 is supported. */
+
+/* Bit 6 : Indicates whether the TPIU supports port size of 7-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_7_Pos (6UL) /*!< Position of PORT_SIZE_7 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_7_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_7_Pos) /*!< Bit mask of PORT_SIZE_7 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_7_NotSupported (0x0UL) /*!< Port size 7 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_7_Supported (0x1UL) /*!< Port size 7 is supported. */
+
+/* Bit 5 : Indicates whether the TPIU supports port size of 6-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_6_Pos (5UL) /*!< Position of PORT_SIZE_6 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_6_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_6_Pos) /*!< Bit mask of PORT_SIZE_6 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_6_NotSupported (0x0UL) /*!< Port size 6 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_6_Supported (0x1UL) /*!< Port size 6 is supported. */
+
+/* Bit 4 : Indicates whether the TPIU supports port size of 5-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_5_Pos (4UL) /*!< Position of PORT_SIZE_5 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_5_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_5_Pos) /*!< Bit mask of PORT_SIZE_5 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_5_NotSupported (0x0UL) /*!< Port size 5 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_5_Supported (0x1UL) /*!< Port size 5 is supported. */
+
+/* Bit 3 : Indicates whether the TPIU supports port size of 4-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_4_Pos (3UL) /*!< Position of PORT_SIZE_4 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_4_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_4_Pos) /*!< Bit mask of PORT_SIZE_4 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_4_NotSupported (0x0UL) /*!< Port size 4 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_4_Supported (0x1UL) /*!< Port size 4 is supported. */
+
+/* Bit 2 : Indicates whether the TPIU supports port size of 3-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_3_Pos (2UL) /*!< Position of PORT_SIZE_3 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_3_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_3_Pos) /*!< Bit mask of PORT_SIZE_3 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_3_NotSupported (0x0UL) /*!< Port size 3 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_3_Supported (0x1UL) /*!< Port size 3 is supported. */
+
+/* Bit 1 : Indicates whether the TPIU supports port size of 2-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_2_Pos (1UL) /*!< Position of PORT_SIZE_2 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_2_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_2_Pos) /*!< Bit mask of PORT_SIZE_2 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_2_NotSupported (0x0UL) /*!< Port size 2 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_2_Supported (0x1UL) /*!< Port size 2 is supported. */
+
+/* Bit 0 : Indicates whether the TPIU supports port size of 1-bit. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_1_Pos (0UL) /*!< Position of PORT_SIZE_1 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_1_Msk (0x1UL << TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_1_Pos) /*!< Bit mask of PORT_SIZE_1 field. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_1_NotSupported (0x0UL) /*!< Port size 1 is not supported. */
+#define TPIU_SUPPORTEDPORTSIZES_PORT_SIZE_1_Supported (0x1UL) /*!< Port size 1 is supported. */
+
+/* Register: TPIU_CURRENTPORTSIZE */
+/* Description: Each bit location is a single port size. One bit can be set, and indicates the current port size. */
+
+/* Bit 31 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_32_Pos (31UL) /*!< Position of PORT_SIZE_32 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_32_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_32_Pos) /*!< Bit mask of PORT_SIZE_32 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_32_NotSelected (0x0UL) /*!< Port size 32 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_32_Selected (0x1UL) /*!< Port size 32 is selected. */
+
+/* Bit 30 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_31_Pos (30UL) /*!< Position of PORT_SIZE_31 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_31_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_31_Pos) /*!< Bit mask of PORT_SIZE_31 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_31_NotSelected (0x0UL) /*!< Port size 31 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_31_Selected (0x1UL) /*!< Port size 31 is selected. */
+
+/* Bit 29 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_30_Pos (29UL) /*!< Position of PORT_SIZE_30 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_30_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_30_Pos) /*!< Bit mask of PORT_SIZE_30 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_30_NotSelected (0x0UL) /*!< Port size 30 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_30_Selected (0x1UL) /*!< Port size 30 is selected. */
+
+/* Bit 28 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_29_Pos (28UL) /*!< Position of PORT_SIZE_29 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_29_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_29_Pos) /*!< Bit mask of PORT_SIZE_29 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_29_NotSelected (0x0UL) /*!< Port size 29 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_29_Selected (0x1UL) /*!< Port size 29 is selected. */
+
+/* Bit 27 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_28_Pos (27UL) /*!< Position of PORT_SIZE_28 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_28_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_28_Pos) /*!< Bit mask of PORT_SIZE_28 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_28_NotSelected (0x0UL) /*!< Port size 28 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_28_Selected (0x1UL) /*!< Port size 28 is selected. */
+
+/* Bit 26 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_27_Pos (26UL) /*!< Position of PORT_SIZE_27 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_27_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_27_Pos) /*!< Bit mask of PORT_SIZE_27 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_27_NotSelected (0x0UL) /*!< Port size 27 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_27_Selected (0x1UL) /*!< Port size 27 is selected. */
+
+/* Bit 25 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_26_Pos (25UL) /*!< Position of PORT_SIZE_26 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_26_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_26_Pos) /*!< Bit mask of PORT_SIZE_26 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_26_NotSelected (0x0UL) /*!< Port size 26 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_26_Selected (0x1UL) /*!< Port size 26 is selected. */
+
+/* Bit 24 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_25_Pos (24UL) /*!< Position of PORT_SIZE_25 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_25_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_25_Pos) /*!< Bit mask of PORT_SIZE_25 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_25_NotSelected (0x0UL) /*!< Port size 25 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_25_Selected (0x1UL) /*!< Port size 25 is selected. */
+
+/* Bit 23 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_24_Pos (23UL) /*!< Position of PORT_SIZE_24 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_24_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_24_Pos) /*!< Bit mask of PORT_SIZE_24 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_24_NotSelected (0x0UL) /*!< Port size 24 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_24_Selected (0x1UL) /*!< Port size 24 is selected. */
+
+/* Bit 22 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_23_Pos (22UL) /*!< Position of PORT_SIZE_23 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_23_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_23_Pos) /*!< Bit mask of PORT_SIZE_23 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_23_NotSelected (0x0UL) /*!< Port size 23 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_23_Selected (0x1UL) /*!< Port size 23 is selected. */
+
+/* Bit 21 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_22_Pos (21UL) /*!< Position of PORT_SIZE_22 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_22_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_22_Pos) /*!< Bit mask of PORT_SIZE_22 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_22_NotSelected (0x0UL) /*!< Port size 22 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_22_Selected (0x1UL) /*!< Port size 22 is selected. */
+
+/* Bit 20 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_21_Pos (20UL) /*!< Position of PORT_SIZE_21 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_21_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_21_Pos) /*!< Bit mask of PORT_SIZE_21 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_21_NotSelected (0x0UL) /*!< Port size 21 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_21_Selected (0x1UL) /*!< Port size 21 is selected. */
+
+/* Bit 19 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_20_Pos (19UL) /*!< Position of PORT_SIZE_20 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_20_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_20_Pos) /*!< Bit mask of PORT_SIZE_20 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_20_NotSelected (0x0UL) /*!< Port size 20 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_20_Selected (0x1UL) /*!< Port size 20 is selected. */
+
+/* Bit 18 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_19_Pos (18UL) /*!< Position of PORT_SIZE_19 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_19_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_19_Pos) /*!< Bit mask of PORT_SIZE_19 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_19_NotSelected (0x0UL) /*!< Port size 19 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_19_Selected (0x1UL) /*!< Port size 19 is selected. */
+
+/* Bit 17 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_18_Pos (17UL) /*!< Position of PORT_SIZE_18 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_18_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_18_Pos) /*!< Bit mask of PORT_SIZE_18 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_18_NotSelected (0x0UL) /*!< Port size 18 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_18_Selected (0x1UL) /*!< Port size 18 is selected. */
+
+/* Bit 16 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_17_Pos (16UL) /*!< Position of PORT_SIZE_17 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_17_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_17_Pos) /*!< Bit mask of PORT_SIZE_17 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_17_NotSelected (0x0UL) /*!< Port size 17 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_17_Selected (0x1UL) /*!< Port size 17 is selected. */
+
+/* Bit 15 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_16_Pos (15UL) /*!< Position of PORT_SIZE_16 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_16_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_16_Pos) /*!< Bit mask of PORT_SIZE_16 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_16_NotSelected (0x0UL) /*!< Port size 16 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_16_Selected (0x1UL) /*!< Port size 16 is selected. */
+
+/* Bit 14 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_15_Pos (14UL) /*!< Position of PORT_SIZE_15 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_15_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_15_Pos) /*!< Bit mask of PORT_SIZE_15 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_15_NotSelected (0x0UL) /*!< Port size 15 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_15_Selected (0x1UL) /*!< Port size 15 is selected. */
+
+/* Bit 13 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_14_Pos (13UL) /*!< Position of PORT_SIZE_14 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_14_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_14_Pos) /*!< Bit mask of PORT_SIZE_14 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_14_NotSelected (0x0UL) /*!< Port size 14 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_14_Selected (0x1UL) /*!< Port size 14 is selected. */
+
+/* Bit 12 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_13_Pos (12UL) /*!< Position of PORT_SIZE_13 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_13_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_13_Pos) /*!< Bit mask of PORT_SIZE_13 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_13_NotSelected (0x0UL) /*!< Port size 13 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_13_Selected (0x1UL) /*!< Port size 13 is selected. */
+
+/* Bit 11 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_12_Pos (11UL) /*!< Position of PORT_SIZE_12 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_12_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_12_Pos) /*!< Bit mask of PORT_SIZE_12 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_12_NotSelected (0x0UL) /*!< Port size 12 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_12_Selected (0x1UL) /*!< Port size 12 is selected. */
+
+/* Bit 10 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_11_Pos (10UL) /*!< Position of PORT_SIZE_11 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_11_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_11_Pos) /*!< Bit mask of PORT_SIZE_11 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_11_NotSelected (0x0UL) /*!< Port size 11 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_11_Selected (0x1UL) /*!< Port size 11 is selected. */
+
+/* Bit 9 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_10_Pos (9UL) /*!< Position of PORT_SIZE_10 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_10_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_10_Pos) /*!< Bit mask of PORT_SIZE_10 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_10_NotSelected (0x0UL) /*!< Port size 10 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_10_Selected (0x1UL) /*!< Port size 10 is selected. */
+
+/* Bit 8 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_9_Pos (8UL) /*!< Position of PORT_SIZE_9 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_9_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_9_Pos) /*!< Bit mask of PORT_SIZE_9 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_9_NotSelected (0x0UL) /*!< Port size 9 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_9_Selected (0x1UL) /*!< Port size 9 is selected. */
+
+/* Bit 7 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_8_Pos (7UL) /*!< Position of PORT_SIZE_8 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_8_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_8_Pos) /*!< Bit mask of PORT_SIZE_8 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_8_NotSelected (0x0UL) /*!< Port size 8 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_8_Selected (0x1UL) /*!< Port size 8 is selected. */
+
+/* Bit 6 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_7_Pos (6UL) /*!< Position of PORT_SIZE_7 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_7_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_7_Pos) /*!< Bit mask of PORT_SIZE_7 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_7_NotSelected (0x0UL) /*!< Port size 7 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_7_Selected (0x1UL) /*!< Port size 7 is selected. */
+
+/* Bit 5 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_6_Pos (5UL) /*!< Position of PORT_SIZE_6 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_6_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_6_Pos) /*!< Bit mask of PORT_SIZE_6 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_6_NotSelected (0x0UL) /*!< Port size 6 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_6_Selected (0x1UL) /*!< Port size 6 is selected. */
+
+/* Bit 4 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_5_Pos (4UL) /*!< Position of PORT_SIZE_5 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_5_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_5_Pos) /*!< Bit mask of PORT_SIZE_5 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_5_NotSelected (0x0UL) /*!< Port size 5 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_5_Selected (0x1UL) /*!< Port size 5 is selected. */
+
+/* Bit 3 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_4_Pos (3UL) /*!< Position of PORT_SIZE_4 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_4_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_4_Pos) /*!< Bit mask of PORT_SIZE_4 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_4_NotSelected (0x0UL) /*!< Port size 4 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_4_Selected (0x1UL) /*!< Port size 4 is selected. */
+
+/* Bit 2 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_3_Pos (2UL) /*!< Position of PORT_SIZE_3 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_3_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_3_Pos) /*!< Bit mask of PORT_SIZE_3 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_3_NotSelected (0x0UL) /*!< Port size 3 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_3_Selected (0x1UL) /*!< Port size 3 is selected. */
+
+/* Bit 1 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_2_Pos (1UL) /*!< Position of PORT_SIZE_2 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_2_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_2_Pos) /*!< Bit mask of PORT_SIZE_2 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_2_NotSelected (0x0UL) /*!< Port size 2 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_2_Selected (0x1UL) /*!< Port size 2 is selected. */
+
+/* Bit 0 : Indicates which port size is currently selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_1_Pos (0UL) /*!< Position of PORT_SIZE_1 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_1_Msk (0x1UL << TPIU_CURRENTPORTSIZE_PORT_SIZE_1_Pos) /*!< Bit mask of PORT_SIZE_1 field. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_1_NotSelected (0x0UL) /*!< Port size 1 is not selected. */
+#define TPIU_CURRENTPORTSIZE_PORT_SIZE_1_Selected (0x1UL) /*!< Port size 1 is selected. */
+
+/* Register: TPIU_SUPPORTEDTRIGGERMODES */
+/* Description: The Supported_trigger_modes register indicates the implemented trigger counter multipliers and other supported features of the trigger system. */
+
+/* Bit 17 : A trigger has occurred but the counter is not at 0. */
+#define TPIU_SUPPORTEDTRIGGERMODES_TRGRUN_Pos (17UL) /*!< Position of TRGRUN field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_TRGRUN_Msk (0x1UL << TPIU_SUPPORTEDTRIGGERMODES_TRGRUN_Pos) /*!< Bit mask of TRGRUN field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_TRGRUN_NotOccured (0x0UL) /*!< Either a trigger has not occurred or the counter is at 0. */
+#define TPIU_SUPPORTEDTRIGGERMODES_TRGRUN_Occured (0x1UL) /*!< A trigger has occurred but the counter is not at 0. */
+
+/* Bit 16 : A trigger has occurred and the counter has reached 0. */
+#define TPIU_SUPPORTEDTRIGGERMODES_TRIGGERED_Pos (16UL) /*!< Position of TRIGGERED field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_TRIGGERED_Msk (0x1UL << TPIU_SUPPORTEDTRIGGERMODES_TRIGGERED_Pos) /*!< Bit mask of TRIGGERED field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_TRIGGERED_NotOccured (0x0UL) /*!< Trigger has not occurred. */
+#define TPIU_SUPPORTEDTRIGGERMODES_TRIGGERED_Occured (0x1UL) /*!< Trigger has occurred. */
+
+/* Bit 8 : Indicates whether an 8-bit wide counter register is implemented. */
+#define TPIU_SUPPORTEDTRIGGERMODES_TCOUNT8_Pos (8UL) /*!< Position of TCOUNT8 field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_TCOUNT8_Msk (0x1UL << TPIU_SUPPORTEDTRIGGERMODES_TCOUNT8_Pos) /*!< Bit mask of TCOUNT8 field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_TCOUNT8_NotImplemented (0x0UL) /*!< An 8-bit wide counter register is implemented. */
+#define TPIU_SUPPORTEDTRIGGERMODES_TCOUNT8_Implemented (0x1UL) /*!< An 8-bit wide counter register is implemented. */
+
+/* Bit 4 : Indicates whether multiplying the trigger counter by 2^(4+1) is supported. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_4_Pos (4UL) /*!< Position of MULT_4 field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_4_Msk (0x1UL << TPIU_SUPPORTEDTRIGGERMODES_MULT_4_Pos) /*!< Bit mask of MULT_4 field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_4_NotSelected (0x0UL) /*!< Multiplying the trigger counter by 2^(4+1) is supported. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_4_Selected (0x1UL) /*!< Multiplying the trigger counter by 2^(4+1) is supported. */
+
+/* Bit 3 : Indicates whether multiplying the trigger counter by 2^(3+1) is supported. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_3_Pos (3UL) /*!< Position of MULT_3 field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_3_Msk (0x1UL << TPIU_SUPPORTEDTRIGGERMODES_MULT_3_Pos) /*!< Bit mask of MULT_3 field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_3_NotSelected (0x0UL) /*!< Multiplying the trigger counter by 2^(3+1) is supported. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_3_Selected (0x1UL) /*!< Multiplying the trigger counter by 2^(3+1) is supported. */
+
+/* Bit 2 : Indicates whether multiplying the trigger counter by 2^(2+1) is supported. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_2_Pos (2UL) /*!< Position of MULT_2 field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_2_Msk (0x1UL << TPIU_SUPPORTEDTRIGGERMODES_MULT_2_Pos) /*!< Bit mask of MULT_2 field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_2_NotSelected (0x0UL) /*!< Multiplying the trigger counter by 2^(2+1) is supported. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_2_Selected (0x1UL) /*!< Multiplying the trigger counter by 2^(2+1) is supported. */
+
+/* Bit 1 : Indicates whether multiplying the trigger counter by 2^(1+1) is supported. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_1_Pos (1UL) /*!< Position of MULT_1 field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_1_Msk (0x1UL << TPIU_SUPPORTEDTRIGGERMODES_MULT_1_Pos) /*!< Bit mask of MULT_1 field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_1_NotSelected (0x0UL) /*!< Multiplying the trigger counter by 2^(1+1) is supported. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_1_Selected (0x1UL) /*!< Multiplying the trigger counter by 2^(1+1) is supported. */
+
+/* Bit 0 : Indicates whether multiplying the trigger counter by 2^(0+1) is supported. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_0_Pos (0UL) /*!< Position of MULT_0 field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_0_Msk (0x1UL << TPIU_SUPPORTEDTRIGGERMODES_MULT_0_Pos) /*!< Bit mask of MULT_0 field. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_0_NotSelected (0x0UL) /*!< Multiplying the trigger counter by 2^(0+1) is supported. */
+#define TPIU_SUPPORTEDTRIGGERMODES_MULT_0_Selected (0x1UL) /*!< Multiplying the trigger counter by 2^(0+1) is supported. */
+
+/* Register: TPIU_TRIGGERCOUNTERVALUE */
+/* Description: The Trigger_counter_value register enables delaying the indication of triggers to any external connected trace capture or storage devices. */
+
+/* Bits 7..0 : 8-bit counter value for the number of words to be output from the formatter before a trigger is inserted. */
+#define TPIU_TRIGGERCOUNTERVALUE_TrigCount_Pos (0UL) /*!< Position of TrigCount field. */
+#define TPIU_TRIGGERCOUNTERVALUE_TrigCount_Msk (0xFFUL << TPIU_TRIGGERCOUNTERVALUE_TrigCount_Pos) /*!< Bit mask of TrigCount field. */
+
+/* Register: TPIU_TRIGGERMULTIPLIER */
+/* Description: The Trigger_multiplier register contains the selectors for the trigger counter multiplier. */
+
+/* Bit 4 : Multiply the Trigger Counter by 2^n. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_4_Pos (4UL) /*!< Position of MULT_4 field. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_4_Msk (0x1UL << TPIU_TRIGGERMULTIPLIER_MULT_4_Pos) /*!< Bit mask of MULT_4 field. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_4_Disabled (0x0UL) /*!< Multiplier disabled. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_4_Enabled (0x1UL) /*!< Multiplier enabled. */
+
+/* Bit 3 : Multiply the Trigger Counter by 2^n. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_3_Pos (3UL) /*!< Position of MULT_3 field. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_3_Msk (0x1UL << TPIU_TRIGGERMULTIPLIER_MULT_3_Pos) /*!< Bit mask of MULT_3 field. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_3_Disabled (0x0UL) /*!< Multiplier disabled. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_3_Enabled (0x1UL) /*!< Multiplier enabled. */
+
+/* Bit 2 : Multiply the Trigger Counter by 2^n. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_2_Pos (2UL) /*!< Position of MULT_2 field. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_2_Msk (0x1UL << TPIU_TRIGGERMULTIPLIER_MULT_2_Pos) /*!< Bit mask of MULT_2 field. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_2_Disabled (0x0UL) /*!< Multiplier disabled. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_2_Enabled (0x1UL) /*!< Multiplier enabled. */
+
+/* Bit 1 : Multiply the Trigger Counter by 2^n. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_1_Pos (1UL) /*!< Position of MULT_1 field. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_1_Msk (0x1UL << TPIU_TRIGGERMULTIPLIER_MULT_1_Pos) /*!< Bit mask of MULT_1 field. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_1_Disabled (0x0UL) /*!< Multiplier disabled. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_1_Enabled (0x1UL) /*!< Multiplier enabled. */
+
+/* Bit 0 : Multiply the Trigger Counter by 2^n. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_0_Pos (0UL) /*!< Position of MULT_0 field. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_0_Msk (0x1UL << TPIU_TRIGGERMULTIPLIER_MULT_0_Pos) /*!< Bit mask of MULT_0 field. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_0_Disabled (0x0UL) /*!< Multiplier disabled. */
+#define TPIU_TRIGGERMULTIPLIER_MULT_0_Enabled (0x1UL) /*!< Multiplier enabled. */
+
+/* Register: TPIU_SUPPPORTEDTESTPATTERNMODES */
+/* Description: The Supported_test_pattern_modes register provides a set of known bit sequences or patterns that can be output over the trace port and can be detected by the TPA or other associated trace capture device. */
+
+/* Bit 17 : Indicates whether continuous mode is supported. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PCONTEN_Pos (17UL) /*!< Position of PCONTEN field. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PCONTEN_Msk (0x1UL << TPIU_SUPPPORTEDTESTPATTERNMODES_PCONTEN_Pos) /*!< Bit mask of PCONTEN field. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PCONTEN_NotSupported (0x0UL) /*!< Mode is not supported. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PCONTEN_Supported (0x1UL) /*!< Mode is supported. */
+
+/* Bit 16 : Indicates whether timed mode is supported. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PTIMEEN_Pos (16UL) /*!< Position of PTIMEEN field. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PTIMEEN_Msk (0x1UL << TPIU_SUPPPORTEDTESTPATTERNMODES_PTIMEEN_Pos) /*!< Bit mask of PTIMEEN field. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PTIMEEN_NotSupported (0x0UL) /*!< Mode is not supported. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PTIMEEN_Supported (0x1UL) /*!< Mode is supported. */
+
+/* Bit 3 : Indicates whether the FF/00 pattern is supported as output over the trace port. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATF0_Pos (3UL) /*!< Position of PATF0 field. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATF0_Msk (0x1UL << TPIU_SUPPPORTEDTESTPATTERNMODES_PATF0_Pos) /*!< Bit mask of PATF0 field. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATF0_NotSupported (0x0UL) /*!< Test pattern is not supported. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATF0_Supported (0x1UL) /*!< Test pattern is supported. */
+
+/* Bit 2 : Indicates whether the AA/55 pattern is supported as output over the trace port. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATA5_Pos (2UL) /*!< Position of PATA5 field. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATA5_Msk (0x1UL << TPIU_SUPPPORTEDTESTPATTERNMODES_PATA5_Pos) /*!< Bit mask of PATA5 field. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATA5_NotSupported (0x0UL) /*!< Test pattern is not supported. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATA5_Supported (0x1UL) /*!< Test pattern is supported. */
+
+/* Bit 1 : Indicates whether the walking 0s pattern is supported as output over the trace port. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATW0_Pos (1UL) /*!< Position of PATW0 field. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATW0_Msk (0x1UL << TPIU_SUPPPORTEDTESTPATTERNMODES_PATW0_Pos) /*!< Bit mask of PATW0 field. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATW0_NotSupported (0x0UL) /*!< Test pattern is not supported. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATW0_Supported (0x1UL) /*!< Test pattern is supported. */
+
+/* Bit 0 : Indicates whether the walking 1s pattern is supported as output over the trace port. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATW1_Pos (0UL) /*!< Position of PATW1 field. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATW1_Msk (0x1UL << TPIU_SUPPPORTEDTESTPATTERNMODES_PATW1_Pos) /*!< Bit mask of PATW1 field. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATW1_NotSupported (0x0UL) /*!< Test pattern is not supported. */
+#define TPIU_SUPPPORTEDTESTPATTERNMODES_PATW1_Supported (0x1UL) /*!< Test pattern is supported. */
+
+/* Register: TPIU_CURRENTTESTPATTERNMODES */
+/* Description: Current_test_pattern_mode indicates the current test pattern or mode selected. */
+
+/* Bit 17 : Indicates whether continuous mode is supported. */
+#define TPIU_CURRENTTESTPATTERNMODES_PCONTEN_Pos (17UL) /*!< Position of PCONTEN field. */
+#define TPIU_CURRENTTESTPATTERNMODES_PCONTEN_Msk (0x1UL << TPIU_CURRENTTESTPATTERNMODES_PCONTEN_Pos) /*!< Bit mask of PCONTEN field. */
+#define TPIU_CURRENTTESTPATTERNMODES_PCONTEN_Disabled (0x0UL) /*!< Mode is disabled. */
+#define TPIU_CURRENTTESTPATTERNMODES_PCONTEN_Enabled (0x1UL) /*!< Mode is enabled. */
+
+/* Bit 16 : Indicates whether timed mode is supported. */
+#define TPIU_CURRENTTESTPATTERNMODES_PTIMEEN_Pos (16UL) /*!< Position of PTIMEEN field. */
+#define TPIU_CURRENTTESTPATTERNMODES_PTIMEEN_Msk (0x1UL << TPIU_CURRENTTESTPATTERNMODES_PTIMEEN_Pos) /*!< Bit mask of PTIMEEN field. */
+#define TPIU_CURRENTTESTPATTERNMODES_PTIMEEN_Disabled (0x0UL) /*!< Mode is disabled. */
+#define TPIU_CURRENTTESTPATTERNMODES_PTIMEEN_Enabled (0x1UL) /*!< Mode is enabled. */
+
+/* Bit 3 : Indicates whether the FF/00 pattern is supported as output over the trace port. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATF0_Pos (3UL) /*!< Position of PATF0 field. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATF0_Msk (0x1UL << TPIU_CURRENTTESTPATTERNMODES_PATF0_Pos) /*!< Bit mask of PATF0 field. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATF0_Disabled (0x0UL) /*!< Test pattern is disabled. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATF0_Enabled (0x1UL) /*!< Test pattern is enabled. */
+
+/* Bit 2 : Indicates whether the AA/55 pattern is supported as output over the trace port. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATA5_Pos (2UL) /*!< Position of PATA5 field. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATA5_Msk (0x1UL << TPIU_CURRENTTESTPATTERNMODES_PATA5_Pos) /*!< Bit mask of PATA5 field. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATA5_Disabled (0x0UL) /*!< Test pattern is disabled. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATA5_Enabled (0x1UL) /*!< Test pattern is enabled. */
+
+/* Bit 1 : Indicates whether the walking 0s pattern is supported as output over the trace port. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATW0_Pos (1UL) /*!< Position of PATW0 field. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATW0_Msk (0x1UL << TPIU_CURRENTTESTPATTERNMODES_PATW0_Pos) /*!< Bit mask of PATW0 field. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATW0_Disabled (0x0UL) /*!< Test pattern is disabled. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATW0_Enabled (0x1UL) /*!< Test pattern is enabled. */
+
+/* Bit 0 : Indicates whether the walking 1s pattern is supported as output over the trace port. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATW1_Pos (0UL) /*!< Position of PATW1 field. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATW1_Msk (0x1UL << TPIU_CURRENTTESTPATTERNMODES_PATW1_Pos) /*!< Bit mask of PATW1 field. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATW1_Disabled (0x0UL) /*!< Test pattern is disabled. */
+#define TPIU_CURRENTTESTPATTERNMODES_PATW1_Enabled (0x1UL) /*!< Test pattern is enabled. */
+
+/* Register: TPIU_TPRCR */
+/* Description: The TPRCR register is an 8-bit counter start value that is decremented. A write sets the initial counter value and a read returns the programmed value. */
+
+/* Bits 7..0 : 8-bit counter value to indicate the number of traceclkin cycles for which a pattern runs before it switches to the next pattern. */
+#define TPIU_TPRCR_PATTCOUNT_Pos (0UL) /*!< Position of PATTCOUNT field. */
+#define TPIU_TPRCR_PATTCOUNT_Msk (0xFFUL << TPIU_TPRCR_PATTCOUNT_Pos) /*!< Bit mask of PATTCOUNT field. */
+
+/* Register: TPIU_FFSR */
+/* Description: The FFSR register indicates the current status of the formatter and flush features available in the TPIU. */
+
+/* Bit 2 : Indicates whether the TRACECTL pin is available for use. */
+#define TPIU_FFSR_TCPRESENT_Pos (2UL) /*!< Position of TCPRESENT field. */
+#define TPIU_FFSR_TCPRESENT_Msk (0x1UL << TPIU_FFSR_TCPRESENT_Pos) /*!< Bit mask of TCPRESENT field. */
+#define TPIU_FFSR_TCPRESENT_NotPresent (0x0UL) /*!< TRACECTL pin is not present. */
+#define TPIU_FFSR_TCPRESENT_Present (0x1UL) /*!< TRACECTL pin is present. */
+
+/* Bit 1 : The formatter has received a stop request signal and all trace data and post-amble is sent. Any additional trace data on the ATB interface is ignored and atreadys goes HIGH. */
+#define TPIU_FFSR_FTSTOPPED_Pos (1UL) /*!< Position of FTSTOPPED field. */
+#define TPIU_FFSR_FTSTOPPED_Msk (0x1UL << TPIU_FFSR_FTSTOPPED_Pos) /*!< Bit mask of FTSTOPPED field. */
+#define TPIU_FFSR_FTSTOPPED_Running (0x0UL) /*!< Formatter has not stopped. */
+#define TPIU_FFSR_FTSTOPPED_Stopped (0x1UL) /*!< Formatter has stopped. */
+
+/* Bit 0 : Flush in progress. */
+#define TPIU_FFSR_FLINPROG_Pos (0UL) /*!< Position of FLINPROG field. */
+#define TPIU_FFSR_FLINPROG_Msk (0x1UL << TPIU_FFSR_FLINPROG_Pos) /*!< Bit mask of FLINPROG field. */
+#define TPIU_FFSR_FLINPROG_NotInProgress (0x0UL) /*!< A flush is not in progress. */
+#define TPIU_FFSR_FLINPROG_InProgress (0x1UL) /*!< A flush is in progress. */
+
+/* Register: TPIU_FFCR */
+/* Description: The FFCR register controls the generation of stop, trigger, and flush events. */
+
+/* Bit 13 : Stops the formatter after a trigger event is observed. Reset to disabled or 0. */
+#define TPIU_FFCR_STOPTRIG_Pos (13UL) /*!< Position of STOPTRIG field. */
+#define TPIU_FFCR_STOPTRIG_Msk (0x1UL << TPIU_FFCR_STOPTRIG_Pos) /*!< Bit mask of STOPTRIG field. */
+#define TPIU_FFCR_STOPTRIG_Disabled (0x0UL) /*!< The formatting feature is disabled. */
+#define TPIU_FFCR_STOPTRIG_Enabled (0x1UL) /*!< The formatting feature is enabled. */
+
+/* Bit 12 : Forces the FIFO to drain off any part-completed packets. */
+#define TPIU_FFCR_STOPFL_Pos (12UL) /*!< Position of STOPFL field. */
+#define TPIU_FFCR_STOPFL_Msk (0x1UL << TPIU_FFCR_STOPFL_Pos) /*!< Bit mask of STOPFL field. */
+#define TPIU_FFCR_STOPFL_Disabled (0x0UL) /*!< The formatting feature is disabled. */
+#define TPIU_FFCR_STOPFL_Enabled (0x1UL) /*!< The formatting feature is enabled. */
+
+/* Bit 10 : Indicates a trigger when flush completion on afreadys is returned. */
+#define TPIU_FFCR_TRIGFL_Pos (10UL) /*!< Position of TRIGFL field. */
+#define TPIU_FFCR_TRIGFL_Msk (0x1UL << TPIU_FFCR_TRIGFL_Pos) /*!< Bit mask of TRIGFL field. */
+#define TPIU_FFCR_TRIGFL_Disabled (0x0UL) /*!< The formatting feature is disabled. */
+#define TPIU_FFCR_TRIGFL_Enabled (0x1UL) /*!< The formatting feature is enabled. */
+
+/* Bit 9 : Indicates a trigger on a trigger event. */
+#define TPIU_FFCR_TRIGEVT_Pos (9UL) /*!< Position of TRIGEVT field. */
+#define TPIU_FFCR_TRIGEVT_Msk (0x1UL << TPIU_FFCR_TRIGEVT_Pos) /*!< Bit mask of TRIGEVT field. */
+#define TPIU_FFCR_TRIGEVT_Disabled (0x0UL) /*!< The formatting feature is disabled. */
+#define TPIU_FFCR_TRIGEVT_Enabled (0x1UL) /*!< The formatting feature is enabled. */
+
+/* Bit 8 : Indicates a trigger when trigin is asserted. */
+#define TPIU_FFCR_TRIGIN_Pos (8UL) /*!< Position of TRIGIN field. */
+#define TPIU_FFCR_TRIGIN_Msk (0x1UL << TPIU_FFCR_TRIGIN_Pos) /*!< Bit mask of TRIGIN field. */
+#define TPIU_FFCR_TRIGIN_Disabled (0x0UL) /*!< The formatting feature is disabled. */
+#define TPIU_FFCR_TRIGIN_Enabled (0x1UL) /*!< The formatting feature is enabled. */
+
+/* Bit 7 : Generates a flush. This bit is set to 1 when this flush is serviced. */
+#define TPIU_FFCR_FONMANW_Pos (7UL) /*!< Position of FONMANW field. */
+#define TPIU_FFCR_FONMANW_Msk (0x1UL << TPIU_FFCR_FONMANW_Pos) /*!< Bit mask of FONMANW field. */
+#define TPIU_FFCR_FONMANW_Disabled (0x0UL) /*!< The formatting feature is disabled. */
+#define TPIU_FFCR_FONMANW_Enabled (0x1UL) /*!< The formatting feature is enabled. */
+
+/* Bit 6 : Generates a flush. This bit is set to 0 when this flush is serviced. */
+#define TPIU_FFCR_FONMANR_Pos (6UL) /*!< Position of FONMANR field. */
+#define TPIU_FFCR_FONMANR_Msk (0x1UL << TPIU_FFCR_FONMANR_Pos) /*!< Bit mask of FONMANR field. */
+#define TPIU_FFCR_FONMANR_Disabled (0x0UL) /*!< The formatting feature is disabled. */
+#define TPIU_FFCR_FONMANR_Enabled (0x1UL) /*!< The formatting feature is enabled. */
+
+/* Bit 5 : Initiates a manual flush of data in the system when a trigger event occurs. */
+#define TPIU_FFCR_FONTRIG_Pos (5UL) /*!< Position of FONTRIG field. */
+#define TPIU_FFCR_FONTRIG_Msk (0x1UL << TPIU_FFCR_FONTRIG_Pos) /*!< Bit mask of FONTRIG field. */
+#define TPIU_FFCR_FONTRIG_Disabled (0x0UL) /*!< The formatting feature is disabled. */
+#define TPIU_FFCR_FONTRIG_Enabled (0x1UL) /*!< The formatting feature is enabled. */
+
+/* Bit 4 : Enables the use of the flushin connection. */
+#define TPIU_FFCR_FONFLIN_Pos (4UL) /*!< Position of FONFLIN field. */
+#define TPIU_FFCR_FONFLIN_Msk (0x1UL << TPIU_FFCR_FONFLIN_Pos) /*!< Bit mask of FONFLIN field. */
+#define TPIU_FFCR_FONFLIN_Disabled (0x0UL) /*!< The formatting feature is disabled. */
+#define TPIU_FFCR_FONFLIN_Enabled (0x1UL) /*!< The formatting feature is enabled. */
+
+/* Bit 1 : Is embedded in trigger packets and indicates that no cycle is using sync packets. */
+#define TPIU_FFCR_ENFCONT_Pos (1UL) /*!< Position of ENFCONT field. */
+#define TPIU_FFCR_ENFCONT_Msk (0x1UL << TPIU_FFCR_ENFCONT_Pos) /*!< Bit mask of ENFCONT field. */
+#define TPIU_FFCR_ENFCONT_Disabled (0x0UL) /*!< The formatting feature is disabled. */
+#define TPIU_FFCR_ENFCONT_Enabled (0x1UL) /*!< The formatting feature is enabled. */
+
+/* Bit 0 : Do not embed triggers into the formatted stream. Trace disable cycles and triggers are indicated by tracectl, where present. */
+#define TPIU_FFCR_ENFTC_Pos (0UL) /*!< Position of ENFTC field. */
+#define TPIU_FFCR_ENFTC_Msk (0x1UL << TPIU_FFCR_ENFTC_Pos) /*!< Bit mask of ENFTC field. */
+#define TPIU_FFCR_ENFTC_Disabled (0x0UL) /*!< The formatting feature is disabled. */
+#define TPIU_FFCR_ENFTC_Enabled (0x1UL) /*!< The formatting feature is enabled. */
+
+/* Register: TPIU_FSCR */
+/* Description: The FSCR register enables the frequency of synchronization information to be optimized to suit the Trace Port Analyzer (TPA) capture buffer size. */
+
+/* Bits 11..0 : 12-bit counter reload value. Indicates the number of complete frames between full synchronization packets. */
+#define TPIU_FSCR_CYCCOUNT_Pos (0UL) /*!< Position of CYCCOUNT field. */
+#define TPIU_FSCR_CYCCOUNT_Msk (0xFFFUL << TPIU_FSCR_CYCCOUNT_Pos) /*!< Bit mask of CYCCOUNT field. */
+
+/* Register: TPIU_EXTCTLINPORT */
+/* Description: Two ports can be used as a control and feedback mechanism for any serializers, pin sharing multiplexers, or other solutions that might be added to the trace output pins either for pin control or a high-speed trace port solution. */
+
+/* Bit 7 : EXTCTL inputs. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_7_Pos (7UL) /*!< Position of EXTCTLIN_7 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_7_Msk (0x1UL << TPIU_EXTCTLINPORT_EXTCTLIN_7_Pos) /*!< Bit mask of EXTCTLIN_7 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_7_Low (0x0UL) /*!< Input EXTCTL7 is low. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_7_High (0x1UL) /*!< Input EXTCTL7 is high. */
+
+/* Bit 6 : EXTCTL inputs. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_6_Pos (6UL) /*!< Position of EXTCTLIN_6 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_6_Msk (0x1UL << TPIU_EXTCTLINPORT_EXTCTLIN_6_Pos) /*!< Bit mask of EXTCTLIN_6 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_6_Low (0x0UL) /*!< Input EXTCTL6 is low. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_6_High (0x1UL) /*!< Input EXTCTL6 is high. */
+
+/* Bit 5 : EXTCTL inputs. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_5_Pos (5UL) /*!< Position of EXTCTLIN_5 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_5_Msk (0x1UL << TPIU_EXTCTLINPORT_EXTCTLIN_5_Pos) /*!< Bit mask of EXTCTLIN_5 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_5_Low (0x0UL) /*!< Input EXTCTL5 is low. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_5_High (0x1UL) /*!< Input EXTCTL5 is high. */
+
+/* Bit 4 : EXTCTL inputs. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_4_Pos (4UL) /*!< Position of EXTCTLIN_4 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_4_Msk (0x1UL << TPIU_EXTCTLINPORT_EXTCTLIN_4_Pos) /*!< Bit mask of EXTCTLIN_4 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_4_Low (0x0UL) /*!< Input EXTCTL4 is low. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_4_High (0x1UL) /*!< Input EXTCTL4 is high. */
+
+/* Bit 3 : EXTCTL inputs. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_3_Pos (3UL) /*!< Position of EXTCTLIN_3 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_3_Msk (0x1UL << TPIU_EXTCTLINPORT_EXTCTLIN_3_Pos) /*!< Bit mask of EXTCTLIN_3 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_3_Low (0x0UL) /*!< Input EXTCTL3 is low. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_3_High (0x1UL) /*!< Input EXTCTL3 is high. */
+
+/* Bit 2 : EXTCTL inputs. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_2_Pos (2UL) /*!< Position of EXTCTLIN_2 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_2_Msk (0x1UL << TPIU_EXTCTLINPORT_EXTCTLIN_2_Pos) /*!< Bit mask of EXTCTLIN_2 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_2_Low (0x0UL) /*!< Input EXTCTL2 is low. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_2_High (0x1UL) /*!< Input EXTCTL2 is high. */
+
+/* Bit 1 : EXTCTL inputs. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_1_Pos (1UL) /*!< Position of EXTCTLIN_1 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_1_Msk (0x1UL << TPIU_EXTCTLINPORT_EXTCTLIN_1_Pos) /*!< Bit mask of EXTCTLIN_1 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_1_Low (0x0UL) /*!< Input EXTCTL1 is low. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_1_High (0x1UL) /*!< Input EXTCTL1 is high. */
+
+/* Bit 0 : EXTCTL inputs. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_0_Pos (0UL) /*!< Position of EXTCTLIN_0 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_0_Msk (0x1UL << TPIU_EXTCTLINPORT_EXTCTLIN_0_Pos) /*!< Bit mask of EXTCTLIN_0 field. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_0_Low (0x0UL) /*!< Input EXTCTL0 is low. */
+#define TPIU_EXTCTLINPORT_EXTCTLIN_0_High (0x1UL) /*!< Input EXTCTL0 is high. */
+
+/* Register: TPIU_EXTCTLOUTPORT */
+/* Description: Two ports can be used as a control and feedback mechanism for any serializers, pin sharing multiplexers, or other solutions that might be added to the trace output pins either for pin control or a high speed trace port solution. These ports are raw register banks that sample or export the corresponding external pins. */
+
+/* Bit 7 : EXTCTL outputs. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_7_Pos (7UL) /*!< Position of EXTCTLOUT_7 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_7_Msk (0x1UL << TPIU_EXTCTLOUTPORT_EXTCTLOUT_7_Pos) /*!< Bit mask of EXTCTLOUT_7 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_7_Low (0x0UL) /*!< Output EXTCTL7 is low. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_7_High (0x1UL) /*!< Output EXTCTL7 is high. */
+
+/* Bit 6 : EXTCTL outputs. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_6_Pos (6UL) /*!< Position of EXTCTLOUT_6 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_6_Msk (0x1UL << TPIU_EXTCTLOUTPORT_EXTCTLOUT_6_Pos) /*!< Bit mask of EXTCTLOUT_6 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_6_Low (0x0UL) /*!< Output EXTCTL6 is low. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_6_High (0x1UL) /*!< Output EXTCTL6 is high. */
+
+/* Bit 5 : EXTCTL outputs. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_5_Pos (5UL) /*!< Position of EXTCTLOUT_5 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_5_Msk (0x1UL << TPIU_EXTCTLOUTPORT_EXTCTLOUT_5_Pos) /*!< Bit mask of EXTCTLOUT_5 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_5_Low (0x0UL) /*!< Output EXTCTL5 is low. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_5_High (0x1UL) /*!< Output EXTCTL5 is high. */
+
+/* Bit 4 : EXTCTL outputs. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_4_Pos (4UL) /*!< Position of EXTCTLOUT_4 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_4_Msk (0x1UL << TPIU_EXTCTLOUTPORT_EXTCTLOUT_4_Pos) /*!< Bit mask of EXTCTLOUT_4 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_4_Low (0x0UL) /*!< Output EXTCTL4 is low. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_4_High (0x1UL) /*!< Output EXTCTL4 is high. */
+
+/* Bit 3 : EXTCTL outputs. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_3_Pos (3UL) /*!< Position of EXTCTLOUT_3 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_3_Msk (0x1UL << TPIU_EXTCTLOUTPORT_EXTCTLOUT_3_Pos) /*!< Bit mask of EXTCTLOUT_3 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_3_Low (0x0UL) /*!< Output EXTCTL3 is low. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_3_High (0x1UL) /*!< Output EXTCTL3 is high. */
+
+/* Bit 2 : EXTCTL outputs. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_2_Pos (2UL) /*!< Position of EXTCTLOUT_2 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_2_Msk (0x1UL << TPIU_EXTCTLOUTPORT_EXTCTLOUT_2_Pos) /*!< Bit mask of EXTCTLOUT_2 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_2_Low (0x0UL) /*!< Output EXTCTL2 is low. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_2_High (0x1UL) /*!< Output EXTCTL2 is high. */
+
+/* Bit 1 : EXTCTL outputs. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_1_Pos (1UL) /*!< Position of EXTCTLOUT_1 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_1_Msk (0x1UL << TPIU_EXTCTLOUTPORT_EXTCTLOUT_1_Pos) /*!< Bit mask of EXTCTLOUT_1 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_1_Low (0x0UL) /*!< Output EXTCTL1 is low. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_1_High (0x1UL) /*!< Output EXTCTL1 is high. */
+
+/* Bit 0 : EXTCTL outputs. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_0_Pos (0UL) /*!< Position of EXTCTLOUT_0 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_0_Msk (0x1UL << TPIU_EXTCTLOUTPORT_EXTCTLOUT_0_Pos) /*!< Bit mask of EXTCTLOUT_0 field. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_0_Low (0x0UL) /*!< Output EXTCTL0 is low. */
+#define TPIU_EXTCTLOUTPORT_EXTCTLOUT_0_High (0x1UL) /*!< Output EXTCTL0 is high. */
+
+/* Register: TPIU_ITTRFLINACK */
+/* Description: The ITTRFLINACK register enables control of the triginack and flushinack outputs from the TPIU. */
+
+/* Bit 1 : Sets the value of flushinack. */
+#define TPIU_ITTRFLINACK_FLUSHINACK_Pos (1UL) /*!< Position of FLUSHINACK field. */
+#define TPIU_ITTRFLINACK_FLUSHINACK_Msk (0x1UL << TPIU_ITTRFLINACK_FLUSHINACK_Pos) /*!< Bit mask of FLUSHINACK field. */
+#define TPIU_ITTRFLINACK_FLUSHINACK_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITTRFLINACK_FLUSHINACK_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 0 : Sets the value of triginack. */
+#define TPIU_ITTRFLINACK_TRIGINACK_Pos (0UL) /*!< Position of TRIGINACK field. */
+#define TPIU_ITTRFLINACK_TRIGINACK_Msk (0x1UL << TPIU_ITTRFLINACK_TRIGINACK_Pos) /*!< Bit mask of TRIGINACK field. */
+#define TPIU_ITTRFLINACK_TRIGINACK_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITTRFLINACK_TRIGINACK_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Register: TPIU_ITTRFLIN */
+/* Description: The ITTRFLIN register contains the values of the flushin and trigin inputs to the TPIU. */
+
+/* Bit 1 : Reads  the value of flushin. */
+#define TPIU_ITTRFLIN_FLUSHIN_Pos (1UL) /*!< Position of FLUSHIN field. */
+#define TPIU_ITTRFLIN_FLUSHIN_Msk (0x1UL << TPIU_ITTRFLIN_FLUSHIN_Pos) /*!< Bit mask of FLUSHIN field. */
+#define TPIU_ITTRFLIN_FLUSHIN_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITTRFLIN_FLUSHIN_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 0 : Reads  the value of trigin. */
+#define TPIU_ITTRFLIN_TRIGIN_Pos (0UL) /*!< Position of TRIGIN field. */
+#define TPIU_ITTRFLIN_TRIGIN_Msk (0x1UL << TPIU_ITTRFLIN_TRIGIN_Pos) /*!< Bit mask of TRIGIN field. */
+#define TPIU_ITTRFLIN_TRIGIN_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITTRFLIN_TRIGIN_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Register: TPIU_ITATBDATA0 */
+/* Description: The ITATBDATA0 register contains the value of the atdatas inputs to the TPIU. The values are valid only when atvalids is HIGH. */
+
+/* Bit 4 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define TPIU_ITATBDATA0_ATDATA_4_Pos (4UL) /*!< Position of ATDATA_4 field. */
+#define TPIU_ITATBDATA0_ATDATA_4_Msk (0x1UL << TPIU_ITATBDATA0_ATDATA_4_Pos) /*!< Bit mask of ATDATA_4 field. */
+#define TPIU_ITATBDATA0_ATDATA_4_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITATBDATA0_ATDATA_4_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 3 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define TPIU_ITATBDATA0_ATDATA_3_Pos (3UL) /*!< Position of ATDATA_3 field. */
+#define TPIU_ITATBDATA0_ATDATA_3_Msk (0x1UL << TPIU_ITATBDATA0_ATDATA_3_Pos) /*!< Bit mask of ATDATA_3 field. */
+#define TPIU_ITATBDATA0_ATDATA_3_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITATBDATA0_ATDATA_3_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 2 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define TPIU_ITATBDATA0_ATDATA_2_Pos (2UL) /*!< Position of ATDATA_2 field. */
+#define TPIU_ITATBDATA0_ATDATA_2_Msk (0x1UL << TPIU_ITATBDATA0_ATDATA_2_Pos) /*!< Bit mask of ATDATA_2 field. */
+#define TPIU_ITATBDATA0_ATDATA_2_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITATBDATA0_ATDATA_2_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 1 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define TPIU_ITATBDATA0_ATDATA_1_Pos (1UL) /*!< Position of ATDATA_1 field. */
+#define TPIU_ITATBDATA0_ATDATA_1_Msk (0x1UL << TPIU_ITATBDATA0_ATDATA_1_Pos) /*!< Bit mask of ATDATA_1 field. */
+#define TPIU_ITATBDATA0_ATDATA_1_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITATBDATA0_ATDATA_1_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 0 : A read access returns the value of a pin on atdatas_x of the enabled port. A write access writes to the corresponding atdatam pin of the enabled port. */
+#define TPIU_ITATBDATA0_ATDATA_0_Pos (0UL) /*!< Position of ATDATA_0 field. */
+#define TPIU_ITATBDATA0_ATDATA_0_Msk (0x1UL << TPIU_ITATBDATA0_ATDATA_0_Pos) /*!< Bit mask of ATDATA_0 field. */
+#define TPIU_ITATBDATA0_ATDATA_0_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITATBDATA0_ATDATA_0_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Register: TPIU_ITATBCTR2 */
+/* Description: Enables control of the atreadys and afvalids outputs of the TPIU. */
+
+/* Bit 1 : Sets the value of atready. */
+#define TPIU_ITATBCTR2_AFVALID_Pos (1UL) /*!< Position of AFVALID field. */
+#define TPIU_ITATBCTR2_AFVALID_Msk (0x1UL << TPIU_ITATBCTR2_AFVALID_Pos) /*!< Bit mask of AFVALID field. */
+#define TPIU_ITATBCTR2_AFVALID_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITATBCTR2_AFVALID_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 0 : Sets the value of afvalid. */
+#define TPIU_ITATBCTR2_ATREADY_Pos (0UL) /*!< Position of ATREADY field. */
+#define TPIU_ITATBCTR2_ATREADY_Msk (0x1UL << TPIU_ITATBCTR2_ATREADY_Pos) /*!< Bit mask of ATREADY field. */
+#define TPIU_ITATBCTR2_ATREADY_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITATBCTR2_ATREADY_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Register: TPIU_ITATBCTR1 */
+/* Description: The ITATBCTR1 register contains the value of the atids input to the TPIU. This is only valid when atvalids is HIGH. */
+
+/* Bits 6..0 : Reads the value of atids. */
+#define TPIU_ITATBCTR1_ATID_Pos (0UL) /*!< Position of ATID field. */
+#define TPIU_ITATBCTR1_ATID_Msk (0x7FUL << TPIU_ITATBCTR1_ATID_Pos) /*!< Bit mask of ATID field. */
+#define TPIU_ITATBCTR1_ATID_Low (0x00UL) /*!< Pin is logic 0. */
+#define TPIU_ITATBCTR1_ATID_High (0x01UL) /*!< Pin is logic 1. */
+
+/* Register: TPIU_ITATBCTR0 */
+/* Description: The ITATBCTR0 register captures the values of the atvalids, afreadys, and atbytess inputs to the TPIU. 
+      To ensure the integration registers work correctly in a system, the value of atbytess is only valid when atvalids, bit[0], is HIGH. */
+
+/* Bits 9..8 : Reads the value of atbytess. */
+#define TPIU_ITATBCTR0_ATBYTES_Pos (8UL) /*!< Position of ATBYTES field. */
+#define TPIU_ITATBCTR0_ATBYTES_Msk (0x3UL << TPIU_ITATBCTR0_ATBYTES_Pos) /*!< Bit mask of ATBYTES field. */
+#define TPIU_ITATBCTR0_ATBYTES_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITATBCTR0_ATBYTES_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 2 : Reads the value of afreadys. */
+#define TPIU_ITATBCTR0_AFREADY_Pos (2UL) /*!< Position of AFREADY field. */
+#define TPIU_ITATBCTR0_AFREADY_Msk (0x1UL << TPIU_ITATBCTR0_AFREADY_Pos) /*!< Bit mask of AFREADY field. */
+#define TPIU_ITATBCTR0_AFREADY_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITATBCTR0_AFREADY_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Bit 0 : Reads the value of atvalids. */
+#define TPIU_ITATBCTR0_ATVALID_Pos (0UL) /*!< Position of ATVALID field. */
+#define TPIU_ITATBCTR0_ATVALID_Msk (0x1UL << TPIU_ITATBCTR0_ATVALID_Pos) /*!< Bit mask of ATVALID field. */
+#define TPIU_ITATBCTR0_ATVALID_Low (0x0UL) /*!< Pin is logic 0. */
+#define TPIU_ITATBCTR0_ATVALID_High (0x1UL) /*!< Pin is logic 1. */
+
+/* Register: TPIU_ITCTRL */
+/* Description: Used to enable topology detection. 
+        This register enables the component to switch from a functional mode, the default behavior, 
+        to integration mode where the inputs and outputs of the component can be directly controlled for integration testing and topology solving. */
+
+/* Bit 0 : Enables the component to switch from functional mode to integration mode and back. If no integration functionality is implemented, this register must read as zero. */
+#define TPIU_ITCTRL_INTEGRATIONMODE_Pos (0UL) /*!< Position of INTEGRATIONMODE field. */
+#define TPIU_ITCTRL_INTEGRATIONMODE_Msk (0x1UL << TPIU_ITCTRL_INTEGRATIONMODE_Pos) /*!< Bit mask of INTEGRATIONMODE field. */
+#define TPIU_ITCTRL_INTEGRATIONMODE_Disabled (0x0UL) /*!< Integration mode is disabled. */
+#define TPIU_ITCTRL_INTEGRATIONMODE_Enabled (0x1UL) /*!< Integration mode is Enabled. */
+
+/* Register: TPIU_CLAIMSET */
+/* Description: Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
+      The claim tags have no effect on the operation of the component. The CLAIMSET register sets bits in the claim tag, and determines the number of claim bits implemented. */
+
+/* Bit 3 : Set claim bit 3 and check if bit is implemented or not. */
+#define TPIU_CLAIMSET_BIT_3_Pos (3UL) /*!< Position of BIT_3 field. */
+#define TPIU_CLAIMSET_BIT_3_Msk (0x1UL << TPIU_CLAIMSET_BIT_3_Pos) /*!< Bit mask of BIT_3 field. */
+#define TPIU_CLAIMSET_BIT_3_NotImplemented (0x0UL) /*!< Claim bit 3 is not implemented. */
+#define TPIU_CLAIMSET_BIT_3_Implemented (0x1UL) /*!< Claim bit 3 is implemented. */
+#define TPIU_CLAIMSET_BIT_3_Set (0x1UL) /*!< Set claim bit 3. */
+
+/* Bit 2 : Set claim bit 2 and check if bit is implemented or not. */
+#define TPIU_CLAIMSET_BIT_2_Pos (2UL) /*!< Position of BIT_2 field. */
+#define TPIU_CLAIMSET_BIT_2_Msk (0x1UL << TPIU_CLAIMSET_BIT_2_Pos) /*!< Bit mask of BIT_2 field. */
+#define TPIU_CLAIMSET_BIT_2_NotImplemented (0x0UL) /*!< Claim bit 2 is not implemented. */
+#define TPIU_CLAIMSET_BIT_2_Implemented (0x1UL) /*!< Claim bit 2 is implemented. */
+#define TPIU_CLAIMSET_BIT_2_Set (0x1UL) /*!< Set claim bit 2. */
+
+/* Bit 1 : Set claim bit 1 and check if bit is implemented or not. */
+#define TPIU_CLAIMSET_BIT_1_Pos (1UL) /*!< Position of BIT_1 field. */
+#define TPIU_CLAIMSET_BIT_1_Msk (0x1UL << TPIU_CLAIMSET_BIT_1_Pos) /*!< Bit mask of BIT_1 field. */
+#define TPIU_CLAIMSET_BIT_1_NotImplemented (0x0UL) /*!< Claim bit 1 is not implemented. */
+#define TPIU_CLAIMSET_BIT_1_Implemented (0x1UL) /*!< Claim bit 1 is implemented. */
+#define TPIU_CLAIMSET_BIT_1_Set (0x1UL) /*!< Set claim bit 1. */
+
+/* Bit 0 : Set claim bit 0 and check if bit is implemented or not. */
+#define TPIU_CLAIMSET_BIT_0_Pos (0UL) /*!< Position of BIT_0 field. */
+#define TPIU_CLAIMSET_BIT_0_Msk (0x1UL << TPIU_CLAIMSET_BIT_0_Pos) /*!< Bit mask of BIT_0 field. */
+#define TPIU_CLAIMSET_BIT_0_NotImplemented (0x0UL) /*!< Claim bit 0 is not implemented. */
+#define TPIU_CLAIMSET_BIT_0_Implemented (0x1UL) /*!< Claim bit 0 is implemented. */
+#define TPIU_CLAIMSET_BIT_0_Set (0x1UL) /*!< Set claim bit 0. */
+
+/* Register: TPIU_CLAIMCLR */
+/* Description: Software can use the claim tag to coordinate application and debugger access to trace unit functionality. 
+      The claim tags have no effect on the operation of the component. 
+      The CLAIMCLR register sets the bits in the claim tag to 0 and determines the current value of the claim tag. */
+
+/* Bit 3 : Read or clear claim bit 3. */
+#define TPIU_CLAIMCLR_BIT_3_Pos (3UL) /*!< Position of BIT_3 field. */
+#define TPIU_CLAIMCLR_BIT_3_Msk (0x1UL << TPIU_CLAIMCLR_BIT_3_Pos) /*!< Bit mask of BIT_3 field. */
+#define TPIU_CLAIMCLR_BIT_3_Cleared (0x0UL) /*!< Claim bit 3 is not set. */
+#define TPIU_CLAIMCLR_BIT_3_Set (0x1UL) /*!< Claim bit 3 is set. */
+#define TPIU_CLAIMCLR_BIT_3_Clear (0x1UL) /*!< Clear claim bit 3. */
+
+/* Bit 2 : Read or clear claim bit 2. */
+#define TPIU_CLAIMCLR_BIT_2_Pos (2UL) /*!< Position of BIT_2 field. */
+#define TPIU_CLAIMCLR_BIT_2_Msk (0x1UL << TPIU_CLAIMCLR_BIT_2_Pos) /*!< Bit mask of BIT_2 field. */
+#define TPIU_CLAIMCLR_BIT_2_Cleared (0x0UL) /*!< Claim bit 2 is not set. */
+#define TPIU_CLAIMCLR_BIT_2_Set (0x1UL) /*!< Claim bit 2 is set. */
+#define TPIU_CLAIMCLR_BIT_2_Clear (0x1UL) /*!< Clear claim bit 2. */
+
+/* Bit 1 : Read or clear claim bit 1. */
+#define TPIU_CLAIMCLR_BIT_1_Pos (1UL) /*!< Position of BIT_1 field. */
+#define TPIU_CLAIMCLR_BIT_1_Msk (0x1UL << TPIU_CLAIMCLR_BIT_1_Pos) /*!< Bit mask of BIT_1 field. */
+#define TPIU_CLAIMCLR_BIT_1_Cleared (0x0UL) /*!< Claim bit 1 is not set. */
+#define TPIU_CLAIMCLR_BIT_1_Set (0x1UL) /*!< Claim bit 1 is set. */
+#define TPIU_CLAIMCLR_BIT_1_Clear (0x1UL) /*!< Clear claim bit 1. */
+
+/* Bit 0 : Read or clear claim bit 0. */
+#define TPIU_CLAIMCLR_BIT_0_Pos (0UL) /*!< Position of BIT_0 field. */
+#define TPIU_CLAIMCLR_BIT_0_Msk (0x1UL << TPIU_CLAIMCLR_BIT_0_Pos) /*!< Bit mask of BIT_0 field. */
+#define TPIU_CLAIMCLR_BIT_0_Cleared (0x0UL) /*!< Claim bit 0 is not set. */
+#define TPIU_CLAIMCLR_BIT_0_Set (0x1UL) /*!< Claim bit 0 is set. */
+#define TPIU_CLAIMCLR_BIT_0_Clear (0x1UL) /*!< Clear claim bit 0. */
+
+/* Register: TPIU_LAR */
+/* Description: This is used to enable write access to device registers. */
+
+/* Bits 31..0 : A write of 0xC5ACCE55 enables further write access to this device. Any other write removes write access. */
+#define TPIU_LAR_ACCESS_Pos (0UL) /*!< Position of ACCESS field. */
+#define TPIU_LAR_ACCESS_Msk (0xFFFFFFFFUL << TPIU_LAR_ACCESS_Pos) /*!< Bit mask of ACCESS field. */
+#define TPIU_LAR_ACCESS_UnLock (0xC5ACCE55UL) /*!< Unlock register interface. */
+
+/* Register: TPIU_LSR */
+/* Description: This indicates the status of the lock control mechanism. This lock prevents accidental writes by code under debug. 
+      Accesses to the extended stimulus port registers are not affected by the lock mechanism. 
+      This register must always be present although there might not be any lock access control mechanism. 
+      The lock mechanism, where present and locked, must block write accesses to any control register, except the Lock Access Register. 
+      For most components this covers all registers except for the Lock Access Register. */
+
+/* Bit 2 : Indicates if the Lock Access Register is implemented as 8-bit or 32-bit. */
+#define TPIU_LSR_TYPE_Pos (2UL) /*!< Position of TYPE field. */
+#define TPIU_LSR_TYPE_Msk (0x1UL << TPIU_LSR_TYPE_Pos) /*!< Bit mask of TYPE field. */
+#define TPIU_LSR_TYPE_Bits32 (0x0UL) /*!< This component implements a 32-bit Lock Access Register. */
+#define TPIU_LSR_TYPE_Bits8 (0x1UL) /*!< This component implements an 8-bit Lock Access Register. */
+
+/* Bit 1 : Returns the current status of the Lock. */
+#define TPIU_LSR_LOCKED_Pos (1UL) /*!< Position of LOCKED field. */
+#define TPIU_LSR_LOCKED_Msk (0x1UL << TPIU_LSR_LOCKED_Pos) /*!< Bit mask of LOCKED field. */
+#define TPIU_LSR_LOCKED_UnLocked (0x0UL) /*!< Write access is allowed to this device. */
+#define TPIU_LSR_LOCKED_Locked (0x1UL) /*!< Write access to the component is blocked. All writes to control registers are ignored. Reads are permitted. */
+
+/* Bit 0 : Indicates that a lock control mechanism exists for this device. */
+#define TPIU_LSR_PRESENT_Pos (0UL) /*!< Position of PRESENT field. */
+#define TPIU_LSR_PRESENT_Msk (0x1UL << TPIU_LSR_PRESENT_Pos) /*!< Bit mask of PRESENT field. */
+#define TPIU_LSR_PRESENT_NotImplemented (0x0UL) /*!< No lock control mechanism exists, writes to the Lock Access Register are ignored. */
+#define TPIU_LSR_PRESENT_Implemented (0x1UL) /*!< Lock control mechanism is present. */
+
+/* Register: TPIU_AUTHSTATUS */
+/* Description: Indicates the current level of tracing permitted by the system */
+
+/* Bits 7..6 : Secure Non-Invasive Debug */
+#define TPIU_AUTHSTATUS_SNID_Pos (6UL) /*!< Position of SNID field. */
+#define TPIU_AUTHSTATUS_SNID_Msk (0x3UL << TPIU_AUTHSTATUS_SNID_Pos) /*!< Bit mask of SNID field. */
+#define TPIU_AUTHSTATUS_SNID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define TPIU_AUTHSTATUS_SNID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Bits 5..4 : Secure Invasive Debug */
+#define TPIU_AUTHSTATUS_SID_Pos (4UL) /*!< Position of SID field. */
+#define TPIU_AUTHSTATUS_SID_Msk (0x3UL << TPIU_AUTHSTATUS_SID_Pos) /*!< Bit mask of SID field. */
+#define TPIU_AUTHSTATUS_SID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define TPIU_AUTHSTATUS_SID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Bits 3..2 : Non-secure Non-Invasive Debug */
+#define TPIU_AUTHSTATUS_NSNID_Pos (2UL) /*!< Position of NSNID field. */
+#define TPIU_AUTHSTATUS_NSNID_Msk (0x3UL << TPIU_AUTHSTATUS_NSNID_Pos) /*!< Bit mask of NSNID field. */
+#define TPIU_AUTHSTATUS_NSNID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define TPIU_AUTHSTATUS_NSNID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Bits 1..0 : Non-secure Invasive Debug */
+#define TPIU_AUTHSTATUS_NSID_Pos (0UL) /*!< Position of NSID field. */
+#define TPIU_AUTHSTATUS_NSID_Msk (0x3UL << TPIU_AUTHSTATUS_NSID_Pos) /*!< Bit mask of NSID field. */
+#define TPIU_AUTHSTATUS_NSID_NotImplemented (0x0UL) /*!< The feature is not implemented. */
+#define TPIU_AUTHSTATUS_NSID_Implemented (0x1UL) /*!< The feature is implemented. */
+
+/* Register: TPIU_DEVID */
+/* Description: Indicates the capabilities of the component. */
+
+/* Bit 11 : Indicates whether Serial Wire Output, UART or NRZ, is supported. */
+#define TPIU_DEVID_SWOUARTNRZ_Pos (11UL) /*!< Position of SWOUARTNRZ field. */
+#define TPIU_DEVID_SWOUARTNRZ_Msk (0x1UL << TPIU_DEVID_SWOUARTNRZ_Pos) /*!< Bit mask of SWOUARTNRZ field. */
+#define TPIU_DEVID_SWOUARTNRZ_NotSupported (0x0UL) /*!< Serial Wire Output, UART or NRZ, is not supported. */
+#define TPIU_DEVID_SWOUARTNRZ_Supported (0x1UL) /*!< Serial Wire Output, UART or NRZ, is supported. */
+
+/* Bit 10 : Indicates whether Serial Wire Output, Manchester encoded format, is supported. */
+#define TPIU_DEVID_SWOMAN_Pos (10UL) /*!< Position of SWOMAN field. */
+#define TPIU_DEVID_SWOMAN_Msk (0x1UL << TPIU_DEVID_SWOMAN_Pos) /*!< Bit mask of SWOMAN field. */
+#define TPIU_DEVID_SWOMAN_NotSupported (0x0UL) /*!< Serial Wire Output, Manchester encoded format, is not supported. */
+#define TPIU_DEVID_SWOMAN_Supported (0x1UL) /*!< Serial Wire Output, Manchester encoded format, is supported. */
+
+/* Bit 9 : Indicates whether trace clock plus data is supported. */
+#define TPIU_DEVID_TCLKDATA_Pos (9UL) /*!< Position of TCLKDATA field. */
+#define TPIU_DEVID_TCLKDATA_Msk (0x1UL << TPIU_DEVID_TCLKDATA_Pos) /*!< Bit mask of TCLKDATA field. */
+#define TPIU_DEVID_TCLKDATA_Supported (0x0UL) /*!< Trace clock and data is supported. */
+#define TPIU_DEVID_TCLKDATA_NotSupported (0x1UL) /*!< Trace clock and data is not supported. */
+
+/* Bits 8..6 : FIFO size in powers of 2. */
+#define TPIU_DEVID_FIFOSIZE_Pos (6UL) /*!< Position of FIFOSIZE field. */
+#define TPIU_DEVID_FIFOSIZE_Msk (0x7UL << TPIU_DEVID_FIFOSIZE_Pos) /*!< Bit mask of FIFOSIZE field. */
+#define TPIU_DEVID_FIFOSIZE_Entries4 (0x2UL) /*!< FIFO size of 4 entries, that is, 16 bytes. */
+
+/* Bit 5 : Indicates the relationship between atclk and traceclkin. */
+#define TPIU_DEVID_CLKRELAT_Pos (5UL) /*!< Position of CLKRELAT field. */
+#define TPIU_DEVID_CLKRELAT_Msk (0x1UL << TPIU_DEVID_CLKRELAT_Pos) /*!< Bit mask of CLKRELAT field. */
+#define TPIU_DEVID_CLKRELAT_Synchronous (0x0UL) /*!< atclk and traceclkin are synchronous. */
+#define TPIU_DEVID_CLKRELAT_ASynchronous (0x1UL) /*!< atclk and traceclkin are asynchronous. */
+
+/* Bits 4..0 : Indicates the hidden level of input multiplexing. When non-zero, this value indicates the type of multiplexing on the input to the ATB. 
+        Currently only 0x00 is supported, that is, no multiplexing is present. This value helps detect the ATB structure. */
+#define TPIU_DEVID_MUXNUM_Pos (0UL) /*!< Position of MUXNUM field. */
+#define TPIU_DEVID_MUXNUM_Msk (0x1FUL << TPIU_DEVID_MUXNUM_Pos) /*!< Bit mask of MUXNUM field. */
+
+/* Register: TPIU_DEVTYPE */
+/* Description: The DEVTYPE register provides a debugger with information about the component when the Part Number field is not recognized. The debugger can then report this information. */
+
+/* Bits 7..4 : The sub-type of the component */
+#define TPIU_DEVTYPE_SUB_Pos (4UL) /*!< Position of SUB field. */
+#define TPIU_DEVTYPE_SUB_Msk (0xFUL << TPIU_DEVTYPE_SUB_Pos) /*!< Bit mask of SUB field. */
+#define TPIU_DEVTYPE_SUB_TracePort (0x1UL) /*!< Indicates that this component is a trace port component. */
+
+/* Bits 3..0 : The main type of the component */
+#define TPIU_DEVTYPE_MAJOR_Pos (0UL) /*!< Position of MAJOR field. */
+#define TPIU_DEVTYPE_MAJOR_Msk (0xFUL << TPIU_DEVTYPE_MAJOR_Pos) /*!< Bit mask of MAJOR field. */
+#define TPIU_DEVTYPE_MAJOR_TraceSource (0x1UL) /*!< Peripheral is a trace sink. */
+
+
 /* Peripheral: TWIM */
 /* Description: I2C compatible Two-Wire Master Interface with EasyDMA 0 */
 
@@ -10750,7 +16083,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UICR_HFXOCNT_HFXOCNT_MaxDebounceTime (0xFFUL) /*!< Max debounce time = (255*64 us + 0.5 us) */
 
 /* Register: UICR_APPNVMCPOFGUARD */
-/* Description: Enable blocking NVM WRITE and aborting NVM ERASE for Application NVM in POFWARN condition . */
+/* Description: Enable blocking NVM WRITE and aborting NVM ERASE for Application NVM in POFWARN condition. */
 
 /* Bit 0 : Enable blocking NVM WRITE and aborting NVM ERASE in POFWARN condition */
 #define UICR_APPNVMCPOFGUARD_NVMCPOFGUARDEN_Pos (0UL) /*!< Position of NVMCPOFGUARDEN field. */
@@ -10799,8 +16132,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* Register: UICR_KEYSLOT_CONFIG_DEST */
 /* Description: Description cluster: Destination address where content of the key value registers (KEYSLOT.KEYn.VALUE[0-3])
-          will be pushed by KMU. Note that this address must match that of a peripherals
-          APB mapped write-only key registers, else the KMU can push this key value into
+          will be pushed by KMU. Note that this address must match that of a peripheral's
+          APB mapped write-only key registers, otherwise the KMU can push this key value into
           an address range which the CPU can potentially read. */
 
 /* Bits 31..0 : Secure APB destination address */

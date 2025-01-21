@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -97,7 +97,7 @@ bool nrfx_interconnect_direct_connection_check(nrfx_interconnect_dppic_to_dppic_
     for (uint8_t i = 0; i < NRFX_INTERCONNECT_DPPIC_PPIB_COUNT; i++)
     {
         NRF_DPPIC_Type *p_reg;
-#if NRFX_API_VER_AT_LEAST(3, 8, 0) && !defined(NRF54L15_ENGA_XXAA)
+#if NRFX_API_VER_AT_LEAST(3, 8, 0)
         p_reg = p_path->src_dppic->dppic.p_reg;
 #else
         p_reg = p_path->src_dppic->dppic;
@@ -133,7 +133,7 @@ bool nrfx_interconnect_direct_connection_check(nrfx_interconnect_dppic_to_dppic_
             for (uint8_t k = 0; k < NRFX_ARRAY_SIZE(interconnect_dppic_ppib); k++)
             {
                 NRF_DPPIC_Type *p_dst_reg;
-#if NRFX_API_VER_AT_LEAST(3, 8, 0) && !defined(NRF54L15_ENGA_XXAA)
+#if NRFX_API_VER_AT_LEAST(3, 8, 0)
                 p_dst_reg = p_path->dst_dppic->dppic.p_reg;
 #else
                 p_dst_reg = p_path->dst_dppic->dppic;
@@ -158,7 +158,7 @@ nrf_apb_index_t nrfx_interconnect_apb_index_get(uint32_t addr)
         uint8_t bus_address_area = nrf_address_bus_get(addr, p_dppic->apb_size);
 
         NRF_DPPIC_Type *p_reg;
-#if NRFX_API_VER_AT_LEAST(3, 8, 0) && !defined(NRF54L15_ENGA_XXAA)
+#if NRFX_API_VER_AT_LEAST(3, 8, 0)
         p_reg = p_dppic->dppic.p_reg;
 #else
         p_reg = p_dppic->dppic;

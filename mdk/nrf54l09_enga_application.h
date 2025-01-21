@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -74,7 +74,7 @@ typedef enum {
   VPR00_IRQn                             = 76,       /*!< 76 VPR00                                                             */
   RRAMC_IRQn                             = 78,       /*!< 78 RRAMC                                                             */
   CTRLAP_IRQn                            = 82,       /*!< 82 CTRLAP                                                            */
-  CM33SS_IRQn                            = 83,       /*!< 83 CM33SS                                                            */
+  CM33SS_IRQn                            = 84,       /*!< 84 CM33SS                                                            */
   TIMER00_IRQn                           = 85,       /*!< 85 TIMER00                                                           */
   EGU00_IRQn                             = 88,       /*!< 88 EGU00                                                             */
   CRACEN_IRQn                            = 89,       /*!< 89 CRACEN                                                            */
@@ -116,6 +116,8 @@ typedef enum {
 #define AAR00_IRQHandler              AAR00_CCM00_IRQHandler
 #define CCM00_IRQn                    AAR00_CCM00_IRQn
 #define CCM00_IRQHandler              AAR00_CCM00_IRQHandler
+#define CPUC_IRQn                     CM33SS_IRQn
+#define CPUC_IRQHandler               CM33SS_IRQHandler
 #define SPIM20_IRQn                   SERIAL20_IRQn
 #define SPIM20_IRQHandler             SERIAL20_IRQHandler
 #define SPIS20_IRQn                   SERIAL20_IRQn

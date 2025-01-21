@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -80,6 +80,15 @@ typedef enum
     NRF_VPR_CSR_VIO_MODE_IN_SHIFT      = VPRCSR_NORDIC_INMODE_MODE_SHIFT,      ///< Sampling and shifting on Counter 1 event.
 } nrf_vpr_csr_vio_mode_in_t;
 
+/** @brief Shift control configuration. */
+typedef struct
+{
+    uint8_t                   shift_count; ///< Number of frames to be shifted to OUTB or from INB before new data is required.
+    nrf_vpr_csr_vio_shift_t   out_mode;    ///< Buffered output mode.
+    uint8_t                   frame_width; ///< Output frame width in bits.
+    nrf_vpr_csr_vio_mode_in_t in_mode;     ///< Buffered input mode.
+} nrf_vpr_csr_vio_shift_ctrl_t;
+
 /** @brief VIO configuration. */
 typedef struct
 {
@@ -103,6 +112,26 @@ NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_dir_get(void);
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_set(uint16_t value);
 
 /**
+ * @brief Function for setting the specified pins as outputs.
+ *
+ * @note Pins not set to 1 will retain their current setting.
+ *       They will not be set to input.
+ *
+ * @param[in] value Mask of pins to be set as output.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_output_set(uint16_t value);
+
+/**
+ * @brief Function for setting the specified pins as inputs.
+ *
+ * @note Pins not set to 1 will retain their current setting.
+ *       They will not be set to output.
+ *
+ * @param[in] value Mask of pins to be set as input.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_input_set(uint16_t value);
+
+/**
  * @brief Function for getting the buffered pin directions mask.
  *
  * @return Mask of pin directions. 0 is input, 1 is output.
@@ -117,10 +146,30 @@ NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_dir_buffered_get(void);
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_buffered_set(uint16_t value);
 
 /**
+ * @brief Function for setting the specified buffered pins as outputs.
+ *
+ * @note Pins not set to 1 will retain their current setting.
+ *       They will not be set to input.
+ *
+ * @param[in] value Mask of pins to be set as output.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_buffered_output_set(uint16_t value);
+
+/**
+ * @brief Function for setting the specified buffered pins as inputs.
+ *
+ * @note Pins not set to 1 will retain their current setting.
+ *       They will not be set to output.
+ *
+ * @param[in] value Mask of pins to be set as input.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_buffered_input_set(uint16_t value);
+
+/**
  * @brief Function for retrieving the dirty status of buffered pin directions mask.
  *
  * @retval true  Buffer is dirty.
- * @retval fasle Buffer is clean.
+ * @retval false Buffer is clean.
  */
 NRF_STATIC_INLINE bool nrf_vpr_csr_vio_dir_buffered_dirty_check(void);
 
@@ -150,14 +199,14 @@ NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_in_get(void);
  *
  * @return Mask of input states. 0 is low, 1 is high.
  */
-NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_in_buffered_get(void);
+NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_in_buffered_get(void);
 
 /**
  * @brief Function for getting the buffered input values, reversed in each byte.
  *
  * @return Mask of input states. 0 is low, 1 is high.
  */
-NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_in_buffered_reversed_byte_get(void);
+NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_in_buffered_reversed_byte_get(void);
 
 /**
  * @brief Function for getting the input mode.
@@ -202,6 +251,26 @@ NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_out_get(void);
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_set(uint16_t value);
 
 /**
+ * @brief Function for enabling the specified output values.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ *
+ * @param[in] value Mask of output states to be set high.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_or_set(uint16_t value);
+
+/**
+ * @brief Function for disabling the specified output values.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ *
+ * @param[in] value Mask of output states to be set low.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_clear_set(uint16_t value);
+
+/**
  * @brief Function for getting the buffered output values.
  *
  * @return Mask of output states. 0 is low, 1 is high.
@@ -214,6 +283,26 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_get(void);
  * @param[in] value Mask of output states to be set. 0 is low, 1 is high.
  */
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_set(uint32_t value);
+
+/**
+ * @brief Function for enabling the specified buffered output values.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ *
+ * @param[in] value Mask of output states to be set high.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_or_set(uint16_t value);
+
+/**
+ * @brief Function for disabling the specified buffered output values.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ *
+ * @param[in] value Mask of output states to be set low.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_clear_set(uint16_t value);
 
 /**
  * @brief Function for getting the buffered output values, reversed in each byte.
@@ -230,6 +319,26 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_reversed_byte_get(void);
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_byte_set(uint32_t value);
 
 /**
+ * @brief Function for enabling the specified buffered output values, reversed in each byte.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ *
+ * @param[in] value Mask of output states to be set high.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_byte_or_set(uint16_t value);
+
+/**
+ * @brief Function for disabling the specified buffered output values, reversed in each byte.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ *
+ * @param[in] value Mask of output states to be set low.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_byte_clear_set(uint16_t value);
+
+/**
  * @brief Function for getting the buffered output values, reversed in each word.
  *
  * @return Mask of output states. 0 is low, 1 is high.
@@ -242,6 +351,26 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_reversed_word_get(void);
  * @param[in] value Mask of output states to be set. 0 is low, 1 is high.
  */
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_word_set(uint32_t value);
+
+/**
+ * @brief Function for enabling the specified buffered output values, reversed in the whole word.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ *
+ * @param[in] value Mask of output states to be set high.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_word_or_set(uint16_t value);
+
+/**
+ * @brief Function for disabling the specified buffered output values, reversed in the whole word.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ *
+ * @param[in] value Mask of output states to be set low.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_word_clear_set(uint16_t value);
 
 /**
  * @brief Function for retrieving the dirty status of buffered output values.
@@ -273,6 +402,26 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_toggle_buffered_set(uint16_t mask);
  * @param[in] value Mask of output states to be set. 0 is low, 1 is high.
  */
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_combined_set(uint32_t value);
+
+/**
+ * @brief Function for enabling the specified combined output and buffered output values.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ *
+ * @param[in] value Mask of output states to be set high.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_combined_or_set(uint32_t value);
+
+/**
+ * @brief Function for disabling the specified combined output and buffered output values.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ *
+ * @param[in] value Mask of output states to be set low.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_combined_clear_set(uint32_t value);
 
 /**
  * @brief Function for setting the combined output and buffered output toggle mask.
@@ -317,7 +466,24 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_buffered_get(nrf_vpr_csr_vio_mod
  *
  * @param[in] p_mode Pointer to the structure with buffered output mode to be set.
  */
-NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_buffered_set(nrf_vpr_csr_vio_mode_out_t const * p_mode);
+NRF_STATIC_INLINE
+void nrf_vpr_csr_vio_mode_out_buffered_set(nrf_vpr_csr_vio_mode_out_t const * p_mode);
+
+/**
+ * @brief Function for setting the buffered shift control register configuration.
+ *
+ * @param[in] p_shift_ctrl Pointer to the structure with buffered shift control configuration to be set.
+ */
+NRF_STATIC_INLINE
+void nrf_vpr_csr_vio_shift_ctrl_buffered_set(nrf_vpr_csr_vio_shift_ctrl_t const * p_shift_ctrl);
+
+/**
+ * @brief Function for getting the buffered shift control register configuration.
+ *
+ * @param[out] p_shift_ctrl Pointer to the structure to be filled with buffered shift control configuration.
+ */
+NRF_STATIC_INLINE
+void nrf_vpr_csr_vio_shift_ctrl_buffered_get(nrf_vpr_csr_vio_shift_ctrl_t * p_shift_ctrl);
 
 /**
  * @brief Function for getting the VIO configuration.
@@ -332,6 +498,16 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_get(nrf_vpr_csr_vio_config_t * p_c
  * @param[in] p_config Pointer to the structure with VIO configuration to be set.
  */
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_set(nrf_vpr_csr_vio_config_t const * p_config);
+
+/**
+ * @brief Function for setting the VIO configuration's input pin to sample on separate pin.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_input_sel_enable(void);
+
+/**
+ * @brief Function for setting the VIO configuration's input pin to sample on same OUT pin.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_input_sel_disable(void);
 
 /**
  * @brief Function for getting the combined pin directions mask and output values.
@@ -352,6 +528,28 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_dirout_get(void);
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_set(uint32_t value);
 
 /**
+ * @brief Function for enabling the combined pin directions mask and output values.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ * @note Lower 16 bits determine the output state, while higher 16 bits determine the pin directions.
+ *
+ * @param[in] value Mask of pins to be set as output and output states to be set high.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_or_set(uint32_t value);
+
+/**
+ * @brief Function for disabling the combined pin directions mask and output values.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ * @note Lower 16 bits determine the output state, while higher 16 bits determine the pin directions.
+ *
+ * @param[in] value Mask of pins to be set as input and output states to be set low.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_clear_set(uint32_t value);
+
+/**
  * @brief Function for getting the combined buffered pin directions mask and buffered output values.
  *
  * @note Lower 16 bits determine the buffered output state, while higher 16 bits determine the buffered pin directions.
@@ -368,6 +566,28 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_dirout_buffered_get(void);
  * @param[in] value Mask of buffered pin directions and buffered output values.
  */
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_buffered_set(uint32_t value);
+
+/**
+ * @brief Function for enabling the combined buffered pin directions mask and buffered output values.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ * @note Lower 16 bits determine the buffered output state, while higher 16 bits determine the buffered pin directions.
+ *
+ * @param[in] value Mask of buffered pins to be set as output and buffered output states to be set high.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_buffered_or_set(uint32_t value);
+
+/**
+ * @brief Function for disabling the combined buffered pin directions mask and buffered output values.
+ *
+ * @note Pins not set to 1 will retain their current value.
+ *       They will not be modified.
+ * @note Lower 16 bits determine the buffered output state, while higher 16 bits determine the buffered pin directions.
+ *
+ * @param[in] value Mask of pins to be set as input and output states to be set low.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_buffered_clear_set(uint32_t value);
 
 /**
  * @brief Function for retrieving the dirty status of combined buffered pin directions mask and buffered output values.
@@ -449,6 +669,16 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_set(uint16_t value)
     nrf_csr_write(VPRCSR_NORDIC_DIR, value);
 }
 
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_output_set(uint16_t value)
+{
+    nrf_csr_set_bits(VPRCSR_NORDIC_DIR, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_input_set(uint16_t value)
+{
+    nrf_csr_clear_bits(VPRCSR_NORDIC_DIR, value);
+}
+
 NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_dir_buffered_get(void)
 {
     return (uint16_t)nrf_csr_read(VPRCSR_NORDIC_DIRB);
@@ -457,6 +687,16 @@ NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_dir_buffered_get(void)
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_buffered_set(uint16_t value)
 {
     nrf_csr_write(VPRCSR_NORDIC_DIRB, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_buffered_output_set(uint16_t value)
+{
+    nrf_csr_set_bits(VPRCSR_NORDIC_DIRB, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dir_buffered_input_set(uint16_t value)
+{
+    nrf_csr_clear_bits(VPRCSR_NORDIC_DIRB, value);
 }
 
 NRF_STATIC_INLINE bool nrf_vpr_csr_vio_dir_buffered_dirty_check(void)
@@ -480,14 +720,14 @@ NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_in_get(void)
     return (uint16_t)nrf_csr_read(VPRCSR_NORDIC_IN);
 }
 
-NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_in_buffered_get(void)
+NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_in_buffered_get(void)
 {
-    return (uint16_t)nrf_csr_read(VPRCSR_NORDIC_INB);
+    return nrf_csr_read(VPRCSR_NORDIC_INB);
 }
 
-NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_in_buffered_reversed_byte_get(void)
+NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_in_buffered_reversed_byte_get(void)
 {
-    return (uint16_t)nrf_csr_read(VPRCSR_NORDIC_INBRB);
+    return nrf_csr_read(VPRCSR_NORDIC_INBRB);
 }
 
 NRF_STATIC_INLINE nrf_vpr_csr_vio_mode_in_t nrf_vpr_csr_vio_mode_in_get(void)
@@ -520,6 +760,16 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_set(uint16_t value)
     nrf_csr_write(VPRCSR_NORDIC_OUT, value);
 }
 
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_or_set(uint16_t value)
+{
+    nrf_csr_set_bits(VPRCSR_NORDIC_OUT, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_clear_set(uint16_t value)
+{
+    nrf_csr_clear_bits(VPRCSR_NORDIC_OUT, value);
+}
+
 NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_get(void)
 {
     return nrf_csr_read(VPRCSR_NORDIC_OUTB);
@@ -528,6 +778,16 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_get(void)
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_set(uint32_t value)
 {
     nrf_csr_write(VPRCSR_NORDIC_OUTB, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_or_set(uint16_t value)
+{
+    nrf_csr_set_bits(VPRCSR_NORDIC_OUTB, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_clear_set(uint16_t value)
+{
+    nrf_csr_clear_bits(VPRCSR_NORDIC_OUTB, value);
 }
 
 NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_reversed_byte_get(void)
@@ -540,6 +800,16 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_byte_set(uint32_t v
     nrf_csr_write(VPRCSR_NORDIC_OUTBRB, value);
 }
 
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_byte_or_set(uint16_t value)
+{
+    nrf_csr_set_bits(VPRCSR_NORDIC_OUTBRB, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_byte_clear_set(uint16_t value)
+{
+    nrf_csr_clear_bits(VPRCSR_NORDIC_OUTBRB, value);
+}
+
 NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_reversed_word_get(void)
 {
     return nrf_csr_read(VPRCSR_NORDIC_OUTBRW);
@@ -548,6 +818,16 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_buffered_reversed_word_get(void)
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_word_set(uint32_t value)
 {
     nrf_csr_write(VPRCSR_NORDIC_OUTBRW, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_word_or_set(uint16_t value)
+{
+    nrf_csr_set_bits(VPRCSR_NORDIC_OUTBRW, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_buffered_reversed_word_clear_set(uint16_t value)
+{
+    nrf_csr_clear_bits(VPRCSR_NORDIC_OUTBRW, value);
 }
 
 NRF_STATIC_INLINE bool nrf_vpr_csr_vio_out_buffered_dirty_check(void)
@@ -569,6 +849,16 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_toggle_buffered_set(uint16_t mask)
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_combined_set(uint32_t value)
 {
     nrf_csr_write(VPRCSR_NORDIC_OUTBD, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_combined_or_set(uint32_t value)
+{
+    nrf_csr_set_bits(VPRCSR_NORDIC_OUTBD, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_combined_clear_set(uint32_t value)
+{
+    nrf_csr_clear_bits(VPRCSR_NORDIC_OUTBD, value);
 }
 
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_combined_toggle_set(uint32_t mask)
@@ -611,13 +901,44 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_buffered_get(nrf_vpr_csr_vio_mod
                           >> VPRCSR_NORDIC_OUTMODEB_FRAMEWIDTH_Pos;
 }
 
-NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_buffered_set(nrf_vpr_csr_vio_mode_out_t const * p_mode)
+NRF_STATIC_INLINE
+void nrf_vpr_csr_vio_mode_out_buffered_set(nrf_vpr_csr_vio_mode_out_t const * p_mode)
 {
     uint32_t reg = ((uint32_t)p_mode->mode << VPRCSR_NORDIC_OUTMODEB_MODE_Pos) |
                    (((uint32_t)p_mode->frame_width << VPRCSR_NORDIC_OUTMODEB_FRAMEWIDTH_Pos)
                     & VPRCSR_NORDIC_OUTMODEB_FRAMEWIDTH_Msk);
 
     nrf_csr_write(VPRCSR_NORDIC_OUTMODE, reg);
+}
+
+NRF_STATIC_INLINE
+void nrf_vpr_csr_vio_shift_ctrl_buffered_set(nrf_vpr_csr_vio_shift_ctrl_t const * p_shift_ctrl)
+{
+    uint32_t reg = ((p_shift_ctrl->shift_count << VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Pos)
+                    & VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Msk) | 
+                   ((p_shift_ctrl->out_mode << VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_MODE_Pos)
+		    & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_MODE_Msk) | 
+                   ((p_shift_ctrl->frame_width << VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_FRAMEWIDTH_Pos)
+		    & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_FRAMEWIDTH_Msk) |
+                   ((p_shift_ctrl->in_mode << VPRCSR_NORDIC_SHIFTCTRLB_INMODEB_MODE_Pos)
+		    & VPRCSR_NORDIC_SHIFTCTRLB_INMODEB_MODE_Msk);
+    
+    nrf_csr_write(VPRCSR_NORDIC_SHIFTCTRLB, reg);
+}
+
+NRF_STATIC_INLINE
+void nrf_vpr_csr_vio_shift_ctrl_buffered_get(nrf_vpr_csr_vio_shift_ctrl_t * p_shift_ctrl)
+{	
+    uint32_t reg = nrf_csr_read(VPRCSR_NORDIC_SHIFTCTRLB);
+    
+    p_shift_ctrl->shift_count = (reg & VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Msk)
+                                >> VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Pos;
+    p_shift_ctrl->out_mode    = (reg & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_MODE_Msk)
+                                >> VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_MODE_Pos;
+    p_shift_ctrl->frame_width = (reg & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_FRAMEWIDTH_Msk)
+                                >> VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_FRAMEWIDTH_Pos;
+    p_shift_ctrl->in_mode     = (reg & VPRCSR_NORDIC_SHIFTCTRLB_INMODEB_MODE_Msk)
+                                >> VPRCSR_NORDIC_SHIFTCTRLB_INMODEB_MODE_Pos;
 }
 
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_get(nrf_vpr_csr_vio_config_t * p_config)
@@ -641,6 +962,16 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_set(nrf_vpr_csr_vio_config_t const
     nrf_csr_write(VPRCSR_NORDIC_RTPERIPHCTRL, reg);
 }
 
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_input_sel_enable(void)
+{
+    nrf_csr_set_bits(VPRCSR_NORDIC_RTPERIPHCTRL, 1UL << VPRCSR_NORDIC_RTPERIPHCTRL_INSEL_Pos);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_input_sel_disable(void)
+{
+    nrf_csr_clear_bits(VPRCSR_NORDIC_RTPERIPHCTRL, 1UL << VPRCSR_NORDIC_RTPERIPHCTRL_INSEL_Pos);
+}
+
 NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_dirout_get(void)
 {
     return nrf_csr_read(VPRCSR_NORDIC_DIROUT);
@@ -651,6 +982,16 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_set(uint32_t value)
     nrf_csr_write(VPRCSR_NORDIC_DIROUT, value);
 }
 
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_or_set(uint32_t value)
+{
+    nrf_csr_set_bits(VPRCSR_NORDIC_DIROUT, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_clear_set(uint32_t value)
+{
+    nrf_csr_clear_bits(VPRCSR_NORDIC_DIROUT, value);
+}
+
 NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_dirout_buffered_get(void)
 {
     return nrf_csr_read(VPRCSR_NORDIC_DIROUTB);
@@ -659,6 +1000,16 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_dirout_buffered_get(void)
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_buffered_set(uint32_t value)
 {
     nrf_csr_write(VPRCSR_NORDIC_DIROUTB, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_buffered_or_set(uint32_t value)
+{
+    nrf_csr_set_bits(VPRCSR_NORDIC_DIROUTB, value);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_dirout_buffered_clear_set(uint32_t value)
+{
+    nrf_csr_clear_bits(VPRCSR_NORDIC_DIROUTB, value);
 }
 
 NRF_STATIC_INLINE bool nrf_vpr_csr_vio_dirout_buffered_dirty_check(void)

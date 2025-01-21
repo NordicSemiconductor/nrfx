@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -91,10 +91,10 @@ typedef enum {
   RRAMC_IRQn                             = 75,       /*!< 75 RRAMC                                                             */
   VPR00_IRQn                             = 76,       /*!< 76 VPR00                                                             */
   CTRLAP_IRQn                            = 82,       /*!< 82 CTRLAP                                                            */
+  CM33SS_IRQn                            = 84,       /*!< 84 CM33SS                                                            */
   TIMER00_IRQn                           = 85,       /*!< 85 TIMER00                                                           */
   SPU10_IRQn                             = 128,      /*!< 128 SPU10                                                            */
   TIMER10_IRQn                           = 133,      /*!< 133 TIMER10                                                          */
-  RTC10_IRQn                             = 134,      /*!< 134 RTC10                                                            */
   EGU10_IRQn                             = 135,      /*!< 135 EGU10                                                            */
   RADIO_0_IRQn                           = 138,      /*!< 138 RADIO_0                                                          */
   RADIO_1_IRQn                           = 139,      /*!< 139 RADIO_1                                                          */
@@ -147,6 +147,8 @@ typedef enum {
 #define SPIS00_IRQHandler             SERIAL00_IRQHandler
 #define UARTE00_IRQn                  SERIAL00_IRQn
 #define UARTE00_IRQHandler            SERIAL00_IRQHandler
+#define CPUC_IRQn                     CM33SS_IRQn
+#define CPUC_IRQHandler               CM33SS_IRQHandler
 #define SPIM20_IRQn                   SERIAL20_IRQn
 #define SPIM20_IRQHandler             SERIAL20_IRQHandler
 #define SPIS20_IRQn                   SERIAL20_IRQn
@@ -191,8 +193,6 @@ typedef enum {
 #define CLOCK_IRQHandler              CLOCK_POWER_IRQHandler
 #define POWER_IRQn                    CLOCK_POWER_IRQn
 #define POWER_IRQHandler              CLOCK_POWER_IRQHandler
-#define RTC30_IRQn                    CLOCK_POWER_IRQn
-#define RTC30_IRQHandler              CLOCK_POWER_IRQHandler
 #define COMP_IRQn                     COMP_LPCOMP_IRQn
 #define COMP_IRQHandler               COMP_LPCOMP_IRQHandler
 #define LPCOMP_IRQn                   COMP_LPCOMP_IRQn

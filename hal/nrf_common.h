@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2020 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -47,7 +47,7 @@ extern "C" {
 #endif
 
 #ifndef NRFX_CONFIG_API_VER_MINOR
-#define NRFX_CONFIG_API_VER_MINOR 7
+#define NRFX_CONFIG_API_VER_MINOR 8
 #endif
 
 #ifndef NRFX_CONFIG_API_VER_MICRO
@@ -115,6 +115,8 @@ extern "C" {
 #define NRF_CPU_FREQ_IS_64MHZ 1
 #elif defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 128)
 #define NRF_CPU_FREQ_IS_128MHZ 1
+#elif defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 256)
+#define NRF_CPU_FREQ_IS_256MHZ 1
 #elif !defined(NRF_CONFIG_CPU_FREQ_MHZ)
 #error "MCU frequency not specified"
 #else
@@ -132,6 +134,8 @@ extern "C" {
 /* If clock configuration is not skipped and frequency not specified,
  * SystemInit() applies 128 MHz setting. */
 #define NRF_CPU_FREQ_IS_128MHZ 1
+#elif defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 256)
+#define NRF_CPU_FREQ_IS_256MHZ 1
 #else
 #error "Invalid MCU frequency"
 #endif
@@ -180,6 +184,30 @@ NRF_STATIC_INLINE void nrf_barrier_rw(void);
 NRF_STATIC_INLINE bool nrf_event_check(void const * p_reg, uint32_t event);
 
 NRF_STATIC_INLINE uint32_t nrf_task_event_address_get(void const * p_reg, uint32_t task_event);
+
+#if defined(ADDRESS_DOMAIN_Msk)
+NRF_STATIC_INLINE uint8_t nrf_address_domain_get(uint32_t addr);
+#endif
+
+#if defined(ADDRESS_REGION_Msk)
+NRF_STATIC_INLINE nrf_region_t nrf_address_region_get(uint32_t addr);
+#endif
+
+#if defined(ADDRESS_SECURITY_Msk)
+NRF_STATIC_INLINE bool nrf_address_security_get(uint32_t addr);
+#endif
+
+#if defined(ADDRESS_BUS_Msk)
+NRF_STATIC_INLINE uint8_t nrf_address_bus_get(uint32_t addr, size_t size);
+#endif
+
+#if defined(ADDRESS_SLAVE_Msk)
+NRF_STATIC_INLINE uint8_t nrf_address_slave_get(uint32_t addr);
+#endif
+
+#if defined(ADDRESS_PERIPHID_Msk)
+NRF_STATIC_INLINE uint16_t nrf_address_periphid_get(uint32_t addr);
+#endif
 
 #ifndef NRF_DECLARE_ONLY
 

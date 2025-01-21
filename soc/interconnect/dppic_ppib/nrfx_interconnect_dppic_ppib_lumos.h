@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -49,7 +49,7 @@ extern "C" {
     .ppib = NRFX_PPIB_INTERCONNECT_INSTANCE(FIRST_PPIB_INDEX, SECOND_PPIB_INDEX),                  \
 }
 
-#if NRFX_API_VER_AT_LEAST(3, 8, 0) && !defined(NRF54L15_ENGA_XXAA)
+#if NRFX_API_VER_AT_LEAST(3, 8, 0)
 #define DPPI_INSTANCE(idx) .dppic = NRFX_DPPI_INSTANCE(idx)
 #else
 #define DPPI_INSTANCE(idx)                                          \
@@ -57,8 +57,7 @@ extern "C" {
     .channels_mask = NRFX_BIT_MASK(NRFX_CONCAT(DPPIC, idx, _CH_NUM))
 #endif
 
-#if defined(NRF54L05_XXAA) || defined(NRF54L09_ENGA_XXAA) || defined(NRF54L10_XXAA) || \
-    defined(NRF54L15_XXAA) || defined(NRF54L15_ENGA_XXAA) || defined(NRF54L20_ENGA_XXAA)
+#if defined(NRF54L_SERIES) || defined(NRF7120_ENGA_XXAA)
 
 #define NRFX_INTERCONNECT_PPIB_MAP  \
 {                                   \

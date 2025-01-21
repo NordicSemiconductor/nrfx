@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2021 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -314,12 +314,24 @@ NRFY_STATIC_INLINE void nrfy_grtc_sys_counter_start(NRF_GRTC_Type * p_reg, bool 
  */
 NRFY_STATIC_INLINE uint64_t nrfy_grtc_sys_counter_get(NRF_GRTC_Type const * p_reg)
 {
+#if NRFX_CHECK(ISA_ARM) && (__CORTEX_M == 33U)
     uint64_t counter;
 
     do {
         counter = nrf_grtc_sys_counter_get(p_reg);
     } while (counter & NRFY_GRTC_SYSCOUNTER_RETRY_MASK);
     return (counter & NRFY_GRTC_SYSCOUNTER_MASK);
+#else
+    uint32_t counter_l, counter_h;
+
+    do {
+        counter_l = nrf_grtc_sys_counter_low_get(p_reg);
+        nrf_barrier_r();
+        counter_h = nrf_grtc_sys_counter_high_get(p_reg);
+        nrf_barrier_r();
+    } while (counter_h & NRF_GRTC_SYSCOUNTERH_OVERFLOW_MASK);
+    return (uint64_t)counter_l | ((uint64_t)(counter_h & NRF_GRTC_SYSCOUNTERH_VALUE_MASK) << 32);
+#endif // NRFX_CHECK(ISA_ARM) && (__CORTEX_M == 33U)
 }
 
 /**

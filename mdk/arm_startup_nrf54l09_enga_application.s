@@ -1,4 +1,4 @@
-; Copyright (c) 2009-2024 ARM Limited. All rights reserved.
+; Copyright (c) 2009-2025 ARM Limited. All rights reserved.
 ; 
 ;     SPDX-License-Identifier: Apache-2.0
 ; 
@@ -167,8 +167,8 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     CTRLAP_IRQHandler
-                DCD     CM33SS_IRQHandler
                 DCD     0                         ; Reserved
+                DCD     CM33SS_IRQHandler
                 DCD     TIMER00_IRQHandler
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -420,6 +420,46 @@ NRF_STATIC_INLINE void nrf_i2s_publish_clear(NRF_I2S_Type *  p_reg,
 NRF_STATIC_INLINE void nrf_i2s_pins_set(NRF_I2S_Type * p_reg, nrf_i2s_pins_t const * p_pins);
 
 /**
+ * @brief Function for setting the SCK pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   SCK pin number.
+ */
+NRF_STATIC_INLINE void nrf_i2s_sck_pin_set(NRF_I2S_Type * p_reg, uint32_t pin);
+
+/**
+ * @brief Function for setting the LRCK pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   LRCK pin number.
+ */
+NRF_STATIC_INLINE void nrf_i2s_lrck_pin_set(NRF_I2S_Type * p_reg, uint32_t pin);
+
+/**
+ * @brief Function for setting the MCK pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   MCK pin number.
+ */
+NRF_STATIC_INLINE void nrf_i2s_mck_pin_set(NRF_I2S_Type * p_reg, uint32_t pin);
+
+/**
+ * @brief Function for setting the SDOUT pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   SDOUT pin number.
+ */
+NRF_STATIC_INLINE void nrf_i2s_sdout_pin_set(NRF_I2S_Type * p_reg, uint32_t pin);
+
+/**
+ * @brief Function for setting the SDIN pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   SDIN pin number.
+ */
+NRF_STATIC_INLINE void nrf_i2s_sdin_pin_set(NRF_I2S_Type * p_reg, uint32_t pin);
+
+/**
  * @brief Function for getting the SCK pin selection.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -642,6 +682,31 @@ NRF_STATIC_INLINE void nrf_i2s_pins_set(NRF_I2S_Type * p_reg, nrf_i2s_pins_t con
     p_reg->PSEL.MCK   = p_pins->mck_pin;
     p_reg->PSEL.SDOUT = p_pins->sdout_pin;
     p_reg->PSEL.SDIN  = p_pins->sdin_pin;
+}
+
+NRF_STATIC_INLINE void nrf_i2s_sck_pin_set(NRF_I2S_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.SCK = pin;
+}
+
+NRF_STATIC_INLINE void nrf_i2s_lrck_pin_set(NRF_I2S_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.LRCK = pin;
+}
+
+NRF_STATIC_INLINE void nrf_i2s_mck_pin_set(NRF_I2S_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.MCK = pin;
+}
+
+NRF_STATIC_INLINE void nrf_i2s_sdout_pin_set(NRF_I2S_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.SDOUT = pin;
+}
+
+NRF_STATIC_INLINE void nrf_i2s_sdin_pin_set(NRF_I2S_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.SDIN = pin;
 }
 
 NRF_STATIC_INLINE uint32_t nrf_i2s_sck_pin_get(NRF_I2S_Type const * p_reg)

@@ -1,6 +1,6 @@
 /*
  
-Copyright (c) 2009-2024 ARM Limited. All rights reserved.
+Copyright (c) 2009-2025 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -359,7 +359,7 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   CTRLAP_IRQHandler
     .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
+    .long   CM33SS_IRQHandler
     .long   TIMER00_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -409,7 +409,7 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   TIMER10_IRQHandler
-    .long   RTC10_IRQHandler
+    .long   0                           /*Reserved */
     .long   EGU10_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -676,10 +676,10 @@ Default_Handler:
     IRQ  RRAMC_IRQHandler
     IRQ  VPR00_IRQHandler
     IRQ  CTRLAP_IRQHandler
+    IRQ  CM33SS_IRQHandler
     IRQ  TIMER00_IRQHandler
     IRQ  SPU10_IRQHandler
     IRQ  TIMER10_IRQHandler
-    IRQ  RTC10_IRQHandler
     IRQ  EGU10_IRQHandler
     IRQ  RADIO_0_IRQHandler
     IRQ  RADIO_1_IRQHandler

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -247,7 +247,7 @@ NRFY_STATIC_INLINE void nrfy_rramc_bytes_write(NRF_RRAMC_Type * p_reg,
 NRFY_STATIC_INLINE uint8_t nrfy_rramc_byte_read(uint32_t address)
 {
     nrf_barrier_r();
-    uint8_t byte = *(volatile uint8_t *)address;
+    uint8_t byte = nrf_rramc_byte_read(address);
     nrf_barrier_r();
     return byte;
 }
@@ -323,7 +323,7 @@ NRFY_STATIC_INLINE void nrfy_rramc_words_write(NRF_RRAMC_Type * p_reg,
 NRFY_STATIC_INLINE uint32_t nrfy_rramc_word_read(uint32_t address)
 {
     nrf_barrier_r();
-    uint32_t word = *(volatile uint32_t *)address;
+    uint32_t word = nrf_rramc_word_read(address);
     nrf_barrier_r();
     return word;
 }
@@ -340,7 +340,7 @@ NRFY_STATIC_INLINE void nrfy_rramc_buffer_read(void *   dst,
                                                uint32_t num_bytes)
 {
     nrf_barrier_r();
-    memcpy(dst, (void *)address, num_bytes);
+    nrf_rramc_buffer_read(dst, address, num_bytes);
     nrf_barrier_r();
 }
 
@@ -687,7 +687,7 @@ NRFY_STATIC_INLINE void __nrfy_internal_rramc_byte_write(NRF_RRAMC_Type * p_reg,
     {}
     nrf_barrier_r();
 
-    *(volatile uint8_t *)addr = value;
+    nrf_rramc_byte_write(addr, value);
     nrf_barrier_w();
 }
 
@@ -700,7 +700,7 @@ NRFY_STATIC_INLINE void __nrfy_internal_rramc_word_write(NRF_RRAMC_Type * p_reg,
     {}
     nrf_barrier_r();
 
-    *(volatile uint32_t *)addr = value;
+    nrf_rramc_word_write(addr, value);
     nrf_barrier_w();
 }
 

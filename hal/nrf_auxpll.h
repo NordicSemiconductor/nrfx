@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2022 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -43,6 +43,7 @@ extern "C" {
 /**
  * @defgroup nrf_auxpll_hal Auxiliary PLL HAL
  * @{
+ * @ingroup nrf_auxpll
  * @ingroup nrf_clock
  * @brief   Hardware access layer for managing the Auxiliary Phase Locked Loop (AUXPLL) peripheral.
  */

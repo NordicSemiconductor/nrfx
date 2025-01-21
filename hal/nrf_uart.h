@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -274,6 +274,14 @@ NRF_STATIC_INLINE void nrf_uart_txrx_pins_set(NRF_UART_Type * p_reg,
 NRF_STATIC_INLINE void nrf_uart_txrx_pins_disconnect(NRF_UART_Type * p_reg);
 
 /**
+ * @brief Function for configuring TX pin.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] pseltxd TXD pin number.
+ */
+NRF_STATIC_INLINE void nrf_uart_tx_pin_set(NRF_UART_Type * p_reg, uint32_t pseltxd);
+
+/**
  * @brief Function for getting TX pin selection.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -281,6 +289,14 @@ NRF_STATIC_INLINE void nrf_uart_txrx_pins_disconnect(NRF_UART_Type * p_reg);
  * @return TX pin selection.
  */
 NRF_STATIC_INLINE uint32_t nrf_uart_tx_pin_get(NRF_UART_Type const * p_reg);
+
+/**
+ * @brief Function for configuring RX pin.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] pselrxd RXD pin number.
+ */
+NRF_STATIC_INLINE void nrf_uart_rx_pin_set(NRF_UART_Type * p_reg, uint32_t pselrxd);
 
 /**
  * @brief Function for getting RX pin selection.
@@ -292,6 +308,14 @@ NRF_STATIC_INLINE uint32_t nrf_uart_tx_pin_get(NRF_UART_Type const * p_reg);
 NRF_STATIC_INLINE uint32_t nrf_uart_rx_pin_get(NRF_UART_Type const * p_reg);
 
 /**
+ * @brief Function for configuring RTS pin.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] pselrts RTS pin number.
+ */
+NRF_STATIC_INLINE void nrf_uart_rts_pin_set(NRF_UART_Type * p_reg, uint32_t pselrts);
+
+/**
  * @brief Function for getting RTS pin selection.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -299,6 +323,14 @@ NRF_STATIC_INLINE uint32_t nrf_uart_rx_pin_get(NRF_UART_Type const * p_reg);
  * @return RTS pin selection.
  */
 NRF_STATIC_INLINE uint32_t nrf_uart_rts_pin_get(NRF_UART_Type const * p_reg);
+
+/**
+ * @brief Function for configuring CTS pin.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] pselcts CTS pin number.
+ */
+NRF_STATIC_INLINE void nrf_uart_cts_pin_set(NRF_UART_Type * p_reg, uint32_t pselcts);
 
 /**
  * @brief Function for getting CTS pin selection.
@@ -453,12 +485,30 @@ NRF_STATIC_INLINE void nrf_uart_txrx_pins_disconnect(NRF_UART_Type * p_reg)
     nrf_uart_txrx_pins_set(p_reg, NRF_UART_PSEL_DISCONNECTED, NRF_UART_PSEL_DISCONNECTED);
 }
 
+NRF_STATIC_INLINE void nrf_uart_tx_pin_set(NRF_UART_Type * p_reg, uint32_t pseltxd)
+{
+#if defined(UART_PSEL_TXD_CONNECT_Pos)
+    p_reg->PSEL.TXD = pseltxd;
+#else
+    p_reg->PSELTXD = pseltxd;
+#endif
+}
+
 NRF_STATIC_INLINE uint32_t nrf_uart_tx_pin_get(NRF_UART_Type const * p_reg)
 {
 #if defined(UART_PSEL_TXD_CONNECT_Pos)
     return p_reg->PSEL.TXD;
 #else
     return p_reg->PSELTXD;
+#endif
+}
+
+NRF_STATIC_INLINE void nrf_uart_rx_pin_set(NRF_UART_Type * p_reg, uint32_t pselrxd)
+{
+#if defined(UART_PSEL_RXD_CONNECT_Pos)
+    p_reg->PSEL.RXD = pselrxd;
+#else
+    p_reg->PSELRXD = pselrxd;
 #endif
 }
 
@@ -471,12 +521,30 @@ NRF_STATIC_INLINE uint32_t nrf_uart_rx_pin_get(NRF_UART_Type const * p_reg)
 #endif
 }
 
+NRF_STATIC_INLINE void nrf_uart_rts_pin_set(NRF_UART_Type * p_reg, uint32_t pselrts)
+{
+#if defined(UART_PSEL_RTS_CONNECT_Pos)
+    p_reg->PSEL.RTS = pselrts;
+#else
+    p_reg->PSELRTS = pselrts;
+#endif
+}
+
 NRF_STATIC_INLINE uint32_t nrf_uart_rts_pin_get(NRF_UART_Type const * p_reg)
 {
 #if defined(UART_PSEL_RTS_CONNECT_Pos)
     return p_reg->PSEL.RTS;
 #else
     return p_reg->PSELRTS;
+#endif
+}
+
+NRF_STATIC_INLINE void nrf_uart_cts_pin_set(NRF_UART_Type * p_reg, uint32_t pselcts)
+{
+#if defined(UART_PSEL_RTS_CONNECT_Pos)
+    p_reg->PSEL.CTS = pselcts;
+#else
+    p_reg->PSELCTS = pselcts;
 #endif
 }
 

@@ -225,7 +225,7 @@ _vectors:
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_HANDLER   CTRLAP_IRQHandler
   ISR_RESERVED_DUMMY                           /* Reserved */
-  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_HANDLER   CM33SS_IRQHandler
   ISR_HANDLER   TIMER00_IRQHandler
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */
@@ -275,7 +275,7 @@ _vectors:
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_HANDLER   TIMER10_IRQHandler
-  ISR_HANDLER   RTC10_IRQHandler
+  ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_HANDLER   EGU10_IRQHandler
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -137,6 +137,7 @@ __STATIC_INLINE void nrfx_ram_ctrl_section_retention_mask_enable_set(uint8_t  bl
 #endif
 
 #elif defined(NRF_VMC)
+    section_mask <<= VMC_RAM_POWER_S0RETENTION_Pos;
     if (enable)
     {
         nrf_vmc_ram_block_retention_set(NRF_VMC, block_idx, (nrf_vmc_retention_t)section_mask);

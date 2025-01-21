@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -46,8 +46,77 @@
  * The following section provides configuration for the name translation.
  * It must be modified to reflect the actual configuration set in NRF_SPU.
  */
+
+#if defined(NRF_TRUSTZONE_NONSECURE)
+#define NRF_CLOCK        NRF_CLOCK_NS
+#define NRF_COMP         NRF_COMP_NS
+#define NRF_CTRLAP       NRF_CTRLAP_NS
+#define NRF_DCNF         NRF_DCNF_NS
+#define NRF_DPPIC        NRF_DPPIC_NS
+#define NRF_EGU0         NRF_EGU0_NS
+#define NRF_EGU1         NRF_EGU1_NS
+#define NRF_EGU2         NRF_EGU2_NS
+#define NRF_EGU3         NRF_EGU3_NS
+#define NRF_EGU4         NRF_EGU4_NS
+#define NRF_EGU5         NRF_EGU5_NS
+#define NRF_FPU          NRF_FPU_NS
+#define NRF_I2S0         NRF_I2S0_NS
+#define NRF_IPC          NRF_IPC_NS
+#define NRF_KMU          NRF_KMU_NS
+#define NRF_LPCOMP       NRF_LPCOMP_NS
+#define NRF_MUTEX        NRF_MUTEX_NS
+#define NRF_NFCT         NRF_NFCT_NS
+#define NRF_NVMC         NRF_NVMC_NS
+#define NRF_OSCILLATORS  NRF_OSCILLATORS_NS
+#define NRF_P0           NRF_P0_NS
+#define NRF_P1           NRF_P1_NS
+#define NRF_PDM0         NRF_PDM0_NS
+#define NRF_POWER        NRF_POWER_NS
+#define NRF_PWM0         NRF_PWM0_NS
+#define NRF_PWM1         NRF_PWM1_NS
+#define NRF_PWM2         NRF_PWM2_NS
+#define NRF_PWM3         NRF_PWM3_NS
+#define NRF_QDEC0        NRF_QDEC0_NS
+#define NRF_QDEC1        NRF_QDEC1_NS
+#define NRF_QSPI         NRF_QSPI_NS
+#define NRF_REGULATORS   NRF_REGULATORS_NS
+#define NRF_RESET        NRF_RESET_NS
+#define NRF_RTC0         NRF_RTC0_NS
+#define NRF_RTC1         NRF_RTC1_NS
+#define NRF_SAADC        NRF_SAADC_NS
+#define NRF_SPIM0        NRF_SPIM0_NS
+#define NRF_SPIM1        NRF_SPIM1_NS
+#define NRF_SPIM2        NRF_SPIM2_NS
+#define NRF_SPIM3        NRF_SPIM3_NS
+#define NRF_SPIM4        NRF_SPIM4_NS
+#define NRF_SPIS0        NRF_SPIS0_NS
+#define NRF_SPIS1        NRF_SPIS1_NS
+#define NRF_SPIS2        NRF_SPIS2_NS
+#define NRF_SPIS3        NRF_SPIS3_NS
+#define NRF_TIMER0       NRF_TIMER0_NS
+#define NRF_TIMER1       NRF_TIMER1_NS
+#define NRF_TIMER2       NRF_TIMER2_NS
+#define NRF_TWIM0        NRF_TWIM0_NS
+#define NRF_TWIM1        NRF_TWIM1_NS
+#define NRF_TWIM2        NRF_TWIM2_NS
+#define NRF_TWIM3        NRF_TWIM3_NS
+#define NRF_TWIS0        NRF_TWIS0_NS
+#define NRF_TWIS1        NRF_TWIS1_NS
+#define NRF_TWIS2        NRF_TWIS2_NS
+#define NRF_TWIS3        NRF_TWIS3_NS
+#define NRF_UARTE0       NRF_UARTE0_NS
+#define NRF_UARTE1       NRF_UARTE1_NS
+#define NRF_UARTE2       NRF_UARTE2_NS
+#define NRF_UARTE3       NRF_UARTE3_NS
+#define NRF_USBD         NRF_USBD_NS
+#define NRF_USBREGULATOR NRF_USBREGULATOR_NS
+#define NRF_VMC          NRF_VMC_NS
+#define NRF_WDT0         NRF_WDT0_NS
+#define NRF_WDT1         NRF_WDT1_NS
+#else
 #define NRF_CLOCK        NRF_CLOCK_S
 #define NRF_COMP         NRF_COMP_S
+#define NRF_CTRLAP       NRF_CTRLAP_S
 #define NRF_DCNF         NRF_DCNF_S
 #define NRF_DPPIC        NRF_DPPIC_S
 #define NRF_EGU0         NRF_EGU0_S
@@ -110,6 +179,7 @@
 #define NRF_VMC          NRF_VMC_S
 #define NRF_WDT0         NRF_WDT0_S
 #define NRF_WDT1         NRF_WDT1_S
+#endif
 
 /*
  * The following section provides the name translation for peripherals with
@@ -126,6 +196,9 @@
 #define NRF_SPU          NRF_SPU_S
 #define NRF_TAD          NRF_TAD_S
 #define NRF_UICR         NRF_UICR_S
+#define NRF_GPIOTE       NRF_GPIOTE0
+#else
+#define NRF_GPIOTE       NRF_GPIOTE1
 #endif
 
 /* Fixups for the GPIOTE driver. */

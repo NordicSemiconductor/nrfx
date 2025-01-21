@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2022 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -334,29 +334,55 @@ static nrfx_err_t local_connection_create(nrfx_interconnect_apb_t const * p_src_
     uint8_t reserved_dst_channel = CHANNEL_INVALID;
     bool use_main_apb_interconnect = false;
     uint32_t chan_mask;
+    uint32_t chan_mask_to_exclude = UINT32_MAX;
 
     NRFX_ASSERT(p_src_apb);
     NRFX_ASSERT(p_dst_apb);
+
+    NRFX_CRITICAL_SECTION_ENTER();
     if (p_src_apb == p_dst_apb)
     {
-        /* Creating connection whithin one APB. */
-        chan_mask = (*p_src_apb->p_dppi_channels &
-                    (p_src_apb->dppi_pub_channels_mask | p_dst_apb->dppi_sub_channels_mask));
+        chan_mask_to_exclude = p_src_apb->dppi_pub_channels_mask |
+                               p_src_apb->dppi_sub_channels_mask;
+        /* Creating connection whithin one APB. No need to have publish/subscribe mask then.*/
+        chan_mask = *p_src_apb->p_dppi_channels;
+        if (chan_mask & ~chan_mask_to_exclude)
+        {
+            /* Try not to utilize channels that can be connected to other APBs. */
+            chan_mask &= ~chan_mask_to_exclude;
+        }
         err_code = channel_allocate(p_src_apb->p_dppi_channels, dppi_channel, chan_mask);
     }
     else
     {
         /* Creating connection between two different APBs. */
-        NRFX_CRITICAL_SECTION_ENTER();
         chan_mask = (*p_src_apb->p_dppi_channels & p_src_apb->dppi_pub_channels_mask) &
                     (*p_dst_apb->p_dppi_channels & p_dst_apb->dppi_sub_channels_mask);
         if (is_main_connection_needed(p_src_apb, p_dst_apb))
         {
-            /* The path requires to go throught the main APB*/
+            /* The path requires to go through the main APB. */
             use_main_apb_interconnect = true;
             chan_mask &= (nrfx_interconnect_apb_main_get()->dppi_pub_channels_mask &
                           nrfx_interconnect_apb_main_get()->dppi_sub_channels_mask &
                           (uint32_t)(*nrfx_interconnect_apb_main_get()->p_dppi_channels));
+        }
+        else if (p_src_apb == nrfx_interconnect_apb_main_get())
+        {
+            /* The path does not go through the main APB,
+               however the source endpoint belongs to it. */
+            chan_mask_to_exclude = p_src_apb->dppi_sub_channels_mask;
+
+        }
+        else if (p_dst_apb == nrfx_interconnect_apb_main_get())
+        {
+            /* The path does not go through the main APB,
+               however the destination endpoint belongs to it. */
+            chan_mask_to_exclude = p_dst_apb->dppi_pub_channels_mask;
+        }
+        if (chan_mask & ~chan_mask_to_exclude)
+        {
+            /* Try not to utilize channels that can be used for broader connections. */
+            chan_mask &= ~chan_mask_to_exclude;
         }
 
         /* Allocating same channel for all involved DPPICs. */
@@ -392,8 +418,8 @@ static nrfx_err_t local_connection_create(nrfx_interconnect_apb_t const * p_src_
                (For Global Domain it is done by Secure Deomain). */
             apb_connection_create(p_src_apb, p_dst_apb, *dppi_channel);
         }
-        NRFX_CRITICAL_SECTION_EXIT();
     }
+    NRFX_CRITICAL_SECTION_EXIT();
     return err_code;
 }
 
@@ -432,7 +458,7 @@ static nrfx_err_t local_connection_remove(nrfx_interconnect_apb_t const * p_src_
             {
                 if (is_main_connection_needed(p_src_apb, p_dst_apb))
                 {
-                    /* The path required to go throught the main APB*/
+                    /* The path required to go through the main APB*/
                     err_code = channel_free(nrfx_interconnect_apb_main_get()->p_dppi_channels,
                                             dppi_channel);
                 }
@@ -602,7 +628,7 @@ void nrfx_gppi_channel_endpoints_setup(uint8_t channel, uint32_t eep, uint32_t t
         {
             (void)local_connection_remove(p_src_apb, p_src_ipct_apb, *src_dppi_chan);
             (void)local_connection_remove(p_dst_ipct_apb, p_dst_apb, *dst_dppi_chan);
-            (void)ipct_connection_create(p_src_ipct, p_dst_ipct, p_path);
+            (void)ipct_connection_remove(p_src_ipct, p_dst_ipct, p_path);
         }
     }
 

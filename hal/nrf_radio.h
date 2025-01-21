@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -51,6 +51,13 @@ extern "C" {
 /** @brief Symbol specifying offset between address of TASK/EVENT register and address of associated SUBSCRIBE/PUBLISH register. */
 #define NRF_RADIO_DPPI_OFFSET NRF_SUBSCRIBE_PUBLISH_OFFSET_RADIO
 #endif // defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
+
+#if defined(RADIO_DATAWHITE_POLY_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether data whitening configuration register is present. **/
+#define NRF_RADIO_HAS_DATAWHITE 1
+#else
+#define NRF_RADIO_HAS_DATAWHITE 0
+#endif
 
 /** @brief RADIO tasks. */
 typedef enum
@@ -1174,7 +1181,7 @@ NRF_STATIC_INLINE nrf_radio_state_t nrf_radio_state_get(NRF_RADIO_Type const * p
  * @param[in] p_reg       Pointer to the structure of registers of the peripheral.
  * @param[in] datawhiteiv Data whitening initial value.
  */
-NRF_STATIC_INLINE void nrf_radio_datawhiteiv_set(NRF_RADIO_Type * p_reg, uint8_t datawhiteiv);
+NRF_STATIC_INLINE void nrf_radio_datawhiteiv_set(NRF_RADIO_Type * p_reg, uint16_t datawhiteiv);
 
 /**
  * @brief Function for getting the data whitening initial value.
@@ -1183,7 +1190,26 @@ NRF_STATIC_INLINE void nrf_radio_datawhiteiv_set(NRF_RADIO_Type * p_reg, uint8_t
  *
  * @return Data whitening initial value.
  */
-NRF_STATIC_INLINE uint8_t nrf_radio_datawhiteiv_get(NRF_RADIO_Type const * p_reg);
+NRF_STATIC_INLINE uint16_t nrf_radio_datawhiteiv_get(NRF_RADIO_Type const * p_reg);
+
+#if NRF_RADIO_HAS_DATAWHITE
+/**
+ * @brief Function for setting the data whitening polynomial.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] poly  Data whitening polynomial.
+ */
+NRF_STATIC_INLINE void nrf_radio_datawhite_poly_set(NRF_RADIO_Type * p_reg, uint16_t poly);
+
+/**
+ * @brief Function for getting the data whitening polynomial.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Data whitening polynomial.
+ */
+NRF_STATIC_INLINE uint16_t nrf_radio_datawhite_poly_get(NRF_RADIO_Type const * p_reg);
+#endif
 
 /**
  * @brief Function for setting Bit counter compare.
@@ -1980,24 +2006,39 @@ NRF_STATIC_INLINE nrf_radio_state_t nrf_radio_state_get(NRF_RADIO_Type const * p
     return (nrf_radio_state_t) p_reg->STATE;
 }
 
-NRF_STATIC_INLINE void nrf_radio_datawhiteiv_set(NRF_RADIO_Type * p_reg, uint8_t datawhiteiv)
+NRF_STATIC_INLINE void nrf_radio_datawhiteiv_set(NRF_RADIO_Type * p_reg, uint16_t datawhiteiv)
 {
-#if defined(RADIO_DATAWHITEIV_DATAWHITEIV_Msk)
-    p_reg->DATAWHITEIV = (((uint32_t)datawhiteiv) & RADIO_DATAWHITEIV_DATAWHITEIV_Msk);
+#if NRF_RADIO_HAS_DATAWHITE
+    p_reg->DATAWHITE = (p_reg->DATAWHITE & ~RADIO_DATAWHITE_IV_Msk) |
+                       (((uint32_t)datawhiteiv << RADIO_DATAWHITE_IV_Pos)
+                                                & RADIO_DATAWHITE_IV_Msk);
 #else
-    p_reg->DATAWHITE &= ~RADIO_DATAWHITE_IV_Msk | (((uint32_t)datawhiteiv << RADIO_DATAWHITE_IV_Pos)
-                                                   & RADIO_DATAWHITE_IV_Msk);
+    p_reg->DATAWHITEIV = (((uint16_t)datawhiteiv) & RADIO_DATAWHITEIV_DATAWHITEIV_Msk);
 #endif
 }
 
-NRF_STATIC_INLINE uint8_t nrf_radio_datawhiteiv_get(NRF_RADIO_Type const * p_reg)
+NRF_STATIC_INLINE uint16_t nrf_radio_datawhiteiv_get(NRF_RADIO_Type const * p_reg)
 {
-#if defined(RADIO_DATAWHITEIV_DATAWHITEIV_Msk)
-    return (uint8_t)(p_reg->DATAWHITEIV & RADIO_DATAWHITEIV_DATAWHITEIV_Msk);
+#if NRF_RADIO_HAS_DATAWHITE
+    return (uint16_t)((p_reg->DATAWHITE & RADIO_DATAWHITE_IV_Msk) >> RADIO_DATAWHITE_IV_Pos);
 #else
-    return (uint8_t)((p_reg->DATAWHITE & RADIO_DATAWHITE_IV_Msk) >> RADIO_DATAWHITE_IV_Pos);
+    return (uint16_t)(p_reg->DATAWHITEIV & RADIO_DATAWHITEIV_DATAWHITEIV_Msk);
 #endif
 }
+
+#if NRF_RADIO_HAS_DATAWHITE
+NRF_STATIC_INLINE void nrf_radio_datawhite_poly_set(NRF_RADIO_Type * p_reg, uint16_t poly)
+{
+    p_reg->DATAWHITE = (p_reg->DATAWHITE & ~RADIO_DATAWHITE_POLY_Msk) | 
+                       (((uint32_t)poly << RADIO_DATAWHITE_POLY_Pos)
+                                         & RADIO_DATAWHITE_POLY_Msk);
+}
+
+NRF_STATIC_INLINE uint16_t nrf_radio_datawhite_poly_get(NRF_RADIO_Type const * p_reg)
+{
+    return (uint16_t)((p_reg->DATAWHITE & RADIO_DATAWHITE_POLY_Msk) >> RADIO_DATAWHITE_POLY_Pos);
+}
+#endif
 
 NRF_STATIC_INLINE void nrf_radio_bcc_set(NRF_RADIO_Type * p_reg, uint32_t radio_bcc)
 {

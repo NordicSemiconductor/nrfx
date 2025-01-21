@@ -1,6 +1,6 @@
 /*
  
-Copyright (c) 2009-2024 ARM Limited. All rights reserved.
+Copyright (c) 2009-2025 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -173,8 +173,8 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   CTRLAP_IRQHandler
-    .long   CM33SS_IRQHandler
     .long   0                           /*Reserved */
+    .long   CM33SS_IRQHandler
     .long   TIMER00_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -41,7 +41,7 @@
 extern "C" {
 #endif
 
-#if defined(NRF54H20_XXAA) || defined(NRF54H20_ENGB_XXAA) || defined(NRF92_SERIES)
+#if defined(NRF54H20_XXAA) || defined(NRF92_SERIES)
 #define NRF_SPIM_CLOCKPIN_MOSI_NEEDED 1
 #endif
 
@@ -730,6 +730,30 @@ NRF_STATIC_INLINE void nrf_spim_pins_set(NRF_SPIM_Type * p_reg,
                                          uint32_t        miso_pin);
 
 /**
+ * @brief Function for setting the SCK pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   SCK pin number.
+ */
+NRF_STATIC_INLINE void nrf_spim_sck_pin_set(NRF_SPIM_Type * p_reg, uint32_t pin);
+
+/**
+ * @brief Function for setting the MOSI pin
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   MOSI pin number.
+ */
+NRF_STATIC_INLINE void nrf_spim_mosi_pin_set(NRF_SPIM_Type * p_reg, uint32_t pin);
+
+/**
+ * @brief Function for setting the MISO pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   MISO pin number.
+ */
+NRF_STATIC_INLINE void nrf_spim_miso_pin_set(NRF_SPIM_Type * p_reg, uint32_t pin);
+
+/**
  * @brief Function for getting the SCK pin selection.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -1280,6 +1304,21 @@ NRF_STATIC_INLINE void nrf_spim_pins_set(NRF_SPIM_Type * p_reg,
     p_reg->PSEL.SCK  = sck_pin;
     p_reg->PSEL.MOSI = mosi_pin;
     p_reg->PSEL.MISO = miso_pin;
+}
+
+NRF_STATIC_INLINE void nrf_spim_sck_pin_set(NRF_SPIM_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.SCK = pin;
+}
+
+NRF_STATIC_INLINE void nrf_spim_mosi_pin_set(NRF_SPIM_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.MOSI = pin;
+}
+
+NRF_STATIC_INLINE void nrf_spim_miso_pin_set(NRF_SPIM_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.MISO = pin;
 }
 
 NRF_STATIC_INLINE uint32_t nrf_spim_sck_pin_get(NRF_SPIM_Type const * p_reg)

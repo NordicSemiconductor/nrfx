@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -66,7 +66,7 @@ typedef struct
 typedef struct
 {
     uint8_t          apb_index;                          ///< APB index to which DPPIC belongs.
-#if (NRFX_API_VER_AT_LEAST(3, 8, 0) && !defined(NRF54L15_ENGA_XXAA)) || defined(__NRFX_DOXYGEN__)
+#if NRFX_API_VER_AT_LEAST(3, 8, 0) || defined(__NRFX_DOXYGEN__)
     nrfx_dppi_t      dppic;                              ///< DPPIC peripheral that belongs to a given domain.
 #else
     NRF_DPPIC_Type * dppic;                              ///< DPPIC peripheral that belongs to a given domain.

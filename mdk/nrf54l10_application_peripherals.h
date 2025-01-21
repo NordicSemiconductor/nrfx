@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2024, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -293,6 +293,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define AAR00_DMAERROR 1                             /*!< (unspecified)                                                        */
 #define AAR00_ERRORSTATUS 1                          /*!< (unspecified)                                                        */
 #define AAR00_ERROREVENT 1                           /*!< (unspecified)                                                        */
+#define AAR00_ERROREVENT_IRQ 0                       /*!< (unspecified)                                                        */
+#define AAR00_PREMATUREOUTPUTPTR 0                   /*!< (unspecified)                                                        */
 
 /*AES CCM Mode Encryption*/
 #define CCM_PRESENT 1
@@ -685,6 +687,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define VPR00_VEVIF_NEVENTS_SIZE 23                  /*!< VEVIF events: 16..22                                                 */
 #define VPR00_VEVIF_EVENTS_MASK 0x00100000           /*!< Mask of supported VEVIF events: 0x00100000                           */
 #define VPR00_DEBUGGER_OFFSET 1024                   /*!< Debugger interface register offset: 0x5004C400                       */
+#define VPR00_RTP_VPR_1_5 0                          /*!< (unspecified)                                                        */
 
 /*GPIO Port*/
 #define GPIO_PRESENT 1
@@ -697,6 +700,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P2_PIN_NUM_MAX 10                            /*!< (unspecified)                                                        */
 #define P2_PIN_NUM_SIZE 11                           /*!< (unspecified)                                                        */
 #define P2_FEATURE_PINS_PRESENT 2047                 /*!< (unspecified)                                                        */
+#define P2_PIN_SENSE_MECHANISM 0                     /*!< (unspecified)                                                        */
 #define P2_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P2_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P2_PWRCTRL 0                                 /*!< (unspecified)                                                        */
@@ -710,6 +714,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P1_PIN_NUM_MAX 16                            /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_SIZE 17                           /*!< (unspecified)                                                        */
 #define P1_FEATURE_PINS_PRESENT 131071               /*!< (unspecified)                                                        */
+#define P1_PIN_SENSE_MECHANISM 1                     /*!< (unspecified)                                                        */
 #define P1_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P1_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P1_PWRCTRL 0                                 /*!< (unspecified)                                                        */
@@ -723,6 +728,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P0_PIN_NUM_MAX 6                             /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_SIZE 7                            /*!< (unspecified)                                                        */
 #define P0_FEATURE_PINS_PRESENT 127                  /*!< (unspecified)                                                        */
+#define P0_PIN_SENSE_MECHANISM 1                     /*!< (unspecified)                                                        */
 #define P0_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P0_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P0_PWRCTRL 0                                 /*!< (unspecified)                                                        */
@@ -815,18 +821,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TIMER24_PCLK_VARIABLE 0                      /*!< (unspecified)                                                        */
 #define TIMER24_SHUTDOWN_TASK 0                      /*!< (unspecified)                                                        */
 
-/*Real-time counter*/
-#define RTC_PRESENT 1
-#define RTC_COUNT 2
-
-#define RTC10_CC_NUM_MIN 0                           /*!< (unspecified)                                                        */
-#define RTC10_CC_NUM_MAX 3                           /*!< (unspecified)                                                        */
-#define RTC10_CC_NUM_SIZE 4                          /*!< (unspecified)                                                        */
-
-#define RTC30_CC_NUM_MIN 0                           /*!< (unspecified)                                                        */
-#define RTC30_CC_NUM_MAX 3                           /*!< (unspecified)                                                        */
-#define RTC30_CC_NUM_SIZE 4                          /*!< (unspecified)                                                        */
-
 /*Event generator unit*/
 #define EGU_PRESENT 1
 #define EGU_COUNT 2
@@ -912,11 +906,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PDM20_SAMPLE16 0                             /*!< (unspecified)                                                        */
 #define PDM20_SAMPLE48 1                             /*!< (unspecified)                                                        */
 #define PDM20_PRESCALER_PRESENT 1                    /*!< (unspecified)                                                        */
+#define PDM20_PDMV2 0                                /*!< (unspecified)                                                        */
+#define PDM20_PCLK24M 0                              /*!< (unspecified)                                                        */
+#define PDM20_AUDIOPLL 0                             /*!< (unspecified)                                                        */
 #define PDM20_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                    */
 
 #define PDM21_SAMPLE16 0                             /*!< (unspecified)                                                        */
 #define PDM21_SAMPLE48 1                             /*!< (unspecified)                                                        */
 #define PDM21_PRESCALER_PRESENT 1                    /*!< (unspecified)                                                        */
+#define PDM21_PDMV2 0                                /*!< (unspecified)                                                        */
+#define PDM21_PCLK24M 0                              /*!< (unspecified)                                                        */
+#define PDM21_AUDIOPLL 0                             /*!< (unspecified)                                                        */
 #define PDM21_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                    */
 
 /*Pulse width modulation unit*/
@@ -1003,6 +1003,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TAMPC_APSPIDEN 0                             /*!< (unspecified)                                                        */
 #define TAMPC_PROTECT_INTRESETEN_CTRL_VALUE_RESET 1  /*!< Reset value of field VALUE in register PROTECT.INTRESETEN.CTRL: 1    */
 #define TAMPC_TAMPERSWITCH 0                         /*!< (unspecified)                                                        */
+#define TAMPC_SM4DISABLECM 1                         /*!< (unspecified)                                                        */
 
 /*Inter-IC Sound*/
 #define I2S_PRESENT 1

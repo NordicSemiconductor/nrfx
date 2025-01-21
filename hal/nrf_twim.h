@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -40,7 +40,7 @@
 extern "C" {
 #endif
 
-#if defined(NRF54H20_XXAA) || defined(NRF54H20_ENGB_XXAA)
+#if defined(NRF54H20_XXAA)
 #define NRF_TWIM_CLOCKPIN_SDA_NEEDED 1
 #endif
 
@@ -464,6 +464,22 @@ NRF_STATIC_INLINE void nrf_twim_pins_set(NRF_TWIM_Type * p_reg,
                                          uint32_t        sda_pin);
 
 /**
+ * @brief Function for setting the SCL pin.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   SCL pin number.
+ */
+NRF_STATIC_INLINE void nrf_twim_scl_pin_set(NRF_TWIM_Type * p_reg, uint32_t pin);
+
+/**
+ * @brief Function for setting the SDA pin
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   SDA pin number.
+ */
+NRF_STATIC_INLINE void nrf_twim_sda_pin_set(NRF_TWIM_Type * p_reg, uint32_t pin);
+
+/**
  * @brief Function for retrieving the SCL pin selection.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -865,6 +881,16 @@ NRF_STATIC_INLINE void nrf_twim_pins_set(NRF_TWIM_Type * p_reg,
 {
     p_reg->PSEL.SCL = scl_pin;
     p_reg->PSEL.SDA = sda_pin;
+}
+
+NRF_STATIC_INLINE void nrf_twim_scl_pin_set(NRF_TWIM_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.SCL = pin;
+}
+
+NRF_STATIC_INLINE void nrf_twim_sda_pin_set(NRF_TWIM_Type * p_reg, uint32_t pin)
+{
+    p_reg->PSEL.SDA = pin;
 }
 
 NRF_STATIC_INLINE uint32_t nrf_twim_scl_pin_get(NRF_TWIM_Type const * p_reg)

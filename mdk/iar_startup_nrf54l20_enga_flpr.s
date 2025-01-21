@@ -1,4 +1,4 @@
-; Copyright (c) 2009-2024 ARM Limited. All rights reserved.
+; Copyright (c) 2009-2025 ARM Limited. All rights reserved.
 ; 
 ;     SPDX-License-Identifier: Apache-2.0
 ; 
@@ -171,7 +171,7 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     CTRLAP_IRQHandler
         DCD     0                         ; Reserved
-        DCD     0                         ; Reserved
+        DCD     CM33SS_IRQHandler
         DCD     TIMER00_IRQHandler
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
@@ -358,6 +358,25 @@ __vector_table
         DCD     GPIOTE30_0_IRQHandler
         DCD     GPIOTE30_1_IRQHandler
         DCD     CLOCK_POWER_IRQHandler
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     VREGUSB_IRQHandler
 
 __Vectors_End
 __Vectors                           EQU   __vector_table
@@ -628,6 +647,11 @@ RRAMC_IRQHandler
 CTRLAP_IRQHandler
         j .
 
+        PUBWEAK  CM33SS_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+CM33SS_IRQHandler
+        j .
+
         PUBWEAK  TIMER00_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 TIMER00_IRQHandler
@@ -861,6 +885,11 @@ GPIOTE30_1_IRQHandler
         PUBWEAK  CLOCK_POWER_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 CLOCK_POWER_IRQHandler
+        j .
+
+        PUBWEAK  VREGUSB_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+VREGUSB_IRQHandler
         j .
 
         END

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2024, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -50,6 +50,13 @@ extern "C" {
 #error Invalid set of configuration for DPPIC.
 #endif
 
+#ifndef NRFX_DPPI_CONFIG_OWNED_CHANNELS_MASK_BY_INST_NUM
+#define NRFX_DPPI_CONFIG_OWNED_CHANNELS_MASK_BY_INST_NUM(inst_num) \
+        NRFX_CONCAT(NRFX_DPPI, inst_num, _CONFIG_OWNED_CHANNELS_MASK)
+#else
+#error Invalid set of configuration for DPPIC.
+#endif
+
 #ifndef NRFX_DPPI_PUB_CONFIG_ALLOWED_CHANNELS_MASK_BY_INST_NUM
 #define NRFX_DPPI_PUB_CONFIG_ALLOWED_CHANNELS_MASK_BY_INST_NUM(inst_num) \
         NRFX_CONCAT(NRFX_DPPI, inst_num, _PUB_CONFIG_ALLOWED_CHANNELS_MASK)
@@ -64,27 +71,23 @@ extern "C" {
 #error "Invalid set of configuration for DPPIC."
 #endif
 
-/* Macro checks if any inst_num mask (PUB or SUB) is not zero and then returns 1, else 0 */
+/* Macro checks if owned inst_num mask is not zero and then returns 1, else 0 */
 #ifdef NRF_SECURE
-#define NRFX_DPPI_PUB_OR_SUB_MASK(inst_num) 1
+#define NRFX_DPPI_OWNED_MASK(inst_num) 1
 #else
-#define NRFX_DPPI_PUB_OR_SUB_MASK(inst_num) \
-    NRFX_COND_CODE_0(NRFX_DPPI_PUB_CONFIG_ALLOWED_CHANNELS_MASK_BY_INST_NUM(inst_num), \
-        (NRFX_COND_CODE_0(NRFX_DPPI_SUB_CONFIG_ALLOWED_CHANNELS_MASK_BY_INST_NUM(inst_num), \
-                          (0), (1))), (1))
+#define NRFX_DPPI_OWNED_MASK(inst_num) \
+    NRFX_COND_CODE_0(NRFX_DPPI_CONFIG_OWNED_CHANNELS_MASK_BY_INST_NUM(inst_num), (0), (1))
 #endif
 
 #define NRFX_DPPI_CHANNELS_VAR(inst_num) \
     NRFX_CONCAT(m_dppi, inst_num, _channels)
 
-#define NRFX_DPPI_CHANNELS_ENTRY(inst_num)                                            \
-    NRFX_COND_CODE_1(NRFX_DPPI_PUB_OR_SUB_MASK(inst_num), \
-        ( \
+#define NRFX_DPPI_CHANNELS_ENTRY(inst_num)                                                \
+    NRFX_COND_CODE_1(NRFX_DPPI_OWNED_MASK(inst_num),                                      \
+        (                                                                                 \
             static nrfx_atomic_t NRFX_DPPI_CHANNELS_VAR(inst_num) __attribute__((used)) = \
-            NRFX_DPPI_PUB_CONFIG_ALLOWED_CHANNELS_MASK_BY_INST_NUM(inst_num) |           \
-            NRFX_DPPI_SUB_CONFIG_ALLOWED_CHANNELS_MASK_BY_INST_NUM(inst_num); \
+            NRFX_DPPI_CONFIG_OWNED_CHANNELS_MASK_BY_INST_NUM(inst_num);                   \
         ), ())
-
 
 #define _NRFX_DPPI_CHANNELS_ENTRY(periph_name, prefix, inst_num, _)                               \
     /* Since this is used only for global instances macro shall skip instances starting with 0 */ \
@@ -92,12 +95,15 @@ extern "C" {
 
 #define NRFX_INTERCONNECT_APB_GLOBAL_DPPI_DEFINE \
         NRFX_FOREACH_PRESENT(DPPIC, _NRFX_DPPI_CHANNELS_ENTRY, (), ())
-
+#else
+#ifndef NRFX_DPPI_OWNED_MASK
+#define NRFX_DPPI_OWNED_MASK NRFX_DPPI_PUB_OR_SUB_MASK
+#endif
 #endif // NRFX_INTERCONNECT_APB_GLOBAL_DPPI_DEFINE
 
 #define NRFX_INTERCONNECT_APB_PROP_ENTRY(inst_num, ppib, apb_size)                                  \
-    NRFX_COND_CODE_1(NRFX_DPPI_PUB_OR_SUB_MASK(inst_num), \
-    ( \
+    NRFX_COND_CODE_1(NRFX_DPPI_OWNED_MASK(inst_num),                                                \
+    (                                                                                               \
     {                                                                                               \
         .p_dppi = NRFX_CONCAT(NRF_DPPIC, inst_num),                                                 \
         .p_dppi_channels = &NRFX_DPPI_CHANNELS_SINGLE_VAR_NAME_BY_INST_NUM(inst_num),               \

@@ -2,8 +2,7 @@
 @mainpage Introduction and configuration
 
 nrfx is a standalone set of drivers for peripherals present in Nordic
-Semiconductor's SoCs. It originated as an extract from the nRF5 SDK.
-The intention was to provide drivers that can be used in various environments
+Semiconductor's SoCs. It provides drivers that can be used in various environments
 without the necessity to integrate other parts of the SDK into them.
 For the user's convenience, the drivers come with the MDK package. This package
 contains definitions of register structures and bitfields for all supported
@@ -93,11 +92,16 @@ for more details regarding the process.
 
 @section nrfx_additional_reqs Additional requirements
 
-Nordic SoCs are based on ARM® Cortex™-M series processors. Before you can
-start developing with nrfx, you must add the CMSIS header files to include
+Nordic SoCs are based on ARM® Cortex™-M series processors and some contain RISC-V coprocessors.
+Before you can start developing with nrfx, you must add the CMSIS header files to include
 paths during the compilation process. Download these files from the following
 website:
 
 -  <a href="https://github.com/ARM-software/CMSIS"> ARM® CMSIS repository</a>
 (CMSIS/Include directory)
+
+@section nrfx_samples nrfx samples
+
+You can refer to the <a href="https://docs.nordicsemi.com/bundle/nrfx_samples_3.8.0/page/index.html">latest release of nrfx samples</a> for the usage examples of nrfx drivers within Zephyr RTOS.
+
 */

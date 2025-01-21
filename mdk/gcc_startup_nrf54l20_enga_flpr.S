@@ -1,6 +1,6 @@
 /*
  
-Copyright (c) 2009-2024 ARM Limited. All rights reserved.
+Copyright (c) 2009-2025 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -359,7 +359,7 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   CTRLAP_IRQHandler
     .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
+    .long   CM33SS_IRQHandler
     .long   TIMER00_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -546,6 +546,25 @@ __isr_vector:
     .long   GPIOTE30_0_IRQHandler
     .long   GPIOTE30_1_IRQHandler
     .long   CLOCK_POWER_IRQHandler
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   VREGUSB_IRQHandler
 
     .size __isr_vector, . - __isr_vector
 
@@ -676,6 +695,7 @@ Default_Handler:
     IRQ  SERIAL00_IRQHandler
     IRQ  RRAMC_IRQHandler
     IRQ  CTRLAP_IRQHandler
+    IRQ  CM33SS_IRQHandler
     IRQ  TIMER00_IRQHandler
     IRQ  EGU00_IRQHandler
     IRQ  CRACEN_IRQHandler
@@ -723,5 +743,6 @@ Default_Handler:
     IRQ  GPIOTE30_0_IRQHandler
     IRQ  GPIOTE30_1_IRQHandler
     IRQ  CLOCK_POWER_IRQHandler
+    IRQ  VREGUSB_IRQHandler
 
   .end

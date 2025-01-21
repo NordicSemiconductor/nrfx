@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2009-2024 ARM Limited. All rights reserved.
+Copyright (c) 2009-2025 ARM Limited. All rights reserved.
 
     SPDX-License-Identifier: Apache-2.0
 
@@ -49,6 +49,13 @@ static inline void nrf91_handle_approtect(void)
         return;
     }
     #if defined (NRF91_ERRATA_36_PRESENT) && NRF91_ERRATA_36_PRESENT
+
+        /* Workaround for Errata 36 "Debug and Trace: Access port gets locked in WFI and WFE" found at the Errata document
+            for your device located at https://infocenter.nordicsemi.com/index.jsp  */
+        #ifdef DEBUG
+           NRF_POWER->TASKS_CONSTLAT = 1;
+        #endif
+
         #if defined (ENABLE_APPROTECT)
             /* Prevent processor from unlocking APPROTECT soft branch after this point. */
             NRF_APPROTECT_S->APPROTECT.FORCEPROTECT = (APPROTECT_APPROTECT_FORCEPROTECT_FORCEPROTECT_Force << APPROTECT_APPROTECT_FORCEPROTECT_FORCEPROTECT_Pos);

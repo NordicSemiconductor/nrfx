@@ -1,4 +1,4 @@
-; Copyright (c) 2009-2024 ARM Limited. All rights reserved.
+; Copyright (c) 2009-2025 ARM Limited. All rights reserved.
 ; 
 ;     SPDX-License-Identifier: Apache-2.0
 ; 
@@ -168,8 +168,8 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     CTRLAP_IRQHandler
-        DCD     CM33SS_IRQHandler
         DCD     0                         ; Reserved
+        DCD     CM33SS_IRQHandler
         DCD     TIMER00_IRQHandler
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
@@ -219,7 +219,7 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     TIMER10_IRQHandler
-        DCD     RTC10_IRQHandler
+        DCD     0                         ; Reserved
         DCD     EGU10_IRQHandler
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
@@ -512,11 +512,6 @@ SPU10_IRQHandler
         PUBWEAK  TIMER10_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 TIMER10_IRQHandler
-        B .
-
-        PUBWEAK  RTC10_IRQHandler
-        SECTION .text:CODE:REORDER:NOROOT(1)
-RTC10_IRQHandler
         B .
 
         PUBWEAK  EGU10_IRQHandler
