@@ -67,6 +67,13 @@ NRFY_STATIC_INLINE uint32_t __nrfy_internal_comp_events_process(NRF_COMP_Type * 
 #define NRFY_COMP_HAS_ISOURCE 0
 #endif
 
+#if NRF_COMP_HAS_REFTRIM || defined(__NRFX_DOXYGEN__)
+/** @refhal{NRF_COMP_HAS_REFTRIM} */
+#define NRFY_COMP_HAS_REFTRIM 1
+#else
+#define NRFY_COMP_HAS_REFTRIM 0
+#endif
+
 /** @brief COMP configuration structure. */
 typedef struct
 {
@@ -337,6 +344,24 @@ NRFY_STATIC_INLINE void nrfy_comp_event_clear(NRF_COMP_Type * p_reg, nrf_comp_ev
     nrf_comp_event_clear(p_reg, event);
     nrf_barrier_w();
 }
+
+#if NRFY_COMP_HAS_REFTRIM
+/** @refhal{nrf_comp_reftrim_set} */
+NRFY_STATIC_INLINE void nrfy_comp_reftrim_set(NRF_COMP_Type * p_reg, uint32_t trim)
+{
+    nrf_comp_reftrim_set(p_reg, trim);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_comp_reftrim_get} */
+NRFY_STATIC_INLINE uint32_t nrfy_comp_reftrim_get(NRF_COMP_Type const * p_reg)
+{
+    nrf_barrier_rw();
+    uint32_t trim = nrf_comp_reftrim_get(p_reg);
+    nrf_barrier_r();
+    return trim;
+}
+#endif
 
 /** @refhal{nrf_comp_event_check} */
 NRFY_STATIC_INLINE bool nrfy_comp_event_check(NRF_COMP_Type const * p_reg, nrf_comp_event_t event)

@@ -62,6 +62,19 @@ typedef enum
 } nrf_vpr_csr_vtim_count_t;
 
 /**
+ * @brief Macro for generating 32-bit counter value.
+ *
+ * @note Use this macro when running two separate counters in trigger mode to write
+ *       the values simultaneously using @ref nrf_vpr_csr_vtim_combined_counter_set
+ *
+ * @param[in] cnt0 Counter 0 value.
+ * @param[in] cnt1 Counter 1 value.
+ */
+#define NRF_VPR_CSR_VTIM_COUNTER_VAL(cnt0, cnt1)                           \
+    (((cnt0 << VPRCSR_NORDIC_CNT_CNT0_Pos) & VPRCSR_NORDIC_CNT_CNT0_Msk) | \
+     ((cnt1 << VPRCSR_NORDIC_CNT_CNT1_Pos) & VPRCSR_NORDIC_CNT_CNT1_Msk))
+
+/**
  * @brief Function for getting the counter mode.
  *
  * @param[in] counter Index of the counter.
@@ -127,7 +140,7 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vtim_simple_counter_add_set(uint8_t counter, 
  * Writing to this register will stall the CPU until counter reaches 0.
  *
  * @param[in] counter Index of the counter.
- * @param[in] write   True if @p value is to be writtten to the counter value before starting the wait.
+ * @param[in] write   True if @p value is to be written to the counter value before starting the wait.
  *                    False otherwise.
  * @param[in] value   Value to be written to the counter if @p write is true.
  */
@@ -148,6 +161,9 @@ NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vtim_combined_counter_get(void);
  * @brief Function for setting the combined counter value.
  *
  * @note Lower 16 bits represent counter 0, while higher 16 bits represent counter 1.
+ * @note This function can also be used in trigger mode to make sure the counter values are
+ *       written simultaneously. Use @ref NRF_VPR_CSR_VTIM_COUNTER_VAL macro to generate
+ *       value to be set.
  *
  * @param[in] value Value to be set.
  */

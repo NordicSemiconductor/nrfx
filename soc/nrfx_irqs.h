@@ -66,10 +66,6 @@
     #include <soc/nrfx_irqs_nrf54l05_application.h>
 #elif defined(NRF54L05_XXAA) && defined(NRF_FLPR)
     #include <soc/nrfx_irqs_nrf54l05_flpr.h>
-#elif defined(NRF54L09_ENGA_XXAA) && defined(NRF_APPLICATION)
-    #include <soc/nrfx_irqs_nrf54l09_enga_application.h>
-#elif defined(NRF54L09_ENGA_XXAA) && defined(NRF_FLPR)
-    #include <soc/nrfx_irqs_nrf54l09_enga_flpr.h>
 #elif defined(NRF54L10_XXAA) && defined(NRF_APPLICATION)
     #include <soc/nrfx_irqs_nrf54l10_application.h>
 #elif defined(NRF54L10_XXAA) && defined(NRF_FLPR)
@@ -78,10 +74,14 @@
     #include <soc/nrfx_irqs_nrf54l15_application.h>
 #elif defined(NRF54L15_XXAA) && defined(NRF_FLPR)
     #include <soc/nrfx_irqs_nrf54l15_flpr.h>
-#elif defined(NRF54L20_ENGA_XXAA) && defined(NRF_APPLICATION)
-    #include <soc/nrfx_irqs_nrf54l20_enga_application.h>
-#elif defined(NRF54L20_ENGA_XXAA) && defined(NRF_FLPR)
-    #include <soc/nrfx_irqs_nrf54l20_enga_flpr.h>
+#elif defined(NRF54LM20A_ENGA_XXAA) && defined(NRF_APPLICATION)
+    #include <soc/nrfx_irqs_nrf54lm20a_enga_application.h>
+#elif defined(NRF54LM20A_ENGA_XXAA) && defined(NRF_FLPR)
+    #include <soc/nrfx_irqs_nrf54lm20a_enga_flpr.h>
+#elif defined(NRF54LV10A_ENGA_XXAA) && defined(NRF_APPLICATION)
+    #include <soc/nrfx_irqs_nrf54lv10a_enga_application.h>
+#elif defined(NRF54LV10A_ENGA_XXAA) && defined(NRF_FLPR)
+    #include <soc/nrfx_irqs_nrf54lv10a_enga_flpr.h>
 #elif defined(NRF7120_ENGA_XXAA) && defined(NRF_APPLICATION)
     #include <soc/nrfx_irqs_nrf7120_enga_application.h>
 #elif defined(NRF7120_ENGA_XXAA) && defined(NRF_FLPR)

@@ -84,6 +84,12 @@ typedef enum
 #endif
 } nrf_vmc_power_t;
 
+/** @brief Position of power configuration bits for RAM section 0. */
+#define NRF_VMC_POWER_S0_POS VMC_RAM_POWER_S0POWER_Pos
+
+/** @brief Position of retention configuration bits for RAM section 0. */
+#define NRF_VMC_RETENTION_S0_POS VMC_RAM_POWER_S0RETENTION_Pos
+
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"

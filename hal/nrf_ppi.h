@@ -229,6 +229,16 @@ NRF_STATIC_INLINE void nrf_ppi_task_endpoint_setup(NRF_PPI_Type *    p_reg,
                                                    nrf_ppi_channel_t channel,
                                                    uint32_t          tep);
 
+/**
+ * @brief Function for getting the task endpoint of a given PPI channel.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] channel Channel of requested task endpoint.
+ *
+ * @return Task endpoint for a given PPI channel.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ppi_task_endpoint_get(NRF_PPI_Type const * p_reg,
+                                                     nrf_ppi_channel_t    channel);
 
 #if defined(PPI_FEATURE_FORKS_PRESENT) || defined(__NRFX_DOXYGEN__)
 /**
@@ -241,6 +251,17 @@ NRF_STATIC_INLINE void nrf_ppi_task_endpoint_setup(NRF_PPI_Type *    p_reg,
 NRF_STATIC_INLINE void nrf_ppi_fork_endpoint_setup(NRF_PPI_Type *    p_reg,
                                                    nrf_ppi_channel_t channel,
                                                    uint32_t          fork_tep);
+
+/**
+ * @brief Function for getting the task endpoint of a given PPI fork.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] channel Channel of requested fork endpoint.
+ *
+ * @return Task endpoint for a given PPI fork.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ppi_fork_endpoint_get(NRF_PPI_Type const * p_reg,
+                                                     nrf_ppi_channel_t    channel);
 
 /**
  * @brief Function for setting up event and task endpoints for a given PPI channel and fork.
@@ -476,6 +497,12 @@ NRF_STATIC_INLINE void nrf_ppi_task_endpoint_setup(NRF_PPI_Type *    p_reg,
     p_reg->CH[(uint32_t) channel].TEP = tep;
 }
 
+NRF_STATIC_INLINE uint32_t nrf_ppi_task_endpoint_get(NRF_PPI_Type const * p_reg,
+                                                     nrf_ppi_channel_t    channel)
+{
+    return p_reg->CH[(uint32_t)channel].TEP;
+}
+
 #if defined(PPI_FEATURE_FORKS_PRESENT)
 
 NRF_STATIC_INLINE void nrf_ppi_fork_endpoint_setup(NRF_PPI_Type *    p_reg,
@@ -483,6 +510,12 @@ NRF_STATIC_INLINE void nrf_ppi_fork_endpoint_setup(NRF_PPI_Type *    p_reg,
                                                    uint32_t          fork_tep)
 {
     p_reg->FORK[(uint32_t) channel].TEP = fork_tep;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_ppi_fork_endpoint_get(NRF_PPI_Type const * p_reg,
+                                                     nrf_ppi_channel_t    channel)
+{
+    return p_reg->FORK[(uint32_t)channel].TEP;
 }
 
 NRF_STATIC_INLINE void nrf_ppi_channel_and_fork_endpoint_setup(NRF_PPI_Type *    p_reg,

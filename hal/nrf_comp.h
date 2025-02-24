@@ -61,6 +61,13 @@ extern "C" {
 #define NRF_COMP_HAS_AIN_AS_PIN 0
 #endif
 
+#if defined(COMP_REFTRIM_REFTRIM_Pos) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether COMP has REFTRIM register. */
+#define NRF_COMP_HAS_REFTRIM 1
+#else
+#define NRF_COMP_HAS_REFTRIM 0
+#endif
+
 /** @brief COMP analog pin selection. */
 #if NRF_COMP_HAS_AIN_AS_PIN
 typedef uint32_t nrf_comp_input_t;
@@ -437,6 +444,25 @@ NRF_STATIC_INLINE void nrf_comp_event_clear(NRF_COMP_Type * p_reg, nrf_comp_even
  */
 NRF_STATIC_INLINE bool nrf_comp_event_check(NRF_COMP_Type const * p_reg, nrf_comp_event_t event);
 
+#if NRF_COMP_HAS_REFTRIM
+/**
+ * @brief Function for setting COMP trimming value.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] trim  Trimming value
+ */
+NRF_STATIC_INLINE void nrf_comp_reftrim_set(NRF_COMP_Type * p_reg, uint32_t trim);
+
+/**
+ * @brief Function for getting COMP trimming value.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Trimming value
+ */
+NRF_STATIC_INLINE uint32_t nrf_comp_reftrim_get(NRF_COMP_Type const * p_reg);
+#endif
+
 #ifndef NRF_DECLARE_ONLY
 
 NRF_STATIC_INLINE void nrf_comp_enable(NRF_COMP_Type * p_reg)
@@ -570,6 +596,18 @@ NRF_STATIC_INLINE bool nrf_comp_event_check(NRF_COMP_Type const * p_reg, nrf_com
 {
     return nrf_event_check(p_reg, event);
 }
+
+#if NRF_COMP_HAS_REFTRIM
+NRF_STATIC_INLINE void nrf_comp_reftrim_set(NRF_COMP_Type * p_reg, uint32_t trim)
+{
+    p_reg->REFTRIM = (trim & COMP_REFTRIM_REFTRIM_Msk);
+}
+
+NRF_STATIC_INLINE uint32_t nrf_comp_reftrim_get(NRF_COMP_Type const * p_reg)
+{
+    return (p_reg->REFTRIM & COMP_REFTRIM_REFTRIM_Msk);
+}
+#endif
 
 #endif // NRF_DECLARE_ONLY
 

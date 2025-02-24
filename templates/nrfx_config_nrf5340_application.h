@@ -1353,6 +1353,15 @@
 #endif
 
 /**
+ * @brief NRFX_TWIM_NRF53_ANOMALY_47_WORKAROUND_ENABLED - Enables nRF53 Anomaly 47 workaround for TWIM.
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_TWIM_NRF53_ANOMALY_47_WORKAROUND_ENABLED
+#define NRFX_TWIM_NRF53_ANOMALY_47_WORKAROUND_ENABLED 0
+#endif
+
+/**
  * @brief NRFX_TWIM_CONFIG_LOG_LEVEL
  *
  * Integer value.

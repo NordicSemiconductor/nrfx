@@ -383,6 +383,15 @@
 #endif
 
 /**
+ * @brief NRFX_GRTC_CONFIG_LFCLK_SELECT_AT_INIT
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GRTC_CONFIG_LFCLK_SELECT_AT_INIT
+#define NRFX_GRTC_CONFIG_LFCLK_SELECT_AT_INIT 1
+#endif
+
+/**
  * @brief NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS
  *
  * Integer value.

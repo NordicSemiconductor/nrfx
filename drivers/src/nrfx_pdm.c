@@ -135,7 +135,7 @@ static void pdm_configure(nrfx_pdm_t const *        p_instance,
         .gain_l      = p_config->gain_l,
         .gain_r      = p_config->gain_r,
         NRFX_COND_CODE_1(NRF_PDM_HAS_RATIO_CONFIG, (.ratio = p_config->ratio,), ())
-        NRFX_COND_CODE_1(NRF_PDM_HAS_MCLKCONFIG, (.mclksrc = p_config->mclksrc,), ())
+        NRFX_COND_CODE_1(NRF_PDM_HAS_SELECTABLE_CLOCK, (.mclksrc = p_config->mclksrc,), ())
         .skip_psel_cfg = p_config->skip_psel_cfg
     };
 

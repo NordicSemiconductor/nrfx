@@ -131,6 +131,24 @@ typedef enum
 } nrfx_clock_cal_state_t;
 #endif
 
+#define NRFX_CLOCK_EVT2STR(evt_type)                                                        \
+    evt_type == NRFX_CLOCK_EVT_HFCLK_STARTED ? "HFCLK_STARTED" :                            \
+    NRFX_COND_CODE_1(NRF_CLOCK_HAS_PLL,                                                     \
+            (evt_type == NRFX_CLOCK_EVT_PLL_STARTED ? "PLL_STARTED" : ), ())                \
+    evt_type == NRFX_CLOCK_EVT_LFCLK_STARTED ? "LFCLK_STARTED" :                            \
+    NRFX_COND_CODE_1(NRF_CLOCK_HAS_CALIBRATION_TIMER,                                       \
+            (evt_type == NRFX_CLOCK_EVT_CTTO ? "CTTO" : ), ())                              \
+    NRFX_COND_CODE_1(NRF_CLOCK_HAS_CALIBRATION,                                             \
+            (evt_type == NRFX_CLOCK_EVT_CAL_DONE ? "CAL_DONE" : ), ())                      \
+    NRFX_COND_CODE_1(NRF_CLOCK_HAS_HFCLKAUDIO,                                              \
+            (evt_type == NRFX_CLOCK_EVT_HFCLKAUDIO_STARTED ? "HFAUDIO_STARTED" : ), ())     \
+    NRFX_COND_CODE_1(NRF_CLOCK_HAS_HFCLK192M,                                               \
+            (evt_type == NRFX_CLOCK_EVT_HFCLK192M_STARTED ? "HF192M_STARTED" : ), ())       \
+    NRFX_COND_CODE_1(NRF_CLOCK_HAS_XO_TUNE,                                                 \
+            (evt_type == NRFX_CLOCK_EVT_XO_TUNED ? "XO_TUNED" :                             \
+             evt_type == NRFX_CLOCK_EVT_XO_TUNE_ERROR ? "XO_TUNE_ERROR" :                   \
+             evt_type == NRFX_CLOCK_EVT_XO_TUNE_FAILED ? "XO_TUNE_FAILED" :), ()) "Unknown"
+
 /** @brief CLOCK control block. */
 typedef struct
 {
@@ -207,7 +225,7 @@ static void clock_stop(nrf_clock_domain_t domain)
         case NRF_CLOCK_DOMAIN_HFCLK:
             int_mask = NRF_CLOCK_INT_HF_STARTED_MASK |
 #if NRF_CLOCK_HAS_XO_TUNE
-                       NRF_CLOCK_INT_XOTUNED_MASK | 
+                       NRF_CLOCK_INT_XOTUNED_MASK |
                        NRF_CLOCK_INT_XOTUNEFAILED_MASK |
                        NRF_CLOCK_INT_XOTUNEERROR_MASK |
 #endif
@@ -237,6 +255,12 @@ static void clock_stop(nrf_clock_domain_t domain)
     nrf_clock_int_disable(NRF_CLOCK, int_mask);
     nrf_clock_task_trigger(NRF_CLOCK, task);
     nrf_clock_event_clear(NRF_CLOCK, event);
+#if NRFX_CHECK(NRF54L_ERRATA_39_ENABLE_WORKAROUND)
+    if (nrf54l_errata_39() && (domain == NRF_CLOCK_DOMAIN_HFCLK))
+    {
+        nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_PLLSTOP);
+    }
+#endif
 
     bool stopped;
     nrf_clock_hfclk_t clk_src = NRF_CLOCK_HFCLK_HIGH_ACCURACY;
@@ -449,12 +473,23 @@ void nrfx_clock_start(nrf_clock_domain_t domain)
             event    = NRF_CLOCK_EVENT_HFCLKSTARTED;
             int_mask = NRF_CLOCK_INT_HF_STARTED_MASK |
 #if NRF_CLOCK_HAS_XO_TUNE
-                       NRF_CLOCK_INT_XOTUNED_MASK | 
-                       NRF_CLOCK_INT_XOTUNEERROR_MASK | 
+                       NRF_CLOCK_INT_XOTUNED_MASK |
+                       NRF_CLOCK_INT_XOTUNEERROR_MASK |
                        NRF_CLOCK_INT_XOTUNEFAILED_MASK |
 #endif
                        0;
+#if NRF_CLOCK_HAS_XO_TUNE
+            nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNED);
+            nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNEFAILED);
+            nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNEERROR);
+#endif
             task     = NRF_CLOCK_TASK_HFCLKSTART;
+#if NRFX_CHECK(NRF54L_ERRATA_39_ENABLE_WORKAROUND)
+            if (nrf54l_errata_39())
+            {
+                nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_PLLSTART);
+            }
+#endif
             break;
 #if NRF_CLOCK_HAS_HFCLK192M
         case NRF_CLOCK_DOMAIN_HFCLK192M:
@@ -570,6 +605,33 @@ nrfx_err_t nrfx_clock_is_calibrating(void)
     return NRFX_SUCCESS;
 }
 
+#if NRF_CLOCK_HAS_CALIBRATION_TIMER && NRFX_CHECK(NRFX_CLOCK_CONFIG_CT_ENABLED)
+void nrfx_clock_calibration_timer_start(uint8_t interval)
+{
+    nrf_clock_cal_timer_timeout_set(NRF_CLOCK, interval);
+    nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_CTTO);
+
+    nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_CTSTART);
+    if (m_clock_cb.event_handler)
+    {
+        nrf_clock_int_enable(NRF_CLOCK, NRF_CLOCK_INT_CTTO_MASK);
+    }
+    else
+    {
+        while (!nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_CTTO))
+        {}
+        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_CTTO);
+    }
+}
+
+void nrfx_clock_calibration_timer_stop(void)
+{
+    nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_CTTO_MASK);
+    nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_CTSTOP);
+}
+#endif // NRF_CLOCK_HAS_CALIBRATION_TIMER && NRFX_CHECK(NRFX_CLOCK_CONFIG_CT_ENABLED)
+#endif // NRF_CLOCK_HAS_CALIBRATION && NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
+
 #if NRF_CLOCK_HAS_XO_TUNE
 nrfx_err_t nrfx_clock_xo_tune_start(void)
 {
@@ -595,11 +657,11 @@ nrfx_err_t nrfx_clock_xo_tune_start(void)
     if (!m_clock_cb.event_handler)
     {
         bool evt_xotuned;
-        bool evt_xotunefailed; 
+        bool evt_xotunefailed;
         do
         {
             evt_xotuned = nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNED);
-            evt_xotunefailed = nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNEFAILED); 
+            evt_xotunefailed = nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNEFAILED);
         } while (!(evt_xotuned | evt_xotunefailed));
         m_clock_cb.xo_tune_in_progress = false;
 
@@ -648,33 +710,6 @@ bool nrfx_clock_xo_tune_error_check(void)
 }
 
 #endif // NRF_CLOCK_HAS_XO
-
-#if NRF_CLOCK_HAS_CALIBRATION_TIMER && NRFX_CHECK(NRFX_CLOCK_CONFIG_CT_ENABLED)
-void nrfx_clock_calibration_timer_start(uint8_t interval)
-{
-    nrf_clock_cal_timer_timeout_set(NRF_CLOCK, interval);
-    nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_CTTO);
-
-    nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_CTSTART);
-    if (m_clock_cb.event_handler)
-    {
-        nrf_clock_int_enable(NRF_CLOCK, NRF_CLOCK_INT_CTTO_MASK);
-    }
-    else
-    {
-        while (!nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_CTTO))
-        {}
-        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_CTTO);
-    }
-}
-
-void nrfx_clock_calibration_timer_stop(void)
-{
-    nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_CTTO_MASK);
-    nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_CTSTOP);
-}
-#endif // NRF_CLOCK_HAS_CALIBRATION_TIMER && NRFX_CHECK(NRFX_CLOCK_CONFIG_CT_ENABLED)
-#endif // NRF_CLOCK_HAS_CALIBRATION && NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
 
 #if defined(CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT) || NRF_CLOCK_HAS_HFCLK192M
 nrfx_err_t nrfx_clock_divider_set(nrf_clock_domain_t domain,
@@ -755,138 +790,111 @@ nrfx_err_t nrfx_clock_divider_set(nrf_clock_domain_t domain,
 
 void nrfx_clock_irq_handler(void)
 {
-    if (nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_HFCLKSTARTED))
-    {
-        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_HFCLKSTARTED);
-        NRFX_LOG_DEBUG("Event: NRF_CLOCK_EVENT_HFCLKSTARTED");
-        nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_HF_STARTED_MASK);
-
-#if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_201)
-        if (!m_clock_cb.hfclk_started)
-        {
-            m_clock_cb.hfclk_started = true;
-            m_clock_cb.event_handler(NRFX_CLOCK_EVT_HFCLK_STARTED);
-        }
+#if NRF_CLOCK_HAS_INTPEND
+    uint32_t intpend = nrf_clock_int_pending_get(NRF_CLOCK);
 #else
-        m_clock_cb.event_handler(NRFX_CLOCK_EVT_HFCLK_STARTED);
+    uint32_t intpend = nrf_clock_int_enable_check(NRF_CLOCK, UINT32_MAX);
 #endif
-    }
-    if (nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_LFCLKSTARTED))
-    {
-        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_LFCLKSTARTED);
-        NRFX_LOG_DEBUG("Event: NRF_CLOCK_EVENT_LFCLKSTARTED");
 
+    while (intpend != 0)
+    {
+        uint32_t int_bit = 31 - NRF_CLZ(intpend);
+        nrf_clock_int_mask_t int_mask = (nrf_clock_int_mask_t)NRFX_BIT(int_bit);
+        nrf_clock_event_t evt = (nrf_clock_event_t)NRFY_INT_BITPOS_TO_EVENT(int_bit);
+        nrfx_clock_evt_type_t evt_type = (nrfx_clock_evt_type_t)int_bit;
+        bool call_handler = true;
+#if !NRF_CLOCK_HAS_INTPEND
+        intpend &= ~int_mask;
+        // Check if event is set for that interrupt and if not continue.
+        if (!nrf_clock_event_check(NRF_CLOCK, evt)) {
+            continue;
+        }
+#endif
+
+        nrf_clock_event_clear(NRF_CLOCK, evt);
+        nrf_clock_int_disable(NRF_CLOCK, int_mask);
+
+        NRFX_LOG_DEBUG("Event: %s", NRFX_CLOCK_EVT2STR(evt_type));
+        switch (int_mask)
+        {
+            case NRF_CLOCK_INT_HF_STARTED_MASK:
+#if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_201)
+                if (!m_clock_cb.hfclk_started)
+                {
+                    m_clock_cb.hfclk_started = true;
+                }
+                else
+                {
+                    call_handler = false;
+                }
+#endif
+                break;
+            case NRF_CLOCK_INT_LF_STARTED_MASK:
+            {
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LFXO_TWO_STAGE_ENABLED)
-        nrf_clock_lfclk_t lfclksrc;
-        (void)nrf_clock_is_running(NRF_CLOCK, NRF_CLOCK_DOMAIN_LFCLK, &lfclksrc);
-        if (lfclksrc == NRF_CLOCK_LFCLK_RC)
-        {
-            // After the LFRC oscillator start switch to external source.
-            nrf_clock_lf_src_set(NRF_CLOCK, (nrf_clock_lfclk_t)NRFX_CLOCK_CONFIG_LF_SRC);
-            nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_LFCLKSTART);
-        }
-        else
+                nrf_clock_lfclk_t lfclksrc;
+                (void)nrf_clock_is_running(NRF_CLOCK, NRF_CLOCK_DOMAIN_LFCLK, &lfclksrc);
+                if (lfclksrc == NRF_CLOCK_LFCLK_RC)
+                {
+                    // After the LFRC oscillator start switch to external source.
+                    nrf_clock_lf_src_set(NRF_CLOCK, (nrf_clock_lfclk_t)NRFX_CLOCK_CONFIG_LF_SRC);
+                    nrf_clock_int_enable(NRF_CLOCK, int_mask);
+                    nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_LFCLKSTART);
+                    call_handler = false;
+                }
+                else
 #endif
-        {
-            // After the LF clock external source start invoke user callback.
-            nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_LF_STARTED_MASK);
-            m_clock_cb.event_handler(NRFX_CLOCK_EVT_LFCLK_STARTED);
-        }
-    }
-
-#if NRFX_CHECK(NRF_CLOCK_HAS_PLL)
-    if (nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_PLLSTARTED))
-    {
-        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_PLLSTARTED);
-        NRFX_LOG_DEBUG("Event: NRF_CLOCK_EVENT_PLLSTARTED");
-        nrf_clock_int_disable(NRF_CLOCK, NRFX_CLOCK_INT_PLL_STARTED_MASK);
-        m_clock_cb.event_handler(NRFX_CLOCK_EVT_PLL_STARTED);
-    }
-#endif
-
+                {
+                    // After the LF clock external source start invoke user callback.
+                }
+                break;
+            }
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
 #if NRF_CLOCK_HAS_CALIBRATION_TIMER && NRFX_CHECK(NRFX_CLOCK_CONFIG_CT_ENABLED)
-    if (nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_CTTO) &&
-        nrf_clock_int_enable_check(NRF_CLOCK, NRF_CLOCK_INT_CTTO_MASK))
-    {
-        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_CTTO);
-        NRFX_LOG_DEBUG("Event: NRF_CLOCK_EVENT_CTTO");
-        nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_CTTO_MASK);
-
-        m_clock_cb.event_handler(NRFX_CLOCK_EVT_CTTO);
-    }
-#endif // NRF_CLOCK_HAS_CALIBRATION_TIMER && NRFX_CHECK(NRFX_CLOCK_CONFIG_CT_ENABLED)
-
-    if (nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_DONE) &&
-        nrf_clock_int_enable_check(NRF_CLOCK, NRF_CLOCK_INT_DONE_MASK))
-    {
+            case NRF_CLOCK_INT_CTTO_MASK:
+                break;
+#endif
+            case NRF_CLOCK_INT_DONE_MASK:
 #if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_192)
-        *(volatile uint32_t *)0x40000C34 = 0x00000000;
+                *(volatile uint32_t *)0x40000C34 = 0x00000000;
 #endif
-        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_DONE);
-        NRFX_LOG_DEBUG("Event: NRF_CLOCK_EVENT_DONE");
-        nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_DONE_MASK);
-        m_clock_cb.cal_state = CAL_STATE_IDLE;
-        m_clock_cb.event_handler(NRFX_CLOCK_EVT_CAL_DONE);
-    }
-#endif // NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
-
+                m_clock_cb.cal_state = CAL_STATE_IDLE;
+                break;
+#endif // NRFX_CLOCK_CONFIG_LF_CAL_ENABLED
 #if NRF_CLOCK_HAS_HFCLKAUDIO
-    if (nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_HFCLKAUDIOSTARTED))
-    {
-        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_HFCLKAUDIOSTARTED);
-        NRFX_LOG_DEBUG("Event: NRF_CLOCK_EVENT_HFCLKAUDIOSTARTED");
-        nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_HFAUDIO_STARTED_MASK);
-
-        m_clock_cb.event_handler(NRFX_CLOCK_EVT_HFCLKAUDIO_STARTED);
-    }
+            case NRF_CLOCK_INT_HFAUDIO_STARTED_MASK:
+                break;
 #endif
-
 #if NRF_CLOCK_HAS_HFCLK192M
-    if (nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_HFCLK192MSTARTED))
-    {
-        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_HFCLK192MSTARTED);
-        NRFX_LOG_DEBUG("Event: NRF_CLOCK_EVENT_HFCLK192MSTARTED");
-        nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_HF192M_STARTED_MASK);
-
-        m_clock_cb.event_handler(NRFX_CLOCK_EVT_HFCLK192M_STARTED);
-    }
+            case NRF_CLOCK_INT_HF192M_STARTED_MASK:
+                break;
 #endif
-
-#if NRF_CLOCK_HAS_XO_TUNE
-    if (nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNED))
-    {
-        m_clock_cb.xo_tune_in_progress = false;
-        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNED);
-        NRFX_LOG_DEBUG("Event: NRF_CLOCK_EVENT_XOTUNED");
-        nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNED);
-        // Enable XOTUNEERROR interrupt to handle situation when XO is out of tune.
-        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNEERROR);
-        nrf_clock_int_enable(NRF_CLOCK, NRF_CLOCK_INT_XOTUNEERROR_MASK);
-
-        m_clock_cb.event_handler(NRFX_CLOCK_EVT_XO_TUNED);
-    }
-
-    if (nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNEERROR) && 
-        nrf_clock_int_enable_check(NRF_CLOCK, NRF_CLOCK_INT_XOTUNEERROR_MASK))
-    {
-        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNEERROR);
-        NRFX_LOG_DEBUG("Event: NRF_CLOCK_EVENT_XOTUNEERROR");
-        nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_XOTUNEERROR_MASK);
-
-        m_clock_cb.event_handler(NRFX_CLOCK_EVT_XO_TUNE_ERROR);
-    }
-
-    if (nrf_clock_event_check(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNEFAILED))
-    {
-        m_clock_cb.xo_tune_in_progress = false;
-        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNEFAILED);
-        NRFX_LOG_DEBUG("Event: NRF_CLOCK_EVENT_XOTUNEFAILED");
-        nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNEFAILED);
-
-        m_clock_cb.event_handler(NRFX_CLOCK_EVT_XO_TUNE_FAILED);
-    }
+#if NRFX_CHECK(NRF_CLOCK_HAS_XO_TUNE)
+            case NRF_CLOCK_INT_XOTUNED_MASK:
+                m_clock_cb.xo_tune_in_progress = false;
+                // Enable XOTUNEERROR interrupt to handle situation when XO is out of tune.
+                nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_XOTUNEERROR);
+                nrf_clock_int_enable(NRF_CLOCK, NRF_CLOCK_INT_XOTUNEERROR_MASK);
+                break;
+            case NRF_CLOCK_INT_XOTUNEERROR_MASK:
+                break;
+            case NRF_CLOCK_INT_XOTUNEFAILED_MASK:
+                m_clock_cb.xo_tune_in_progress = false;
+                break;
 #endif
+            default:
+                NRFX_ASSERT(0);
+                break;
+        }
+
+        if (call_handler)
+        {
+            m_clock_cb.event_handler(evt_type);
+        }
+#if NRF_CLOCK_HAS_INTPEND
+        intpend = nrf_clock_int_pending_get(NRF_CLOCK);
+#endif
+    }
 }
 
 #endif // NRFX_CHECK(NRFX_CLOCK_ENABLED)

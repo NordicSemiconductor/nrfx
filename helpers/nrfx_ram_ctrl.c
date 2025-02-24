@@ -137,11 +137,6 @@ typedef union
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 3
 #define RAM_UNIFORM_SECTIONS_TOTAL     3
-#elif defined(NRF54L09_ENGA_XXAA)
-#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
-#define RAM_UNIFORM_BLOCKS             1
-#define RAM_UNIFORM_SECTIONS_PER_BLOCK 6
-#define RAM_UNIFORM_SECTIONS_TOTAL     6
 #elif defined(NRF54L10_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
 #define RAM_UNIFORM_BLOCKS             1
@@ -152,7 +147,7 @@ typedef union
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 8
 #define RAM_UNIFORM_SECTIONS_TOTAL     8
-#elif defined(NRF54L20_ENGA_XXAA)
+#elif defined(NRF54LM20A_ENGA_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
 #define RAM_NON_UNIFORM_SECTIONS                                      \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
@@ -187,6 +182,11 @@ typedef union
                  1, 6), /* Section 0 of block 1 - 1 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
                  1, 7)  /* Section 0 of block 1 - 1 * 32 kB units. */
+#elif defined(NRF54LV10A_ENGA_XXAA)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 6
+#define RAM_UNIFORM_SECTIONS_TOTAL     6
 #elif defined(NRF9120_XXAA) || defined(NRF9160_XXAA)
 #define RAM_SECTION_UNIT_SIZE          8192
 #define RAM_UNIFORM_BLOCKS             8

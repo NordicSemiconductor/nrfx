@@ -74,12 +74,12 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_NETWORK)
         #include "nrf5340_xxaa_network_memory.h"
     #endif
-#elif defined(NRF54L09_ENGA_XXAA)
+#elif defined(NRF54LV10A_ENGA_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf54l09_enga_xxaa_application_memory.h"
+        #include "nrf54lv10a_enga_xxaa_application_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf54l09_enga_xxaa_flpr_memory.h"
+        #include "nrf54lv10a_enga_xxaa_flpr_memory.h"
     #endif
 #elif defined(NRF54L05_XXAA)
     #if defined(NRF_APPLICATION)
@@ -102,12 +102,12 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_FLPR)
         #include "nrf54l15_xxaa_flpr_memory.h"
     #endif
-#elif defined(NRF54L20_ENGA_XXAA)
+#elif defined(NRF54LM20A_ENGA_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf54l20_enga_xxaa_application_memory.h"
+        #include "nrf54lm20a_enga_xxaa_application_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf54l20_enga_xxaa_flpr_memory.h"
+        #include "nrf54lm20a_enga_xxaa_flpr_memory.h"
     #endif
 #elif defined(NRF54H20_XXAA)
     #if defined(NRF_APPLICATION)

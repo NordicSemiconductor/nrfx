@@ -146,6 +146,13 @@ extern "C" {
 #define NRF_FICR_HAS_BLE_IR 0
 #endif
 
+#if defined(FICR_TRIM_GLOBAL_COMP_REFTRIM_VALUE_Pos) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether FICR GLOBAL.COMP.REFTRIM register is present. */
+#define NRF_FICR_HAS_GLOBAL_COMP_REFTRIM 1
+#else
+#define NRF_FICR_HAS_GLOBAL_COMP_REFTRIM 0
+#endif
+
 #if NRF_FICR_HAS_CODE_PAGE_SIZE || NRF_FICR_HAS_INFO_CODE_PAGE_SIZE
 /**
  * @brief Function for getting the size of the code memory page.
@@ -227,6 +234,17 @@ NRF_STATIC_INLINE uint32_t nrf_ficr_er_get(NRF_FICR_Type const * p_reg, uint32_t
  * @return Unique identity root.
  */
 NRF_STATIC_INLINE uint32_t nrf_ficr_ir_get(NRF_FICR_Type const * p_reg, uint32_t reg_id);
+#endif
+
+#if NRF_FICR_HAS_GLOBAL_COMP_REFTRIM
+/**
+ * @brief Function for getting the reftrim value for comparator.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Retrim value for comparator.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ficr_global_comp_reftrim_get(NRF_FICR_Type const * p_reg);
 #endif
 
 #ifndef NRF_DECLARE_ONLY
@@ -328,6 +346,13 @@ NRF_STATIC_INLINE uint32_t nrf_ficr_ir_get(NRF_FICR_Type const * p_reg, uint32_t
 #else
     return p_reg->IR[reg_id];
 #endif
+}
+#endif
+
+#if NRF_FICR_HAS_GLOBAL_COMP_REFTRIM
+NRF_STATIC_INLINE uint32_t nrf_ficr_global_comp_reftrim_get(NRF_FICR_Type const * p_reg)
+{
+    return p_reg->TRIM.GLOBAL.COMP.REFTRIM;
 }
 #endif
 

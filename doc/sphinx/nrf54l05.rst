@@ -1,5 +1,0 @@
-nRF54L05 drivers
-================
-
-.. doxygenpage:: nrf54l05_drivers
-    :content-only:

@@ -1,6 +1,28 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.11.0] - 2025-02-24
+### Added
+- Added the workaround for nRF54L Series anomaly 39 in the CLOCK driver.
+- Added the optional workarounds for nRF52 Series anomaly 219 and nRF53 Series anomaly 47 in the TWIM driver.
+- Added support for nRF54LM20A Eng A in the PDM driver.
+- Added support for trimming in the COMP HAL and driver for supported devices.
+- Added support for frame size and address in the UARTE HAL.
+- Added support for nRF54L Series in the CTRLAP HAL.
+- Added configuration option for skipping clock selection in the GRTC HALY.
+- Added auxiliary macro for generating 32-bit counter value in the VPR CSR VTIM HAL.
+- Added functions for getting task endpoint associated with given channel or fork in the PPI HAL.
+- Expanded functions for setting RAM power and retention configuration in the MEMCONF HAL.
+
+### Changed
+- Updated MDK to version 8.70.0.
+- Renamed nRF54L20 Eng A to nRF54LM20A Eng A.
+- Renamed nRF54L09 Eng A to nRF54LV10A Eng A.
+- Removed Sphinx-based documentation. Use existing Doxygen documentation instead.
+
+### Fixed
+- Fixed incorrect value of power-on-reset reset reason bitmask in the RESETINFO HAL.
+
 ## [3.10.0] - 2025-01-21
 ### Added
 - Added support for nRF7120 Eng A.

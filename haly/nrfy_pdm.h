@@ -93,8 +93,8 @@ typedef struct
 #if NRF_PDM_HAS_RATIO_CONFIG
     nrf_pdm_ratio_t   ratio;         ///< Ratio between PDM_CLK and output sample rate.
 #endif
-#if NRF_PDM_HAS_MCLKCONFIG
-    nrf_pdm_mclksrc_t mclksrc;       ///< Master clock source selection.
+#if NRF_PDM_HAS_SELECTABLE_CLOCK
+    nrf_pdm_mclksrc_t mclksrc;       ///< Clock source selection.
 #endif
     bool              skip_psel_cfg; ///< Skip pin selection configuration.
                                      /**< When set to true, the driver does not modify
@@ -120,7 +120,7 @@ NRFY_STATIC_INLINE void nrfy_pdm_periph_configure(NRF_PDM_Type *            p_re
     nrf_pdm_ratio_set(p_reg, p_config->ratio);
 #endif
 
-#if NRF_PDM_HAS_MCLKCONFIG
+#if NRF_PDM_HAS_SELECTABLE_CLOCK
     nrf_pdm_mclksrc_configure(p_reg, p_config->mclksrc);
 #endif
 #if NRF_PDM_HAS_PDMCLKCTRL
@@ -501,14 +501,106 @@ NRFY_STATIC_INLINE void nrfy_pdm_ratio_set(NRF_PDM_Type *  p_reg,
     nrf_pdm_ratio_set(p_reg, ratio);
     nrf_barrier_w();
 }
+#if NRF_PDM_HAS_CUSTOM_RATIO
+/**
+ * @brief Function for setting custom ratio between PDM_CLK and output sample rate.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] ratio Custom ratio between PDM_CLK and output sample rate.
+ */
+NRFY_STATIC_INLINE void nrfy_pdm_custom_ratio_set(NRF_PDM_Type *  p_reg,
+                                                  uint8_t         ratio)
+{
+    nrf_pdm_ratio_set(p_reg, NRF_PDM_RATIO_CUSTOM);
+    nrf_barrier_w();
+    nrf_pdm_custom_ratio_set(p_reg, ratio);
+    nrf_barrier_w();
+}
 #endif
+#endif // NRF_PDM_HAS_RATIO_CONFIG
 
-#if NRF_PDM_HAS_MCLKCONFIG
+#if NRF_PDM_HAS_SELECTABLE_CLOCK
 /** @refhal{nrf_pdm_mclksrc_configure} */
 NRFY_STATIC_INLINE void nrfy_pdm_mclksrc_configure(NRF_PDM_Type *    p_reg,
                                                    nrf_pdm_mclksrc_t mclksrc)
 {
     nrf_pdm_mclksrc_configure(p_reg, mclksrc);
+    nrf_barrier_w();
+}
+#endif
+
+#if NRF_PDM_HAS_FILTER
+/** @refhal{nrf_pdm_filter_ctrl_set} */
+NRFY_STATIC_INLINE
+void nrfy_pdm_filter_ctrl_set(NRF_PDM_Type * p_reg, nrf_pdm_filter_ctrl_t const * fctrl)
+{
+    nrf_pdm_filter_ctrl_set(p_reg, fctrl);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_pdm_filter_ctrl_get} */
+NRFY_STATIC_INLINE
+void nrfy_pdm_filter_ctrl_get(NRF_PDM_Type const * p_reg, nrf_pdm_filter_ctrl_t * fctrl)
+{
+    nrf_barrier_rw();
+    nrf_pdm_filter_ctrl_get(p_reg, fctrl);
+    nrf_barrier_r();
+}
+
+/** @refhal{nrf_pdm_filter_hp_pole_enable} */
+NRFY_STATIC_INLINE
+void nrfy_pdm_filter_hp_pole_enable(NRF_PDM_Type * p_reg, bool enable)
+{
+    nrf_pdm_filter_hp_pole_enable(p_reg, enable);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_pdm_filter_hp_pole_set} */
+NRFY_STATIC_INLINE
+void nrfy_pdm_filter_hp_pole_set(NRF_PDM_Type * p_reg, nrf_pdm_filter_hp_pole_t hppole)
+{
+    nrf_pdm_filter_hp_pole_set(p_reg, hppole);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_pdm_filter_hp_pole_get} */
+NRFY_STATIC_INLINE nrf_pdm_filter_hp_pole_t nrfy_pdm_filter_hp_pole_get(NRF_PDM_Type const * p_reg)
+{
+    nrf_barrier_rw();
+    nrf_pdm_filter_hp_pole_t hppole = nrf_pdm_filter_hp_pole_get(p_reg);
+    nrf_barrier_r();
+    return hppole;
+}
+
+/** @refhal{nrf_pdm_filter_softmute_enable} */
+NRFY_STATIC_INLINE void nrfy_pdm_filter_softmute_enable(NRF_PDM_Type * p_reg, bool enable)
+{
+    nrf_pdm_filter_softmute_enable(p_reg, enable);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_pdm_filter_softcycles_set} */
+NRFY_STATIC_INLINE
+void nrfy_pdm_filter_softcycles_set(NRF_PDM_Type * p_reg, nrf_pdm_filter_softcycles_t cycles)
+{
+    nrf_pdm_filter_softcycles_set(p_reg, cycles);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_pdm_filter_softcycles_get} */
+NRFY_STATIC_INLINE
+nrf_pdm_filter_softcycles_t nrfy_pdm_filter_softcycles_get(NRF_PDM_Type const * p_reg)
+{
+    nrf_barrier_rw();
+    nrf_pdm_filter_softcycles_t cycles = nrf_pdm_filter_softcycles_get(p_reg);
+    nrf_barrier_r();
+    return cycles;
+}
+
+/** @refhal{nrf_pdm_filter_sampledelay_enable} */
+NRFY_STATIC_INLINE void nrfy_pdm_filter_sampledelay_enable(NRF_PDM_Type * p_reg, bool enable)
+{
+    nrf_pdm_filter_sampledelay_enable(p_reg, enable);
     nrf_barrier_w();
 }
 #endif

@@ -210,7 +210,7 @@ NRFY_STATIC_INLINE uint32_t nrfy_grtc_events_process(NRF_GRTC_Type * p_reg,
  */
 NRFY_STATIC_INLINE void nrfy_grtc_prepare(NRF_GRTC_Type * p_reg, bool busy_wait)
 {
-#if NRFY_GRTC_HAS_CLKSEL
+#if NRFY_GRTC_HAS_CLKSEL && NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_LFCLK_SELECT_AT_INIT)
     nrf_grtc_clksel_set(p_reg, NRF_GRTC_CLKSEL_LFCLK);
 #endif
     nrf_grtc_sys_counter_set(p_reg, false);

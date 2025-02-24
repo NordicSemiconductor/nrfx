@@ -120,12 +120,20 @@ void SystemInit(void)
             #endif
 
             #if NRF54L_ERRATA_32_ENABLE_WORKAROUND
-               /* Workaround for Errata 32 */
+                /* Workaround for Errata 32 */
                 if (nrf54l_errata_32())
                 {
                     if (*((volatile uint32_t *)0x00FFC334ul) <= 0x180A1D00ul){
                         *((volatile uint32_t *)0x50120640ul) = 0x1EA9E040ul;
                     }
+                }
+            #endif
+
+            #if NRF54L_ERRATA_40_ENABLE_WORKAROUND
+                /* Workaround for Errata 40 */
+                if (nrf54l_errata_40())
+                {
+                    *((volatile uint32_t *)0x5008A7ACul) = 0x040A0078ul;
                 }
             #endif
 
@@ -172,7 +180,7 @@ void SystemInit(void)
         #endif
 
         #if !defined(NRF_TRUSTZONE_NONSECURE) && defined(__ARM_FEATURE_CMSE)
-            #if !defined (NRF54L09_ENGA_XXAA)
+            #if !defined (NRF54LV10A_ENGA_XXAA)
                 #if defined(NRF_CONFIG_NFCT_PINS_AS_GPIOS)
                     NRF_NFCT_S->PADCONFIG = (NFCT_PADCONFIG_ENABLE_Disabled << NFCT_PADCONFIG_ENABLE_Pos);
                 #endif

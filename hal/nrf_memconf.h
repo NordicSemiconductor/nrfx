@@ -130,6 +130,17 @@ void nrf_memconf_ramblock_control_mask_enable_set(NRF_MEMCONF_Type * p_reg,
                                                   bool               enable);
 
 /**
+ * @brief Function for setting mask of RAM blocks powered-on in System ON mode.
+ *
+ * @param[in] p_reg         Pointer to the structure of registers of the peripheral.
+ * @param[in] power_id      Power block index.
+ * @param[in] ramblock_mask Mask of RAM blocks.
+ */
+NRF_STATIC_INLINE void nrf_memconf_ramblock_control_mask_set(NRF_MEMCONF_Type * p_reg,
+                                                             uint8_t            power_id,
+                                                             uint32_t           ramblock_mask);
+
+/**
  * @brief Function for checking whether given RAM block is enabled.
  *
  * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
@@ -168,6 +179,17 @@ NRF_STATIC_INLINE void nrf_memconf_ramblock_ret_mask_enable_set(NRF_MEMCONF_Type
                                                                 uint8_t            power_id,
                                                                 uint32_t           ramblock_mask,
                                                                 bool               enable);
+
+/**
+ * @brief Function for setting mask of RAM blocks retained in System OFF mode.
+ *
+ * @param[in] p_reg         Pointer to the structure of registers of the peripheral.
+ * @param[in] power_id      Power block index.
+ * @param[in] ramblock_mask Mask of RAM blocks.
+ */
+NRF_STATIC_INLINE void nrf_memconf_ramblock_ret_mask_set(NRF_MEMCONF_Type * p_reg,
+                                                         uint8_t            power_id,
+                                                         uint32_t           ramblock_mask);
 
 /**
  * @brief Function for checking whether the retention of specified RAM block is enabled.
@@ -223,6 +245,17 @@ NRF_STATIC_INLINE void nrf_memconf_ramblock_ret2_mask_enable_set(NRF_MEMCONF_Typ
                                                                  uint8_t            power_id,
                                                                  uint32_t           ramblock_mask,
                                                                  bool               enable);
+
+/**
+ * @brief Function for setting mask of RAM blocks whose secondary banks are to be retained in System OFF mode.
+ *
+ * @param[in] p_reg         Pointer to the structure of registers of the peripheral.
+ * @param[in] power_id      Power block index.
+ * @param[in] ramblock_mask Mask of RAM blocks.
+ */
+NRF_STATIC_INLINE void nrf_memconf_ramblock_ret2_mask_set(NRF_MEMCONF_Type * p_reg,
+                                                          uint8_t            power_id,
+                                                          uint32_t           ramblock_mask);
 #endif
 
 #if NRF_MEMCONF_HAS_REPAIR
@@ -352,6 +385,15 @@ void nrf_memconf_ramblock_control_mask_enable_set(NRF_MEMCONF_Type * p_reg,
     }
 }
 
+NRF_STATIC_INLINE void nrf_memconf_ramblock_control_mask_set(NRF_MEMCONF_Type * p_reg,
+                                                             uint8_t            power_id,
+                                                             uint32_t           ramblock_mask)
+{
+    NRFX_ASSERT(power_id < NRF_MEMCONF_POWERBLOCK_COUNT);
+
+    p_reg->POWER[power_id].CONTROL = ramblock_mask;
+}
+
 NRF_STATIC_INLINE bool nrf_memconf_ramblock_control_enable_check(NRF_MEMCONF_Type const * p_reg,
                                                                  uint8_t                  power_id,
                                                                  uint8_t                  ramblock)
@@ -392,6 +434,15 @@ NRF_STATIC_INLINE void nrf_memconf_ramblock_ret_mask_enable_set(NRF_MEMCONF_Type
     {
         p_reg->POWER[power_id].RET &= ~ramblock_mask;
     }
+}
+
+NRF_STATIC_INLINE void nrf_memconf_ramblock_ret_mask_set(NRF_MEMCONF_Type * p_reg,
+                                                         uint8_t            power_id,
+                                                         uint32_t           ramblock_mask)
+{
+    NRFX_ASSERT(power_id < NRF_MEMCONF_POWERBLOCK_COUNT);
+
+    p_reg->POWER[power_id].RET = ramblock_mask;
 }
 
 NRF_STATIC_INLINE bool nrf_memconf_ramblock_ret_enable_check(NRF_MEMCONF_Type const * p_reg,
@@ -445,6 +496,15 @@ NRF_STATIC_INLINE void nrf_memconf_ramblock_ret2_mask_enable_set(NRF_MEMCONF_Typ
     {
         p_reg->POWER[power_id].RET2 &= ~ramblock_mask;
     }
+}
+
+NRF_STATIC_INLINE void nrf_memconf_ramblock_ret2_mask_set(NRF_MEMCONF_Type * p_reg,
+                                                          uint8_t            power_id,
+                                                          uint32_t           ramblock_mask)
+{
+    NRFX_ASSERT(power_id < NRF_MEMCONF_POWERBLOCK_COUNT);
+
+    p_reg->POWER[power_id].RET2 = ramblock_mask;
 }
 #endif
 

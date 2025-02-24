@@ -95,6 +95,27 @@ extern "C" {
 #define NRF_PDM_HAS_PRESCALER 0
 #endif
 
+#if defined(PDM_CLKSELECT_SRC_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether PDM clock select register is available. */
+#define NRF_PDM_HAS_CLKSELECT 1
+#else
+#define NRF_PDM_HAS_CLKSELECT 0
+#endif
+
+#if defined(PDM_RATIO_RATIO_Custom) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether PDM custom ratio configuration is available. */
+#define NRF_PDM_HAS_CUSTOM_RATIO 1
+#else
+#define NRF_PDM_HAS_CUSTOM_RATIO 0
+#endif
+
+#if defined(PDM_FILTER_CTRL_DECRATIO_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether PDM filter registers are available. */
+#define NRF_PDM_HAS_FILTER 1
+#else
+#define NRF_PDM_HAS_FILTER 0
+#endif
+
 /** @brief Minimum value of PDM gain. */
 #define NRF_PDM_GAIN_MINIMUM  0x00
 /** @brief Default value of PDM gain. */
@@ -107,6 +128,13 @@ extern "C" {
 #define NRF_PDM_PRESCALER_MIN PDM_PRESCALER_DIVISOR_Min
 /** @brief Maximum value of PDM prescaler. */
 #define NRF_PDM_PRESCALER_MAX PDM_PRESCALER_DIVISOR_Max
+#endif
+
+#if NRF_PDM_HAS_MCLKCONFIG || NRF_PDM_HAS_CLKSELECT
+/** @brief Symbol indicating whether PDM has selectable clock source. */
+#define NRF_PDM_HAS_SELECTABLE_CLOCK 1
+#else
+#define NRF_PDM_HAS_SELECTABLE_CLOCK 0
 #endif
 
 /** @brief PDM gain type. */
@@ -172,24 +200,33 @@ typedef enum
 typedef enum
 {
 #if defined(PDM_RATIO_RATIO_Ratio32)  || defined(__NRFX_DOXYGEN__)
-    NRF_PDM_RATIO_32X  = PDM_RATIO_RATIO_Ratio32,  ///< Ratio of 32.
+    NRF_PDM_RATIO_32X    = PDM_RATIO_RATIO_Ratio32,  ///< Ratio of 32.
 #endif
 #if defined(PDM_RATIO_RATIO_Ratio48)  || defined(__NRFX_DOXYGEN__)
-    NRF_PDM_RATIO_48X  = PDM_RATIO_RATIO_Ratio48,  ///< Ratio of 48.
+    NRF_PDM_RATIO_48X    = PDM_RATIO_RATIO_Ratio48,  ///< Ratio of 48.
 #endif
 #if defined(PDM_RATIO_RATIO_Ratio50)  || defined(__NRFX_DOXYGEN__)
-    NRF_PDM_RATIO_50X  = PDM_RATIO_RATIO_Ratio50,  ///< Ratio of 50.
+    NRF_PDM_RATIO_50X    = PDM_RATIO_RATIO_Ratio50,  ///< Ratio of 50.
 #endif
-    NRF_PDM_RATIO_64X  = PDM_RATIO_RATIO_Ratio64,  ///< Ratio of 64.
-    NRF_PDM_RATIO_80X  = PDM_RATIO_RATIO_Ratio80,  ///< Ratio of 80.
+    NRF_PDM_RATIO_64X    = PDM_RATIO_RATIO_Ratio64,  ///< Ratio of 64.
+    NRF_PDM_RATIO_80X    = PDM_RATIO_RATIO_Ratio80,  ///< Ratio of 80.
 #if defined(PDM_RATIO_RATIO_Ratio96)  || defined(__NRFX_DOXYGEN__)
-    NRF_PDM_RATIO_96X  = PDM_RATIO_RATIO_Ratio96,  ///< Ratio of 96.
+    NRF_PDM_RATIO_96X    = PDM_RATIO_RATIO_Ratio96,  ///< Ratio of 96.
 #endif
 #if defined(PDM_RATIO_RATIO_Ratio100) || defined(__NRFX_DOXYGEN__)
-    NRF_PDM_RATIO_100X = PDM_RATIO_RATIO_Ratio100, ///< Ratio of 100.
+    NRF_PDM_RATIO_100X   = PDM_RATIO_RATIO_Ratio100, ///< Ratio of 100.
 #endif
 #if defined(PDM_RATIO_RATIO_Ratio128) || defined(__NRFX_DOXYGEN__)
-    NRF_PDM_RATIO_128X = PDM_RATIO_RATIO_Ratio128, ///< Ratio of 128.
+    NRF_PDM_RATIO_128X   = PDM_RATIO_RATIO_Ratio128, ///< Ratio of 128.
+#endif
+#if defined(PDM_RATIO_RATIO_Ratio150) || defined(__NRFX_DOXYGEN__)
+    NRF_PDM_RATIO_150X   = PDM_RATIO_RATIO_Ratio150, ///< Ratio of 150.
+#endif
+#if defined(PDM_RATIO_RATIO_Ratio192) || defined(__NRFX_DOXYGEN__)
+    NRF_PDM_RATIO_192X   = PDM_RATIO_RATIO_Ratio192, ///< Ratio of 192.
+#endif
+#if NRF_PDM_HAS_CUSTOM_RATIO
+    NRF_PDM_RATIO_CUSTOM = PDM_RATIO_RATIO_Custom,   ///< Custom ratio.
 #endif
 } nrf_pdm_ratio_t;
 #endif
@@ -208,13 +245,96 @@ typedef enum
     NRF_PDM_EDGE_LEFTRISING  = PDM_MODE_EDGE_LeftRising    ///< Left (or mono) is sampled on rising edge of PDM_CLK.
 } nrf_pdm_edge_t;
 
-#if NRF_PDM_HAS_MCLKCONFIG
-/** @brief PDM master clock source selection. */
+#if NRF_PDM_HAS_SELECTABLE_CLOCK
+/** @brief PDM clock source selection. */
 typedef enum
 {
+#if NRF_PDM_HAS_MCLKCONFIG
     NRF_PDM_MCLKSRC_PCLK32M = PDM_MCLKCONFIG_SRC_PCLK32M, ///< 32MHz peripheral clock.
     NRF_PDM_MCLKSRC_ACLK    = PDM_MCLKCONFIG_SRC_ACLK     ///< Audio PLL clock.
+#elif NRF_PDM_HAS_CLKSELECT
+    NRF_PDM_MCLKSRC_PCLK32M = PDM_CLKSELECT_SRC_PCLK32M,  ///< 32MHz peripheral clock.
+    NRF_PDM_MCLKSRC_ACLK    = PDM_CLKSELECT_SRC_ACLK      ///< Audio PLL clock.
+#endif
 } nrf_pdm_mclksrc_t;
+#endif
+
+#if NRF_PDM_HAS_FILTER
+/** @brief PDM input data sample delay. */
+typedef enum
+{
+    NRF_PDM_SAMPLE_DELAY_NONE  = PDM_FILTER_CTRL_DATASAMPLEDELAY_NoDelay,      ///< No delay added.
+    NRF_PDM_SAMPLE_DELAY_LEFT  = PDM_FILTER_CTRL_DATASAMPLEDELAY_DelayOnLeft,  ///< One clock cycle delay on left channel.
+    NRF_PDM_SAMPLE_DELAY_RIGHT = PDM_FILTER_CTRL_DATASAMPLEDELAY_DelayOnRight, ///< One clock cycle delay on right channel.
+    NRF_PDM_SAMPLE_DELAY_BOTH  = PDM_FILTER_CTRL_DATASAMPLEDELAY_DelayOnBoth,  ///< One clock cycle delay on both channels.
+} nrf_pdm_sample_delay_t;
+
+/** @brief PDM CIC filter most significant bit. */
+typedef enum
+{
+    NRF_PDM_FILTER_CIC_MSB_RANGE_0  = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range0,  ///< OSR range low - 4 bits, OSR range high - 32 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_1  = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range1,  ///< OSR range low - 34 bits, OSR range high - 36 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_2  = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range2,  ///< OSR range low - 38 bits, OSR range high - 42 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_3  = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range3,  ///< OSR range low - 44 bits, OSR range high - 48 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_4  = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range4,  ///< OSR range low - 50 bits, OSR range high - 54 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_5  = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range5,  ///< OSR range low - 56 bits, OSR range high - 64 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_6  = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range6,  ///< OSR range low - 66 bits, OSR range high - 72 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_7  = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range7,  ///< OSR range low - 74 bits, OSR range high - 84 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_8  = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range8,  ///< OSR range low - 86 bits, OSR range high - 96 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_9  = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range9,  ///< OSR range low - 98 bits, OSR range high - 110 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_10 = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range10, ///< OSR range low - 112 bits, OSR range high - 128 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_11 = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range11, ///< OSR range low - 130 bits, OSR range high - 146 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_12 = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range12, ///< OSR range low - 148 bits, OSR range high - 168 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_13 = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range13, ///< OSR range low - 170 bits, OSR range high - 194 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_14 = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range14, ///< OSR range low - 196 bits, OSR range high - 222 bits.
+    NRF_PDM_FILTER_CIC_MSB_RANGE_15 = PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Range15, ///< OSR range low - 224 bits, OSR range high - 256 bits.
+} nrf_pdm_filter_cic_t;
+
+/** @brief PDM high pass filter -3dB gain pole frequency. */
+typedef enum
+{
+    NRF_PDM_FILTER_HP_POLE_0_16_HZ = PDM_FILTER_HPPOLE_HPPOLE_p0p16, ///< 0.16 Hz.
+    NRF_PDM_FILTER_HP_POLE_0_32_HZ = PDM_FILTER_HPPOLE_HPPOLE_p0p32, ///< 0.32 Hz.
+    NRF_PDM_FILTER_HP_POLE_0_64_HZ = PDM_FILTER_HPPOLE_HPPOLE_p0p64, ///< 0.64 Hz.
+    NRF_PDM_FILTER_HP_POLE_1_25_HZ = PDM_FILTER_HPPOLE_HPPOLE_p1p25, ///< 1.25 Hz.
+    NRF_PDM_FILTER_HP_POLE_2_5_HZ  = PDM_FILTER_HPPOLE_HPPOLE_p2p5,  ///< 2.5 Hz.
+    NRF_PDM_FILTER_HP_POLE_5_HZ    = PDM_FILTER_HPPOLE_HPPOLE_p5,    ///< 5 Hz.
+    NRF_PDM_FILTER_HP_POLE_10_HZ   = PDM_FILTER_HPPOLE_HPPOLE_p10,   ///< 10 Hz.
+    NRF_PDM_FILTER_HP_POLE_20_HZ   = PDM_FILTER_HPPOLE_HPPOLE_p20,   ///< 20 Hz.
+    NRF_PDM_FILTER_HP_POLE_40_HZ   = PDM_FILTER_HPPOLE_HPPOLE_p40,   ///< 40 Hz.
+    NRF_PDM_FILTER_HP_POLE_79_HZ   = PDM_FILTER_HPPOLE_HPPOLE_p79,   ///< 79 Hz.
+    NRF_PDM_FILTER_HP_POLE_157_HZ  = PDM_FILTER_HPPOLE_HPPOLE_p157,  ///< 157 Hz.
+    NRF_PDM_FILTER_HP_POLE_310_HZ  = PDM_FILTER_HPPOLE_HPPOLE_p310,  ///< 310 Hz.
+    NRF_PDM_FILTER_HP_POLE_603_HZ  = PDM_FILTER_HPPOLE_HPPOLE_p603,  ///< 603 Hz.
+    NRF_PDM_FILTER_HP_POLE_1152_HZ = PDM_FILTER_HPPOLE_HPPOLE_p1152, ///< 1152 Hz.
+    NRF_PDM_FILTER_HP_POLE_2110_HZ = PDM_FILTER_HPPOLE_HPPOLE_p2110, ///< 2110 Hz.
+} nrf_pdm_filter_hp_pole_t;
+
+/** @brief PDM number of cycles for soft mute transition. */
+typedef enum
+{
+    NRF_PDM_FILTER_SOFTCYCLES_2      = PDM_FILTER_SOFTCYCLES_DISABLE_s2,     ///< 2 filter source clock cycles.
+    NRF_PDM_FILTER_SOFTCYCLES_8      = PDM_FILTER_SOFTCYCLES_DISABLE_s8,     ///< 8 filter source clock cycles.
+    NRF_PDM_FILTER_SOFTCYCLES_32     = PDM_FILTER_SOFTCYCLES_DISABLE_s32,    ///< 32 filter source clock cycles.
+    NRF_PDM_FILTER_SOFTCYCLES_64     = PDM_FILTER_SOFTCYCLES_DISABLE_s64,    ///< 64 filter source clock cycles.
+    NRF_PDM_FILTER_SOFTCYCLES_128    = PDM_FILTER_SOFTCYCLES_DISABLE_s128,   ///< 128 filter source clock cycles.
+    NRF_PDM_FILTER_SOFTCYCLES_256    = PDM_FILTER_SOFTCYCLES_DISABLE_s256,   ///< 256 filter source clock cycles.
+    NRF_PDM_FILTER_SOFTCYCLES_512    = PDM_FILTER_SOFTCYCLES_DISABLE_s512,   ///< 512 filter source clock cycles.
+    NRF_PDM_FILTER_SOFTCYCLES_CUSTOM = PDM_FILTER_SOFTCYCLES_DISABLE_custom, ///< Custom number of filter source clock cycles.
+} nrf_pdm_filter_softcycles_t;
+
+/** @brief PDM fliter configuration. */
+typedef struct
+{
+    bool                   r_mute;                 ///< Override soft mute for right channel.
+    bool                   l_mute;                 ///< Override soft mute for left channel.
+    bool                   gain_step_add;          ///< Add +0.25dB to the gain stage.
+    bool                   minor_gain_step_custom; ///< Compensate gain with +0.25dB.
+    uint8_t                gain_step_custom;       ///< +0.5dB steps to compensate gain.
+    uint8_t                soft_cycles;            ///< Number of cycles for soft gain/mute function.
+    nrf_pdm_sample_delay_t sample_delay;           ///< Input data sample delay.
+    nrf_pdm_filter_cic_t   cic_filter;             ///< MSB for CIC filter.
+} nrf_pdm_filter_ctrl_t;
 #endif
 
 /**
@@ -529,16 +649,111 @@ NRF_STATIC_INLINE uint32_t * nrf_pdm_buffer_get(NRF_PDM_Type const * p_reg);
  * @param[in] ratio Ratio between PDM_CLK and output sample rate.
  */
 NRF_STATIC_INLINE void nrf_pdm_ratio_set(NRF_PDM_Type * p_reg, nrf_pdm_ratio_t ratio);
-#endif
 
-#if NRF_PDM_HAS_MCLKCONFIG
+#if NRF_PDM_HAS_CUSTOM_RATIO
 /**
- * @brief Function for configuring PDM master clock source.
+ * @brief Function for setting custom ratio between PDM_CLK and output sample rate.
+ *
+ * @warning Before calling this function, the caller must ensure that custom ratio
+ *          configuration has been set using @ref nrf_pdm_ratio_set.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] ratio Custom ratio between PDM_CLK and output sample rate.
+ */
+NRF_STATIC_INLINE void nrf_pdm_custom_ratio_set(NRF_PDM_Type * p_reg, uint8_t ratio);
+#endif
+#endif // NRF_PDM_HAS_RATIO_CONFIG
+
+#if NRF_PDM_HAS_SELECTABLE_CLOCK
+/**
+ * @brief Function for configuring PDM clock source.
  *
  * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
- * @param[in] mclksrc Master Clock source selection.
+ * @param[in] mclksrc Clock source selection.
  */
 NRF_STATIC_INLINE void nrf_pdm_mclksrc_configure(NRF_PDM_Type * p_reg, nrf_pdm_mclksrc_t mclksrc);
+#endif
+
+#if NRF_PDM_HAS_FILTER
+/**
+ * @brief Function for setting PDM filter configuration.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] fctrl Pointer to the structure with filter configuration to be set.
+ */
+NRF_STATIC_INLINE
+void nrf_pdm_filter_ctrl_set(NRF_PDM_Type * p_reg, nrf_pdm_filter_ctrl_t const * fctrl);
+
+/**
+ * @brief Function for getting PDM filter configuration.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] fctrl Pointer to the structure to be filled with filter configuration.
+ */
+NRF_STATIC_INLINE
+void nrf_pdm_filter_ctrl_get(NRF_PDM_Type const * p_reg, nrf_pdm_filter_ctrl_t * fctrl);
+
+/**
+ * @brief Function for enabling PDM high-pass filter gain pole.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] enable True if high-pass filter is to be enabled, false otherwise.
+ */
+NRF_STATIC_INLINE
+void nrf_pdm_filter_hp_pole_enable(NRF_PDM_Type * p_reg, bool enable);
+
+/**
+ * @brief Function for setting PDM high-pass filter gain pole.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] hppole High-pass filter gain pole.
+ */
+NRF_STATIC_INLINE
+void nrf_pdm_filter_hp_pole_set(NRF_PDM_Type * p_reg, nrf_pdm_filter_hp_pole_t hppole);
+
+/**
+ * @brief Function for getting PDM high-pass filter gain pole.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * 
+ * @return High-pass filter gain pole.
+ */
+NRF_STATIC_INLINE nrf_pdm_filter_hp_pole_t nrf_pdm_filter_hp_pole_get(NRF_PDM_Type const * p_reg);
+
+/**
+ * @brief Function for enabling PDM filter soft mute function.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] enable True if soft mute function is to be enabled, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_pdm_filter_softmute_enable(NRF_PDM_Type * p_reg, bool enable);
+
+/**
+ * @brief Function for setting PDM number of cycles used for soft mute transition.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] cycles Number of cycles.
+ */
+NRF_STATIC_INLINE
+void nrf_pdm_filter_softcycles_set(NRF_PDM_Type * p_reg, nrf_pdm_filter_softcycles_t cycles);
+
+/**
+ * @brief Function for getting PDM number of cycles used for soft mute transition.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ *
+ * @return Number of cycles.
+ */
+NRF_STATIC_INLINE
+nrf_pdm_filter_softcycles_t nrf_pdm_filter_softcycles_get(NRF_PDM_Type const * p_reg);
+
+/**
+ * @brief Function for enabling PDM input data sample delay.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] enable True if sample delay is to be enabled, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_pdm_filter_sampledelay_enable(NRF_PDM_Type * p_reg, bool enable);
 #endif
 
 #ifndef NRF_DECLARE_ONLY
@@ -743,12 +958,128 @@ NRF_STATIC_INLINE void nrf_pdm_ratio_set(NRF_PDM_Type * p_reg, nrf_pdm_ratio_t r
 {
     p_reg->RATIO = ratio;
 }
-#endif
 
-#if NRF_PDM_HAS_MCLKCONFIG
+#if NRF_PDM_HAS_CUSTOM_RATIO
+NRF_STATIC_INLINE void nrf_pdm_custom_ratio_set(NRF_PDM_Type * p_reg, uint8_t ratio)
+{
+    NRFX_ASSERT(ratio >= PDM_FILTER_CTRL_DECRATIO_Min);
+    NRFX_ASSERT(ratio <= PDM_FILTER_CTRL_DECRATIO_Max);
+    NRFX_ASSERT(ratio % 2 == 0);
+    p_reg->FILTER.CTRL = (p_reg->FILTER.CTRL & ~PDM_FILTER_CTRL_DECRATIO_Msk) |
+                          (((uint32_t)ratio << PDM_FILTER_CTRL_DECRATIO_Pos)
+                                             & PDM_FILTER_CTRL_DECRATIO_Msk);
+}
+#endif
+#endif // NRF_PDM_HAS_RATIO_CONFIG
+
+#if NRF_PDM_HAS_SELECTABLE_CLOCK
 NRF_STATIC_INLINE void nrf_pdm_mclksrc_configure(NRF_PDM_Type * p_reg, nrf_pdm_mclksrc_t mclksrc)
 {
+#if NRF_PDM_HAS_MCLKCONFIG
     p_reg->MCLKCONFIG = mclksrc;
+#elif NRF_PDM_HAS_CLKSELECT
+    p_reg->CLKSELECT = mclksrc;
+#endif
+}
+#endif
+
+#if NRF_PDM_HAS_FILTER
+NRF_STATIC_INLINE
+void nrf_pdm_filter_ctrl_set(NRF_PDM_Type * p_reg, nrf_pdm_filter_ctrl_t const * fctrl)
+{
+    NRFX_ASSERT(fctrl->gain_step_custom >= PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Min);
+    NRFX_ASSERT(fctrl->gain_step_custom <= PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Max);
+    NRFX_ASSERT(fctrl->soft_cycles >= PDM_FILTER_CTRL_SOFTCYCLES_Min);
+    NRFX_ASSERT(fctrl->soft_cycles <= PDM_FILTER_CTRL_SOFTCYCLES_Max);
+    p_reg->FILTER.CTRL = (((fctrl->r_mute ? PDM_FILTER_CTRL_OVERRIDERIGHTSOFTMUTE_Enable
+                                          : PDM_FILTER_CTRL_OVERRIDERIGHTSOFTMUTE_Disable)
+                                         << PDM_FILTER_CTRL_OVERRIDERIGHTSOFTMUTE_Pos) |
+                ((fctrl->l_mute ? PDM_FILTER_CTRL_OVERRIDELEFTSOFTMUTE_Enable
+                                : PDM_FILTER_CTRL_OVERRIDELEFTSOFTMUTE_Disable)
+                                << PDM_FILTER_CTRL_OVERRIDELEFTSOFTMUTE_Pos) |
+                ((fctrl->gain_step_add ? PDM_FILTER_CTRL_GAINADD0P25_Enable
+                                       : PDM_FILTER_CTRL_GAINADD0P25_Disable)
+                                       << PDM_FILTER_CTRL_GAINADD0P25_Pos) |
+                ((fctrl->minor_gain_step_custom ? PDM_FILTER_CTRL_MINORSTEP025CUSTOM_Enable
+                                                : PDM_FILTER_CTRL_MINORSTEP025CUSTOM_Disable)
+                                                << PDM_FILTER_CTRL_MINORSTEP025CUSTOM_Pos) |
+                ((fctrl->gain_step_custom << PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Pos)
+                                           & PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Msk) |
+                ((fctrl->soft_cycles << PDM_FILTER_CTRL_SOFTCYCLES_Pos)
+                                      & PDM_FILTER_CTRL_SOFTCYCLES_Msk) |
+                ((fctrl->sample_delay << PDM_FILTER_CTRL_DATASAMPLEDELAY_Pos)
+                                       & PDM_FILTER_CTRL_DATASAMPLEDELAY_Msk) |
+                ((fctrl->cic_filter << PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Pos)
+                                     & PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Msk));
+}
+
+NRF_STATIC_INLINE
+void nrf_pdm_filter_ctrl_get(NRF_PDM_Type const * p_reg, nrf_pdm_filter_ctrl_t * fctrl)
+{
+    fctrl->r_mute = (((p_reg->FILTER.CTRL & PDM_FILTER_CTRL_OVERRIDERIGHTSOFTMUTE_Msk)
+                                         >> PDM_FILTER_CTRL_OVERRIDERIGHTSOFTMUTE_Pos)
+                                         == PDM_FILTER_CTRL_OVERRIDERIGHTSOFTMUTE_Enable);
+    fctrl->l_mute = (((p_reg->FILTER.CTRL & PDM_FILTER_CTRL_OVERRIDELEFTSOFTMUTE_Msk)
+                                         >> PDM_FILTER_CTRL_OVERRIDELEFTSOFTMUTE_Pos)
+                                         == PDM_FILTER_CTRL_OVERRIDELEFTSOFTMUTE_Enable);
+    fctrl->gain_step_add = (((p_reg->FILTER.CTRL & PDM_FILTER_CTRL_GAINADD0P25_Msk)
+                                                >> PDM_FILTER_CTRL_GAINADD0P25_Pos)
+                                                == PDM_FILTER_CTRL_GAINADD0P25_Enable);
+    fctrl->minor_gain_step_custom = (((p_reg->FILTER.CTRL & PDM_FILTER_CTRL_MINORSTEP025CUSTOM_Msk)
+                                                         >> PDM_FILTER_CTRL_MINORSTEP025CUSTOM_Pos)
+                                                         == PDM_FILTER_CTRL_MINORSTEP025CUSTOM_Enable);
+    fctrl->gain_step_custom = ((p_reg->FILTER.CTRL & PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Msk)
+                                                  >> PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Pos);
+    fctrl->soft_cycles = ((p_reg->FILTER.CTRL & PDM_FILTER_CTRL_SOFTCYCLES_Msk)
+                                             >> PDM_FILTER_CTRL_SOFTCYCLES_Pos);
+    fctrl->sample_delay = (nrf_pdm_sample_delay_t)((p_reg->FILTER.CTRL
+                                              & PDM_FILTER_CTRL_DATASAMPLEDELAY_Msk)
+                                             >> PDM_FILTER_CTRL_DATASAMPLEDELAY_Pos);
+    fctrl->cic_filter = (nrf_pdm_filter_cic_t)((p_reg->FILTER.CTRL 
+                                              & PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Msk)
+                                             >> PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Pos);
+}
+
+NRF_STATIC_INLINE
+void nrf_pdm_filter_hp_pole_enable(NRF_PDM_Type * p_reg, bool enable)
+{
+    p_reg->FILTER.HPDISABLE = enable ? PDM_FILTER_HPDISABLE_DISABLE_Enable
+                                     : PDM_FILTER_HPDISABLE_DISABLE_Disable;
+}
+
+NRF_STATIC_INLINE
+void nrf_pdm_filter_hp_pole_set(NRF_PDM_Type * p_reg, nrf_pdm_filter_hp_pole_t hppole)
+{
+    p_reg->FILTER.HPPOLE = hppole;
+}
+
+NRF_STATIC_INLINE nrf_pdm_filter_hp_pole_t nrf_pdm_filter_hp_pole_get(NRF_PDM_Type const * p_reg)
+{
+    return (nrf_pdm_filter_hp_pole_t)p_reg->FILTER.HPPOLE;
+}
+
+NRF_STATIC_INLINE void nrf_pdm_filter_softmute_enable(NRF_PDM_Type * p_reg, bool enable)
+{
+    p_reg->FILTER.SOFTMUTE = enable ? PDM_FILTER_SOFTMUTE_ENABLE_Enabled
+                                    : PDM_FILTER_SOFTMUTE_ENABLE_Disabled;
+}
+
+NRF_STATIC_INLINE
+void nrf_pdm_filter_softcycles_set(NRF_PDM_Type * p_reg, nrf_pdm_filter_softcycles_t cycles)
+{
+    p_reg->FILTER.SOFTCYCLES = cycles;
+}
+
+NRF_STATIC_INLINE
+nrf_pdm_filter_softcycles_t nrf_pdm_filter_softcycles_get(NRF_PDM_Type const * p_reg)
+{
+    return (nrf_pdm_filter_softcycles_t)p_reg->FILTER.SOFTCYCLES;
+}
+
+NRF_STATIC_INLINE void nrf_pdm_filter_sampledelay_enable(NRF_PDM_Type * p_reg, bool enable)
+{
+    p_reg->FILTER.SAMPLEDELAY = enable ? PDM_FILTER_SAMPLEDELAY_DELAY_x1
+                                       : PDM_FILTER_SAMPLEDELAY_DELAY_no_delay;
 }
 #endif
 

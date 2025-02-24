@@ -343,6 +343,48 @@
     NRFX_EVAL(NRFX_FOR_EACH(_NRFX_MAX_P1, (), __VA_ARGS__) 0 \
               NRFX_FOR_EACH(_NRFX_MAX_P2, (), __VA_ARGS__))
 
+/**
+ * @brief Macro for getting a position of a bit in a bit mask with only one bit set.
+ *
+ * Macro shall be used only on fixed value so that it can be resolved at compile time.
+ *
+ * @param _bitmask 32 bit mask with one bit set.
+ *
+ * @return Index of a bit.
+ */
+#define NRFX_BITMASK_TO_BITPOS(_bitmask) \
+    _bitmask == NRFX_BIT(0) ? 0 : \
+    _bitmask == NRFX_BIT(1) ? 1 : \
+    _bitmask == NRFX_BIT(2) ? 2 : \
+    _bitmask == NRFX_BIT(3) ? 3 : \
+    _bitmask == NRFX_BIT(4) ? 4 : \
+    _bitmask == NRFX_BIT(5) ? 5 : \
+    _bitmask == NRFX_BIT(6) ? 6 : \
+    _bitmask == NRFX_BIT(7) ? 7 : \
+    _bitmask == NRFX_BIT(8) ? 8 : \
+    _bitmask == NRFX_BIT(9) ? 9 : \
+    _bitmask == NRFX_BIT(10) ? 10 : \
+    _bitmask == NRFX_BIT(11) ? 11 : \
+    _bitmask == NRFX_BIT(12) ? 12 : \
+    _bitmask == NRFX_BIT(13) ? 13 : \
+    _bitmask == NRFX_BIT(14) ? 14 : \
+    _bitmask == NRFX_BIT(15) ? 15 : \
+    _bitmask == NRFX_BIT(16) ? 16 : \
+    _bitmask == NRFX_BIT(17) ? 17 : \
+    _bitmask == NRFX_BIT(18) ? 18 : \
+    _bitmask == NRFX_BIT(19) ? 19 : \
+    _bitmask == NRFX_BIT(20) ? 20 : \
+    _bitmask == NRFX_BIT(21) ? 21 : \
+    _bitmask == NRFX_BIT(22) ? 22 : \
+    _bitmask == NRFX_BIT(23) ? 23 : \
+    _bitmask == NRFX_BIT(24) ? 24 : \
+    _bitmask == NRFX_BIT(25) ? 25 : \
+    _bitmask == NRFX_BIT(26) ? 26 : \
+    _bitmask == NRFX_BIT(27) ? 27 : \
+    _bitmask == NRFX_BIT(28) ? 28 : \
+    _bitmask == NRFX_BIT(29) ? 29 : \
+    _bitmask == NRFX_BIT(30) ? 30 : 31
+
 /** @} */
 
 #endif /* NRFX_UTILS_H__ */

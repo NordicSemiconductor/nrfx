@@ -41,6 +41,10 @@
 #define NRFX_LOG_MODULE COMP
 #include <nrfx_log.h>
 
+#if defined(NRF54H20_XXAA)
+#include <hal/nrf_ficr.h>
+#endif
+
 #define EVT_TO_STR(event)                                     \
     (event == NRF_COMP_EVENT_READY ? "NRF_COMP_EVENT_READY" : \
     (event == NRF_COMP_EVENT_DOWN  ? "NRF_COMP_EVENT_DOWN"  : \
@@ -74,6 +78,10 @@ static void comp_configure(nrfx_comp_config_t const * p_config)
                        NRF_COMP_INT_CROSS_MASK,
                        p_config->interrupt_priority,
                        false);
+#if defined(NRF54H20_XXAA)
+    uint32_t trim = nrf_ficr_global_comp_reftrim_get(NRF_FICR);
+    nrfy_comp_reftrim_set(NRF_COMP, trim);
+#endif
 }
 
 static void comp_execute_handler(nrf_comp_event_t event, uint32_t event_mask)

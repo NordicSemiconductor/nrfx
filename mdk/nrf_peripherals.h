@@ -66,8 +66,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #elif defined (NRF54L05_XXAA)
     #include "nrf54l05_peripherals.h"
 
-#elif defined (NRF54L09_ENGA_XXAA)
-    #include "nrf54l09_enga_peripherals.h"
+#elif defined (NRF54LV10A_ENGA_XXAA)
+    #include "nrf54lv10a_enga_peripherals.h"
 
 #elif defined (NRF54L10_XXAA)
     #include "nrf54l10_peripherals.h"
@@ -75,8 +75,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #elif defined (NRF54L15_XXAA)
     #include "nrf54l15_peripherals.h"
 
-#elif defined (NRF54L20_ENGA_XXAA)
-    #include "nrf54l20_enga_peripherals.h"
+#elif defined (NRF54LM20A_ENGA_XXAA)
+    #include "nrf54lm20a_enga_peripherals.h"
 
 #elif defined (NRF7120_ENGA_XXAA)
     #include "nrf7120_enga_peripherals.h"

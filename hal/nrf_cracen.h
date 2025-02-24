@@ -246,6 +246,9 @@ NRF_STATIC_INLINE void nrf_cracen_seedram_lock_enable_set(NRF_CRACEN_Type * p_re
 #elif defined(CRACEN_SEEDLOCK_ENABLE_Enabled)
     p_reg->SEEDLOCK = (enable ? CRACEN_SEEDLOCK_ENABLE_Enabled
                        : CRACEN_SEEDLOCK_ENABLE_Disabled) << CRACEN_SEEDLOCK_ENABLE_Pos;
+#elif defined(CRACEN_PROTECTEDRAMLOCK_ENABLE_Enabled)
+    p_reg->PROTECTEDRAMLOCK = (enable ? CRACEN_PROTECTEDRAMLOCK_ENABLE_Enabled
+                               : CRACEN_PROTECTEDRAMLOCK_ENABLE_Disabled) << CRACEN_PROTECTEDRAMLOCK_ENABLE_Pos;
 #else
     p_reg->KEYLOCK = (enable ? CRACEN_KEYLOCK_ENABLE_Enabled : CRACEN_KEYLOCK_ENABLE_Disabled)
                      << CRACEN_KEYLOCK_ENABLE_Pos;
@@ -260,6 +263,9 @@ NRF_STATIC_INLINE bool nrf_cracen_seedram_lock_check(NRF_CRACEN_Type const * p_r
 #elif defined(CRACEN_SEEDLOCK_ENABLE_Enabled)
     return p_reg->SEEDLOCK == (CRACEN_SEEDLOCK_ENABLE_Enabled
                                << CRACEN_SEEDLOCK_ENABLE_Pos);
+#elif defined(CRACEN_PROTECTEDRAMLOCK_ENABLE_Enabled)
+    return p_reg->PROTECTEDRAMLOCK == (CRACEN_PROTECTEDRAMLOCK_ENABLE_Enabled
+                                  << CRACEN_PROTECTEDRAMLOCK_ENABLE_Pos);
 #else
     return p_reg->KEYLOCK == (CRACEN_KEYLOCK_ENABLE_Enabled << CRACEN_KEYLOCK_ENABLE_Pos);
 #endif

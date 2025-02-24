@@ -1,4 +1,0 @@
-Sphinx<7, >5
-sphinx-ncs-theme<1.1
-breathe
-m2r2

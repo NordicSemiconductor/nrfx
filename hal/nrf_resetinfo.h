@@ -99,25 +99,25 @@ extern "C" {
 /** @brief Global reset reason mask. */
 typedef enum
 {
-    NRF_RESETINFO_RESETREAS_GLOBAL_POR_MASK       = RESETINFO_RESETREAS_GLOBAL_RESETPOR_Msk,  /**< Reset from power on reset. */
-    NRF_RESETINFO_RESETREAS_GLOBAL_PIN_MASK       = RESETINFO_RESETREAS_GLOBAL_RESETPIN_Msk,  /**< Reset from pin reset. */
-    NRF_RESETINFO_RESETREAS_GLOBAL_DOG_MASK       = RESETINFO_RESETREAS_GLOBAL_DOG_Msk,       /**< Reset from the SysCtrl watchdog timer. */
-    NRF_RESETINFO_RESETREAS_GLOBAL_CTRLAP_MASK    = RESETINFO_RESETREAS_GLOBAL_CTRLAP_Msk,    /**< Reset from CTRL-AP. */
-    NRF_RESETINFO_RESETREAS_GLOBAL_SECSREQ_MASK   = RESETINFO_RESETREAS_GLOBAL_SECSREQ_Msk,   /**< Reset due to secure domain system reset request. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_POR_MASK       = RESETINFO_RESETREAS_GLOBAL_RESETPORONLY_Msk,  /**< Reset from power on reset (reset reason POR or BOR). */
+    NRF_RESETINFO_RESETREAS_GLOBAL_PIN_MASK       = RESETINFO_RESETREAS_GLOBAL_RESETPIN_Msk,      /**< Reset from pin reset. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_DOG_MASK       = RESETINFO_RESETREAS_GLOBAL_DOG_Msk,           /**< Reset from the SysCtrl watchdog timer. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_CTRLAP_MASK    = RESETINFO_RESETREAS_GLOBAL_CTRLAP_Msk,        /**< Reset from CTRL-AP. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_SECSREQ_MASK   = RESETINFO_RESETREAS_GLOBAL_SECSREQ_Msk,       /**< Reset due to secure domain system reset request. */
 #if NRF_RESETINFO_HAS_MULTIPLE_SECWDT
-    NRF_RESETINFO_RESETREAS_GLOBAL_SECWDT0_MASK   = RESETINFO_RESETREAS_GLOBAL_SECWDT0_Msk,   /**< Reset due to secure domain watchdog 0 timer. */
-    NRF_RESETINFO_RESETREAS_GLOBAL_SECWDT1_MASK   = RESETINFO_RESETREAS_GLOBAL_SECWDT1_Msk,   /**< Reset due to secure domain watchdog 1 timer. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_SECWDT0_MASK   = RESETINFO_RESETREAS_GLOBAL_SECWDT0_Msk,       /**< Reset due to secure domain watchdog 0 timer. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_SECWDT1_MASK   = RESETINFO_RESETREAS_GLOBAL_SECWDT1_Msk,       /**< Reset due to secure domain watchdog 1 timer. */
 #else
-    NRF_RESETINFO_RESETREAS_GLOBAL_SECWDT0_MASK   = RESETINFO_RESETREAS_GLOBAL_SECWDT_Msk,    /**< Reset due to secure domain watchdog timer. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_SECWDT0_MASK   = RESETINFO_RESETREAS_GLOBAL_SECWDT_Msk,        /**< Reset due to secure domain watchdog timer. */
 #endif
-    NRF_RESETINFO_RESETREAS_GLOBAL_SECLOCKUP_MASK = RESETINFO_RESETREAS_GLOBAL_SECLOCKUP_Msk, /**< Reset due to secure domain lockup. */
-    NRF_RESETINFO_RESETREAS_GLOBAL_SECTAMPER_MASK = RESETINFO_RESETREAS_GLOBAL_SECTAMPER_Msk, /**< Reset due to secure domain tamper detected. */
-    NRF_RESETINFO_RESETREAS_GLOBAL_GPIO_MASK      = RESETINFO_RESETREAS_GLOBAL_OFF_Msk,       /**< Reset due to wakeup from System OFF triggered by DETECT signal from GPIO. */
-    NRF_RESETINFO_RESETREAS_GLOBAL_LPCOMP_MASK    = RESETINFO_RESETREAS_GLOBAL_LPCOMP_Msk,    /**< Reset due to wakeup from System OFF triggered by LPCOMP. */
-    NRF_RESETINFO_RESETREAS_GLOBAL_DIF_MASK       = RESETINFO_RESETREAS_GLOBAL_DIF_Msk,       /**< Reset due to wakeup from System OFF triggered by entering debug interface mode. */
-    NRF_RESETINFO_RESETREAS_GLOBAL_GRTC_MASK      = RESETINFO_RESETREAS_GLOBAL_GRTC_Msk,      /**< Reset due to wakeup from System OFF triggered by GRTC interrupt. */
-    NRF_RESETINFO_RESETREAS_GLOBAL_NFC_MASK       = RESETINFO_RESETREAS_GLOBAL_NFC_Msk,       /**< Reset due to wakeup from System OFF triggered by NRF field detection in sense mode. */
-    NRF_RESETINFO_RESETREAS_GLOBAL_VUSB_MASK      = RESETINFO_RESETREAS_GLOBAL_VUSB_Msk,      /**< Reset due to wakeup from System OFF triggered by VBUS rising into valid range. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_SECLOCKUP_MASK = RESETINFO_RESETREAS_GLOBAL_SECLOCKUP_Msk,     /**< Reset due to secure domain lockup. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_SECTAMPER_MASK = RESETINFO_RESETREAS_GLOBAL_SECTAMPER_Msk,     /**< Reset due to secure domain tamper detected. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_GPIO_MASK      = RESETINFO_RESETREAS_GLOBAL_OFF_Msk,           /**< Reset due to wakeup from System OFF triggered by DETECT signal from GPIO. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_LPCOMP_MASK    = RESETINFO_RESETREAS_GLOBAL_LPCOMP_Msk,        /**< Reset due to wakeup from System OFF triggered by LPCOMP. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_DIF_MASK       = RESETINFO_RESETREAS_GLOBAL_DIF_Msk,           /**< Reset due to wakeup from System OFF triggered by entering debug interface mode. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_GRTC_MASK      = RESETINFO_RESETREAS_GLOBAL_GRTC_Msk,          /**< Reset due to wakeup from System OFF triggered by GRTC interrupt. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_NFC_MASK       = RESETINFO_RESETREAS_GLOBAL_NFC_Msk,           /**< Reset due to wakeup from System OFF triggered by NRF field detection in sense mode. */
+    NRF_RESETINFO_RESETREAS_GLOBAL_VUSB_MASK      = RESETINFO_RESETREAS_GLOBAL_VUSB_Msk,          /**< Reset due to wakeup from System OFF triggered by VBUS rising into valid range. */
 } nrf_resetinfo_resetreas_global_mask_t;
 
 /** @brief Local reset reason mask. */

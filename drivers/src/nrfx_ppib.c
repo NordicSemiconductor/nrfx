@@ -79,7 +79,7 @@
 
 #endif
 
-#if defined(NRF54L20_ENGA_XXAA)
+#if defined(NRF54LM20A_ENGA_XXAA)
 
 #if !defined(NRFX_PPIB_INTERCONNECT_02_03_CHANNELS_USED)
 /**
@@ -151,7 +151,7 @@ static ppib_control_block_t m_cb[NRFX_PPIB_INTERCONNECT_COUNT] = {
     _NRFX_PPIBC_CB_INITIALIZER(22, 30)
 #endif
 #endif
-#if defined(NRF54L20_ENGA_XXAA)
+#if defined(NRF54LM20A_ENGA_XXAA)
 #if NRFX_CHECK(NRFX_PPIB02_ENABLED) && NRFX_CHECK(NRFX_PPIB03_ENABLED)
     _NRFX_PPIBC_CB_INITIALIZER(02, 03)
 #endif

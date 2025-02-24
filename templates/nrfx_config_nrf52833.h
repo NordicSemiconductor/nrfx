@@ -1327,6 +1327,15 @@
 #endif
 
 /**
+ * @brief NRFX_TWIM_NRF52_ANOMALY_219_WORKAROUND_ENABLED - Enables nRF52 Anomaly 219 workaround for TWIM.
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_TWIM_NRF52_ANOMALY_219_WORKAROUND_ENABLED
+#define NRFX_TWIM_NRF52_ANOMALY_219_WORKAROUND_ENABLED 0
+#endif
+
+/**
  * @brief NRFX_TWIM_CONFIG_LOG_LEVEL
  *
  * Integer value.

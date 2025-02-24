@@ -1,7 +1,0 @@
-Drivers
-=======
-
-.. toctree::
-    :glob:
-
-    **/index
