@@ -57,6 +57,7 @@ typedef enum {
   VPRCLIC_20_IRQn                        = 20,       /*!< 20 VPRCLIC_20                                                        */
   VPRCLIC_21_IRQn                        = 21,       /*!< 21 VPRCLIC_21                                                        */
   VPRCLIC_22_IRQn                        = 22,       /*!< 22 VPRCLIC_22                                                        */
+  VPRTIM_IRQn                            = 32,       /*!< 32 VPRTIM                                                            */
   SPU00_IRQn                             = 64,       /*!< 64 SPU00                                                             */
   MPC00_IRQn                             = 65,       /*!< 65 MPC00                                                             */
   AAR00_CCM00_IRQn                       = 74,       /*!< 74 AAR00_CCM00                                                       */
@@ -126,6 +127,7 @@ typedef enum {
   LFXO_IRQn                              = 290,      /*!< 290 LFXO                                                             */
   LFRC_IRQn                              = 291,      /*!< 291 LFRC                                                             */
   HFXO64M_IRQn                           = 292,      /*!< 292 HFXO64M                                                          */
+  HVBUCK_IRQn                            = 301,      /*!< 301 HVBUCK                                                           */
 } IRQn_Type;
 
 /* ==================================================== Interrupt Aliases ==================================================== */
@@ -135,12 +137,16 @@ typedef enum {
 #define CCM00_IRQHandler              AAR00_CCM00_IRQHandler
 #define SPIM00_IRQn                   SERIAL00_IRQn
 #define SPIM00_IRQHandler             SERIAL00_IRQHandler
+#define SPIS00_IRQn                   SERIAL00_IRQn
+#define SPIS00_IRQHandler             SERIAL00_IRQHandler
 #define UARTE00_IRQn                  SERIAL00_IRQn
 #define UARTE00_IRQHandler            SERIAL00_IRQHandler
 #define CPUC_IRQn                     CM33SS_IRQn
 #define CPUC_IRQHandler               CM33SS_IRQHandler
 #define SPIM01_IRQn                   SERIAL01_IRQn
 #define SPIM01_IRQHandler             SERIAL01_IRQHandler
+#define SPIS01_IRQn                   SERIAL01_IRQn
+#define SPIS01_IRQHandler             SERIAL01_IRQHandler
 #define SPIM20_IRQn                   SERIAL20_IRQn
 #define SPIM20_IRQHandler             SERIAL20_IRQHandler
 #define SPIS20_IRQn                   SERIAL20_IRQn

@@ -352,7 +352,7 @@ _vectors:
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_HANDLER   IPCT120_0_IRQHandler
   ISR_RESERVED_DUMMY                           /* Reserved */
-  ISR_HANDLER   I3C120_IRQHandler
+  ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_HANDLER   VPR121_IRQHandler
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */
@@ -363,7 +363,7 @@ _vectors:
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */
-  ISR_HANDLER   I3C121_IRQHandler
+  ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */

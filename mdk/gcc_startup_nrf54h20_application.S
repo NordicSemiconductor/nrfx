@@ -301,7 +301,7 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   IPCT120_0_IRQHandler
     .long   0                           /*Reserved */
-    .long   I3C120_IRQHandler
+    .long   0                           /*Reserved */
     .long   VPR121_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -312,7 +312,7 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
-    .long   I3C121_IRQHandler
+    .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -820,11 +820,9 @@ Default_Handler:
     IRQ  USBHS_IRQHandler
     IRQ  EXMIF_IRQHandler
     IRQ  IPCT120_0_IRQHandler
-    IRQ  I3C120_IRQHandler
     IRQ  VPR121_IRQHandler
     IRQ  CAN120_IRQHandler
     IRQ  MVDMA120_IRQHandler
-    IRQ  I3C121_IRQHandler
     IRQ  TIMER120_IRQHandler
     IRQ  TIMER121_IRQHandler
     IRQ  PWM120_IRQHandler

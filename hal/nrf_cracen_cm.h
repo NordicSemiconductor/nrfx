@@ -58,12 +58,12 @@ typedef enum
 /** @brief CRACEN CryptoMaster interrupts' masks. */
 typedef enum
 {
-    NRF_CRACEN_CM_INT_FETCH_BLOCK_END_MASK =  0x1, ///< Interrupt on DMA fetch end of block (if enabled in the descriptor, for indirect mode only).
-    NRF_CRACEN_CM_INT_FETCH_STOPPED_MASK   =  0x2, ///< Interrupt on DMA fetch stopped/ended.
-    NRF_CRACEN_CM_INT_FETCH_ERROR_MASK     =  0x4, ///< Interrupt on DMA fetch bus error.
-    NRF_CRACEN_CM_INT_PUSH_BLOCK_END_MASK  =  0x8, ///< Interrupt on DMA push end of block (if enabled in the descriptor, for indirect mode only).
-    NRF_CRACEN_CM_INT_PUSH_STOPPED_MASK    = 0x10, ///< Interrupt on DMA push stopped/ended.
-    NRF_CRACEN_CM_INT_PUSH_ERROR_MASK      = 0x20, ///< Interrupt on DMA push bus error.
+    NRF_CRACEN_CM_INT_FETCH_BLOCK_END_MASK = CRACENCORE_CRYPTMSTRDMA_INTEN_FETCHERBLOCKEND_Msk, ///< Interrupt on DMA fetch end of block (if enabled in the descriptor, for indirect mode only).
+    NRF_CRACEN_CM_INT_FETCH_STOPPED_MASK   = CRACENCORE_CRYPTMSTRDMA_INTEN_FETCHERSTOPPED_Msk,  ///< Interrupt on DMA fetch stopped/ended.
+    NRF_CRACEN_CM_INT_FETCH_ERROR_MASK     = CRACENCORE_CRYPTMSTRDMA_INTEN_FETCHERERROR_Msk,    ///< Interrupt on DMA fetch bus error.
+    NRF_CRACEN_CM_INT_PUSH_BLOCK_END_MASK  = CRACENCORE_CRYPTMSTRDMA_INTEN_PUSHERBLOCKEND_Msk,  ///< Interrupt on DMA push end of block (if enabled in the descriptor, for indirect mode only).
+    NRF_CRACEN_CM_INT_PUSH_STOPPED_MASK    = CRACENCORE_CRYPTMSTRDMA_INTEN_PUSHERSTOPPED_Msk,   ///< Interrupt on DMA push stopped/ended.
+    NRF_CRACEN_CM_INT_PUSH_ERROR_MASK      = CRACENCORE_CRYPTMSTRDMA_INTEN_PUSHERERROR_Msk,     ///< Interrupt on DMA push bus error.
 } nrf_cracen_cm_int_mask_t;
 
 /** @brief CRACEN CryptoMaster status busy mask. */

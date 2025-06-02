@@ -282,7 +282,7 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
+    .long   VPRTIM_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -845,6 +845,7 @@ Default_Handler:
     .set    \handler, Default_Handler
     .endm
 
+    IRQ  VPRTIM_IRQHandler
     IRQ  VPRCLIC_16_IRQHandler
     IRQ  VPRCLIC_17_IRQHandler
     IRQ  VPRCLIC_18_IRQHandler

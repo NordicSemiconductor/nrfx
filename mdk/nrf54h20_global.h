@@ -74,8 +74,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_FICR_NS_BASE                  0x0FFFE000UL
 #define NRF_USBHSCORE0_NS_BASE            0x2F700000UL
 #define NRF_USBHSCORE0_S_BASE             0x2F700000UL
-#define NRF_I3CCORE120_NS_BASE            0x2FBE0000UL
-#define NRF_I3CCORE121_NS_BASE            0x2FBE1000UL
 #define NRF_MCAN120_NS_BASE               0x2FBEF800UL
 #define NRF_DMU120_NS_BASE                0x2FBEFBC0UL
 #define NRF_STMDATA_NS_BASE               0xA0000000UL
@@ -115,8 +113,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_IPCT120_NS_BASE               0x4F8D1000UL
 #define NRF_IPCT120_S_BASE                0x5F8D1000UL
 #define NRF_MUTEX120_NS_BASE              0x4F8D2000UL
-#define NRF_I3C120_NS_BASE                0x4F8D3000UL
-#define NRF_I3C120_S_BASE                 0x5F8D3000UL
 #define NRF_VPR121_NS_BASE                0x4F8D4000UL
 #define NRF_VPR121_S_BASE                 0x5F8D4000UL
 #define NRF_CAN120_NS_BASE                0x4F8D8000UL
@@ -125,8 +121,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_MVDMA120_S_BASE               0x5F8D9000UL
 #define NRF_RAMC122_NS_BASE               0x4F8DA000UL
 #define NRF_RAMC122_S_BASE                0x5F8DA000UL
-#define NRF_I3C121_NS_BASE                0x4F8DE000UL
-#define NRF_I3C121_S_BASE                 0x5F8DE000UL
 #define NRF_DPPIC120_NS_BASE              0x4F8E1000UL
 #define NRF_DPPIC120_S_BASE               0x5F8E1000UL
 #define NRF_TIMER120_NS_BASE              0x4F8E2000UL
@@ -316,8 +310,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_FICR_NS                       ((NRF_FICR_Type*)                     NRF_FICR_NS_BASE)
 #define NRF_USBHSCORE0_NS                 ((NRF_USBHSCORE_Type*)                NRF_USBHSCORE0_NS_BASE)
 #define NRF_USBHSCORE0_S                  ((NRF_USBHSCORE_Type*)                NRF_USBHSCORE0_S_BASE)
-#define NRF_I3CCORE120_NS                 ((NRF_I3CCORE_Type*)                  NRF_I3CCORE120_NS_BASE)
-#define NRF_I3CCORE121_NS                 ((NRF_I3CCORE_Type*)                  NRF_I3CCORE121_NS_BASE)
 #define NRF_MCAN120_NS                    ((NRF_MCAN_Type*)                     NRF_MCAN120_NS_BASE)
 #define NRF_DMU120_NS                     ((NRF_DMU_Type*)                      NRF_DMU120_NS_BASE)
 #define NRF_STMDATA_NS                    ((NRF_STMDATA_Type*)                  NRF_STMDATA_NS_BASE)
@@ -357,8 +349,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_IPCT120_NS                    ((NRF_IPCT_Type*)                     NRF_IPCT120_NS_BASE)
 #define NRF_IPCT120_S                     ((NRF_IPCT_Type*)                     NRF_IPCT120_S_BASE)
 #define NRF_MUTEX120_NS                   ((NRF_MUTEX_Type*)                    NRF_MUTEX120_NS_BASE)
-#define NRF_I3C120_NS                     ((NRF_I3C_Type*)                      NRF_I3C120_NS_BASE)
-#define NRF_I3C120_S                      ((NRF_I3C_Type*)                      NRF_I3C120_S_BASE)
 #define NRF_VPR121_NS                     ((NRF_VPR_Type*)                      NRF_VPR121_NS_BASE)
 #define NRF_VPR121_S                      ((NRF_VPR_Type*)                      NRF_VPR121_S_BASE)
 #define NRF_CAN120_NS                     ((NRF_CAN_Type*)                      NRF_CAN120_NS_BASE)
@@ -367,8 +357,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_MVDMA120_S                    ((NRF_MVDMA_Type*)                    NRF_MVDMA120_S_BASE)
 #define NRF_RAMC122_NS                    ((NRF_RAMC_Type*)                     NRF_RAMC122_NS_BASE)
 #define NRF_RAMC122_S                     ((NRF_RAMC_Type*)                     NRF_RAMC122_S_BASE)
-#define NRF_I3C121_NS                     ((NRF_I3C_Type*)                      NRF_I3C121_NS_BASE)
-#define NRF_I3C121_S                      ((NRF_I3C_Type*)                      NRF_I3C121_S_BASE)
 #define NRF_DPPIC120_NS                   ((NRF_DPPIC_Type*)                    NRF_DPPIC120_NS_BASE)
 #define NRF_DPPIC120_S                    ((NRF_DPPIC_Type*)                    NRF_DPPIC120_S_BASE)
 #define NRF_TIMER120_NS                   ((NRF_TIMER_Type*)                    NRF_TIMER120_NS_BASE)
@@ -558,8 +546,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifdef NRF_TRUSTZONE_NONSECURE                       /*!< Remap NRF_X_NS instances to NRF_X symbol for ease of use.            */
   #define NRF_FICR                                NRF_FICR_NS
   #define NRF_USBHSCORE0                          NRF_USBHSCORE0_NS
-  #define NRF_I3CCORE120                          NRF_I3CCORE120_NS
-  #define NRF_I3CCORE121                          NRF_I3CCORE121_NS
   #define NRF_MCAN120                             NRF_MCAN120_NS
   #define NRF_DMU120                              NRF_DMU120_NS
   #define NRF_STMDATA                             NRF_STMDATA_NS
@@ -588,12 +574,10 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_VPR120                              NRF_VPR120_NS
   #define NRF_IPCT120                             NRF_IPCT120_NS
   #define NRF_MUTEX120                            NRF_MUTEX120_NS
-  #define NRF_I3C120                              NRF_I3C120_NS
   #define NRF_VPR121                              NRF_VPR121_NS
   #define NRF_CAN120                              NRF_CAN120_NS
   #define NRF_MVDMA120                            NRF_MVDMA120_NS
   #define NRF_RAMC122                             NRF_RAMC122_NS
-  #define NRF_I3C121                              NRF_I3C121_NS
   #define NRF_DPPIC120                            NRF_DPPIC120_NS
   #define NRF_TIMER120                            NRF_TIMER120_NS
   #define NRF_TIMER121                            NRF_TIMER121_NS
@@ -688,8 +672,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #else                                                /*!< Remap NRF_X_S instances to NRF_X symbol for ease of use.             */
   #define NRF_FICR                                NRF_FICR_NS
   #define NRF_USBHSCORE0                          NRF_USBHSCORE0_S
-  #define NRF_I3CCORE120                          NRF_I3CCORE120_NS
-  #define NRF_I3CCORE121                          NRF_I3CCORE121_NS
   #define NRF_MCAN120                             NRF_MCAN120_NS
   #define NRF_DMU120                              NRF_DMU120_NS
   #define NRF_STMDATA                             NRF_STMDATA_S
@@ -718,12 +700,10 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_VPR120                              NRF_VPR120_S
   #define NRF_IPCT120                             NRF_IPCT120_S
   #define NRF_MUTEX120                            NRF_MUTEX120_NS
-  #define NRF_I3C120                              NRF_I3C120_S
   #define NRF_VPR121                              NRF_VPR121_S
   #define NRF_CAN120                              NRF_CAN120_S
   #define NRF_MVDMA120                            NRF_MVDMA120_S
   #define NRF_RAMC122                             NRF_RAMC122_S
-  #define NRF_I3C121                              NRF_I3C121_S
   #define NRF_DPPIC120                            NRF_DPPIC120_S
   #define NRF_TIMER120                            NRF_TIMER120_S
   #define NRF_TIMER121                            NRF_TIMER121_S

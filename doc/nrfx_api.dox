@@ -71,6 +71,8 @@
 
 @defgroup nrf_mpu MPU
 
+@defgroup nrf_mramc MRAMC
+
 @defgroup nrf_mutex MUTEX
 
 @defgroup nrf_mvdma MVDMA

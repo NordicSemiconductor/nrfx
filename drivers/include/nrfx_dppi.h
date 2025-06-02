@@ -239,6 +239,20 @@ nrfx_err_t nrfx_dppi_group_enable(nrfx_dppi_t const *      p_instance,
 nrfx_err_t nrfx_dppi_group_disable(nrfx_dppi_t const *      p_instance,
                                    nrf_dppi_channel_group_t group);
 
+/**
+ * @brief Function for getting a driver instance for DPPI located on the same bus
+ *        as the specified peripheral.
+ *
+ * @param[in]  peripheral_addr Address of a peripheral.
+ * @param[out] p_instance      Pointer to the DPPI driver instance structure
+ *                             to be filled.
+ *
+ * @retval NRFX_SUCCESS             DPPI driver instance was found.
+ * @retval NRFX_ERROR_INVALID_PARAM No DPPI driver instance was found
+ *                                  for a given peripheral address.
+ */
+nrfx_err_t nrfx_dppi_periph_get(uint32_t peripheral_addr, nrfx_dppi_t * p_instance);
+
 #else
 
 #if !defined(NRF_DPPIC_INDEX)

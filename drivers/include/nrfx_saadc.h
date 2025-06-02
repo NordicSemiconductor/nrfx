@@ -83,14 +83,24 @@ extern "C" {
                          (.resistor_p = NRF_SAADC_RESISTOR_DISABLED,   \
                           .resistor_n = NRF_SAADC_RESISTOR_DISABLED,), \
                          ())                                           \
-        .gain       = NRF_SAADC_GAIN1,                                 \
+        NRFX_COND_CODE_1(NRF_SAADC_HAS_CH_GAIN,                        \
+                         (.gain = NRF_SAADC_GAIN1,),                   \
+                         ())                                           \
         .reference  = NRF_SAADC_REFERENCE_INTERNAL,                    \
         .acq_time   = NRFX_SAADC_DEFAULT_ACQTIME,                      \
+        .mode       = NRF_SAADC_MODE_SINGLE_ENDED,                     \
+        NRFX_COND_CODE_1(NRF_SAADC_HAS_CH_BURST,                       \
+                         (.burst = NRF_SAADC_BURST_DISABLED,),         \
+                         ())                                           \
+        NRFX_COND_CODE_1(NRF_SAADC_HAS_CH_CHOPPING,                    \
+                         (.chopping = NRF_SAADC_CHOPPING_DISABLED,),   \
+                         ())                                           \
+        NRFX_COND_CODE_1(NRF_SAADC_HAS_CH_HIGHSPEED,                   \
+                         (.highspeed = NRF_SAADC_HIGHSPEED_DISABLED,), \
+                         ())                                           \
         NRFX_COND_CODE_1(NRF_SAADC_HAS_CONV_TIME,                      \
                          (.conv_time = NRFX_SAADC_DEFAULT_CONV_TIME,), \
                          ())                                           \
-        .mode       = NRF_SAADC_MODE_SINGLE_ENDED,                     \
-        .burst      = NRF_SAADC_BURST_DISABLED,                        \
     },                                                                 \
     .pin_p          = (nrf_saadc_input_t)_pin_p,                       \
     .pin_n          = NRF_SAADC_INPUT_DISABLED,                        \
@@ -121,50 +131,52 @@ extern "C" {
                          (.resistor_p = NRF_SAADC_RESISTOR_DISABLED,    \
                           .resistor_n = NRF_SAADC_RESISTOR_DISABLED,),  \
                          ())                                            \
-        .gain       = NRF_SAADC_GAIN1,                                  \
+        NRFX_COND_CODE_1(NRF_SAADC_HAS_CH_GAIN,                         \
+                         (.gain = NRF_SAADC_GAIN1,),                    \
+                         ())                                            \
         .reference  = NRF_SAADC_REFERENCE_INTERNAL,                     \
         .acq_time   = NRFX_SAADC_DEFAULT_ACQTIME,                       \
+        .mode       = NRF_SAADC_MODE_DIFFERENTIAL,                      \
+        NRFX_COND_CODE_1(NRF_SAADC_HAS_CH_BURST,                        \
+                         (.burst = NRF_SAADC_BURST_DISABLED,),          \
+                         ())                                            \
+        NRFX_COND_CODE_1(NRF_SAADC_HAS_CH_CHOPPING,                     \
+                         (.chopping = NRF_SAADC_CHOPPING_DISABLED,),    \
+                         ())                                            \
+        NRFX_COND_CODE_1(NRF_SAADC_HAS_CH_HIGHSPEED,                    \
+                         (.highspeed = NRF_SAADC_HIGHSPEED_DISABLED,),  \
+                         ())                                            \
         NRFX_COND_CODE_1(NRF_SAADC_HAS_CONV_TIME,                       \
                          (.conv_time = NRFX_SAADC_DEFAULT_CONV_TIME,),  \
                          ())                                            \
-        .mode       = NRF_SAADC_MODE_DIFFERENTIAL,                      \
-        .burst      = NRF_SAADC_BURST_DISABLED,                         \
     },                                                                  \
     .pin_p          = (nrf_saadc_input_t)_pin_p,                        \
     .pin_n          = (nrf_saadc_input_t)_pin_n,                        \
     .channel_index  = _index,                                           \
 }
 
-#if (NRF_SAADC_8BIT_SAMPLE_WIDTH == 8) || defined(__NRFX_DOXYGEN__)
+#if NRFX_API_VER_AT_LEAST(3, 12, 0) || defined(__NRFX_DOXYGEN__)
 /**
- * @brief Macro for getting number of bytes needed to store specified number of SAADC samples
- *        for given resolution of the SAADC.
+ * @brief Macro for getting number of bytes needed to store specified number of SAADC samples.
  *
- * @param[in] _resolution Resolution expressed as @ref nrf_saadc_resolution_t.
  * @param[in] _samples    Number of samples.
  *
  * @return Number of bytes needed to store specified number of samples.
  */
-#define NRFX_SAADC_SAMPLES_TO_BYTES(_resolution, _samples) \
-    ((_resolution) == NRF_SAADC_RESOLUTION_8BIT ? _samples : (_samples * 2))
-#else
-#define NRFX_SAADC_SAMPLES_TO_BYTES(_resolution, _samples) (_samples)
-#endif
+#define NRFX_SAADC_SAMPLES_TO_BYTES(_samples) (_samples * 2)
 
-#if (NRF_SAADC_8BIT_SAMPLE_WIDTH == 8) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Macro for getting specified SAADC sample from the filled buffer.
  *
- * @param[in] _resolution Resolution expressed as @ref nrf_saadc_resolution_t.
  * @param[in] _samples    Pointer to the buffer filled with SAADC samples.
  * @param[in] _index      Sample index.
  *
  * @return Specified sample.
  */
-#define NRFX_SAADC_SAMPLE_GET(_resolution, _samples, _index) \
-    ((_resolution) == NRF_SAADC_RESOLUTION_8BIT ? (((int8_t *) (_samples))[(_index)]) : \
-                                                  (((int16_t *)(_samples))[(_index)]))
+#define NRFX_SAADC_SAMPLE_GET(_samples, _index) (((int16_t *)(_samples))[(_index)])
+
 #else
+#define NRFX_SAADC_SAMPLES_TO_BYTES(_resolution, _samples) (_samples * 2)
 #define NRFX_SAADC_SAMPLE_GET(_resolution, _samples, _index) (((int16_t *)(_samples))[(_index)])
 #endif
 
@@ -488,4 +500,3 @@ void nrfx_saadc_irq_handler(void);
 #endif
 
 #endif // NRFX_SAADC_H__
-

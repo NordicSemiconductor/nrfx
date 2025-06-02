@@ -83,6 +83,12 @@ void SystemInit(void)
         #endif
 
         #if !defined(NRF_TRUSTZONE_NONSECURE) && defined(__ARM_FEATURE_CMSE)
+            #if defined (NRF54LM20A_ENGA_XXAA) || defined (NRF54LV10A_ENGA_XXAA)
+                /* Dummy-read KMU to starts its boot preparations. This operation should be at
+                   the beginning of SystemInit to allow KMU to run to completion during the function call */
+                NRF_KMU->STATUS;
+            #endif
+
             #ifndef NRF_SKIP_TAMPC_SETUP
                 nrf54l_handle_approtect();
             #endif
@@ -235,6 +241,16 @@ void SystemInit(void)
                 NRF_GLITCHDET_S->CONFIG = (GLITCHDET_CONFIG_ENABLE_Disable << GLITCHDET_CONFIG_ENABLE_Pos);
             #endif
         #endif
+
+        #if !defined(NRF_TRUSTZONE_NONSECURE) && defined(__ARM_FEATURE_CMSE) && !defined (NRF_SKIP_KMU_WAIT_FOR_READY)
+            #if defined (NRF54LM20A_ENGA_XXAA) || defined (NRF54LV10A_ENGA_XXAA)
+                /* KMU is ready by now, but to be sure allow it to run to completion */
+                while(NRF_KMU->STATUS == KMU_STATUS_STATUS_Busy)
+                {
+                }
+            #endif
+        #endif
+
     #endif
 }
 

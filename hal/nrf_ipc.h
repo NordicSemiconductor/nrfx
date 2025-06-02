@@ -262,6 +262,18 @@ NRF_STATIC_INLINE void nrf_ipc_subscribe_set(NRF_IPC_Type * p_reg,
 NRF_STATIC_INLINE void nrf_ipc_subscribe_clear(NRF_IPC_Type * p_reg, nrf_ipc_task_t task);
 
 /**
+ * @brief Function for getting the subscribe configuration for a given
+ *        IPC task.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] task  Task for which to read the configuration.
+ *
+ * @return IPC subscribe configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ipc_subscribe_get(NRF_IPC_Type const * p_reg,
+                                                 nrf_ipc_task_t       task);
+
+/**
  * @brief Function for setting the DPPI publish configuration for a given
  *        IPC event.
  *
@@ -281,6 +293,18 @@ NRF_STATIC_INLINE void nrf_ipc_publish_set(NRF_IPC_Type *  p_reg,
  * @param[in] event Event for which to clear the configuration.
  */
 NRF_STATIC_INLINE void nrf_ipc_publish_clear(NRF_IPC_Type * p_reg, nrf_ipc_event_t event);
+
+/**
+ * @brief Function for getting the publish configuration for a given
+ *        IPC event.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] event Event for which to read the configuration.
+ *
+ * @return IPC publish configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ipc_publish_get(NRF_IPC_Type const * p_reg,
+                                               nrf_ipc_event_t      event);
 
 /**
  * @brief Function for setting the configuration of the specified send task.
@@ -431,6 +455,12 @@ NRF_STATIC_INLINE void nrf_ipc_subscribe_set(NRF_IPC_Type * p_reg,
             ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
 }
 
+NRF_STATIC_INLINE uint32_t nrf_ipc_subscribe_get(NRF_IPC_Type const * p_reg,
+                                                 nrf_ipc_task_t       task)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) task + 0x80uL));
+}
+
 NRF_STATIC_INLINE void nrf_ipc_subscribe_clear(NRF_IPC_Type * p_reg, nrf_ipc_task_t task)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
@@ -447,6 +477,12 @@ NRF_STATIC_INLINE void nrf_ipc_publish_set(NRF_IPC_Type *  p_reg,
 NRF_STATIC_INLINE void nrf_ipc_publish_clear(NRF_IPC_Type *  p_reg, nrf_ipc_event_t event)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) = 0;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_ipc_publish_get(NRF_IPC_Type const * p_reg,
+                                               nrf_ipc_event_t      event)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) event + 0x80uL));
 }
 
 NRF_STATIC_INLINE void nrf_ipc_send_config_set(NRF_IPC_Type * p_reg,

@@ -175,6 +175,14 @@ void SystemInit(void)
                 // Configure trace port speed
                 NRF_TAD_S->TRACEPORTSPEED = TAD_TRACEPORTSPEED_TRACEPORTSPEED_DIV2;
             #endif
+
+            #if !defined(NRF_SKIP_RESET_FLPR)
+                // Assert a sync reset in FLPR
+                NRF_VPR00_NS->DEBUGIF.DMCONTROL = (VPR_DEBUGIF_DMCONTROL_NDMRESET_Active << VPR_DEBUGIF_DMCONTROL_NDMRESET_Pos) | (VPR_DEBUGIF_DMCONTROL_DMACTIVE_Enabled << VPR_DEBUGIF_DMCONTROL_DMACTIVE_Pos);
+
+                // De-assert a sync reset in FLPR
+                NRF_VPR00_NS->DEBUGIF.DMCONTROL = (VPR_DEBUGIF_DMCONTROL_NDMRESET_Inactive << VPR_DEBUGIF_DMCONTROL_NDMRESET_Pos) | (VPR_DEBUGIF_DMCONTROL_DMACTIVE_Disabled << VPR_DEBUGIF_DMCONTROL_DMACTIVE_Pos);
+            #endif
         #endif
 
         #if !defined(NRF_TRUSTZONE_NONSECURE) && !defined (NRF_SKIP_GLITCHDETECTOR_DISABLE)

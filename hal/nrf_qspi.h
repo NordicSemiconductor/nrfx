@@ -681,6 +681,16 @@ NRF_STATIC_INLINE void nrf_qspi_cinstr_long_transfer_continue(NRF_QSPI_Type *   
  * @param[in] enable True if XIP is to be enabled, false otherwise.
  */
 NRF_STATIC_INLINE void nrf_qspi_xip_set(NRF_QSPI_Type * p_reg, bool enable);
+
+/**
+ * @brief Function for checking whether Execute in Place (XIP) operation is enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval true  XIP is enabled.
+ * @retval false XIP is not enabled.
+ */
+NRF_STATIC_INLINE bool nrf_qspi_xip_check(NRF_QSPI_Type const * p_reg);
 #endif
 
 #if NRF_QSPI_HAS_XIP_ENC
@@ -781,11 +791,13 @@ NRF_STATIC_INLINE void nrf_qspi_enable(NRF_QSPI_Type * p_reg)
 
 NRF_STATIC_INLINE void nrf_qspi_disable(NRF_QSPI_Type * p_reg)
 {
+#if NRFX_CHECK(NRF52_ERRATA_122_ENABLE_WORKAROUND)
     if (nrf52_errata_122())
     {
         // Workaround for anomaly 122: "QSPI: QSPI uses current after being disabled".
         *(volatile uint32_t *)0x40029054ul = 1ul;
     }
+#endif
     p_reg->ENABLE = (QSPI_ENABLE_ENABLE_Disabled << QSPI_ENABLE_ENABLE_Pos);
 }
 
@@ -1078,6 +1090,11 @@ NRF_STATIC_INLINE void nrf_qspi_xip_set(NRF_QSPI_Type * p_reg, bool enable)
 {
     p_reg->XIPEN = (enable ? QSPI_XIPEN_XIPEN_Enable << QSPI_XIPEN_XIPEN_Pos
                            : QSPI_XIPEN_XIPEN_Disable << QSPI_XIPEN_XIPEN_Pos);
+}
+
+NRF_STATIC_INLINE bool nrf_qspi_xip_check(NRF_QSPI_Type const * p_reg)
+{
+    return (p_reg->XIPEN >> QSPI_XIPEN_XIPEN_Pos) == QSPI_XIPEN_XIPEN_Enable;
 }
 #endif
 

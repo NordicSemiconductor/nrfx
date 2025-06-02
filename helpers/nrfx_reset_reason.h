@@ -97,7 +97,7 @@ extern "C" {
 #endif
 
 #if (defined(NRF_POWER) && NRF_POWER_HAS_RESETREAS_NFC) ||      \
-    (defined(NRF_RESET) && defined(RESET_RESETREAS_NFC_Msk)) || \
+    (defined(NRF_RESET) && NRF_RESET_HAS_NFC_RESET) || \
     (defined(NRF_RESETINFO)) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether NFC reset reason is present. */
 #define NRFX_RESET_REASON_HAS_NFC 1
@@ -188,8 +188,10 @@ typedef enum
     /**< Force off reset from application core detected. */
     NRFX_RESET_REASON_MFORCEOFF_MASK    = NRF_RESET_RESETREAS_MFORCEOFF_MASK,
 #endif
+#if NRFX_RESET_REASON_HAS_NFC
     /**< Reset after wakeup from System OFF mode due to NFC field being detected. */
     NRFX_RESET_REASON_NFC_MASK          = NRF_RESET_RESETREAS_NFC_MASK,
+#endif
     /**< Reset from application watchdog timer 1 detected. */
     NRFX_RESET_REASON_DOG1_MASK         = NRF_RESET_RESETREAS_DOG1_MASK,
 #if NRFX_RESET_REASON_HAS_VBUS

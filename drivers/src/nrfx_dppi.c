@@ -323,6 +323,8 @@ static dppic_control_block_t m_cb[NRFX_DPPI_ENABLED_COUNT] = {
     NRFX_FOREACH_ENABLED(DPPI, _NRFX_DPPIC_CB_INITIALIZER, (), ())
 };
 
+#define _NRFX_DPPIC_LIST_INSTANCES(periph_name, prefix, idx, _) NRFX_DPPI_INSTANCE(prefix##idx),
+
 static void dppi_free(nrfx_dppi_t const * p_instance)
 {
     dppic_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
@@ -515,6 +517,31 @@ static nrfx_err_t dppi_group_disable(nrfx_dppi_t const *      p_instance,
     }
     NRFX_LOG_INFO("Function: %s, error code: %s.", __func__, NRFX_LOG_ERROR_STRING_GET(err_code));
     return err_code;
+}
+
+nrfx_err_t nrfx_dppi_periph_get(uint32_t peripheral_addr, nrfx_dppi_t * p_instance)
+{
+    static const nrfx_dppi_t dppi_list[NRFX_DPPI_ENABLED_COUNT] =
+    {
+        NRFX_FOREACH_ENABLED(DPPI, _NRFX_DPPIC_LIST_INSTANCES, (), ())
+    };
+
+#if NRF_DPPI_HAS_APB_MAPPING
+    for (uint32_t i = 0; i < NRFX_DPPI_ENABLED_COUNT; i++)
+    {
+        if((nrf_address_bus_get(peripheral_addr, NRF_PERIPH_APB_MASK)) ==
+           (nrf_address_bus_get((uint32_t)dppi_list[i].p_reg, NRF_DPPI_APB_MASK)))
+        {
+            *p_instance = dppi_list[i];
+            return NRFX_SUCCESS;
+        }
+    }
+    return NRFX_ERROR_INVALID_PARAM;
+#else
+    (void)peripheral_addr;
+    *p_instance = dppi_list[0];
+    return NRFX_SUCCESS;
+#endif
 }
 
 #if NRFX_API_VER_AT_LEAST(3, 8, 0)

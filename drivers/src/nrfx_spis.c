@@ -481,19 +481,17 @@ static void spis_state_entry_action_execute(NRF_SPIS_Type * p_spis,
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-qual"
 #endif
-            event.p_tx_buf    = (void *)p_cb->tx_buffer;
-            event.p_rx_buf    = (void *)p_cb->rx_buffer;
+            event.p_tx_buf    = nrf_spis_tx_buffer_get(p_spis);
+            event.tx_buf_size = nrf_spis_tx_maxcnt_get(p_spis);
+            event.p_rx_buf    = nrf_spis_rx_buffer_get(p_spis);
+            event.rx_buf_size = nrf_spis_rx_maxcnt_get(p_spis);
 #if defined(__GNUC__)
 #pragma GCC diagnostic pop
 #endif
 
-            event.tx_buf_size = p_cb->tx_buffer_size;
-            event.rx_buf_size = p_cb->rx_buffer_size;
-
             NRFX_LOG_INFO("Transfer rx_len:%d.", event.rx_amount);
             NRFX_LOG_DEBUG("Rx data:");
-            NRFX_LOG_HEXDUMP_DEBUG((uint8_t const *)p_cb->rx_buffer,
-                                   event.rx_amount * sizeof(p_cb->rx_buffer[0]));
+            NRFX_LOG_HEXDUMP_DEBUG((uint8_t const *)event.p_rx_buf, event.rx_buf_size);
             NRFX_ASSERT(p_cb->handler != NULL);
             p_cb->handler(&event, p_cb->p_context);
             break;
@@ -582,8 +580,27 @@ static void irq_handler(NRF_SPIS_Type * p_spis, spis_cb_t * p_cb)
 {
     // @note: as multiple events can be pending for processing, the correct event processing order
     // is as follows:
-    // - SPI semaphore acquired event.
     // - SPI transaction complete event.
+    // - SPI semaphore acquired event.
+
+    // Check for SPI transaction complete event.
+    if (nrf_spis_event_check(p_spis, NRF_SPIS_EVENT_END))
+    {
+        volatile nrfx_spis_state_t prev_spi_state = p_cb->spi_state;
+        nrf_spis_event_clear(p_spis, NRF_SPIS_EVENT_END);
+        NRFX_LOG_DEBUG("SPIS: Event: %s.", EVT_TO_STR(NRF_SPIS_EVENT_END));
+
+        spis_state_change(p_spis, p_cb, SPIS_XFER_COMPLETED);
+
+        if (prev_spi_state == SPIS_BUFFER_RESOURCE_REQUESTED) {
+            /* In this case nrfx_spis_buffers_set was called while xfer was running.
+             * NRFX_SPIS_XFER_DONE event for most recent xfer was reported above.
+             * SPIS state has to be changed back to SPIS_BUFFER_RESOURCE_REQUESTED to keep waiting for resource.
+             * It has to be done outside of spis_state_change function because the task NRF_SPIS_TASK_ACQUIRE was already triggered by nrfx_spis_buffers_set.
+             */
+            p_cb->spi_state = SPIS_BUFFER_RESOURCE_REQUESTED;
+        }
+    }
 
     // Check for SPI semaphore acquired event.
     if (nrf_spis_event_check(p_spis, NRF_SPIS_EVENT_ACQUIRED))
@@ -610,24 +627,6 @@ static void irq_handler(NRF_SPIS_Type * p_spis, spis_cb_t * p_cb)
                 nrf_spis_task_trigger(p_spis, NRF_SPIS_TASK_RELEASE);
 
                 spis_state_change(p_spis, p_cb, SPIS_BUFFER_RESOURCE_CONFIGURED);
-                break;
-
-            default:
-                // No implementation required.
-                break;
-        }
-    }
-
-    // Check for SPI transaction complete event.
-    if (nrf_spis_event_check(p_spis, NRF_SPIS_EVENT_END))
-    {
-        nrf_spis_event_clear(p_spis, NRF_SPIS_EVENT_END);
-        NRFX_LOG_DEBUG("SPIS: Event: %s.", EVT_TO_STR(NRF_SPIS_EVENT_END));
-
-        switch (p_cb->spi_state)
-        {
-            case SPIS_BUFFER_RESOURCE_CONFIGURED:
-                spis_state_change(p_spis, p_cb, SPIS_XFER_COMPLETED);
                 break;
 
             default:

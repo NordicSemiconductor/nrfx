@@ -94,7 +94,7 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
-        DCD     0                         ; Reserved
+        DCD     VPRTIM_IRQHandler
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
@@ -636,6 +636,11 @@ CLICSoftware_Handler
 
 
        ; Dummy interrupt handlers
+
+        PUBWEAK  VPRTIM_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+VPRTIM_IRQHandler
+        j .
 
         PUBWEAK  VPRCLIC_16_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)

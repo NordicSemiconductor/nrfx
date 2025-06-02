@@ -114,6 +114,16 @@ typedef enum
     NRF_AUXPLL_DIVIDER_RANGE_MAX  = AUXPLL_CONFIG_CFGSTATIC_AUXPLLRANGE_StaticHigh, /**< Maximum static divider setting. Fractional division not supported. */
 } nrf_auxpll_divider_range_t;
 
+/** @brief AUXPLL fractional PLL Divider ratio. */
+typedef enum
+{
+    NRF_AUXPLL_FREQUENCY_DIV_MIN     = AUXPLL_AUXPLLCTRL_FREQUENCY_FREQUENCY_MinimumDiv, /**< Minimum division ratio of 4. */
+    NRF_AUXPLL_FREQUENCY_AUDIO_44K1  = AUXPLL_AUXPLLCTRL_FREQUENCY_FREQUENCY_Audio44k1,  /**< Division ratio for audio 44.1kHz frequency family. */
+    NRF_AUXPLL_FREQUENCY_USB_24M     = AUXPLL_AUXPLLCTRL_FREQUENCY_FREQUENCY_USB24M,     /**< Division ratio for USB PHY 24MHz clock. */
+    NRF_AUXPLL_FREQUENCY_AUDIO_48K   = AUXPLL_AUXPLLCTRL_FREQUENCY_FREQUENCY_Audio48k,   /**< Division ratio for 48kHz frequency family. */
+    NRF_AUXPLL_FREQUENCY_DIV_MAX     = AUXPLL_AUXPLLCTRL_FREQUENCY_FREQUENCY_MaximumDiv, /**< Maximum division ratio of 5. */
+} nrf_auxpll_freq_div_ratio_t;
+
 /** @brief AUXPLL configuration. */
 typedef struct
 {
@@ -274,8 +284,8 @@ NRF_STATIC_INLINE uint8_t nrf_auxpll_trim_ctune_get(NRF_AUXPLL_Type const * p_re
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] value Fractional divider ratio.
  */
-NRF_STATIC_INLINE void nrf_auxpll_ctrl_frequency_set(NRF_AUXPLL_Type * p_reg,
-                                                     uint16_t          value);
+NRF_STATIC_INLINE void nrf_auxpll_ctrl_frequency_set(NRF_AUXPLL_Type *           p_reg,
+                                                     nrf_auxpll_freq_div_ratio_t value);
 
 /**
  * @brief Function for getting the AUXPLL fractional PLL divider ratio.
@@ -526,8 +536,8 @@ NRF_STATIC_INLINE uint8_t nrf_auxpll_trim_ctune_get(NRF_AUXPLL_Type const * p_re
     return (uint8_t)p_reg->TRIM.CTUNE;
 }
 
-NRF_STATIC_INLINE void nrf_auxpll_ctrl_frequency_set(NRF_AUXPLL_Type * p_reg,
-                                                     uint16_t          value)
+NRF_STATIC_INLINE void nrf_auxpll_ctrl_frequency_set(NRF_AUXPLL_Type *           p_reg,
+                                                     nrf_auxpll_freq_div_ratio_t value)
 {
     p_reg->AUXPLLCTRL.FREQUENCY = value;
 }

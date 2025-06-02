@@ -670,8 +670,16 @@ static inline nrf_usbd_task_t task_start_ep(nrfx_usbd_ep_t ep)
 static inline usbd_ep_state_t* ep_state_access(nrfx_usbd_ep_t ep)
 {
     NRFX_USBD_ASSERT_EP_VALID(ep);
-    return ((NRF_USBD_EPIN_CHECK(ep) ? m_ep_state.ep_in : m_ep_state.ep_out) +
-        NRF_USBD_EP_NR_GET(ep));
+    int idx = NRF_USBD_EP_NR_GET(ep);
+
+    if (NRF_USBD_EPIN_CHECK(ep))
+    {
+        return (idx < NRF_USBD_EPIN_CNT) ? &m_ep_state.ep_in[idx] : NULL;
+    }
+    else
+    {
+        return (idx < NRF_USBD_EPOUT_CNT) ? &m_ep_state.ep_out[idx] : NULL;
+    }
 }
 
 /**

@@ -164,6 +164,7 @@ __WEAK void SysTick_Handler(void)
  __HANDLER("Default_Handler") void LFXO_IRQHandler                                             (void);
  __HANDLER("Default_Handler") void LFRC_IRQHandler                                             (void);
  __HANDLER("Default_Handler") void HFXO64M_IRQHandler                                          (void);
+ __HANDLER("Default_Handler") void HVBUCK_IRQHandler                                           (void);
 
 /*----------------------------------------------------------------------------
   Exception / Interrupt Vector table
@@ -486,6 +487,15 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     LFXO_IRQHandler,
     LFRC_IRQHandler,
     HFXO64M_IRQHandler,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    HVBUCK_IRQHandler,
 };
 
 #if defined(__GNUC__)

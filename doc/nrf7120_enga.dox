@@ -46,6 +46,8 @@ For a complete overview, see @ref nrfx_drv_supp_matrix.
 
 @ref nrf_mpc
 
+@ref nrf_mramc
+
 @ref nrf_nfct
 
 @ref nrf_pdm

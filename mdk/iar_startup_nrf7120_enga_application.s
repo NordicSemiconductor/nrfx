@@ -378,6 +378,15 @@ __vector_table
         DCD     LFXO_IRQHandler
         DCD     LFRC_IRQHandler
         DCD     HFXO64M_IRQHandler
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     HVBUCK_IRQHandler
 
 __Vectors_End
 __Vectors                           EQU   __vector_table
@@ -825,6 +834,11 @@ LFRC_IRQHandler
         PUBWEAK  HFXO64M_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 HFXO64M_IRQHandler
+        B .
+
+        PUBWEAK  HVBUCK_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+HVBUCK_IRQHandler
         B .
 
         END

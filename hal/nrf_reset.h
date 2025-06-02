@@ -62,6 +62,13 @@ extern "C" {
 #define NRF_RESET_HAS_APPLICATION 0
 #endif
 
+#if defined(RESET_RESETREAS_NFC_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether NFC reset is present. */
+#define NRF_RESET_HAS_NFC_RESET 1
+#else
+#define NRF_RESET_HAS_NFC_RESET 0
+#endif
+
 #if defined(RESET_RESETREAS_VBUS_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether VBUS reset is present. */
 #define NRF_RESET_HAS_VBUS_RESET 1
@@ -148,7 +155,9 @@ typedef enum
     NRF_RESET_RESETREAS_LOCKUP_MASK     = RESET_RESETREAS_LOCKUP_Msk,     ///< Bit mask of LOCKUP field.
     NRF_RESET_RESETREAS_OFF_MASK        = RESET_RESETREAS_OFF_Msk,        ///< Bit mask of OFF field.
     NRF_RESET_RESETREAS_DIF_MASK        = RESET_RESETREAS_DIF_Msk,        ///< Bit mask of DIF field.
+#if NRF_RESET_HAS_NFC_RESET
     NRF_RESET_RESETREAS_NFC_MASK        = RESET_RESETREAS_NFC_Msk,        ///< Bit mask of NFC field.
+#endif
     NRF_RESET_RESETREAS_DOG1_MASK       = RESET_RESETREAS_DOG1_Msk,       ///< Bit mask of DOG1 field.
 #if NRF_RESET_HAS_CTRLAPSOFT_RESET
     NRF_RESET_RESETREAS_CTRLAPSOFT_MASK = RESET_RESETREAS_CTRLAPSOFT_Msk, ///< Bit mask of CTRLAPSOFT field.
@@ -246,9 +255,10 @@ NRF_STATIC_INLINE void nrf_reset_network_force_off(NRF_RESET_Type * p_reg, bool 
         p_reg->NETWORK.FORCEOFF = RESET_NETWORK_FORCEOFF_FORCEOFF_Hold <<
                                   RESET_NETWORK_FORCEOFF_FORCEOFF_Pos;
     }
+#if NRFX_CHECK(NRF53_ERRATA_161_ENABLE_WORKAROUND)
     else if (nrf53_errata_161())
     {
-        *(volatile uint32_t *)0x50005618UL = 1UL;
+        *(volatile uint32_t *)((uintptr_t)p_reg + 0x618UL) = 1UL;
         p_reg->NETWORK.FORCEOFF = RESET_NETWORK_FORCEOFF_FORCEOFF_Release <<
                                   RESET_NETWORK_FORCEOFF_FORCEOFF_Pos;
         NRFX_DELAY_US(5);
@@ -257,8 +267,9 @@ NRF_STATIC_INLINE void nrf_reset_network_force_off(NRF_RESET_Type * p_reg, bool 
         NRFX_DELAY_US(1);
         p_reg->NETWORK.FORCEOFF = RESET_NETWORK_FORCEOFF_FORCEOFF_Release <<
                                   RESET_NETWORK_FORCEOFF_FORCEOFF_Pos;
-        *(volatile uint32_t *)0x50005618UL = 0UL;
+        *(volatile uint32_t *)((uintptr_t)p_reg + 0x618UL) = 0UL;
     }
+#endif
     else
     {
         p_reg->NETWORK.FORCEOFF = RESET_NETWORK_FORCEOFF_FORCEOFF_Release <<

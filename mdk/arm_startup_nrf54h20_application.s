@@ -295,7 +295,7 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     IPCT120_0_IRQHandler
                 DCD     0                         ; Reserved
-                DCD     I3C120_IRQHandler
+                DCD     0                         ; Reserved
                 DCD     VPR121_IRQHandler
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
@@ -306,7 +306,7 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
-                DCD     I3C121_IRQHandler
+                DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
@@ -669,11 +669,9 @@ Default_Handler PROC
                 EXPORT   USBHS_IRQHandler [WEAK]
                 EXPORT   EXMIF_IRQHandler [WEAK]
                 EXPORT   IPCT120_0_IRQHandler [WEAK]
-                EXPORT   I3C120_IRQHandler [WEAK]
                 EXPORT   VPR121_IRQHandler [WEAK]
                 EXPORT   CAN120_IRQHandler [WEAK]
                 EXPORT   MVDMA120_IRQHandler [WEAK]
-                EXPORT   I3C121_IRQHandler [WEAK]
                 EXPORT   TIMER120_IRQHandler [WEAK]
                 EXPORT   TIMER121_IRQHandler [WEAK]
                 EXPORT   PWM120_IRQHandler [WEAK]
@@ -748,11 +746,9 @@ TBM_IRQHandler
 USBHS_IRQHandler
 EXMIF_IRQHandler
 IPCT120_0_IRQHandler
-I3C120_IRQHandler
 VPR121_IRQHandler
 CAN120_IRQHandler
 MVDMA120_IRQHandler
-I3C121_IRQHandler
 TIMER120_IRQHandler
 TIMER121_IRQHandler
 PWM120_IRQHandler

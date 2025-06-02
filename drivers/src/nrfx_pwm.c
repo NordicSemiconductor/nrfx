@@ -165,10 +165,7 @@ static void pwm_configure(nrfx_pwm_t const * p_instance, nrfx_pwm_config_t const
 #if NRF_PWM_HAS_IDLEOUT
     for (uint8_t channel = 0; channel < NRF_PWM_CHANNEL_COUNT; ++channel)
     {
-        nrfy_pwm_channel_idle_set(p_instance->p_reg, channel, 
-                                  p_config->count_mode == NRF_PWM_MODE_UP ?
-                                  !p_config->pin_inverted[channel]        :
-                                  p_config->pin_inverted[channel]);
+        nrfy_pwm_channel_idle_set(p_instance->p_reg, channel, p_config->pin_inverted[channel]);
     }
 #endif
 

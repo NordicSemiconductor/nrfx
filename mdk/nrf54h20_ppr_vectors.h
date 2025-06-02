@@ -114,11 +114,9 @@ __WEAK void CLICSoftware_Handler(void)
  __HANDLER("Default_Handler") void USBHS_IRQHandler                                            (void);
  __HANDLER("Default_Handler") void EXMIF_IRQHandler                                            (void);
  __HANDLER("Default_Handler") void IPCT120_0_IRQHandler                                        (void);
- __HANDLER("Default_Handler") void I3C120_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void VPR121_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void CAN120_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void MVDMA120_IRQHandler                                         (void);
- __HANDLER("Default_Handler") void I3C121_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void TIMER120_IRQHandler                                         (void);
  __HANDLER("Default_Handler") void TIMER121_IRQHandler                                         (void);
  __HANDLER("Default_Handler") void PWM120_IRQHandler                                           (void);
@@ -402,7 +400,7 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     IPCT120_0_IRQHandler,
     0,
-    I3C120_IRQHandler,
+    0,
     VPR121_IRQHandler,
     0,
     0,
@@ -413,7 +411,7 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     0,
     0,
-    I3C121_IRQHandler,
+    0,
     0,
     0,
     0,

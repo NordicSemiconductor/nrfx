@@ -393,10 +393,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define USBHSCORE_PRESENT 1
 #define USBHSCORE_COUNT 1
 
-/*I3CCORE*/
-#define I3CCORE_PRESENT 1
-#define I3CCORE_COUNT 2
-
 /*MCAN*/
 #define MCAN_PRESENT 1
 #define MCAN_COUNT 1
@@ -524,10 +520,6 @@ POSSIBILITY OF SUCH DAMAGE.
 /*MUTEX*/
 #define MUTEX_PRESENT 1
 #define MUTEX_COUNT 2
-
-/*I3C*/
-#define I3C_PRESENT 1
-#define I3C_COUNT 2
 
 /*VPR peripheral registers*/
 #define VPR_PRESENT 1

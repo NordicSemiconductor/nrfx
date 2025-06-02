@@ -253,6 +253,18 @@ NRF_STATIC_INLINE void nrf_rramc_subscribe_set(NRF_RRAMC_Type * p_reg,
 NRF_STATIC_INLINE void nrf_rramc_subscribe_clear(NRF_RRAMC_Type * p_reg, nrf_rramc_task_t task);
 
 /**
+ * @brief Function for getting the subscribe configuration for a given
+ *        RRAMC task.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] task  Task for which to read the configuration.
+ *
+ * @return RRAMC subscribe configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_rramc_subscribe_get(NRF_RRAMC_Type const * p_reg,
+                                                   nrf_rramc_task_t       task);
+
+/**
  * @brief Function for setting the publish configuration for a wokenup
  *        RRAMC event.
  *
@@ -278,6 +290,18 @@ NRF_STATIC_INLINE void nrf_rramc_publish_set(NRF_RRAMC_Type *  p_reg,
  * @param[in] event Event for which to clear the configuration.
  */
 NRF_STATIC_INLINE void nrf_rramc_publish_clear(NRF_RRAMC_Type * p_reg, nrf_rramc_event_t event);
+
+/**
+ * @brief Function for getting the publish configuration for a given
+ *        RRAMC event.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] event Event for which to read the configuration.
+ *
+ * @return RRAMC publish configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_rramc_publish_get(NRF_RRAMC_Type const * p_reg,
+                                                 nrf_rramc_event_t      event);
 
 #endif // defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 
@@ -431,12 +455,12 @@ NRF_STATIC_INLINE uint32_t nrf_rramc_region_config_raw_get(NRF_RRAMC_Type const 
 /**
  * @brief Function for writing a byte to RRAM memory.
  *
- * @note If write buffer is enabled, new data might not be immediately committed 
+ * @note If write buffer is enabled, new data might not be immediately committed
  *       to the target memory.
  *
- * @warning Before calling this function, the caller must ensure that write mode 
+ * @warning Before calling this function, the caller must ensure that write mode
  *          is enabled using @ref nrf_rramc_config_set.
- * 
+ *
  * @param[in] address Address of the byte to write.
  * @param[in] value   Value to write.
  */
@@ -445,10 +469,10 @@ NRF_STATIC_INLINE void nrf_rramc_byte_write(uint32_t address, uint8_t value);
 /**
  * @brief Function for writing a halfword to RRAM memory.
  *
- * @note If write buffer is enabled, new data might not be immediately committed 
+ * @note If write buffer is enabled, new data might not be immediately committed
  *       to the target memory.
  *
- * @warning Before calling this function, the caller must ensure that write mode 
+ * @warning Before calling this function, the caller must ensure that write mode
  *          is enabled using @ref nrf_rramc_config_set.
  *
  * @param[in] address Address of the halfword to write.
@@ -459,10 +483,10 @@ NRF_STATIC_INLINE void nrf_rramc_halfword_write(uint32_t address, uint16_t value
 /**
  * @brief Function for writing a word to RRAM memory.
  *
- * @note If write buffer is enabled, new data might not be immediately committed 
+ * @note If write buffer is enabled, new data might not be immediately committed
  *       to the target memory.
  *
- * @warning Before calling this function, the caller must ensure that write mode 
+ * @warning Before calling this function, the caller must ensure that write mode
  *          is enabled using @ref nrf_rramc_config_set.
  *
  * @param[in] address Address of the word to write.
@@ -474,10 +498,10 @@ NRF_STATIC_INLINE void nrf_rramc_word_write(uint32_t address, uint32_t value);
  * @brief Function for writing a given number of bytes from a specified buffer
  *        into RRAM memory.
  *
- * @note If write buffer is enabled, new data might not be immediately committed 
+ * @note If write buffer is enabled, new data might not be immediately committed
  *       to the target memory.
  *
- * @warning Before calling this function, the caller must ensure that write mode 
+ * @warning Before calling this function, the caller must ensure that write mode
  *          is enabled using @ref nrf_rramc_config_set.
  *
  * @param[in] address   Destination address in RRAM.
@@ -590,6 +614,12 @@ NRF_STATIC_INLINE void nrf_rramc_subscribe_clear(NRF_RRAMC_Type * p_reg, nrf_rra
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
 }
 
+NRF_STATIC_INLINE uint32_t nrf_rramc_subscribe_get(NRF_RRAMC_Type const * p_reg,
+                                                   nrf_rramc_task_t       task)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) task + 0x80uL));
+}
+
 NRF_STATIC_INLINE void nrf_rramc_publish_set(NRF_RRAMC_Type *  p_reg,
                                              nrf_rramc_event_t event,
                                              uint8_t           channel)
@@ -601,6 +631,12 @@ NRF_STATIC_INLINE void nrf_rramc_publish_set(NRF_RRAMC_Type *  p_reg,
 NRF_STATIC_INLINE void nrf_rramc_publish_clear(NRF_RRAMC_Type * p_reg, nrf_rramc_event_t event)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) = 0;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_rramc_publish_get(NRF_RRAMC_Type const * p_reg,
+                                                 nrf_rramc_event_t      event)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) event + 0x80uL));
 }
 #endif // defined(DPPI_PRESENT)
 

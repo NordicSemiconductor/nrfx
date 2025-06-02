@@ -74,10 +74,7 @@ POSSIBILITY OF SUCH DAMAGE.
         #endif
     #endif
 
-    #define EASYVDMA_PRESENT
-    #define VDMADESCRIPTOR_CONFIG_CNT_Pos (0UL)        /*!< Position of CNT field.                                               */
-    #define VDMADESCRIPTOR_CONFIG_CNT_Msk (0xFFFFFFUL << VDMADESCRIPTOR_CONFIG_CNT_Pos) /*!< Bit mask of CNT field.              */
-    #define VDMADESCRIPTOR_CONFIG_ATTRIBUTE_Pos (24UL) /*!< Position of ATTRIBUTE field.                                         */
+    #define EASYVDMA_PRESENT                                        */
 
     #define SAADC_CH_NUM SAADC_CH_MaxCount
     #define SAADC_EASYDMA_MAXCNT_SIZE 15

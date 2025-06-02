@@ -383,6 +383,15 @@ __isr_vector:
     .long   LFXO_IRQHandler
     .long   LFRC_IRQHandler
     .long   HFXO64M_IRQHandler
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   HVBUCK_IRQHandler
 
     .size __isr_vector, . - __isr_vector
 
@@ -676,5 +685,6 @@ Default_Handler:
     IRQ  LFXO_IRQHandler
     IRQ  LFRC_IRQHandler
     IRQ  HFXO64M_IRQHandler
+    IRQ  HVBUCK_IRQHandler
 
   .end

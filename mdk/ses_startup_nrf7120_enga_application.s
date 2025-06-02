@@ -448,6 +448,15 @@ _vectors:
   ISR_HANDLER   LFXO_IRQHandler
   ISR_HANDLER   LFRC_IRQHandler
   ISR_HANDLER   HFXO64M_IRQHandler
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_RESERVED_DUMMY                           /* Reserved */
+  ISR_HANDLER   HVBUCK_IRQHandler
 _vectors_end:
 
 #ifdef VECTORS_IN_RAM

@@ -565,7 +565,7 @@ NRF_STATIC_INLINE void nrf_ccm_int_disable(NRF_CCM_Type * p_reg, uint32_t mask);
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] mask  Mask of interrupts to be checked.
  *                  Use @ref nrf_ccm_int_mask_t values for bit masking.
- * 
+ *
  * @return Mask of enabled interrupts.
  */
 NRF_STATIC_INLINE uint32_t nrf_ccm_int_enable_check(NRF_CCM_Type const * p_reg, uint32_t mask);
@@ -923,6 +923,18 @@ NRF_STATIC_INLINE void nrf_ccm_subscribe_clear(NRF_CCM_Type * p_reg,
                                                nrf_ccm_task_t task);
 
 /**
+ * @brief Function for getting the subscribe configuration for a given
+ *        CCM task.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] task  Task for which to read the configuration.
+ *
+ * @return CCM subscribe configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ccm_subscribe_get(NRF_CCM_Type const * p_reg,
+                                                 nrf_ccm_task_t       task);
+
+/**
  * @brief Function for setting the publish configuration for a given
  *        CCM event.
  *
@@ -943,6 +955,18 @@ NRF_STATIC_INLINE void nrf_ccm_publish_set(NRF_CCM_Type *  p_reg,
  */
 NRF_STATIC_INLINE void nrf_ccm_publish_clear(NRF_CCM_Type *  p_reg,
                                              nrf_ccm_event_t event);
+
+/**
+ * @brief Function for getting the publish configuration for a given
+ *        CCM event.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] event Event for which to read the configuration.
+ *
+ * @return CCM publish configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ccm_publish_get(NRF_CCM_Type const * p_reg,
+                                               nrf_ccm_event_t      event);
 #endif // defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 
 #ifndef NRF_DECLARE_ONLY
@@ -1273,6 +1297,12 @@ NRF_STATIC_INLINE void nrf_ccm_subscribe_clear(NRF_CCM_Type * p_reg,
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
 }
 
+NRF_STATIC_INLINE uint32_t nrf_ccm_subscribe_get(NRF_CCM_Type const * p_reg,
+                                                 nrf_ccm_task_t       task)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) task + 0x80uL));
+}
+
 NRF_STATIC_INLINE void nrf_ccm_publish_set(NRF_CCM_Type *  p_reg,
                                            nrf_ccm_event_t event,
                                            uint8_t         channel)
@@ -1285,6 +1315,12 @@ NRF_STATIC_INLINE void nrf_ccm_publish_clear(NRF_CCM_Type *  p_reg,
                                              nrf_ccm_event_t event)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) = 0;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_ccm_publish_get(NRF_CCM_Type const * p_reg,
+                                               nrf_ccm_event_t      event)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) event + 0x80uL));
 }
 #endif // defined(DPPI_PRESENT)
 

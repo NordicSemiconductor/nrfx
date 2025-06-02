@@ -1,6 +1,38 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.12.0] - 2025-06-02
+### Added
+- Added a driver, HALY and HAL for MRAMC.
+- Added support for 24 MHz clock on the nRF54LM20A Eng A SoC in the CLOCK driver.
+- Added the workaround for nRF54L Series anomaly 55 in the SPIM driver.
+- Added functions for setting compare value in an optimized way in the GRTC driver.
+- Added a function for retrieving compare value in the GRTC driver.
+- Added a function for setting and getting an event handler in the TWIM driver.
+- Added support for chopping and high-speed analog pin configuration on the affected SoCs in the SAADC driver.
+- Added a function for getting a driver instance associated with a DPPIC instance located on the same APB as the specified peripheral in the DPPI driver.
+- Added functions for managing all RAM blocks at once in the ``nrfx_ram_ctrl`` helper.
+- Added a function for getting a pin drive setting in the GPIO HAL.
+- Added a function for checking whether the XIP is active in the QSPI HAL.
+- Added an enumerator for frequency divider ratio in the AUXPLL HAL.
+- Added new functions for enabling, disabling and checking status of voltage regulators in POWER HAL. Previous functions are deprecated.
+- Added functions for getting the SUBSCRIBE and PUBLISH registers in all HALs.
+
+### Changed
+- Updated MDK to version 8.71.1.
+- Optimized counter setting and reading procedures to make them more performant in the GRTC driver.
+- Restored USBPWRRDY event clearing before initialization in the USBREG driver.
+
+### Fixed
+- Fixed 8-bit samples handling for the nRF54 Series in the SAADC driver.
+- Fixed missing DONE event clearing after a calibration in the SAADC driver.
+- Fixed the processing order when events arrive simultaneously in the SPIS driver.
+- Fixed pin idle state handling for the nRF54 Series in the PWM driver.
+- Fixed the counter reading procedure for VPR cores in the GRTC HALY.
+- Fixed the custom ratio setting procedure in the PDM HALY.
+- Fixed missing array list functionality for the nRF54 Series in the SPIM HAL.
+- Fixed a workaround for the anomaly 161 on the nRF5340 SoC in non-secure variant in the RESET HAL.
+
 ## [3.11.0] - 2025-02-24
 ### Added
 - Added the workaround for nRF54L Series anomaly 39 in the CLOCK driver.

@@ -122,7 +122,9 @@ typedef enum
 {
     NRFX_IDS_DOMAIN_SEC  = 1,                         ///< Reserved. */
     NRFX_IDS_DOMAIN_APP  = NRF_PROCESSOR_APPLICATION, ///< Application domain. */
+#if defined(NRF_RADIOCORE_BELLBOARD)
     NRFX_IDS_DOMAIN_NET  = NRF_PROCESSOR_RADIOCORE,   ///< Network domain. */
+#endif
     NRFX_IDS_DOMAIN_SYSC = 12,                        ///< Reserved. */
     NRFX_IDS_DOMAIN_PPR  = NRF_PROCESSOR_PPR,         ///< Peripheral Processor */
     NRFX_IDS_DOMAIN_FLPR = NRF_PROCESSOR_FLPR,        ///< Fast Lightweight Processor */
@@ -288,11 +290,11 @@ __STATIC_INLINE void nrfx_ids_signal(nrfx_ids_t *      p_instance,
         case NRFX_IDS_DOMAIN_APP:
             p_bell = NRF_APPLICATION_BELLBOARD;
             break;
-
+#if defined(NRF_RADIOCORE_BELLBOARD)
         case NRFX_IDS_DOMAIN_NET:
             p_bell = NRF_RADIOCORE_BELLBOARD;
             break;
-
+#endif
         case NRFX_IDS_DOMAIN_SEC:
             p_bell = (NRF_BELLBOARD_Type *)NRF_SECDOMBELLBOARD;
             break;

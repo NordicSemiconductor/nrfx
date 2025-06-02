@@ -298,7 +298,7 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     IPCT120_0_IRQHandler
         DCD     0                         ; Reserved
-        DCD     I3C120_IRQHandler
+        DCD     0                         ; Reserved
         DCD     VPR121_IRQHandler
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
@@ -309,7 +309,7 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
-        DCD     I3C121_IRQHandler
+        DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
@@ -847,11 +847,6 @@ EXMIF_IRQHandler
 IPCT120_0_IRQHandler
         j .
 
-        PUBWEAK  I3C120_IRQHandler
-        SECTION .text:CODE:REORDER:NOROOT(1)
-I3C120_IRQHandler
-        j .
-
         PUBWEAK  VPR121_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 VPR121_IRQHandler
@@ -865,11 +860,6 @@ CAN120_IRQHandler
         PUBWEAK  MVDMA120_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 MVDMA120_IRQHandler
-        j .
-
-        PUBWEAK  I3C121_IRQHandler
-        SECTION .text:CODE:REORDER:NOROOT(1)
-I3C121_IRQHandler
         j .
 
         PUBWEAK  TIMER120_IRQHandler

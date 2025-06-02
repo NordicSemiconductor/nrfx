@@ -377,6 +377,15 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     LFXO_IRQHandler
                 DCD     LFRC_IRQHandler
                 DCD     HFXO64M_IRQHandler
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     HVBUCK_IRQHandler
 
 __Vectors_End
 
@@ -525,6 +534,7 @@ Default_Handler PROC
                 EXPORT   LFXO_IRQHandler [WEAK]
                 EXPORT   LFRC_IRQHandler [WEAK]
                 EXPORT   HFXO64M_IRQHandler [WEAK]
+                EXPORT   HVBUCK_IRQHandler [WEAK]
 SWI00_IRQHandler
 SWI01_IRQHandler
 SWI02_IRQHandler
@@ -600,6 +610,7 @@ CLOCK_POWER_IRQHandler
 LFXO_IRQHandler
 LFRC_IRQHandler
 HFXO64M_IRQHandler
+HVBUCK_IRQHandler
                 B .
                 ENDP
                 ALIGN

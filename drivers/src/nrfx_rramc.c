@@ -66,7 +66,7 @@ NRFX_STATIC_INLINE uint32_t total_memory_size_get(void)
     return (size * 1024UL);
 }
 
-NRFX_STATIC_INLINE bool is_valid_address(uint32_t addr, bool uicr_allowed)
+NRFX_STATIC_INLINE __UNUSED bool is_valid_address(uint32_t addr, bool uicr_allowed)
 {
     if ((addr - NRFY_RRAMC_RRAM_BASE_ADDRESS) < total_memory_size_get())
     {
@@ -84,7 +84,7 @@ NRFX_STATIC_INLINE bool is_valid_address(uint32_t addr, bool uicr_allowed)
     return false;
 }
 
-NRFX_STATIC_INLINE bool fit_in_memory(uint32_t addr, bool uicr_allowed, uint32_t bytes)
+NRFX_STATIC_INLINE __UNUSED bool fit_in_memory(uint32_t addr, bool uicr_allowed, uint32_t bytes)
 {
     if ((addr - NRFY_RRAMC_RRAM_BASE_ADDRESS + bytes) < total_memory_size_get())
     {

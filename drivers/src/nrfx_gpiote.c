@@ -1515,9 +1515,7 @@ static void port_event_handle(NRF_GPIOTE_Type * p_gpiote, gpiote_control_block_t
 
         /* All pins have been handled, clear PORT, check latch again in case
          * something came between deciding to exit and clearing PORT event. */
-        (void)nrfy_gpiote_events_process(p_gpiote,
-                                         (uint32_t)NRF_GPIOTE_INT_PORT_MASK,
-                                         p_cb->channels_number);
+        (void)nrfy_gpiote_events_process(p_gpiote, (uint32_t)NRF_GPIOTE_INT_PORT_MASK, 0);
     } while (latch_pending_read_and_check(latch, p_cb->available_gpio_ports));
 }
 
@@ -1634,9 +1632,7 @@ static void port_event_handle(NRF_GPIOTE_Type * p_gpiote, gpiote_control_block_t
             }
         }
 
-        (void)nrfy_gpiote_events_process(p_gpiote,
-                                         (uint32_t)NRF_GPIOTE_INT_PORT_MASK,
-                                         p_cb->channels_number);
+        (void)nrfy_gpiote_events_process(p_gpiote, (uint32_t)NRF_GPIOTE_INT_PORT_MASK, 0);
     } while (input_read_and_check(input, pins_to_check, p_cb->available_gpio_ports));
 }
 #endif // defined(NRF_GPIO_LATCH_PRESENT)

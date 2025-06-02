@@ -170,6 +170,19 @@ nrfx_err_t nrfx_grtc_sleep_configuration_get(nrfx_grtc_sleep_config_t * p_sleep_
 nrfx_err_t nrfx_grtc_channel_alloc(uint8_t * p_channel);
 
 /**
+ * @brief Function for setting a callback to a channel.
+ *
+ * Function enables the interrupt for that channel.
+ *
+ * @param[in] channel   Channel.
+ * @param[in] handler   User handler called when channel expires.
+ * @param[in] p_context Context passed to the callback.
+ */
+void nrfx_grtc_channel_callback_set(uint8_t                channel,
+                                    nrfx_grtc_cc_handler_t handler,
+                                    void *                 p_context);
+
+/**
  * @brief Function for freeing the GRTC capture/compare channel.
  *
  * @note Function is thread safe as it uses @ref nrfx_flag32_free.
@@ -294,7 +307,6 @@ void nrfx_grtc_syscountervalid_int_disable(void);
  * @retval NRFX_ERROR_ALREADY The GRTC is already running.
  * @retval NRFX_ERROR_TIMEOUT The SYSCOUNTER failed to start due to a timeout.
  */
-
 nrfx_err_t nrfx_grtc_syscounter_start(bool busy_wait, uint8_t * p_main_cc_channel);
 
 /**
@@ -360,7 +372,27 @@ nrfx_err_t nrfx_grtc_syscounter_cc_absolute_set(nrfx_grtc_channel_t * p_chan_dat
                                                 bool                  enable_irq);
 
 /**
+ * @brief Function for setting the absolute compare value for the SYSCOUNTER in an optimized way.
+ *
+ * Function must be called with interrupts locked. If @p safe_setting is true then
+ * it means that previous CC for that channel did not yet expire and it
+ * was set to a value earlier than @p val so there is a chance that it will
+ * expire during setting the new value. In that case compare event may be misinterpreted.
+ * Slower but safe procedure is used in that case which ensures that there will be no
+ * unexpected user callback triggered. If @p safe_setting is false then function just sets
+ * new CC value.
+ *
+ * @param[in] channel      Channel.
+ * @param[in] val          Absolute value to be set in the compare register.
+ * @param[in] safe_setting True if safe procedure is to be used, false otherwise.
+ */
+void nrfx_grtc_syscounter_cc_abs_set(uint8_t channel, uint64_t val, bool safe_setting);
+
+/**
  * @brief Function for setting the relative compare value for the SYSCOUNTER.
+ *
+ * Function has no assumptions on the current channel state so channel event is cleared and
+ * interrupt can optionally be enabled for that channel.
  *
  * @note This function marks the specified @p channel as used.
  *
@@ -378,6 +410,22 @@ nrfx_err_t nrfx_grtc_syscounter_cc_relative_set(nrfx_grtc_channel_t *           
                                                 uint32_t                          val,
                                                 bool                              enable_irq,
                                                 nrfx_grtc_cc_relative_reference_t reference);
+
+/**
+ * @brief Function for setting the relative compare value in an optimized way.
+ *
+ * Function just sets CCADD value and does not attempt to enable or disable the interrupt.
+ * It assumes that expected channel configuration is done prior to that call.
+ * Function assumes that previously used CC value has already expired so new value
+ * can be safely set without a risk of spurious CC expiration.
+ *
+ * @param[in] channel   Channel.
+ * @param[in] val       Relative value to be set in the CCADD register.
+ * @param[in] reference Reference. Current counter value or current CC value.
+ */
+void nrfx_grtc_syscounter_cc_rel_set(uint8_t                           channel,
+                                     uint32_t                          val,
+                                     nrfx_grtc_cc_relative_reference_t reference);
 
 /**
  * @brief Function for disabling the SYSCOUNTER compare interrupt.
@@ -479,7 +527,6 @@ void nrfx_grtc_active_request_set(bool active);
  * @param[out] p_counter p_counter Pointer to the variable to be filled with the SYSCOUNTER value.
  *
  * @retval NRFX_SUCCESS        The procedure was successful.
- * @retval NRFX_ERROR_INTERNAL The SYSCOUNTER (1 MHz) is not running.
  */
 nrfx_err_t nrfx_grtc_syscounter_get(uint64_t * p_counter);
 
@@ -539,6 +586,15 @@ NRFX_STATIC_INLINE bool nrfx_grtc_sys_counter_cc_enable_check(uint8_t channel);
  */
 NRFX_STATIC_INLINE bool nrfx_grtc_syscounter_compare_event_check(uint8_t channel);
 
+/**
+ * @brief Function for retrieving CC value.
+ *
+ * @param[in] channel Compare channel.
+ *
+ * @return Value read from CC register.
+ */
+NRFX_STATIC_INLINE uint64_t nrfx_grtc_sys_counter_cc_get(uint8_t channel);
+
 #if NRF_GRTC_HAS_RTCOUNTER || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for reading the GRTC RTCOUNTER value.
@@ -588,6 +644,11 @@ NRFX_STATIC_INLINE bool nrfx_grtc_sys_counter_cc_enable_check(uint8_t channel)
 NRFX_STATIC_INLINE bool nrfx_grtc_syscounter_compare_event_check(uint8_t channel)
 {
     return nrfy_grtc_sys_counter_compare_event_check(NRF_GRTC, channel);
+}
+
+NRFX_STATIC_INLINE uint64_t nrfx_grtc_sys_counter_cc_get(uint8_t channel)
+{
+    return nrfy_grtc_sys_counter_cc_get(NRF_GRTC, channel);
 }
 
 #if NRF_GRTC_HAS_RTCOUNTER

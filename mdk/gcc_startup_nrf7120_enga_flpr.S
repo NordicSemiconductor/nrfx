@@ -307,7 +307,7 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
+    .long   VPRTIM_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -568,6 +568,15 @@ __isr_vector:
     .long   LFXO_IRQHandler
     .long   LFRC_IRQHandler
     .long   HFXO64M_IRQHandler
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   HVBUCK_IRQHandler
 
     .size __isr_vector, . - __isr_vector
 
@@ -665,6 +674,7 @@ Default_Handler:
     IRQ  VPRCLIC_20_IRQHandler
     IRQ  VPRCLIC_21_IRQHandler
     IRQ  VPRCLIC_22_IRQHandler
+    IRQ  VPRTIM_IRQHandler
     IRQ  SPU00_IRQHandler
     IRQ  MPC00_IRQHandler
     IRQ  AAR00_CCM00_IRQHandler
@@ -734,5 +744,6 @@ Default_Handler:
     IRQ  LFXO_IRQHandler
     IRQ  LFRC_IRQHandler
     IRQ  HFXO64M_IRQHandler
+    IRQ  HVBUCK_IRQHandler
 
   .end

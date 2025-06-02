@@ -118,6 +118,18 @@ extern "C" {
         (*((volatile uint32_t *)(task_or_event + NRF_SUBSCRIBE_PUBLISH_OFFSET(task_or_event))) = 0)
 #endif
 
+#if defined(ADDRESS_BUS_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether DPPI instance can be mapped to a peripheral based on common APB. */
+#define NRF_DPPI_HAS_APB_MAPPING 1
+#else
+#define NRF_DPPI_HAS_APB_MAPPING 0
+#endif
+
+#if NRF_DPPI_HAS_APB_MAPPING
+/** @brief Symbol specifying bitmask for mapping specific DPPIC to a respective APB it belongs to. */
+#define NRF_DPPI_APB_MASK 0x10000UL
+#endif
+
 /** @brief DPPI channel groups. */
 typedef enum
 {
@@ -254,6 +266,18 @@ NRF_STATIC_INLINE void nrf_dppi_subscribe_set(NRF_DPPIC_Type * p_reg,
  * @param[in] task  Task for which to clear the configuration.
  */
 NRF_STATIC_INLINE void nrf_dppi_subscribe_clear(NRF_DPPIC_Type * p_reg, nrf_dppi_task_t task);
+
+/**
+ * @brief Function for getting the subscribe configuration for a given
+ *        DPPI task.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] task  Task for which to read the configuration.
+ *
+ * @return DPPI subscribe configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_dppi_subscribe_get(NRF_DPPIC_Type const * p_reg,
+                                                  nrf_dppi_task_t        task);
 
 /**
  * @brief Function for setting multiple DPPI channels in a channel group.
@@ -414,6 +438,12 @@ NRF_STATIC_INLINE void nrf_dppi_subscribe_set(NRF_DPPIC_Type * p_reg,
     NRFX_ASSERT(channel < nrf_dppi_channel_number_get(p_reg));
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
             ((uint32_t)channel | NRF_SUBSCRIBE_PUBLISH_ENABLE);
+}
+
+NRF_STATIC_INLINE uint32_t nrf_dppi_subscribe_get(NRF_DPPIC_Type const * p_reg,
+                                                  nrf_dppi_task_t        task)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) task + 0x80uL));
 }
 
 NRF_STATIC_INLINE void nrf_dppi_subscribe_clear(NRF_DPPIC_Type * p_reg, nrf_dppi_task_t task)

@@ -193,7 +193,7 @@ typedef enum
     NRF_PDM_FREQ_1333K = PDM_PDMCLKCTRL_FREQ_1333K    ///< PDM_CLK = 1.333 MHz.
 #endif
 } nrf_pdm_freq_t;
-#endif 
+#endif
 
 #if NRF_PDM_HAS_RATIO_CONFIG
 /** @brief PDM ratio between PDM_CLK and output sample rate. */
@@ -438,6 +438,18 @@ NRF_STATIC_INLINE void nrf_pdm_subscribe_set(NRF_PDM_Type * p_reg,
 NRF_STATIC_INLINE void nrf_pdm_subscribe_clear(NRF_PDM_Type * p_reg, nrf_pdm_task_t task);
 
 /**
+ * @brief Function for getting the subscribe configuration for a given
+ *        PDM task.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] task  Task for which to read the configuration.
+ *
+ * @return PDM subscribe configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_pdm_subscribe_get(NRF_PDM_Type const * p_reg,
+                                                 nrf_pdm_task_t       task);
+
+/**
  * @brief Function for setting the publish configuration for a given
  *        PDM event.
  *
@@ -457,6 +469,18 @@ NRF_STATIC_INLINE void nrf_pdm_publish_set(NRF_PDM_Type *  p_reg,
  * @param[in] event Event for which to clear the configuration.
  */
 NRF_STATIC_INLINE void nrf_pdm_publish_clear(NRF_PDM_Type * p_reg, nrf_pdm_event_t event);
+
+/**
+ * @brief Function for getting the publish configuration for a given
+ *        PDM event.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] event Event for which to read the configuration.
+ *
+ * @return PDM publish configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_pdm_publish_get(NRF_PDM_Type const * p_reg,
+                                               nrf_pdm_event_t      event);
 #endif // defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 
 /**
@@ -715,7 +739,7 @@ void nrf_pdm_filter_hp_pole_set(NRF_PDM_Type * p_reg, nrf_pdm_filter_hp_pole_t h
  * @brief Function for getting PDM high-pass filter gain pole.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * 
+ *
  * @return High-pass filter gain pole.
  */
 NRF_STATIC_INLINE nrf_pdm_filter_hp_pole_t nrf_pdm_filter_hp_pole_get(NRF_PDM_Type const * p_reg);
@@ -813,6 +837,12 @@ NRF_STATIC_INLINE void nrf_pdm_subscribe_clear(NRF_PDM_Type * p_reg, nrf_pdm_tas
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
 }
 
+NRF_STATIC_INLINE uint32_t nrf_pdm_subscribe_get(NRF_PDM_Type const * p_reg,
+                                                 nrf_pdm_task_t       task)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) task + 0x80uL));
+}
+
 NRF_STATIC_INLINE void nrf_pdm_publish_set(NRF_PDM_Type *  p_reg,
                                            nrf_pdm_event_t event,
                                            uint8_t         channel)
@@ -824,6 +854,12 @@ NRF_STATIC_INLINE void nrf_pdm_publish_set(NRF_PDM_Type *  p_reg,
 NRF_STATIC_INLINE void nrf_pdm_publish_clear(NRF_PDM_Type * p_reg, nrf_pdm_event_t event)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) = 0;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_pdm_publish_get(NRF_PDM_Type const * p_reg,
+                                               nrf_pdm_event_t      event)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) event + 0x80uL));
 }
 #endif // defined(DPPI_PRESENT)
 
@@ -964,7 +1000,6 @@ NRF_STATIC_INLINE void nrf_pdm_custom_ratio_set(NRF_PDM_Type * p_reg, uint8_t ra
 {
     NRFX_ASSERT(ratio >= PDM_FILTER_CTRL_DECRATIO_Min);
     NRFX_ASSERT(ratio <= PDM_FILTER_CTRL_DECRATIO_Max);
-    NRFX_ASSERT(ratio % 2 == 0);
     p_reg->FILTER.CTRL = (p_reg->FILTER.CTRL & ~PDM_FILTER_CTRL_DECRATIO_Msk) |
                           (((uint32_t)ratio << PDM_FILTER_CTRL_DECRATIO_Pos)
                                              & PDM_FILTER_CTRL_DECRATIO_Msk);
@@ -1035,7 +1070,7 @@ void nrf_pdm_filter_ctrl_get(NRF_PDM_Type const * p_reg, nrf_pdm_filter_ctrl_t *
     fctrl->sample_delay = (nrf_pdm_sample_delay_t)((p_reg->FILTER.CTRL
                                               & PDM_FILTER_CTRL_DATASAMPLEDELAY_Msk)
                                              >> PDM_FILTER_CTRL_DATASAMPLEDELAY_Pos);
-    fctrl->cic_filter = (nrf_pdm_filter_cic_t)((p_reg->FILTER.CTRL 
+    fctrl->cic_filter = (nrf_pdm_filter_cic_t)((p_reg->FILTER.CTRL
                                               & PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Msk)
                                              >> PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Pos);
 }

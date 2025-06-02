@@ -73,10 +73,8 @@ POSSIBILITY OF SUCH DAMAGE.
     #define DPPI_CH_NUM 8
 
     #undef ETM_TRCRSCTLR_MaxCount
-    #undef RADIO_PENALTYREG_PCP_MaxCount
 
     #define ETM_TRCRSCTLR_MaxCount (32UL)                          /*!< Max size of TRCRSCTLR[32] array.            */
-    #define RADIO_PENALTYREG_PCP_MaxCount (5UL)                    /*!< Max size of PCP[5] array.                   */
 
     #define EASYVDMA_PRESENT
 

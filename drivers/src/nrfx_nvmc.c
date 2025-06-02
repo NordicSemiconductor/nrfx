@@ -151,12 +151,12 @@ static bool is_page_aligned_check(uint32_t addr)
     return !(addr % flash_page_size_get());
 }
 
-__STATIC_INLINE bool is_halfword_aligned(uint32_t addr)
+NRFX_STATIC_INLINE __UNUSED bool is_halfword_aligned(uint32_t addr)
 {
     return ((addr & 0x1u) == 0u);
 }
 
-__STATIC_INLINE bool is_valid_address(uint32_t addr, bool uicr_allowed)
+NRFX_STATIC_INLINE __UNUSED bool is_valid_address(uint32_t addr, bool uicr_allowed)
 {
     if ((addr - NVMC_FLASH_BASE_ADDRESS) < flash_total_size_get())
     {

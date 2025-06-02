@@ -50,6 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
 typedef enum {
 /* ===================================================== Core Interrupts ===================================================== */
 /* ============================================== Processor Specific Interrupts ============================================== */
+  VPRTIM_IRQn                            = 7,        /*!< 7 VPRTIM                                                             */
   VPRCLIC_16_IRQn                        = 16,       /*!< 16 VPRCLIC_16                                                        */
   VPRCLIC_17_IRQn                        = 17,       /*!< 17 VPRCLIC_17                                                        */
   VPRCLIC_18_IRQn                        = 18,       /*!< 18 VPRCLIC_18                                                        */

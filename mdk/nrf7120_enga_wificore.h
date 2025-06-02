@@ -83,6 +83,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_WIFICORE_UMAC_VPR_BASE        0x48004000UL
 #define NRF_WIFICORE_MVDMA_BASE           0x48008000UL
 #define NRF_WIFICORE_LRCCONF_LRC0_BASE    0x4800B000UL
+#define NRF_WIFICORE_PCGCM_LRC0_BASE      0x4800C000UL
 #define NRF_WIFICORE_ANTSWC_BASE          0x4800D000UL
 #define NRF_WIFICORE_BELLBOARD_BASE       0x40074000UL
 
@@ -94,6 +95,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_WIFICORE_UMAC_VPR             ((NRF_VPR_Type*)                      NRF_WIFICORE_UMAC_VPR_BASE)
 #define NRF_WIFICORE_MVDMA                ((NRF_MVDMA_Type*)                    NRF_WIFICORE_MVDMA_BASE)
 #define NRF_WIFICORE_LRCCONF_LRC0         ((NRF_LRCCONF_Type*)                  NRF_WIFICORE_LRCCONF_LRC0_BASE)
+#define NRF_WIFICORE_PCGCM_LRC0           ((NRF_PCGCMASTER_Type*)               NRF_WIFICORE_PCGCM_LRC0_BASE)
 #define NRF_WIFICORE_ANTSWC               ((NRF_ANTSWC_Type*)                   NRF_WIFICORE_ANTSWC_BASE)
 #define NRF_WIFICORE_BELLBOARD            ((NRF_BELLBOARD_Type*)                NRF_WIFICORE_BELLBOARD_BASE)
 
@@ -106,6 +108,7 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_UMAC_VPR                            NRF_WIFICORE_UMAC_VPR
   #define NRF_MVDMA                               NRF_WIFICORE_MVDMA
   #define NRF_LRCCONF_LRC0                        NRF_WIFICORE_LRCCONF_LRC0
+  #define NRF_PCGCM_LRC0                          NRF_WIFICORE_PCGCM_LRC0
   #define NRF_ANTSWC                              NRF_WIFICORE_ANTSWC
   #define NRF_BELLBOARD                           NRF_WIFICORE_BELLBOARD
 #endif                                               /*!< NRF_WIFICORE                                                         */

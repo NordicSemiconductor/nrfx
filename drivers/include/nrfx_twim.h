@@ -238,6 +238,39 @@ nrfx_err_t nrfx_twim_reconfigure(nrfx_twim_t const *        p_instance,
                                  nrfx_twim_config_t const * p_config);
 
 /**
+ * @brief Function for getting current TWIM event handler and associated context.
+ *
+ * @param[in]  p_instance      Pointer to the driver instance structure.
+ * @param[out] p_event_handler Pointer to be filled with the current event handler.
+ * @param[out] pp_context      Pointer to be filled with a pointer to the current event handler context.
+ */
+void nrfx_twim_callback_get(nrfx_twim_t const *       p_instance,
+                            nrfx_twim_evt_handler_t * p_event_handler,
+                            void **                   pp_context);
+
+/**
+ * @brief Function for setting event handler of a TWIM instance.
+ *
+ * This function overwrites the internally stored values of @c event_handler and @c p_context
+ * parameters passed to the @ref nrfx_twim_init function. To be able to restore previous event handler
+ * you can use the @ref nrfx_twim_callback_get .
+ *
+ * @warning This function can be used only for reconfiguring handler in the non-blocking mode.
+ *          Use @ref nrfx_twim_uninit and @ref nrfx_twim_init to reconfigure driver in the blocking mode.
+ *
+ * @param[in] p_instance    Pointer to the driver instance structure.
+ * @param[in] event_handler Event handler provided by the user. Cannot be NULL.
+ * @param[in] p_context     Context passed to event handler.
+ *
+ * @retval NRFX_SUCCESS             Reconfiguration was successful.
+ * @retval NRFX_ERROR_BUSY          The driver is performing transaction.
+ * @retval NRFX_ERROR_INVALID_STATE The driver is configured in blocking mode.
+ */
+nrfx_err_t nrfx_twim_callback_set(nrfx_twim_t const *     p_instance,
+                                  nrfx_twim_evt_handler_t event_handler,
+                                  void *                  p_context);
+
+/**
  * @brief Function for uninitializing the TWIM instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.

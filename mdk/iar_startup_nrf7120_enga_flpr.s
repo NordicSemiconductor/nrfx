@@ -119,7 +119,7 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
-        DCD     0                         ; Reserved
+        DCD     VPRTIM_IRQHandler
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
@@ -380,6 +380,15 @@ __vector_table
         DCD     LFXO_IRQHandler
         DCD     LFRC_IRQHandler
         DCD     HFXO64M_IRQHandler
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     HVBUCK_IRQHandler
 
 __Vectors_End
 __Vectors                           EQU   __vector_table
@@ -483,6 +492,11 @@ VPRCLIC_21_IRQHandler
         PUBWEAK  VPRCLIC_22_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 VPRCLIC_22_IRQHandler
+        j .
+
+        PUBWEAK  VPRTIM_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+VPRTIM_IRQHandler
         j .
 
         PUBWEAK  SPU00_IRQHandler
@@ -828,6 +842,11 @@ LFRC_IRQHandler
         PUBWEAK  HFXO64M_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 HFXO64M_IRQHandler
+        j .
+
+        PUBWEAK  HVBUCK_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+HVBUCK_IRQHandler
         j .
 
         END

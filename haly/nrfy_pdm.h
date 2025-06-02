@@ -511,9 +511,10 @@ NRFY_STATIC_INLINE void nrfy_pdm_ratio_set(NRF_PDM_Type *  p_reg,
 NRFY_STATIC_INLINE void nrfy_pdm_custom_ratio_set(NRF_PDM_Type *  p_reg,
                                                   uint8_t         ratio)
 {
-    nrf_pdm_ratio_set(p_reg, NRF_PDM_RATIO_CUSTOM);
+    NRFX_ASSERT(ratio % 2 == 0);
+    nrf_pdm_custom_ratio_set(p_reg, (ratio / 2) - 1);
     nrf_barrier_w();
-    nrf_pdm_custom_ratio_set(p_reg, ratio);
+    nrf_pdm_ratio_set(p_reg, NRF_PDM_RATIO_CUSTOM);
     nrf_barrier_w();
 }
 #endif

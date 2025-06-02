@@ -69,6 +69,13 @@ extern "C" {
 void nrfx_ram_ctrl_power_enable_set(void const * p_object, size_t length, bool enable);
 
 /**
+ * @brief Function for setting if all RAM sections are to be powered on or off.
+ *
+ * @param[in] enable True if RAM sections are to be powered on, false otherwise.
+ */
+void nrfx_ram_ctrl_power_enable_all_set(bool enable);
+
+/**
  * @brief Function for setting if the RAM sections containing specified object
  *        are to be retained or not.
  *
@@ -77,6 +84,13 @@ void nrfx_ram_ctrl_power_enable_set(void const * p_object, size_t length, bool e
  * @param[in] enable   True if RAM sections are to be retained, false otherwise.
  */
 void nrfx_ram_ctrl_retention_enable_set(void const * p_object, size_t length, bool enable);
+
+/**
+ * @brief Function for setting if all RAM sections are to be retained or not.
+ *
+ * @param[in] enable True if RAM sections are to be retained, false otherwise.
+ */
+void nrfx_ram_ctrl_retention_enable_all_set(bool enable);
 
 /**
  * @brief Function for setting if the specified mask of RAM sections contained within given RAM block

@@ -124,11 +124,20 @@ NRFY_STATIC_INLINE bool __nrfy_internal_grtc_sys_counter_ready_check(NRF_GRTC_Ty
 #endif
 
 #if NRF_GRTC_HAS_SYSCOUNTER_ARRAY || defined(__NRFX_DOXYGEN__)
+#if (NRFX_CHECK(ISA_ARM) && (__CORTEX_M == 33U)) || defined(__NRFX_DOXYGEN__)
 /** @brief Mask to determine whether the SYSCOUNTER value is reliable. */
 #define NRFY_GRTC_SYSCOUNTER_RETRY_MASK \
     ((uint64_t)(NRF_GRTC_SYSCOUNTERH_OVERFLOW_MASK + NRF_GRTC_SYSCOUNTERH_BUSY_MASK) << 32)
 #else
+#define NRFY_GRTC_SYSCOUNTER_RETRY_MASK \
+    (NRF_GRTC_SYSCOUNTERH_OVERFLOW_MASK + NRF_GRTC_SYSCOUNTERH_BUSY_MASK)
+#endif
+#else
+#if NRFX_CHECK(ISA_ARM) && (__CORTEX_M == 33U)
 #define NRFY_GRTC_SYSCOUNTER_RETRY_MASK ((uint64_t)(NRF_GRTC_SYSCOUNTERH_OVERFLOW_MASK) << 32)
+#else
+#define NRFY_GRTC_SYSCOUNTER_RETRY_MASK (NRF_GRTC_SYSCOUNTERH_OVERFLOW_MASK)
+#endif
 #endif
 
 /** @brief Mask of the SYSCOUNTER value. */
@@ -329,7 +338,7 @@ NRFY_STATIC_INLINE uint64_t nrfy_grtc_sys_counter_get(NRF_GRTC_Type const * p_re
         nrf_barrier_r();
         counter_h = nrf_grtc_sys_counter_high_get(p_reg);
         nrf_barrier_r();
-    } while (counter_h & NRF_GRTC_SYSCOUNTERH_OVERFLOW_MASK);
+    } while (counter_h & NRFY_GRTC_SYSCOUNTER_RETRY_MASK);
     return (uint64_t)counter_l | ((uint64_t)(counter_h & NRF_GRTC_SYSCOUNTERH_VALUE_MASK) << 32);
 #endif // NRFX_CHECK(ISA_ARM) && (__CORTEX_M == 33U)
 }

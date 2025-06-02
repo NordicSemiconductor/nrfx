@@ -37,8 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* MDK version */
 #define MDK_MAJOR_VERSION   8 
-#define MDK_MINOR_VERSION   70 
-#define MDK_MICRO_VERSION   0 
+#define MDK_MINOR_VERSION   71 
+#define MDK_MICRO_VERSION   1 
 
    
 /* Define coprocessor domains */

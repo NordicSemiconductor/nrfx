@@ -159,7 +159,11 @@ typedef enum
 /** @brief TDM clock source selection. */
 typedef enum
 {
+#if defined(TDM_CONFIG_SCK_SRC_CLKSRC_PCLK) || defined(__NRFX_DOXYGEN__)
+    NRF_TDM_SRC_PCLK32M = TDM_CONFIG_SCK_SRC_CLKSRC_PCLK,    ///< 32MHz peripheral clock.
+#elif defined(TDM_CONFIG_SCK_SRC_CLKSRC_PCLK32M)
     NRF_TDM_SRC_PCLK32M = TDM_CONFIG_SCK_SRC_CLKSRC_PCLK32M, ///< 32MHz peripheral clock.
+#endif
     NRF_TDM_SRC_ACLK    = TDM_CONFIG_SCK_SRC_CLKSRC_ACLK     ///< Audio PLL clock.
 }  nrf_tdm_src_t;
 
@@ -400,6 +404,18 @@ NRF_STATIC_INLINE void nrf_tdm_subscribe_clear(NRF_TDM_Type * p_reg,
                                                nrf_tdm_task_t task);
 
 /**
+ * @brief Function for getting the subscribe configuration for a given
+ *        TDM task.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] task  Task for which to read the configuration.
+ *
+ * @return TDM subscribe configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_tdm_subscribe_get(NRF_TDM_Type const * p_reg,
+                                                 nrf_tdm_task_t       task);
+
+/**
  * @brief Function for setting the publish configuration for a given
  *        TDM event.
  *
@@ -420,6 +436,18 @@ NRF_STATIC_INLINE void nrf_tdm_publish_set(NRF_TDM_Type *  p_reg,
  */
 NRF_STATIC_INLINE void nrf_tdm_publish_clear(NRF_TDM_Type *  p_reg,
                                              nrf_tdm_event_t event);
+
+/**
+ * @brief Function for getting the publish configuration for a given
+ *        TDM event.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] event Event for which to read the configuration.
+ *
+ * @return TDM publish configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_tdm_publish_get(NRF_TDM_Type const * p_reg,
+                                               nrf_tdm_event_t      event);
 #endif // defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 
 /**
@@ -714,6 +742,14 @@ NRF_STATIC_INLINE void nrf_tdm_subscribe_clear(NRF_TDM_Type * p_reg,
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
 }
 
+
+NRF_STATIC_INLINE uint32_t nrf_tdm_subscribe_get(NRF_TDM_Type const * p_reg,
+                                                 nrf_tdm_task_t       task)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) task + 0x80uL));
+}
+
+
 NRF_STATIC_INLINE void nrf_tdm_publish_set(NRF_TDM_Type *  p_reg,
                                            nrf_tdm_event_t event,
                                            uint8_t         channel)
@@ -726,6 +762,12 @@ NRF_STATIC_INLINE void nrf_tdm_publish_clear(NRF_TDM_Type *  p_reg,
                                              nrf_tdm_event_t event)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) = 0;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_tdm_publish_get(NRF_TDM_Type const * p_reg,
+                                               nrf_tdm_event_t      event)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) event + 0x80uL));
 }
 #endif // defined(DPPI_PRESENT)
 

@@ -67,24 +67,21 @@ POSSIBILITY OF SUCH DAMAGE.
     #elif defined(NRF_APPLICATION)
         #if defined(NRF_TRUSTZONE_NONSECURE)
             #define GPIOTE_IRQ_GROUP       0
-            #define GRTC_IRQ_GROUP         1 
+            #define GRTC_IRQ_GROUP         1
         #else
             #define GPIOTE_IRQ_GROUP       1
             #define GRTC_IRQ_GROUP         2
         #endif
     #endif
 
-    #define EASYVDMA_PRESENT
-    #define VDMADESCRIPTOR_CONFIG_CNT_Pos (0UL)        /*!< Position of CNT field.                                               */
-    #define VDMADESCRIPTOR_CONFIG_CNT_Msk (0xFFFFFFUL << VDMADESCRIPTOR_CONFIG_CNT_Pos) /*!< Bit mask of CNT field.              */
-    #define VDMADESCRIPTOR_CONFIG_ATTRIBUTE_Pos (24UL) /*!< Position of ATTRIBUTE field.                                         */
+    #define EASYVDMA_PRESENT                                       */
 
     #define SAADC_CH_NUM SAADC_CH_MaxCount
     #define SAADC_EASYDMA_MAXCNT_SIZE 15
 
     #define LPCOMP_REFSEL_RESOLUTION 16
 
-    #define MPC_MASTER_PORTS_MaxCount (15UL) /*!< Max number of master ports. */
+    #define MPC_MASTER_PORTS_MaxCount (8UL) /*!< Max number of master ports. */
 
     #define GPIOTE20_CH_NUM GPIOTE20_GPIOTE_NCHANNELS_SIZE
     #define GPIOTE30_CH_NUM GPIOTE30_GPIOTE_NCHANNELS_SIZE
@@ -102,7 +99,7 @@ POSSIBILITY OF SUCH DAMAGE.
     #define DPPIC10_CH_NUM DPPIC10_CH_NUM_SIZE
     #define DPPIC20_CH_NUM DPPIC20_CH_NUM_SIZE
     #define DPPIC30_CH_NUM DPPIC30_CH_NUM_SIZE
-    
+
     #define DPPIC00_GROUP_NUM DPPIC00_GROUP_NUM_SIZE
     #define DPPIC10_GROUP_NUM DPPIC10_GROUP_NUM_SIZE
     #define DPPIC20_GROUP_NUM DPPIC20_GROUP_NUM_SIZE

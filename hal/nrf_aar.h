@@ -402,8 +402,8 @@ NRF_STATIC_INLINE void nrf_aar_in_ptr_set(NRF_AAR_Type *         p_reg,
                                           nrf_vdma_job_t const * p_job);
 
 /**
- * @brief Function for getting the pointer to a job list containing both 
- *        the Hash and Prand parts of the private resolvable address (DEVICEADDR) 
+ * @brief Function for getting the pointer to a job list containing both
+ *        the Hash and Prand parts of the private resolvable address (DEVICEADDR)
  *        field from the Bluetooth packet, and a number of Identity Resolving Keys (IRK).
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -487,6 +487,17 @@ NRF_STATIC_INLINE void nrf_aar_subscribe_clear(NRF_AAR_Type * p_reg,
                                                nrf_aar_task_t task);
 
 /**
+ * @brief Function for getting the subscribe configuration for a given
+ *        AAR task.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] task  Task for which to read the configuration.
+ *
+ * @return AAR subscribe configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_aar_subscribe_get(NRF_AAR_Type const * p_reg,
+                                                 nrf_aar_task_t       task);
+/**
  * @brief Function for setting the publish configuration for a given
  *        AAR event.
  *
@@ -507,6 +518,18 @@ NRF_STATIC_INLINE void nrf_aar_publish_set(NRF_AAR_Type *  p_reg,
  */
 NRF_STATIC_INLINE void nrf_aar_publish_clear(NRF_AAR_Type *  p_reg,
                                              nrf_aar_event_t event);
+
+/**
+ * @brief Function for getting the publish configuration for a given
+ *        AAR event.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] event Event for which to read the configuration.
+ *
+ * @return AAR publish configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_aar_publish_get(NRF_AAR_Type const * p_reg,
+                                               nrf_aar_event_t      event);
 #endif // defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 
 #ifndef NRF_DECLARE_ONLY
@@ -687,6 +710,12 @@ NRF_STATIC_INLINE void nrf_aar_subscribe_clear(NRF_AAR_Type * p_reg,
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
 }
 
+NRF_STATIC_INLINE uint32_t nrf_aar_subscribe_get(NRF_AAR_Type const * p_reg,
+                                                 nrf_aar_task_t       task)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) task + 0x80uL));
+}
+
 NRF_STATIC_INLINE void nrf_aar_publish_set(NRF_AAR_Type *  p_reg,
                                            nrf_aar_event_t event,
                                            uint8_t         channel)
@@ -699,6 +728,12 @@ NRF_STATIC_INLINE void nrf_aar_publish_clear(NRF_AAR_Type *  p_reg,
                                              nrf_aar_event_t event)
 {
     *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) = 0;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_aar_publish_get(NRF_AAR_Type const * p_reg,
+                                               nrf_aar_event_t      event)
+{
+    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) event + 0x80uL));
 }
 #endif // defined(DPPI_PRESENT)
 

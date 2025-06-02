@@ -47,7 +47,7 @@ extern "C" {
 #endif
 
 #ifndef NRFX_CONFIG_API_VER_MINOR
-#define NRFX_CONFIG_API_VER_MINOR 9
+#define NRFX_CONFIG_API_VER_MINOR 10
 #endif
 
 #ifndef NRFX_CONFIG_API_VER_MICRO
@@ -74,6 +74,10 @@ extern "C" {
 #define NRF_SUBSCRIBE_PUBLISH_OFFSET(task_or_event) 0x80uL
 #endif // defined(NRF_RADIO)
 #endif // defined(DPPI_PRESENT)
+
+#if defined(ADDRESS_BUS_Msk)
+#define NRF_PERIPH_APB_MASK 0x1000UL
+#endif
 
 #if !defined(NRFY_CACHE_WB)
 #define NRFY_CACHE_WB(p_buffer, size)

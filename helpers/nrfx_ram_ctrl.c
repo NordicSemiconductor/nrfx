@@ -153,35 +153,35 @@ typedef union
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
                  0, 0), /* Section 0 of block 0 - 7 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 0, 1), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+                 0, 1), /* Section 1 of block 0 - 7 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 0, 2), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+                 0, 2), /* Section 2 of block 0 - 7 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 0, 3), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+                 0, 3), /* Section 3 of block 0 - 7 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 0, 4), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+                 0, 4), /* Section 4 of block 0 - 7 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 0, 5), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+                 0, 5), /* Section 5 of block 0 - 7 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 0, 6), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+                 0, 6), /* Section 6 of block 0 - 7 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 0, 7), /* Section 0 of block 0 - 7 * 32 kB units. */ \
+                 0, 7), /* Section 7 of block 0 - 7 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
                  1, 0), /* Section 0 of block 1 - 1 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 1, 1), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+                 1, 1), /* Section 1 of block 1 - 1 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 1, 2), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+                 1, 2), /* Section 2 of block 1 - 1 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 1, 3), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+                 1, 3), /* Section 3 of block 1 - 1 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 1, 4), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+                 1, 4), /* Section 4 of block 1 - 1 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 1, 5), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+                 1, 5), /* Section 5 of block 1 - 1 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 1, 6), /* Section 0 of block 1 - 1 * 32 kB units. */ \
+                 1, 6), /* Section 6 of block 1 - 1 * 32 kB units. */ \
     NRFX_LISTIFY(1, RAM_NON_UNIFORM_SECTION_DECLARE, (,),             \
-                 1, 7)  /* Section 0 of block 1 - 1 * 32 kB units. */
+                 1, 7)  /* Section 7 of block 1 - 1 * 32 kB units. */
 #elif defined(NRF54LV10A_ENGA_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
 #define RAM_UNIFORM_BLOCKS             1
@@ -208,6 +208,21 @@ static const ram_unit_t unit_to_block_section_lut[] =
     RAM_NON_UNIFORM_SECTIONS,
 };
 #endif
+
+static const size_t m_ram_size =
+#if defined(NRF_MEMORY_RAM_SIZE)
+                                 NRF_MEMORY_RAM_SIZE +
+#endif
+#if defined(NRF_MEMORY_RAM0_SIZE)
+                                 NRF_MEMORY_RAM0_SIZE +
+#endif
+#if defined(NRF_MEMORY_RAM1_SIZE)
+                                 NRF_MEMORY_RAM1_SIZE +
+#endif
+#if defined(NRF_MEMORY_RAM2_SIZE)
+                                 NRF_MEMORY_RAM2_SIZE +
+#endif
+                                 0;
 
 typedef void (* ram_ctrl_block_section_op_t)(uint8_t  block_idx,
                                              uint32_t section_mask,
@@ -279,10 +294,22 @@ void nrfx_ram_ctrl_power_enable_set(void const * p_object, size_t length, bool e
                                    ram_ctrl_block_section_power_enable_set);
 }
 
+void nrfx_ram_ctrl_power_enable_all_set(bool enable)
+{
+    ram_ctrl_block_section_iterate((void const *)NRF_MEMORY_RAM_BASE, m_ram_size, enable,
+                                   ram_ctrl_block_section_power_enable_set);
+}
+
 void nrfx_ram_ctrl_retention_enable_set(void const * p_object, size_t length, bool enable)
 {
     ram_ctrl_block_section_iterate(p_object,
                                    length,
                                    enable,
+                                   ram_ctrl_block_section_retention_enable_set);
+}
+
+void nrfx_ram_ctrl_retention_enable_all_set(bool enable)
+{
+    ram_ctrl_block_section_iterate((void const *)NRF_MEMORY_RAM_BASE, m_ram_size, enable,
                                    ram_ctrl_block_section_retention_enable_set);
 }

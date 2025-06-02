@@ -88,6 +88,7 @@ __WEAK void CLICSoftware_Handler(void)
 }
 
 /* Device specific interrupt handlers */
+ __HANDLER("Default_Handler") void VPRTIM_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void VPRCLIC_16_IRQHandler                                       (void);
  __HANDLER("Default_Handler") void VPRCLIC_17_IRQHandler                                       (void);
  __HANDLER("Default_Handler") void VPRCLIC_18_IRQHandler                                       (void);
@@ -144,7 +145,7 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     0,
     0,
-    0,
+    VPRTIM_IRQHandler,
     0,
     0,
     0,

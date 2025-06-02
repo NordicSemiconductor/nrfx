@@ -142,6 +142,8 @@ typedef enum
             (evt_type == NRFX_CLOCK_EVT_CAL_DONE ? "CAL_DONE" : ), ())                      \
     NRFX_COND_CODE_1(NRF_CLOCK_HAS_HFCLKAUDIO,                                              \
             (evt_type == NRFX_CLOCK_EVT_HFCLKAUDIO_STARTED ? "HFAUDIO_STARTED" : ), ())     \
+    NRFX_COND_CODE_1(NRF_CLOCK_HAS_HFCLK24M,                                                \
+            (evt_type == NRFX_CLOCK_EVT_HFCLK24M_STARTED ? "HFCLK24M_STARTED" : ), ())      \
     NRFX_COND_CODE_1(NRF_CLOCK_HAS_HFCLK192M,                                               \
             (evt_type == NRFX_CLOCK_EVT_HFCLK192M_STARTED ? "HF192M_STARTED" : ), ())       \
     NRFX_COND_CODE_1(NRF_CLOCK_HAS_XO_TUNE,                                                 \
@@ -245,6 +247,13 @@ static void clock_stop(nrf_clock_domain_t domain)
             int_mask = NRF_CLOCK_INT_HFAUDIO_STARTED_MASK;
             task = NRF_CLOCK_TASK_HFCLKAUDIOSTOP;
             event = NRF_CLOCK_EVENT_HFCLKAUDIOSTARTED;
+            break;
+#endif
+#if NRF_CLOCK_HAS_HFCLK24M
+        case NRF_CLOCK_DOMAIN_HFCLK24M:
+            int_mask = NRF_CLOCK_INT_HFCLK24M_STARTED_MASK;
+            task = NRF_CLOCK_TASK_HFCLK24MSTOP;
+            event = NRF_CLOCK_EVENT_HFCLK24MSTARTED;
             break;
 #endif
         default:
@@ -406,6 +415,9 @@ void nrfx_clock_uninit(void)
 #if NRF_CLOCK_HAS_HFCLKAUDIO
     clock_stop(NRF_CLOCK_DOMAIN_HFCLKAUDIO);
 #endif
+#if NRF_CLOCK_HAS_HFCLK24M
+    clock_stop(NRF_CLOCK_DOMAIN_HFCLK24M);
+#endif
     m_clock_cb.module_initialized = false;
     NRFX_LOG_INFO("Uninitialized.");
 }
@@ -503,6 +515,13 @@ void nrfx_clock_start(nrf_clock_domain_t domain)
             event    = NRF_CLOCK_EVENT_HFCLKAUDIOSTARTED;
             int_mask = NRF_CLOCK_INT_HFAUDIO_STARTED_MASK;
             task     = NRF_CLOCK_TASK_HFCLKAUDIOSTART;
+            break;
+#endif
+#if NRF_CLOCK_HAS_HFCLK24M
+        case NRF_CLOCK_DOMAIN_HFCLK24M:
+            event    = NRF_CLOCK_EVENT_HFCLK24MSTARTED;
+            int_mask = NRF_CLOCK_INT_HFCLK24M_STARTED_MASK;
+            task     = NRF_CLOCK_TASK_HFCLK24MSTART;
             break;
 #endif
         default:
@@ -722,7 +741,7 @@ nrfx_err_t nrfx_clock_divider_set(nrf_clock_domain_t domain,
             switch (div)
             {
                 case NRF_CLOCK_HFCLK_DIV_2:
-#if !defined(NRF_TRUSTZONE_NONSECURE)
+#if !defined(NRF_TRUSTZONE_NONSECURE) && NRFX_CHECK(NRF53_ERRATA_4_ENABLE_WORKAROUND)
                     if (nrf53_errata_4())
                     {
                         NRFX_CRITICAL_SECTION_ENTER();
@@ -743,7 +762,7 @@ nrfx_err_t nrfx_clock_divider_set(nrf_clock_domain_t domain,
                     }
                     break;
                 case NRF_CLOCK_HFCLK_DIV_1:
-#if !defined(NRF_TRUSTZONE_NONSECURE)
+#if !defined(NRF_TRUSTZONE_NONSECURE) && NRFX_CHECK(NRF53_ERRATA_4_ENABLE_WORKAROUND)
                     if (nrf53_errata_4())
                     {
                         NRFX_CRITICAL_SECTION_ENTER();
@@ -863,6 +882,10 @@ void nrfx_clock_irq_handler(void)
 #endif // NRFX_CLOCK_CONFIG_LF_CAL_ENABLED
 #if NRF_CLOCK_HAS_HFCLKAUDIO
             case NRF_CLOCK_INT_HFAUDIO_STARTED_MASK:
+                break;
+#endif
+#if NRF_CLOCK_HAS_HFCLK24M
+            case NRF_CLOCK_INT_HFCLK24M_STARTED_MASK:
                 break;
 #endif
 #if NRF_CLOCK_HAS_HFCLK192M

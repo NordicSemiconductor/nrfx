@@ -205,13 +205,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /*RAM Controller*/
 #define RAMC_PRESENT 1
-#define RAMC_COUNT 3
+#define RAMC_COUNT 2
 
 #define RAMC000_ECC 0                                /*!< (unspecified)                                                        */
 #define RAMC000_SEC 1                                /*!< (unspecified)                                                        */
-
-#define RAMC001_ECC 0                                /*!< (unspecified)                                                        */
-#define RAMC001_SEC 0                                /*!< (unspecified)                                                        */
 
 #define RAMC122_ECC 0                                /*!< (unspecified)                                                        */
 #define RAMC122_SEC 0                                /*!< (unspecified)                                                        */
@@ -710,10 +707,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define USBHSCORE_PRESENT 1
 #define USBHSCORE_COUNT 1
 
-/*I3CCORE*/
-#define I3CCORE_PRESENT 1
-#define I3CCORE_COUNT 2
-
 /*MCAN*/
 #define MCAN_PRESENT 1
 #define MCAN_COUNT 1
@@ -825,10 +818,6 @@ POSSIBILITY OF SUCH DAMAGE.
 /*MUTEX*/
 #define MUTEX_PRESENT 1
 #define MUTEX_COUNT 2
-
-/*I3C*/
-#define I3C_PRESENT 1
-#define I3C_COUNT 2
 
 /*VPR peripheral registers*/
 #define VPR_PRESENT 1
