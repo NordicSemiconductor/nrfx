@@ -164,14 +164,14 @@ extern "C" {
 /** @brief @deprecated Symbol specifying width of the 8-bit sample in bits. */
 #define NRF_SAADC_8BIT_SAMPLE_WIDTH 16
 
-#if defined SAADC_SAMPLERATE_CC_Min || defined(__NRFX_DOXYGEN__)
+#if defined(SAADC_SAMPLERATE_CC_Min) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol specifying minimum capture and compare value for sample rate. */
 #define NRF_SAADC_SAMPLERATE_CC_MIN SAADC_SAMPLERATE_CC_Min
 #else
 #define NRF_SAADC_SAMPLERATE_CC_MIN (80UL)
 #endif
 
-#if defined SAADC_SAMPLERATE_CC_Max || defined(__NRFX_DOXYGEN__)
+#if defined(SAADC_SAMPLERATE_CC_Max) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol specifying maximum capture and compare value for sample rate. */
 #define NRF_SAADC_SAMPLERATE_CC_MAX SAADC_SAMPLERATE_CC_Max
 #else

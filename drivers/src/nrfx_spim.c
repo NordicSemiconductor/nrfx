@@ -488,23 +488,7 @@ static void spim_configure(nrfx_spim_t const *        p_instance,
 #if NRFX_CHECK(NRF54L_ERRATA_55_ENABLE_WORKAROUND)
     if (nrf54l_errata_55())
     {
-        uint32_t p = prescaler *
-                     ((NRF_SPIM_BASE_FREQUENCY_GET(p_instance->p_reg) ==
-                       NRF_SPIM_BASE_FREQUENCY_16MHZ) ? 2 : 1);
-
-        // First condition (CPHA=0) applies to prescaler 4 (slow instances) and 8.
-        // Second condition (CPHA=1) applies to prescaler 2 (slow instances) and 4.
-        if (((p == 8) &&
-             ((p_config->mode == NRF_SPIM_MODE_0) || (p_config->mode == NRF_SPIM_MODE_2))) ||
-            ((p == 4) &&
-             ((p_config->mode == NRF_SPIM_MODE_1) || (p_config->mode == NRF_SPIM_MODE_3))))
-        {
-            p_cb->apply_errata_nrf54l_55 = 1;
-        }
-        else
-        {
-            p_cb->apply_errata_nrf54l_55 = 0;
-        }
+        p_cb->apply_errata_nrf54l_55 = 1;
     }
 #endif
 
@@ -878,7 +862,7 @@ static nrfx_err_t spim_xfer(NRF_SPIM_Type               * p_spim,
     nrfy_spim_enable(p_spim);
 
 #if NRFX_CHECK(NRF54L_ERRATA_55_ENABLE_WORKAROUND)
-    if (nrf54l_errata_55() && p_cb->apply_errata_nrf54l_55)
+    if (p_cb->apply_errata_nrf54l_55)
     {
         *(volatile uint32_t *)((uintptr_t)p_spim + 0xc80) = 0x82;
     }
@@ -904,7 +888,7 @@ static nrfx_err_t spim_xfer(NRF_SPIM_Type               * p_spim,
     if (!p_cb->handler)
     {
 #if NRFX_CHECK(NRF54L_ERRATA_55_ENABLE_WORKAROUND)
-        if (nrf54l_errata_55() && p_cb->apply_errata_nrf54l_55)
+        if (p_cb->apply_errata_nrf54l_55)
         {
             *(volatile uint32_t *)((uintptr_t)p_spim + 0xc80) = 0;
         }
@@ -1009,8 +993,7 @@ void nrfx_spim_abort(nrfx_spim_t const * p_instance)
 static void irq_handler(NRF_SPIM_Type * p_spim, spim_control_block_t * p_cb)
 {
 #if NRFX_CHECK(NRF54L_ERRATA_55_ENABLE_WORKAROUND)
-    if (nrf54l_errata_55() && p_cb->apply_errata_nrf54l_55 &&
-        nrfy_spim_event_check(p_spim, NRF_SPIM_EVENT_END))
+    if (p_cb->apply_errata_nrf54l_55 && nrfy_spim_event_check(p_spim, NRF_SPIM_EVENT_END))
     {
         *(volatile uint32_t *)((uintptr_t)p_spim + 0xc80) = 0;
     }

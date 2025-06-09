@@ -976,19 +976,16 @@ static void grtc_irq_handler(void)
                  */
                 if (!nrf_grtc_event_check(NRF_GRTC, NRFY_INT_BITPOS_TO_EVENT(idx)))
                 {
-                    break;
+                    continue;
                 }
 
                 nrf_grtc_event_clear(NRF_GRTC, NRFY_INT_BITPOS_TO_EVENT(idx));
 
                 m_cb.channel_data[i].handler(idx, cc_value, m_cb.channel_data[i].p_context);
-                break;
             }
-
-            /* Return early as this is the most likely scenario (single CC expiring). */
-            if (NRFX_IS_ENABLED(GRTC_EXT) && (intpend == 0))
+            else if (nrf_grtc_event_check(NRF_GRTC, NRFY_INT_BITPOS_TO_EVENT(idx)))
             {
-                break;
+                nrf_grtc_event_clear(NRF_GRTC, NRFY_INT_BITPOS_TO_EVENT(idx));
             }
         }
 #if NRF_GRTC_HAS_RTCOUNTER

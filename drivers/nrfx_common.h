@@ -94,7 +94,7 @@ extern "C" {
 #define NRFX_RELEASE_VER_MINOR 12
 
 /** @brief Symbol specifying micro number of the current nrfx version. */
-#define NRFX_RELEASE_VER_MICRO 0
+#define NRFX_RELEASE_VER_MICRO 1
 
 /**
  * @brief Macro for checking if the specified identifier is defined and it has

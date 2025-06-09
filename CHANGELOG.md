@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.12.1] - 2025-06-09
+### Fixed
+- Fixed missing event clearing in case of NULL user handler in the GRTC driver.
+- Fixed the workaround condition for nRF54L Series anomaly 55 in the SPIM driver.
+
 ## [3.12.0] - 2025-06-02
 ### Added
 - Added a driver, HALY and HAL for MRAMC.

@@ -356,6 +356,7 @@ nrfx_err_t nrfx_grtc_syscounter_cc_disable(uint8_t channel);
 /**
  * @brief Function for setting the absolute compare value for the SYSCOUNTER.
  *
+ * @note This function is deprecated. Use @ref nrfx_grtc_syscounter_cc_abs_set instead.
  * @note This function marks the specified @p channel as used.
  *
  * @param[in] p_chan_data Pointer to the channel data instance structure.
@@ -390,6 +391,8 @@ void nrfx_grtc_syscounter_cc_abs_set(uint8_t channel, uint64_t val, bool safe_se
 
 /**
  * @brief Function for setting the relative compare value for the SYSCOUNTER.
+ *
+ * @note This function is deprecated. Use @ref nrfx_grtc_syscounter_cc_rel_set instead.
  *
  * Function has no assumptions on the current channel state so channel event is cleared and
  * interrupt can optionally be enabled for that channel.
