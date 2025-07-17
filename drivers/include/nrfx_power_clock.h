@@ -67,6 +67,14 @@ __STATIC_INLINE void nrfx_power_clock_irq_init(void)
         NRFX_IRQ_PRIORITY_SET(irqn, priority);
         NRFX_IRQ_ENABLE(irqn);
     }
+#if NRFX_CHECK(NRFX_CLOCK_CONFIG_USE_LFRC_CALIBRATION) && \
+    NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
+    if (!NRFX_IRQ_IS_ENABLED(LFRC_IRQn))
+    {
+        NRFX_IRQ_PRIORITY_SET(LFRC_IRQn, priority);
+        NRFX_IRQ_ENABLE(LFRC_IRQn);
+    }
+#endif
 }
 
 #if NRFX_CHECK(NRFX_POWER_ENABLED) && NRFX_CHECK(NRFX_CLOCK_ENABLED)

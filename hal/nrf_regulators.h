@@ -47,6 +47,14 @@ extern "C" {
  * @brief   Hardware access layer for managing the REGULATORS peripheral.
  */
 
+#if defined(REGULATORS_DCDCEN_DCDCEN_Msk) || defined(REGULATORS_VREGMAIN_DCDCEN_VAL_Msk) || \
+    defined(REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the main voltage regulator (VREGMAIN) is present. */
+#define NRF_REGULATORS_HAS_VREG_MAIN 1
+#else
+#define NRF_REGULATORS_HAS_VREG_MAIN 0
+#endif
+
 #if defined(REGULATORS_VREGH_DCDCEN_DCDCEN_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether high voltage regulator (VREGH) is present. */
 #define NRF_REGULATORS_HAS_VREG_HIGH 1
@@ -66,6 +74,14 @@ extern "C" {
 #define NRF_REGULATORS_HAS_VREG_RADIO 1
 #else
 #define NRF_REGULATORS_HAS_VREG_RADIO 0
+#endif
+
+#if NRF_REGULATORS_HAS_VREG_MAIN || NRF_REGULATORS_HAS_VREG_HIGH || \
+    NRF_REGULATORS_HAS_VREG_MEDIUM || NRF_REGULATORS_HAS_VREG_RADIO
+/** @brief Symbol indicating whether any regulator is present. */
+#define NRF_REGULATORS_HAS_VREG_ANY 1
+#else
+#define NRF_REGULATORS_HAS_VREG_ANY 0
 #endif
 
 #if defined(REGULATORS_POFCON_POF_Msk) || defined(__NRFX_DOXYGEN__)
@@ -117,10 +133,13 @@ extern "C" {
 #define NRF_REGULATORS_HAS_INDUCTOR_DET 0
 #endif
 
+#if NRF_REGULATORS_HAS_VREG_ANY
 /** @brief Voltage regulators. */
 typedef enum
 {
+#if NRF_REGULATORS_HAS_VREG_MAIN
     NRF_REGULATORS_VREG_MAIN,   ///< Main voltage regulator (VREGMAIN).
+#endif
 #if NRF_REGULATORS_HAS_VREG_HIGH
     NRF_REGULATORS_VREG_HIGH,   ///< High voltage regulator (VREGH).
 #endif
@@ -131,6 +150,7 @@ typedef enum
     NRF_REGULATORS_VREG_RADIO,  ///< Radio voltage regulator (VREGRADIO).
 #endif
 } nrf_regulators_vreg_t;
+#endif
 
 #if NRF_REGULATORS_HAS_POF
 /** @brief POF Comparator thresholds. */
@@ -209,6 +229,7 @@ typedef enum
 } nrf_regulators_main_status_t;
 #endif
 
+#if NRF_REGULATORS_HAS_VREG_ANY
 /**
  * @brief Function for enabling or disabling the specified voltage regulator.
  *
@@ -231,6 +252,7 @@ NRF_STATIC_INLINE void nrf_regulators_vreg_enable_set(NRF_REGULATORS_Type * p_re
  */
 NRF_STATIC_INLINE bool nrf_regulators_vreg_enable_check(NRF_REGULATORS_Type const * p_reg,
                                                        nrf_regulators_vreg_t        regulator);
+#endif // NRF_REGULATORS_HAS_VREG_ANY
 
 /**
  * @brief Function for putting the CPU in System OFF mode.
@@ -326,6 +348,7 @@ NRF_STATIC_INLINE bool nrf_regulators_inductor_check(NRF_REGULATORS_Type const *
 
 #ifndef NRF_DECLARE_ONLY
 
+#if NRF_REGULATORS_HAS_VREG_ANY
 NRF_STATIC_INLINE void nrf_regulators_vreg_enable_set(NRF_REGULATORS_Type * p_reg,
                                                       nrf_regulators_vreg_t regulator,
                                                       bool                  enable)
@@ -417,6 +440,7 @@ NRF_STATIC_INLINE bool nrf_regulators_vreg_enable_check(NRF_REGULATORS_Type cons
             return false;
     }
 }
+#endif // NRF_REGULATORS_HAS_VREG_ANY
 
 NRF_STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type * p_reg)
 {

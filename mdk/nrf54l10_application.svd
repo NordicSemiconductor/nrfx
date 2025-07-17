@@ -843,13 +843,13 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>READ</name>
-              <description>Read access</description>
+              <description>Read access. Must be enabled in order for the Arm Cortex CPU to start executing from RRAM.</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>NotAllowed</name>
-                  <description>Reading from the region is not allowed</description>
+                  <description>Reading from the region is not allowed.</description>
                   <value>0x0</value>
                 </enumeratedValue>
                 <enumeratedValue>
@@ -9669,7 +9669,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x18</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>CH[%s]</name>
-              <description>Description collection: Configuration of features for channel n of DPPIC</description>
+              <description>Description collection: Security configuration for channel n of DPPIC</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -9718,7 +9718,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x8</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>CHG[%s]</name>
-              <description>Description collection: Configuration of features for channel group n of DPPIC</description>
+              <description>Description collection: Security configuration for channel group n of DPPIC</description>
               <addressOffset>0x060</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -9776,7 +9776,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x8</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>CH[%s]</name>
-              <description>Description collection: Configuration of features for channel o of GPIOTE[n]</description>
+              <description>Description collection: Security configuration for channel o of GPIOTE[n]</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -9825,7 +9825,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x8</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>INTERRUPT[%s]</name>
-              <description>Description collection: Configuration of features for interrupt o of GPIOTE[n]</description>
+              <description>Description collection: Security configuration for interrupt o of GPIOTE[n]</description>
               <addressOffset>0x020</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -9883,7 +9883,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x20</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>PIN[%s]</name>
-              <description>Description collection: Configuration of features for GPIO[n] PIN[o]</description>
+              <description>Description collection: Security configuration for GPIO[n] PIN[o]</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -9994,7 +9994,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x18</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>CC[%s]</name>
-              <description>Description collection: Configuration of features for CC n of GRTC</description>
+              <description>Description collection: Security configuration for CC n of GRTC</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -10041,7 +10041,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             </register>
             <register>
               <name>PWMCONFIG</name>
-              <description>Configuration of feature for PWMCONFIG of GRTC</description>
+              <description>Security Configuration for PWMCONFIG of GRTC</description>
               <addressOffset>0x074</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -10088,7 +10088,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             </register>
             <register>
               <name>CLK</name>
-              <description>Configuration of features for CLKOUT/CLKCFG of GRTC</description>
+              <description>Security configuration for CLKOUT/CLKCFG of GRTC</description>
               <addressOffset>0x078</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -10135,7 +10135,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             </register>
             <register>
               <name>SYSCOUNTER</name>
-              <description>Configuration of features for SYSCOUNTERL/SYSCOUNTERH of GRTC</description>
+              <description>Security configuration for SYSCOUNTERL/SYSCOUNTERH of GRTC</description>
               <addressOffset>0x07C</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -10184,7 +10184,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x10</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>INTERRUPT[%s]</name>
-              <description>Description collection: Configuration of features for interrupt n of GRTC</description>
+              <description>Description collection: Security configuration for interrupt n of GRTC</description>
               <addressOffset>0x080</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -35734,10 +35734,138 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
         </register>
       </registers>
     </peripheral>
+    <peripheral>
+      <name>GLOBAL_GPIOHSPADCTRL_S</name>
+      <description>GPIO high-speed pad control</description>
+      <baseAddress>0x50050400</baseAddress>
+      <headerStructName>GPIOHSPADCTRL</headerStructName>
+      <!--Security dma=NA-->
+      <!--Security securemapping=S-->
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x1000</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <groupName>GPIOHSPADCTRL</groupName>
+      <size>0x20</size>
+      <registers>
+        <register>
+          <name>BIAS</name>
+          <description>Bias control</description>
+          <addressOffset>0x30</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>HSBIAS</name>
+              <description>Slew setting for high-speed pad (higher value is faster)</description>
+              <lsb>0</lsb>
+              <msb>1</msb>
+            </field>
+            <field>
+              <name>REPLICABIAS</name>
+              <description>Slew setting for replica clock (used by the VPR coprocessor for emulating a QSPI peripheral)</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CTRL</name>
+          <description>Input sampling and buffering control (used by the VPR coprocessor for emulating a QSPI peripheral)</description>
+          <addressOffset>0x38</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>RXDELAY</name>
+              <description>Delay selection</description>
+              <lsb>0</lsb>
+              <msb>2</msb>
+            </field>
+            <field>
+              <name>SCKEN</name>
+              <description>Enable SCK</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Delay chain is reset and delayed sampling is disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Delay chain and delayed sampling is active</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SCKPHASE</name>
+              <description>SCK phase</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Inverted</name>
+                  <description>Invert SCK phase</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>NonInverted</name>
+                  <description>Non-inverted SCK phase</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CSNEN</name>
+              <description>Enable CSN synchronization of sampling</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Delay chain is reset on active edge of CSN</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Delay chain is not reset on active edge of CSN</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DATAENABLE</name>
+              <description>Enable delayed sampling</description>
+              <lsb>6</lsb>
+              <msb>9</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Delayed sampling is disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Delayed sampling is enabled</description>
+                  <value>0xF</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
     <peripheral derivedFrom="GLOBAL_P2_NS">
       <name>GLOBAL_P2_S</name>
       <description>GPIO Port 1</description>
       <baseAddress>0x50050400</baseAddress>
+      <alternatePeripheral>GLOBAL_GPIOHSPADCTRL_S</alternatePeripheral>
       <!--Security dma=NA-->
       <!--Security securemapping=US-->
       <!--Split access-->

@@ -148,6 +148,11 @@ POSSIBILITY OF SUCH DAMAGE.
                 <msb>31</msb>
                 <enumeratedValues>
                   <enumeratedValue>
+                    <name>N54LV10A</name>
+                    <description>nRF54LV10A</description>
+                    <value>0x054BD10A</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
                     <name>Unspecified</name>
                     <description>Unspecified</description>
                     <value>0xFFFFFFFF</value>
@@ -665,13 +670,13 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>READ</name>
-              <description>Read access</description>
+              <description>Read access. Must be enabled in order for the Arm Cortex CPU to start executing from RRAM.</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>NotAllowed</name>
-                  <description>Reading from the region is not allowed</description>
+                  <description>Reading from the region is not allowed.</description>
                   <value>0x0</value>
                 </enumeratedValue>
                 <enumeratedValue>
@@ -777,7 +782,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <name>SIZE</name>
               <description>Immutable boot region size</description>
               <lsb>16</lsb>
-              <msb>20</msb>
+              <msb>22</msb>
             </field>
           </fields>
         </register>
@@ -9704,7 +9709,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x18</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>CH[%s]</name>
-              <description>Description collection: Configuration of features for channel n of DPPIC</description>
+              <description>Description collection: Security configuration for channel n of DPPIC</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -9753,7 +9758,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x8</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>CHG[%s]</name>
-              <description>Description collection: Configuration of features for channel group n of DPPIC</description>
+              <description>Description collection: Security configuration for channel group n of DPPIC</description>
               <addressOffset>0x060</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -9811,7 +9816,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x8</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>CH[%s]</name>
-              <description>Description collection: Configuration of features for channel o of GPIOTE[n]</description>
+              <description>Description collection: Security configuration for channel o of GPIOTE[n]</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -9860,7 +9865,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x8</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>INTERRUPT[%s]</name>
-              <description>Description collection: Configuration of features for interrupt o of GPIOTE[n]</description>
+              <description>Description collection: Security configuration for interrupt o of GPIOTE[n]</description>
               <addressOffset>0x020</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -9918,7 +9923,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x20</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>PIN[%s]</name>
-              <description>Description collection: Configuration of features for GPIO[n] PIN[o]</description>
+              <description>Description collection: Security configuration for GPIO[n] PIN[o]</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -9974,7 +9979,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x18</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>CC[%s]</name>
-              <description>Description collection: Configuration of features for CC n of GRTC</description>
+              <description>Description collection: Security configuration for CC n of GRTC</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -10021,7 +10026,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             </register>
             <register>
               <name>PWMCONFIG</name>
-              <description>Configuration of feature for PWMCONFIG of GRTC</description>
+              <description>Security Configuration for PWMCONFIG of GRTC</description>
               <addressOffset>0x074</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -10068,7 +10073,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             </register>
             <register>
               <name>CLK</name>
-              <description>Configuration of features for CLKOUT/CLKCFG of GRTC</description>
+              <description>Security configuration for CLKOUT/CLKCFG of GRTC</description>
               <addressOffset>0x078</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -10115,7 +10120,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             </register>
             <register>
               <name>SYSCOUNTER</name>
-              <description>Configuration of features for SYSCOUNTERL/SYSCOUNTERH of GRTC</description>
+              <description>Security configuration for SYSCOUNTERL/SYSCOUNTERH of GRTC</description>
               <addressOffset>0x07C</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -10164,7 +10169,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <dim>0x10</dim>
               <dimIncrement>0x4</dimIncrement>
               <name>INTERRUPT[%s]</name>
-              <description>Description collection: Configuration of features for interrupt n of GRTC</description>
+              <description>Description collection: Security configuration for interrupt n of GRTC</description>
               <addressOffset>0x080</addressOffset>
               <access>read-write</access>
               <resetValue>0x00100010</resetValue>
@@ -10370,7 +10375,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <addressOffset>0x400</addressOffset>
           <register>
             <name>ADDRESS</name>
-            <description>Target Address of Memory Access Error. Register content won't be changed as long as MEMACCERR event is active.</description>
+            <description>Target Address of Memory Access Error. Register content will not be changed as long as MEMACCERR event is active.</description>
             <addressOffset>0x000</addressOffset>
             <access>read-only</access>
             <resetValue>0x00000000</resetValue>
@@ -10386,7 +10391,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           </register>
           <register>
             <name>INFO</name>
-            <description>Access information for the transaction that triggered a memory access error. Register content won't be changed as long as MEMACCERR event is active.</description>
+            <description>Access information for the transaction that triggered a memory access error. Register content will not be changed as long as MEMACCERR event is active.</description>
             <addressOffset>0x004</addressOffset>
             <access>read-only</access>
             <resetValue>0x00000000</resetValue>
@@ -10515,7 +10520,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Locked</name>
-                    <description>Override region n settings can't be updated until next reset</description>
+                    <description>Override region n settings can not be updated until next reset</description>
                     <value>0x1</value>
                   </enumeratedValue>
                 </enumeratedValues>
@@ -19936,7 +19941,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 <name>SIZE</name>
                 <description>Size in KBytes of region [n]</description>
                 <lsb>16</lsb>
-                <msb>20</msb>
+                <msb>22</msb>
               </field>
             </fields>
           </register>
@@ -29483,8 +29488,8 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>MindBm</name>
-                  <description>-46 dBm</description>
-                  <value>0x110</value>
+                  <description>Minimum output power</description>
+                  <value>0x000</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
@@ -46698,16 +46703,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   <description>1 megabaud when UARTE has 16 MHz peripheral clock frequency</description>
                   <value>0x10000000</value>
                 </enumeratedValue>
-                <enumeratedValue>
-                  <name>Baud2M</name>
-                  <description>2 megabaud when UARTE has 16 MHz peripheral clock frequency</description>
-                  <value>0x20000000</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Baud4M</name>
-                  <description>4 megabaud when UARTE has 16 MHz peripheral clock frequency</description>
-                  <value>0x40000000</value>
-                </enumeratedValue>
               </enumeratedValues>
             </field>
           </fields>
@@ -51427,19 +51422,9 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 <msb>14</msb>
                 <enumeratedValues>
                   <enumeratedValue>
-                    <name>Dvdd</name>
-                    <description>Connected to the internal 0.9V digital supply rail</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
                     <name>VddL</name>
                     <description>Connected to VDDL</description>
                     <value>0x1</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Vdd</name>
-                    <description>Connected to VDD</description>
-                    <value>0x2</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Vss</name>
@@ -51501,7 +51486,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 <enumeratedValues>
                   <enumeratedValue>
                     <name>Dvdd</name>
-                    <description>Connected to the internal 0.9V digital supply rail</description>
+                    <description>Connected to the internal 0.9 V digital supply rail</description>
                     <value>0x0</value>
                   </enumeratedValue>
                   <enumeratedValue>
@@ -51642,6 +51627,12 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 <description>Acquisition time, the time the ADC uses to sample the input voltage. Resulting acquistion time is ((TACQ+1) x 125 ns)</description>
                 <lsb>16</lsb>
                 <msb>24</msb>
+              </field>
+              <field>
+                <name>TCONV</name>
+                <description>Conversion time. Resulting conversion time is ((TCONV+1) x 250 ns)</description>
+                <lsb>28</lsb>
+                <msb>30</msb>
               </field>
             </fields>
           </register>
@@ -70547,11 +70538,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   <value>0x0</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>VDD</name>
-                  <description>VREF = VDD</description>
-                  <value>0x4</value>
-                </enumeratedValue>
-                <enumeratedValue>
                   <name>ARef</name>
                   <description>VREF = AREF</description>
                   <value>0x5</value>
@@ -74840,24 +74826,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValues>
               </field>
               <field>
-                <name>ALWAYSRUNNING</name>
-                <description>ALWAYSRUN activated</description>
-                <lsb>4</lsb>
-                <msb>4</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>NotRunning</name>
-                    <description>Automatic clock control enabled</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Running</name>
-                    <description>Oscillator is always running</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-              <field>
                 <name>STATE</name>
                 <description>LFCLK state (Running between START task and STOPPED event)</description>
                 <lsb>16</lsb>
@@ -75123,6 +75091,39 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 <enumeratedValue>
                   <name>Generated</name>
                   <description>Event generated</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PUBLISH_POFWARN</name>
+          <description>Publish configuration for event POFWARN</description>
+          <addressOffset>0x1B0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>CHIDX</name>
+              <description>DPPI channel that event POFWARN will publish to</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+            </field>
+            <field>
+              <name>EN</name>
+              <lsb>31</lsb>
+              <msb>31</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable publishing</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable publishing</description>
                   <value>0x1</value>
                 </enumeratedValue>
               </enumeratedValues>

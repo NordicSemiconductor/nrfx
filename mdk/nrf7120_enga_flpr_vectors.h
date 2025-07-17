@@ -150,7 +150,6 @@ __WEAK void CLICSoftware_Handler(void)
  __HANDLER("Default_Handler") void GRTC_4_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void GRTC_5_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void TDM_IRQHandler                                              (void);
- __HANDLER("Default_Handler") void AUXPLL_AUXPM_IRQHandler                                     (void);
  __HANDLER("Default_Handler") void SERIAL23_IRQHandler                                         (void);
  __HANDLER("Default_Handler") void SERIAL24_IRQHandler                                         (void);
  __HANDLER("Default_Handler") void TAMPC_IRQHandler                                            (void);
@@ -162,10 +161,11 @@ __WEAK void CLICSoftware_Handler(void)
  __HANDLER("Default_Handler") void GPIOTE30_0_IRQHandler                                       (void);
  __HANDLER("Default_Handler") void GPIOTE30_1_IRQHandler                                       (void);
  __HANDLER("Default_Handler") void CLOCK_POWER_IRQHandler                                      (void);
+ __HANDLER("Default_Handler") void VREGUSB_IRQHandler                                          (void);
  __HANDLER("Default_Handler") void LFXO_IRQHandler                                             (void);
  __HANDLER("Default_Handler") void LFRC_IRQHandler                                             (void);
  __HANDLER("Default_Handler") void HFXO64M_IRQHandler                                          (void);
- __HANDLER("Default_Handler") void HVBUCK_IRQHandler                                           (void);
+ __HANDLER("Default_Handler") void AUDIOPLL_AUDIOPLLM_IRQHandler                               (void);
 
 /*----------------------------------------------------------------------------
   Exception / Interrupt Vector table
@@ -431,7 +431,7 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     TDM_IRQHandler,
     0,
     0,
-    AUXPLL_AUXPM_IRQHandler,
+    0,
     0,
     SERIAL23_IRQHandler,
     SERIAL24_IRQHandler,
@@ -485,7 +485,7 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     0,
     0,
-    0,
+    VREGUSB_IRQHandler,
     LFXO_IRQHandler,
     LFRC_IRQHandler,
     HFXO64M_IRQHandler,
@@ -497,7 +497,10 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     0,
     0,
-    HVBUCK_IRQHandler,
+    0,
+    0,
+    0,
+    AUDIOPLL_AUDIOPLLM_IRQHandler,
 };
 
 #if defined(__GNUC__)

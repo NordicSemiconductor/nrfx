@@ -914,7 +914,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <name>SIZE</name>
               <description>Immutable boot region size</description>
               <lsb>16</lsb>
-              <msb>20</msb>
+              <msb>22</msb>
             </field>
           </fields>
         </register>
@@ -6745,14 +6745,14 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>GSNPSID</name>
-          <description>Synopsys ID Register</description>
+          <description>Identification register</description>
           <addressOffset>0x040</addressOffset>
           <access>read-write</access>
-          <resetValue>0x4F54430A</resetValue>
+          <resetValue>0x4F54500B</resetValue>
           <size>0x20</size>
           <fields>
             <field>
-              <name>SYNOPSYSID</name>
+              <name>GSNPSID</name>
               <description>Release number of the controller being used currently.</description>
               <lsb>0</lsb>
               <msb>31</msb>
@@ -6765,7 +6765,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>User Hardware Configuration 1 Register</description>
           <addressOffset>0x044</addressOffset>
           <access>read-write</access>
-          <resetValue>0xAA555000</resetValue>
+          <resetValue>0x00000000</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -6782,7 +6782,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>User Hardware Configuration 2 Register</description>
           <addressOffset>0x048</addressOffset>
           <access>read-write</access>
-          <resetValue>0x228BFC72</resetValue>
+          <resetValue>0x22AFFC72</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -7232,7 +7232,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>User Hardware Configuration 3 Register</description>
           <addressOffset>0x04C</addressOffset>
           <access>read-write</access>
-          <resetValue>0x0BEAC0E8</resetValue>
+          <resetValue>0x0BE0C0E8</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -7518,7 +7518,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>User Hardware Configuration 4 Register</description>
           <addressOffset>0x050</addressOffset>
           <access>read-write</access>
-          <resetValue>0x1E10AA60</resetValue>
+          <resetValue>0x3E10AA60</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -46156,7 +46156,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <name>SIZE</name>
                 <description>Size in KBytes of region [n]</description>
                 <lsb>16</lsb>
-                <msb>20</msb>
+                <msb>22</msb>
               </field>
             </fields>
           </register>
@@ -56427,8 +56427,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <field>
               <name>EN</name>
               <description>Enable publishing of SOF event</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
+              <lsb>31</lsb>
+              <msb>31</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -56751,6 +56751,18 @@ POSSIBILITY OF SUCH DAMAGE.
                 <description>Overrides OTG ID pin signal</description>
                 <lsb>31</lsb>
                 <msb>31</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Device</name>
+                    <description>Role is Device</description>
+                    <value>0x1</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Host</name>
+                    <description>Role is Host.</description>
+                    <value>0x0</value>
+                  </enumeratedValue>
+                </enumeratedValues>
               </field>
             </fields>
           </register>
@@ -62362,8 +62374,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>MindBm</name>
-                  <description>-46 dBm</description>
-                  <value>0x110</value>
+                  <description>Minimum output power</description>
+                  <value>0x000</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
@@ -73741,7 +73753,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Ratio150</name>
-                  <description>Ratio of 100</description>
+                  <description>Ratio of 150</description>
                   <value>0x5</value>
                 </enumeratedValue>
                 <enumeratedValue>
@@ -106063,6 +106075,39 @@ POSSIBILITY OF SUCH DAMAGE.
                 <enumeratedValue>
                   <name>Generated</name>
                   <description>Event generated</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PUBLISH_POFWARN</name>
+          <description>Publish configuration for event POFWARN</description>
+          <addressOffset>0x1B0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>CHIDX</name>
+              <description>DPPI channel that event POFWARN will publish to</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+            </field>
+            <field>
+              <name>EN</name>
+              <lsb>31</lsb>
+              <msb>31</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable publishing</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable publishing</description>
                   <value>0x1</value>
                 </enumeratedValue>
               </enumeratedValues>

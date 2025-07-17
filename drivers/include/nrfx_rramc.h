@@ -209,6 +209,20 @@ void nrfx_rramc_uninit(void);
  */
 uint32_t nrfx_rramc_memory_size_get(void);
 
+/** @brief Function for committing write buffer. */
+void nrfx_rramc_write_buffer_commit(void);
+
+/** @brief Function for waking up the RRAMC. */
+void nrfx_rramc_wake_up(void);
+
+/**
+ * @brief Function for checking if RRAMC write buffer is empty.
+ *
+ * @retval true  Buffer is empty.
+ * @retval false Buffer is not empty.
+ */
+bool nrfx_rramc_write_buffer_empty_check(void);
+
 /**
  * @brief Function for reading a word from the OTP in UICR.
  *

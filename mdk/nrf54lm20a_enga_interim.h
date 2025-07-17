@@ -74,7 +74,7 @@ POSSIBILITY OF SUCH DAMAGE.
         #endif
     #endif
 
-    #define EASYVDMA_PRESENT                               */
+    #define EASYVDMA_PRESENT
 
     #define SAADC_CH_NUM SAADC_CH_MaxCount
     #define SAADC_EASYDMA_MAXCNT_SIZE 15

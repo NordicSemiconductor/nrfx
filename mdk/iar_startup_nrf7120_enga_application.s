@@ -320,7 +320,7 @@ __vector_table
         DCD     TDM_IRQHandler
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
-        DCD     AUXPLL_AUXPM_IRQHandler
+        DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     SERIAL23_IRQHandler
         DCD     SERIAL24_IRQHandler
@@ -374,7 +374,7 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
-        DCD     0                         ; Reserved
+        DCD     VREGUSB_IRQHandler
         DCD     LFXO_IRQHandler
         DCD     LFRC_IRQHandler
         DCD     HFXO64M_IRQHandler
@@ -386,7 +386,10 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
-        DCD     HVBUCK_IRQHandler
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     0                         ; Reserved
+        DCD     AUDIOPLL_AUDIOPLLM_IRQHandler
 
 __Vectors_End
 __Vectors                           EQU   __vector_table
@@ -761,11 +764,6 @@ GRTC_5_IRQHandler
 TDM_IRQHandler
         B .
 
-        PUBWEAK  AUXPLL_AUXPM_IRQHandler
-        SECTION .text:CODE:REORDER:NOROOT(1)
-AUXPLL_AUXPM_IRQHandler
-        B .
-
         PUBWEAK  SERIAL23_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 SERIAL23_IRQHandler
@@ -821,6 +819,11 @@ GPIOTE30_1_IRQHandler
 CLOCK_POWER_IRQHandler
         B .
 
+        PUBWEAK  VREGUSB_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+VREGUSB_IRQHandler
+        B .
+
         PUBWEAK  LFXO_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 LFXO_IRQHandler
@@ -836,9 +839,9 @@ LFRC_IRQHandler
 HFXO64M_IRQHandler
         B .
 
-        PUBWEAK  HVBUCK_IRQHandler
+        PUBWEAK  AUDIOPLL_AUDIOPLLM_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
-HVBUCK_IRQHandler
+AUDIOPLL_AUDIOPLLM_IRQHandler
         B .
 
         END

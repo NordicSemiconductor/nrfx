@@ -137,6 +137,15 @@ extern "C" {
 #define NRF_CLOCK_HAS_XO 0
 #endif
 
+#if defined(CLOCK_LFCLKSRC_SRC_Xtal) || defined(CLOCK_LFCLK_SRC_SRC_LFXO) || \
+    defined(CLOCK_LFCLKSTAT_SRC_LFXO_Msk) || defined(CLOCK_LFCLKSRC_SRC_LFXO) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether XTAL clock source is present. */
+#define NRF_CLOCK_HAS_XTAL 1
+#else
+#define NRF_CLOCK_HAS_XTAL 0
+#endif
+
 #if defined(CLOCK_TASKS_XOTUNE_TASKS_XOTUNE_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether XOTUNE registers are present. */
 #define NRF_CLOCK_HAS_XO_TUNE 1
@@ -149,6 +158,13 @@ extern "C" {
 #define NRF_CLOCK_HAS_LFCLK_TYPE 1
 #else
 #define NRF_CLOCK_HAS_LFCLK_TYPE 0
+#endif
+
+#if defined(CLOCK_LFCLK_SRC_SRC_LFXO) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether LFCLK has LFXO source. */
+#define NRF_CLOCK_HAS_LFCLK_LFXO 1
+#else
+#define NRF_CLOCK_HAS_LFCLK_LFXO 0
 #endif
 
 #if defined(CLOCK_INTPEND_ResetValue) || defined(__NRFX_DOXYGEN__)
@@ -312,15 +328,17 @@ typedef enum
     NRF_CLOCK_LFCLK_RC         = CLOCK_LFCLKSRC_SRC_LFRC,                                               /**< Internal 32 kHz RC oscillator. */
 #endif
 
+#if NRF_CLOCK_HAS_XTAL
 #if defined(CLOCK_LFCLKSRC_SRC_Xtal) || defined(__NRFX_DOXYGEN__)
     NRF_CLOCK_LFCLK_XTAL       = CLOCK_LFCLKSRC_SRC_Xtal,                                               /**< External 32 kHz crystal. */
-#elif NRF_CLOCK_HAS_LFCLK_TYPE
+#elif NRF_CLOCK_HAS_LFCLK_LFXO
     NRF_CLOCK_LFCLK_XTAL       = CLOCK_LFCLK_SRC_SRC_LFXO,                                              /**< External 32 kHz crystal. */
 #elif NRF_CLOCK_HAS_LFCLKSTAT
     NRF_CLOCK_LFCLK_XTAL       = (CLOCK_LFCLKSTAT_SRC_LFXO_Active << CLOCK_LFCLKSTAT_SRC_LFXO_Pos),     /**< External 32 kHz crystal. */
 #else
     NRF_CLOCK_LFCLK_XTAL       = CLOCK_LFCLKSRC_SRC_LFXO,                                               /**< External 32 kHz crystal. */
 #endif
+#endif // NRF_CLOCK_HAS_XTAL
 
 #if defined(CLOCK_LFCLKSRC_SRC_Synth) || defined(__NRFX_DOXYGEN__)
     NRF_CLOCK_LFCLK_SYNTH      = CLOCK_LFCLKSRC_SRC_Synth,                                              /**< Internal 32 kHz synthesized from HFCLK system clock. */

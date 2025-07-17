@@ -526,6 +526,15 @@
 #endif
 
 /**
+ * @brief NRFX_GPIOTE_CONFIG_NONUNIFORM_INSTANCES
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GPIOTE_CONFIG_NONUNIFORM_INSTANCES
+#define NRFX_GPIOTE_CONFIG_NONUNIFORM_INSTANCES 1
+#endif
+
+/**
  * @brief NRFX_GPIOTE_DEFAULT_CONFIG_IRQ_PRIORITY
  *
  * Integer value. Minimum: 0. Maximum: 7.

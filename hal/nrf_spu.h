@@ -121,10 +121,20 @@ extern "C" {
 #define NRF_SPU_HAS_MRAMC 0
 #endif
 
+#if defined(SPU_FEATURE_GPIO_MaxCount) || defined(SPU_FEATURE_GRTC_CC_MaxCount) || \
+    defined(SPU_FEATURE_GPIOTE_MaxCount) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SPU has FEATURE register. */
+#define NRF_SPU_HAS_FEATURE 1
+#else
+#define NRF_SPU_HAS_FEATURE 0
+#endif
+
 #if NRF_SPU_HAS_PERIPHERAL_ACCESS
 
 /** @brief Number of peripherals. */
 #define NRF_SPU_PERIPH_COUNT                     SPU_PERIPH_MaxCount
+
+#if NRF_SPU_HAS_FEATURE
 
 #if NRF_SPU_HAS_IPCT
 /** @brief Number of IPCT channels. */
@@ -186,6 +196,8 @@ extern "C" {
 /** @brief Number of MRAMCs. */
 #define NRF_SPU_FEATURE_MRAMC_COUNT              SPU_FEATURE_MRAMC_MaxCount
 #endif
+
+#endif // NRF_SPU_HAS_FEATURE
 
 #endif // NRF_SPU_HAS_PERIPHERAL_ACCESS
 
@@ -251,6 +263,7 @@ typedef enum
     NRF_SPU_DMA_SEPARATEATTRIBUTE   = SPU_PERIPH_PERM_DMA_SeparateAttribute,   /**< DMA transfers can have a different security attribute than the one assigned to the peripheral. */
 } nrf_spu_dma_t;
 
+#if NRF_SPU_HAS_FEATURE
 /** @brief SPU features. */
 typedef enum
 {
@@ -284,6 +297,7 @@ typedef enum
     NRF_SPU_FEATURE_MRAMC_READY           /**< MRAMC ready. */
 #endif
 } nrf_spu_feature_t;
+#endif // NRF_SPU_HAS_FEATURE
 
 #endif
 
@@ -703,6 +717,7 @@ NRF_STATIC_INLINE bool nrf_spu_periph_perm_ownerprog_get(NRF_SPU_Type const * p_
 NRF_STATIC_INLINE bool nrf_spu_periph_perm_present_get(NRF_SPU_Type const * p_reg,
                                                        uint8_t              index);
 
+#if NRF_SPU_HAS_FEATURE
 /**
  * @brief Function for getting the security mapping of the specified feature.
  *
@@ -835,6 +850,7 @@ NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
                                                    uint8_t           subindex,
                                                    nrf_owner_t       owner_id);
 #endif // NRF_SPU_HAS_OWNERSHIP
+#endif // NRF_SPU_HAS_FEATURE
 #endif // NRF_SPU_HAS_PERIPHERAL_ACCESS
 
 #ifndef NRF_DECLARE_ONLY
@@ -1152,6 +1168,7 @@ NRF_STATIC_INLINE void nrf_spu_periph_perm_ownerid_set(NRF_SPU_Type * p_reg,
 }
 #endif
 
+#if NRF_SPU_HAS_FEATURE
 NRF_STATIC_INLINE bool nrf_spu_feature_secattr_get(NRF_SPU_Type const * p_reg,
                                                    nrf_spu_feature_t    feature,
                                                    uint8_t              index,
@@ -2495,6 +2512,8 @@ NRF_STATIC_INLINE void nrf_spu_feature_ownerid_set(NRF_SPU_Type *    p_reg,
     }
 }
 #endif // NRF_SPU_HAS_OWNERSHIP
+
+#endif // NRF_SPU_HAS_FEATURE
 
 #endif // NRF_SPU_HAS_PERIPHERAL_ACCESS
 

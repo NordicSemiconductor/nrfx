@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* MDK version */
 #define MDK_MAJOR_VERSION   8 
-#define MDK_MINOR_VERSION   71 
+#define MDK_MINOR_VERSION   72 
 #define MDK_MICRO_VERSION   1 
 
    
@@ -71,6 +71,7 @@ POSSIBILITY OF SUCH DAMAGE.
         #endif
     #endif
 #endif
+
 
 /* Define NRF51_SERIES for common use in nRF51 series devices. Only if not previously defined. */
 #if defined (NRF51) ||\
@@ -123,7 +124,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 /* Define NRF54L_SERIES for common use in nRF54L series devices */
-#if defined (NRF54L05_XXAA) || defined (NRF54LV10A_ENGA_XXAA) || defined (NRF54L10_XXAA) || defined (NRF54L15_XXAA) ||  defined (NRF54LM20A_ENGA_XXAA)
+#if defined (NRF54L05_XXAA) || defined (NRF54LV10A_ENGA_XXAA) || defined (NRF54L10_XXAA) || defined (NRF54L15_XXAA) ||  defined (NRF54LM20A_ENGA_XXAA) || defined (NRF54LS05B_ENGA_XXAA)
     #ifndef NRF54L_SERIES
         #define NRF54L_SERIES
     #endif
@@ -252,6 +253,10 @@ POSSIBILITY OF SUCH DAMAGE.
     #include "nrf54lm20a_enga.h"
     #include "nrf54lm20a_enga_interim.h"
     #include "nrf54lm20a_enga_name_change.h"
+
+#elif defined (NRF54LS05B_ENGA_XXAA)
+    #include "nrf54ls05b_enga.h"
+    #include "nrf54ls05b_enga_name_change.h"
 
 #elif defined (NRF7120_ENGA_XXAA)
     #include "nrf7120_enga.h"

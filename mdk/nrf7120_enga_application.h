@@ -123,7 +123,6 @@ typedef enum {
   GRTC_4_IRQn                            = 230,      /*!< 230 GRTC_4                                                           */
   GRTC_5_IRQn                            = 231,      /*!< 231 GRTC_5                                                           */
   TDM_IRQn                               = 232,      /*!< 232 TDM                                                              */
-  AUXPLL_AUXPM_IRQn                      = 235,      /*!< 235 AUXPLL_AUXPM                                                     */
   SERIAL23_IRQn                          = 237,      /*!< 237 SERIAL23                                                         */
   SERIAL24_IRQn                          = 238,      /*!< 238 SERIAL24                                                         */
   TAMPC_IRQn                             = 239,      /*!< 239 TAMPC                                                            */
@@ -135,10 +134,11 @@ typedef enum {
   GPIOTE30_0_IRQn                        = 268,      /*!< 268 GPIOTE30_0                                                       */
   GPIOTE30_1_IRQn                        = 269,      /*!< 269 GPIOTE30_1                                                       */
   CLOCK_POWER_IRQn                       = 270,      /*!< 270 CLOCK_POWER                                                      */
+  VREGUSB_IRQn                           = 289,      /*!< 289 VREGUSB                                                          */
   LFXO_IRQn                              = 290,      /*!< 290 LFXO                                                             */
   LFRC_IRQn                              = 291,      /*!< 291 LFRC                                                             */
   HFXO64M_IRQn                           = 292,      /*!< 292 HFXO64M                                                          */
-  HVBUCK_IRQn                            = 301,      /*!< 301 HVBUCK                                                           */
+  AUDIOPLL_AUDIOPLLM_IRQn                = 304,      /*!< 304 AUDIOPLL_AUDIOPLLM                                               */
 } IRQn_Type;
 
 /* ==================================================== Interrupt Aliases ==================================================== */
@@ -188,10 +188,6 @@ typedef enum {
 #define TWIS22_IRQHandler             SERIAL22_IRQHandler
 #define UARTE22_IRQn                  SERIAL22_IRQn
 #define UARTE22_IRQHandler            SERIAL22_IRQHandler
-#define AUXPLL_IRQn                   AUXPLL_AUXPM_IRQn
-#define AUXPLL_IRQHandler             AUXPLL_AUXPM_IRQHandler
-#define AUXPM_IRQn                    AUXPLL_AUXPM_IRQn
-#define AUXPM_IRQHandler              AUXPLL_AUXPM_IRQHandler
 #define SPIM23_IRQn                   SERIAL23_IRQn
 #define SPIM23_IRQHandler             SERIAL23_IRQHandler
 #define SPIS23_IRQn                   SERIAL23_IRQn
@@ -230,6 +226,10 @@ typedef enum {
 #define CLOCK_IRQHandler              CLOCK_POWER_IRQHandler
 #define POWER_IRQn                    CLOCK_POWER_IRQn
 #define POWER_IRQHandler              CLOCK_POWER_IRQHandler
+#define AUDIOPLL_IRQn                 AUDIOPLL_AUDIOPLLM_IRQn
+#define AUDIOPLL_IRQHandler           AUDIOPLL_AUDIOPLLM_IRQHandler
+#define AUDIOPLLM_IRQn                AUDIOPLL_AUDIOPLLM_IRQn
+#define AUDIOPLLM_IRQHandler          AUDIOPLL_AUDIOPLLM_IRQHandler
 
 /* =========================================================================================================================== */
 /* ================                           Processor and Core Peripheral Section                           ================ */

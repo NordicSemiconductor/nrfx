@@ -74,7 +74,7 @@ POSSIBILITY OF SUCH DAMAGE.
         #endif
     #endif
 
-    #define EASYVDMA_PRESENT                                        */
+    #define EASYVDMA_PRESENT
 
     #define SAADC_CH_NUM SAADC_CH_MaxCount
     #define SAADC_EASYDMA_MAXCNT_SIZE 15
@@ -141,6 +141,8 @@ POSSIBILITY OF SUCH DAMAGE.
     #define VPR_CLIC_PRIO_COUNT       4
     #define ADDRESS_SLAVE_Pos         (12UL)
     #define ADDRESS_SLAVE_Msk         (0x3FUL << ADDRESS_SLAVE_Pos)
+
+    #define TWIM_FREQUENCY_FREQUENCY_K1000 (0x0FF00000UL)
 
 
 #endif

@@ -30,6 +30,7 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include "system_nrf54l.h"
 #include "system_nrf54l_approtect.h"
 #include "system_config_sau.h"
+#include "nrf_peripherals.h"
 
 /*lint ++flb "Enter library region" */
 
@@ -89,6 +90,14 @@ void SystemInit(void)
                 NRF_KMU->STATUS;
             #endif
 
+            #if NRF54L_ERRATA_37_ENABLE_WORKAROUND
+                /* Workaround for Errata 37 */
+                if (nrf54l_errata_37())
+                {
+                    *((volatile uint32_t *)0x5005340C) = 1ul;
+                }
+            #endif
+
             #ifndef NRF_SKIP_TAMPC_SETUP
                 nrf54l_handle_approtect();
             #endif
@@ -106,17 +115,32 @@ void SystemInit(void)
                 /* Trimming of the device. Copy all the trimming values from FICR into the target addresses. Trim
                 until one ADDR is not initialized. */
                 uint32_t index = 0ul;
-                for (index = 0ul; index < FICR_TRIMCNF_MaxCount && NRF_FICR_NS->TRIMCNF[index].ADDR != 0xFFFFFFFFul && NRF_FICR_NS->TRIMCNF[index].ADDR != 0x00000000ul; index++) {
-                #if defined ( __ICCARM__ )
-                    /* IAR will complain about the order of volatile pointer accesses. */
-                    #pragma diag_suppress=Pa082
-                #endif
-                * ((volatile uint32_t*)NRF_FICR_NS->TRIMCNF[index].ADDR) = NRF_FICR_NS->TRIMCNF[index].DATA;
+
+                #if defined (NRF54LS05B_ENGA_XXAA)
+
+                    for (index = 0ul; index < FICR_TRIMCNF_MaxCount && NRF_FICR->TRIMCNF[index].ADDR != 0xFFFFFFFFul && NRF_FICR->TRIMCNF[index].ADDR != 0x00000000ul; index++) {
+                    #if defined ( __ICCARM__ )
+                        /* IAR will complain about the order of volatile pointer accesses. */
+                        #pragma diag_suppress=Pa082
+                    #endif
+                    * ((volatile uint32_t*)NRF_FICR->TRIMCNF[index].ADDR) = NRF_FICR->TRIMCNF[index].DATA;
+
+                #else
+
+                    for (index = 0ul; index < FICR_TRIMCNF_MaxCount && NRF_FICR_NS->TRIMCNF[index].ADDR != 0xFFFFFFFFul && NRF_FICR_NS->TRIMCNF[index].ADDR != 0x00000000ul; index++) {
+                    #if defined ( __ICCARM__ )
+                        /* IAR will complain about the order of volatile pointer accesses. */
+                        #pragma diag_suppress=Pa082
+                    #endif
+                    * ((volatile uint32_t*)NRF_FICR_NS->TRIMCNF[index].ADDR) = NRF_FICR_NS->TRIMCNF[index].DATA;
+
+                #endif  //NRF54LS05B_ENGA_XXAA
+
                 #if defined ( __ICCARM__ )
                     #pragma diag_default=Pa082
                 #endif
                 }
-            #endif
+            #endif //NRF_DISABLE_FICR_TRIMCNF
 
             /* Device configuration for ES PDK */
             #if defined (NRF54L05_XXAA) || defined (NRF54L10_XXAA) || defined (NRF54L15_XXAA)
@@ -149,6 +173,17 @@ void SystemInit(void)
                 {
                     *((volatile uint32_t *)0x50120624ul) = (20 | (1<<5));
                     *((volatile uint32_t *)0x5012063Cul) &= ~(1ul << 19);
+                }
+            #endif
+
+            #if NRF54L_ERRATA_48_ENABLE_WORKAROUND
+                /* Workaround for Errata 48 */
+                if (nrf54l_errata_48())
+                {
+                    if (NRF_RESET->RESETREAS & RESET_RESETREAS_RESETPIN_Msk)
+                    {
+                        NRF_RESET->RESETREAS =  ~RESET_RESETREAS_RESETPIN_Msk;
+                    }
                 }
             #endif
 
@@ -233,7 +268,7 @@ void SystemInit(void)
             #endif
         #endif
 
-        #if !defined(NRF_TRUSTZONE_NONSECURE) && !defined (NRF_SKIP_GLITCHDETECTOR_DISABLE)
+        #if !defined(NRF_TRUSTZONE_NONSECURE) && !defined (NRF_SKIP_GLITCHDETECTOR_DISABLE) && defined(GLITCHDET_PRESENT)
             /* Disable glitch detector */
             #if defined (GLITCHDET_GLITCHDETECTORS)
                 NRF_GLITCHDET_S->GLITCHDETECTOR.CONFIG = (GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Disable << GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Pos);

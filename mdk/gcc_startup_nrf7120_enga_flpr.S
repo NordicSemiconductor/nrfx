@@ -510,7 +510,7 @@ __isr_vector:
     .long   TDM_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
-    .long   AUXPLL_AUXPM_IRQHandler
+    .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   SERIAL23_IRQHandler
     .long   SERIAL24_IRQHandler
@@ -564,7 +564,7 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
+    .long   VREGUSB_IRQHandler
     .long   LFXO_IRQHandler
     .long   LFRC_IRQHandler
     .long   HFXO64M_IRQHandler
@@ -576,7 +576,10 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
-    .long   HVBUCK_IRQHandler
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   0                           /*Reserved */
+    .long   AUDIOPLL_AUDIOPLLM_IRQHandler
 
     .size __isr_vector, . - __isr_vector
 
@@ -729,7 +732,6 @@ Default_Handler:
     IRQ  GRTC_4_IRQHandler
     IRQ  GRTC_5_IRQHandler
     IRQ  TDM_IRQHandler
-    IRQ  AUXPLL_AUXPM_IRQHandler
     IRQ  SERIAL23_IRQHandler
     IRQ  SERIAL24_IRQHandler
     IRQ  TAMPC_IRQHandler
@@ -741,9 +743,10 @@ Default_Handler:
     IRQ  GPIOTE30_0_IRQHandler
     IRQ  GPIOTE30_1_IRQHandler
     IRQ  CLOCK_POWER_IRQHandler
+    IRQ  VREGUSB_IRQHandler
     IRQ  LFXO_IRQHandler
     IRQ  LFRC_IRQHandler
     IRQ  HFXO64M_IRQHandler
-    IRQ  HVBUCK_IRQHandler
+    IRQ  AUDIOPLL_AUDIOPLLM_IRQHandler
 
   .end

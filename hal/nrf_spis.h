@@ -1067,22 +1067,22 @@ NRF_STATIC_INLINE uint8_t * nrf_spis_rx_buffer_get(NRF_SPIS_Type * p_reg)
 NRF_STATIC_INLINE size_t nrf_spis_tx_maxcnt_get(NRF_SPIS_Type * p_reg)
 {
 #if defined(NRF51)
-return (size_t)p_reg->MAXTX;
+    return (size_t)p_reg->MAXTX;
 #elif NRF_SPIS_HAS_DMA_REG
-return (size_t)p_reg->DMA.TX.MAXCNT;
+    return (size_t)p_reg->DMA.TX.MAXCNT;
 #else
-return (size_t)p_reg->TXD.MAXCNT;
+    return (size_t)p_reg->TXD.MAXCNT;
 #endif
 }
 
 NRF_STATIC_INLINE size_t nrf_spis_rx_maxcnt_get(NRF_SPIS_Type * p_reg)
 {
 #if defined(NRF51)
-return (size_t)p_reg->MAXRX;
+    return (size_t)p_reg->MAXRX;
 #elif NRF_SPIS_HAS_DMA_REG
-return (size_t)p_reg->DMA.RX.MAXCNT;
+    return (size_t)p_reg->DMA.RX.MAXCNT;
 #else
-return (size_t)p_reg->RXD.MAXCNT;
+    return (size_t)p_reg->RXD.MAXCNT;
 #endif
 }
 

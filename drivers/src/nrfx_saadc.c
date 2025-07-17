@@ -38,6 +38,10 @@
 #define NRFX_LOG_MODULE SAADC
 #include <nrfx_log.h>
 
+#if NRF_SAADC_HAS_CAL || NRF_SAADC_HAS_CALREF ||  NRF_SAADC_HAS_LIN_CAL
+#include <hal/nrf_ficr.h>
+#endif
+
 #if defined(NRF52_SERIES) && !defined(USE_WORKAROUND_FOR_ANOMALY_212)
     // ANOMALY 212 - SAADC events are missing when switching from single channel
     //               to multi channel configuration with burst enabled.
@@ -281,6 +285,24 @@ nrfx_err_t nrfx_saadc_init(uint8_t interrupt_priority)
 
     nrfy_saadc_int_init(NRF_SAADC, mask, interrupt_priority, false);
     m_cb.event_handler = NULL;
+
+#if NRF_SAADC_HAS_CALREF && NRF_FICR_HAS_GLOBAL_SAADC_CALREF
+    uint32_t trim = nrf_ficr_global_saadc_calref_get(NRF_FICR);
+    nrfy_saadc_calref_set(NRF_SAADC, trim);
+#endif
+
+#if NRF_SAADC_HAS_CAL && NRF_FICR_HAS_GLOBAL_SAADC_CAL
+    trim = nrf_ficr_global_saadc_cal_get(NRF_FICR, 0);
+    nrfy_saadc_cal_set(NRF_SAADC, trim);
+#endif
+
+#if NRF_SAADC_HAS_LIN_CAL && NRF_FICR_HAS_GLOBAL_SAADC_LINCALCOEFF
+    for (uint8_t i = 0; i < FICR_TRIM_GLOBAL_SAADC_LINCALCOEFF_MaxIndex; i++)
+    {
+        uint32_t val = nrf_ficr_global_saadc_lincalcoeff_get(NRF_FICR, i);
+        nrfy_saadc_linearity_calibration_coeff_set(NRF_SAADC, i, val);
+    }
+#endif
 
     err_code = NRFX_SUCCESS;
     NRFX_LOG_INFO("Function: %s, error code: %s.", __func__, NRFX_LOG_ERROR_STRING_GET(err_code));

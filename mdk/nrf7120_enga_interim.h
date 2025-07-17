@@ -119,6 +119,8 @@ POSSIBILITY OF SUCH DAMAGE.
     #define P3_PIN_NUM P3_PIN_NUM_SIZE
     #define P4_PIN_NUM P4_PIN_NUM_SIZE
 
+    #define NRF_AUXPLL NRF_AUDIOPLL
+
     typedef enum
     {
         NRF_APB_INDEX_MCU   = 1,

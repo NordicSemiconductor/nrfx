@@ -153,6 +153,27 @@ extern "C" {
 #define NRF_FICR_HAS_GLOBAL_COMP_REFTRIM 0
 #endif
 
+#if defined(FICR_TRIM_GLOBAL_SAADC_CAL_VALUE_Pos) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether FICR GLOBAL.SAADC.CAL register is present. */
+#define NRF_FICR_HAS_GLOBAL_SAADC_CAL 1
+#else
+#define NRF_FICR_HAS_GLOBAL_SAADC_CAL 0
+#endif
+
+#if defined(FICR_TRIM_GLOBAL_SAADC_CALREF_VALUE_Pos) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether FICR GLOBAL.SAADC.CALREF register is present. */
+#define NRF_FICR_HAS_GLOBAL_SAADC_CALREF 1
+#else
+#define NRF_FICR_HAS_GLOBAL_SAADC_CALREF 0
+#endif
+
+#if defined(FICR_TRIM_GLOBAL_SAADC_LINCALCOEFF_VALUE_Pos) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether FICR GLOBAL.SAADC.LINCALCOEFF register is present. */
+#define NRF_FICR_HAS_GLOBAL_SAADC_LINCALCOEFF 1
+#else
+#define NRF_FICR_HAS_GLOBAL_SAADC_LINCALCOEFF 0
+#endif
+
 #if NRF_FICR_HAS_CODE_PAGE_SIZE || NRF_FICR_HAS_INFO_CODE_PAGE_SIZE
 /**
  * @brief Function for getting the size of the code memory page.
@@ -245,6 +266,44 @@ NRF_STATIC_INLINE uint32_t nrf_ficr_ir_get(NRF_FICR_Type const * p_reg, uint32_t
  * @return Retrim value for comparator.
  */
 NRF_STATIC_INLINE uint32_t nrf_ficr_global_comp_reftrim_get(NRF_FICR_Type const * p_reg);
+#endif
+
+#if NRF_FICR_HAS_GLOBAL_SAADC_CAL
+/**
+ * @brief Function for getting the calibration value of a given index for SAADC.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] reg_id Register index.
+ *
+ * @return Calibration value.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ficr_global_saadc_cal_get(NRF_FICR_Type const * p_reg,
+                                                         uint32_t              reg_id);
+#endif
+
+#if NRF_FICR_HAS_GLOBAL_SAADC_CALREF
+/**
+ * @brief Function for getting the reference calibration value for SAADC.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ *
+ * @return Reference calibration value.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ficr_global_saadc_calref_get(NRF_FICR_Type const * p_reg);
+
+#endif
+
+#if NRF_FICR_HAS_GLOBAL_SAADC_LINCALCOEFF
+/**
+ * @brief Function for getting the linear calibration coefficient of a given index for SAADC.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] reg_id Register index.
+ *
+ * @return Linear calibration coefficient.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ficr_global_saadc_lincalcoeff_get(NRF_FICR_Type const * p_reg,
+                                                                 uint8_t               reg_id);
 #endif
 
 #ifndef NRF_DECLARE_ONLY
@@ -353,6 +412,29 @@ NRF_STATIC_INLINE uint32_t nrf_ficr_ir_get(NRF_FICR_Type const * p_reg, uint32_t
 NRF_STATIC_INLINE uint32_t nrf_ficr_global_comp_reftrim_get(NRF_FICR_Type const * p_reg)
 {
     return p_reg->TRIM.GLOBAL.COMP.REFTRIM;
+}
+#endif
+
+#if NRF_FICR_HAS_GLOBAL_SAADC_CAL
+NRF_STATIC_INLINE uint32_t nrf_ficr_global_saadc_cal_get(NRF_FICR_Type const * p_reg,
+                                                         uint32_t              reg_id)
+{
+    return p_reg->TRIM.GLOBAL.SAADC.CAL[reg_id];
+}
+#endif
+
+#if NRF_FICR_HAS_GLOBAL_SAADC_CALREF
+NRF_STATIC_INLINE uint32_t nrf_ficr_global_saadc_calref_get(NRF_FICR_Type const * p_reg)
+{
+    return p_reg->TRIM.GLOBAL.SAADC.CALREF;
+}
+#endif
+
+#if NRF_FICR_HAS_GLOBAL_SAADC_LINCALCOEFF
+NRF_STATIC_INLINE uint32_t nrf_ficr_global_saadc_lincalcoeff_get(NRF_FICR_Type const * p_reg,
+                                                                 uint8_t               reg_id)
+{
+    return p_reg->TRIM.GLOBAL.SAADC.LINCALCOEFF[reg_id];
 }
 #endif
 

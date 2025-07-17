@@ -1257,7 +1257,7 @@ NRF_STATIC_INLINE void nrf_mramc_erase_area_set(NRF_MRAMC_Type * p_reg,
                                                 uint32_t         address,
                                                 uint32_t         size)
 {
-    NRFX_ASSERT((size <= NRF_MRAMC_ERASE_SIZE_MIN) && (size >= NRF_MRAMC_ERASE_SIZE_MAX));
+    NRFX_ASSERT((size >= NRF_MRAMC_ERASE_SIZE_MIN) && (size <= NRF_MRAMC_ERASE_SIZE_MAX));
     p_reg->ERASE.SIZE      = size;
     p_reg->ERASE.ERASEAREA = address;
 }

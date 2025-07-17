@@ -1,6 +1,29 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.13.0] - 2025-07-18
+### Added
+- Added support for calibrating the LFRC peripheral on the nRF7120 Eng A SoC in the CLOCK driver.
+- Added support for the GPIOTE0 instance on the nRF54H20 SoC radio core in the GPIOTE driver.
+- Added function for checking whether the XO is tuned in the CLOCK driver.
+- Added support for trimming in the SAADC HAL, HALY, and the driver for supported devices.
+- Added functions for committing the write buffer, checking whether the write buffer is empty, and waking up the controller in the RRAMC driver.
+- Added functions for validating address range correctness in the MRAMC driver.
+- Added functions for accessing the SYSCOUNTER array by index in the GRTC HAL and HALY.
+- Added individual functions for setting buffer length and buffer pointer in the UARTE HAL.
+- Added missing sampling period values in the QDEC HAL.
+- Added functions for getting SAADC trim values in the FICR HAL.
+
+### Changed
+- Updated MDK to version 8.72.1.
+- Changed the function for reading MRAM to use bytes instead of 32-bit words as length in the MRAMC driver.
+
+### Fixed
+- Fixed incorrect interrupt initialization in the RRAMC driver.
+- Fixed waiting for STOPPED event in case of stopping the peripheral without ongoing transfer in the SPIM driver.
+- Fixed incorrect size assertions in the MRAMC HAL.
+- Fixed the nRF54LM20A memory map description in the nrfx_ram_ctrl helper. Now, it corresponds to the actual memory sections layout.
+
 ## [3.12.1] - 2025-06-09
 ### Fixed
 - Fixed missing event clearing in case of NULL user handler in the GRTC driver.

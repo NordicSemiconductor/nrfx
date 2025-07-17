@@ -183,6 +183,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define BELLBOARD_IRQ_COUNT 4
 
+/*Wi-Fi Information Configuration Registers*/
+#define WICR_PRESENT 1
+#define WICR_COUNT 1
+
 /*Factory Information Configuration Registers*/
 #define FICR_PRESENT 1
 #define FICR_COUNT 1
@@ -286,7 +290,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define MPC_PRESENT 1
 #define MPC_COUNT 1
 
-#define MPC00_EXTEND_CLOCK_REQ 0                     /*!< (unspecified)                                                        */
+#define MPC00_EXTEND_CLOCK_REQ 1                     /*!< (unspecified)                                                        */
 #define MPC00_RTCHOKE 0                              /*!< (unspecified)                                                        */
 #define MPC00_OVERRIDE_GRAN 4096                     /*!< The override region granularity is 4096 bytes                        */
 
@@ -339,20 +343,20 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PPIB01_NTASKSEVENTS_SIZE 8                   /*!< (unspecified)                                                        */
 
 #define PPIB10_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
-#define PPIB10_NTASKSEVENTS_MAX 7                    /*!< (unspecified)                                                        */
-#define PPIB10_NTASKSEVENTS_SIZE 8                   /*!< (unspecified)                                                        */
+#define PPIB10_NTASKSEVENTS_MAX 11                   /*!< (unspecified)                                                        */
+#define PPIB10_NTASKSEVENTS_SIZE 12                  /*!< (unspecified)                                                        */
 
 #define PPIB11_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
-#define PPIB11_NTASKSEVENTS_MAX 7                    /*!< (unspecified)                                                        */
-#define PPIB11_NTASKSEVENTS_SIZE 8                   /*!< (unspecified)                                                        */
+#define PPIB11_NTASKSEVENTS_MAX 15                   /*!< (unspecified)                                                        */
+#define PPIB11_NTASKSEVENTS_SIZE 16                  /*!< (unspecified)                                                        */
 
 #define PPIB20_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
 #define PPIB20_NTASKSEVENTS_MAX 7                    /*!< (unspecified)                                                        */
 #define PPIB20_NTASKSEVENTS_SIZE 8                   /*!< (unspecified)                                                        */
 
 #define PPIB21_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
-#define PPIB21_NTASKSEVENTS_MAX 7                    /*!< (unspecified)                                                        */
-#define PPIB21_NTASKSEVENTS_SIZE 8                   /*!< (unspecified)                                                        */
+#define PPIB21_NTASKSEVENTS_MAX 15                   /*!< (unspecified)                                                        */
+#define PPIB21_NTASKSEVENTS_SIZE 16                  /*!< (unspecified)                                                        */
 
 #define PPIB22_NTASKSEVENTS_MIN 0                    /*!< (unspecified)                                                        */
 #define PPIB22_NTASKSEVENTS_MAX 3                    /*!< (unspecified)                                                        */
@@ -378,6 +382,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define AAR00_DMAERROR 1                             /*!< (unspecified)                                                        */
 #define AAR00_ERRORSTATUS 1                          /*!< (unspecified)                                                        */
 #define AAR00_ERROREVENT 1                           /*!< (unspecified)                                                        */
+#define AAR00_ERROREVENT_IRQ 1                       /*!< (unspecified)                                                        */
+#define AAR00_PREMATUREOUTPUTPTR 1                   /*!< (unspecified)                                                        */
 
 /*AES CCM Mode Encryption*/
 #define CCM_PRESENT 1
@@ -772,10 +778,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P2_PIN_NUM_MAX 11                            /*!< (unspecified)                                                        */
 #define P2_PIN_NUM_SIZE 12                           /*!< (unspecified)                                                        */
 #define P2_FEATURE_PINS_PRESENT 4095                 /*!< (unspecified)                                                        */
+#define P2_FEATURE_I5_LIBRARY 0                      /*!< (unspecified)                                                        */
 #define P2_PIN_SENSE_MECHANISM 0                     /*!< (unspecified)                                                        */
 #define P2_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P2_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P2_PWRCTRL 0                                 /*!< (unspecified)                                                        */
+#define P2_SLEWMODE 0                                /*!< (unspecified)                                                        */
+#define P2_PULLSTR 0                                 /*!< (unspecified)                                                        */
+#define P2_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P2_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P2_BIASCTRL 0                                /*!< (unspecified)                                                        */
 
@@ -784,13 +794,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P1_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP4 1                            /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
-#define P1_PIN_NUM_MAX 19                            /*!< (unspecified)                                                        */
-#define P1_PIN_NUM_SIZE 20                           /*!< (unspecified)                                                        */
-#define P1_FEATURE_PINS_PRESENT 1048575              /*!< (unspecified)                                                        */
+#define P1_PIN_NUM_MAX 15                            /*!< (unspecified)                                                        */
+#define P1_PIN_NUM_SIZE 16                           /*!< (unspecified)                                                        */
+#define P1_FEATURE_PINS_PRESENT 65535                /*!< (unspecified)                                                        */
+#define P1_FEATURE_I5_LIBRARY 0                      /*!< (unspecified)                                                        */
 #define P1_PIN_SENSE_MECHANISM 1                     /*!< (unspecified)                                                        */
 #define P1_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P1_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P1_PWRCTRL 0                                 /*!< (unspecified)                                                        */
+#define P1_SLEWMODE 0                                /*!< (unspecified)                                                        */
+#define P1_PULLSTR 0                                 /*!< (unspecified)                                                        */
+#define P1_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P1_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P1_BIASCTRL 0                                /*!< (unspecified)                                                        */
 
@@ -799,13 +813,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P3_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P3_CTRLSEL_MAP4 1                            /*!< (unspecified)                                                        */
 #define P3_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
-#define P3_PIN_NUM_MAX 12                            /*!< (unspecified)                                                        */
-#define P3_PIN_NUM_SIZE 13                           /*!< (unspecified)                                                        */
-#define P3_FEATURE_PINS_PRESENT 8191                 /*!< (unspecified)                                                        */
+#define P3_PIN_NUM_MAX 11                            /*!< (unspecified)                                                        */
+#define P3_PIN_NUM_SIZE 12                           /*!< (unspecified)                                                        */
+#define P3_FEATURE_PINS_PRESENT 4095                 /*!< (unspecified)                                                        */
+#define P3_FEATURE_I5_LIBRARY 0                      /*!< (unspecified)                                                        */
 #define P3_PIN_SENSE_MECHANISM 1                     /*!< (unspecified)                                                        */
 #define P3_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P3_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P3_PWRCTRL 0                                 /*!< (unspecified)                                                        */
+#define P3_SLEWMODE 0                                /*!< (unspecified)                                                        */
+#define P3_PULLSTR 0                                 /*!< (unspecified)                                                        */
+#define P3_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P3_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P3_BIASCTRL 0                                /*!< (unspecified)                                                        */
 
@@ -817,10 +835,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P4_PIN_NUM_MAX 11                            /*!< (unspecified)                                                        */
 #define P4_PIN_NUM_SIZE 12                           /*!< (unspecified)                                                        */
 #define P4_FEATURE_PINS_PRESENT 4095                 /*!< (unspecified)                                                        */
+#define P4_FEATURE_I5_LIBRARY 0                      /*!< (unspecified)                                                        */
 #define P4_PIN_SENSE_MECHANISM 1                     /*!< (unspecified)                                                        */
 #define P4_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P4_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P4_PWRCTRL 0                                 /*!< (unspecified)                                                        */
+#define P4_SLEWMODE 0                                /*!< (unspecified)                                                        */
+#define P4_PULLSTR 0                                 /*!< (unspecified)                                                        */
+#define P4_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P4_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P4_BIASCTRL 0                                /*!< (unspecified)                                                        */
 
@@ -829,13 +851,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P0_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP4 1                            /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
-#define P0_PIN_NUM_MAX 9                             /*!< (unspecified)                                                        */
-#define P0_PIN_NUM_SIZE 10                           /*!< (unspecified)                                                        */
-#define P0_FEATURE_PINS_PRESENT 1023                 /*!< (unspecified)                                                        */
+#define P0_PIN_NUM_MAX 12                            /*!< (unspecified)                                                        */
+#define P0_PIN_NUM_SIZE 13                           /*!< (unspecified)                                                        */
+#define P0_FEATURE_PINS_PRESENT 8191                 /*!< (unspecified)                                                        */
+#define P0_FEATURE_I5_LIBRARY 0                      /*!< (unspecified)                                                        */
 #define P0_PIN_SENSE_MECHANISM 1                     /*!< (unspecified)                                                        */
 #define P0_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P0_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P0_PWRCTRL 0                                 /*!< (unspecified)                                                        */
+#define P0_SLEWMODE 0                                /*!< (unspecified)                                                        */
+#define P0_PULLSTR 0                                 /*!< (unspecified)                                                        */
+#define P0_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P0_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P0_BIASCTRL 0                                /*!< (unspecified)                                                        */
 
@@ -850,7 +876,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TAD_TADFORCEON 0                             /*!< (unspecified)                                                        */
 #define TAD_TAD_HAS_TASKS 0                          /*!< (unspecified)                                                        */
 #define TAD_PDREQCLR 1                               /*!< (unspecified)                                                        */
-#define TAD_TAD_HAS_DBGWAKEUPREQ 0                   /*!< (unspecified)                                                        */
+#define TAD_TAD_HAS_DBGWAKEUPREQ 1                   /*!< (unspecified)                                                        */
 
 /*Timer/Counter*/
 #define TIMER_PRESENT 1
@@ -983,9 +1009,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define USBHS_PRESENT 1
 #define USBHS_COUNT 1
 
-#define USBHS_HAS_CORE_EVENT 1                       /*!< (unspecified)                                                        */
+#define USBHS_HAS_CORE_EVENT 0                       /*!< (unspecified)                                                        */
 #define USBHS_HAS_SOF_EVENT 1                        /*!< (unspecified)                                                        */
 #define USBHS_RTUNE_AVAILABLE 1                      /*!< (unspecified)                                                        */
+#define USBHS_HAS_STATUS_REGISTER 0                  /*!< (unspecified)                                                        */
 
 /*Quad serial peripheral interface*/
 #define QSPI_PRESENT 1
@@ -1087,6 +1114,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define MEMCONF_PRESENT 1
 #define MEMCONF_COUNT 1
 
+#define MEMCONF_NRAMS_MIN 0                          /*!< Number of RAMs: [0..1]                                               */
+#define MEMCONF_NRAMS_MAX 1                          /*!< Number of RAMs: [0..1]                                               */
+#define MEMCONF_NRAMS_SIZE 2                         /*!< Number of RAMs: [0..1]                                               */
 #define MEMCONF_RETTRIM 1                            /*!< (unspecified)                                                        */
 #define MEMCONF_REPAIR 0                             /*!< (unspecified)                                                        */
 #define MEMCONF_POWER 1                              /*!< (unspecified)                                                        */
@@ -1110,7 +1140,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PDM20_SAMPLE16 0                             /*!< (unspecified)                                                        */
 #define PDM20_SAMPLE48 1                             /*!< (unspecified)                                                        */
 #define PDM20_PRESCALER_PRESENT 1                    /*!< (unspecified)                                                        */
-#define PDM20_PDMV2 0                                /*!< (unspecified)                                                        */
+#define PDM20_PDMV2 1                                /*!< (unspecified)                                                        */
 #define PDM20_PCLK24M 0                              /*!< (unspecified)                                                        */
 #define PDM20_AUDIOPLL 1                             /*!< (unspecified)                                                        */
 #define PDM20_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                    */
@@ -1118,7 +1148,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PDM21_SAMPLE16 0                             /*!< (unspecified)                                                        */
 #define PDM21_SAMPLE48 1                             /*!< (unspecified)                                                        */
 #define PDM21_PRESCALER_PRESENT 1                    /*!< (unspecified)                                                        */
-#define PDM21_PDMV2 0                                /*!< (unspecified)                                                        */
+#define PDM21_PDMV2 1                                /*!< (unspecified)                                                        */
 #define PDM21_PCLK24M 0                              /*!< (unspecified)                                                        */
 #define PDM21_AUDIOPLL 1                             /*!< (unspecified)                                                        */
 #define PDM21_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                    */
@@ -1149,6 +1179,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_PRESENT 1
 #define SAADC_COUNT 1
 
+#define SAADC_CHOPPING 1                             /*!< (unspecified)                                                        */
+#define SAADC_BURSTREG 1                             /*!< (unspecified)                                                        */
 #define SAADC_PSEL_V2 1                              /*!< (unspecified)                                                        */
 #define SAADC_TASKS_CALIBRATEGAIN 1                  /*!< (unspecified)                                                        */
 #define SAADC_SAMPLERATE_CC_VALUERANGE_MIN 8         /*!< (unspecified)                                                        */
@@ -1229,7 +1261,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GRTC_CLKSELREG 1                             /*!< (unspecified)                                                        */
 #define GRTC_CLKSELLFLPRC 1                          /*!< (unspecified)                                                        */
 #define GRTC_CCADD_WRITE_ONLY 0                      /*!< (unspecified)                                                        */
-#define GRTC_READY_STATUS_AND_EVENTS 0               /*!< (unspecified)                                                        */
+#define GRTC_READY_STATUS_AND_EVENTS 1               /*!< (unspecified)                                                        */
 #define GRTC_SYSCOUNTER_LOADED_STATUS 1              /*!< (unspecified)                                                        */
 #define GRTC_CC_PAST_STATUS 1                        /*!< (unspecified)                                                        */
 #define GRTC_SYSCOUNTER_WRITEABLE 1                  /*!< (unspecified)                                                        */
@@ -1243,21 +1275,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TDM_NUM_CHANNELS_SIZE 8                      /*!< (unspecified)                                                        */
 #define TDM_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                      */
 
-/*AUXPLL*/
-#define AUXPLL_PRESENT 1
-#define AUXPLL_COUNT 1
-
-/*AUXPM*/
-#define AUXPM_PRESENT 1
-#define AUXPM_COUNT 1
-
 /*Tamper controller*/
 #define TAMPC_PRESENT 1
 #define TAMPC_COUNT 1
 
 #define TAMPC_APSPIDEN 0                             /*!< (unspecified)                                                        */
 #define TAMPC_PROTECT_INTRESETEN_CTRL_VALUE_RESET 1  /*!< Reset value of field VALUE in register PROTECT.INTRESETEN.CTRL: 1    */
-#define TAMPC_TAMPERSWITCH 0                         /*!< (unspecified)                                                        */
+#define TAMPC_TAMPERSWITCH 1                         /*!< (unspecified)                                                        */
 
 /*Coexistence controller*/
 #define COEXC_PRESENT 1
@@ -1299,6 +1323,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CLOCK_COUNT 1
 
 #define CLOCK_XOTUNE 0                               /*!< (unspecified)                                                        */
+#define CLOCK_XOCAL 0                                /*!< (unspecified)                                                        */
 #define CLOCK_PLL24M 1                               /*!< (unspecified)                                                        */
 
 /*Power control*/
@@ -1331,6 +1356,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define VREGUSB_COUNT 1
 
 #define VREGUSB_PROLONGED_WAKEUP 0                   /*!< (unspecified)                                                        */
+#define VREGUSB_VAR1 0                               /*!< (unspecified)                                                        */
 
 /*LFXO peripheral*/
 #define LFXO_PRESENT 1
@@ -1344,38 +1370,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #define HFXO64M_PRESENT 1
 #define HFXO64M_COUNT 1
 
-/*VREGMRAM peripheral*/
-#define VREGMRAM_PRESENT 1
-#define VREGMRAM_COUNT 1
-
 /*OSCRFR peripheral*/
 #define OSCRFR_PRESENT 1
 #define OSCRFR_COUNT 1
 
-/*VDETAO1V8 peripheral*/
-#define VDETAO1V8_PRESENT 1
-#define VDETAO1V8_COUNT 1
+/*AUXPLL*/
+#define AUXPLL_PRESENT 1
+#define AUXPLL_COUNT 1
 
-/*VDETAO0V8 peripheral*/
-#define VDETAO0V8_PRESENT 1
-#define VDETAO0V8_COUNT 1
-
-/*Saana HVBUCK register map HVBUCK register map for digital part HVBUCK register map for analog part*/
-#define HVBUCK_PRESENT 1
-#define HVBUCK_COUNT 1
-
-#define HVBUCK_BUCK1V1 1                             /*!< (unspecified)                                                        */
-#define HVBUCK_BUCK1V8 0                             /*!< (unspecified)                                                        */
-#define HVBUCK_UPSCALE2 0                            /*!< (unspecified)                                                        */
-
-/*VDETIO peripheral*/
-#define VDETIO_PRESENT 1
-#define VDETIO_COUNT 1
-
-#define VDETIO_CONFIG_PWRGOOD_RESET 30               /*!< Reset value of register CONFIG.PWRGOOD: 30                           */
-#define VDETIO_NPORTS_MIN 0                          /*!< Number of ports supported : 0..4                                     */
-#define VDETIO_NPORTS_MAX 4                          /*!< Number of ports supported : 0..4                                     */
-#define VDETIO_NPORTS_SIZE 5                         /*!< Number of ports supported : 0..4                                     */
+/*AUXPM*/
+#define AUXPM_PRESENT 1
+#define AUXPM_COUNT 1
 
 /* ==================================================== Baudrate settings ==================================================== */
 /**

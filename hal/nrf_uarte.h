@@ -704,6 +704,24 @@ NRF_STATIC_INLINE void nrf_uarte_baudrate_set(NRF_UARTE_Type *     p_reg,
                                               nrf_uarte_baudrate_t baudrate);
 
 /**
+ * @brief Function for setting the transmit buffer length.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] length   Maximum number of data bytes to receive.
+ */
+NRF_STATIC_INLINE void nrf_uarte_tx_maxcnt_set(NRF_UARTE_Type * p_reg,
+                                               size_t           length);
+
+/**
+ * @brief Function for setting the transmit buffer pointer.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] p_buffer Pointer to the buffer for received data.
+ */
+NRF_STATIC_INLINE void nrf_uarte_tx_ptr_set(NRF_UARTE_Type * p_reg,
+                                            uint8_t  const * p_buffer);
+
+/**
  * @brief Function for setting the transmit buffer.
  *
  * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
@@ -731,6 +749,24 @@ NRF_STATIC_INLINE uint8_t const * nrf_uarte_tx_buffer_get(NRF_UARTE_Type * p_reg
  * @retval Amount of bytes transmitted.
  */
 NRF_STATIC_INLINE uint32_t nrf_uarte_tx_amount_get(NRF_UARTE_Type const * p_reg);
+
+/**
+ * @brief Function for setting the receive buffer length.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] length   Maximum number of data bytes to receive.
+ */
+NRF_STATIC_INLINE void nrf_uarte_rx_maxcnt_set(NRF_UARTE_Type * p_reg,
+                                               size_t           length);
+
+/**
+ * @brief Function for setting the receive buffer pointer.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] p_buffer Pointer to the buffer for received data.
+ */
+NRF_STATIC_INLINE void nrf_uarte_rx_ptr_set(NRF_UARTE_Type * p_reg,
+                                            uint8_t *        p_buffer);
 
 /**
  * @brief Function for setting the receive buffer.
@@ -1020,17 +1056,32 @@ NRF_STATIC_INLINE void nrf_uarte_baudrate_set(NRF_UARTE_Type * p_reg, nrf_uarte_
     p_reg->BAUDRATE = baudrate;
 }
 
+NRF_STATIC_INLINE void nrf_uarte_tx_maxcnt_set(NRF_UARTE_Type * p_reg,
+                                               size_t           length)
+{
+#if NRF_UARTE_HAS_DMA_REG
+    p_reg->DMA.TX.MAXCNT = length;
+#else
+    p_reg->TXD.MAXCNT = length;
+#endif
+}
+
+NRF_STATIC_INLINE void nrf_uarte_tx_ptr_set(NRF_UARTE_Type * p_reg,
+                                            uint8_t  const * p_buffer)
+{
+#if NRF_UARTE_HAS_DMA_REG
+    p_reg->DMA.TX.PTR = (uint32_t)p_buffer;
+#else
+    p_reg->TXD.PTR = (uint32_t)p_buffer;
+#endif
+}
+
 NRF_STATIC_INLINE void nrf_uarte_tx_buffer_set(NRF_UARTE_Type * p_reg,
                                                uint8_t  const * p_buffer,
                                                size_t           length)
 {
-#if NRF_UARTE_HAS_DMA_REG
-    p_reg->DMA.TX.PTR    = (uint32_t)p_buffer;
-    p_reg->DMA.TX.MAXCNT = length;
-#else
-    p_reg->TXD.PTR    = (uint32_t)p_buffer;
-    p_reg->TXD.MAXCNT = length;
-#endif
+    nrf_uarte_tx_ptr_set(p_reg, p_buffer);
+    nrf_uarte_tx_maxcnt_set(p_reg, length);
 }
 
 NRF_STATIC_INLINE uint8_t const * nrf_uarte_tx_buffer_get(NRF_UARTE_Type * p_reg)
@@ -1051,17 +1102,32 @@ NRF_STATIC_INLINE uint32_t nrf_uarte_tx_amount_get(NRF_UARTE_Type const * p_reg)
 #endif
 }
 
+NRF_STATIC_INLINE void nrf_uarte_rx_maxcnt_set(NRF_UARTE_Type * p_reg,
+                                               size_t           length)
+{
+#if NRF_UARTE_HAS_DMA_REG
+    p_reg->DMA.RX.MAXCNT = length;
+#else
+    p_reg->RXD.MAXCNT = length;
+#endif
+}
+
+NRF_STATIC_INLINE void nrf_uarte_rx_ptr_set(NRF_UARTE_Type * p_reg,
+                                            uint8_t *        p_buffer)
+{
+#if NRF_UARTE_HAS_DMA_REG
+    p_reg->DMA.RX.PTR = (uint32_t)p_buffer;
+#else
+    p_reg->RXD.PTR = (uint32_t)p_buffer;
+#endif
+}
+
 NRF_STATIC_INLINE void nrf_uarte_rx_buffer_set(NRF_UARTE_Type * p_reg,
                                                uint8_t *        p_buffer,
                                                size_t           length)
 {
-#if NRF_UARTE_HAS_DMA_REG
-    p_reg->DMA.RX.PTR    = (uint32_t)p_buffer;
-    p_reg->DMA.RX.MAXCNT = length;
-#else
-    p_reg->RXD.PTR    = (uint32_t)p_buffer;
-    p_reg->RXD.MAXCNT = length;
-#endif
+    nrf_uarte_rx_ptr_set(p_reg, p_buffer);
+    nrf_uarte_rx_maxcnt_set(p_reg, length);
 }
 
 NRF_STATIC_INLINE uint8_t * nrf_uarte_rx_buffer_get(NRF_UARTE_Type * p_reg)

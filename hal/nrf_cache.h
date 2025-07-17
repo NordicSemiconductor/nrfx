@@ -175,6 +175,13 @@ extern "C" {
 #define NRF_CACHE_HAS_CACHEINFO_SET_WAY_INFO 0
 #endif
 
+#if defined(CACHE_DEBUGLOCK_DEBUGLOCK_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether cache DEBUGLOCK is supported. */
+#define NRF_CACHE_HAS_DEBUGLOCK 1
+#else
+#define NRF_CACHE_HAS_DEBUGLOCK 0
+#endif
+
 #if NRF_CACHE_HAS_CACHEDATA
 /** @brief Max number of words in CACHEDATA data units. */
 #define NRF_CACHEDATA_DATA_WORDS_IN_UNIT_MAX CACHEDATA_SET_WAY_DU_DATA_MaxCount
@@ -434,6 +441,7 @@ NRF_STATIC_INLINE void nrf_cache_ramsize_set(NRF_CACHE_Type * p_reg, nrf_cache_r
 NRF_STATIC_INLINE nrf_cache_ramsize_t nrf_cache_ramsize_get(NRF_CACHE_Type const * p_reg);
 #endif
 
+#if NRF_CACHE_HAS_DEBUGLOCK
 /**
  * @brief Function for blocking the cache content access.
  *
@@ -444,6 +452,7 @@ NRF_STATIC_INLINE nrf_cache_ramsize_t nrf_cache_ramsize_get(NRF_CACHE_Type const
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  */
 NRF_STATIC_INLINE void nrf_cache_read_lock_enable(NRF_CACHE_Type * p_reg);
+#endif
 
 #if NRF_CACHE_HAS_WRITELOCK
 /**
@@ -757,10 +766,12 @@ NRF_STATIC_INLINE nrf_cache_ramsize_t nrf_cache_ramsize_get(NRF_CACHE_Type const
 }
 #endif
 
+#if NRF_CACHE_HAS_DEBUGLOCK
 NRF_STATIC_INLINE void nrf_cache_read_lock_enable(NRF_CACHE_Type * p_reg)
 {
     p_reg->DEBUGLOCK = CACHE_DEBUGLOCK_DEBUGLOCK_Locked;
 }
+#endif
 
 #if NRF_CACHE_HAS_WRITELOCK
 NRF_STATIC_INLINE void nrf_cache_update_lock_set(NRF_CACHE_Type * p_reg, bool enable)

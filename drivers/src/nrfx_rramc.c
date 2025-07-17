@@ -190,7 +190,7 @@ static nrfx_err_t rramc_configure(nrfx_rramc_config_t const * p_config)
 
     if (m_cb.handler)
     {
-        nrfy_rramc_int_init(NRF_RRAMC, NRF_RRAMC_ALL_INTS_MASK, p_config->irq_priority, false);
+        nrfy_rramc_int_init(NRF_RRAMC, NRF_RRAMC_ALL_INTS_MASK, p_config->irq_priority, true);
     }
     return NRFX_SUCCESS;
 }
@@ -259,6 +259,21 @@ void nrfx_rramc_uninit(void)
 uint32_t nrfx_rramc_memory_size_get(void)
 {
     return total_memory_size_get();
+}
+
+void nrfx_rramc_write_buffer_commit(void)
+{
+    nrfy_rramc_task_trigger(NRF_RRAMC, NRF_RRAMC_TASK_COMMIT_WRITEBUF);
+}
+
+void nrfx_rramc_wake_up(void)
+{
+    nrfy_rramc_task_trigger(NRF_RRAMC, NRF_RRAMC_TASK_WAKEUP);
+}
+
+bool nrfx_rramc_write_buffer_empty_check(void)
+{
+    return nrfy_rramc_empty_buffer_check(NRF_RRAMC);
 }
 
 void nrfx_rramc_irq_handler(void)

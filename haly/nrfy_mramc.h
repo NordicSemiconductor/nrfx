@@ -117,7 +117,7 @@ NRFY_STATIC_INLINE void nrfy_mramc_configure(NRF_MRAMC_Type *            p_reg,
 {
     __nrfy_internal_mramc_config_set(p_reg, &p_config->config);
     nrf_mramc_readynext_timeout_set(p_reg, &p_config->preload_timeout);
-    nrf_mramc_power_init_set(p_reg, MRAMC_POWER_INIT_MODE_PowerUp);
+    nrf_mramc_power_init_set(p_reg, NRF_MRAMC_POWER_INIT_MODE_UP);
     nrf_barrier_w();
 }
 
@@ -276,7 +276,7 @@ NRFY_STATIC_INLINE void nrfy_mramc_buffer_read(void *   dst,
                                                uint32_t num_bytes)
 {
     nrf_barrier_r();
-    memcpy(dst, (void *)address, num_bytes * NRFY_MRAMC_BYTES_IN_WORD);
+    memcpy(dst, (void *)address, num_bytes);
     nrf_barrier_r();
 }
 

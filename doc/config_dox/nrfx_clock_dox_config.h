@@ -102,6 +102,13 @@
  */
 #define NRFX_CLOCK_CONFIG_DEBUG_COLOR
 
+/** @brief Extends NRFX_CLOCK to use LFRC peripheral
+ *
+ *  Set to 1 to activate.
+ *
+ * @note This is an NRF_CONFIG macro.
+ */
+#define NRFX_CLOCK_CONFIG_USE_LFRC_CALIBRATION
 
 
 /** @} */

@@ -75,6 +75,13 @@ extern "C" {
 #define NRF_OSCILLATORS_HAS_LFXO_BYPASS 0
 #endif
 
+#if NRF_OSCILLATORS_HAS_LFXO_BYPASS || NRF_OSCILLATORS_HAS_LFXO_CAP_AS_INT_VALUE
+/** @brief Symbol indicating whether LFXO is present. */
+#define NRF_OSCILLATORS_HAS_LFXO 1
+#else
+#define NRF_OSCILLATORS_HAS_LFXO 0
+#endif
+
 #if defined(NRF5340_XXAA_APPLICATION) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Macro for calculating HFXO internal capacitor value.
@@ -130,6 +137,7 @@ typedef enum
 } nrf_oscillators_pll_freq_t;
 #endif
 
+#if NRF_OSCILLATORS_HAS_LFXO
 #if NRF_OSCILLATORS_HAS_LFXO_CAP_AS_INT_VALUE
 /** @brief LFXO capacitance type. */
 typedef uint32_t nrf_oscillators_lfxo_cap_t;
@@ -148,7 +156,8 @@ typedef enum
     NRF_OSCILLATORS_LFXO_CAP_11PF     = OSCILLATORS_XOSC32KI_INTCAP_INTCAP_C11PF,    ///< Use 11 pF internal capacitors.
 #endif
 } nrf_oscillators_lfxo_cap_t;
-#endif
+#endif // NRF_OSCILLATORS_HAS_LFXO_CAP_AS_INT_VALUE
+#endif // NRF_OSCILLATORS_HAS_LFXO
 
 #if NRF_OSCILLATORS_HAS_CLOCK_QUALITY_IND
 /**
@@ -183,6 +192,7 @@ NRF_STATIC_INLINE
 nrf_oscillators_pll_freq_t nrf_oscillators_pll_freq_get(NRF_OSCILLATORS_Type * p_reg);
 #endif
 
+#if NRF_OSCILLATORS_HAS_LFXO
 #if NRF_OSCILLATORS_HAS_LFXO_BYPASS
 /**
  * @brief Function for enabling or disabling the bypass of LFXO with external clock source.
@@ -204,6 +214,7 @@ NRF_STATIC_INLINE void nrf_oscillators_lfxo_bypass_set(NRF_OSCILLATORS_Type * p_
  */
 NRF_STATIC_INLINE void nrf_oscillators_lfxo_cap_set(NRF_OSCILLATORS_Type *     p_reg,
                                                     nrf_oscillators_lfxo_cap_t cap);
+#endif
 
 /**
  * @brief Function for configuring the internal capacitors of HFXO.
@@ -243,6 +254,7 @@ nrf_oscillators_pll_freq_t nrf_oscillators_pll_freq_get(NRF_OSCILLATORS_Type * p
 }
 #endif
 
+#if NRF_OSCILLATORS_HAS_LFXO
 #if NRF_OSCILLATORS_HAS_LFXO_BYPASS
 NRF_STATIC_INLINE void nrf_oscillators_lfxo_bypass_set(NRF_OSCILLATORS_Type * p_reg, bool enable)
 {
@@ -256,6 +268,7 @@ NRF_STATIC_INLINE void nrf_oscillators_lfxo_cap_set(NRF_OSCILLATORS_Type *     p
 {
     p_reg->XOSC32KI.INTCAP = (uint32_t)cap;
 }
+#endif
 
 NRF_STATIC_INLINE void nrf_oscillators_hfxo_cap_set(NRF_OSCILLATORS_Type * p_reg,
                                                     bool                   enable,

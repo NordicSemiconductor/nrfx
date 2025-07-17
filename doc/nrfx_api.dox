@@ -61,6 +61,8 @@
 
 @defgroup nrf_kmu KMU
 
+@defgroup nrf_lfrc LFRC
+
 @defgroup nrf_lpcomp LPCOMP
 
 @defgroup nrf_lrc LRC

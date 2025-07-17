@@ -37,6 +37,9 @@
 #include <nrfx.h>
 #include <hal/nrf_clock.h>
 #include <nrfx_power_clock.h>
+#if defined(LFRC_PRESENT)
+#include <hal/nrf_lfrc.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -48,6 +51,9 @@ extern "C" {
  * @ingroup nrf_clock
  * @brief   CLOCK peripheral driver.
  */
+
+/** @brief Symbol specifying driver event offset for LFRC hardware events. */
+#define NRFX_CLOCK_LFRC_EVT_OFFSET 32
 
 /** @brief Clock events. */
 typedef enum
@@ -62,6 +68,9 @@ typedef enum
 #endif
 #if NRF_CLOCK_HAS_CALIBRATION
     NRFX_CLOCK_EVT_CAL_DONE           = NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_DONE_MASK),             ///< Calibration has been done.
+#elif NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)
+    NRFX_CLOCK_EVT_CAL_DONE           = (NRFX_BITMASK_TO_BITPOS(NRF_LFRC_INT_CALDONE_MASK) + \
+                                         NRFX_CLOCK_LFRC_EVT_OFFSET),                                ///< Calibration has been done.
 #endif
 #if NRF_CLOCK_HAS_HFCLKAUDIO
     NRFX_CLOCK_EVT_HFCLKAUDIO_STARTED = NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_HFAUDIO_STARTED_MASK),  ///< HFCLKAUDIO has been started.
@@ -281,10 +290,18 @@ nrfx_err_t nrfx_clock_xo_tune_abort(void);
  */
 bool nrfx_clock_xo_tune_error_check(void);
 
+/**
+ * @brief Function for checking if XO has been successfully tuned.
+ *
+ * @retval true  XO is successfully tuned.
+ * @retval false XO is not tuned.
+ */
+bool nrfx_clock_xo_tune_status_check(void);
+
 #endif
 
-#if (NRF_CLOCK_HAS_CALIBRATION && NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)) || \
-     defined(__NRFX_DOXYGEN__)
+#if ((NRF_CLOCK_HAS_CALIBRATION || NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)) && \
+     NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for starting the calibration of internal LFCLK.
  *
@@ -292,7 +309,7 @@ bool nrfx_clock_xo_tune_error_check(void);
  * must be running before this function is called.
  *
  * @retval NRFX_SUCCESS             The procedure is successful.
- * @retval NRFX_ERROR_INVALID_STATE The low-frequency of high-frequency clock is off.
+ * @retval NRFX_ERROR_INVALID_STATE The low-frequency or high-frequency clock is off.
  * @retval NRFX_ERROR_BUSY          Clock is in the calibration phase.
  */
 nrfx_err_t nrfx_clock_calibration_start(void);
@@ -319,8 +336,8 @@ void nrfx_clock_calibration_timer_start(uint8_t interval);
 /** @brief Function for stopping the calibration timer. */
 void nrfx_clock_calibration_timer_stop(void);
 #endif
-#endif /* (NRF_CLOCK_HAS_CALIBRATION && NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)) || \
-           defined(__NRFX_DOXYGEN__) */
+#endif /* ((NRF_CLOCK_HAS_CALIBRATION || NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)) && \
+           NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)) || defined(__NRFX_DOXYGEN__) */
 
 /**
  * @brief Function for returning a requested task address for the clock driver module.

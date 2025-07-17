@@ -66,10 +66,8 @@ NRFX_STATIC_INLINE uint32_t total_memory_size_get(void)
     return (size * 1024UL);
 }
 
-NRFX_STATIC_INLINE __UNUSED bool is_valid_address_check(uint32_t addr, bool uicr_allowed)
+bool nrfx_mramc_valid_address_check(uint32_t addr, bool uicr_allowed)
 {
-    NRFX_ASSERT(nrfx_is_word_aligned((void const *)addr));
-
     if ((addr - NRFY_MRAMC_MRAM_BASE_ADDRESS) < total_memory_size_get())
     {
         return true;
@@ -86,9 +84,7 @@ NRFX_STATIC_INLINE __UNUSED bool is_valid_address_check(uint32_t addr, bool uicr
     return false;
 }
 
-NRFX_STATIC_INLINE __UNUSED bool fit_in_memory_check(uint32_t addr,
-                                                     bool     uicr_allowed,
-                                                     uint32_t bytes)
+bool nrfx_mramc_fits_memory_check(uint32_t addr, bool uicr_allowed, uint32_t bytes)
 {
     if ((addr - NRFY_MRAMC_MRAM_BASE_ADDRESS + bytes) < total_memory_size_get())
     {
@@ -118,8 +114,8 @@ void nrfx_mramc_all_erase(void)
 void nrfx_mramc_word_write(uint32_t address, uint32_t value)
 {
     NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(is_valid_address_check(address, true));
-    NRFX_ASSERT(fit_in_memory_check(address, true, NRFY_MRAMC_BYTES_IN_WORD));
+    NRFX_ASSERT(nrfx_mramc_valid_address_check(address, true));
+    NRFX_ASSERT(nrfx_mramc_fits_memory_check(address, true, NRFY_MRAMC_BYTES_IN_WORD));
     NRFX_ASSERT(nrfx_is_word_aligned((void const *)address));
 
     nrfy_mramc_word_write(NRF_MRAMC, address, value);
@@ -129,22 +125,21 @@ void nrfx_mramc_words_write(uint32_t address, void const * src, uint32_t num_wor
 {
     NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
     NRFX_ASSERT(src);
-    NRFX_ASSERT(is_valid_address_check(address, true));
-    NRFX_ASSERT(fit_in_memory_check(address, true, (num_words * NRFY_MRAMC_BYTES_IN_WORD)));
+    NRFX_ASSERT(nrfx_mramc_valid_address_check(address, true));
+    NRFX_ASSERT(nrfx_mramc_fits_memory_check(address, true, (num_words * NRFY_MRAMC_BYTES_IN_WORD)));
     NRFX_ASSERT(nrfx_is_word_aligned((void const *)address));
     NRFX_ASSERT(nrfx_is_word_aligned(src));
 
     nrfy_mramc_words_write(NRF_MRAMC, address, src, num_words);
 }
 
-void nrfx_mramc_buffer_read(void * dst, uint32_t address, uint32_t num_words)
+void nrfx_mramc_buffer_read(void * dst, uint32_t address, uint32_t num_bytes)
 {
     NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(is_valid_address_check(address, true));
-    NRFX_ASSERT(fit_in_memory_check(address, true, (num_words * NRFY_MRAMC_BYTES_IN_WORD)));
-    NRFX_ASSERT(nrfx_is_word_aligned((void const *)address));
+    NRFX_ASSERT(nrfx_mramc_valid_address_check(address, true));
+    NRFX_ASSERT(nrfx_mramc_fits_memory_check(address, true, num_bytes));
 
-    nrfy_mramc_buffer_read(dst, address, num_words);
+    nrfy_mramc_buffer_read(dst, address, num_bytes);
 }
 
 void nrfx_mramc_config_write_mode_set(nrf_mramc_mode_write_t write_mode)
@@ -265,8 +260,8 @@ uint32_t nrfx_mramc_memory_size_get(void)
 void nrfx_mramc_area_erase(uint32_t address, uint32_t size)
 {
     NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(is_valid_address_check(address, true));
-    NRFX_ASSERT(fit_in_memory_check(address, true, size));
+    NRFX_ASSERT(nrfx_mramc_valid_address_check(address, true));
+    NRFX_ASSERT(nrfx_mramc_fits_memory_check(address, true, (size * NRFY_MRAMC_BYTES_IN_WORD)));
     NRFX_ASSERT(nrfx_is_word_aligned((void const *)address));
 
     nrfy_mramc_erase_area_set(NRF_MRAMC, address, size);

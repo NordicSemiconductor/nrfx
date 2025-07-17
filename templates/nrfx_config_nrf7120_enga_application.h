@@ -122,6 +122,15 @@
 #endif
 
 /**
+ * @brief NRFX_CLOCK_CONFIG_USE_LFRC_CALIBRATION
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_CLOCK_CONFIG_USE_LFRC_CALIBRATION
+#define NRFX_CLOCK_CONFIG_USE_LFRC_CALIBRATION 0
+#endif
+
+/**
  * @brief NRFX_COMP_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.

@@ -203,7 +203,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define MPC_PRESENT 1
 #define MPC_COUNT 1
 
-#define MPC00_EXTEND_CLOCK_REQ 0                     /*!< (unspecified)                                                        */
+#define MPC00_EXTEND_CLOCK_REQ 1                     /*!< (unspecified)                                                        */
 #define MPC00_RTCHOKE 0                              /*!< (unspecified)                                                        */
 #define MPC00_OVERRIDE_GRAN 4096                     /*!< The override region granularity is 4096 bytes                        */
 
@@ -318,6 +318,21 @@ POSSIBILITY OF SUCH DAMAGE.
 #define VPR_PRESENT 1
 #define VPR_COUNT 1
 
+#define VPR00_RISCV_EXTN_E 1                         /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_M 1                         /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_C 1                         /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_ZBA 1                       /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_ZBB 1                       /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_ZBC 1                       /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_ZBS 1                       /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_ZCB 1                       /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_ZIFENCEI 0                  /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_ZICSR 1                     /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_ZICNTR 0                    /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_SMCLIC 1                    /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_SMCLICCONFIG 1              /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_SDEXT 1                     /*!< (unspecified)                                                        */
+#define VPR00_RISCV_EXTN_SDTRIG 1                    /*!< (unspecified)                                                        */
 #define VPR00_INIT_PC_RESET_VALUE 0x00000000         /*!< Boot vector (INIT_PC_RESET_VALUE): 0x00000000                        */
 #define VPR00_VPR_START_RESET_VALUE 0                /*!< Self-booting (VPR_START_RESET_VALUE): 0                              */
 #define VPR00_RAM_BASE_ADDR 0x20000000               /*!< VPR RAM base address (RAM_BASE_ADDR): 0x20000000                     */
@@ -328,6 +343,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define VPR00_RETAINED 0                             /*!< Retain registers in Deep Sleep mode: 0                               */
 #define VPR00_VPRSAVEDCTX 1                          /*!< (unspecified)                                                        */
 #define VPR00_VPRSAVEADDR 0x2002FD40                 /*!< VPR context save address: 0x2002FD40                                 */
+#define VPR00_VPRSAVESIZE 512                        /*!< VPR context save size: 512 bytes                                     */
 #define VPR00_VPRREMAPADDRVTOB 0x00000000            /*!< VPR remap address: 0x00000000                                        */
 #define VPR00_VEVIF_NTASKS_MIN 16                    /*!< VEVIF tasks: 16..22                                                  */
 #define VPR00_VEVIF_NTASKS_MAX 22                    /*!< VEVIF tasks: 16..22                                                  */
@@ -783,6 +799,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_TACQ_VALUE_RANGE_MIN 1                 /*!< (unspecified)                                                        */
 #define SAADC_TACQ_VALUE_RANGE_MAX 319               /*!< (unspecified)                                                        */
 #define SAADC_TACQ_VALUE_RANGE_SIZE 320              /*!< (unspecified)                                                        */
+#define SAADC_TCONV_VALUE_RANGE_MIN 1                /*!< (unspecified)                                                        */
+#define SAADC_TCONV_VALUE_RANGE_MAX 7                /*!< (unspecified)                                                        */
+#define SAADC_TCONV_VALUE_RANGE_SIZE 8               /*!< (unspecified)                                                        */
 
 /*Temperature Sensor*/
 #define TEMP_PRESENT 1
@@ -795,28 +814,38 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P1_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP2 1                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
+#define P1_CTRLSEL_MAP4 0                            /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_MAX 25                            /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_SIZE 26                           /*!< (unspecified)                                                        */
 #define P1_FEATURE_PINS_PRESENT 67108863             /*!< (unspecified)                                                        */
+#define P1_FEATURE_I5_LIBRARY 0                      /*!< (unspecified)                                                        */
 #define P1_PIN_SENSE_MECHANISM 1                     /*!< (unspecified)                                                        */
 #define P1_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P1_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P1_PWRCTRL 0                                 /*!< (unspecified)                                                        */
+#define P1_SLEWMODE 0                                /*!< (unspecified)                                                        */
+#define P1_PULLSTR 0                                 /*!< (unspecified)                                                        */
+#define P1_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P1_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P1_BIASCTRL 0                                /*!< (unspecified)                                                        */
 
 #define P0_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP2 1                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
+#define P0_CTRLSEL_MAP4 0                            /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_MAX 4                             /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_SIZE 5                            /*!< (unspecified)                                                        */
 #define P0_FEATURE_PINS_PRESENT 31                   /*!< (unspecified)                                                        */
+#define P0_FEATURE_I5_LIBRARY 0                      /*!< (unspecified)                                                        */
 #define P0_PIN_SENSE_MECHANISM 1                     /*!< (unspecified)                                                        */
 #define P0_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P0_RETAIN 0                                  /*!< (unspecified)                                                        */
 #define P0_PWRCTRL 0                                 /*!< (unspecified)                                                        */
+#define P0_SLEWMODE 0                                /*!< (unspecified)                                                        */
+#define P0_PULLSTR 0                                 /*!< (unspecified)                                                        */
+#define P0_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P0_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P0_BIASCTRL 0                                /*!< (unspecified)                                                        */
 

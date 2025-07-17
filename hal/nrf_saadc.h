@@ -80,6 +80,20 @@ extern "C" {
 #define NRF_SAADC_HAS_LIN_CAL 0
 #endif
 
+#if defined(SAADC_CAL_ResetValue) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SAADC CAL trim config is present. */
+#define NRF_SAADC_HAS_CAL 1
+#else
+#define NRF_SAADC_HAS_CAL 0
+#endif
+
+#if defined(SAADC_CALREF_ResetValue) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SAADC CALREF trim is present. */
+#define NRF_SAADC_HAS_CALREF 1
+#else
+#define NRF_SAADC_HAS_CALREF 0
+#endif
+
 #if defined(SAADC_CH_PSELP_PIN_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether configuration of analog input using pin number is present. */
 #define NRF_SAADC_HAS_AIN_AS_PIN 1
@@ -992,6 +1006,44 @@ NRF_STATIC_INLINE int16_t nrf_saadc_value_min_get(nrf_saadc_resolution_t resolut
  */
 NRF_STATIC_INLINE int16_t nrf_saadc_value_max_get(nrf_saadc_resolution_t resolution);
 
+#if NRF_SAADC_HAS_CAL
+/**
+ * @brief Function for setting SAADC CAL trimming value.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] trim  Trimming value
+ */
+NRF_STATIC_INLINE void nrf_saadc_cal_set(NRF_SAADC_Type * p_reg, uint32_t trim);
+
+/**
+ * @brief Function for getting SAADC CAL trimming value.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Trimming value
+ */
+NRF_STATIC_INLINE uint32_t nrf_saadc_cal_get(NRF_SAADC_Type const * p_reg);
+#endif
+
+#if NRF_SAADC_HAS_CALREF
+/**
+ * @brief Function for setting SAADC CALREF trimming value.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] trim  Trimming value
+ */
+NRF_STATIC_INLINE void nrf_saadc_calref_set(NRF_SAADC_Type * p_reg, uint32_t trim);
+
+/**
+ * @brief Function for getting SAADC CALREF trimming value.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Trimming value
+ */
+NRF_STATIC_INLINE uint32_t nrf_saadc_calref_get(NRF_SAADC_Type const * p_reg);
+#endif
+
 #ifndef NRF_DECLARE_ONLY
 
 NRF_STATIC_INLINE void nrf_saadc_task_trigger(NRF_SAADC_Type * p_reg, nrf_saadc_task_t task)
@@ -1395,6 +1447,30 @@ NRF_STATIC_INLINE int16_t nrf_saadc_value_max_get(nrf_saadc_resolution_t resolut
     }
     return (int16_t)((1 << res_bits) - 1);
 }
+
+#if NRF_SAADC_HAS_CAL
+NRF_STATIC_INLINE void nrf_saadc_cal_set(NRF_SAADC_Type * p_reg, uint32_t trim)
+{
+    p_reg->CAL = trim;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_saadc_cal_get(NRF_SAADC_Type const * p_reg)
+{
+    return p_reg->CAL;
+}
+#endif
+
+#if NRF_SAADC_HAS_CALREF
+NRF_STATIC_INLINE void nrf_saadc_calref_set(NRF_SAADC_Type * p_reg, uint32_t trim)
+{
+    p_reg->CALREF = trim;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_saadc_calref_get(NRF_SAADC_Type const * p_reg)
+{
+    return p_reg->CALREF;
+}
+#endif
 
 #endif // NRF_DECLARE_ONLY
 

@@ -48,6 +48,13 @@ extern "C" {
  * @brief   Magnetoresistive Random Access Memory Controller (MRAMC) peripheral driver.
  */
 
+/**
+ * @brief Macro for mapping relative MRAMC offset to absolute address
+ *
+ * @param[in] offset Offset to map.
+ */
+#define NRFX_MRAMC_MAP_TO_ADDR(offset) (NRFY_MRAMC_MRAM_BASE_ADDRESS + (offset))
+
 /** @brief Configuration structure of the MRAMC driver instance. */
 typedef struct
 {
@@ -104,6 +111,29 @@ typedef struct
 typedef void (* nrfx_mramc_evt_handler_t)(nrf_mramc_event_t const event_type);
 
 /**
+ * @brief Function for checking if the address is valid.
+ *
+ * @param[in] addr         Address to be checked.
+ * @param[in] uicr_allowed If true, the UICR area is considered valid.
+ *
+ * @retval true Address is valid.
+ * @retval false Address is invalid.
+ */
+bool nrfx_mramc_valid_address_check(uint32_t addr, bool uicr_allowed);
+
+/**
+ * @brief Function for checking if the address and size fit in MRAM memory.
+ *
+ * @param[in] addr         Address to be checked.
+ * @param[in] uicr_allowed If true, the UICR area is considered valid.
+ * @param[in] bytes        Number of bytes to be checked.
+ *
+ * @retval true Address and size fit in memory.
+ * @retval false Address and size not fitting in memory.
+ */
+bool nrfx_mramc_fits_memory_check(uint32_t addr, bool uicr_allowed, uint32_t bytes);
+
+/**
  * @brief Function for erasing the whole MRAM memory.
  *
  * @note All user code and UICR will be erased.
@@ -138,13 +168,13 @@ void nrfx_mramc_word_write(uint32_t address, uint32_t value);
 void nrfx_mramc_words_write(uint32_t address, void const * src, uint32_t num_words);
 
 /**
- * @brief Function for reading consecutive 32-bit words from MRAM.
+ * @brief Function for reading consecutive bytes from MRAM.
  *
  * @param[out] dst       Pointer to the buffer to store the data.
  * @param[in]  address   Address of the first byte to be read. Must be word-aligned.
- * @param[in]  num_words Number of words to be read.
+ * @param[in]  num_bytes Number of bytes to be read.
  */
-void nrfx_mramc_buffer_read(void * dst, uint32_t address, uint32_t num_words);
+void nrfx_mramc_buffer_read(void * dst, uint32_t address, uint32_t num_bytes);
 
 /**
  * @brief Function for setting the MRAMC write mode.

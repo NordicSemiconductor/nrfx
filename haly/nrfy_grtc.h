@@ -343,6 +343,39 @@ NRFY_STATIC_INLINE uint64_t nrfy_grtc_sys_counter_get(NRF_GRTC_Type const * p_re
 #endif // NRFX_CHECK(ISA_ARM) && (__CORTEX_M == 33U)
 }
 
+#if NRFY_GRTC_HAS_SYSCOUNTER_ARRAY
+/**
+ * @brief Function for returning the value of 1 MHz SYSCOUNTER for the specified domain.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] index index Index of the domain for which the SYSCOUNTER value is to be read.
+ *
+ * @return SYSCOUNTER value.
+ */
+NRFY_STATIC_INLINE uint64_t nrfy_grtc_sys_counter_indexed_get(NRF_GRTC_Type const * p_reg,
+                                                              uint8_t               index)
+{
+#if NRFX_CHECK(ISA_ARM) && (__CORTEX_M == 33U)
+    uint64_t counter;
+
+    do {
+        counter = nrf_grtc_sys_counter_indexed_get(p_reg, index);
+    } while (counter & NRFY_GRTC_SYSCOUNTER_RETRY_MASK);
+    return (counter & NRFY_GRTC_SYSCOUNTER_MASK);
+#else
+    uint32_t counter_l, counter_h;
+
+    do {
+        counter_l = nrf_grtc_sys_counter_low_indexed_get(p_reg, index);
+        nrf_barrier_r();
+        counter_h = nrf_grtc_sys_counter_high_indexed_get(p_reg, index);
+        nrf_barrier_r();
+    } while (counter_h & NRFY_GRTC_SYSCOUNTER_RETRY_MASK);
+    return (uint64_t)counter_l | ((uint64_t)(counter_h & NRF_GRTC_SYSCOUNTERH_VALUE_MASK) << 32);
+#endif // NRFX_CHECK(ISA_ARM) && (__CORTEX_M == 33U)
+}
+#endif // NRFY_GRTC_HAS_SYSCOUNTER_ARRAY
+
 /**
  * @brief Function for checking whether SYSCOUNTER value is ready to be read.
  *
@@ -646,6 +679,18 @@ NRFY_STATIC_INLINE bool nrfy_grtc_sys_counter_overflow_check(NRF_GRTC_Type const
     nrf_barrier_r();
     return check;
 }
+
+#if NRFY_GRTC_HAS_SYSCOUNTER_ARRAY
+/** @refhal{nrf_grtc_sys_counter_overflow_indexed_check} */
+NRFY_STATIC_INLINE bool nrfy_grtc_sys_counter_overflow_indexed_check(NRF_GRTC_Type const * p_reg,
+                                                                     uint8_t               index)
+{
+    nrf_barrier_r();
+    bool check = nrf_grtc_sys_counter_overflow_indexed_check(p_reg, index);
+    nrf_barrier_r();
+    return check;
+}
+#endif // NRFY_GRTC_HAS_SYSCOUNTER_ARRAY
 
 /** @refhal{nrf_grtc_event_address_get} */
 NRFY_STATIC_INLINE uint32_t nrfy_grtc_event_address_get(NRF_GRTC_Type const * p_reg,

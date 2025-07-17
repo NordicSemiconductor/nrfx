@@ -109,6 +109,8 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_FLPR)
         #include "nrf54lm20a_enga_flpr_vectors.h"
     #endif
+#elif defined(NRF54LS05B_ENGA_XXAA)
+    #include "nrf54ls05b_enga_application_vectors.h"
 #elif defined(NRF54H20_XXAA)
     #if defined(NRF_APPLICATION)
         #include "nrf54h20_application_vectors.h"

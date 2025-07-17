@@ -319,7 +319,7 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     TDM_IRQHandler
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
-                DCD     AUXPLL_AUXPM_IRQHandler
+                DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     SERIAL23_IRQHandler
                 DCD     SERIAL24_IRQHandler
@@ -373,7 +373,7 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
-                DCD     0                         ; Reserved
+                DCD     VREGUSB_IRQHandler
                 DCD     LFXO_IRQHandler
                 DCD     LFRC_IRQHandler
                 DCD     HFXO64M_IRQHandler
@@ -385,7 +385,10 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
-                DCD     HVBUCK_IRQHandler
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     AUDIOPLL_AUDIOPLLM_IRQHandler
 
 __Vectors_End
 
@@ -519,7 +522,6 @@ Default_Handler PROC
                 EXPORT   GRTC_4_IRQHandler [WEAK]
                 EXPORT   GRTC_5_IRQHandler [WEAK]
                 EXPORT   TDM_IRQHandler [WEAK]
-                EXPORT   AUXPLL_AUXPM_IRQHandler [WEAK]
                 EXPORT   SERIAL23_IRQHandler [WEAK]
                 EXPORT   SERIAL24_IRQHandler [WEAK]
                 EXPORT   TAMPC_IRQHandler [WEAK]
@@ -531,10 +533,11 @@ Default_Handler PROC
                 EXPORT   GPIOTE30_0_IRQHandler [WEAK]
                 EXPORT   GPIOTE30_1_IRQHandler [WEAK]
                 EXPORT   CLOCK_POWER_IRQHandler [WEAK]
+                EXPORT   VREGUSB_IRQHandler [WEAK]
                 EXPORT   LFXO_IRQHandler [WEAK]
                 EXPORT   LFRC_IRQHandler [WEAK]
                 EXPORT   HFXO64M_IRQHandler [WEAK]
-                EXPORT   HVBUCK_IRQHandler [WEAK]
+                EXPORT   AUDIOPLL_AUDIOPLLM_IRQHandler [WEAK]
 SWI00_IRQHandler
 SWI01_IRQHandler
 SWI02_IRQHandler
@@ -595,7 +598,6 @@ GRTC_3_IRQHandler
 GRTC_4_IRQHandler
 GRTC_5_IRQHandler
 TDM_IRQHandler
-AUXPLL_AUXPM_IRQHandler
 SERIAL23_IRQHandler
 SERIAL24_IRQHandler
 TAMPC_IRQHandler
@@ -607,10 +609,11 @@ WDT31_IRQHandler
 GPIOTE30_0_IRQHandler
 GPIOTE30_1_IRQHandler
 CLOCK_POWER_IRQHandler
+VREGUSB_IRQHandler
 LFXO_IRQHandler
 LFRC_IRQHandler
 HFXO64M_IRQHandler
-HVBUCK_IRQHandler
+AUDIOPLL_AUDIOPLLM_IRQHandler
                 B .
                 ENDP
                 ALIGN

@@ -67,14 +67,14 @@ POSSIBILITY OF SUCH DAMAGE.
     #elif defined(NRF_APPLICATION)
         #if defined(NRF_TRUSTZONE_NONSECURE)
             #define GPIOTE_IRQ_GROUP       0
-            #define GRTC_IRQ_GROUP         1
+            #define GRTC_IRQ_GROUP         1 
         #else
             #define GPIOTE_IRQ_GROUP       1
             #define GRTC_IRQ_GROUP         2
         #endif
     #endif
 
-    #define EASYVDMA_PRESENT                                       */
+    #define EASYVDMA_PRESENT
 
     #define SAADC_CH_NUM SAADC_CH_MaxCount
     #define SAADC_EASYDMA_MAXCNT_SIZE 15
@@ -99,7 +99,7 @@ POSSIBILITY OF SUCH DAMAGE.
     #define DPPIC10_CH_NUM DPPIC10_CH_NUM_SIZE
     #define DPPIC20_CH_NUM DPPIC20_CH_NUM_SIZE
     #define DPPIC30_CH_NUM DPPIC30_CH_NUM_SIZE
-
+    
     #define DPPIC00_GROUP_NUM DPPIC00_GROUP_NUM_SIZE
     #define DPPIC10_GROUP_NUM DPPIC10_GROUP_NUM_SIZE
     #define DPPIC20_GROUP_NUM DPPIC20_GROUP_NUM_SIZE

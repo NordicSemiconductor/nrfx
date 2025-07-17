@@ -94,6 +94,8 @@ NRFY_STATIC_INLINE void nrfy_gpiote_int_init(NRF_GPIOTE_Type * p_reg,
 
 #if defined(NRF_GPIOTE_IRQn_EXT)
     IRQn_Type irqn = NRF_GPIOTE_IRQn_EXT;
+#elif defined(NRF_GPIOTE130) && defined(NRF_GPIOTE0)
+    IRQn_Type irqn = (p_reg == NRF_GPIOTE0) ? GPIOTE_0_IRQn : GPIOTE130_IRQn;
 #elif defined(NRF_GPIOTE130)
     IRQn_Type irqn = GPIOTE130_IRQn;
 #elif defined(LUMOS_XXAA) && defined(NRF_APPLICATION) && !defined(NRF_TRUSTZONE_NONSECURE)
@@ -412,7 +414,10 @@ NRFY_STATIC_INLINE uint32_t __nrfy_internal_gpiote_events_process(NRF_GPIOTE_Typ
                                                   &event_mask);
     }
 
-    (void)__nrfy_internal_gpiote_event_handle(p_reg, mask, NRF_GPIOTE_EVENT_PORT, &event_mask);
+    if (mask & NRF_GPIOTE_INT_PORT_MASK)
+    {
+        (void)__nrfy_internal_gpiote_event_handle(p_reg, mask, NRF_GPIOTE_EVENT_PORT, &event_mask);
+    }
 
     return event_mask;
 }
