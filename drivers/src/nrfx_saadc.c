@@ -849,6 +849,7 @@ static void saadc_event_end_handle(void)
     {
         case NRF_SAADC_STATE_SIMPLE_MODE_SAMPLE:
             nrfy_saadc_disable(NRF_SAADC);
+            saadc_channels_disable(m_cb.channels_configured | m_cb.channels_activated);
             m_cb.saadc_state = NRF_SAADC_STATE_SIMPLE_MODE;
             /* In the simple, non-blocking mode the event handler must be
              * called after the internal driver state is updated. This will
@@ -868,6 +869,7 @@ static void saadc_event_end_handle(void)
             if (!m_cb.buffer_primary.p_buffer)
             {
                 nrfy_saadc_disable(NRF_SAADC);
+                saadc_channels_disable(m_cb.channels_configured | m_cb.channels_activated);
                 m_cb.saadc_state = NRF_SAADC_STATE_ADV_MODE;
                 evt_data.type = NRFX_SAADC_EVT_FINISHED;
                 m_cb.event_handler(&evt_data);
