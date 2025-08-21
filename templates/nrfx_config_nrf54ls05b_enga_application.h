@@ -31,13 +31,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef NRFX_CONFIG_NRF54LV10A_ENGA_APPLICATION_H__
-#define NRFX_CONFIG_NRF54LV10A_ENGA_APPLICATION_H__
+#ifndef NRFX_CONFIG_NRF54LS05B_ENGA_APPLICATION_H__
+#define NRFX_CONFIG_NRF54LS05B_ENGA_APPLICATION_H__
 
 #ifndef NRFX_CONFIG_H__
 #error "This file should not be included directly. Include nrfx_config.h instead."
 #endif
 
+/**
+ * @brief NRFX_CRACEN_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_CRACEN_ENABLED
+#define NRFX_CRACEN_ENABLED 1
+#endif
 
 /**
  * @brief NRFX_DEFAULT_IRQ_PRIORITY
@@ -119,57 +127,6 @@
  */
 #ifndef NRFX_CLOCK_CONFIG_LOG_LEVEL
 #define NRFX_CLOCK_CONFIG_LOG_LEVEL 3
-#endif
-
-/**
- * @brief NRFX_COMP_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_COMP_ENABLED
-#define NRFX_COMP_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_COMP_DEFAULT_CONFIG_IRQ_PRIORITY
- *
- * Integer value. Minimum: 0. Maximum: 7.
- */
-#ifndef NRFX_COMP_DEFAULT_CONFIG_IRQ_PRIORITY
-#define NRFX_COMP_DEFAULT_CONFIG_IRQ_PRIORITY NRFX_DEFAULT_IRQ_PRIORITY
-#endif
-
-/**
- * @brief NRFX_COMP_CONFIG_LOG_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_COMP_CONFIG_LOG_ENABLED
-#define NRFX_COMP_CONFIG_LOG_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_COMP_CONFIG_LOG_LEVEL
- *
- * Integer value.
- * Supported values:
- * - Off     = 0
- * - Error   = 1
- * - Warning = 2
- * - Info    = 3
- * - Debug   = 4
- */
-#ifndef NRFX_COMP_CONFIG_LOG_LEVEL
-#define NRFX_COMP_CONFIG_LOG_LEVEL 3
-#endif
-
-/**
- * @brief NRFX_CRACEN_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_CRACEN_ENABLED
-#define NRFX_CRACEN_ENABLED 0
 #endif
 
 /**
@@ -406,14 +363,14 @@
  * Integer value.
  */
 #ifndef NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS
-#define NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS 8
+#define NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS 12
 #endif
 
 /**
  * @brief NRFX_GRTC_CONFIG_ALLOWED_CC_CHANNELS_MASK
  */
 #ifndef NRFX_GRTC_CONFIG_ALLOWED_CC_CHANNELS_MASK
-#define NRFX_GRTC_CONFIG_ALLOWED_CC_CHANNELS_MASK 0x00000f0f
+#define NRFX_GRTC_CONFIG_ALLOWED_CC_CHANNELS_MASK 0x00000fff
 #endif
 
 /**
@@ -447,48 +404,6 @@
  */
 #ifndef NRFX_GRTC_CONFIG_LOG_LEVEL
 #define NRFX_GRTC_CONFIG_LOG_LEVEL 3
-#endif
-
-/**
- * @brief NRFX_LPCOMP_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_LPCOMP_ENABLED
-#define NRFX_LPCOMP_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_LPCOMP_DEFAULT_CONFIG_IRQ_PRIORITY
- *
- * Integer value. Minimum: 0. Maximum: 7.
- */
-#ifndef NRFX_LPCOMP_DEFAULT_CONFIG_IRQ_PRIORITY
-#define NRFX_LPCOMP_DEFAULT_CONFIG_IRQ_PRIORITY NRFX_DEFAULT_IRQ_PRIORITY
-#endif
-
-/**
- * @brief NRFX_LPCOMP_CONFIG_LOG_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_LPCOMP_CONFIG_LOG_ENABLED
-#define NRFX_LPCOMP_CONFIG_LOG_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_LPCOMP_CONFIG_LOG_LEVEL
- *
- * Integer value.
- * Supported values:
- * - Off     = 0
- * - Error   = 1
- * - Warning = 2
- * - Info    = 3
- * - Debug   = 4
- */
-#ifndef NRFX_LPCOMP_CONFIG_LOG_LEVEL
-#define NRFX_LPCOMP_CONFIG_LOG_LEVEL 3
 #endif
 
 /**
@@ -675,21 +590,105 @@
 #endif
 
 /**
- * @brief NRFX_PRS_BOX_3_ENABLED
+ * @brief NRFX_PWM_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
  */
-#ifndef NRFX_PRS_BOX_3_ENABLED
-#define NRFX_PRS_BOX_3_ENABLED 0
+#ifndef NRFX_PWM_ENABLED
+#define NRFX_PWM_ENABLED 0
 #endif
 
 /**
- * @brief NRFX_PRS_BOX_4_ENABLED
+ * @brief NRFX_PWM_DEFAULT_CONFIG_IRQ_PRIORITY
+ *
+ * Integer value. Minimum: 0. Maximum: 7.
+ */
+#ifndef NRFX_PWM_DEFAULT_CONFIG_IRQ_PRIORITY
+#define NRFX_PWM_DEFAULT_CONFIG_IRQ_PRIORITY NRFX_DEFAULT_IRQ_PRIORITY
+#endif
+
+/**
+ * @brief NRFX_PWM_CONFIG_LOG_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
  */
-#ifndef NRFX_PRS_BOX_4_ENABLED
-#define NRFX_PRS_BOX_4_ENABLED 0
+#ifndef NRFX_PWM_CONFIG_LOG_ENABLED
+#define NRFX_PWM_CONFIG_LOG_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_PWM_CONFIG_LOG_LEVEL
+ *
+ * Integer value.
+ * Supported values:
+ * - Off     = 0
+ * - Error   = 1
+ * - Warning = 2
+ * - Info    = 3
+ * - Debug   = 4
+ */
+#ifndef NRFX_PWM_CONFIG_LOG_LEVEL
+#define NRFX_PWM_CONFIG_LOG_LEVEL 3
+#endif
+
+/**
+ * @brief NRFX_PWM20_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_PWM20_ENABLED
+#define NRFX_PWM20_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_QDEC_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_QDEC_ENABLED
+#define NRFX_QDEC_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_QDEC_DEFAULT_CONFIG_IRQ_PRIORITY
+ *
+ * Integer value. Minimum: 0. Maximum: 7.
+ */
+#ifndef NRFX_QDEC_DEFAULT_CONFIG_IRQ_PRIORITY
+#define NRFX_QDEC_DEFAULT_CONFIG_IRQ_PRIORITY NRFX_DEFAULT_IRQ_PRIORITY
+#endif
+
+/**
+ * @brief NRFX_QDEC_CONFIG_LOG_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_QDEC_CONFIG_LOG_ENABLED
+#define NRFX_QDEC_CONFIG_LOG_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_QDEC_CONFIG_LOG_LEVEL
+ *
+ * Integer value.
+ * Supported values:
+ * - Off     = 0
+ * - Error   = 1
+ * - Warning = 2
+ * - Info    = 3
+ * - Debug   = 4
+ */
+#ifndef NRFX_QDEC_CONFIG_LOG_LEVEL
+#define NRFX_QDEC_CONFIG_LOG_LEVEL 3
+#endif
+
+/**
+ * @brief NRFX_QDEC20_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_QDEC20_ENABLED
+#define NRFX_QDEC20_ENABLED 0
 #endif
 
 /**
@@ -837,12 +836,12 @@
 #endif
 
 /**
- * @brief NRFX_SPIM30_ENABLED
+ * @brief NRFX_SPIM22_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
  */
-#ifndef NRFX_SPIM30_ENABLED
-#define NRFX_SPIM30_ENABLED 0
+#ifndef NRFX_SPIM22_ENABLED
+#define NRFX_SPIM22_ENABLED 0
 #endif
 
 /**
@@ -906,12 +905,12 @@
 #endif
 
 /**
- * @brief NRFX_SPIS30_ENABLED
+ * @brief NRFX_SPIS22_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
  */
-#ifndef NRFX_SPIS30_ENABLED
-#define NRFX_SPIS30_ENABLED 0
+#ifndef NRFX_SPIS22_ENABLED
+#define NRFX_SPIS22_ENABLED 0
 #endif
 
 /**
@@ -1035,42 +1034,6 @@
 #endif
 
 /**
- * @brief NRFX_TIMER21_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_TIMER21_ENABLED
-#define NRFX_TIMER21_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_TIMER22_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_TIMER22_ENABLED
-#define NRFX_TIMER22_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_TIMER23_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_TIMER23_ENABLED
-#define NRFX_TIMER23_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_TIMER24_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_TIMER24_ENABLED
-#define NRFX_TIMER24_ENABLED 0
-#endif
-
-/**
  * @brief NRFX_TWIM_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
@@ -1131,12 +1094,12 @@
 #endif
 
 /**
- * @brief NRFX_TWIM30_ENABLED
+ * @brief NRFX_TWIM22_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
  */
-#ifndef NRFX_TWIM30_ENABLED
-#define NRFX_TWIM30_ENABLED 0
+#ifndef NRFX_TWIM22_ENABLED
+#define NRFX_TWIM22_ENABLED 0
 #endif
 
 /**
@@ -1218,12 +1181,12 @@
 #endif
 
 /**
- * @brief NRFX_TWIS30_ENABLED
+ * @brief NRFX_TWIS22_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
  */
-#ifndef NRFX_TWIS30_ENABLED
-#define NRFX_TWIS30_ENABLED 0
+#ifndef NRFX_TWIS22_ENABLED
+#define NRFX_TWIS22_ENABLED 0
 #endif
 
 /**
@@ -1314,12 +1277,12 @@
 #endif
 
 /**
- * @brief NRFX_UARTE30_ENABLED
+ * @brief NRFX_UARTE22_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
  */
-#ifndef NRFX_UARTE30_ENABLED
-#define NRFX_UARTE30_ENABLED 0
+#ifndef NRFX_UARTE22_ENABLED
+#define NRFX_UARTE22_ENABLED 0
 #endif
 
 /**
@@ -1382,13 +1345,4 @@
 #define NRFX_WDT30_ENABLED 0
 #endif
 
-/**
- * @brief NRFX_WDT31_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_WDT31_ENABLED
-#define NRFX_WDT31_ENABLED 0
-#endif
-
-#endif // NRFX_CONFIG_NRF54LV10A_ENGA_APPLICATION_H__
+#endif // NRFX_CONFIG_NRF54LS05B_ENGA_APPLICATION_H__

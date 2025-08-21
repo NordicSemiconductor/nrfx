@@ -98,7 +98,8 @@ NRFY_STATIC_INLINE void nrfy_gpiote_int_init(NRF_GPIOTE_Type * p_reg,
     IRQn_Type irqn = (p_reg == NRF_GPIOTE0) ? GPIOTE_0_IRQn : GPIOTE130_IRQn;
 #elif defined(NRF_GPIOTE130)
     IRQn_Type irqn = GPIOTE130_IRQn;
-#elif defined(LUMOS_XXAA) && defined(NRF_APPLICATION) && !defined(NRF_TRUSTZONE_NONSECURE)
+#elif defined(LUMOS_XXAA) && defined(NRF_APPLICATION) && \
+      !defined(NRF_TRUSTZONE_NONSECURE) && !defined(NRF54LS05B_ENGA_XXAA)
     IRQn_Type irqn = (IRQn_Type)(nrfx_get_irq_number(p_reg) + 1);
 #else
     IRQn_Type irqn = nrfx_get_irq_number(p_reg);

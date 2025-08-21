@@ -1,6 +1,20 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [3.14.0] - 2025-08-22
+### Added
+- Added support for nRF54LS05B Eng A.
+- Added support for using the CRACEN driver without CRYPTOMASTER module.
+
+### Changed
+- Updated MDK to version 8.72.2.
+
+### Fixed
+- Fixed missing event clearing when setting limits in the SAADC driver.
+- Fixed missing disabling of the internal timer in case of switching modes in the SAADC driver.
+- Fixed missing brackets in NRFX_BITMASK_TO_BITPOS() macro.
+- Fixed incorrect offset in the PUBLISH and SUBSCRIBE register getters in the RADIO HAL.
+
 ## [3.13.0] - 2025-07-18
 ### Added
 - Added support for calibrating the LFRC peripheral on the nRF7120 Eng A SoC in the CLOCK driver.

@@ -81,9 +81,9 @@ extern "C" {
 
 // USBHS_IRQHandler
 
-/*TODO: assumed notation for nrfx_qspi_*_irq_handler 
+/*TODO: assumed notation for nrfx_qspi_*_irq_handler
 - no current support in nrfx for these*/
-// QSPI00_IRQHandler 
+// QSPI00_IRQHandler
 #define nrfx_qspi_00_irq_handler QSPI00_IRQHandler
 
 // QSPI01_IRQHandler
@@ -114,7 +114,7 @@ extern "C" {
 
 // BELLBOARDAPP_0_IRQHandler
 
-// BELLBOARDAPP_1_IRQHandler 
+// BELLBOARDAPP_1_IRQHandler
 
 // SPU10_IRQHandler
 
@@ -142,7 +142,6 @@ extern "C" {
 #define nrfx_spis_20_irq_handler        SERIAL20_IRQHandler
 #define nrfx_twim_20_irq_handler        SERIAL20_IRQHandler
 #define nrfx_twis_20_irq_handler        SERIAL20_IRQHandler
-#define nrfx_spi_20_irq_handler         SERIAL20_IRQHandler
 #define nrfx_uarte_20_irq_handler       SERIAL20_IRQHandler
 #endif
 
@@ -154,7 +153,6 @@ extern "C" {
 #define nrfx_spis_21_irq_handler        SERIAL21_IRQHandler
 #define nrfx_twim_21_irq_handler        SERIAL21_IRQHandler
 #define nrfx_twis_21_irq_handler        SERIAL21_IRQHandler
-#define nrfx_spi_21_irq_handler         SERIAL21_IRQHandler
 #define nrfx_uarte_21_irq_handler       SERIAL21_IRQHandler
 #endif
 
@@ -166,7 +164,6 @@ extern "C" {
 #define nrfx_spis_22_irq_handler        SERIAL22_IRQHandler
 #define nrfx_twim_22_irq_handler        SERIAL22_IRQHandler
 #define nrfx_twis_22_irq_handler        SERIAL22_IRQHandler
-#define nrfx_spi_22_irq_handler         SERIAL22_IRQHandler
 #define nrfx_uarte_22_irq_handler       SERIAL22_IRQHandler
 #endif
 
@@ -238,7 +235,6 @@ extern "C" {
 #define nrfx_spis_23_irq_handler        SERIAL23_IRQHandler
 #define nrfx_twim_23_irq_handler        SERIAL23_IRQHandler
 #define nrfx_twis_23_irq_handler        SERIAL23_IRQHandler
-#define nrfx_spi_23_irq_handler         SERIAL23_IRQHandler
 #define nrfx_uarte_23_irq_handler       SERIAL23_IRQHandler
 #endif
 
@@ -250,7 +246,6 @@ extern "C" {
 #define nrfx_spis_24_irq_handler        SERIAL24_IRQHandler
 #define nrfx_twim_24_irq_handler        SERIAL24_IRQHandler
 #define nrfx_twis_24_irq_handler        SERIAL24_IRQHandler
-#define nrfx_spi_24_irq_handler         SERIAL24_IRQHandler
 #define nrfx_uarte_24_irq_handler       SERIAL24_IRQHandler
 #endif
 
@@ -266,7 +261,6 @@ extern "C" {
 #define nrfx_spis_30_irq_handler        SERIAL30_IRQHandler
 #define nrfx_twim_30_irq_handler        SERIAL30_IRQHandler
 #define nrfx_twis_30_irq_handler        SERIAL30_IRQHandler
-#define nrfx_spi_30_irq_handler         SERIAL30_IRQHandler
 #define nrfx_uarte_30_irq_handler       SERIAL30_IRQHandler
 #endif
 

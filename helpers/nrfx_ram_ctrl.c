@@ -152,6 +152,11 @@ typedef union
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 16
 #define RAM_UNIFORM_SECTIONS_TOTAL     16
+#elif defined(NRF54LS05B_ENGA_XXAA)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 2
+#define RAM_UNIFORM_SECTIONS_TOTAL     2
 #elif defined(NRF54LV10A_ENGA_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
 #define RAM_UNIFORM_BLOCKS             1

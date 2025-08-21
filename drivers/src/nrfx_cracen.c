@@ -37,8 +37,10 @@
 
 #include <hal/nrf_cracen.h>
 #include <hal/nrf_cracen_rng.h>
+#if NRF_CRACEN_HAS_CRYPTOMASTER
 #include <hal/nrf_cracen_cm.h>
 #include <helpers/nrf_cracen_cm_dma.h>
+#endif
 #include <soc/nrfx_coredep.h>
 
 /* TRNG HW chosen configuration options */
@@ -56,9 +58,11 @@
 #define AES_ECB_BLK_SZ 16U /* 128 bits */
 
 #define CTR_DRBG_MAX_BYTES_PER_REQUEST  (1 << 16)                            /* NIST.SP.800-90Ar1:Table 3 */
-#define CTR_DRBG_RESEED_INTERVAL        ((uint64_t)1 << 48)                  /* 2^48 as per NIST spec */
+#if NRF_CRACEN_HAS_CRYPTOMASTER
 #define CTR_DRBG_KEY_SIZE               32U                                  /* 256 bits AES Key */
+#define CTR_DRBG_RESEED_INTERVAL        ((uint64_t)1 << 48)                  /* 2^48 as per NIST spec */
 #define CTR_DRBG_ENTROPY_SIZE           (CTR_DRBG_KEY_SIZE + AES_ECB_BLK_SZ) /* Seed equals key-len + 16 */
+#endif
 
 /* Return values common between these driver internal functions: */
 typedef enum {
@@ -71,9 +75,11 @@ typedef enum {
 
 /* Internal status of the CTR_DRBG RNG driver */
 typedef struct {
+#if NRF_CRACEN_HAS_CRYPTOMASTER
     uint8_t          key[CTR_DRBG_KEY_SIZE];
     uint8_t          value[AES_ECB_BLK_SZ];
     uint64_t         reseed_counter;
+#endif
     nrfx_drv_state_t initialized;
     bool             trng_conditioning_key_set;
 } nrfx_cracen_cb_t;
@@ -252,6 +258,7 @@ static cracen_ret_t trng_entropy_get(uint8_t * p_buf, size_t size)
     return OK;
 }
 
+#if NRF_CRACEN_HAS_CRYPTOMASTER
 /*
  * Check if the CryptoMaster is done.
  *
@@ -469,11 +476,10 @@ static cracen_ret_t ctr_drbg_reseed(void)
 
     return OK;
 }
+#endif
 
 nrfx_err_t nrfx_cracen_ctr_drbg_init(void)
 {
-    int r;
-
     if (m_cb.initialized == NRFX_DRV_STATE_INITIALIZED)
     {
         return NRFX_ERROR_ALREADY;
@@ -481,11 +487,15 @@ nrfx_err_t nrfx_cracen_ctr_drbg_init(void)
 
     memset(&m_cb, 0, sizeof(m_cb));
 
+#if NRF_CRACEN_HAS_CRYPTOMASTER
+    int r;
+
     r = ctr_drbg_reseed();
     if (r != OK)
     {
         return NRFX_ERROR_INTERNAL;
     }
+#endif
 
     m_cb.initialized = NRFX_DRV_STATE_INITIALIZED;
     return NRFX_SUCCESS;
@@ -514,6 +524,7 @@ nrfx_err_t nrfx_cracen_ctr_drbg_random_get(uint8_t * p_buf, size_t size)
         return NRFX_ERROR_INVALID_PARAM;
     }
 
+#if NRF_CRACEN_HAS_CRYPTOMASTER
     if (m_cb.reseed_counter >= CTR_DRBG_RESEED_INTERVAL)
     {
         r = ctr_drbg_reseed();
@@ -549,7 +560,14 @@ nrfx_err_t nrfx_cracen_ctr_drbg_random_get(uint8_t * p_buf, size_t size)
     }
 
     m_cb.reseed_counter += 1;
+#else
+    r = trng_entropy_get(p_buf, size);
 
+    if (r != OK)
+    {
+        return NRFX_ERROR_INTERNAL;
+    }
+#endif
     return NRFX_SUCCESS;
 }
 

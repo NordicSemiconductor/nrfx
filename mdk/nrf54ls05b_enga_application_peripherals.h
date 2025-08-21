@@ -57,7 +57,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #define ICACHE_EXTENDEDPROFILING 0                   /*!< (unspecified)                                                        */
 #define ICACHE_DEBUGLOCK 0                           /*!< (unspecified)                                                        */
 #define ICACHE_WRITELOCK 0                           /*!< (unspecified)                                                        */
-#define ICACHE_PREFETCHCONFIG 0                      /*!< (unspecified)                                                        */
 #define ICACHE_NONCACHEABLEMISS 0                    /*!< (unspecified)                                                        */
 #define ICACHE_BUSWIDTH_MIN 0                        /*!< Data bus width : 0..63                                               */
 #define ICACHE_BUSWIDTH_MAX 63                       /*!< Data bus width : 0..63                                               */
@@ -177,7 +176,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RRAMC_PRESENT 1
 #define RRAMC_COUNT 1
 
-#define RRAMC_NRRAMWORDSIZE 128                      /*!< RRAM word size : 128 bits per wordline                               */
+#define RRAMC_NRRAMWORDSIZE 64                       /*!< RRAM word size : 64 bits per wordline                                */
 #define RRAMC_NWRITEBUFSIZE 32                       /*!< Maximum write buffer size : 32                                       */
 #define RRAMC_LOWPOWERCONFIGOPTION2 0                /*!< (unspecified)                                                        */
 #define RRAMC_REGION0ADDR_WRITABLE 0                 /*!< (unspecified)                                                        */
@@ -214,18 +213,18 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RRAMC_REGION1WRITEONCE_WRITABLE 0            /*!< (unspecified)                                                        */
 #define RRAMC_REGION1LOCK 0                          /*!< (unspecified)                                                        */
 #define RRAMC_REGION1LOCK_WRITABLE 1                 /*!< (unspecified)                                                        */
-#define RRAMC_REGION2ADDR_WRITABLE 0                 /*!< (unspecified)                                                        */
-#define RRAMC_REGION2SIZE 8                          /*!< (unspecified)                                                        */
-#define RRAMC_REGION2SIZE_WRITABLE 0                 /*!< (unspecified)                                                        */
+#define RRAMC_REGION2ADDR_WRITABLE 1                 /*!< (unspecified)                                                        */
+#define RRAMC_REGION2SIZE 0                          /*!< (unspecified)                                                        */
+#define RRAMC_REGION2SIZE_WRITABLE 1                 /*!< (unspecified)                                                        */
 #define RRAMC_REGION2READ 1                          /*!< (unspecified)                                                        */
 #define RRAMC_REGION2READ_WRITABLE 1                 /*!< (unspecified)                                                        */
 #define RRAMC_REGION2WRITE 1                         /*!< (unspecified)                                                        */
 #define RRAMC_REGION2WRITE_WRITABLE 1                /*!< (unspecified)                                                        */
-#define RRAMC_REGION2EXECUTE 0                       /*!< (unspecified)                                                        */
-#define RRAMC_REGION2EXECUTE_WRITABLE 0              /*!< (unspecified)                                                        */
-#define RRAMC_REGION2SECURE 1                        /*!< (unspecified)                                                        */
+#define RRAMC_REGION2EXECUTE 1                       /*!< (unspecified)                                                        */
+#define RRAMC_REGION2EXECUTE_WRITABLE 1              /*!< (unspecified)                                                        */
+#define RRAMC_REGION2SECURE 0                        /*!< (unspecified)                                                        */
 #define RRAMC_REGION2SECURE_WRITABLE 0               /*!< (unspecified)                                                        */
-#define RRAMC_REGION2OWNER 2                         /*!< (unspecified)                                                        */
+#define RRAMC_REGION2OWNER 0                         /*!< (unspecified)                                                        */
 #define RRAMC_REGION2OWNER_WRITABLE 0                /*!< (unspecified)                                                        */
 #define RRAMC_REGION2WRITEONCE 0                     /*!< (unspecified)                                                        */
 #define RRAMC_REGION2WRITEONCE_WRITABLE 1            /*!< (unspecified)                                                        */
@@ -333,9 +332,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #define EGU20_CH_NUM_MAX 5                           /*!< (unspecified)                                                        */
 #define EGU20_CH_NUM_SIZE 6                          /*!< (unspecified)                                                        */
 
-/*TRNG*/
-#define TRNG_PRESENT 1
-#define TRNG_COUNT 1
+/*CRACENCORE TRNG registers*/
+#define CRACENCORE_PRESENT 1
+#define CRACENCORE_COUNT 1
+
+/*CRACEN TRNG*/
+#define CRACEN_PRESENT 1
+#define CRACEN_COUNT 1
 
 /*2.4 GHz radio*/
 #define RADIO_PRESENT 1
@@ -407,7 +410,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM22_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define SPIM22_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
 #define SPIM22_FEATURE_HARDWARE_CSN_PRESENT 1        /*!< (unspecified)                                                        */
-#define SPIM22_FEATURE_HARDWARE_DCX_PRESENT 0        /*!< (unspecified)                                                        */
+#define SPIM22_FEATURE_HARDWARE_DCX_PRESENT 1        /*!< (unspecified)                                                        */
 #define SPIM22_FEATURE_RXDELAY_PRESENT 1             /*!< (unspecified)                                                        */
 #define SPIM22_STALL_STATUS_PRESENT 0                /*!< (unspecified)                                                        */
 #define SPIM22_STALL_STATUS_TX_PRESENT 0             /*!< (unspecified)                                                        */
@@ -542,7 +545,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define SAADC_PSEL_V2 1                              /*!< (unspecified)                                                        */
 #define SAADC_TASKS_CALIBRATEGAIN 0                  /*!< (unspecified)                                                        */
-#define SAADC_SAMPLERATE_CC_VALUERANGE_MIN 8         /*!< (unspecified)                                                        */
+#define SAADC_SAMPLERATE_CC_VALUERANGE_MIN 16        /*!< (unspecified)                                                        */
 #define SAADC_SAMPLERATE_CC_VALUERANGE_MAX 2047      /*!< (unspecified)                                                        */
 #define SAADC_SAMPLERATE_CC_VALUERANGE_SIZE 2048     /*!< (unspecified)                                                        */
 #define SAADC_TACQ_VALUE_RANGE_MIN 1                 /*!< (unspecified)                                                        */
@@ -551,6 +554,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_TCONV_VALUE_RANGE_MIN 1                /*!< (unspecified)                                                        */
 #define SAADC_TCONV_VALUE_RANGE_MAX 7                /*!< (unspecified)                                                        */
 #define SAADC_TCONV_VALUE_RANGE_SIZE 8               /*!< (unspecified)                                                        */
+#define SAADC_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                    */
 
 /*Temperature Sensor*/
 #define TEMP_PRESENT 1
@@ -564,6 +568,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P1_CTRLSEL_MAP2 1                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP4 0                            /*!< (unspecified)                                                        */
+#define P1_CTRLSEL_MAP5 0                            /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_MAX 31                            /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_SIZE 32                           /*!< (unspecified)                                                        */
@@ -583,6 +588,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P0_CTRLSEL_MAP2 1                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP4 0                            /*!< (unspecified)                                                        */
+#define P0_CTRLSEL_MAP5 0                            /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_MAX 4                             /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_SIZE 5                            /*!< (unspecified)                                                        */
@@ -654,7 +660,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GRTC_CLKOUTREG 1                             /*!< (unspecified)                                                        */
 #define GRTC_CLKSELREG 1                             /*!< (unspecified)                                                        */
 #define GRTC_CLKSELLFLPRC 1                          /*!< (unspecified)                                                        */
-#define GRTC_CCADD_WRITE_ONLY 0                      /*!< (unspecified)                                                        */
+#define GRTC_CCADD_WRITE_ONLY 1                      /*!< (unspecified)                                                        */
 #define GRTC_READY_STATUS_AND_EVENTS 1               /*!< (unspecified)                                                        */
 #define GRTC_SYSCOUNTER_LOADED_STATUS 1              /*!< (unspecified)                                                        */
 #define GRTC_CC_PAST_STATUS 1                        /*!< (unspecified)                                                        */
@@ -669,6 +675,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TAMPC_TAMPERSWITCH 0                         /*!< (unspecified)                                                        */
 #define TAMPC_SM4DISABLECM 0                         /*!< (unspecified)                                                        */
 #define TAMPC_PROTECTRESETBEHAVIOR 0                 /*!< (unspecified)                                                        */
+#define TAMPC_SPIDEN 0                               /*!< (unspecified)                                                        */
+#define TAMPC_SPNIDEN 0                              /*!< (unspecified)                                                        */
+#define TAMPC_ACTIVESHIELD 0                         /*!< (unspecified)                                                        */
 
 /*Watchdog Timer*/
 #define WDT_PRESENT 1
@@ -701,6 +710,8 @@ POSSIBILITY OF SUCH DAMAGE.
 /*Voltage regulators*/
 #define REGULATORS_PRESENT 1
 #define REGULATORS_COUNT 1
+
+#define REGULATORS_POF 1                             /*!< (unspecified)                                                        */
 
 /* ==================================================== Baudrate settings ==================================================== */
 /**

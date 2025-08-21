@@ -1766,7 +1766,8 @@ NRF_STATIC_INLINE void nrf_radio_subscribe_clear(NRF_RADIO_Type * p_reg,
 NRF_STATIC_INLINE uint32_t nrf_radio_subscribe_get(NRF_RADIO_Type const * p_reg,
                                                    nrf_radio_task_t       task)
 {
-    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) task + 0x80uL));
+    return *((volatile uint32_t const *)
+        ((uint8_t const *) p_reg + (uint32_t) task + NRF_RADIO_DPPI_OFFSET));
 }
 
 NRF_STATIC_INLINE void nrf_radio_publish_set(NRF_RADIO_Type *  p_reg,
@@ -1786,7 +1787,8 @@ NRF_STATIC_INLINE void nrf_radio_publish_clear(NRF_RADIO_Type *  p_reg,
 NRF_STATIC_INLINE uint32_t nrf_radio_publish_get(NRF_RADIO_Type const * p_reg,
                                                  nrf_radio_event_t      event)
 {
-    return *((volatile uint32_t const *) ((uint8_t const *) p_reg + (uint32_t) event + 0x80uL));
+    return *((volatile uint32_t const *)
+        ((uint8_t const *) p_reg + (uint32_t) event + NRF_RADIO_DPPI_OFFSET));
 }
 #endif // defined(DPPI_PRESENT)
 

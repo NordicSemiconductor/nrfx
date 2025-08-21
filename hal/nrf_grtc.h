@@ -40,18 +40,18 @@
 extern "C" {
 #endif
 
-#if defined(LUMOS_XXAA) && !defined(GRTC_IRQn)
+#if defined(NRF54LS05B_ENGA_XXAA) || (defined(LUMOS_XXAA) && defined(NRF_FLPR))
+#define GRTC_IRQn       GRTC_0_IRQn
+#define GRTC_IRQHandler GRTC_0_IRQHandler
+#elif defined(LUMOS_XXAA)
 #if defined(NRF_APPLICATION) && defined(NRF_TRUSTZONE_NONSECURE)
 #define GRTC_IRQn       GRTC_1_IRQn
 #define GRTC_IRQHandler GRTC_1_IRQHandler
 #elif defined(NRF_APPLICATION) && !defined(NRF_TRUSTZONE_NONSECURE)
 #define GRTC_IRQn       GRTC_2_IRQn
 #define GRTC_IRQHandler GRTC_2_IRQHandler
-#elif defined(NRF_FLPR)
-#define GRTC_IRQn       GRTC_0_IRQn
-#define GRTC_IRQHandler GRTC_0_IRQHandler
-#endif
-#endif // defined(LUMOS_XXAA) && !defined(GRTC_IRQn)
+#endif // defined(LUMOS_XXAA)
+#endif // defined(NRF54LS05B_ENGA_XXAA) || defined(LUMOS_XXAA) && defined(NRF_FLPR)
 
 #if defined(HALTIUM_XXAA)
 #if (defined(ISA_ARM) && defined(NRF_TRUSTZONE_NONSECURE)) || defined(ISA_RISCV)

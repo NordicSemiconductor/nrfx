@@ -196,7 +196,7 @@ typedef struct
     bool spare_en;              /**< Enable spare general purpose configuration bits. */
 #endif
 } nrf_lfrc_config_t;
-#endif 
+#endif
 
 /** @brief Number of measurement cycles used during calibration. */
 typedef enum
@@ -341,7 +341,7 @@ NRF_STATIC_INLINE bool nrf_lfrc_statusana_ready_check(NRF_LFRC_Type const * p_re
  * @retval false The signal is logic 0.
  */
 NRF_STATIC_INLINE bool nrf_lfrc_statusana_settled_check(NRF_LFRC_Type const * p_reg);
-#endif 
+#endif
 
 #if NRF_LFRC_HAS_CONFIG_CFG
 /**
@@ -558,7 +558,7 @@ NRF_STATIC_INLINE uint16_t nrf_lfrc_cal_num_of_cycles_get(NRF_LFRC_Type const * 
 {
     return (uint16_t)p_reg->CAL.NHI;
 }
-#endif 
+#endif
 
 #if NRF_LFRC_HAS_PWRUPCTRL
 NRF_STATIC_INLINE void nrf_lfrc_power_control_set(NRF_LFRC_Type *          p_reg,

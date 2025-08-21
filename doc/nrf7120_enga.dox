@@ -40,8 +40,6 @@ For a complete overview, see @ref nrfx_drv_supp_matrix.
 
 @ref nrf_kmu
 
-@ref nrf_lfrc
-
 @ref nrf_lpcomp
 
 @ref nrf_memconf

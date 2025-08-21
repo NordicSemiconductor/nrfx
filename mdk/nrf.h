@@ -38,7 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* MDK version */
 #define MDK_MAJOR_VERSION   8 
 #define MDK_MINOR_VERSION   72 
-#define MDK_MICRO_VERSION   1 
+#define MDK_MICRO_VERSION   2 
 
    
 /* Define coprocessor domains */
@@ -256,6 +256,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #elif defined (NRF54LS05B_ENGA_XXAA)
     #include "nrf54ls05b_enga.h"
+    #include "nrf54ls05b_enga_interim.h"
     #include "nrf54ls05b_enga_name_change.h"
 
 #elif defined (NRF7120_ENGA_XXAA)

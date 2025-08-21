@@ -69,8 +69,8 @@ typedef enum
 #if NRF_CLOCK_HAS_CALIBRATION
     NRFX_CLOCK_EVT_CAL_DONE           = NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_DONE_MASK),             ///< Calibration has been done.
 #elif NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)
-    NRFX_CLOCK_EVT_CAL_DONE           = (NRFX_BITMASK_TO_BITPOS(NRF_LFRC_INT_CALDONE_MASK) + \
-                                         NRFX_CLOCK_LFRC_EVT_OFFSET),                                ///< Calibration has been done.
+    NRFX_CLOCK_EVT_CAL_DONE           = NRFX_BITMASK_TO_BITPOS(NRF_LFRC_INT_CALDONE_MASK) + \
+                                        NRFX_CLOCK_LFRC_EVT_OFFSET,                                  ///< Calibration has been done.
 #endif
 #if NRF_CLOCK_HAS_HFCLKAUDIO
     NRFX_CLOCK_EVT_HFCLKAUDIO_STARTED = NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_HFAUDIO_STARTED_MASK),  ///< HFCLKAUDIO has been started.

@@ -118,7 +118,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>UUID[%s]</name>
             <description>Description collection: 128-bit Universally Unique IDentifier (UUID).</description>
             <addressOffset>0x00C</addressOffset>
-            <access>read-write</access>
+            <access>read-only</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -572,7 +572,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <registers>
         <cluster>
           <dim>1</dim>
-          <dimIncrement>0x020</dimIncrement>
+          <dimIncrement>0x010</dimIncrement>
           <name>APPROTECT[%s]</name>
           <description>Access Port Protection Registers</description>
           <headerStructName>UICR_APPROTECT</headerStructName>
@@ -603,7 +603,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <register>
             <name>PROTECT1</name>
             <description>Description cluster: Access port protection</description>
-            <addressOffset>0x01C</addressOffset>
+            <addressOffset>0x00C</addressOffset>
             <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
@@ -616,59 +616,6 @@ POSSIBILITY OF SUCH DAMAGE.
                   <enumeratedValue>
                     <name>Unprotected</name>
                     <description>Leaves TAMPC PROTECT.DOMAIN DBGEN and NIDEN signal protectors unlocked and under CPU control.</description>
-                    <value>0xFFFFFFFF</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-        </cluster>
-        <cluster>
-          <dim>1</dim>
-          <dimIncrement>0x020</dimIncrement>
-          <name>SECUREAPPROTECT[%s]</name>
-          <description>Access Port Protection Registers</description>
-          <headerStructName>UICR_SECUREAPPROTECT</headerStructName>
-          <access>read-writeonce</access>
-          <addressOffset>0x020</addressOffset>
-          <register>
-            <name>PROTECT0</name>
-            <description>Description cluster: Access port protection</description>
-            <addressOffset>0x000</addressOffset>
-            <access>read-writeonce</access>
-            <resetValue>0xFFFFFFFF</resetValue>
-            <size>0x20</size>
-            <fields>
-              <field>
-                <name>PALL</name>
-                <lsb>0</lsb>
-                <msb>31</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Unprotected</name>
-                    <description>Leaves TAMPC PROTECT.DOMAIN SPIDEN and SPNIDEN signal protectors unlocked and under CPU control.</description>
-                    <value>0xFFFFFFFF</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-          <register>
-            <name>PROTECT1</name>
-            <description>Description cluster: Access port protection register</description>
-            <addressOffset>0x01C</addressOffset>
-            <access>read-writeonce</access>
-            <resetValue>0xFFFFFFFF</resetValue>
-            <size>0x20</size>
-            <fields>
-              <field>
-                <name>PALL</name>
-                <lsb>0</lsb>
-                <msb>31</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Unprotected</name>
-                    <description>Leaves TAMPC PROTECT.DOMAIN SPIDEN and SPNIDEN signal protectors unlocked and under CPU control.</description>
                     <value>0xFFFFFFFF</value>
                   </enumeratedValue>
                 </enumeratedValues>
@@ -851,7 +798,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <name>SIZE</name>
               <description>Immutable boot region size</description>
               <lsb>16</lsb>
-              <msb>20</msb>
+              <msb>25</msb>
             </field>
           </fields>
         </register>
@@ -6530,6 +6477,71 @@ POSSIBILITY OF SUCH DAMAGE.
             </fields>
           </register>
         </cluster>
+        <cluster>
+          <name>CSAA</name>
+          <description>Channel sounding access address scoring algorithm</description>
+          <headerStructName>ECB_CSAA</headerStructName>
+          <access>read-write</access>
+          <addressOffset>0x53C</addressOffset>
+          <register>
+            <name>REFLECTOR</name>
+            <description>Selected Channel Sounding Access Address used in the CS SYNC from Reflector to Initiator</description>
+            <addressOffset>0x000</addressOffset>
+            <access>read-only</access>
+            <resetValue>0x00000000</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>PN</name>
+                <lsb>0</lsb>
+                <msb>31</msb>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>INITIATOR</name>
+            <description>Selected Channel Sounding Access Address used in the CS SYNC from Initiator to Reflector</description>
+            <addressOffset>0x004</addressOffset>
+            <access>read-only</access>
+            <resetValue>0x00000000</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>PN</name>
+                <lsb>0</lsb>
+                <msb>31</msb>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>MODE</name>
+            <description>Operation modes</description>
+            <addressOffset>0x008</addressOffset>
+            <access>read-write</access>
+            <resetValue>0x00000000</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>BITREVERSE</name>
+                <description>Reverse the endianness on bit level for the ECB output, INITIATOR, and REFLECTOR registers</description>
+                <lsb>0</lsb>
+                <msb>0</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Default</name>
+                    <description>Default endianness</description>
+                    <value>0x0</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Reversed</name>
+                    <description>Reversed endianness</description>
+                    <value>0x1</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+        </cluster>
       </registers>
     </peripheral>
     <peripheral>
@@ -6559,6 +6571,29 @@ POSSIBILITY OF SUCH DAMAGE.
             <field>
               <name>TASKS_WAKEUP</name>
               <description>Wakeup the RRAM from low power mode</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Trigger</name>
+                  <description>Trigger task</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TASKS_CLRWRITEBUF</name>
+          <description>Clear internal write-buffer</description>
+          <addressOffset>0x004</addressOffset>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>TASKS_CLRWRITEBUF</name>
+              <description>Clear internal write-buffer</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -6605,6 +6640,39 @@ POSSIBILITY OF SUCH DAMAGE.
             <field>
               <name>CHIDX</name>
               <description>DPPI channel that task WAKEUP will subscribe to</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+            </field>
+            <field>
+              <name>EN</name>
+              <lsb>31</lsb>
+              <msb>31</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable subscription</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable subscription</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SUBSCRIBE_CLRWRITEBUF</name>
+          <description>Subscribe configuration for task CLRWRITEBUF</description>
+          <addressOffset>0x084</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>CHIDX</name>
+              <description>DPPI channel that task CLRWRITEBUF will subscribe to</description>
               <lsb>0</lsb>
               <msb>7</msb>
             </field>
@@ -7500,7 +7568,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <addressOffset>0x540</addressOffset>
           <register>
             <name>ERASEALL</name>
-            <description>Register for erasing whole RRAM main block, that includes the SICR and the UICR</description>
+            <description>Erase RRAM, including UICR All information in SICR, including keys, are also erased</description>
             <addressOffset>0x000</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
@@ -7508,7 +7576,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>ERASE</name>
-                <description>Erase whole RRAM main block</description>
+                <description>Erase RRAM</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
                 <enumeratedValues>
@@ -7685,7 +7753,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <name>SIZE</name>
                 <description>Size in KBytes of region [n]</description>
                 <lsb>16</lsb>
-                <msb>20</msb>
+                <msb>25</msb>
               </field>
             </fields>
           </register>
@@ -8185,6 +8253,62 @@ POSSIBILITY OF SUCH DAMAGE.
       <groupName>TAD</groupName>
       <size>0x20</size>
       <registers>
+        <register>
+          <name>SYSPWRUPREQ</name>
+          <description>System power-up request</description>
+          <addressOffset>0x400</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ACTIVE</name>
+              <description>Activate power-up request</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotActive</name>
+                  <description>Power-up request not active</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Active</name>
+                  <description>Power-up request active</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DBGPWRUPREQ</name>
+          <description>Debug power-up request</description>
+          <addressOffset>0x404</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ACTIVE</name>
+              <description>Activate power-up request</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotActive</name>
+                  <description>Power-up request not active</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Active</name>
+                  <description>Power-up request active</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
         <register>
           <name>ENABLE</name>
           <description>Enable debug domain and aquire selected GPIOs</description>
@@ -10986,212 +11110,21 @@ POSSIBILITY OF SUCH DAMAGE.
       </registers>
     </peripheral>
     <peripheral>
-      <name>GLOBAL_TRNG</name>
-      <description>TRNG</description>
+      <name>GLOBAL_CRACENCORE</name>
+      <description>CRACENCORE TRNG registers</description>
       <baseAddress>0x40059000</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x1000</size>
         <usage>registers</usage>
       </addressBlock>
-      <interrupt>
-        <name>TRNG</name>
-        <value>89</value>
-      </interrupt>
-      <groupName>TRNG</groupName>
+      <groupName>CRACENCORE</groupName>
       <size>0x20</size>
       <registers>
-        <register>
-          <name>EVENTS_RNG</name>
-          <description>Event indicating that interrupt triggered at RNG</description>
-          <addressOffset>0x104</addressOffset>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>EVENTS_RNG</name>
-              <description>Event indicating that interrupt triggered at RNG</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>NotGenerated</name>
-                  <description>Event not generated</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Generated</name>
-                  <description>Event generated</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTEN</name>
-          <description>Enable or disable interrupt</description>
-          <addressOffset>0x300</addressOffset>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>RNG</name>
-              <description>Enable or disable interrupt for event RNG</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Disable</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Enable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTENSET</name>
-          <description>Enable interrupt</description>
-          <addressOffset>0x304</addressOffset>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>RNG</name>
-              <description>Write '1' to enable interrupt for event RNG</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Set</name>
-                  <description>Enable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTENCLR</name>
-          <description>Disable interrupt</description>
-          <addressOffset>0x308</addressOffset>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>RNG</name>
-              <description>Write '1' to disable interrupt for event RNG</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Clear</name>
-                  <description>Disable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTPEND</name>
-          <description>Pending interrupts</description>
-          <addressOffset>0x30C</addressOffset>
-          <access>read-only</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>RNG</name>
-              <description>Read pending status of interrupt for event RNG</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>NotPending</name>
-                  <description>Read: Not pending</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Pending</name>
-                  <description>Read: Pending</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>ENABLE</name>
-          <description>Enable RNG peripheral module.</description>
-          <addressOffset>0x400</addressOffset>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>RNG</name>
-              <description>Enable RNG</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>RNG disabled.</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>RNG enabled.</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-          </fields>
-        </register>
         <cluster>
           <name>RNGCONTROL</name>
           <description>Unspecified</description>
-          <headerStructName>TRNG_RNGCONTROL</headerStructName>
+          <headerStructName>CRACENCORE_RNGCONTROL</headerStructName>
           <access>read-write</access>
           <addressOffset>0x500</addressOffset>
           <register>
@@ -11846,6 +11779,213 @@ POSSIBILITY OF SUCH DAMAGE.
             </fields>
           </register>
         </cluster>
+      </registers>
+    </peripheral>
+    <peripheral>
+      <name>GLOBAL_TRNG</name>
+      <description>CRACEN TRNG</description>
+      <baseAddress>0x40059000</baseAddress>
+      <alternatePeripheral>GLOBAL_CRACENCORE</alternatePeripheral>
+      <headerStructName>CRACEN</headerStructName>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x1000</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <interrupt>
+        <name>TRNG</name>
+        <value>89</value>
+      </interrupt>
+      <groupName>CRACEN</groupName>
+      <size>0x20</size>
+      <registers>
+        <register>
+          <name>EVENTS_RNG</name>
+          <description>Event indicating that interrupt triggered at RNG</description>
+          <addressOffset>0x104</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>EVENTS_RNG</name>
+              <description>Event indicating that interrupt triggered at RNG</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotGenerated</name>
+                  <description>Event not generated</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Generated</name>
+                  <description>Event generated</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTEN</name>
+          <description>Enable or disable interrupt</description>
+          <addressOffset>0x300</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>RNG</name>
+              <description>Enable or disable interrupt for event RNG</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTENSET</name>
+          <description>Enable interrupt</description>
+          <addressOffset>0x304</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>RNG</name>
+              <description>Write '1' to enable interrupt for event RNG</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTENCLR</name>
+          <description>Disable interrupt</description>
+          <addressOffset>0x308</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>RNG</name>
+              <description>Write '1' to disable interrupt for event RNG</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTPEND</name>
+          <description>Pending interrupts</description>
+          <addressOffset>0x30C</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>RNG</name>
+              <description>Read pending status of interrupt for event RNG</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>ENABLE</name>
+          <description>Enable RNG peripheral module.</description>
+          <addressOffset>0x400</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>RNG</name>
+              <description>Enable RNG</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>RNG disabled.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>RNG enabled.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
       </registers>
     </peripheral>
     <peripheral derivedFrom="GLOBAL_DPPIC00">
@@ -17337,8 +17477,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>MindBm</name>
-                  <description>-46 dBm</description>
-                  <value>0x110</value>
+                  <description>Minimum output power</description>
+                  <value>0x000</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
@@ -17373,6 +17513,22 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>RSSI sample result. The value of this register is read as a positive value while the actual received signal strength is a negative value. Actual received signal strength is therefore as follows: received signal strength = -A dBm.</description>
               <lsb>0</lsb>
               <msb>6</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>FREQFINETUNE</name>
+          <description>Fine tuning of the RF frequency</description>
+          <addressOffset>0x0804</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>FSFREQFINETUNE</name>
+              <description>Twos-complement number for fine-tuning the frequency. The step size is 488.28125 Hz, giving a range from -1 MHz to (one step short of) +1 MHz.</description>
+              <lsb>0</lsb>
+              <msb>12</msb>
             </field>
           </fields>
         </register>
@@ -25648,7 +25804,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <addressOffset>0x000</addressOffset>
             <register>
               <name>END</name>
-              <description>Generated after all MAXCNT bytes have been transferred</description>
+              <description>Indicates that the transfer of MAXCNT bytes between memory and the peripheral has been fully completed.</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -25656,7 +25812,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>END</name>
-                  <description>Generated after all MAXCNT bytes have been transferred</description>
+                  <description>Indicates that the transfer of MAXCNT bytes between memory and the peripheral has been fully completed.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -25769,7 +25925,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <addressOffset>0x01C</addressOffset>
             <register>
               <name>END</name>
-              <description>Generated after all MAXCNT bytes have been transferred</description>
+              <description>Indicates that the transfer of MAXCNT bytes between memory and the peripheral has been fully completed.</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -25777,7 +25933,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>END</name>
-                  <description>Generated after all MAXCNT bytes have been transferred</description>
+                  <description>Indicates that the transfer of MAXCNT bytes between memory and the peripheral has been fully completed.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -27748,6 +27904,11 @@ POSSIBILITY OF SUCH DAMAGE.
                   <description>400 kbps</description>
                   <value>0x06400000</value>
                 </enumeratedValue>
+                <enumeratedValue>
+                  <name>K1000</name>
+                  <description>1000 kbps</description>
+                  <value>0x0FF00000</value>
+                </enumeratedValue>
               </enumeratedValues>
             </field>
           </fields>
@@ -28045,7 +28206,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </field>
                   <field>
                     <name>ONESHOT_0</name>
-                    <description>Configure match filter 0 as one-shot or sticky</description>
+                    <description>Configure match filter 0 as one-shot or continous</description>
                     <lsb>16</lsb>
                     <msb>16</msb>
                     <enumeratedValues>
@@ -28063,7 +28224,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </field>
                   <field>
                     <name>ONESHOT_1</name>
-                    <description>Configure match filter 1 as one-shot or sticky</description>
+                    <description>Configure match filter 1 as one-shot or continous</description>
                     <lsb>17</lsb>
                     <msb>17</msb>
                     <enumeratedValues>
@@ -28081,7 +28242,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </field>
                   <field>
                     <name>ONESHOT_2</name>
-                    <description>Configure match filter 2 as one-shot or sticky</description>
+                    <description>Configure match filter 2 as one-shot or continous</description>
                     <lsb>18</lsb>
                     <msb>18</msb>
                     <enumeratedValues>
@@ -28099,7 +28260,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </field>
                   <field>
                     <name>ONESHOT_3</name>
-                    <description>Configure match filter 3 as one-shot or sticky</description>
+                    <description>Configure match filter 3 as one-shot or continous</description>
                     <lsb>19</lsb>
                     <msb>19</msb>
                     <enumeratedValues>
@@ -28131,7 +28292,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <name>DATA</name>
                     <description>Data to look for</description>
                     <lsb>0</lsb>
-                    <msb>31</msb>
+                    <msb>7</msb>
                   </field>
                 </fields>
               </register>
@@ -30921,7 +31082,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>RAM buffer start address</description>
               <addressOffset>0x004</addressOffset>
               <access>read-write</access>
-              <resetValue>0x00000000</resetValue>
+              <resetValue>0x20000000</resetValue>
               <size>0x20</size>
               <fields>
                 <field>
@@ -30995,7 +31156,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <name>BUSERRORADDRESS</name>
               <description>Address of transaction that generated the last BUSERROR event.</description>
               <addressOffset>0x020</addressOffset>
-              <access>read-write</access>
+              <access>read-only</access>
               <resetValue>0x00000000</resetValue>
               <size>0x20</size>
               <fields>
@@ -31197,7 +31358,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>RAM buffer start address</description>
               <addressOffset>0x004</addressOffset>
               <access>read-write</access>
-              <resetValue>0x00000000</resetValue>
+              <resetValue>0x20000000</resetValue>
               <size>0x20</size>
               <fields>
                 <field>
@@ -31271,7 +31432,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <name>BUSERRORADDRESS</name>
               <description>Address of transaction that generated the last BUSERROR event.</description>
               <addressOffset>0x020</addressOffset>
-              <access>read-write</access>
+              <access>read-only</access>
               <resetValue>0x00000000</resetValue>
               <size>0x20</size>
               <fields>
@@ -42376,7 +42537,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <enumeratedValues>
                   <enumeratedValue>
                     <name>Internal</name>
-                    <description>Internal 1.3 V reference</description>
+                    <description>Internal 1.024 V reference</description>
                     <value>0x0</value>
                   </enumeratedValue>
                   <enumeratedValue>
@@ -42972,7 +43133,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 1st piece wise linear function</description>
           <addressOffset>0x520</addressOffset>
           <access>read-write</access>
-          <resetValue>0x000002D6</resetValue>
+          <resetValue>0x0000038C</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -42988,7 +43149,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 2nd piece wise linear function</description>
           <addressOffset>0x524</addressOffset>
           <access>read-write</access>
-          <resetValue>0x0000032D</resetValue>
+          <resetValue>0x000003B3</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43004,7 +43165,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 3rd piece wise linear function</description>
           <addressOffset>0x528</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000384</resetValue>
+          <resetValue>0x000003FA</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43020,7 +43181,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 4th piece wise linear function</description>
           <addressOffset>0x52C</addressOffset>
           <access>read-write</access>
-          <resetValue>0x000003E9</resetValue>
+          <resetValue>0x00000451</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43036,7 +43197,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 5th piece wise linear function</description>
           <addressOffset>0x530</addressOffset>
           <access>read-write</access>
-          <resetValue>0x0000046F</resetValue>
+          <resetValue>0x000004AA</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43052,7 +43213,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 6th piece wise linear function</description>
           <addressOffset>0x534</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000522</resetValue>
+          <resetValue>0x00000539</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43068,7 +43229,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Slope of 7th piece wise linear function</description>
           <addressOffset>0x538</addressOffset>
           <access>read-write</access>
-          <resetValue>0x000005B7</resetValue>
+          <resetValue>0x00000578</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43084,7 +43245,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 1st piece wise linear function</description>
           <addressOffset>0x540</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000FD6</resetValue>
+          <resetValue>0x00000037</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43100,7 +43261,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 2nd piece wise linear function</description>
           <addressOffset>0x544</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000F76</resetValue>
+          <resetValue>0x00000011</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43116,7 +43277,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 3rd piece wise linear function</description>
           <addressOffset>0x548</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000F8A</resetValue>
+          <resetValue>0x00000005</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43132,7 +43293,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 4th piece wise linear function</description>
           <addressOffset>0x54C</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000FF8</resetValue>
+          <resetValue>0x0000002B</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43148,7 +43309,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 5th piece wise linear function</description>
           <addressOffset>0x550</addressOffset>
           <access>read-write</access>
-          <resetValue>0x000000CC</resetValue>
+          <resetValue>0x0000008F</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43164,7 +43325,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 6th piece wise linear function</description>
           <addressOffset>0x554</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000207</resetValue>
+          <resetValue>0x0000015D</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43180,7 +43341,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>y-intercept of 7th piece wise linear function</description>
           <addressOffset>0x558</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000558</resetValue>
+          <resetValue>0x000001C0</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43196,7 +43357,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>End point of 1st piece wise linear function</description>
           <addressOffset>0x560</addressOffset>
           <access>read-write</access>
-          <resetValue>0x000000E2</resetValue>
+          <resetValue>0x000000E5</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43212,7 +43373,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>End point of 2nd piece wise linear function</description>
           <addressOffset>0x564</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000002</resetValue>
+          <resetValue>0x000000FB</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43228,7 +43389,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>End point of 3rd piece wise linear function</description>
           <addressOffset>0x568</addressOffset>
           <access>read-write</access>
-          <resetValue>0x0000001F</resetValue>
+          <resetValue>0x00000010</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43244,7 +43405,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>End point of 4th piece wise linear function</description>
           <addressOffset>0x56C</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000038</resetValue>
+          <resetValue>0x0000002B</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43260,7 +43421,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>End point of 5th piece wise linear function</description>
           <addressOffset>0x570</addressOffset>
           <access>read-write</access>
-          <resetValue>0x0000004F</resetValue>
+          <resetValue>0x00000041</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -43276,7 +43437,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>End point of 6th piece wise linear function</description>
           <addressOffset>0x574</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000066</resetValue>
+          <resetValue>0x00000050</resetValue>
           <size>0x20</size>
           <fields>
             <field>
@@ -49586,7 +49747,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <addressOffset>0x140</addressOffset>
           <register>
             <name>NONSECURE</name>
-            <description>Description cluster: Non-secure port event from owner n</description>
+            <description>Description cluster: Port event (the event name NONSECURE was chosen to be API compatible with devices that feature Arm TrustZone security)</description>
             <addressOffset>0x000</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
@@ -49594,35 +49755,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>NONSECURE</name>
-                <description>Non-secure port event from owner n</description>
-                <lsb>0</lsb>
-                <msb>0</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>NotGenerated</name>
-                    <description>Event not generated</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Generated</name>
-                    <description>Event generated</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-          <register>
-            <name>SECURE</name>
-            <description>Description cluster: Secure port event from owner n</description>
-            <addressOffset>0x004</addressOffset>
-            <access>read-write</access>
-            <resetValue>0x00000000</resetValue>
-            <size>0x20</size>
-            <fields>
-              <field>
-                <name>SECURE</name>
-                <description>Secure port event from owner n</description>
+                <description>Port event (the event name NONSECURE was chosen to be API compatible with devices that feature Arm TrustZone security)</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
                 <enumeratedValues>
@@ -49695,39 +49828,6 @@ POSSIBILITY OF SUCH DAMAGE.
               <field>
                 <name>CHIDX</name>
                 <description>DPPI channel that event PORT[n].NONSECURE will publish to</description>
-                <lsb>0</lsb>
-                <msb>7</msb>
-              </field>
-              <field>
-                <name>EN</name>
-                <lsb>31</lsb>
-                <msb>31</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Disabled</name>
-                    <description>Disable publishing</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Enabled</name>
-                    <description>Enable publishing</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-          <register>
-            <name>SECURE</name>
-            <description>Description cluster: Publish configuration for event PORT[n].SECURE</description>
-            <addressOffset>0x004</addressOffset>
-            <access>read-write</access>
-            <resetValue>0x00000000</resetValue>
-            <size>0x20</size>
-            <fields>
-              <field>
-                <name>CHIDX</name>
-                <description>DPPI channel that event PORT[n].SECURE will publish to</description>
                 <lsb>0</lsb>
                 <msb>7</msb>
               </field>
@@ -49980,33 +50080,6 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Write '1' to enable interrupt for event PORT0NONSECURE</description>
               <lsb>16</lsb>
               <msb>16</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Set</name>
-                  <description>Enable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>PORT0SECURE</name>
-              <description>Write '1' to enable interrupt for event PORT0SECURE</description>
-              <lsb>17</lsb>
-              <msb>17</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -50282,33 +50355,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 </enumeratedValue>
               </enumeratedValues>
             </field>
-            <field>
-              <name>PORT0SECURE</name>
-              <description>Write '1' to disable interrupt for event PORT0SECURE</description>
-              <lsb>17</lsb>
-              <msb>17</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Clear</name>
-                  <description>Disable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
           </fields>
         </register>
         <register>
@@ -50562,33 +50608,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 </enumeratedValue>
               </enumeratedValues>
             </field>
-            <field>
-              <name>PORT0SECURE</name>
-              <description>Write '1' to enable interrupt for event PORT0SECURE</description>
-              <lsb>17</lsb>
-              <msb>17</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Set</name>
-                  <description>Enable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
           </fields>
         </register>
         <register>
@@ -50820,33 +50839,6 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Write '1' to disable interrupt for event PORT0NONSECURE</description>
               <lsb>16</lsb>
               <msb>16</msb>
-              <enumeratedValues>
-                <usage>read</usage>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Read: Disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Read: Enabled</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-              <enumeratedValues>
-                <usage>write</usage>
-                <enumeratedValue>
-                  <name>Clear</name>
-                  <description>Disable</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>PORT0SECURE</name>
-              <description>Write '1' to disable interrupt for event PORT0SECURE</description>
-              <lsb>17</lsb>
-              <msb>17</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -59092,7 +59084,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>CCADD</name>
             <description>Description cluster: Count to add to CC[n] when this register is written.</description>
             <addressOffset>0x008</addressOffset>
-            <access>read-write</access>
+            <access>write-only</access>
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
             <fields>
@@ -59394,6 +59386,11 @@ POSSIBILITY OF SUCH DAMAGE.
               <msb>17</msb>
               <access>write-only</access>
               <enumeratedValues>
+                <enumeratedValue>
+                  <name>LFXO</name>
+                  <description>GRTC LFCLK clock source is LFXO</description>
+                  <value>0x0</value>
+                </enumeratedValue>
                 <enumeratedValue>
                   <name>SystemLFCLK</name>
                   <description>GRTC LFCLK clock source is system LFCLK</description>
@@ -59837,24 +59834,6 @@ POSSIBILITY OF SUCH DAMAGE.
           <size>0x20</size>
           <fields>
             <field>
-              <name>ACTIVESHIELD</name>
-              <description>Active shield detector detected an error.</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>NotDetected</name>
-                  <description>Not detected.</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Detected</name>
-                  <description>Detected.</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
               <name>PROTECT</name>
               <description>Error detected for the protected signals.</description>
               <lsb>4</lsb>
@@ -59983,95 +59962,6 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <cluster>
-          <name>ACTIVESHIELD</name>
-          <description>Unspecified</description>
-          <headerStructName>TAMPC_ACTIVESHIELD</headerStructName>
-          <access>read-write</access>
-          <addressOffset>0x404</addressOffset>
-          <register>
-            <name>CHEN</name>
-            <description>Active shield detector channel enable register.</description>
-            <addressOffset>0x000</addressOffset>
-            <access>read-write</access>
-            <resetValue>0x00000000</resetValue>
-            <size>0x20</size>
-            <fields>
-              <field>
-                <name>CH_0</name>
-                <description>Enable or disable active shield channel 0.</description>
-                <lsb>0</lsb>
-                <msb>0</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Disabled</name>
-                    <description>Disable channel.</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Enabled</name>
-                    <description>Enable channel.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-              <field>
-                <name>CH_1</name>
-                <description>Enable or disable active shield channel 1.</description>
-                <lsb>1</lsb>
-                <msb>1</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Disabled</name>
-                    <description>Disable channel.</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Enabled</name>
-                    <description>Enable channel.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-              <field>
-                <name>CH_2</name>
-                <description>Enable or disable active shield channel 2.</description>
-                <lsb>2</lsb>
-                <msb>2</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Disabled</name>
-                    <description>Disable channel.</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Enabled</name>
-                    <description>Enable channel.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-              <field>
-                <name>CH_3</name>
-                <description>Enable or disable active shield channel 3.</description>
-                <lsb>3</lsb>
-                <msb>3</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Disabled</name>
-                    <description>Disable channel.</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Enabled</name>
-                    <description>Enable channel.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-            </fields>
-          </register>
-        </cluster>
-        <cluster>
           <name>PROTECT</name>
           <description>Unspecified</description>
           <headerStructName>TAMPC_PROTECT</headerStructName>
@@ -60107,12 +59997,12 @@ POSSIBILITY OF SUCH DAMAGE.
                     <enumeratedValues>
                       <enumeratedValue>
                         <name>Low</name>
-                        <description>Signal is logic 0.</description>
+                        <description>Signal is logic 0, indicating that invasive debug is disabled.</description>
                         <value>0x0</value>
                       </enumeratedValue>
                       <enumeratedValue>
                         <name>High</name>
-                        <description>Signal is logic 1.</description>
+                        <description>Signal is logic 1, indicating that invasive debug is enabled.</description>
                         <value>0x1</value>
                       </enumeratedValue>
                     </enumeratedValues>
@@ -60228,12 +60118,12 @@ POSSIBILITY OF SUCH DAMAGE.
                     <enumeratedValues>
                       <enumeratedValue>
                         <name>Low</name>
-                        <description>Signal is logic 0.</description>
+                        <description>Signal is logic 0, indicating that non-invasive debug is disabled.</description>
                         <value>0x0</value>
                       </enumeratedValue>
                       <enumeratedValue>
                         <name>High</name>
-                        <description>Signal is logic 1.</description>
+                        <description>Signal is logic 1, indicating that non-invasive debug is enabled.</description>
                         <value>0x1</value>
                       </enumeratedValue>
                     </enumeratedValues>
@@ -60327,248 +60217,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 </fields>
               </register>
             </cluster>
-            <cluster>
-              <name>SPIDEN</name>
-              <description>Unspecified</description>
-              <headerStructName>TAMPC_PROTECT_DOMAIN_SPIDEN</headerStructName>
-              <access>read-write</access>
-              <addressOffset>0x010</addressOffset>
-              <register>
-                <name>CTRL</name>
-                <description>Description cluster: Control register for secure priviliged invasive (halting) debug enable for the local debug components within domain n.</description>
-                <addressOffset>0x000</addressOffset>
-                <access>read-write</access>
-                <resetValue>0x00000010</resetValue>
-                <size>0x20</size>
-                <fields>
-                  <field>
-                    <name>VALUE</name>
-                    <description>Set value of spiden signal.</description>
-                    <lsb>0</lsb>
-                    <msb>0</msb>
-                    <enumeratedValues>
-                      <enumeratedValue>
-                        <name>Low</name>
-                        <description>Signal is logic 0.</description>
-                        <value>0x0</value>
-                      </enumeratedValue>
-                      <enumeratedValue>
-                        <name>High</name>
-                        <description>Signal is logic 1.</description>
-                        <value>0x1</value>
-                      </enumeratedValue>
-                    </enumeratedValues>
-                  </field>
-                  <field>
-                    <name>LOCK</name>
-                    <description>Lock this register to prevent changes to the VALUE field until next reset.</description>
-                    <lsb>1</lsb>
-                    <msb>1</msb>
-                    <access>writeonce</access>
-                    <modifiedWriteValues>oneToSet</modifiedWriteValues>
-                    <enumeratedValues>
-                      <enumeratedValue>
-                        <name>Disabled</name>
-                        <description>Lock disabled.</description>
-                        <value>0x0</value>
-                      </enumeratedValue>
-                      <enumeratedValue>
-                        <name>Enabled</name>
-                        <description>Lock enabled.</description>
-                        <value>0x1</value>
-                      </enumeratedValue>
-                    </enumeratedValues>
-                  </field>
-                  <field>
-                    <name>WRITEPROTECTION</name>
-                    <description>The write protection must be cleared to allow updates to the VALUE field.</description>
-                    <lsb>4</lsb>
-                    <msb>7</msb>
-                    <enumeratedValues>
-                      <enumeratedValue>
-                        <name>Disabled</name>
-                        <description>Read: Write protection is disabled.</description>
-                        <value>0x0</value>
-                      </enumeratedValue>
-                      <enumeratedValue>
-                        <name>Enabled</name>
-                        <description>Read: Write protection is enabled.</description>
-                        <value>0x1</value>
-                      </enumeratedValue>
-                      <enumeratedValue>
-                        <name>Clear</name>
-                        <description>Write: Value to clear write protection.</description>
-                        <value>0xF</value>
-                      </enumeratedValue>
-                    </enumeratedValues>
-                  </field>
-                  <field>
-                    <name>KEY</name>
-                    <description>Required write key for upper 16 bits. Must be included in all register write operations.</description>
-                    <lsb>16</lsb>
-                    <msb>31</msb>
-                    <access>write-only</access>
-                    <enumeratedValues>
-                      <enumeratedValue>
-                        <name>KEY</name>
-                        <description>Write key value.</description>
-                        <value>0x50FA</value>
-                      </enumeratedValue>
-                    </enumeratedValues>
-                  </field>
-                </fields>
-              </register>
-              <register>
-                <name>STATUS</name>
-                <description>Description cluster: Status register for secure priviliged invasive (halting) debug enable for domain n.</description>
-                <addressOffset>0x004</addressOffset>
-                <access>read-write</access>
-                <resetValue>0x00000000</resetValue>
-                <modifiedWriteValues>oneToClear</modifiedWriteValues>
-                <size>0x20</size>
-                <fields>
-                  <field>
-                    <name>ERROR</name>
-                    <description>Error detection status.</description>
-                    <lsb>0</lsb>
-                    <msb>0</msb>
-                    <enumeratedValues>
-                      <enumeratedValue>
-                        <name>NoError</name>
-                        <description>No error detected.</description>
-                        <value>0x0</value>
-                      </enumeratedValue>
-                      <enumeratedValue>
-                        <name>Error</name>
-                        <description>Error detected.</description>
-                        <value>0x1</value>
-                      </enumeratedValue>
-                    </enumeratedValues>
-                  </field>
-                </fields>
-              </register>
-            </cluster>
-            <cluster>
-              <name>SPNIDEN</name>
-              <description>Unspecified</description>
-              <headerStructName>TAMPC_PROTECT_DOMAIN_SPNIDEN</headerStructName>
-              <access>read-write</access>
-              <addressOffset>0x018</addressOffset>
-              <register>
-                <name>CTRL</name>
-                <description>Description cluster: Control register for secure priviliged non-invasive debug enable for the local debug components within domain n.</description>
-                <addressOffset>0x000</addressOffset>
-                <access>read-write</access>
-                <resetValue>0x00000010</resetValue>
-                <size>0x20</size>
-                <fields>
-                  <field>
-                    <name>VALUE</name>
-                    <description>Set value of spniden signal.</description>
-                    <lsb>0</lsb>
-                    <msb>0</msb>
-                    <enumeratedValues>
-                      <enumeratedValue>
-                        <name>Low</name>
-                        <description>Signal is logic 0.</description>
-                        <value>0x0</value>
-                      </enumeratedValue>
-                      <enumeratedValue>
-                        <name>High</name>
-                        <description>Signal is logic 1.</description>
-                        <value>0x1</value>
-                      </enumeratedValue>
-                    </enumeratedValues>
-                  </field>
-                  <field>
-                    <name>LOCK</name>
-                    <description>Lock this register to prevent changes to the VALUE field until next reset.</description>
-                    <lsb>1</lsb>
-                    <msb>1</msb>
-                    <access>writeonce</access>
-                    <modifiedWriteValues>oneToSet</modifiedWriteValues>
-                    <enumeratedValues>
-                      <enumeratedValue>
-                        <name>Disabled</name>
-                        <description>Lock disabled.</description>
-                        <value>0x0</value>
-                      </enumeratedValue>
-                      <enumeratedValue>
-                        <name>Enabled</name>
-                        <description>Lock enabled.</description>
-                        <value>0x1</value>
-                      </enumeratedValue>
-                    </enumeratedValues>
-                  </field>
-                  <field>
-                    <name>WRITEPROTECTION</name>
-                    <description>The write protection must be cleared to allow updates to the VALUE field.</description>
-                    <lsb>4</lsb>
-                    <msb>7</msb>
-                    <enumeratedValues>
-                      <enumeratedValue>
-                        <name>Disabled</name>
-                        <description>Read: Write protection is disabled.</description>
-                        <value>0x0</value>
-                      </enumeratedValue>
-                      <enumeratedValue>
-                        <name>Enabled</name>
-                        <description>Read: Write protection is enabled.</description>
-                        <value>0x1</value>
-                      </enumeratedValue>
-                      <enumeratedValue>
-                        <name>Clear</name>
-                        <description>Write: Value to clear write protection.</description>
-                        <value>0xF</value>
-                      </enumeratedValue>
-                    </enumeratedValues>
-                  </field>
-                  <field>
-                    <name>KEY</name>
-                    <description>Required write key for upper 16 bits. Must be included in all register write operations.</description>
-                    <lsb>16</lsb>
-                    <msb>31</msb>
-                    <access>write-only</access>
-                    <enumeratedValues>
-                      <enumeratedValue>
-                        <name>KEY</name>
-                        <description>Write key value.</description>
-                        <value>0x50FA</value>
-                      </enumeratedValue>
-                    </enumeratedValues>
-                  </field>
-                </fields>
-              </register>
-              <register>
-                <name>STATUS</name>
-                <description>Description cluster: Status register for secure priviliged non-invasive debug enable for domain n.</description>
-                <addressOffset>0x004</addressOffset>
-                <access>read-write</access>
-                <resetValue>0x00000000</resetValue>
-                <modifiedWriteValues>oneToClear</modifiedWriteValues>
-                <size>0x20</size>
-                <fields>
-                  <field>
-                    <name>ERROR</name>
-                    <description>Error detection status.</description>
-                    <lsb>0</lsb>
-                    <msb>0</msb>
-                    <enumeratedValues>
-                      <enumeratedValue>
-                        <name>NoError</name>
-                        <description>No error detected.</description>
-                        <value>0x0</value>
-                      </enumeratedValue>
-                      <enumeratedValue>
-                        <name>Error</name>
-                        <description>Error detected.</description>
-                        <value>0x1</value>
-                      </enumeratedValue>
-                    </enumeratedValues>
-                  </field>
-                </fields>
-              </register>
-            </cluster>
           </cluster>
           <cluster>
             <dim>1</dim>
@@ -60586,7 +60234,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <addressOffset>0x000</addressOffset>
               <register>
                 <name>CTRL</name>
-                <description>Description cluster: Control register to enable invasive (halting) debug in domain n's access port.</description>
+                <description>Description cluster: Control register to enable invasive (halting) debug in domain ns access port.</description>
                 <addressOffset>0x000</addressOffset>
                 <access>read-write</access>
                 <resetValue>0x00000010</resetValue>
@@ -60600,12 +60248,12 @@ POSSIBILITY OF SUCH DAMAGE.
                     <enumeratedValues>
                       <enumeratedValue>
                         <name>Low</name>
-                        <description>Signal is logic 0.</description>
+                        <description>Signal is logic 0, indicating that invasive debug is disabled.</description>
                         <value>0x0</value>
                       </enumeratedValue>
                       <enumeratedValue>
                         <name>High</name>
-                        <description>Signal is logic 1.</description>
+                        <description>Signal is logic 1, indicating that invasive debug is enabled.</description>
                         <value>0x1</value>
                       </enumeratedValue>
                     </enumeratedValues>
@@ -60671,7 +60319,7 @@ POSSIBILITY OF SUCH DAMAGE.
               </register>
               <register>
                 <name>STATUS</name>
-                <description>Description cluster: Status register for invasive (halting) debug enable for domain n's access port.</description>
+                <description>Description cluster: Status register for invasive (halting) debug enable for domain ns access port.</description>
                 <addressOffset>0x004</addressOffset>
                 <access>read-write</access>
                 <resetValue>0x00000000</resetValue>
@@ -60699,248 +60347,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 </fields>
               </register>
             </cluster>
-          </cluster>
-          <cluster>
-            <name>ACTIVESHIELD</name>
-            <description>Enable active shield detector.</description>
-            <headerStructName>TAMPC_PROTECT_ACTIVESHIELD</headerStructName>
-            <access>read-write</access>
-            <addressOffset>0x400</addressOffset>
-            <register>
-              <name>CTRL</name>
-              <description>Control register for active shield detector enable signal.</description>
-              <addressOffset>0x000</addressOffset>
-              <access>read-write</access>
-              <resetValue>0x00000010</resetValue>
-              <size>0x20</size>
-              <fields>
-                <field>
-                  <name>VALUE</name>
-                  <description>Set value of active shield enable signal.</description>
-                  <lsb>0</lsb>
-                  <msb>0</msb>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>Low</name>
-                      <description>Signal is logic 0.</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>High</name>
-                      <description>Signal is logic 1.</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-                <field>
-                  <name>LOCK</name>
-                  <description>Lock this register to prevent changes to the VALUE field until next reset.</description>
-                  <lsb>1</lsb>
-                  <msb>1</msb>
-                  <access>writeonce</access>
-                  <modifiedWriteValues>oneToSet</modifiedWriteValues>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>Disabled</name>
-                      <description>Lock disabled.</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Enabled</name>
-                      <description>Lock enabled.</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-                <field>
-                  <name>WRITEPROTECTION</name>
-                  <description>The write protection must be cleared to allow updates to the VALUE field.</description>
-                  <lsb>4</lsb>
-                  <msb>7</msb>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>Disabled</name>
-                      <description>Read: Write protection is disabled.</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Enabled</name>
-                      <description>Read: Write protection is enabled.</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Clear</name>
-                      <description>Write: Value to clear write protection.</description>
-                      <value>0xF</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-                <field>
-                  <name>KEY</name>
-                  <description>Required write key for upper 16 bits. Must be included in all register write operations.</description>
-                  <lsb>16</lsb>
-                  <msb>31</msb>
-                  <access>write-only</access>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>KEY</name>
-                      <description>Write key value.</description>
-                      <value>0x50FA</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-              </fields>
-            </register>
-            <register>
-              <name>STATUS</name>
-              <description>Status register for active shield detector enable signal.</description>
-              <addressOffset>0x004</addressOffset>
-              <access>read-write</access>
-              <resetValue>0x00000000</resetValue>
-              <modifiedWriteValues>oneToClear</modifiedWriteValues>
-              <size>0x20</size>
-              <fields>
-                <field>
-                  <name>ERROR</name>
-                  <description>Error detection status.</description>
-                  <lsb>0</lsb>
-                  <msb>0</msb>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>NoError</name>
-                      <description>No error detected.</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Error</name>
-                      <description>Error detected.</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-              </fields>
-            </register>
-          </cluster>
-          <cluster>
-            <name>CRACENTAMP</name>
-            <description>Enable tamper detector from CRACEN.</description>
-            <headerStructName>TAMPC_PROTECT_CRACENTAMP</headerStructName>
-            <access>read-write</access>
-            <addressOffset>0x438</addressOffset>
-            <register>
-              <name>CTRL</name>
-              <description>Control register for CRACEN tamper detector enable signal.</description>
-              <addressOffset>0x000</addressOffset>
-              <access>read-write</access>
-              <resetValue>0x00000011</resetValue>
-              <size>0x20</size>
-              <fields>
-                <field>
-                  <name>VALUE</name>
-                  <description>Set value of CRACEN tamper detector enable signal.</description>
-                  <lsb>0</lsb>
-                  <msb>0</msb>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>Low</name>
-                      <description>Signal is logic 0.</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>High</name>
-                      <description>Signal is logic 1.</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-                <field>
-                  <name>LOCK</name>
-                  <description>Lock this register to prevent changes to the VALUE field until next reset.</description>
-                  <lsb>1</lsb>
-                  <msb>1</msb>
-                  <access>writeonce</access>
-                  <modifiedWriteValues>oneToSet</modifiedWriteValues>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>Disabled</name>
-                      <description>Lock disabled.</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Enabled</name>
-                      <description>Lock enabled.</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-                <field>
-                  <name>WRITEPROTECTION</name>
-                  <description>The write protection must be cleared to allow updates to the VALUE field.</description>
-                  <lsb>4</lsb>
-                  <msb>7</msb>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>Disabled</name>
-                      <description>Read: Write protection is disabled.</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Enabled</name>
-                      <description>Read: Write protection is enabled.</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Clear</name>
-                      <description>Write: Value to clear write protection.</description>
-                      <value>0xF</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-                <field>
-                  <name>KEY</name>
-                  <description>Required write key for upper 16 bits. Must be included in all register write operations.</description>
-                  <lsb>16</lsb>
-                  <msb>31</msb>
-                  <access>write-only</access>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>KEY</name>
-                      <description>Write key value.</description>
-                      <value>0x50FA</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-              </fields>
-            </register>
-            <register>
-              <name>STATUS</name>
-              <description>Status register for CRACEN tamper detector enable signal.</description>
-              <addressOffset>0x004</addressOffset>
-              <access>read-write</access>
-              <resetValue>0x00000000</resetValue>
-              <modifiedWriteValues>oneToClear</modifiedWriteValues>
-              <size>0x20</size>
-              <fields>
-                <field>
-                  <name>ERROR</name>
-                  <description>Error detection status.</description>
-                  <lsb>0</lsb>
-                  <msb>0</msb>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>NoError</name>
-                      <description>No error detected.</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Error</name>
-                      <description>Error detected.</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-              </fields>
-            </register>
           </cluster>
           <cluster>
             <name>GLITCHSLOWDOMAIN</name>
@@ -61157,127 +60563,6 @@ POSSIBILITY OF SUCH DAMAGE.
             <register>
               <name>STATUS</name>
               <description>Status register for fast domain glitch detectors enable signal.</description>
-              <addressOffset>0x004</addressOffset>
-              <access>read-write</access>
-              <resetValue>0x00000000</resetValue>
-              <modifiedWriteValues>oneToClear</modifiedWriteValues>
-              <size>0x20</size>
-              <fields>
-                <field>
-                  <name>ERROR</name>
-                  <description>Error detection status.</description>
-                  <lsb>0</lsb>
-                  <msb>0</msb>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>NoError</name>
-                      <description>No error detected.</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Error</name>
-                      <description>Error detected.</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-              </fields>
-            </register>
-          </cluster>
-          <cluster>
-            <name>EXTRESETEN</name>
-            <description>Trigger a reset when tamper is detected by the external tamper detectors.</description>
-            <headerStructName>TAMPC_PROTECT_EXTRESETEN</headerStructName>
-            <access>read-write</access>
-            <addressOffset>0x470</addressOffset>
-            <register>
-              <name>CTRL</name>
-              <description>Control register for external tamper reset enable signal.</description>
-              <addressOffset>0x000</addressOffset>
-              <access>read-write</access>
-              <resetValue>0x00000010</resetValue>
-              <size>0x20</size>
-              <fields>
-                <field>
-                  <name>VALUE</name>
-                  <description>Set value of external tamper reset enable signal.</description>
-                  <lsb>0</lsb>
-                  <msb>0</msb>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>Low</name>
-                      <description>Signal is logic 0.</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>High</name>
-                      <description>Signal is logic 1.</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-                <field>
-                  <name>LOCK</name>
-                  <description>Lock this register to prevent changes to the VALUE field until next reset.</description>
-                  <lsb>1</lsb>
-                  <msb>1</msb>
-                  <access>writeonce</access>
-                  <modifiedWriteValues>oneToSet</modifiedWriteValues>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>Disabled</name>
-                      <description>Lock disabled.</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Enabled</name>
-                      <description>Lock enabled.</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-                <field>
-                  <name>WRITEPROTECTION</name>
-                  <description>The write protection must be cleared to allow updates to the VALUE field.</description>
-                  <lsb>4</lsb>
-                  <msb>7</msb>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>Disabled</name>
-                      <description>Read: Write protection is disabled.</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Enabled</name>
-                      <description>Read: Write protection is enabled.</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Clear</name>
-                      <description>Write: Value to clear write protection.</description>
-                      <value>0xF</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-                <field>
-                  <name>KEY</name>
-                  <description>Required write key for upper 16 bits. Must be included in all register write operations.</description>
-                  <lsb>16</lsb>
-                  <msb>31</msb>
-                  <access>write-only</access>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>KEY</name>
-                      <description>Write key value.</description>
-                      <value>0x50FA</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-              </fields>
-            </register>
-            <register>
-              <name>STATUS</name>
-              <description>Status register for external tamper reset enable signal.</description>
               <addressOffset>0x004</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -64323,6 +63608,11 @@ POSSIBILITY OF SUCH DAMAGE.
                     <value>0x0</value>
                   </enumeratedValue>
                   <enumeratedValue>
+                    <name>LFXO</name>
+                    <description>32.768 kHz crystal oscillator</description>
+                    <value>0x1</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
                     <name>LFSYNT</name>
                     <description>32.768 kHz synthesized from HFCLK</description>
                     <value>0x2</value>
@@ -64379,6 +63669,11 @@ POSSIBILITY OF SUCH DAMAGE.
                     <value>0x0</value>
                   </enumeratedValue>
                   <enumeratedValue>
+                    <name>LFXO</name>
+                    <description>32.768 kHz crystal oscillator</description>
+                    <value>0x1</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
                     <name>LFSYNT</name>
                     <description>32.768 kHz synthesized from HFCLK</description>
                     <value>0x2</value>
@@ -64423,6 +63718,11 @@ POSSIBILITY OF SUCH DAMAGE.
                     <name>LFRC</name>
                     <description>32.768 kHz RC oscillator</description>
                     <value>0x0</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>LFXO</name>
+                    <description>32.768 kHz crystal oscillator</description>
+                    <value>0x1</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>LFSYNT</name>
@@ -64643,6 +63943,39 @@ POSSIBILITY OF SUCH DAMAGE.
                 <enumeratedValue>
                   <name>Generated</name>
                   <description>Event generated</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PUBLISH_POFWARN</name>
+          <description>Publish configuration for event POFWARN</description>
+          <addressOffset>0x1B0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>CHIDX</name>
+              <description>DPPI channel that event POFWARN will publish to</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+            </field>
+            <field>
+              <name>EN</name>
+              <lsb>31</lsb>
+              <msb>31</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable publishing</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable publishing</description>
                   <value>0x1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -65387,6 +64720,29 @@ POSSIBILITY OF SUCH DAMAGE.
                     <value>0x3</value>
                   </enumeratedValue>
                 </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+        </cluster>
+        <cluster>
+          <name>XOSC32KI</name>
+          <description>32.768 kHz oscillator control</description>
+          <headerStructName>OSCILLATORS_XOSC32KI</headerStructName>
+          <access>read-write</access>
+          <addressOffset>0x900</addressOffset>
+          <register>
+            <name>INTCAP</name>
+            <description>Programmable capacitance of XL1 and XL2</description>
+            <addressOffset>0x004</addressOffset>
+            <access>read-write</access>
+            <resetValue>0x00000017</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>VAL</name>
+                <description>Crystal load capacitor as seen by the crystal across its terminals, including pin capacitance but excluding PCB stray capacitance.</description>
+                <lsb>0</lsb>
+                <msb>4</msb>
               </field>
             </fields>
           </register>

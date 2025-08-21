@@ -164,6 +164,15 @@
 #endif
 
 /**
+ * @brief NRFX_CRACEN_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_CRACEN_ENABLED
+#define NRFX_CRACEN_ENABLED 0
+#endif
+
+/**
  * @brief NRFX_DPPI_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.

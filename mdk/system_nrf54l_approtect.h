@@ -152,10 +152,15 @@ static inline void nrf54l_handle_secureapprotect_signal(volatile uint32_t * sign
          ENABLE_SECURE_APPROTECT and ENABLE_SECURE_APPROTECT_USER_HANDLING. */
 static inline void nrf54l_handle_approtect(void)
 {
+#if defined (NRF54LS05B_ENGA_XXAA)
+    nrf54l_handle_approtect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].DBGEN.CTRL);
+    nrf54l_handle_approtect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].NIDEN.CTRL);
+#else
     nrf54l_handle_approtect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].DBGEN.CTRL);
     nrf54l_handle_approtect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].NIDEN.CTRL);
     nrf54l_handle_secureapprotect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].SPIDEN.CTRL);
     nrf54l_handle_secureapprotect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].SPNIDEN.CTRL);
+#endif
 
     /* Handle AUX AP*/
     nrf54l_handle_approtect_signal(&NRF_TAMPC->PROTECT.AP[0].DBGEN.CTRL);

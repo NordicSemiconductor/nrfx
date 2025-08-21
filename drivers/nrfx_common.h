@@ -91,7 +91,7 @@ extern "C" {
 #define NRFX_RELEASE_VER_MAJOR 3
 
 /** @brief Symbol specifying minor number of the current nrfx version. */
-#define NRFX_RELEASE_VER_MINOR 13
+#define NRFX_RELEASE_VER_MINOR 14
 
 /** @brief Symbol specifying micro number of the current nrfx version. */
 #define NRFX_RELEASE_VER_MICRO 0
@@ -577,6 +577,8 @@ do {                                                         \
  * equal to its ID number. See the chapter "Peripheral interface" (sections
  * "Peripheral ID" and "Interrupts") in the Product Specification.
  *
+ * @warning This macro is valid only for peripherals with a single interrupt line.
+ *
  * @param[in] base_addr Peripheral base address or pointer.
  *
  * @return Interrupt number associated with the specified peripheral.
@@ -642,6 +644,8 @@ NRF_STATIC_INLINE bool nrfx_is_word_aligned(void const * p_object);
 
 /**
  * @brief Function for getting the interrupt number for the specified peripheral.
+ *
+ * @warning This function is valid only for peripherals with a single interrupt line.
  *
  * @param[in] p_reg Peripheral base pointer.
  *

@@ -419,6 +419,12 @@ nrfx_err_t nrfx_saadc_simple_mode_set(uint32_t                   channel_mask,
         burst = NRF_SAADC_BURST_ENABLED;
     }
 
+    /**
+     * Continuous mode has to be disabled for simple mode, this have caused issues when
+     * running first advanced continuous mode and then switching to simple
+     */
+    nrfy_saadc_continuous_mode_disable(NRF_SAADC);
+
     saadc_generic_mode_set(channel_mask,
                            resolution,
                            oversampling,
@@ -686,6 +692,12 @@ nrfx_err_t nrfx_saadc_limits_set(uint8_t channel, int16_t limit_low, int16_t lim
     {
         return NRFX_ERROR_INVALID_PARAM;
     }
+
+    nrf_saadc_event_t limit_low_evt = nrfy_saadc_limit_event_get(channel, NRF_SAADC_LIMIT_LOW);
+    nrfy_saadc_event_clear(NRF_SAADC, limit_low_evt);
+
+    nrf_saadc_event_t limit_high_evt = nrfy_saadc_limit_event_get(channel, NRF_SAADC_LIMIT_HIGH);
+    nrfy_saadc_event_clear(NRF_SAADC, limit_high_evt);
 
     nrfy_saadc_channel_limits_set(NRF_SAADC, channel, limit_low, limit_high);
 

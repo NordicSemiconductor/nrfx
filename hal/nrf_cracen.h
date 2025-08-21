@@ -47,31 +47,75 @@ extern "C" {
  * @brief   Hardware access layer for managing the Crypto Accelerator Engine (CRACEN) peripheral.
  */
 
+#if defined(CRACEN_ENABLE_CRYPTOMASTER_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether CRACEN has CRYPTOMASTER module. */
+#define NRF_CRACEN_HAS_CRYPTOMASTER 1
+#else
+#define NRF_CRACEN_HAS_CRYPTOMASTER 0
+#endif
+
+#if defined(CRACEN_ENABLE_PKEIKG_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether CRACEN has PKE and IKG modules. */
+#define NRF_CRACEN_HAS_PKEIKG 1
+#else
+#define NRF_CRACEN_HAS_PKEIKG 0
+#endif
+
+#if defined(CRACEN_SEEDRAMLOCK_ENABLE_Enabled) || defined(CRACEN_SEEDLOCK_ENABLE_Enabled) || \
+    defined(CRACEN_PROTECTEDRAMLOCK_ENABLE_Enabled) || defined(CRACEN_KEYLOCK_ENABLE_Enabled) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether CRACEN has locking feature. */
+#define NRF_CRACEN_HAS_LOCK 1
+#else
+#define NRF_CRACEN_HAS_LOCK 0
+#endif
+
+#if defined(CRACEN_SEED_ResetValue) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether CRACEN has SEED register. */
+#define NRF_CRACEN_HAS_SEED 1
+#else
+#define NRF_CRACEN_HAS_SEED 0
+#endif
+
+#if NRF_CRACEN_HAS_SEED
 /** @brief Number of seed words for private key generation. */
 #define NRF_CRACEN_SEED_COUNT CRACEN_SEED_MaxCount
+#endif
 
 /** @brief CRACEN events. */
 typedef enum
 {
+#if NRF_CRACEN_HAS_CRYPTOMASTER
     NRF_CRACEN_EVENT_CRYPTOMASTER = offsetof(NRF_CRACEN_Type, EVENTS_CRYPTOMASTER), ///< Interrupt triggered at Cryptomaster.
+#endif
     NRF_CRACEN_EVENT_RNG          = offsetof(NRF_CRACEN_Type, EVENTS_RNG),          ///< Interrupt triggered at RNG.
+#if NRF_CRACEN_HAS_PKEIKG
     NRF_CRACEN_EVENT_PKE_IKG      = offsetof(NRF_CRACEN_Type, EVENTS_PKEIKG),       ///< Interrupt triggered at PKE or IKG.
+#endif
 } nrf_cracen_event_t;
 
 /** @brief CRACEN interrupts. */
 typedef enum
 {
+#if NRF_CRACEN_HAS_CRYPTOMASTER
     NRF_CRACEN_INT_CRYPTOMASTER_MASK = CRACEN_INTENSET_CRYPTOMASTER_Msk, ///< Interrupt on CRYPTOMASTER event.
+#endif
     NRF_CRACEN_INT_RNG_MASK          = CRACEN_INTENSET_RNG_Msk,          ///< Interrupt on RNG event.
+#if NRF_CRACEN_HAS_PKEIKG
     NRF_CRACEN_INT_PKE_IKG_MASK      = CRACEN_INTENSET_PKEIKG_Msk,       ///< Interrupt on PKEIKG event.
+#endif
 } nrf_cracen_int_mask_t;
 
 /** @brief CRACEN modules mask. */
 typedef enum
 {
+#if NRF_CRACEN_HAS_CRYPTOMASTER
     NRF_CRACEN_MODULE_CRYPTOMASTER_MASK = CRACEN_ENABLE_CRYPTOMASTER_Msk, ///< Cryptomaster module.
+#endif
     NRF_CRACEN_MODULE_RNG_MASK          = CRACEN_ENABLE_RNG_Msk,          ///< RNG module.
+#if NRF_CRACEN_HAS_PKEIKG
     NRF_CRACEN_MODULE_PKE_IKG_MASK      = CRACEN_ENABLE_PKEIKG_Msk,       ///< PKE and IKG module.
+#endif
 } nrf_cracen_module_mask_t;
 
 
@@ -161,11 +205,12 @@ NRF_STATIC_INLINE void nrf_cracen_module_disable(NRF_CRACEN_Type * p_reg, uint32
  */
 NRF_STATIC_INLINE uint32_t nrf_cracen_module_get(NRF_CRACEN_Type const * p_reg);
 
+#if NRF_CRACEN_HAS_LOCK
 /**
  * @brief Function for enabling or disabling lock on access to the RAM used for the seed.
  *
  * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
- * @param[in] enable True if lock is to be enabled, false otherwise. 
+ * @param[in] enable True if lock is to be enabled, false otherwise.
  */
 NRF_STATIC_INLINE void nrf_cracen_seedram_lock_enable_set(NRF_CRACEN_Type * p_reg, bool enable);
 
@@ -178,7 +223,9 @@ NRF_STATIC_INLINE void nrf_cracen_seedram_lock_enable_set(NRF_CRACEN_Type * p_re
  * @retval false Access to the RAM used for the seed is unlocked.
  */
 NRF_STATIC_INLINE bool nrf_cracen_seedram_lock_check(NRF_CRACEN_Type const * p_reg);
+#endif
 
+#if NRF_CRACEN_HAS_SEED
 /**
  * @brief Function for setting specified seed word for private key generation.
  *
@@ -187,6 +234,7 @@ NRF_STATIC_INLINE bool nrf_cracen_seedram_lock_check(NRF_CRACEN_Type const * p_r
  * @param[in] value Seed value to be set.
  */
 NRF_STATIC_INLINE void nrf_cracen_seed_set(NRF_CRACEN_Type * p_reg, uint8_t idx, uint32_t value);
+#endif
 
 #ifndef NRF_DECLARE_ONLY
 NRF_STATIC_INLINE uint32_t nrf_cracen_event_address_get(NRF_CRACEN_Type const * p_reg,
@@ -238,6 +286,7 @@ NRF_STATIC_INLINE uint32_t nrf_cracen_module_get(NRF_CRACEN_Type const * p_reg)
     return p_reg->ENABLE;
 }
 
+#if NRF_CRACEN_HAS_LOCK
 NRF_STATIC_INLINE void nrf_cracen_seedram_lock_enable_set(NRF_CRACEN_Type * p_reg, bool enable)
 {
 #if defined(CRACEN_SEEDRAMLOCK_ENABLE_Enabled)
@@ -270,12 +319,15 @@ NRF_STATIC_INLINE bool nrf_cracen_seedram_lock_check(NRF_CRACEN_Type const * p_r
     return p_reg->KEYLOCK == (CRACEN_KEYLOCK_ENABLE_Enabled << CRACEN_KEYLOCK_ENABLE_Pos);
 #endif
 }
+#endif
 
+#if NRF_CRACEN_HAS_SEED
 NRF_STATIC_INLINE void nrf_cracen_seed_set(NRF_CRACEN_Type * p_reg, uint8_t idx, uint32_t value)
 {
     NRFX_ASSERT(idx < NRF_CRACEN_SEED_COUNT);
     p_reg->SEED[idx] = value;
 }
+#endif
 #endif // NRF_DECLARE_ONLY
 
 /** @} */

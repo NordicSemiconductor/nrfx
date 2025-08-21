@@ -1166,6 +1166,7 @@ typedef struct {
   #define CLOCK_LFCLK_SRC_SRC_Min (0x0UL)            /*!< Min enumerator value of SRC field.                                   */
   #define CLOCK_LFCLK_SRC_SRC_Max (0x2UL)            /*!< Max enumerator value of SRC field.                                   */
   #define CLOCK_LFCLK_SRC_SRC_LFRC (0x0UL)           /*!< 32.768 kHz RC oscillator                                             */
+  #define CLOCK_LFCLK_SRC_SRC_LFXO (0x1UL)           /*!< 32.768 kHz crystal oscillator                                        */
   #define CLOCK_LFCLK_SRC_SRC_LFSYNT (0x2UL)         /*!< 32.768 kHz synthesized from HFCLK                                    */
 
 
@@ -1190,6 +1191,7 @@ typedef struct {
   #define CLOCK_LFCLK_STAT_SRC_Min (0x0UL)           /*!< Min enumerator value of SRC field.                                   */
   #define CLOCK_LFCLK_STAT_SRC_Max (0x2UL)           /*!< Max enumerator value of SRC field.                                   */
   #define CLOCK_LFCLK_STAT_SRC_LFRC (0x0UL)          /*!< 32.768 kHz RC oscillator                                             */
+  #define CLOCK_LFCLK_STAT_SRC_LFXO (0x1UL)          /*!< 32.768 kHz crystal oscillator                                        */
   #define CLOCK_LFCLK_STAT_SRC_LFSYNT (0x2UL)        /*!< 32.768 kHz synthesized from HFCLK                                    */
 
 /* STATE @Bit 16 : LFCLK state (Running between START task and STOPPED event) */
@@ -1210,6 +1212,7 @@ typedef struct {
   #define CLOCK_LFCLK_SRCCOPY_SRC_Min (0x0UL)        /*!< Min enumerator value of SRC field.                                   */
   #define CLOCK_LFCLK_SRCCOPY_SRC_Max (0x2UL)        /*!< Max enumerator value of SRC field.                                   */
   #define CLOCK_LFCLK_SRCCOPY_SRC_LFRC (0x0UL)       /*!< 32.768 kHz RC oscillator                                             */
+  #define CLOCK_LFCLK_SRCCOPY_SRC_LFXO (0x1UL)       /*!< 32.768 kHz crystal oscillator                                        */
   #define CLOCK_LFCLK_SRCCOPY_SRC_LFSYNT (0x2UL)     /*!< 32.768 kHz synthesized from HFCLK                                    */
 
 
@@ -2078,6 +2081,556 @@ typedef struct {
   #define CPUC_CPUID_CPUID_Pos (0UL)                 /*!< Position of CPUID field.                                             */
   #define CPUC_CPUID_CPUID_Msk (0xFFFFFFFFUL << CPUC_CPUID_CPUID_Pos) /*!< Bit mask of CPUID field.                            */
 
+
+#endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
+
+/* =========================================================================================================================== */
+/* ================                                          CRACEN                                          ================ */
+/* =========================================================================================================================== */
+
+#if !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__) /*!< Ignore C structs for assembly code.                                 */
+/* ====================================================== Struct CRACEN ====================================================== */
+/**
+  * @brief CRACEN TRNG
+  */
+  typedef struct {                                   /*!< CRACEN Structure                                                     */
+    __IM uint32_t RESERVED[65];
+    __IOM uint32_t EVENTS_RNG;                       /*!< (@ 0x00000104) Event indicating that interrupt triggered at RNG      */
+    __IM uint32_t RESERVED1[126];
+    __IOM uint32_t INTEN;                            /*!< (@ 0x00000300) Enable or disable interrupt                           */
+    __IOM uint32_t INTENSET;                         /*!< (@ 0x00000304) Enable interrupt                                      */
+    __IOM uint32_t INTENCLR;                         /*!< (@ 0x00000308) Disable interrupt                                     */
+    __IM uint32_t INTPEND;                           /*!< (@ 0x0000030C) Pending interrupts                                    */
+    __IM uint32_t RESERVED2[60];
+    __IOM uint32_t ENABLE;                           /*!< (@ 0x00000400) Enable RNG peripheral module.                         */
+  } NRF_CRACEN_Type;                                 /*!< Size = 1028 (0x404)                                                  */
+
+/* CRACEN_EVENTS_RNG: Event indicating that interrupt triggered at RNG */
+  #define CRACEN_EVENTS_RNG_ResetValue (0x00000000UL) /*!< Reset value of EVENTS_RNG register.                                 */
+
+/* EVENTS_RNG @Bit 0 : Event indicating that interrupt triggered at RNG */
+  #define CRACEN_EVENTS_RNG_EVENTS_RNG_Pos (0UL)     /*!< Position of EVENTS_RNG field.                                        */
+  #define CRACEN_EVENTS_RNG_EVENTS_RNG_Msk (0x1UL << CRACEN_EVENTS_RNG_EVENTS_RNG_Pos) /*!< Bit mask of EVENTS_RNG field.      */
+  #define CRACEN_EVENTS_RNG_EVENTS_RNG_Min (0x0UL)   /*!< Min enumerator value of EVENTS_RNG field.                            */
+  #define CRACEN_EVENTS_RNG_EVENTS_RNG_Max (0x1UL)   /*!< Max enumerator value of EVENTS_RNG field.                            */
+  #define CRACEN_EVENTS_RNG_EVENTS_RNG_NotGenerated (0x0UL) /*!< Event not generated                                           */
+  #define CRACEN_EVENTS_RNG_EVENTS_RNG_Generated (0x1UL) /*!< Event generated                                                  */
+
+
+/* CRACEN_INTEN: Enable or disable interrupt */
+  #define CRACEN_INTEN_ResetValue (0x00000000UL)     /*!< Reset value of INTEN register.                                       */
+
+/* RNG @Bit 1 : Enable or disable interrupt for event RNG */
+  #define CRACEN_INTEN_RNG_Pos (1UL)                 /*!< Position of RNG field.                                               */
+  #define CRACEN_INTEN_RNG_Msk (0x1UL << CRACEN_INTEN_RNG_Pos) /*!< Bit mask of RNG field.                                     */
+  #define CRACEN_INTEN_RNG_Min (0x0UL)               /*!< Min enumerator value of RNG field.                                   */
+  #define CRACEN_INTEN_RNG_Max (0x1UL)               /*!< Max enumerator value of RNG field.                                   */
+  #define CRACEN_INTEN_RNG_Disabled (0x0UL)          /*!< Disable                                                              */
+  #define CRACEN_INTEN_RNG_Enabled (0x1UL)           /*!< Enable                                                               */
+
+
+/* CRACEN_INTENSET: Enable interrupt */
+  #define CRACEN_INTENSET_ResetValue (0x00000000UL)  /*!< Reset value of INTENSET register.                                    */
+
+/* RNG @Bit 1 : Write '1' to enable interrupt for event RNG */
+  #define CRACEN_INTENSET_RNG_Pos (1UL)              /*!< Position of RNG field.                                               */
+  #define CRACEN_INTENSET_RNG_Msk (0x1UL << CRACEN_INTENSET_RNG_Pos) /*!< Bit mask of RNG field.                               */
+  #define CRACEN_INTENSET_RNG_Min (0x0UL)            /*!< Min enumerator value of RNG field.                                   */
+  #define CRACEN_INTENSET_RNG_Max (0x1UL)            /*!< Max enumerator value of RNG field.                                   */
+  #define CRACEN_INTENSET_RNG_Set (0x1UL)            /*!< Enable                                                               */
+  #define CRACEN_INTENSET_RNG_Disabled (0x0UL)       /*!< Read: Disabled                                                       */
+  #define CRACEN_INTENSET_RNG_Enabled (0x1UL)        /*!< Read: Enabled                                                        */
+
+
+/* CRACEN_INTENCLR: Disable interrupt */
+  #define CRACEN_INTENCLR_ResetValue (0x00000000UL)  /*!< Reset value of INTENCLR register.                                    */
+
+/* RNG @Bit 1 : Write '1' to disable interrupt for event RNG */
+  #define CRACEN_INTENCLR_RNG_Pos (1UL)              /*!< Position of RNG field.                                               */
+  #define CRACEN_INTENCLR_RNG_Msk (0x1UL << CRACEN_INTENCLR_RNG_Pos) /*!< Bit mask of RNG field.                               */
+  #define CRACEN_INTENCLR_RNG_Min (0x0UL)            /*!< Min enumerator value of RNG field.                                   */
+  #define CRACEN_INTENCLR_RNG_Max (0x1UL)            /*!< Max enumerator value of RNG field.                                   */
+  #define CRACEN_INTENCLR_RNG_Clear (0x1UL)          /*!< Disable                                                              */
+  #define CRACEN_INTENCLR_RNG_Disabled (0x0UL)       /*!< Read: Disabled                                                       */
+  #define CRACEN_INTENCLR_RNG_Enabled (0x1UL)        /*!< Read: Enabled                                                        */
+
+
+/* CRACEN_INTPEND: Pending interrupts */
+  #define CRACEN_INTPEND_ResetValue (0x00000000UL)   /*!< Reset value of INTPEND register.                                     */
+
+/* RNG @Bit 1 : Read pending status of interrupt for event RNG */
+  #define CRACEN_INTPEND_RNG_Pos (1UL)               /*!< Position of RNG field.                                               */
+  #define CRACEN_INTPEND_RNG_Msk (0x1UL << CRACEN_INTPEND_RNG_Pos) /*!< Bit mask of RNG field.                                 */
+  #define CRACEN_INTPEND_RNG_Min (0x0UL)             /*!< Min enumerator value of RNG field.                                   */
+  #define CRACEN_INTPEND_RNG_Max (0x1UL)             /*!< Max enumerator value of RNG field.                                   */
+  #define CRACEN_INTPEND_RNG_NotPending (0x0UL)      /*!< Read: Not pending                                                    */
+  #define CRACEN_INTPEND_RNG_Pending (0x1UL)         /*!< Read: Pending                                                        */
+
+
+/* CRACEN_ENABLE: Enable RNG peripheral module. */
+  #define CRACEN_ENABLE_ResetValue (0x00000000UL)    /*!< Reset value of ENABLE register.                                      */
+
+/* RNG @Bit 1 : Enable RNG */
+  #define CRACEN_ENABLE_RNG_Pos (1UL)                /*!< Position of RNG field.                                               */
+  #define CRACEN_ENABLE_RNG_Msk (0x1UL << CRACEN_ENABLE_RNG_Pos) /*!< Bit mask of RNG field.                                   */
+  #define CRACEN_ENABLE_RNG_Min (0x0UL)              /*!< Min enumerator value of RNG field.                                   */
+  #define CRACEN_ENABLE_RNG_Max (0x1UL)              /*!< Max enumerator value of RNG field.                                   */
+  #define CRACEN_ENABLE_RNG_Disabled (0x0UL)         /*!< RNG disabled.                                                        */
+  #define CRACEN_ENABLE_RNG_Enabled (0x1UL)          /*!< RNG enabled.                                                         */
+
+
+#endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
+
+/* =========================================================================================================================== */
+/* ================                                        CRACENCORE                                        ================ */
+/* =========================================================================================================================== */
+
+#if !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__) /*!< Ignore C structs for assembly code.                                 */
+
+/* ============================================== Struct CRACENCORE_RNGCONTROL =============================================== */
+/**
+  * @brief RNGCONTROL [CRACENCORE_RNGCONTROL] (unspecified)
+  */
+typedef struct {
+  __IOM uint32_t  CONTROL;                           /*!< (@ 0x00000000) Control register                                      */
+  __IOM uint32_t  FIFOLEVEL;                         /*!< (@ 0x00000004) FIFO level register.                                  */
+  __IOM uint32_t  FIFOTHRESHOLD;                     /*!< (@ 0x00000008) FIFO threshold register.                              */
+  __IOM uint32_t  FIFODEPTH;                         /*!< (@ 0x0000000C) FIFO depth register.                                  */
+  __IOM uint32_t  KEY[4];                            /*!< (@ 0x00000010) Key register.                                         */
+  __IOM uint32_t  TESTDATA;                          /*!< (@ 0x00000020) Test data register.                                   */
+  __IOM uint32_t  REPEATTHRESHOLD;                   /*!< (@ 0x00000024) Repetition test cut-off register.                     */
+  __IOM uint32_t  PROPTESTCUTOFF;                    /*!< (@ 0x00000028) Proportion test cut-off register.                     */
+  __IOM uint32_t  LFSRSEED;                          /*!< (@ 0x0000002C) LFSR seed register.                                   */
+  __IOM uint32_t  STATUS;                            /*!< (@ 0x00000030) Status register.                                      */
+  __IOM uint32_t  WARMUPPERIOD;                      /*!< (@ 0x00000034) Number of clock cycles in warm-up sequence.           */
+  __IOM uint32_t  DISABLEOSC;                        /*!< (@ 0x00000038) DisableOsc register.                                  */
+  __IM  uint32_t  RESERVED[2];
+  __IOM uint32_t  SAMPLINGPERIOD;                    /*!< (@ 0x00000044) Number of clock cycles between sampling moments.      */
+  __IM  uint32_t  RESERVED1[4];
+  __IOM uint32_t  HWCONFIG;                          /*!< (@ 0x00000058) Hardware configuration register.                      */
+  __IOM uint32_t  COOLDOWNPERIOD;                    /*!< (@ 0x0000005C) Number of clock cycles in cool-down sequence.         */
+  __IOM uint32_t  AUTOCORRTESTCUTOFF0;               /*!< (@ 0x00000060) AutoCorrTestCutoff register 0                         */
+  __IOM uint32_t  AUTOCORRTESTCUTOFF1;               /*!< (@ 0x00000064) AutoCorrTestCutoff register 1                         */
+  __IOM uint32_t  CORRTESTCUTOFF0;                   /*!< (@ 0x00000068) CorrTestCutoff register 0                             */
+  __IOM uint32_t  CORRTESTCUTOFF1;                   /*!< (@ 0x0000006C) CorrTestCutoff register 1                             */
+  __IOM uint32_t  AUTOCORRTESTFAILED;                /*!< (@ 0x00000070) Auto-correlation test failing ring(s).                */
+  __IOM uint32_t  CORRTESTFAILED;                    /*!< (@ 0x00000074) Correlation test failing ring.                        */
+  __IM  uint32_t  RESERVED2;
+  __IOM uint32_t  HWVERSION;                         /*!< (@ 0x0000007C) Fixed to 1 for this version.                          */
+  __IM  uint32_t  FIFO[32];                          /*!< (@ 0x00000080) FIFO data                                             */
+} NRF_CRACENCORE_RNGCONTROL_Type;                    /*!< Size = 256 (0x100)                                                   */
+
+/* CRACENCORE_RNGCONTROL_CONTROL: Control register */
+  #define CRACENCORE_RNGCONTROL_CONTROL_ResetValue (0x00040000UL) /*!< Reset value of CONTROL register.                        */
+
+/* ENABLE @Bit 0 : Start/enable the NDRNG. */
+  #define CRACENCORE_RNGCONTROL_CONTROL_ENABLE_Pos (0UL) /*!< Position of ENABLE field.                                        */
+  #define CRACENCORE_RNGCONTROL_CONTROL_ENABLE_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_ENABLE_Pos) /*!< Bit mask of ENABLE
+                                                                            field.*/
+
+/* LFSREN @Bit 1 : Select between the NDRNG with asynchronous free running oscillators (when 0) and the Pseudo-Random generator
+                   with synchronous oscillators for simulation purpose (when 1). */
+
+  #define CRACENCORE_RNGCONTROL_CONTROL_LFSREN_Pos (1UL) /*!< Position of LFSREN field.                                        */
+  #define CRACENCORE_RNGCONTROL_CONTROL_LFSREN_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_LFSREN_Pos) /*!< Bit mask of LFSREN
+                                                                            field.*/
+
+/* TESTEN @Bit 2 : Select input for conditioning function and continuous tests: */
+  #define CRACENCORE_RNGCONTROL_CONTROL_TESTEN_Pos (2UL) /*!< Position of TESTEN field.                                        */
+  #define CRACENCORE_RNGCONTROL_CONTROL_TESTEN_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_TESTEN_Pos) /*!< Bit mask of TESTEN
+                                                                            field.*/
+  #define CRACENCORE_RNGCONTROL_CONTROL_TESTEN_Min (0x0UL) /*!< Min enumerator value of TESTEN field.                          */
+  #define CRACENCORE_RNGCONTROL_CONTROL_TESTEN_Max (0x1UL) /*!< Max enumerator value of TESTEN field.                          */
+  #define CRACENCORE_RNGCONTROL_CONTROL_TESTEN_NORMAL (0x0UL) /*!< Noise source (normal mode).                                 */
+  #define CRACENCORE_RNGCONTROL_CONTROL_TESTEN_TEST (0x1UL) /*!< Test data register (test mode).                               */
+
+/* CONDBYPASS @Bit 3 : Conditioning function bypass. */
+  #define CRACENCORE_RNGCONTROL_CONTROL_CONDBYPASS_Pos (3UL) /*!< Position of CONDBYPASS field.                                */
+  #define CRACENCORE_RNGCONTROL_CONTROL_CONDBYPASS_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_CONDBYPASS_Pos) /*!< Bit mask of
+                                                                            CONDBYPASS field.*/
+  #define CRACENCORE_RNGCONTROL_CONTROL_CONDBYPASS_Min (0x0UL) /*!< Min enumerator value of CONDBYPASS field.                  */
+  #define CRACENCORE_RNGCONTROL_CONTROL_CONDBYPASS_Max (0x1UL) /*!< Max enumerator value of CONDBYPASS field.                  */
+  #define CRACENCORE_RNGCONTROL_CONTROL_CONDBYPASS_NORMAL (0x0UL) /*!< the conditioning function is used (normal mode).        */
+  #define CRACENCORE_RNGCONTROL_CONTROL_CONDBYPASS_BYPASS (0x1UL) /*!< the conditioning function is bypassed (to observe entropy
+                                                                       source directly).*/
+
+/* INTENREP @Bit 4 : Enable interrupt if any of the health test fails. */
+  #define CRACENCORE_RNGCONTROL_CONTROL_INTENREP_Pos (4UL) /*!< Position of INTENREP field.                                    */
+  #define CRACENCORE_RNGCONTROL_CONTROL_INTENREP_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_INTENREP_Pos) /*!< Bit mask of
+                                                                            INTENREP field.*/
+
+/* INTENFULL @Bit 7 : Enable interrupt if FIFO is full. */
+  #define CRACENCORE_RNGCONTROL_CONTROL_INTENFULL_Pos (7UL) /*!< Position of INTENFULL field.                                  */
+  #define CRACENCORE_RNGCONTROL_CONTROL_INTENFULL_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_INTENFULL_Pos) /*!< Bit mask of
+                                                                            INTENFULL field.*/
+
+/* SOFTRST @Bit 8 : Datapath content flush and control FSM */
+  #define CRACENCORE_RNGCONTROL_CONTROL_SOFTRST_Pos (8UL) /*!< Position of SOFTRST field.                                      */
+  #define CRACENCORE_RNGCONTROL_CONTROL_SOFTRST_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_SOFTRST_Pos) /*!< Bit mask of
+                                                                            SOFTRST field.*/
+
+/* FORCEACTIVEROS @Bit 11 : Force oscillators to run when FIFO is full. */
+  #define CRACENCORE_RNGCONTROL_CONTROL_FORCEACTIVEROS_Pos (11UL) /*!< Position of FORCEACTIVEROS field.                       */
+  #define CRACENCORE_RNGCONTROL_CONTROL_FORCEACTIVEROS_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_FORCEACTIVEROS_Pos) /*!< Bit
+                                                                            mask of FORCEACTIVEROS field.*/
+
+/* IGNOREHEALTHTESTSFAILFORFSM @Bit 12 : Results of the health tests during start-up and online test do not affect the control
+                                         FSM state. */
+
+  #define CRACENCORE_RNGCONTROL_CONTROL_IGNOREHEALTHTESTSFAILFORFSM_Pos (12UL) /*!< Position of IGNOREHEALTHTESTSFAILFORFSM
+                                                                            field.*/
+  #define CRACENCORE_RNGCONTROL_CONTROL_IGNOREHEALTHTESTSFAILFORFSM_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_IGNOREHEALTHTESTSFAILFORFSM_Pos)
+                                                                            /*!< Bit mask of IGNOREHEALTHTESTSFAILFORFSM field.*/
+
+/* NB128BITBLOCKS @Bits 16..19 : Number of 128 bit blocks used in conditioning (AES-CBC-MAC) post-processing. */
+  #define CRACENCORE_RNGCONTROL_CONTROL_NB128BITBLOCKS_Pos (16UL) /*!< Position of NB128BITBLOCKS field.                       */
+  #define CRACENCORE_RNGCONTROL_CONTROL_NB128BITBLOCKS_Msk (0xFUL << CRACENCORE_RNGCONTROL_CONTROL_NB128BITBLOCKS_Pos) /*!< Bit
+                                                                            mask of NB128BITBLOCKS field.*/
+
+/* FIFOWRITESTARTUP @Bit 20 : Enable write of the samples in the FIFO during start-up. */
+  #define CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Pos (20UL) /*!< Position of FIFOWRITESTARTUP field.                   */
+  #define CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Pos) /*!<
+                                                                            Bit mask of FIFOWRITESTARTUP field.*/
+
+/* DISREPETTESTS @Bit 21 : All repetition tests (each share) are disabled via this single bit. */
+  #define CRACENCORE_RNGCONTROL_CONTROL_DISREPETTESTS_Pos (21UL) /*!< Position of DISREPETTESTS field.                         */
+  #define CRACENCORE_RNGCONTROL_CONTROL_DISREPETTESTS_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_DISREPETTESTS_Pos) /*!< Bit
+                                                                            mask of DISREPETTESTS field.*/
+
+/* DISPROPTESTS @Bit 22 : All proportion tests (each share) are disabled via this single bit. */
+  #define CRACENCORE_RNGCONTROL_CONTROL_DISPROPTESTS_Pos (22UL) /*!< Position of DISPROPTESTS field.                           */
+  #define CRACENCORE_RNGCONTROL_CONTROL_DISPROPTESTS_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_DISPROPTESTS_Pos) /*!< Bit mask
+                                                                            of DISPROPTESTS field.*/
+
+/* DISAUTOCORRTESTS @Bits 23..24 : Disable specific delay(s) check in auto-correlation test - same RO: */
+  #define CRACENCORE_RNGCONTROL_CONTROL_DISAUTOCORRTESTS_Pos (23UL) /*!< Position of DISAUTOCORRTESTS field.                   */
+  #define CRACENCORE_RNGCONTROL_CONTROL_DISAUTOCORRTESTS_Msk (0x3UL << CRACENCORE_RNGCONTROL_CONTROL_DISAUTOCORRTESTS_Pos) /*!<
+                                                                            Bit mask of DISAUTOCORRTESTS field.*/
+
+/* DISCORRTESTS @Bits 27..29 : Disable specific delay(s) check in correlation test - different ROs: */
+  #define CRACENCORE_RNGCONTROL_CONTROL_DISCORRTESTS_Pos (27UL) /*!< Position of DISCORRTESTS field.                           */
+  #define CRACENCORE_RNGCONTROL_CONTROL_DISCORRTESTS_Msk (0x7UL << CRACENCORE_RNGCONTROL_CONTROL_DISCORRTESTS_Pos) /*!< Bit mask
+                                                                            of DISCORRTESTS field.*/
+
+/* BLENDINGMETHOD @Bits 30..31 : Select blending method */
+  #define CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_Pos (30UL) /*!< Position of BLENDINGMETHOD field.                       */
+  #define CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_Msk (0x3UL << CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_Pos) /*!< Bit
+                                                                            mask of BLENDINGMETHOD field.*/
+  #define CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_Min (0x0UL) /*!< Min enumerator value of BLENDINGMETHOD field.          */
+  #define CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_Max (0x3UL) /*!< Max enumerator value of BLENDINGMETHOD field.          */
+  #define CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_CONCATENATION (0x0UL) /*!< Concatenation                                */
+  #define CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_XORLEVEL1 (0x1UL) /*!< XOR level 1                                      */
+  #define CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_XORLEVEL2 (0x2UL) /*!< XOR level 2                                      */
+  #define CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_VONNEUMANN (0x3UL) /*!< VON-NEUMANN debiasing                           */
+
+
+/* CRACENCORE_RNGCONTROL_FIFOLEVEL: FIFO level register. */
+  #define CRACENCORE_RNGCONTROL_FIFOLEVEL_ResetValue (0x00000000UL) /*!< Reset value of FIFOLEVEL register.                    */
+
+/* FIFOLEVEL @Bits 0..31 : Number of 32 bits words of random values available in the FIFO. */
+  #define CRACENCORE_RNGCONTROL_FIFOLEVEL_FIFOLEVEL_Pos (0UL) /*!< Position of FIFOLEVEL field.                                */
+  #define CRACENCORE_RNGCONTROL_FIFOLEVEL_FIFOLEVEL_Msk (0xFFFFFFFFUL << CRACENCORE_RNGCONTROL_FIFOLEVEL_FIFOLEVEL_Pos) /*!< Bit
+                                                                            mask of FIFOLEVEL field.*/
+
+
+/* CRACENCORE_RNGCONTROL_FIFOTHRESHOLD: FIFO threshold register. */
+  #define CRACENCORE_RNGCONTROL_FIFOTHRESHOLD_ResetValue (0x00000003UL) /*!< Reset value of FIFOTHRESHOLD register.            */
+
+/* FIFOTHRESHOLD @Bits 0..31 : FIFO level below which the module leaves the idle state to refill the FIFO, expressed in number
+                               of 128bit blocks. */
+
+  #define CRACENCORE_RNGCONTROL_FIFOTHRESHOLD_FIFOTHRESHOLD_Pos (0UL) /*!< Position of FIFOTHRESHOLD field.                    */
+  #define CRACENCORE_RNGCONTROL_FIFOTHRESHOLD_FIFOTHRESHOLD_Msk (0xFFFFFFFFUL << CRACENCORE_RNGCONTROL_FIFOTHRESHOLD_FIFOTHRESHOLD_Pos)
+                                                                            /*!< Bit mask of FIFOTHRESHOLD field.*/
+
+
+/* CRACENCORE_RNGCONTROL_FIFODEPTH: FIFO depth register. */
+  #define CRACENCORE_RNGCONTROL_FIFODEPTH_ResetValue (0x00000010UL) /*!< Reset value of FIFODEPTH register.                    */
+
+/* FIFODEPTH @Bits 0..31 : Maximum number of 32 bits words that can be stored in the FIFO. */
+  #define CRACENCORE_RNGCONTROL_FIFODEPTH_FIFODEPTH_Pos (0UL) /*!< Position of FIFODEPTH field.                                */
+  #define CRACENCORE_RNGCONTROL_FIFODEPTH_FIFODEPTH_Msk (0xFFFFFFFFUL << CRACENCORE_RNGCONTROL_FIFODEPTH_FIFODEPTH_Pos) /*!< Bit
+                                                                            mask of FIFODEPTH field.*/
+
+
+/* CRACENCORE_RNGCONTROL_KEY: Key register. */
+  #define CRACENCORE_RNGCONTROL_KEY_MaxCount (4UL)   /*!< Max size of KEY[4] array.                                            */
+  #define CRACENCORE_RNGCONTROL_KEY_MaxIndex (3UL)   /*!< Max index of KEY[4] array.                                           */
+  #define CRACENCORE_RNGCONTROL_KEY_MinIndex (0UL)   /*!< Min index of KEY[4] array.                                           */
+  #define CRACENCORE_RNGCONTROL_KEY_ResetValue (0x00000000UL) /*!< Reset value of KEY[4] register.                             */
+
+/* KEY @Bits 0..31 : Key register. */
+  #define CRACENCORE_RNGCONTROL_KEY_KEY_Pos (0UL)    /*!< Position of KEY field.                                               */
+  #define CRACENCORE_RNGCONTROL_KEY_KEY_Msk (0xFFFFFFFFUL << CRACENCORE_RNGCONTROL_KEY_KEY_Pos) /*!< Bit mask of KEY field.    */
+
+
+/* CRACENCORE_RNGCONTROL_TESTDATA: Test data register. */
+  #define CRACENCORE_RNGCONTROL_TESTDATA_ResetValue (0x00000000UL) /*!< Reset value of TESTDATA register.                      */
+
+/* TESTDATA @Bits 0..31 : Test data register. */
+  #define CRACENCORE_RNGCONTROL_TESTDATA_TESTDATA_Pos (0UL) /*!< Position of TESTDATA field.                                   */
+  #define CRACENCORE_RNGCONTROL_TESTDATA_TESTDATA_Msk (0xFFFFFFFFUL << CRACENCORE_RNGCONTROL_TESTDATA_TESTDATA_Pos) /*!< Bit
+                                                                            mask of TESTDATA field.*/
+
+
+/* CRACENCORE_RNGCONTROL_REPEATTHRESHOLD: Repetition test cut-off register. */
+  #define CRACENCORE_RNGCONTROL_REPEATTHRESHOLD_ResetValue (0x00000004UL) /*!< Reset value of REPEATTHRESHOLD register.        */
+
+/* REPEATTHRESHOLD @Bits 0..5 : Repetition Test cut-off value. */
+  #define CRACENCORE_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Pos (0UL) /*!< Position of REPEATTHRESHOLD field.              */
+  #define CRACENCORE_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Msk (0x3FUL << CRACENCORE_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Pos)
+                                                                            /*!< Bit mask of REPEATTHRESHOLD field.*/
+
+
+/* CRACENCORE_RNGCONTROL_PROPTESTCUTOFF: Proportion test cut-off register. */
+  #define CRACENCORE_RNGCONTROL_PROPTESTCUTOFF_ResetValue (0x0000000DUL) /*!< Reset value of PROPTESTCUTOFF register.          */
+
+/* PROPTESTCUTOFF @Bits 0..8 : Proportion test cut-off value. */
+  #define CRACENCORE_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Pos (0UL) /*!< Position of PROPTESTCUTOFF field.                 */
+  #define CRACENCORE_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Msk (0x1FFUL << CRACENCORE_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Pos)
+                                                                            /*!< Bit mask of PROPTESTCUTOFF field.*/
+
+
+/* CRACENCORE_RNGCONTROL_LFSRSEED: LFSR seed register. */
+  #define CRACENCORE_RNGCONTROL_LFSRSEED_ResetValue (0x00FFFFFFUL) /*!< Reset value of LFSRSEED register.                      */
+
+/* LFSRSEED @Bits 0..23 : LFSR initialization value. */
+  #define CRACENCORE_RNGCONTROL_LFSRSEED_LFSRSEED_Pos (0UL) /*!< Position of LFSRSEED field.                                   */
+  #define CRACENCORE_RNGCONTROL_LFSRSEED_LFSRSEED_Msk (0xFFFFFFUL << CRACENCORE_RNGCONTROL_LFSRSEED_LFSRSEED_Pos) /*!< Bit mask
+                                                                            of LFSRSEED field.*/
+
+/* LFSRSSELECTION @Bits 24..25 : Share index for which initialization value should be used. */
+  #define CRACENCORE_RNGCONTROL_LFSRSEED_LFSRSSELECTION_Pos (24UL) /*!< Position of LFSRSSELECTION field.                      */
+  #define CRACENCORE_RNGCONTROL_LFSRSEED_LFSRSSELECTION_Msk (0x3UL << CRACENCORE_RNGCONTROL_LFSRSEED_LFSRSSELECTION_Pos) /*!<
+                                                                            Bit mask of LFSRSSELECTION field.*/
+
+
+/* CRACENCORE_RNGCONTROL_STATUS: Status register. */
+  #define CRACENCORE_RNGCONTROL_STATUS_ResetValue (0x00000000UL) /*!< Reset value of STATUS register.                          */
+
+/* TESTDATABUSY @Bit 0 : High when data written to TestData register is being processed. */
+  #define CRACENCORE_RNGCONTROL_STATUS_TESTDATABUSY_Pos (0UL) /*!< Position of TESTDATABUSY field.                             */
+  #define CRACENCORE_RNGCONTROL_STATUS_TESTDATABUSY_Msk (0x1UL << CRACENCORE_RNGCONTROL_STATUS_TESTDATABUSY_Pos) /*!< Bit mask
+                                                                            of TESTDATABUSY field.*/
+
+/* STATE @Bits 1..3 : State of the control FSM: */
+  #define CRACENCORE_RNGCONTROL_STATUS_STATE_Pos (1UL) /*!< Position of STATE field.                                           */
+  #define CRACENCORE_RNGCONTROL_STATUS_STATE_Msk (0x7UL << CRACENCORE_RNGCONTROL_STATUS_STATE_Pos) /*!< Bit mask of STATE
+                                                                            field.*/
+  #define CRACENCORE_RNGCONTROL_STATUS_STATE_Min (0x0UL) /*!< Min enumerator value of STATE field.                             */
+  #define CRACENCORE_RNGCONTROL_STATUS_STATE_Max (0x5UL) /*!< Max enumerator value of STATE field.                             */
+  #define CRACENCORE_RNGCONTROL_STATUS_STATE_RESET (0x0UL) /*!< Reset                                                          */
+  #define CRACENCORE_RNGCONTROL_STATUS_STATE_STARTUP (0x1UL) /*!< Startup                                                      */
+  #define CRACENCORE_RNGCONTROL_STATUS_STATE_IDLERON (0x2UL) /*!< Idle / FIFO full                                             */
+  #define CRACENCORE_RNGCONTROL_STATUS_STATE_FILLFIFO (0x4UL) /*!< Fill FIFO                                                   */
+  #define CRACENCORE_RNGCONTROL_STATUS_STATE_ERROR (0x5UL) /*!< Error                                                          */
+
+/* REPFAIL @Bit 4 : NIST repetition test(s) failure. */
+  #define CRACENCORE_RNGCONTROL_STATUS_REPFAIL_Pos (4UL) /*!< Position of REPFAIL field.                                       */
+  #define CRACENCORE_RNGCONTROL_STATUS_REPFAIL_Msk (0x1UL << CRACENCORE_RNGCONTROL_STATUS_REPFAIL_Pos) /*!< Bit mask of REPFAIL
+                                                                            field.*/
+
+/* PROPFAIL @Bit 5 : NIST proportion test(s) failure. */
+  #define CRACENCORE_RNGCONTROL_STATUS_PROPFAIL_Pos (5UL) /*!< Position of PROPFAIL field.                                     */
+  #define CRACENCORE_RNGCONTROL_STATUS_PROPFAIL_Msk (0x1UL << CRACENCORE_RNGCONTROL_STATUS_PROPFAIL_Pos) /*!< Bit mask of
+                                                                            PROPFAIL field.*/
+
+/* ANYHEALTHTESTFAIL @Bit 6 : Any of the enabled health tests is failing. */
+  #define CRACENCORE_RNGCONTROL_STATUS_ANYHEALTHTESTFAIL_Pos (6UL) /*!< Position of ANYHEALTHTESTFAIL field.                   */
+  #define CRACENCORE_RNGCONTROL_STATUS_ANYHEALTHTESTFAIL_Msk (0x1UL << CRACENCORE_RNGCONTROL_STATUS_ANYHEALTHTESTFAIL_Pos) /*!<
+                                                                            Bit mask of ANYHEALTHTESTFAIL field.*/
+
+/* FULLINT @Bit 7 : FIFO full status. */
+  #define CRACENCORE_RNGCONTROL_STATUS_FULLINT_Pos (7UL) /*!< Position of FULLINT field.                                       */
+  #define CRACENCORE_RNGCONTROL_STATUS_FULLINT_Msk (0x1UL << CRACENCORE_RNGCONTROL_STATUS_FULLINT_Pos) /*!< Bit mask of FULLINT
+                                                                            field.*/
+
+/* STARTUPFAIL @Bit 10 : Start-up test(s) failure. */
+  #define CRACENCORE_RNGCONTROL_STATUS_STARTUPFAIL_Pos (10UL) /*!< Position of STARTUPFAIL field.                              */
+  #define CRACENCORE_RNGCONTROL_STATUS_STARTUPFAIL_Msk (0x1UL << CRACENCORE_RNGCONTROL_STATUS_STARTUPFAIL_Pos) /*!< Bit mask of
+                                                                            STARTUPFAIL field.*/
+
+/* REPTESTFAILPERSHARE @Bits 12..15 : NIST Repetition test failure per share. */
+  #define CRACENCORE_RNGCONTROL_STATUS_REPTESTFAILPERSHARE_Pos (12UL) /*!< Position of REPTESTFAILPERSHARE field.              */
+  #define CRACENCORE_RNGCONTROL_STATUS_REPTESTFAILPERSHARE_Msk (0xFUL << CRACENCORE_RNGCONTROL_STATUS_REPTESTFAILPERSHARE_Pos)
+                                                                            /*!< Bit mask of REPTESTFAILPERSHARE field.*/
+
+/* PROPTESTFAILPERSHARE @Bits 16..19 : NIST Proportion test failure per share. */
+  #define CRACENCORE_RNGCONTROL_STATUS_PROPTESTFAILPERSHARE_Pos (16UL) /*!< Position of PROPTESTFAILPERSHARE field.            */
+  #define CRACENCORE_RNGCONTROL_STATUS_PROPTESTFAILPERSHARE_Msk (0xFUL << CRACENCORE_RNGCONTROL_STATUS_PROPTESTFAILPERSHARE_Pos)
+                                                                            /*!< Bit mask of PROPTESTFAILPERSHARE field.*/
+
+/* CONDITIONINGISTOOSLOW @Bit 20 : Conditioning consumes data slower than they are provided to it. */
+  #define CRACENCORE_RNGCONTROL_STATUS_CONDITIONINGISTOOSLOW_Pos (20UL) /*!< Position of CONDITIONINGISTOOSLOW field.          */
+  #define CRACENCORE_RNGCONTROL_STATUS_CONDITIONINGISTOOSLOW_Msk (0x1UL << CRACENCORE_RNGCONTROL_STATUS_CONDITIONINGISTOOSLOW_Pos)
+                                                                            /*!< Bit mask of CONDITIONINGISTOOSLOW field.*/
+
+
+/* CRACENCORE_RNGCONTROL_WARMUPPERIOD: Number of clock cycles in warm-up sequence. */
+  #define CRACENCORE_RNGCONTROL_WARMUPPERIOD_ResetValue (0x00000200UL) /*!< Reset value of WARMUPPERIOD register.              */
+
+/* WARMUPPERIOD @Bits 0..11 : Number of clock cycles in warm-up sequence. */
+  #define CRACENCORE_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Pos (0UL) /*!< Position of WARMUPPERIOD field.                       */
+  #define CRACENCORE_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Msk (0xFFFUL << CRACENCORE_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Pos)
+                                                                            /*!< Bit mask of WARMUPPERIOD field.*/
+
+
+/* CRACENCORE_RNGCONTROL_DISABLEOSC: DisableOsc register. */
+  #define CRACENCORE_RNGCONTROL_DISABLEOSC_ResetValue (0x00000000UL) /*!< Reset value of DISABLEOSC register.                  */
+
+/* DISABLEOSC @Bits 0..7 : Disable oscillator rings 0 to 7. */
+  #define CRACENCORE_RNGCONTROL_DISABLEOSC_DISABLEOSC_Pos (0UL) /*!< Position of DISABLEOSC field.                             */
+  #define CRACENCORE_RNGCONTROL_DISABLEOSC_DISABLEOSC_Msk (0xFFUL << CRACENCORE_RNGCONTROL_DISABLEOSC_DISABLEOSC_Pos) /*!< Bit
+                                                                            mask of DISABLEOSC field.*/
+
+
+/* CRACENCORE_RNGCONTROL_SAMPLINGPERIOD: Number of clock cycles between sampling moments. */
+  #define CRACENCORE_RNGCONTROL_SAMPLINGPERIOD_ResetValue (0x00000FFFUL) /*!< Reset value of SAMPLINGPERIOD register.          */
+
+/* SAMPLINGPERIOD @Bits 0..11 : Number of clock cycles between sampling moments. */
+  #define CRACENCORE_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Pos (0UL) /*!< Position of SAMPLINGPERIOD field.                 */
+  #define CRACENCORE_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Msk (0xFFFUL << CRACENCORE_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Pos)
+                                                                            /*!< Bit mask of SAMPLINGPERIOD field.*/
+
+
+/* CRACENCORE_RNGCONTROL_HWCONFIG: Hardware configuration register. */
+  #define CRACENCORE_RNGCONTROL_HWCONFIG_ResetValue (0x0002410FUL) /*!< Reset value of HWCONFIG register.                      */
+
+/* NBOFINV @Bits 0..7 : Generic g_NbOfInverters value. */
+  #define CRACENCORE_RNGCONTROL_HWCONFIG_NBOFINV_Pos (0UL) /*!< Position of NBOFINV field.                                     */
+  #define CRACENCORE_RNGCONTROL_HWCONFIG_NBOFINV_Msk (0xFFUL << CRACENCORE_RNGCONTROL_HWCONFIG_NBOFINV_Pos) /*!< Bit mask of
+                                                                            NBOFINV field.*/
+
+/* LOG2NBOFAUTOCORRTESTSPERSHARE @Bits 8..11 : Generic g_Log2NbOfAutoCorrTestsPerShare value. */
+  #define CRACENCORE_RNGCONTROL_HWCONFIG_LOG2NBOFAUTOCORRTESTSPERSHARE_Pos (8UL) /*!< Position of LOG2NBOFAUTOCORRTESTSPERSHARE
+                                                                            field.*/
+  #define CRACENCORE_RNGCONTROL_HWCONFIG_LOG2NBOFAUTOCORRTESTSPERSHARE_Msk (0xFUL << CRACENCORE_RNGCONTROL_HWCONFIG_LOG2NBOFAUTOCORRTESTSPERSHARE_Pos)
+                                                                            /*!< Bit mask of LOG2NBOFAUTOCORRTESTSPERSHARE
+                                                                            field.*/
+
+/* LOG2FIFODEPTH @Bits 12..15 : Generic g_Log2FifoDepth value. */
+  #define CRACENCORE_RNGCONTROL_HWCONFIG_LOG2FIFODEPTH_Pos (12UL) /*!< Position of LOG2FIFODEPTH field.                        */
+  #define CRACENCORE_RNGCONTROL_HWCONFIG_LOG2FIFODEPTH_Msk (0xFUL << CRACENCORE_RNGCONTROL_HWCONFIG_LOG2FIFODEPTH_Pos) /*!< Bit
+                                                                            mask of LOG2FIFODEPTH field.*/
+
+/* LOG2NBOFSHARES @Bits 16..17 : Generic g_Log2NbOfShares value. */
+  #define CRACENCORE_RNGCONTROL_HWCONFIG_LOG2NBOFSHARES_Pos (16UL) /*!< Position of LOG2NBOFSHARES field.                      */
+  #define CRACENCORE_RNGCONTROL_HWCONFIG_LOG2NBOFSHARES_Msk (0x3UL << CRACENCORE_RNGCONTROL_HWCONFIG_LOG2NBOFSHARES_Pos) /*!<
+                                                                            Bit mask of LOG2NBOFSHARES field.*/
+
+
+/* CRACENCORE_RNGCONTROL_COOLDOWNPERIOD: Number of clock cycles in cool-down sequence. */
+  #define CRACENCORE_RNGCONTROL_COOLDOWNPERIOD_ResetValue (0x00000000UL) /*!< Reset value of COOLDOWNPERIOD register.          */
+
+/* COOLDOWNPERIOD @Bits 0..11 : Number of clock cycles in cool-down sequence. */
+  #define CRACENCORE_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Pos (0UL) /*!< Position of COOLDOWNPERIOD field.                 */
+  #define CRACENCORE_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Msk (0xFFFUL << CRACENCORE_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Pos)
+                                                                            /*!< Bit mask of COOLDOWNPERIOD field.*/
+
+
+/* CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF0: AutoCorrTestCutoff register 0 */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF0_ResetValue (0x007F007FUL) /*!< Reset value of AUTOCORRTESTCUTOFF0 register.*/
+
+/* DLYZEROCUTOFF @Bits 0..15 : Auto-correlation test cut-off value for delay of 0 samples. */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF0_DLYZEROCUTOFF_Pos (0UL) /*!< Position of DLYZEROCUTOFF field.              */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF0_DLYZEROCUTOFF_Msk (0xFFFFUL << CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF0_DLYZEROCUTOFF_Pos)
+                                                                            /*!< Bit mask of DLYZEROCUTOFF field.*/
+
+/* DLYONECUTOFF @Bits 16..31 : Auto-correlation test cut-off value for delay of +1 sample. */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF0_DLYONECUTOFF_Pos (16UL) /*!< Position of DLYONECUTOFF field.               */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF0_DLYONECUTOFF_Msk (0xFFFFUL << CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF0_DLYONECUTOFF_Pos)
+                                                                            /*!< Bit mask of DLYONECUTOFF field.*/
+
+
+/* CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF1: AutoCorrTestCutoff register 1 */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF1_ResetValue (0x007F007FUL) /*!< Reset value of AUTOCORRTESTCUTOFF1 register.*/
+
+/* DLYTWOCUTOFF @Bits 0..15 : Auto-correlation test cut-off value for delay of +2 samples. */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF1_DLYTWOCUTOFF_Pos (0UL) /*!< Position of DLYTWOCUTOFF field.                */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF1_DLYTWOCUTOFF_Msk (0xFFFFUL << CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF1_DLYTWOCUTOFF_Pos)
+                                                                            /*!< Bit mask of DLYTWOCUTOFF field.*/
+
+/* DLYTHREECUTOFF @Bits 16..31 : Auto-correlation test cut-off value for delay of +3 samples. */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF1_DLYTHREECUTOFF_Pos (16UL) /*!< Position of DLYTHREECUTOFF field.           */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF1_DLYTHREECUTOFF_Msk (0xFFFFUL << CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF1_DLYTHREECUTOFF_Pos)
+                                                                            /*!< Bit mask of DLYTHREECUTOFF field.*/
+
+
+/* CRACENCORE_RNGCONTROL_CORRTESTCUTOFF0: CorrTestCutoff register 0 */
+  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF0_ResetValue (0x007F007FUL) /*!< Reset value of CORRTESTCUTOFF0 register.        */
+
+/* DLYZEROCUTOFF @Bits 0..15 : Correlation test cut-off value for delay of 0 samples. */
+  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF0_DLYZEROCUTOFF_Pos (0UL) /*!< Position of DLYZEROCUTOFF field.                  */
+  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF0_DLYZEROCUTOFF_Msk (0xFFFFUL << CRACENCORE_RNGCONTROL_CORRTESTCUTOFF0_DLYZEROCUTOFF_Pos)
+                                                                            /*!< Bit mask of DLYZEROCUTOFF field.*/
+
+/* DLYONECUTOFF @Bits 16..31 : Correlation test cut-off value for delay of +/-1 sample. */
+  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF0_DLYONECUTOFF_Pos (16UL) /*!< Position of DLYONECUTOFF field.                   */
+  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF0_DLYONECUTOFF_Msk (0xFFFFUL << CRACENCORE_RNGCONTROL_CORRTESTCUTOFF0_DLYONECUTOFF_Pos)
+                                                                            /*!< Bit mask of DLYONECUTOFF field.*/
+
+
+/* CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1: CorrTestCutoff register 1 */
+  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_ResetValue (0x007F007FUL) /*!< Reset value of CORRTESTCUTOFF1 register.        */
+
+/* DLYTWOCUTOFF @Bits 0..15 : Correlation test cut-off value for delay of +/- 2 samples. */
+  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTWOCUTOFF_Pos (0UL) /*!< Position of DLYTWOCUTOFF field.                    */
+  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTWOCUTOFF_Msk (0xFFFFUL << CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTWOCUTOFF_Pos)
+                                                                            /*!< Bit mask of DLYTWOCUTOFF field.*/
+
+/* DLYTHREECUTOFF @Bits 16..31 : Correlation test cut-off value for delay of +/- 3 samples. */
+  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTHREECUTOFF_Pos (16UL) /*!< Position of DLYTHREECUTOFF field.               */
+  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTHREECUTOFF_Msk (0xFFFFUL << CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTHREECUTOFF_Pos)
+                                                                            /*!< Bit mask of DLYTHREECUTOFF field.*/
+
+
+/* CRACENCORE_RNGCONTROL_AUTOCORRTESTFAILED: Auto-correlation test failing ring(s). */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTFAILED_ResetValue (0x00000000UL) /*!< Reset value of AUTOCORRTESTFAILED register.  */
+
+/* AUTOCORRTESTFAILED @Bits 0..31 : Auto-correlation test failing ring(s). */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTFAILED_AUTOCORRTESTFAILED_Pos (0UL) /*!< Position of AUTOCORRTESTFAILED field.     */
+  #define CRACENCORE_RNGCONTROL_AUTOCORRTESTFAILED_AUTOCORRTESTFAILED_Msk (0xFFFFFFFFUL << CRACENCORE_RNGCONTROL_AUTOCORRTESTFAILED_AUTOCORRTESTFAILED_Pos)
+                                                                            /*!< Bit mask of AUTOCORRTESTFAILED field.*/
+
+
+/* CRACENCORE_RNGCONTROL_CORRTESTFAILED: Correlation test failing ring. */
+  #define CRACENCORE_RNGCONTROL_CORRTESTFAILED_ResetValue (0x00000000UL) /*!< Reset value of CORRTESTFAILED register.          */
+
+/* CORRTESTFAILED @Bits 0..31 : Correlation test failing ring. */
+  #define CRACENCORE_RNGCONTROL_CORRTESTFAILED_CORRTESTFAILED_Pos (0UL) /*!< Position of CORRTESTFAILED field.                 */
+  #define CRACENCORE_RNGCONTROL_CORRTESTFAILED_CORRTESTFAILED_Msk (0xFFFFFFFFUL << CRACENCORE_RNGCONTROL_CORRTESTFAILED_CORRTESTFAILED_Pos)
+                                                                            /*!< Bit mask of CORRTESTFAILED field.*/
+
+
+/* CRACENCORE_RNGCONTROL_HWVERSION: Fixed to 1 for this version. */
+  #define CRACENCORE_RNGCONTROL_HWVERSION_ResetValue (0x00000001UL) /*!< Reset value of HWVERSION register.                    */
+
+/* HWVERSION @Bits 0..31 : Fixed to 1 for this version. */
+  #define CRACENCORE_RNGCONTROL_HWVERSION_HWVERSION_Pos (0UL) /*!< Position of HWVERSION field.                                */
+  #define CRACENCORE_RNGCONTROL_HWVERSION_HWVERSION_Msk (0xFFFFFFFFUL << CRACENCORE_RNGCONTROL_HWVERSION_HWVERSION_Pos) /*!< Bit
+                                                                            mask of HWVERSION field.*/
+
+
+/* CRACENCORE_RNGCONTROL_FIFO: FIFO data */
+  #define CRACENCORE_RNGCONTROL_FIFO_MaxCount (32UL) /*!< Max size of FIFO[32] array.                                          */
+  #define CRACENCORE_RNGCONTROL_FIFO_MaxIndex (31UL) /*!< Max index of FIFO[32] array.                                         */
+  #define CRACENCORE_RNGCONTROL_FIFO_MinIndex (0UL)  /*!< Min index of FIFO[32] array.                                         */
+  #define CRACENCORE_RNGCONTROL_FIFO_ResetValue (0x00000000UL) /*!< Reset value of FIFO[32] register.                          */
+
+/* DATA @Bits 0..31 : FIFO data */
+  #define CRACENCORE_RNGCONTROL_FIFO_DATA_Pos (0UL)  /*!< Position of DATA field.                                              */
+  #define CRACENCORE_RNGCONTROL_FIFO_DATA_Msk (0xFFFFFFFFUL << CRACENCORE_RNGCONTROL_FIFO_DATA_Pos) /*!< Bit mask of DATA
+                                                                            field.*/
+
+
+/* ==================================================== Struct CRACENCORE ==================================================== */
+/**
+  * @brief CRACENCORE TRNG registers
+  */
+  typedef struct {                                   /*!< CRACENCORE Structure                                                 */
+    __IM uint32_t RESERVED[320];
+    __IOM NRF_CRACENCORE_RNGCONTROL_Type RNGCONTROL; /*!< (@ 0x00000500) (unspecified)                                         */
+  } NRF_CRACENCORE_Type;                             /*!< Size = 1536 (0x600)                                                  */
 
 #endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
 
@@ -3333,6 +3886,47 @@ typedef struct {
   #define ECB_OUT_PTR_PTR_Msk (0xFFFFFFFFUL << ECB_OUT_PTR_PTR_Pos) /*!< Bit mask of PTR field.                                */
 
 
+
+/* ===================================================== Struct ECB_CSAA ===================================================== */
+/**
+  * @brief CSAA [ECB_CSAA] Channel sounding access address scoring algorithm
+  */
+typedef struct {
+  __IM  uint32_t  REFLECTOR;                         /*!< (@ 0x00000000) Selected Channel Sounding Access Address used in the CS
+                                                                         SYNC from Reflector to Initiator*/
+  __IM  uint32_t  INITIATOR;                         /*!< (@ 0x00000004) Selected Channel Sounding Access Address used in the CS
+                                                                         SYNC from Initiator to Reflector*/
+  __IOM uint32_t  MODE;                              /*!< (@ 0x00000008) Operation modes                                       */
+} NRF_ECB_CSAA_Type;                                 /*!< Size = 12 (0x00C)                                                    */
+
+/* ECB_CSAA_REFLECTOR: Selected Channel Sounding Access Address used in the CS SYNC from Reflector to Initiator */
+  #define ECB_CSAA_REFLECTOR_ResetValue (0x00000000UL) /*!< Reset value of REFLECTOR register.                                 */
+
+/* PN @Bits 0..31 : (unspecified) */
+  #define ECB_CSAA_REFLECTOR_PN_Pos (0UL)            /*!< Position of PN field.                                                */
+  #define ECB_CSAA_REFLECTOR_PN_Msk (0xFFFFFFFFUL << ECB_CSAA_REFLECTOR_PN_Pos) /*!< Bit mask of PN field.                     */
+
+
+/* ECB_CSAA_INITIATOR: Selected Channel Sounding Access Address used in the CS SYNC from Initiator to Reflector */
+  #define ECB_CSAA_INITIATOR_ResetValue (0x00000000UL) /*!< Reset value of INITIATOR register.                                 */
+
+/* PN @Bits 0..31 : (unspecified) */
+  #define ECB_CSAA_INITIATOR_PN_Pos (0UL)            /*!< Position of PN field.                                                */
+  #define ECB_CSAA_INITIATOR_PN_Msk (0xFFFFFFFFUL << ECB_CSAA_INITIATOR_PN_Pos) /*!< Bit mask of PN field.                     */
+
+
+/* ECB_CSAA_MODE: Operation modes */
+  #define ECB_CSAA_MODE_ResetValue (0x00000000UL)    /*!< Reset value of MODE register.                                        */
+
+/* BITREVERSE @Bit 0 : Reverse the endianness on bit level for the ECB output, INITIATOR, and REFLECTOR registers */
+  #define ECB_CSAA_MODE_BITREVERSE_Pos (0UL)         /*!< Position of BITREVERSE field.                                        */
+  #define ECB_CSAA_MODE_BITREVERSE_Msk (0x1UL << ECB_CSAA_MODE_BITREVERSE_Pos) /*!< Bit mask of BITREVERSE field.              */
+  #define ECB_CSAA_MODE_BITREVERSE_Min (0x0UL)       /*!< Min enumerator value of BITREVERSE field.                            */
+  #define ECB_CSAA_MODE_BITREVERSE_Max (0x1UL)       /*!< Max enumerator value of BITREVERSE field.                            */
+  #define ECB_CSAA_MODE_BITREVERSE_Default (0x0UL)   /*!< Default endianness                                                   */
+  #define ECB_CSAA_MODE_BITREVERSE_Reversed (0x1UL)  /*!< Reversed endianness                                                  */
+
+
 /* ======================================================= Struct ECB ======================================================== */
 /**
   * @brief AES ECB Mode Encryption
@@ -3361,7 +3955,8 @@ typedef struct {
     __IOM NRF_ECB_IN_Type IN;                        /*!< (@ 0x00000530) IN EasyDMA channel                                    */
     __IM uint32_t RESERVED7;
     __IOM NRF_ECB_OUT_Type OUT;                      /*!< (@ 0x00000538) OUT EasyDMA channel                                   */
-  } NRF_ECB_Type;                                    /*!< Size = 1340 (0x53C)                                                  */
+    __IOM NRF_ECB_CSAA_Type CSAA;                    /*!< (@ 0x0000053C) Channel sounding access address scoring algorithm     */
+  } NRF_ECB_Type;                                    /*!< Size = 1352 (0x548)                                                  */
 
 /* ECB_TASKS_START: Start ECB block encrypt */
   #define ECB_TASKS_START_ResetValue (0x00000000UL)  /*!< Reset value of TASKS_START register.                                 */
@@ -4086,7 +4681,7 @@ typedef struct {
 typedef struct {
   __IM  uint32_t  CONFIGID;                          /*!< (@ 0x00000000) Configuration identifier                              */
   __IM  uint32_t  DEVICEID[2];                       /*!< (@ 0x00000004) Device identifier                                     */
-  __IOM uint32_t  UUID[4];                           /*!< (@ 0x0000000C) 128-bit Universally Unique IDentifier (UUID).         */
+  __IM  uint32_t  UUID[4];                           /*!< (@ 0x0000000C) 128-bit Universally Unique IDentifier (UUID).         */
   __IM  uint32_t  PART;                              /*!< (@ 0x0000001C) Part code                                             */
   __IM  uint32_t  VARIANT;                           /*!< (@ 0x00000020) Part Variant, Hardware version and Production
                                                                          configuration*/
@@ -6728,81 +7323,6 @@ typedef struct {
 #endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
 
 /* =========================================================================================================================== */
-/* ================                                       GPIOHSPADCTRL                                       ================ */
-/* =========================================================================================================================== */
-
-#if !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__) /*!< Ignore C structs for assembly code.                                 */
-/* ================================================== Struct GPIOHSPADCTRL =================================================== */
-/**
-  * @brief GPIO high-speed pad control
-  */
-  typedef struct {                                   /*!< GPIOHSPADCTRL Structure                                              */
-    __IM uint32_t RESERVED[12];
-    __IOM uint32_t BIAS;                             /*!< (@ 0x00000030) Bias control                                          */
-    __IM uint32_t RESERVED1;
-    __IOM uint32_t CTRL;                             /*!< (@ 0x00000038) Input sampling and buffering control (used by the VPR
-                                                                         coprocessor for emulating a QSPI peripheral)*/
-  } NRF_GPIOHSPADCTRL_Type;                          /*!< Size = 60 (0x03C)                                                    */
-
-/* GPIOHSPADCTRL_BIAS: Bias control */
-  #define GPIOHSPADCTRL_BIAS_ResetValue (0x00000000UL) /*!< Reset value of BIAS register.                                      */
-
-/* HSBIAS @Bits 0..1 : Slew setting for high-speed pad (higher value is faster) */
-  #define GPIOHSPADCTRL_BIAS_HSBIAS_Pos (0UL)        /*!< Position of HSBIAS field.                                            */
-  #define GPIOHSPADCTRL_BIAS_HSBIAS_Msk (0x3UL << GPIOHSPADCTRL_BIAS_HSBIAS_Pos) /*!< Bit mask of HSBIAS field.                */
-  #define GPIOHSPADCTRL_BIAS_HSBIAS_Min (0x0UL)      /*!< Min value of HSBIAS field.                                           */
-  #define GPIOHSPADCTRL_BIAS_HSBIAS_Max (0x3UL)      /*!< Max size of HSBIAS field.                                            */
-
-/* REPLICABIAS @Bit 2 : Slew setting for replica clock (used by the VPR coprocessor for emulating a QSPI peripheral) */
-  #define GPIOHSPADCTRL_BIAS_REPLICABIAS_Pos (2UL)   /*!< Position of REPLICABIAS field.                                       */
-  #define GPIOHSPADCTRL_BIAS_REPLICABIAS_Msk (0x1UL << GPIOHSPADCTRL_BIAS_REPLICABIAS_Pos) /*!< Bit mask of REPLICABIAS field. */
-  #define GPIOHSPADCTRL_BIAS_REPLICABIAS_Min (0x0UL) /*!< Min value of REPLICABIAS field.                                      */
-  #define GPIOHSPADCTRL_BIAS_REPLICABIAS_Max (0x1UL) /*!< Max size of REPLICABIAS field.                                       */
-
-
-/* GPIOHSPADCTRL_CTRL: Input sampling and buffering control (used by the VPR coprocessor for emulating a QSPI peripheral) */
-  #define GPIOHSPADCTRL_CTRL_ResetValue (0x00000000UL) /*!< Reset value of CTRL register.                                      */
-
-/* RXDELAY @Bits 0..2 : Delay selection */
-  #define GPIOHSPADCTRL_CTRL_RXDELAY_Pos (0UL)       /*!< Position of RXDELAY field.                                           */
-  #define GPIOHSPADCTRL_CTRL_RXDELAY_Msk (0x7UL << GPIOHSPADCTRL_CTRL_RXDELAY_Pos) /*!< Bit mask of RXDELAY field.             */
-
-/* SCKEN @Bit 3 : Enable SCK */
-  #define GPIOHSPADCTRL_CTRL_SCKEN_Pos (3UL)         /*!< Position of SCKEN field.                                             */
-  #define GPIOHSPADCTRL_CTRL_SCKEN_Msk (0x1UL << GPIOHSPADCTRL_CTRL_SCKEN_Pos) /*!< Bit mask of SCKEN field.                   */
-  #define GPIOHSPADCTRL_CTRL_SCKEN_Min (0x0UL)       /*!< Min enumerator value of SCKEN field.                                 */
-  #define GPIOHSPADCTRL_CTRL_SCKEN_Max (0x1UL)       /*!< Max enumerator value of SCKEN field.                                 */
-  #define GPIOHSPADCTRL_CTRL_SCKEN_Disabled (0x0UL)  /*!< Delay chain is reset and delayed sampling is disabled                */
-  #define GPIOHSPADCTRL_CTRL_SCKEN_Enabled (0x1UL)   /*!< Delay chain and delayed sampling is active                           */
-
-/* SCKPHASE @Bit 4 : SCK phase */
-  #define GPIOHSPADCTRL_CTRL_SCKPHASE_Pos (4UL)      /*!< Position of SCKPHASE field.                                          */
-  #define GPIOHSPADCTRL_CTRL_SCKPHASE_Msk (0x1UL << GPIOHSPADCTRL_CTRL_SCKPHASE_Pos) /*!< Bit mask of SCKPHASE field.          */
-  #define GPIOHSPADCTRL_CTRL_SCKPHASE_Min (0x0UL)    /*!< Min enumerator value of SCKPHASE field.                              */
-  #define GPIOHSPADCTRL_CTRL_SCKPHASE_Max (0x1UL)    /*!< Max enumerator value of SCKPHASE field.                              */
-  #define GPIOHSPADCTRL_CTRL_SCKPHASE_Inverted (0x0UL) /*!< Invert SCK phase                                                   */
-  #define GPIOHSPADCTRL_CTRL_SCKPHASE_NonInverted (0x1UL) /*!< Non-inverted SCK phase                                          */
-
-/* CSNEN @Bit 5 : Enable CSN synchronization of sampling */
-  #define GPIOHSPADCTRL_CTRL_CSNEN_Pos (5UL)         /*!< Position of CSNEN field.                                             */
-  #define GPIOHSPADCTRL_CTRL_CSNEN_Msk (0x1UL << GPIOHSPADCTRL_CTRL_CSNEN_Pos) /*!< Bit mask of CSNEN field.                   */
-  #define GPIOHSPADCTRL_CTRL_CSNEN_Min (0x0UL)       /*!< Min enumerator value of CSNEN field.                                 */
-  #define GPIOHSPADCTRL_CTRL_CSNEN_Max (0x1UL)       /*!< Max enumerator value of CSNEN field.                                 */
-  #define GPIOHSPADCTRL_CTRL_CSNEN_Enabled (0x0UL)   /*!< Delay chain is reset on active edge of CSN                           */
-  #define GPIOHSPADCTRL_CTRL_CSNEN_Disabled (0x1UL)  /*!< Delay chain is not reset on active edge of CSN                       */
-
-/* DATAENABLE @Bits 6..9 : Enable delayed sampling */
-  #define GPIOHSPADCTRL_CTRL_DATAENABLE_Pos (6UL)    /*!< Position of DATAENABLE field.                                        */
-  #define GPIOHSPADCTRL_CTRL_DATAENABLE_Msk (0xFUL << GPIOHSPADCTRL_CTRL_DATAENABLE_Pos) /*!< Bit mask of DATAENABLE field.    */
-  #define GPIOHSPADCTRL_CTRL_DATAENABLE_Min (0x0UL)  /*!< Min enumerator value of DATAENABLE field.                            */
-  #define GPIOHSPADCTRL_CTRL_DATAENABLE_Max (0xFUL)  /*!< Max enumerator value of DATAENABLE field.                            */
-  #define GPIOHSPADCTRL_CTRL_DATAENABLE_Disabled (0x0UL) /*!< Delayed sampling is disabled                                     */
-  #define GPIOHSPADCTRL_CTRL_DATAENABLE_Enabled (0xFUL) /*!< Delayed sampling is enabled                                       */
-
-
-#endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
-
-/* =========================================================================================================================== */
 /* ================                                       GPIOINTERNAL                                       ================ */
 /* =========================================================================================================================== */
 
@@ -6828,17 +7348,23 @@ typedef struct {
   * @brief EVENTS_PORT [GPIOTE_EVENTS_PORT] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  NONSECURE;                         /*!< (@ 0x00000000) Non-secure port event from owner n                    */
-  __IOM uint32_t  SECURE;                            /*!< (@ 0x00000004) Secure port event from owner n                        */
+  __IOM uint32_t  NONSECURE;                         /*!< (@ 0x00000000) Port event (the event name NONSECURE was chosen to be
+                                                                         API compatible with devices that feature Arm TrustZone
+                                                                         security)*/
+  __IM  uint32_t  RESERVED;
 } NRF_GPIOTE_EVENTS_PORT_Type;                       /*!< Size = 8 (0x008)                                                     */
   #define GPIOTE_EVENTS_PORT_MaxCount (1UL)          /*!< Size of EVENTS_PORT[1] array.                                        */
   #define GPIOTE_EVENTS_PORT_MaxIndex (0UL)          /*!< Max index of EVENTS_PORT[1] array.                                   */
   #define GPIOTE_EVENTS_PORT_MinIndex (0UL)          /*!< Min index of EVENTS_PORT[1] array.                                   */
 
-/* GPIOTE_EVENTS_PORT_NONSECURE: Non-secure port event from owner n */
+/* GPIOTE_EVENTS_PORT_NONSECURE: Port event (the event name NONSECURE was chosen to be API compatible with devices that feature
+                                  Arm TrustZone security) */
+
   #define GPIOTE_EVENTS_PORT_NONSECURE_ResetValue (0x00000000UL) /*!< Reset value of NONSECURE register.                       */
 
-/* NONSECURE @Bit 0 : Non-secure port event from owner n */
+/* NONSECURE @Bit 0 : Port event (the event name NONSECURE was chosen to be API compatible with devices that feature Arm
+                      TrustZone security) */
+
   #define GPIOTE_EVENTS_PORT_NONSECURE_NONSECURE_Pos (0UL) /*!< Position of NONSECURE field.                                   */
   #define GPIOTE_EVENTS_PORT_NONSECURE_NONSECURE_Msk (0x1UL << GPIOTE_EVENTS_PORT_NONSECURE_NONSECURE_Pos) /*!< Bit mask of
                                                                             NONSECURE field.*/
@@ -6848,18 +7374,6 @@ typedef struct {
   #define GPIOTE_EVENTS_PORT_NONSECURE_NONSECURE_Generated (0x1UL) /*!< Event generated                                        */
 
 
-/* GPIOTE_EVENTS_PORT_SECURE: Secure port event from owner n */
-  #define GPIOTE_EVENTS_PORT_SECURE_ResetValue (0x00000000UL) /*!< Reset value of SECURE register.                             */
-
-/* SECURE @Bit 0 : Secure port event from owner n */
-  #define GPIOTE_EVENTS_PORT_SECURE_SECURE_Pos (0UL) /*!< Position of SECURE field.                                            */
-  #define GPIOTE_EVENTS_PORT_SECURE_SECURE_Msk (0x1UL << GPIOTE_EVENTS_PORT_SECURE_SECURE_Pos) /*!< Bit mask of SECURE field.  */
-  #define GPIOTE_EVENTS_PORT_SECURE_SECURE_Min (0x0UL) /*!< Min enumerator value of SECURE field.                              */
-  #define GPIOTE_EVENTS_PORT_SECURE_SECURE_Max (0x1UL) /*!< Max enumerator value of SECURE field.                              */
-  #define GPIOTE_EVENTS_PORT_SECURE_SECURE_NotGenerated (0x0UL) /*!< Event not generated                                       */
-  #define GPIOTE_EVENTS_PORT_SECURE_SECURE_Generated (0x1UL) /*!< Event generated                                              */
-
-
 
 /* =============================================== Struct GPIOTE_PUBLISH_PORT ================================================ */
 /**
@@ -6867,7 +7381,7 @@ typedef struct {
   */
 typedef struct {
   __IOM uint32_t  NONSECURE;                         /*!< (@ 0x00000000) Publish configuration for event PORT[n].NONSECURE     */
-  __IOM uint32_t  SECURE;                            /*!< (@ 0x00000004) Publish configuration for event PORT[n].SECURE        */
+  __IM  uint32_t  RESERVED;
 } NRF_GPIOTE_PUBLISH_PORT_Type;                      /*!< Size = 8 (0x008)                                                     */
   #define GPIOTE_PUBLISH_PORT_MaxCount (1UL)         /*!< Size of PUBLISH_PORT[1] array.                                       */
   #define GPIOTE_PUBLISH_PORT_MaxIndex (0UL)         /*!< Max index of PUBLISH_PORT[1] array.                                  */
@@ -6890,24 +7404,6 @@ typedef struct {
   #define GPIOTE_PUBLISH_PORT_NONSECURE_EN_Max (0x1UL) /*!< Max enumerator value of EN field.                                  */
   #define GPIOTE_PUBLISH_PORT_NONSECURE_EN_Disabled (0x0UL) /*!< Disable publishing                                            */
   #define GPIOTE_PUBLISH_PORT_NONSECURE_EN_Enabled (0x1UL) /*!< Enable publishing                                              */
-
-
-/* GPIOTE_PUBLISH_PORT_SECURE: Publish configuration for event PORT[n].SECURE */
-  #define GPIOTE_PUBLISH_PORT_SECURE_ResetValue (0x00000000UL) /*!< Reset value of SECURE register.                            */
-
-/* CHIDX @Bits 0..7 : DPPI channel that event PORT[n].SECURE will publish to */
-  #define GPIOTE_PUBLISH_PORT_SECURE_CHIDX_Pos (0UL) /*!< Position of CHIDX field.                                             */
-  #define GPIOTE_PUBLISH_PORT_SECURE_CHIDX_Msk (0xFFUL << GPIOTE_PUBLISH_PORT_SECURE_CHIDX_Pos) /*!< Bit mask of CHIDX field.  */
-  #define GPIOTE_PUBLISH_PORT_SECURE_CHIDX_Min (0x00UL) /*!< Min value of CHIDX field.                                         */
-  #define GPIOTE_PUBLISH_PORT_SECURE_CHIDX_Max (0xFFUL) /*!< Max size of CHIDX field.                                          */
-
-/* EN @Bit 31 : (unspecified) */
-  #define GPIOTE_PUBLISH_PORT_SECURE_EN_Pos (31UL)   /*!< Position of EN field.                                                */
-  #define GPIOTE_PUBLISH_PORT_SECURE_EN_Msk (0x1UL << GPIOTE_PUBLISH_PORT_SECURE_EN_Pos) /*!< Bit mask of EN field.            */
-  #define GPIOTE_PUBLISH_PORT_SECURE_EN_Min (0x0UL)  /*!< Min enumerator value of EN field.                                    */
-  #define GPIOTE_PUBLISH_PORT_SECURE_EN_Max (0x1UL)  /*!< Max enumerator value of EN field.                                    */
-  #define GPIOTE_PUBLISH_PORT_SECURE_EN_Disabled (0x0UL) /*!< Disable publishing                                               */
-  #define GPIOTE_PUBLISH_PORT_SECURE_EN_Enabled (0x1UL) /*!< Enable publishing                                                 */
 
 
 /* ====================================================== Struct GPIOTE ====================================================== */
@@ -7172,15 +7668,6 @@ typedef struct {
   #define GPIOTE_INTENSET0_PORT0NONSECURE_Disabled (0x0UL) /*!< Read: Disabled                                                 */
   #define GPIOTE_INTENSET0_PORT0NONSECURE_Enabled (0x1UL) /*!< Read: Enabled                                                   */
 
-/* PORT0SECURE @Bit 17 : Write '1' to enable interrupt for event PORT0SECURE */
-  #define GPIOTE_INTENSET0_PORT0SECURE_Pos (17UL)    /*!< Position of PORT0SECURE field.                                       */
-  #define GPIOTE_INTENSET0_PORT0SECURE_Msk (0x1UL << GPIOTE_INTENSET0_PORT0SECURE_Pos) /*!< Bit mask of PORT0SECURE field.     */
-  #define GPIOTE_INTENSET0_PORT0SECURE_Min (0x0UL)   /*!< Min enumerator value of PORT0SECURE field.                           */
-  #define GPIOTE_INTENSET0_PORT0SECURE_Max (0x1UL)   /*!< Max enumerator value of PORT0SECURE field.                           */
-  #define GPIOTE_INTENSET0_PORT0SECURE_Set (0x1UL)   /*!< Enable                                                               */
-  #define GPIOTE_INTENSET0_PORT0SECURE_Disabled (0x0UL) /*!< Read: Disabled                                                    */
-  #define GPIOTE_INTENSET0_PORT0SECURE_Enabled (0x1UL) /*!< Read: Enabled                                                      */
-
 
 /* GPIOTE_INTENCLR0: Disable interrupt */
   #define GPIOTE_INTENCLR0_ResetValue (0x00000000UL) /*!< Reset value of INTENCLR0 register.                                   */
@@ -7266,15 +7753,6 @@ typedef struct {
   #define GPIOTE_INTENCLR0_PORT0NONSECURE_Clear (0x1UL) /*!< Disable                                                           */
   #define GPIOTE_INTENCLR0_PORT0NONSECURE_Disabled (0x0UL) /*!< Read: Disabled                                                 */
   #define GPIOTE_INTENCLR0_PORT0NONSECURE_Enabled (0x1UL) /*!< Read: Enabled                                                   */
-
-/* PORT0SECURE @Bit 17 : Write '1' to disable interrupt for event PORT0SECURE */
-  #define GPIOTE_INTENCLR0_PORT0SECURE_Pos (17UL)    /*!< Position of PORT0SECURE field.                                       */
-  #define GPIOTE_INTENCLR0_PORT0SECURE_Msk (0x1UL << GPIOTE_INTENCLR0_PORT0SECURE_Pos) /*!< Bit mask of PORT0SECURE field.     */
-  #define GPIOTE_INTENCLR0_PORT0SECURE_Min (0x0UL)   /*!< Min enumerator value of PORT0SECURE field.                           */
-  #define GPIOTE_INTENCLR0_PORT0SECURE_Max (0x1UL)   /*!< Max enumerator value of PORT0SECURE field.                           */
-  #define GPIOTE_INTENCLR0_PORT0SECURE_Clear (0x1UL) /*!< Disable                                                              */
-  #define GPIOTE_INTENCLR0_PORT0SECURE_Disabled (0x0UL) /*!< Read: Disabled                                                    */
-  #define GPIOTE_INTENCLR0_PORT0SECURE_Enabled (0x1UL) /*!< Read: Enabled                                                      */
 
 
 /* GPIOTE_INTENSET1: Enable interrupt */
@@ -7362,15 +7840,6 @@ typedef struct {
   #define GPIOTE_INTENSET1_PORT0NONSECURE_Disabled (0x0UL) /*!< Read: Disabled                                                 */
   #define GPIOTE_INTENSET1_PORT0NONSECURE_Enabled (0x1UL) /*!< Read: Enabled                                                   */
 
-/* PORT0SECURE @Bit 17 : Write '1' to enable interrupt for event PORT0SECURE */
-  #define GPIOTE_INTENSET1_PORT0SECURE_Pos (17UL)    /*!< Position of PORT0SECURE field.                                       */
-  #define GPIOTE_INTENSET1_PORT0SECURE_Msk (0x1UL << GPIOTE_INTENSET1_PORT0SECURE_Pos) /*!< Bit mask of PORT0SECURE field.     */
-  #define GPIOTE_INTENSET1_PORT0SECURE_Min (0x0UL)   /*!< Min enumerator value of PORT0SECURE field.                           */
-  #define GPIOTE_INTENSET1_PORT0SECURE_Max (0x1UL)   /*!< Max enumerator value of PORT0SECURE field.                           */
-  #define GPIOTE_INTENSET1_PORT0SECURE_Set (0x1UL)   /*!< Enable                                                               */
-  #define GPIOTE_INTENSET1_PORT0SECURE_Disabled (0x0UL) /*!< Read: Disabled                                                    */
-  #define GPIOTE_INTENSET1_PORT0SECURE_Enabled (0x1UL) /*!< Read: Enabled                                                      */
-
 
 /* GPIOTE_INTENCLR1: Disable interrupt */
   #define GPIOTE_INTENCLR1_ResetValue (0x00000000UL) /*!< Reset value of INTENCLR1 register.                                   */
@@ -7457,15 +7926,6 @@ typedef struct {
   #define GPIOTE_INTENCLR1_PORT0NONSECURE_Disabled (0x0UL) /*!< Read: Disabled                                                 */
   #define GPIOTE_INTENCLR1_PORT0NONSECURE_Enabled (0x1UL) /*!< Read: Enabled                                                   */
 
-/* PORT0SECURE @Bit 17 : Write '1' to disable interrupt for event PORT0SECURE */
-  #define GPIOTE_INTENCLR1_PORT0SECURE_Pos (17UL)    /*!< Position of PORT0SECURE field.                                       */
-  #define GPIOTE_INTENCLR1_PORT0SECURE_Msk (0x1UL << GPIOTE_INTENCLR1_PORT0SECURE_Pos) /*!< Bit mask of PORT0SECURE field.     */
-  #define GPIOTE_INTENCLR1_PORT0SECURE_Min (0x0UL)   /*!< Min enumerator value of PORT0SECURE field.                           */
-  #define GPIOTE_INTENCLR1_PORT0SECURE_Max (0x1UL)   /*!< Max enumerator value of PORT0SECURE field.                           */
-  #define GPIOTE_INTENCLR1_PORT0SECURE_Clear (0x1UL) /*!< Disable                                                              */
-  #define GPIOTE_INTENCLR1_PORT0SECURE_Disabled (0x0UL) /*!< Read: Disabled                                                    */
-  #define GPIOTE_INTENCLR1_PORT0SECURE_Enabled (0x1UL) /*!< Read: Enabled                                                      */
-
 
 /* GPIOTE_CONFIG: Configuration for OUT[n], SET[n], and CLR[n] tasks and IN[n] event */
   #define GPIOTE_CONFIG_MaxCount (8UL)               /*!< Max size of CONFIG[8] array.                                         */
@@ -7537,7 +7997,7 @@ typedef struct {
 typedef struct {
   __IOM uint32_t  CCL;                               /*!< (@ 0x00000000) The lower 32-bits of Capture/Compare register CC[n]   */
   __IOM uint32_t  CCH;                               /*!< (@ 0x00000004) The higher 32-bits of Capture/Compare register CC[n]  */
-  __IOM uint32_t  CCADD;                             /*!< (@ 0x00000008) Count to add to CC[n] when this register is written.  */
+  __OM  uint32_t  CCADD;                             /*!< (@ 0x00000008) Count to add to CC[n] when this register is written.  */
   __IOM uint32_t  CCEN;                              /*!< (@ 0x0000000C) Configure Capture/Compare register CC[n]              */
 } NRF_GRTC_CC_Type;                                  /*!< Size = 16 (0x010)                                                    */
   #define GRTC_CC_MaxCount (12UL)                    /*!< Size of CC[12] array.                                                */
@@ -10380,8 +10840,9 @@ typedef struct {
 /* CLKSEL @Bits 16..17 : GRTC LFCLK clock source selection */
   #define GRTC_CLKCFG_CLKSEL_Pos (16UL)              /*!< Position of CLKSEL field.                                            */
   #define GRTC_CLKCFG_CLKSEL_Msk (0x3UL << GRTC_CLKCFG_CLKSEL_Pos) /*!< Bit mask of CLKSEL field.                              */
-  #define GRTC_CLKCFG_CLKSEL_Min (0x1UL)             /*!< Min enumerator value of CLKSEL field.                                */
+  #define GRTC_CLKCFG_CLKSEL_Min (0x0UL)             /*!< Min enumerator value of CLKSEL field.                                */
   #define GRTC_CLKCFG_CLKSEL_Max (0x2UL)             /*!< Max enumerator value of CLKSEL field.                                */
+  #define GRTC_CLKCFG_CLKSEL_LFXO (0x0UL)            /*!< GRTC LFCLK clock source is LFXO                                      */
   #define GRTC_CLKCFG_CLKSEL_SystemLFCLK (0x1UL)     /*!< GRTC LFCLK clock source is system LFCLK                              */
   #define GRTC_CLKCFG_CLKSEL_LFLPRC (0x2UL)          /*!< GRTC LFCLK clock source is LFLPRC                                    */
 
@@ -11012,6 +11473,26 @@ typedef struct {
   #define OSCILLATORS_PLL_CURRENTFREQ_CURRENTFREQ_CK64M (0x3UL) /*!< 64 MHz                                                    */
 
 
+
+/* =============================================== Struct OSCILLATORS_XOSC32KI =============================================== */
+/**
+  * @brief XOSC32KI [OSCILLATORS_XOSC32KI] 32.768 kHz oscillator control
+  */
+typedef struct {
+  __IM  uint32_t  RESERVED;
+  __IOM uint32_t  INTCAP;                            /*!< (@ 0x00000004) Programmable capacitance of XL1 and XL2               */
+} NRF_OSCILLATORS_XOSC32KI_Type;                     /*!< Size = 8 (0x008)                                                     */
+
+/* OSCILLATORS_XOSC32KI_INTCAP: Programmable capacitance of XL1 and XL2 */
+  #define OSCILLATORS_XOSC32KI_INTCAP_ResetValue (0x00000017UL) /*!< Reset value of INTCAP register.                           */
+
+/* VAL @Bits 0..4 : Crystal load capacitor as seen by the crystal across its terminals, including pin capacitance but excluding
+                    PCB stray capacitance. */
+
+  #define OSCILLATORS_XOSC32KI_INTCAP_VAL_Pos (0UL)  /*!< Position of VAL field.                                               */
+  #define OSCILLATORS_XOSC32KI_INTCAP_VAL_Msk (0x1FUL << OSCILLATORS_XOSC32KI_INTCAP_VAL_Pos) /*!< Bit mask of VAL field.      */
+
+
 /* =================================================== Struct OSCILLATORS ==================================================== */
 /**
   * @brief Oscillator control
@@ -11021,7 +11502,9 @@ typedef struct {
     __IOM NRF_OSCILLATORS_XOSC32M_Type XOSC32M;      /*!< (@ 0x00000700) 32 MHz oscillator control                             */
     __IM uint32_t RESERVED1[56];
     __IOM NRF_OSCILLATORS_PLL_Type PLL;              /*!< (@ 0x00000800) Oscillator control                                    */
-  } NRF_OSCILLATORS_Type;                            /*!< Size = 2056 (0x808)                                                  */
+    __IM uint32_t RESERVED2[62];
+    __IOM NRF_OSCILLATORS_XOSC32KI_Type XOSC32KI;    /*!< (@ 0x00000900) 32.768 kHz oscillator control                         */
+  } NRF_OSCILLATORS_Type;                            /*!< Size = 2312 (0x908)                                                  */
 
 #endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
 
@@ -11045,7 +11528,8 @@ typedef struct {
     __IOM uint32_t EVENTS_POFWARN;                   /*!< (@ 0x00000130) Power failure warning                                 */
     __IOM uint32_t EVENTS_SLEEPENTER;                /*!< (@ 0x00000134) CPU entered WFI/WFE sleep                             */
     __IOM uint32_t EVENTS_SLEEPEXIT;                 /*!< (@ 0x00000138) CPU exited WFI/WFE sleep                              */
-    __IM uint32_t RESERVED3[30];
+    __IM uint32_t RESERVED3[29];
+    __IOM uint32_t PUBLISH_POFWARN;                  /*!< (@ 0x000001B0) Publish configuration for event POFWARN               */
     __IOM uint32_t PUBLISH_SLEEPENTER;               /*!< (@ 0x000001B4) Publish configuration for event SLEEPENTER            */
     __IOM uint32_t PUBLISH_SLEEPEXIT;                /*!< (@ 0x000001B8) Publish configuration for event SLEEPEXIT             */
     __IM uint32_t RESERVED4[81];
@@ -11155,6 +11639,24 @@ typedef struct {
   #define POWER_EVENTS_SLEEPEXIT_EVENTS_SLEEPEXIT_Max (0x1UL) /*!< Max enumerator value of EVENTS_SLEEPEXIT field.             */
   #define POWER_EVENTS_SLEEPEXIT_EVENTS_SLEEPEXIT_NotGenerated (0x0UL) /*!< Event not generated                                */
   #define POWER_EVENTS_SLEEPEXIT_EVENTS_SLEEPEXIT_Generated (0x1UL) /*!< Event generated                                       */
+
+
+/* POWER_PUBLISH_POFWARN: Publish configuration for event POFWARN */
+  #define POWER_PUBLISH_POFWARN_ResetValue (0x00000000UL) /*!< Reset value of PUBLISH_POFWARN register.                        */
+
+/* CHIDX @Bits 0..7 : DPPI channel that event POFWARN will publish to */
+  #define POWER_PUBLISH_POFWARN_CHIDX_Pos (0UL)      /*!< Position of CHIDX field.                                             */
+  #define POWER_PUBLISH_POFWARN_CHIDX_Msk (0xFFUL << POWER_PUBLISH_POFWARN_CHIDX_Pos) /*!< Bit mask of CHIDX field.            */
+  #define POWER_PUBLISH_POFWARN_CHIDX_Min (0x00UL)   /*!< Min value of CHIDX field.                                            */
+  #define POWER_PUBLISH_POFWARN_CHIDX_Max (0xFFUL)   /*!< Max size of CHIDX field.                                             */
+
+/* EN @Bit 31 : (unspecified) */
+  #define POWER_PUBLISH_POFWARN_EN_Pos (31UL)        /*!< Position of EN field.                                                */
+  #define POWER_PUBLISH_POFWARN_EN_Msk (0x1UL << POWER_PUBLISH_POFWARN_EN_Pos) /*!< Bit mask of EN field.                      */
+  #define POWER_PUBLISH_POFWARN_EN_Min (0x0UL)       /*!< Min enumerator value of EN field.                                    */
+  #define POWER_PUBLISH_POFWARN_EN_Max (0x1UL)       /*!< Max enumerator value of EN field.                                    */
+  #define POWER_PUBLISH_POFWARN_EN_Disabled (0x0UL)  /*!< Disable publishing                                                   */
+  #define POWER_PUBLISH_POFWARN_EN_Enabled (0x1UL)   /*!< Enable publishing                                                    */
 
 
 /* POWER_PUBLISH_SLEEPENTER: Publish configuration for event SLEEPENTER */
@@ -14567,29 +15069,31 @@ typedef struct {
     __IOM uint32_t TXPOWER;                          /*!< (@ 0x00000710) Output power                                          */
     __IOM uint32_t TIFS;                             /*!< (@ 0x00000714) Interframe spacing in us                              */
     __IM uint32_t RSSISAMPLE;                        /*!< (@ 0x00000718) RSSI sample                                           */
-    __IM uint32_t RESERVED18[123];
+    __IM uint32_t RESERVED18[58];
+    __IOM uint32_t FREQFINETUNE;                     /*!< (@ 0x00000804) Fine tuning of the RF frequency                       */
+    __IM uint32_t RESERVED19[64];
     __IOM uint32_t FECONFIG;                         /*!< (@ 0x00000908) Config register                                       */
-    __IM uint32_t RESERVED19[253];
+    __IM uint32_t RESERVED20[253];
     __IOM uint32_t DFEMODE;                          /*!< (@ 0x00000D00) Whether to use Angle-of-Arrival (AOA) or
                                                                          Angle-of-Departure (AOD)*/
     __IM uint32_t DFESTATUS;                         /*!< (@ 0x00000D04) DFE status information                                */
-    __IM uint32_t RESERVED20[2];
+    __IM uint32_t RESERVED21[2];
     __IOM uint32_t DFECTRL1;                         /*!< (@ 0x00000D10) Various configuration for Direction finding           */
     __IOM uint32_t DFECTRL2;                         /*!< (@ 0x00000D14) Start offset for Direction finding                    */
-    __IM uint32_t RESERVED21[4];
+    __IM uint32_t RESERVED22[4];
     __IOM uint32_t SWITCHPATTERN;                    /*!< (@ 0x00000D28) GPIO patterns to be used for each antenna             */
     __OM uint32_t CLEARPATTERN;                      /*!< (@ 0x00000D2C) Clear the GPIO pattern array for antenna control      */
     __IOM NRF_RADIO_PSEL_Type PSEL;                  /*!< (@ 0x00000D30) (unspecified)                                         */
-    __IM uint32_t RESERVED22;
+    __IM uint32_t RESERVED23;
     __IOM NRF_RADIO_DFEPACKET_Type DFEPACKET;        /*!< (@ 0x00000D50) DFE packet EasyDMA channel                            */
-    __IM uint32_t RESERVED23[43];
+    __IM uint32_t RESERVED24[43];
     __IM uint32_t CRCSTATUS;                         /*!< (@ 0x00000E0C) CRC status                                            */
     __IM uint32_t RXMATCH;                           /*!< (@ 0x00000E10) Received address                                      */
     __IM uint32_t RXCRC;                             /*!< (@ 0x00000E14) CRC field of previously received packet               */
     __IM uint32_t DAI;                               /*!< (@ 0x00000E18) Device address match index                            */
     __IM uint32_t PDUSTAT;                           /*!< (@ 0x00000E1C) Payload status                                        */
     __IOM uint32_t PCNF0;                            /*!< (@ 0x00000E20) Packet configuration register 0                       */
-    __IM uint32_t RESERVED24;
+    __IM uint32_t RESERVED25;
     __IOM uint32_t PCNF1;                            /*!< (@ 0x00000E28) Packet configuration register 1                       */
     __IOM uint32_t BASE0;                            /*!< (@ 0x00000E2C) Base address 0                                        */
     __IOM uint32_t BASE1;                            /*!< (@ 0x00000E30) Base address 1                                        */
@@ -14604,16 +15108,16 @@ typedef struct {
     __IOM uint32_t DAP[8];                           /*!< (@ 0x00000E70) Device address prefix n                               */
     __IOM uint32_t DACNF;                            /*!< (@ 0x00000E90) Device address match configuration                    */
     __IOM uint32_t BCC;                              /*!< (@ 0x00000E94) Bit counter compare                                   */
-    __IM uint32_t RESERVED25[3];
-    __IM uint32_t CTESTATUS;                         /*!< (@ 0x00000EA4) CTEInfo parsed from received packet                   */
     __IM uint32_t RESERVED26[3];
+    __IM uint32_t CTESTATUS;                         /*!< (@ 0x00000EA4) CTEInfo parsed from received packet                   */
+    __IM uint32_t RESERVED27[3];
     __IOM uint32_t MHRMATCHCONF;                     /*!< (@ 0x00000EB4) Search pattern configuration                          */
     __IOM uint32_t MHRMATCHMASK;                     /*!< (@ 0x00000EB8) Pattern mask                                          */
     __IOM uint32_t SFD;                              /*!< (@ 0x00000EBC) IEEE 802.15.4 start of frame delimiter                */
     __IOM uint32_t CTEINLINECONF;                    /*!< (@ 0x00000EC0) Configuration for CTE inline mode                     */
-    __IM uint32_t RESERVED27[3];
+    __IM uint32_t RESERVED28[3];
     __IOM uint32_t PACKETPTR;                        /*!< (@ 0x00000ED0) Packet pointer                                        */
-    __IM uint32_t RESERVED28[75];
+    __IM uint32_t RESERVED29[75];
     __IOM NRF_RADIO_CSTONES_Type CSTONES;            /*!< (@ 0x00001000) (unspecified)                                         */
     __IOM NRF_RADIO_RTT_Type RTT;                    /*!< (@ 0x00001050) (unspecified)                                         */
   } NRF_RADIO_Type;                                  /*!< Size = 4196 (0x1064)                                                 */
@@ -16851,7 +17355,7 @@ typedef struct {
 /* TXPOWER @Bits 0..10 : RADIO output power */
   #define RADIO_TXPOWER_TXPOWER_Pos (0UL)            /*!< Position of TXPOWER field.                                           */
   #define RADIO_TXPOWER_TXPOWER_Msk (0x7FFUL << RADIO_TXPOWER_TXPOWER_Pos) /*!< Bit mask of TXPOWER field.                     */
-  #define RADIO_TXPOWER_TXPOWER_Min (0x1UL)          /*!< Min enumerator value of TXPOWER field.                               */
+  #define RADIO_TXPOWER_TXPOWER_Min (0x0UL)          /*!< Min enumerator value of TXPOWER field.                               */
   #define RADIO_TXPOWER_TXPOWER_Max (0x130UL)        /*!< Max enumerator value of TXPOWER field.                               */
   #define RADIO_TXPOWER_TXPOWER_MaxdBm (0x03FUL)     /*!< +8 dBm                                                               */
   #define RADIO_TXPOWER_TXPOWER_Pos8dBm (0x03FUL)    /*!< +8 dBm                                                               */
@@ -16882,7 +17386,7 @@ typedef struct {
   #define RADIO_TXPOWER_TXPOWER_Neg28dBm (0x001UL)   /*!< -28 dBm                                                              */
   #define RADIO_TXPOWER_TXPOWER_Neg40dBm (0x130UL)   /*!< -40 dBm                                                              */
   #define RADIO_TXPOWER_TXPOWER_Neg46dBm (0x110UL)   /*!< -46 dBm                                                              */
-  #define RADIO_TXPOWER_TXPOWER_MindBm (0x110UL)     /*!< -46 dBm                                                              */
+  #define RADIO_TXPOWER_TXPOWER_MindBm (0x000UL)     /*!< Minimum output power                                                 */
 
 
 /* RADIO_TIFS: Interframe spacing in us */
@@ -16905,6 +17409,17 @@ typedef struct {
 
   #define RADIO_RSSISAMPLE_RSSISAMPLE_Pos (0UL)      /*!< Position of RSSISAMPLE field.                                        */
   #define RADIO_RSSISAMPLE_RSSISAMPLE_Msk (0x7FUL << RADIO_RSSISAMPLE_RSSISAMPLE_Pos) /*!< Bit mask of RSSISAMPLE field.       */
+
+
+/* RADIO_FREQFINETUNE: Fine tuning of the RF frequency */
+  #define RADIO_FREQFINETUNE_ResetValue (0x00000000UL) /*!< Reset value of FREQFINETUNE register.                              */
+
+/* FSFREQFINETUNE @Bits 0..12 : Twos-complement number for fine-tuning the frequency. The step size is 488.28125 Hz, giving a
+                                range from -1 MHz to (one step short of) +1 MHz. */
+
+  #define RADIO_FREQFINETUNE_FSFREQFINETUNE_Pos (0UL) /*!< Position of FSFREQFINETUNE field.                                   */
+  #define RADIO_FREQFINETUNE_FSFREQFINETUNE_Msk (0x1FFFUL << RADIO_FREQFINETUNE_FSFREQFINETUNE_Pos) /*!< Bit mask of
+                                                                            FSFREQFINETUNE field.*/
 
 
 /* RADIO_FECONFIG: Config register */
@@ -17997,14 +18512,14 @@ typedef struct {
   * @brief ERASE [RRAMC_ERASE] (unspecified)
   */
 typedef struct {
-  __IOM uint32_t  ERASEALL;                          /*!< (@ 0x00000000) Register for erasing whole RRAM main block, that
-                                                                         includes the SICR and the UICR*/
+  __IOM uint32_t  ERASEALL;                          /*!< (@ 0x00000000) Erase RRAM, including UICR All information in SICR,
+                                                                         including keys, are also erased*/
 } NRF_RRAMC_ERASE_Type;                              /*!< Size = 4 (0x004)                                                     */
 
-/* RRAMC_ERASE_ERASEALL: Register for erasing whole RRAM main block, that includes the SICR and the UICR */
+/* RRAMC_ERASE_ERASEALL: Erase RRAM, including UICR All information in SICR, including keys, are also erased */
   #define RRAMC_ERASE_ERASEALL_ResetValue (0x00000000UL) /*!< Reset value of ERASEALL register.                                */
 
-/* ERASE @Bit 0 : Erase whole RRAM main block */
+/* ERASE @Bit 0 : Erase RRAM */
   #define RRAMC_ERASE_ERASEALL_ERASE_Pos (0UL)       /*!< Position of ERASE field.                                             */
   #define RRAMC_ERASE_ERASEALL_ERASE_Msk (0x1UL << RRAMC_ERASE_ERASEALL_ERASE_Pos) /*!< Bit mask of ERASE field.               */
   #define RRAMC_ERASE_ERASEALL_ERASE_Min (0x0UL)     /*!< Min enumerator value of ERASE field.                                 */
@@ -18095,9 +18610,9 @@ typedef struct {
   #define RRAMC_REGION_CONFIG_LOCK_Disabled (0x0UL)  /*!< Lock disabled for region [n]                                         */
   #define RRAMC_REGION_CONFIG_LOCK_Enabled (0x1UL)   /*!< Lock enabled for region [n]                                          */
 
-/* SIZE @Bits 16..20 : Size in KBytes of region [n] */
+/* SIZE @Bits 16..25 : Size in KBytes of region [n] */
   #define RRAMC_REGION_CONFIG_SIZE_Pos (16UL)        /*!< Position of SIZE field.                                              */
-  #define RRAMC_REGION_CONFIG_SIZE_Msk (0x1FUL << RRAMC_REGION_CONFIG_SIZE_Pos) /*!< Bit mask of SIZE field.                   */
+  #define RRAMC_REGION_CONFIG_SIZE_Msk (0x3FFUL << RRAMC_REGION_CONFIG_SIZE_Pos) /*!< Bit mask of SIZE field.                  */
 
 
 /* ====================================================== Struct RRAMC ======================================================= */
@@ -18106,42 +18621,42 @@ typedef struct {
   */
   typedef struct {                                   /*!< RRAMC Structure                                                      */
     __OM uint32_t TASKS_WAKEUP;                      /*!< (@ 0x00000000) Wakeup the RRAM from low power mode                   */
-    __IM uint32_t RESERVED;
+    __OM uint32_t TASKS_CLRWRITEBUF;                 /*!< (@ 0x00000004) Clear internal write-buffer                           */
     __OM uint32_t TASKS_COMMITWRITEBUF;              /*!< (@ 0x00000008) Commits the data stored in internal write-buffer to
                                                                          RRAM*/
-    __IM uint32_t RESERVED1[29];
+    __IM uint32_t RESERVED[29];
     __IOM uint32_t SUBSCRIBE_WAKEUP;                 /*!< (@ 0x00000080) Subscribe configuration for task WAKEUP               */
-    __IM uint32_t RESERVED2;
+    __IOM uint32_t SUBSCRIBE_CLRWRITEBUF;            /*!< (@ 0x00000084) Subscribe configuration for task CLRWRITEBUF          */
     __IOM uint32_t SUBSCRIBE_COMMITWRITEBUF;         /*!< (@ 0x00000088) Subscribe configuration for task COMMITWRITEBUF       */
-    __IM uint32_t RESERVED3[29];
+    __IM uint32_t RESERVED1[29];
     __IOM uint32_t EVENTS_WOKENUP;                   /*!< (@ 0x00000100) RRAMC is woken up from low power mode                 */
     __IOM uint32_t EVENTS_READY;                     /*!< (@ 0x00000104) RRAMC is ready                                        */
     __IOM uint32_t EVENTS_READYNEXT;                 /*!< (@ 0x00000108) Ready to accept a new write operation                 */
     __IOM uint32_t EVENTS_ACCESSERROR;               /*!< (@ 0x0000010C) RRAM access error                                     */
-    __IM uint32_t RESERVED4[28];
+    __IM uint32_t RESERVED2[28];
     __IOM uint32_t PUBLISH_WOKENUP;                  /*!< (@ 0x00000180) Publish configuration for event WOKENUP               */
-    __IM uint32_t RESERVED5[95];
+    __IM uint32_t RESERVED3[95];
     __IOM uint32_t INTEN;                            /*!< (@ 0x00000300) Enable or disable interrupt                           */
     __IOM uint32_t INTENSET;                         /*!< (@ 0x00000304) Enable interrupt                                      */
     __IOM uint32_t INTENCLR;                         /*!< (@ 0x00000308) Disable interrupt                                     */
     __IM uint32_t INTPEND;                           /*!< (@ 0x0000030C) Pending interrupts                                    */
-    __IM uint32_t RESERVED6[60];
+    __IM uint32_t RESERVED4[60];
     __IM uint32_t READY;                             /*!< (@ 0x00000400) RRAMC ready status                                    */
     __IM uint32_t READYNEXT;                         /*!< (@ 0x00000404) Ready next flag                                       */
     __IM uint32_t ACCESSERRORADDR;                   /*!< (@ 0x00000408) Address of the first access error                     */
-    __IM uint32_t RESERVED7;
+    __IM uint32_t RESERVED5;
     __IOM NRF_RRAMC_BUFSTATUS_Type BUFSTATUS;        /*!< (@ 0x00000410) (unspecified)                                         */
-    __IM uint32_t RESERVED8;
+    __IM uint32_t RESERVED6;
     __IOM NRF_RRAMC_ECC_Type ECC;                    /*!< (@ 0x00000420) (unspecified)                                         */
-    __IM uint32_t RESERVED9[55];
+    __IM uint32_t RESERVED7[55];
     __IOM uint32_t CONFIG;                           /*!< (@ 0x00000500) Configuration register                                */
-    __IM uint32_t RESERVED10[2];
+    __IM uint32_t RESERVED8[2];
     __IOM uint32_t READYNEXTTIMEOUT;                 /*!< (@ 0x0000050C) Configuration for ready next timeout counter, in units
                                                                          of AXI clock frequency*/
     __IOM NRF_RRAMC_POWER_Type POWER;                /*!< (@ 0x00000510) (unspecified)                                         */
-    __IM uint32_t RESERVED11[9];
+    __IM uint32_t RESERVED9[9];
     __IOM NRF_RRAMC_ERASE_Type ERASE;                /*!< (@ 0x00000540) (unspecified)                                         */
-    __IM uint32_t RESERVED12[3];
+    __IM uint32_t RESERVED10[3];
     __IOM NRF_RRAMC_REGION_Type REGION[5];           /*!< (@ 0x00000550) RRAMC can apply access privileges to regions of the
                                                                          RRAM. Some regions are dedicated for system use and are
                                                                          not available for configuration - refer to the
@@ -18158,6 +18673,18 @@ typedef struct {
   #define RRAMC_TASKS_WAKEUP_TASKS_WAKEUP_Min (0x1UL) /*!< Min enumerator value of TASKS_WAKEUP field.                         */
   #define RRAMC_TASKS_WAKEUP_TASKS_WAKEUP_Max (0x1UL) /*!< Max enumerator value of TASKS_WAKEUP field.                         */
   #define RRAMC_TASKS_WAKEUP_TASKS_WAKEUP_Trigger (0x1UL) /*!< Trigger task                                                    */
+
+
+/* RRAMC_TASKS_CLRWRITEBUF: Clear internal write-buffer */
+  #define RRAMC_TASKS_CLRWRITEBUF_ResetValue (0x00000000UL) /*!< Reset value of TASKS_CLRWRITEBUF register.                    */
+
+/* TASKS_CLRWRITEBUF @Bit 0 : Clear internal write-buffer */
+  #define RRAMC_TASKS_CLRWRITEBUF_TASKS_CLRWRITEBUF_Pos (0UL) /*!< Position of TASKS_CLRWRITEBUF field.                        */
+  #define RRAMC_TASKS_CLRWRITEBUF_TASKS_CLRWRITEBUF_Msk (0x1UL << RRAMC_TASKS_CLRWRITEBUF_TASKS_CLRWRITEBUF_Pos) /*!< Bit mask
+                                                                            of TASKS_CLRWRITEBUF field.*/
+  #define RRAMC_TASKS_CLRWRITEBUF_TASKS_CLRWRITEBUF_Min (0x1UL) /*!< Min enumerator value of TASKS_CLRWRITEBUF field.          */
+  #define RRAMC_TASKS_CLRWRITEBUF_TASKS_CLRWRITEBUF_Max (0x1UL) /*!< Max enumerator value of TASKS_CLRWRITEBUF field.          */
+  #define RRAMC_TASKS_CLRWRITEBUF_TASKS_CLRWRITEBUF_Trigger (0x1UL) /*!< Trigger task                                          */
 
 
 /* RRAMC_TASKS_COMMITWRITEBUF: Commits the data stored in internal write-buffer to RRAM */
@@ -18188,6 +18715,24 @@ typedef struct {
   #define RRAMC_SUBSCRIBE_WAKEUP_EN_Max (0x1UL)      /*!< Max enumerator value of EN field.                                    */
   #define RRAMC_SUBSCRIBE_WAKEUP_EN_Disabled (0x0UL) /*!< Disable subscription                                                 */
   #define RRAMC_SUBSCRIBE_WAKEUP_EN_Enabled (0x1UL)  /*!< Enable subscription                                                  */
+
+
+/* RRAMC_SUBSCRIBE_CLRWRITEBUF: Subscribe configuration for task CLRWRITEBUF */
+  #define RRAMC_SUBSCRIBE_CLRWRITEBUF_ResetValue (0x00000000UL) /*!< Reset value of SUBSCRIBE_CLRWRITEBUF register.            */
+
+/* CHIDX @Bits 0..7 : DPPI channel that task CLRWRITEBUF will subscribe to */
+  #define RRAMC_SUBSCRIBE_CLRWRITEBUF_CHIDX_Pos (0UL) /*!< Position of CHIDX field.                                            */
+  #define RRAMC_SUBSCRIBE_CLRWRITEBUF_CHIDX_Msk (0xFFUL << RRAMC_SUBSCRIBE_CLRWRITEBUF_CHIDX_Pos) /*!< Bit mask of CHIDX field.*/
+  #define RRAMC_SUBSCRIBE_CLRWRITEBUF_CHIDX_Min (0x00UL) /*!< Min value of CHIDX field.                                        */
+  #define RRAMC_SUBSCRIBE_CLRWRITEBUF_CHIDX_Max (0xFFUL) /*!< Max size of CHIDX field.                                         */
+
+/* EN @Bit 31 : (unspecified) */
+  #define RRAMC_SUBSCRIBE_CLRWRITEBUF_EN_Pos (31UL)  /*!< Position of EN field.                                                */
+  #define RRAMC_SUBSCRIBE_CLRWRITEBUF_EN_Msk (0x1UL << RRAMC_SUBSCRIBE_CLRWRITEBUF_EN_Pos) /*!< Bit mask of EN field.          */
+  #define RRAMC_SUBSCRIBE_CLRWRITEBUF_EN_Min (0x0UL) /*!< Min enumerator value of EN field.                                    */
+  #define RRAMC_SUBSCRIBE_CLRWRITEBUF_EN_Max (0x1UL) /*!< Max enumerator value of EN field.                                    */
+  #define RRAMC_SUBSCRIBE_CLRWRITEBUF_EN_Disabled (0x0UL) /*!< Disable subscription                                            */
+  #define RRAMC_SUBSCRIBE_CLRWRITEBUF_EN_Enabled (0x1UL) /*!< Enable subscription                                              */
 
 
 /* RRAMC_SUBSCRIBE_COMMITWRITEBUF: Subscribe configuration for task COMMITWRITEBUF */
@@ -18478,7 +19023,7 @@ typedef struct {
   #define RRAMC_CONFIG_WRITEBUFSIZE_Pos (8UL)        /*!< Position of WRITEBUFSIZE field.                                      */
   #define RRAMC_CONFIG_WRITEBUFSIZE_Msk (0x3FUL << RRAMC_CONFIG_WRITEBUFSIZE_Pos) /*!< Bit mask of WRITEBUFSIZE field.         */
   #define RRAMC_CONFIG_WRITEBUFSIZE_Min (0x00UL)     /*!< Min value of WRITEBUFSIZE field.                                     */
-  #define RRAMC_CONFIG_WRITEBUFSIZE_Max (0x20UL)     /*!< Max size of WRITEBUFSIZE field.                                      */
+  #define RRAMC_CONFIG_WRITEBUFSIZE_Max (0x08UL)     /*!< Max size of WRITEBUFSIZE field.                                      */
   #define RRAMC_CONFIG_WRITEBUFSIZE_Unbuffered (0x00UL) /*!< Disable buffering                                                 */
 
 
@@ -18696,7 +19241,7 @@ typedef struct {
   #define SAADC_CH_CONFIG_REFSEL_Msk (0x7UL << SAADC_CH_CONFIG_REFSEL_Pos) /*!< Bit mask of REFSEL field.                      */
   #define SAADC_CH_CONFIG_REFSEL_Min (0x0UL)         /*!< Min enumerator value of REFSEL field.                                */
   #define SAADC_CH_CONFIG_REFSEL_Max (0x3UL)         /*!< Max enumerator value of REFSEL field.                                */
-  #define SAADC_CH_CONFIG_REFSEL_Internal (0x0UL)    /*!< Internal 1.3 V reference                                             */
+  #define SAADC_CH_CONFIG_REFSEL_Internal (0x0UL)    /*!< Internal 1.024 V reference                                           */
   #define SAADC_CH_CONFIG_REFSEL_External (0x1UL)    /*!< External reference voltage                                           */
   #define SAADC_CH_CONFIG_REFSEL_VddL (0x2UL)        /*!< Reference given at VDDL                                              */
   #define SAADC_CH_CONFIG_REFSEL_Vdd (0x3UL)         /*!< Reference given at VDD                                               */
@@ -19818,7 +20363,7 @@ typedef struct {
 /* CC @Bits 0..10 : Capture and compare value. Sample rate is 16 MHz/CC */
   #define SAADC_SAMPLERATE_CC_Pos (0UL)              /*!< Position of CC field.                                                */
   #define SAADC_SAMPLERATE_CC_Msk (0x7FFUL << SAADC_SAMPLERATE_CC_Pos) /*!< Bit mask of CC field.                              */
-  #define SAADC_SAMPLERATE_CC_Min (0x008UL)          /*!< Min value of CC field.                                               */
+  #define SAADC_SAMPLERATE_CC_Min (0x010UL)          /*!< Min value of CC field.                                               */
   #define SAADC_SAMPLERATE_CC_Max (0x7FFUL)          /*!< Max size of CC field.                                                */
 
 /* MODE @Bit 12 : Select mode for sample rate control */
@@ -22828,11 +23373,38 @@ typedef struct {
   * @brief Trace and debug control
   */
   typedef struct {                                   /*!< TAD Structure                                                        */
-    __IM uint32_t RESERVED[320];
+    __IM uint32_t RESERVED[256];
+    __IOM uint32_t SYSPWRUPREQ;                      /*!< (@ 0x00000400) System power-up request                               */
+    __IOM uint32_t DBGPWRUPREQ;                      /*!< (@ 0x00000404) Debug power-up request                                */
+    __IM uint32_t RESERVED1[62];
     __IOM uint32_t ENABLE;                           /*!< (@ 0x00000500) Enable debug domain and aquire selected GPIOs         */
-    __IM uint32_t RESERVED1[5];
+    __IM uint32_t RESERVED2[5];
     __IOM uint32_t TRACEPORTSPEED;                   /*!< (@ 0x00000518) Trace port speed                                      */
   } NRF_TAD_Type;                                    /*!< Size = 1308 (0x51C)                                                  */
+
+/* TAD_SYSPWRUPREQ: System power-up request */
+  #define TAD_SYSPWRUPREQ_ResetValue (0x00000000UL)  /*!< Reset value of SYSPWRUPREQ register.                                 */
+
+/* ACTIVE @Bit 0 : Activate power-up request */
+  #define TAD_SYSPWRUPREQ_ACTIVE_Pos (0UL)           /*!< Position of ACTIVE field.                                            */
+  #define TAD_SYSPWRUPREQ_ACTIVE_Msk (0x1UL << TAD_SYSPWRUPREQ_ACTIVE_Pos) /*!< Bit mask of ACTIVE field.                      */
+  #define TAD_SYSPWRUPREQ_ACTIVE_Min (0x0UL)         /*!< Min enumerator value of ACTIVE field.                                */
+  #define TAD_SYSPWRUPREQ_ACTIVE_Max (0x1UL)         /*!< Max enumerator value of ACTIVE field.                                */
+  #define TAD_SYSPWRUPREQ_ACTIVE_NotActive (0x0UL)   /*!< Power-up request not active                                          */
+  #define TAD_SYSPWRUPREQ_ACTIVE_Active (0x1UL)      /*!< Power-up request active                                              */
+
+
+/* TAD_DBGPWRUPREQ: Debug power-up request */
+  #define TAD_DBGPWRUPREQ_ResetValue (0x00000000UL)  /*!< Reset value of DBGPWRUPREQ register.                                 */
+
+/* ACTIVE @Bit 0 : Activate power-up request */
+  #define TAD_DBGPWRUPREQ_ACTIVE_Pos (0UL)           /*!< Position of ACTIVE field.                                            */
+  #define TAD_DBGPWRUPREQ_ACTIVE_Msk (0x1UL << TAD_DBGPWRUPREQ_ACTIVE_Pos) /*!< Bit mask of ACTIVE field.                      */
+  #define TAD_DBGPWRUPREQ_ACTIVE_Min (0x0UL)         /*!< Min enumerator value of ACTIVE field.                                */
+  #define TAD_DBGPWRUPREQ_ACTIVE_Max (0x1UL)         /*!< Max enumerator value of ACTIVE field.                                */
+  #define TAD_DBGPWRUPREQ_ACTIVE_NotActive (0x0UL)   /*!< Power-up request not active                                          */
+  #define TAD_DBGPWRUPREQ_ACTIVE_Active (0x1UL)      /*!< Power-up request active                                              */
+
 
 /* TAD_ENABLE: Enable debug domain and aquire selected GPIOs */
   #define TAD_ENABLE_ResetValue (0x00000000UL)       /*!< Reset value of ENABLE register.                                      */
@@ -22871,51 +23443,6 @@ typedef struct {
 
 #if !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__) /*!< Ignore C structs for assembly code.                                 */
 
-/* ================================================ Struct TAMPC_ACTIVESHIELD ================================================ */
-/**
-  * @brief ACTIVESHIELD [TAMPC_ACTIVESHIELD] (unspecified)
-  */
-typedef struct {
-  __IOM uint32_t  CHEN;                              /*!< (@ 0x00000000) Active shield detector channel enable register.       */
-} NRF_TAMPC_ACTIVESHIELD_Type;                       /*!< Size = 4 (0x004)                                                     */
-
-/* TAMPC_ACTIVESHIELD_CHEN: Active shield detector channel enable register. */
-  #define TAMPC_ACTIVESHIELD_CHEN_ResetValue (0x00000000UL) /*!< Reset value of CHEN register.                                 */
-
-/* CH0 @Bit 0 : Enable or disable active shield channel 0. */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH0_Pos (0UL)      /*!< Position of CH0 field.                                               */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH0_Msk (0x1UL << TAMPC_ACTIVESHIELD_CHEN_CH0_Pos) /*!< Bit mask of CH0 field.               */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH0_Min (0x0UL)    /*!< Min enumerator value of CH0 field.                                   */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH0_Max (0x1UL)    /*!< Max enumerator value of CH0 field.                                   */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH0_Disabled (0x0UL) /*!< Disable channel.                                                   */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH0_Enabled (0x1UL) /*!< Enable channel.                                                     */
-
-/* CH1 @Bit 1 : Enable or disable active shield channel 1. */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH1_Pos (1UL)      /*!< Position of CH1 field.                                               */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH1_Msk (0x1UL << TAMPC_ACTIVESHIELD_CHEN_CH1_Pos) /*!< Bit mask of CH1 field.               */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH1_Min (0x0UL)    /*!< Min enumerator value of CH1 field.                                   */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH1_Max (0x1UL)    /*!< Max enumerator value of CH1 field.                                   */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH1_Disabled (0x0UL) /*!< Disable channel.                                                   */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH1_Enabled (0x1UL) /*!< Enable channel.                                                     */
-
-/* CH2 @Bit 2 : Enable or disable active shield channel 2. */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH2_Pos (2UL)      /*!< Position of CH2 field.                                               */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH2_Msk (0x1UL << TAMPC_ACTIVESHIELD_CHEN_CH2_Pos) /*!< Bit mask of CH2 field.               */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH2_Min (0x0UL)    /*!< Min enumerator value of CH2 field.                                   */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH2_Max (0x1UL)    /*!< Max enumerator value of CH2 field.                                   */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH2_Disabled (0x0UL) /*!< Disable channel.                                                   */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH2_Enabled (0x1UL) /*!< Enable channel.                                                     */
-
-/* CH3 @Bit 3 : Enable or disable active shield channel 3. */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH3_Pos (3UL)      /*!< Position of CH3 field.                                               */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH3_Msk (0x1UL << TAMPC_ACTIVESHIELD_CHEN_CH3_Pos) /*!< Bit mask of CH3 field.               */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH3_Min (0x0UL)    /*!< Min enumerator value of CH3 field.                                   */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH3_Max (0x1UL)    /*!< Max enumerator value of CH3 field.                                   */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH3_Disabled (0x0UL) /*!< Disable channel.                                                   */
-  #define TAMPC_ACTIVESHIELD_CHEN_CH3_Enabled (0x1UL) /*!< Enable channel.                                                     */
-
-
-
 /* ============================================ Struct TAMPC_PROTECT_DOMAIN_DBGEN ============================================ */
 /**
   * @brief DBGEN [TAMPC_PROTECT_DOMAIN_DBGEN] (unspecified)
@@ -22938,8 +23465,8 @@ typedef struct {
                                                                             field.*/
   #define TAMPC_PROTECT_DOMAIN_DBGEN_CTRL_VALUE_Min (0x0UL) /*!< Min enumerator value of VALUE field.                          */
   #define TAMPC_PROTECT_DOMAIN_DBGEN_CTRL_VALUE_Max (0x1UL) /*!< Max enumerator value of VALUE field.                          */
-  #define TAMPC_PROTECT_DOMAIN_DBGEN_CTRL_VALUE_Low (0x0UL) /*!< Signal is logic 0.                                            */
-  #define TAMPC_PROTECT_DOMAIN_DBGEN_CTRL_VALUE_High (0x1UL) /*!< Signal is logic 1.                                           */
+  #define TAMPC_PROTECT_DOMAIN_DBGEN_CTRL_VALUE_Low (0x0UL) /*!< Signal is logic 0, indicating that invasive debug is disabled.*/
+  #define TAMPC_PROTECT_DOMAIN_DBGEN_CTRL_VALUE_High (0x1UL) /*!< Signal is logic 1, indicating that invasive debug is enabled.*/
 
 /* LOCK @Bit 1 : Lock this register to prevent changes to the VALUE field until next reset. */
   #define TAMPC_PROTECT_DOMAIN_DBGEN_CTRL_LOCK_Pos (1UL) /*!< Position of LOCK field.                                          */
@@ -23005,8 +23532,10 @@ typedef struct {
                                                                             field.*/
   #define TAMPC_PROTECT_DOMAIN_NIDEN_CTRL_VALUE_Min (0x0UL) /*!< Min enumerator value of VALUE field.                          */
   #define TAMPC_PROTECT_DOMAIN_NIDEN_CTRL_VALUE_Max (0x1UL) /*!< Max enumerator value of VALUE field.                          */
-  #define TAMPC_PROTECT_DOMAIN_NIDEN_CTRL_VALUE_Low (0x0UL) /*!< Signal is logic 0.                                            */
-  #define TAMPC_PROTECT_DOMAIN_NIDEN_CTRL_VALUE_High (0x1UL) /*!< Signal is logic 1.                                           */
+  #define TAMPC_PROTECT_DOMAIN_NIDEN_CTRL_VALUE_Low (0x0UL) /*!< Signal is logic 0, indicating that non-invasive debug is
+                                                                 disabled.*/
+  #define TAMPC_PROTECT_DOMAIN_NIDEN_CTRL_VALUE_High (0x1UL) /*!< Signal is logic 1, indicating that non-invasive debug is
+                                                                  enabled.*/
 
 /* LOCK @Bit 1 : Lock this register to prevent changes to the VALUE field until next reset. */
   #define TAMPC_PROTECT_DOMAIN_NIDEN_CTRL_LOCK_Pos (1UL) /*!< Position of LOCK field.                                          */
@@ -23050,142 +23579,6 @@ typedef struct {
 
 
 
-/* =========================================== Struct TAMPC_PROTECT_DOMAIN_SPIDEN ============================================ */
-/**
-  * @brief SPIDEN [TAMPC_PROTECT_DOMAIN_SPIDEN] (unspecified)
-  */
-typedef struct {
-  __IOM uint32_t  CTRL;                              /*!< (@ 0x00000000) Control register for secure priviliged invasive
-                                                                         (halting) debug enable for the local debug components
-                                                                         within domain n.*/
-  __IOM uint32_t  STATUS;                            /*!< (@ 0x00000004) Status register for secure priviliged invasive
-                                                                         (halting) debug enable for domain n.*/
-} NRF_TAMPC_PROTECT_DOMAIN_SPIDEN_Type;              /*!< Size = 8 (0x008)                                                     */
-
-/* TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL: Control register for secure priviliged invasive (halting) debug enable for the local debug
-                                      components within domain n. */
-
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_ResetValue (0x00000010UL) /*!< Reset value of CTRL register.                        */
-
-/* VALUE @Bit 0 : Set value of spiden signal. */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_VALUE_Pos (0UL) /*!< Position of VALUE field.                                       */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_VALUE_Msk (0x1UL << TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_VALUE_Pos) /*!< Bit mask of
-                                                                            VALUE field.*/
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_VALUE_Min (0x0UL) /*!< Min enumerator value of VALUE field.                         */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_VALUE_Max (0x1UL) /*!< Max enumerator value of VALUE field.                         */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_VALUE_Low (0x0UL) /*!< Signal is logic 0.                                           */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_VALUE_High (0x1UL) /*!< Signal is logic 1.                                          */
-
-/* LOCK @Bit 1 : Lock this register to prevent changes to the VALUE field until next reset. */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_LOCK_Pos (1UL) /*!< Position of LOCK field.                                         */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_LOCK_Msk (0x1UL << TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_LOCK_Pos) /*!< Bit mask of LOCK
-                                                                            field.*/
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_LOCK_Min (0x0UL) /*!< Min enumerator value of LOCK field.                           */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_LOCK_Max (0x1UL) /*!< Max enumerator value of LOCK field.                           */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_LOCK_Disabled (0x0UL) /*!< Lock disabled.                                           */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_LOCK_Enabled (0x1UL) /*!< Lock enabled.                                             */
-
-/* WRITEPROTECTION @Bits 4..7 : The write protection must be cleared to allow updates to the VALUE field. */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_WRITEPROTECTION_Pos (4UL) /*!< Position of WRITEPROTECTION field.                   */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_WRITEPROTECTION_Msk (0xFUL << TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_WRITEPROTECTION_Pos)
-                                                                            /*!< Bit mask of WRITEPROTECTION field.*/
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_WRITEPROTECTION_Min (0x0UL) /*!< Min enumerator value of WRITEPROTECTION field.     */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_WRITEPROTECTION_Max (0xFUL) /*!< Max enumerator value of WRITEPROTECTION field.     */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_WRITEPROTECTION_Disabled (0x0UL) /*!< Read: Write protection is disabled.           */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_WRITEPROTECTION_Enabled (0x1UL) /*!< Read: Write protection is enabled.             */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_WRITEPROTECTION_Clear (0xFUL) /*!< Write: Value to clear write protection.          */
-
-/* KEY @Bits 16..31 : Required write key for upper 16 bits. Must be included in all register write operations. */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_KEY_Pos (16UL) /*!< Position of KEY field.                                          */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_KEY_Msk (0xFFFFUL << TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_KEY_Pos) /*!< Bit mask of KEY
-                                                                            field.*/
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_KEY_Min (0x50FAUL) /*!< Min enumerator value of KEY field.                          */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_KEY_Max (0x50FAUL) /*!< Max enumerator value of KEY field.                          */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_CTRL_KEY_KEY (0x50FAUL) /*!< Write key value.                                            */
-
-
-/* TAMPC_PROTECT_DOMAIN_SPIDEN_STATUS: Status register for secure priviliged invasive (halting) debug enable for domain n. */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_STATUS_ResetValue (0x00000000UL) /*!< Reset value of STATUS register.                    */
-
-/* ERROR @Bit 0 : Error detection status. */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_STATUS_ERROR_Pos (0UL) /*!< Position of ERROR field.                                     */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_STATUS_ERROR_Msk (0x1UL << TAMPC_PROTECT_DOMAIN_SPIDEN_STATUS_ERROR_Pos) /*!< Bit mask of
-                                                                            ERROR field.*/
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_STATUS_ERROR_Min (0x0UL) /*!< Min enumerator value of ERROR field.                       */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_STATUS_ERROR_Max (0x1UL) /*!< Max enumerator value of ERROR field.                       */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_STATUS_ERROR_NoError (0x0UL) /*!< No error detected.                                     */
-  #define TAMPC_PROTECT_DOMAIN_SPIDEN_STATUS_ERROR_Error (0x1UL) /*!< Error detected.                                          */
-
-
-
-/* =========================================== Struct TAMPC_PROTECT_DOMAIN_SPNIDEN =========================================== */
-/**
-  * @brief SPNIDEN [TAMPC_PROTECT_DOMAIN_SPNIDEN] (unspecified)
-  */
-typedef struct {
-  __IOM uint32_t  CTRL;                              /*!< (@ 0x00000000) Control register for secure priviliged non-invasive
-                                                                         debug enable for the local debug components within
-                                                                         domain n.*/
-  __IOM uint32_t  STATUS;                            /*!< (@ 0x00000004) Status register for secure priviliged non-invasive
-                                                                         debug enable for domain n.*/
-} NRF_TAMPC_PROTECT_DOMAIN_SPNIDEN_Type;             /*!< Size = 8 (0x008)                                                     */
-
-/* TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL: Control register for secure priviliged non-invasive debug enable for the local debug
-                                       components within domain n. */
-
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_ResetValue (0x00000010UL) /*!< Reset value of CTRL register.                       */
-
-/* VALUE @Bit 0 : Set value of spniden signal. */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_VALUE_Pos (0UL) /*!< Position of VALUE field.                                      */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_VALUE_Msk (0x1UL << TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_VALUE_Pos) /*!< Bit mask of
-                                                                            VALUE field.*/
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_VALUE_Min (0x0UL) /*!< Min enumerator value of VALUE field.                        */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_VALUE_Max (0x1UL) /*!< Max enumerator value of VALUE field.                        */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_VALUE_Low (0x0UL) /*!< Signal is logic 0.                                          */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_VALUE_High (0x1UL) /*!< Signal is logic 1.                                         */
-
-/* LOCK @Bit 1 : Lock this register to prevent changes to the VALUE field until next reset. */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_LOCK_Pos (1UL) /*!< Position of LOCK field.                                        */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_LOCK_Msk (0x1UL << TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_LOCK_Pos) /*!< Bit mask of LOCK
-                                                                            field.*/
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_LOCK_Min (0x0UL) /*!< Min enumerator value of LOCK field.                          */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_LOCK_Max (0x1UL) /*!< Max enumerator value of LOCK field.                          */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_LOCK_Disabled (0x0UL) /*!< Lock disabled.                                          */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_LOCK_Enabled (0x1UL) /*!< Lock enabled.                                            */
-
-/* WRITEPROTECTION @Bits 4..7 : The write protection must be cleared to allow updates to the VALUE field. */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_WRITEPROTECTION_Pos (4UL) /*!< Position of WRITEPROTECTION field.                  */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_WRITEPROTECTION_Msk (0xFUL << TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_WRITEPROTECTION_Pos)
-                                                                            /*!< Bit mask of WRITEPROTECTION field.*/
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_WRITEPROTECTION_Min (0x0UL) /*!< Min enumerator value of WRITEPROTECTION field.    */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_WRITEPROTECTION_Max (0xFUL) /*!< Max enumerator value of WRITEPROTECTION field.    */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_WRITEPROTECTION_Disabled (0x0UL) /*!< Read: Write protection is disabled.          */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_WRITEPROTECTION_Enabled (0x1UL) /*!< Read: Write protection is enabled.            */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_WRITEPROTECTION_Clear (0xFUL) /*!< Write: Value to clear write protection.         */
-
-/* KEY @Bits 16..31 : Required write key for upper 16 bits. Must be included in all register write operations. */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_KEY_Pos (16UL) /*!< Position of KEY field.                                         */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_KEY_Msk (0xFFFFUL << TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_KEY_Pos) /*!< Bit mask of KEY
-                                                                            field.*/
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_KEY_Min (0x50FAUL) /*!< Min enumerator value of KEY field.                         */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_KEY_Max (0x50FAUL) /*!< Max enumerator value of KEY field.                         */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_CTRL_KEY_KEY (0x50FAUL) /*!< Write key value.                                           */
-
-
-/* TAMPC_PROTECT_DOMAIN_SPNIDEN_STATUS: Status register for secure priviliged non-invasive debug enable for domain n. */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_STATUS_ResetValue (0x00000000UL) /*!< Reset value of STATUS register.                   */
-
-/* ERROR @Bit 0 : Error detection status. */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_STATUS_ERROR_Pos (0UL) /*!< Position of ERROR field.                                    */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_STATUS_ERROR_Msk (0x1UL << TAMPC_PROTECT_DOMAIN_SPNIDEN_STATUS_ERROR_Pos) /*!< Bit mask
-                                                                            of ERROR field.*/
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_STATUS_ERROR_Min (0x0UL) /*!< Min enumerator value of ERROR field.                      */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_STATUS_ERROR_Max (0x1UL) /*!< Max enumerator value of ERROR field.                      */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_STATUS_ERROR_NoError (0x0UL) /*!< No error detected.                                    */
-  #define TAMPC_PROTECT_DOMAIN_SPNIDEN_STATUS_ERROR_Error (0x1UL) /*!< Error detected.                                         */
-
-
-
 /* =============================================== Struct TAMPC_PROTECT_DOMAIN =============================================== */
 /**
   * @brief DOMAIN [TAMPC_PROTECT_DOMAIN] (unspecified)
@@ -23193,8 +23586,7 @@ typedef struct {
 typedef struct {
   __IOM NRF_TAMPC_PROTECT_DOMAIN_DBGEN_Type DBGEN;   /*!< (@ 0x00000000) (unspecified)                                         */
   __IOM NRF_TAMPC_PROTECT_DOMAIN_NIDEN_Type NIDEN;   /*!< (@ 0x00000008) (unspecified)                                         */
-  __IOM NRF_TAMPC_PROTECT_DOMAIN_SPIDEN_Type SPIDEN; /*!< (@ 0x00000010) (unspecified)                                         */
-  __IOM NRF_TAMPC_PROTECT_DOMAIN_SPNIDEN_Type SPNIDEN; /*!< (@ 0x00000018) (unspecified)                                       */
+  __IM  uint32_t  RESERVED[4];
 } NRF_TAMPC_PROTECT_DOMAIN_Type;                     /*!< Size = 32 (0x020)                                                    */
   #define TAMPC_PROTECT_DOMAIN_MaxCount (1UL)        /*!< Size of DOMAIN[1] array.                                             */
   #define TAMPC_PROTECT_DOMAIN_MaxIndex (0UL)        /*!< Max index of DOMAIN[1] array.                                        */
@@ -23207,12 +23599,12 @@ typedef struct {
   */
 typedef struct {
   __IOM uint32_t  CTRL;                              /*!< (@ 0x00000000) Control register to enable invasive (halting) debug in
-                                                                         domain n's access port.*/
+                                                                         domain ns access port.*/
   __IOM uint32_t  STATUS;                            /*!< (@ 0x00000004) Status register for invasive (halting) debug enable for
-                                                                         domain n's access port.*/
+                                                                         domain ns access port.*/
 } NRF_TAMPC_PROTECT_AP_DBGEN_Type;                   /*!< Size = 8 (0x008)                                                     */
 
-/* TAMPC_PROTECT_AP_DBGEN_CTRL: Control register to enable invasive (halting) debug in domain n's access port. */
+/* TAMPC_PROTECT_AP_DBGEN_CTRL: Control register to enable invasive (halting) debug in domain ns access port. */
   #define TAMPC_PROTECT_AP_DBGEN_CTRL_ResetValue (0x00000010UL) /*!< Reset value of CTRL register.                             */
 
 /* VALUE @Bit 0 : Set value of dbgen signal. */
@@ -23220,8 +23612,8 @@ typedef struct {
   #define TAMPC_PROTECT_AP_DBGEN_CTRL_VALUE_Msk (0x1UL << TAMPC_PROTECT_AP_DBGEN_CTRL_VALUE_Pos) /*!< Bit mask of VALUE field. */
   #define TAMPC_PROTECT_AP_DBGEN_CTRL_VALUE_Min (0x0UL) /*!< Min enumerator value of VALUE field.                              */
   #define TAMPC_PROTECT_AP_DBGEN_CTRL_VALUE_Max (0x1UL) /*!< Max enumerator value of VALUE field.                              */
-  #define TAMPC_PROTECT_AP_DBGEN_CTRL_VALUE_Low (0x0UL) /*!< Signal is logic 0.                                                */
-  #define TAMPC_PROTECT_AP_DBGEN_CTRL_VALUE_High (0x1UL) /*!< Signal is logic 1.                                               */
+  #define TAMPC_PROTECT_AP_DBGEN_CTRL_VALUE_Low (0x0UL) /*!< Signal is logic 0, indicating that invasive debug is disabled.    */
+  #define TAMPC_PROTECT_AP_DBGEN_CTRL_VALUE_High (0x1UL) /*!< Signal is logic 1, indicating that invasive debug is enabled.    */
 
 /* LOCK @Bit 1 : Lock this register to prevent changes to the VALUE field until next reset. */
   #define TAMPC_PROTECT_AP_DBGEN_CTRL_LOCK_Pos (1UL) /*!< Position of LOCK field.                                              */
@@ -23249,7 +23641,7 @@ typedef struct {
   #define TAMPC_PROTECT_AP_DBGEN_CTRL_KEY_KEY (0x50FAUL) /*!< Write key value.                                                 */
 
 
-/* TAMPC_PROTECT_AP_DBGEN_STATUS: Status register for invasive (halting) debug enable for domain n's access port. */
+/* TAMPC_PROTECT_AP_DBGEN_STATUS: Status register for invasive (halting) debug enable for domain ns access port. */
   #define TAMPC_PROTECT_AP_DBGEN_STATUS_ResetValue (0x00000000UL) /*!< Reset value of STATUS register.                         */
 
 /* ERROR @Bit 0 : Error detection status. */
@@ -23274,134 +23666,6 @@ typedef struct {
   #define TAMPC_PROTECT_AP_MaxCount (1UL)            /*!< Size of AP[1] array.                                                 */
   #define TAMPC_PROTECT_AP_MaxIndex (0UL)            /*!< Max index of AP[1] array.                                            */
   #define TAMPC_PROTECT_AP_MinIndex (0UL)            /*!< Min index of AP[1] array.                                            */
-
-
-/* ============================================ Struct TAMPC_PROTECT_ACTIVESHIELD ============================================ */
-/**
-  * @brief ACTIVESHIELD [TAMPC_PROTECT_ACTIVESHIELD] Enable active shield detector.
-  */
-typedef struct {
-  __IOM uint32_t  CTRL;                              /*!< (@ 0x00000000) Control register for active shield detector enable
-                                                                         signal.*/
-  __IOM uint32_t  STATUS;                            /*!< (@ 0x00000004) Status register for active shield detector enable
-                                                                         signal.*/
-} NRF_TAMPC_PROTECT_ACTIVESHIELD_Type;               /*!< Size = 8 (0x008)                                                     */
-
-/* TAMPC_PROTECT_ACTIVESHIELD_CTRL: Control register for active shield detector enable signal. */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_ResetValue (0x00000010UL) /*!< Reset value of CTRL register.                         */
-
-/* VALUE @Bit 0 : Set value of active shield enable signal. */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_VALUE_Pos (0UL) /*!< Position of VALUE field.                                        */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_VALUE_Msk (0x1UL << TAMPC_PROTECT_ACTIVESHIELD_CTRL_VALUE_Pos) /*!< Bit mask of VALUE
-                                                                            field.*/
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_VALUE_Min (0x0UL) /*!< Min enumerator value of VALUE field.                          */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_VALUE_Max (0x1UL) /*!< Max enumerator value of VALUE field.                          */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_VALUE_Low (0x0UL) /*!< Signal is logic 0.                                            */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_VALUE_High (0x1UL) /*!< Signal is logic 1.                                           */
-
-/* LOCK @Bit 1 : Lock this register to prevent changes to the VALUE field until next reset. */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_LOCK_Pos (1UL) /*!< Position of LOCK field.                                          */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_LOCK_Msk (0x1UL << TAMPC_PROTECT_ACTIVESHIELD_CTRL_LOCK_Pos) /*!< Bit mask of LOCK
-                                                                            field.*/
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_LOCK_Min (0x0UL) /*!< Min enumerator value of LOCK field.                            */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_LOCK_Max (0x1UL) /*!< Max enumerator value of LOCK field.                            */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_LOCK_Disabled (0x0UL) /*!< Lock disabled.                                            */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_LOCK_Enabled (0x1UL) /*!< Lock enabled.                                              */
-
-/* WRITEPROTECTION @Bits 4..7 : The write protection must be cleared to allow updates to the VALUE field. */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_WRITEPROTECTION_Pos (4UL) /*!< Position of WRITEPROTECTION field.                    */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_WRITEPROTECTION_Msk (0xFUL << TAMPC_PROTECT_ACTIVESHIELD_CTRL_WRITEPROTECTION_Pos)
-                                                                            /*!< Bit mask of WRITEPROTECTION field.*/
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_WRITEPROTECTION_Min (0x0UL) /*!< Min enumerator value of WRITEPROTECTION field.      */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_WRITEPROTECTION_Max (0xFUL) /*!< Max enumerator value of WRITEPROTECTION field.      */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_WRITEPROTECTION_Disabled (0x0UL) /*!< Read: Write protection is disabled.            */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_WRITEPROTECTION_Enabled (0x1UL) /*!< Read: Write protection is enabled.              */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_WRITEPROTECTION_Clear (0xFUL) /*!< Write: Value to clear write protection.           */
-
-/* KEY @Bits 16..31 : Required write key for upper 16 bits. Must be included in all register write operations. */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_KEY_Pos (16UL) /*!< Position of KEY field.                                           */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_KEY_Msk (0xFFFFUL << TAMPC_PROTECT_ACTIVESHIELD_CTRL_KEY_Pos) /*!< Bit mask of KEY
-                                                                            field.*/
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_KEY_Min (0x50FAUL) /*!< Min enumerator value of KEY field.                           */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_KEY_Max (0x50FAUL) /*!< Max enumerator value of KEY field.                           */
-  #define TAMPC_PROTECT_ACTIVESHIELD_CTRL_KEY_KEY (0x50FAUL) /*!< Write key value.                                             */
-
-
-/* TAMPC_PROTECT_ACTIVESHIELD_STATUS: Status register for active shield detector enable signal. */
-  #define TAMPC_PROTECT_ACTIVESHIELD_STATUS_ResetValue (0x00000000UL) /*!< Reset value of STATUS register.                     */
-
-/* ERROR @Bit 0 : Error detection status. */
-  #define TAMPC_PROTECT_ACTIVESHIELD_STATUS_ERROR_Pos (0UL) /*!< Position of ERROR field.                                      */
-  #define TAMPC_PROTECT_ACTIVESHIELD_STATUS_ERROR_Msk (0x1UL << TAMPC_PROTECT_ACTIVESHIELD_STATUS_ERROR_Pos) /*!< Bit mask of
-                                                                            ERROR field.*/
-  #define TAMPC_PROTECT_ACTIVESHIELD_STATUS_ERROR_Min (0x0UL) /*!< Min enumerator value of ERROR field.                        */
-  #define TAMPC_PROTECT_ACTIVESHIELD_STATUS_ERROR_Max (0x1UL) /*!< Max enumerator value of ERROR field.                        */
-  #define TAMPC_PROTECT_ACTIVESHIELD_STATUS_ERROR_NoError (0x0UL) /*!< No error detected.                                      */
-  #define TAMPC_PROTECT_ACTIVESHIELD_STATUS_ERROR_Error (0x1UL) /*!< Error detected.                                           */
-
-
-
-/* ============================================= Struct TAMPC_PROTECT_CRACENTAMP ============================================= */
-/**
-  * @brief CRACENTAMP [TAMPC_PROTECT_CRACENTAMP] Enable tamper detector from CRACEN.
-  */
-typedef struct {
-  __IOM uint32_t  CTRL;                              /*!< (@ 0x00000000) Control register for CRACEN tamper detector enable
-                                                                         signal.*/
-  __IOM uint32_t  STATUS;                            /*!< (@ 0x00000004) Status register for CRACEN tamper detector enable
-                                                                         signal.*/
-} NRF_TAMPC_PROTECT_CRACENTAMP_Type;                 /*!< Size = 8 (0x008)                                                     */
-
-/* TAMPC_PROTECT_CRACENTAMP_CTRL: Control register for CRACEN tamper detector enable signal. */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_ResetValue (0x00000011UL) /*!< Reset value of CTRL register.                           */
-
-/* VALUE @Bit 0 : Set value of CRACEN tamper detector enable signal. */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_VALUE_Pos (0UL) /*!< Position of VALUE field.                                          */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_VALUE_Msk (0x1UL << TAMPC_PROTECT_CRACENTAMP_CTRL_VALUE_Pos) /*!< Bit mask of VALUE
-                                                                            field.*/
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_VALUE_Min (0x0UL) /*!< Min enumerator value of VALUE field.                            */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_VALUE_Max (0x1UL) /*!< Max enumerator value of VALUE field.                            */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_VALUE_Low (0x0UL) /*!< Signal is logic 0.                                              */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_VALUE_High (0x1UL) /*!< Signal is logic 1.                                             */
-
-/* LOCK @Bit 1 : Lock this register to prevent changes to the VALUE field until next reset. */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_LOCK_Pos (1UL) /*!< Position of LOCK field.                                            */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_LOCK_Msk (0x1UL << TAMPC_PROTECT_CRACENTAMP_CTRL_LOCK_Pos) /*!< Bit mask of LOCK field.*/
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_LOCK_Min (0x0UL) /*!< Min enumerator value of LOCK field.                              */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_LOCK_Max (0x1UL) /*!< Max enumerator value of LOCK field.                              */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_LOCK_Disabled (0x0UL) /*!< Lock disabled.                                              */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_LOCK_Enabled (0x1UL) /*!< Lock enabled.                                                */
-
-/* WRITEPROTECTION @Bits 4..7 : The write protection must be cleared to allow updates to the VALUE field. */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_WRITEPROTECTION_Pos (4UL) /*!< Position of WRITEPROTECTION field.                      */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_WRITEPROTECTION_Msk (0xFUL << TAMPC_PROTECT_CRACENTAMP_CTRL_WRITEPROTECTION_Pos) /*!<
-                                                                            Bit mask of WRITEPROTECTION field.*/
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_WRITEPROTECTION_Min (0x0UL) /*!< Min enumerator value of WRITEPROTECTION field.        */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_WRITEPROTECTION_Max (0xFUL) /*!< Max enumerator value of WRITEPROTECTION field.        */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_WRITEPROTECTION_Disabled (0x0UL) /*!< Read: Write protection is disabled.              */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_WRITEPROTECTION_Enabled (0x1UL) /*!< Read: Write protection is enabled.                */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_WRITEPROTECTION_Clear (0xFUL) /*!< Write: Value to clear write protection.             */
-
-/* KEY @Bits 16..31 : Required write key for upper 16 bits. Must be included in all register write operations. */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_KEY_Pos (16UL) /*!< Position of KEY field.                                             */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_KEY_Msk (0xFFFFUL << TAMPC_PROTECT_CRACENTAMP_CTRL_KEY_Pos) /*!< Bit mask of KEY field.*/
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_KEY_Min (0x50FAUL) /*!< Min enumerator value of KEY field.                             */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_KEY_Max (0x50FAUL) /*!< Max enumerator value of KEY field.                             */
-  #define TAMPC_PROTECT_CRACENTAMP_CTRL_KEY_KEY (0x50FAUL) /*!< Write key value.                                               */
-
-
-/* TAMPC_PROTECT_CRACENTAMP_STATUS: Status register for CRACEN tamper detector enable signal. */
-  #define TAMPC_PROTECT_CRACENTAMP_STATUS_ResetValue (0x00000000UL) /*!< Reset value of STATUS register.                       */
-
-/* ERROR @Bit 0 : Error detection status. */
-  #define TAMPC_PROTECT_CRACENTAMP_STATUS_ERROR_Pos (0UL) /*!< Position of ERROR field.                                        */
-  #define TAMPC_PROTECT_CRACENTAMP_STATUS_ERROR_Msk (0x1UL << TAMPC_PROTECT_CRACENTAMP_STATUS_ERROR_Pos) /*!< Bit mask of ERROR
-                                                                            field.*/
-  #define TAMPC_PROTECT_CRACENTAMP_STATUS_ERROR_Min (0x0UL) /*!< Min enumerator value of ERROR field.                          */
-  #define TAMPC_PROTECT_CRACENTAMP_STATUS_ERROR_Max (0x1UL) /*!< Max enumerator value of ERROR field.                          */
-  #define TAMPC_PROTECT_CRACENTAMP_STATUS_ERROR_NoError (0x0UL) /*!< No error detected.                                        */
-  #define TAMPC_PROTECT_CRACENTAMP_STATUS_ERROR_Error (0x1UL) /*!< Error detected.                                             */
-
 
 
 /* ========================================== Struct TAMPC_PROTECT_GLITCHSLOWDOMAIN ========================================== */
@@ -23531,69 +23795,6 @@ typedef struct {
   #define TAMPC_PROTECT_GLITCHFASTDOMAIN_STATUS_ERROR_Max (0x1UL) /*!< Max enumerator value of ERROR field.                    */
   #define TAMPC_PROTECT_GLITCHFASTDOMAIN_STATUS_ERROR_NoError (0x0UL) /*!< No error detected.                                  */
   #define TAMPC_PROTECT_GLITCHFASTDOMAIN_STATUS_ERROR_Error (0x1UL) /*!< Error detected.                                       */
-
-
-
-/* ============================================= Struct TAMPC_PROTECT_EXTRESETEN ============================================= */
-/**
-  * @brief EXTRESETEN [TAMPC_PROTECT_EXTRESETEN] Trigger a reset when tamper is detected by the external tamper detectors.
-  */
-typedef struct {
-  __IOM uint32_t  CTRL;                              /*!< (@ 0x00000000) Control register for external tamper reset enable
-                                                                         signal.*/
-  __IOM uint32_t  STATUS;                            /*!< (@ 0x00000004) Status register for external tamper reset enable
-                                                                         signal.*/
-} NRF_TAMPC_PROTECT_EXTRESETEN_Type;                 /*!< Size = 8 (0x008)                                                     */
-
-/* TAMPC_PROTECT_EXTRESETEN_CTRL: Control register for external tamper reset enable signal. */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_ResetValue (0x00000010UL) /*!< Reset value of CTRL register.                           */
-
-/* VALUE @Bit 0 : Set value of external tamper reset enable signal. */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_VALUE_Pos (0UL) /*!< Position of VALUE field.                                          */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_VALUE_Msk (0x1UL << TAMPC_PROTECT_EXTRESETEN_CTRL_VALUE_Pos) /*!< Bit mask of VALUE
-                                                                            field.*/
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_VALUE_Min (0x0UL) /*!< Min enumerator value of VALUE field.                            */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_VALUE_Max (0x1UL) /*!< Max enumerator value of VALUE field.                            */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_VALUE_Low (0x0UL) /*!< Signal is logic 0.                                              */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_VALUE_High (0x1UL) /*!< Signal is logic 1.                                             */
-
-/* LOCK @Bit 1 : Lock this register to prevent changes to the VALUE field until next reset. */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_LOCK_Pos (1UL) /*!< Position of LOCK field.                                            */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_LOCK_Msk (0x1UL << TAMPC_PROTECT_EXTRESETEN_CTRL_LOCK_Pos) /*!< Bit mask of LOCK field.*/
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_LOCK_Min (0x0UL) /*!< Min enumerator value of LOCK field.                              */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_LOCK_Max (0x1UL) /*!< Max enumerator value of LOCK field.                              */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_LOCK_Disabled (0x0UL) /*!< Lock disabled.                                              */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_LOCK_Enabled (0x1UL) /*!< Lock enabled.                                                */
-
-/* WRITEPROTECTION @Bits 4..7 : The write protection must be cleared to allow updates to the VALUE field. */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_WRITEPROTECTION_Pos (4UL) /*!< Position of WRITEPROTECTION field.                      */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_WRITEPROTECTION_Msk (0xFUL << TAMPC_PROTECT_EXTRESETEN_CTRL_WRITEPROTECTION_Pos) /*!<
-                                                                            Bit mask of WRITEPROTECTION field.*/
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_WRITEPROTECTION_Min (0x0UL) /*!< Min enumerator value of WRITEPROTECTION field.        */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_WRITEPROTECTION_Max (0xFUL) /*!< Max enumerator value of WRITEPROTECTION field.        */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_WRITEPROTECTION_Disabled (0x0UL) /*!< Read: Write protection is disabled.              */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_WRITEPROTECTION_Enabled (0x1UL) /*!< Read: Write protection is enabled.                */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_WRITEPROTECTION_Clear (0xFUL) /*!< Write: Value to clear write protection.             */
-
-/* KEY @Bits 16..31 : Required write key for upper 16 bits. Must be included in all register write operations. */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_KEY_Pos (16UL) /*!< Position of KEY field.                                             */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_KEY_Msk (0xFFFFUL << TAMPC_PROTECT_EXTRESETEN_CTRL_KEY_Pos) /*!< Bit mask of KEY field.*/
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_KEY_Min (0x50FAUL) /*!< Min enumerator value of KEY field.                             */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_KEY_Max (0x50FAUL) /*!< Max enumerator value of KEY field.                             */
-  #define TAMPC_PROTECT_EXTRESETEN_CTRL_KEY_KEY (0x50FAUL) /*!< Write key value.                                               */
-
-
-/* TAMPC_PROTECT_EXTRESETEN_STATUS: Status register for external tamper reset enable signal. */
-  #define TAMPC_PROTECT_EXTRESETEN_STATUS_ResetValue (0x00000000UL) /*!< Reset value of STATUS register.                       */
-
-/* ERROR @Bit 0 : Error detection status. */
-  #define TAMPC_PROTECT_EXTRESETEN_STATUS_ERROR_Pos (0UL) /*!< Position of ERROR field.                                        */
-  #define TAMPC_PROTECT_EXTRESETEN_STATUS_ERROR_Msk (0x1UL << TAMPC_PROTECT_EXTRESETEN_STATUS_ERROR_Pos) /*!< Bit mask of ERROR
-                                                                            field.*/
-  #define TAMPC_PROTECT_EXTRESETEN_STATUS_ERROR_Min (0x0UL) /*!< Min enumerator value of ERROR field.                          */
-  #define TAMPC_PROTECT_EXTRESETEN_STATUS_ERROR_Max (0x1UL) /*!< Max enumerator value of ERROR field.                          */
-  #define TAMPC_PROTECT_EXTRESETEN_STATUS_ERROR_NoError (0x0UL) /*!< No error detected.                                        */
-  #define TAMPC_PROTECT_EXTRESETEN_STATUS_ERROR_Error (0x1UL) /*!< Error detected.                                             */
 
 
 
@@ -23729,25 +23930,18 @@ typedef struct {
 /**
   * @brief PROTECT [TAMPC_PROTECT] (unspecified)
   */
-typedef union {
-  struct {
-    __IOM NRF_TAMPC_PROTECT_DOMAIN_Type DOMAIN[1];   /*!< (@ 0x00000000) (unspecified)                                         */
-    __IM uint32_t RESERVED[120];
-    __IOM NRF_TAMPC_PROTECT_AP_Type AP[1];           /*!< (@ 0x00000200) (unspecified)                                         */
-    __IM uint32_t RESERVED1[124];
-    __IOM NRF_TAMPC_PROTECT_ACTIVESHIELD_Type ACTIVESHIELD; /*!< (@ 0x00000400) Enable active shield detector.                 */
-    __IM uint32_t RESERVED2[12];
-    __IOM NRF_TAMPC_PROTECT_CRACENTAMP_Type CRACENTAMP; /*!< (@ 0x00000438) Enable tamper detector from CRACEN.                */
-    __IOM NRF_TAMPC_PROTECT_GLITCHSLOWDOMAIN_Type GLITCHSLOWDOMAIN; /*!< (@ 0x00000440) Enable slow domain glitch detectors.   */
-    __IOM NRF_TAMPC_PROTECT_GLITCHFASTDOMAIN_Type GLITCHFASTDOMAIN; /*!< (@ 0x00000448) Enable fast domain glitch detectors.   */
-    __IM uint32_t RESERVED3[8];
-    __IOM NRF_TAMPC_PROTECT_EXTRESETEN_Type EXTRESETEN; /*!< (@ 0x00000470) Trigger a reset when tamper is detected by the
-                                                                            external tamper detectors.*/
-    __IOM NRF_TAMPC_PROTECT_INTRESETEN_Type INTRESETEN; /*!< (@ 0x00000478) Trigger a reset when tamper is detected by the
-                                                                            glitch detectors, signal protector or CRACEN tamper
-                                                                            detector.*/
-    __IOM NRF_TAMPC_PROTECT_ERASEPROTECT_Type ERASEPROTECT; /*!< (@ 0x00000480) Device erase protection.                       */
-  };
+typedef struct {
+  __IOM NRF_TAMPC_PROTECT_DOMAIN_Type DOMAIN[1];     /*!< (@ 0x00000000) (unspecified)                                         */
+  __IM  uint32_t  RESERVED[120];
+  __IOM NRF_TAMPC_PROTECT_AP_Type AP[1];             /*!< (@ 0x00000200) (unspecified)                                         */
+  __IM  uint32_t  RESERVED1[140];
+  __IOM NRF_TAMPC_PROTECT_GLITCHSLOWDOMAIN_Type GLITCHSLOWDOMAIN; /*!< (@ 0x00000440) Enable slow domain glitch detectors.     */
+  __IOM NRF_TAMPC_PROTECT_GLITCHFASTDOMAIN_Type GLITCHFASTDOMAIN; /*!< (@ 0x00000448) Enable fast domain glitch detectors.     */
+  __IM  uint32_t  RESERVED2[10];
+  __IOM NRF_TAMPC_PROTECT_INTRESETEN_Type INTRESETEN; /*!< (@ 0x00000478) Trigger a reset when tamper is detected by the glitch
+                                                                          detectors, signal protector or CRACEN tamper
+                                                                          detector.*/
+  __IOM NRF_TAMPC_PROTECT_ERASEPROTECT_Type ERASEPROTECT; /*!< (@ 0x00000480) Device erase protection.                         */
 } NRF_TAMPC_PROTECT_Type;                            /*!< Size = 1160 (0x488)                                                  */
 
 /* ====================================================== Struct TAMPC ======================================================= */
@@ -23766,8 +23960,7 @@ typedef union {
     __IM uint32_t INTPEND;                           /*!< (@ 0x0000030C) Pending interrupts                                    */
     __IM uint32_t RESERVED2[60];
     __IOM uint32_t STATUS;                           /*!< (@ 0x00000400) The tamper controller status.                         */
-    __IOM NRF_TAMPC_ACTIVESHIELD_Type ACTIVESHIELD;  /*!< (@ 0x00000404) (unspecified)                                         */
-    __IM uint32_t RESERVED3[62];
+    __IM uint32_t RESERVED3[63];
     __IOM NRF_TAMPC_PROTECT_Type PROTECT;            /*!< (@ 0x00000500) (unspecified)                                         */
   } NRF_TAMPC_Type;                                  /*!< Size = 2440 (0x988)                                                  */
 
@@ -23883,14 +24076,6 @@ typedef union {
 
 /* TAMPC_STATUS: The tamper controller status. */
   #define TAMPC_STATUS_ResetValue (0x00000000UL)     /*!< Reset value of STATUS register.                                      */
-
-/* ACTIVESHIELD @Bit 0 : Active shield detector detected an error. */
-  #define TAMPC_STATUS_ACTIVESHIELD_Pos (0UL)        /*!< Position of ACTIVESHIELD field.                                      */
-  #define TAMPC_STATUS_ACTIVESHIELD_Msk (0x1UL << TAMPC_STATUS_ACTIVESHIELD_Pos) /*!< Bit mask of ACTIVESHIELD field.          */
-  #define TAMPC_STATUS_ACTIVESHIELD_Min (0x0UL)      /*!< Min enumerator value of ACTIVESHIELD field.                          */
-  #define TAMPC_STATUS_ACTIVESHIELD_Max (0x1UL)      /*!< Max enumerator value of ACTIVESHIELD field.                          */
-  #define TAMPC_STATUS_ACTIVESHIELD_NotDetected (0x0UL) /*!< Not detected.                                                     */
-  #define TAMPC_STATUS_ACTIVESHIELD_Detected (0x1UL) /*!< Detected.                                                            */
 
 /* PROTECT @Bit 4 : Error detected for the protected signals. */
   #define TAMPC_STATUS_PROTECT_Pos (4UL)             /*!< Position of PROTECT field.                                           */
@@ -24129,7 +24314,7 @@ typedef union {
 
 
 /* TEMP_A0: Slope of 1st piece wise linear function */
-  #define TEMP_A0_ResetValue (0x000002D6UL)          /*!< Reset value of A0 register.                                          */
+  #define TEMP_A0_ResetValue (0x0000038CUL)          /*!< Reset value of A0 register.                                          */
 
 /* A0 @Bits 0..11 : Slope of 1st piece wise linear function */
   #define TEMP_A0_A0_Pos (0UL)                       /*!< Position of A0 field.                                                */
@@ -24137,7 +24322,7 @@ typedef union {
 
 
 /* TEMP_A1: Slope of 2nd piece wise linear function */
-  #define TEMP_A1_ResetValue (0x0000032DUL)          /*!< Reset value of A1 register.                                          */
+  #define TEMP_A1_ResetValue (0x000003B3UL)          /*!< Reset value of A1 register.                                          */
 
 /* A1 @Bits 0..11 : Slope of 2nd piece wise linear function */
   #define TEMP_A1_A1_Pos (0UL)                       /*!< Position of A1 field.                                                */
@@ -24145,7 +24330,7 @@ typedef union {
 
 
 /* TEMP_A2: Slope of 3rd piece wise linear function */
-  #define TEMP_A2_ResetValue (0x00000384UL)          /*!< Reset value of A2 register.                                          */
+  #define TEMP_A2_ResetValue (0x000003FAUL)          /*!< Reset value of A2 register.                                          */
 
 /* A2 @Bits 0..11 : Slope of 3rd piece wise linear function */
   #define TEMP_A2_A2_Pos (0UL)                       /*!< Position of A2 field.                                                */
@@ -24153,7 +24338,7 @@ typedef union {
 
 
 /* TEMP_A3: Slope of 4th piece wise linear function */
-  #define TEMP_A3_ResetValue (0x000003E9UL)          /*!< Reset value of A3 register.                                          */
+  #define TEMP_A3_ResetValue (0x00000451UL)          /*!< Reset value of A3 register.                                          */
 
 /* A3 @Bits 0..11 : Slope of 4th piece wise linear function */
   #define TEMP_A3_A3_Pos (0UL)                       /*!< Position of A3 field.                                                */
@@ -24161,7 +24346,7 @@ typedef union {
 
 
 /* TEMP_A4: Slope of 5th piece wise linear function */
-  #define TEMP_A4_ResetValue (0x0000046FUL)          /*!< Reset value of A4 register.                                          */
+  #define TEMP_A4_ResetValue (0x000004AAUL)          /*!< Reset value of A4 register.                                          */
 
 /* A4 @Bits 0..11 : Slope of 5th piece wise linear function */
   #define TEMP_A4_A4_Pos (0UL)                       /*!< Position of A4 field.                                                */
@@ -24169,7 +24354,7 @@ typedef union {
 
 
 /* TEMP_A5: Slope of 6th piece wise linear function */
-  #define TEMP_A5_ResetValue (0x00000522UL)          /*!< Reset value of A5 register.                                          */
+  #define TEMP_A5_ResetValue (0x00000539UL)          /*!< Reset value of A5 register.                                          */
 
 /* A5 @Bits 0..11 : Slope of 6th piece wise linear function */
   #define TEMP_A5_A5_Pos (0UL)                       /*!< Position of A5 field.                                                */
@@ -24177,7 +24362,7 @@ typedef union {
 
 
 /* TEMP_A6: Slope of 7th piece wise linear function */
-  #define TEMP_A6_ResetValue (0x000005B7UL)          /*!< Reset value of A6 register.                                          */
+  #define TEMP_A6_ResetValue (0x00000578UL)          /*!< Reset value of A6 register.                                          */
 
 /* A6 @Bits 0..11 : Slope of 7th piece wise linear function */
   #define TEMP_A6_A6_Pos (0UL)                       /*!< Position of A6 field.                                                */
@@ -24185,7 +24370,7 @@ typedef union {
 
 
 /* TEMP_B0: y-intercept of 1st piece wise linear function */
-  #define TEMP_B0_ResetValue (0x00000FD6UL)          /*!< Reset value of B0 register.                                          */
+  #define TEMP_B0_ResetValue (0x00000037UL)          /*!< Reset value of B0 register.                                          */
 
 /* B0 @Bits 0..11 : y-intercept of 1st piece wise linear function */
   #define TEMP_B0_B0_Pos (0UL)                       /*!< Position of B0 field.                                                */
@@ -24193,7 +24378,7 @@ typedef union {
 
 
 /* TEMP_B1: y-intercept of 2nd piece wise linear function */
-  #define TEMP_B1_ResetValue (0x00000F76UL)          /*!< Reset value of B1 register.                                          */
+  #define TEMP_B1_ResetValue (0x00000011UL)          /*!< Reset value of B1 register.                                          */
 
 /* B1 @Bits 0..11 : y-intercept of 2nd piece wise linear function */
   #define TEMP_B1_B1_Pos (0UL)                       /*!< Position of B1 field.                                                */
@@ -24201,7 +24386,7 @@ typedef union {
 
 
 /* TEMP_B2: y-intercept of 3rd piece wise linear function */
-  #define TEMP_B2_ResetValue (0x00000F8AUL)          /*!< Reset value of B2 register.                                          */
+  #define TEMP_B2_ResetValue (0x00000005UL)          /*!< Reset value of B2 register.                                          */
 
 /* B2 @Bits 0..11 : y-intercept of 3rd piece wise linear function */
   #define TEMP_B2_B2_Pos (0UL)                       /*!< Position of B2 field.                                                */
@@ -24209,7 +24394,7 @@ typedef union {
 
 
 /* TEMP_B3: y-intercept of 4th piece wise linear function */
-  #define TEMP_B3_ResetValue (0x00000FF8UL)          /*!< Reset value of B3 register.                                          */
+  #define TEMP_B3_ResetValue (0x0000002BUL)          /*!< Reset value of B3 register.                                          */
 
 /* B3 @Bits 0..11 : y-intercept of 4th piece wise linear function */
   #define TEMP_B3_B3_Pos (0UL)                       /*!< Position of B3 field.                                                */
@@ -24217,7 +24402,7 @@ typedef union {
 
 
 /* TEMP_B4: y-intercept of 5th piece wise linear function */
-  #define TEMP_B4_ResetValue (0x000000CCUL)          /*!< Reset value of B4 register.                                          */
+  #define TEMP_B4_ResetValue (0x0000008FUL)          /*!< Reset value of B4 register.                                          */
 
 /* B4 @Bits 0..11 : y-intercept of 5th piece wise linear function */
   #define TEMP_B4_B4_Pos (0UL)                       /*!< Position of B4 field.                                                */
@@ -24225,7 +24410,7 @@ typedef union {
 
 
 /* TEMP_B5: y-intercept of 6th piece wise linear function */
-  #define TEMP_B5_ResetValue (0x00000207UL)          /*!< Reset value of B5 register.                                          */
+  #define TEMP_B5_ResetValue (0x0000015DUL)          /*!< Reset value of B5 register.                                          */
 
 /* B5 @Bits 0..11 : y-intercept of 6th piece wise linear function */
   #define TEMP_B5_B5_Pos (0UL)                       /*!< Position of B5 field.                                                */
@@ -24233,7 +24418,7 @@ typedef union {
 
 
 /* TEMP_B6: y-intercept of 7th piece wise linear function */
-  #define TEMP_B6_ResetValue (0x00000558UL)          /*!< Reset value of B6 register.                                          */
+  #define TEMP_B6_ResetValue (0x000001C0UL)          /*!< Reset value of B6 register.                                          */
 
 /* B6 @Bits 0..11 : y-intercept of 7th piece wise linear function */
   #define TEMP_B6_B6_Pos (0UL)                       /*!< Position of B6 field.                                                */
@@ -24241,7 +24426,7 @@ typedef union {
 
 
 /* TEMP_T0: End point of 1st piece wise linear function */
-  #define TEMP_T0_ResetValue (0x000000E2UL)          /*!< Reset value of T0 register.                                          */
+  #define TEMP_T0_ResetValue (0x000000E5UL)          /*!< Reset value of T0 register.                                          */
 
 /* T0 @Bits 0..7 : End point of 1st piece wise linear function */
   #define TEMP_T0_T0_Pos (0UL)                       /*!< Position of T0 field.                                                */
@@ -24249,7 +24434,7 @@ typedef union {
 
 
 /* TEMP_T1: End point of 2nd piece wise linear function */
-  #define TEMP_T1_ResetValue (0x00000002UL)          /*!< Reset value of T1 register.                                          */
+  #define TEMP_T1_ResetValue (0x000000FBUL)          /*!< Reset value of T1 register.                                          */
 
 /* T1 @Bits 0..7 : End point of 2nd piece wise linear function */
   #define TEMP_T1_T1_Pos (0UL)                       /*!< Position of T1 field.                                                */
@@ -24257,7 +24442,7 @@ typedef union {
 
 
 /* TEMP_T2: End point of 3rd piece wise linear function */
-  #define TEMP_T2_ResetValue (0x0000001FUL)          /*!< Reset value of T2 register.                                          */
+  #define TEMP_T2_ResetValue (0x00000010UL)          /*!< Reset value of T2 register.                                          */
 
 /* T2 @Bits 0..7 : End point of 3rd piece wise linear function */
   #define TEMP_T2_T2_Pos (0UL)                       /*!< Position of T2 field.                                                */
@@ -24265,7 +24450,7 @@ typedef union {
 
 
 /* TEMP_T3: End point of 4th piece wise linear function */
-  #define TEMP_T3_ResetValue (0x00000038UL)          /*!< Reset value of T3 register.                                          */
+  #define TEMP_T3_ResetValue (0x0000002BUL)          /*!< Reset value of T3 register.                                          */
 
 /* T3 @Bits 0..7 : End point of 4th piece wise linear function */
   #define TEMP_T3_T3_Pos (0UL)                       /*!< Position of T3 field.                                                */
@@ -24273,7 +24458,7 @@ typedef union {
 
 
 /* TEMP_T4: End point of 5th piece wise linear function */
-  #define TEMP_T4_ResetValue (0x0000004FUL)          /*!< Reset value of T4 register.                                          */
+  #define TEMP_T4_ResetValue (0x00000041UL)          /*!< Reset value of T4 register.                                          */
 
 /* T4 @Bits 0..7 : End point of 5th piece wise linear function */
   #define TEMP_T4_T4_Pos (0UL)                       /*!< Position of T4 field.                                                */
@@ -24281,7 +24466,7 @@ typedef union {
 
 
 /* TEMP_T5: End point of 6th piece wise linear function */
-  #define TEMP_T5_ResetValue (0x00000066UL)          /*!< Reset value of T5 register.                                          */
+  #define TEMP_T5_ResetValue (0x00000050UL)          /*!< Reset value of T5 register.                                          */
 
 /* T5 @Bits 0..7 : End point of 6th piece wise linear function */
   #define TEMP_T5_T5_Pos (0UL)                       /*!< Position of T5 field.                                                */
@@ -24942,530 +25127,6 @@ typedef union {
 #endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
 
 /* =========================================================================================================================== */
-/* ================                                           TRNG                                           ================ */
-/* =========================================================================================================================== */
-
-#if !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__) /*!< Ignore C structs for assembly code.                                 */
-
-/* ================================================= Struct TRNG_RNGCONTROL ================================================== */
-/**
-  * @brief RNGCONTROL [TRNG_RNGCONTROL] (unspecified)
-  */
-typedef struct {
-  __IOM uint32_t  CONTROL;                           /*!< (@ 0x00000000) Control register                                      */
-  __IOM uint32_t  FIFOLEVEL;                         /*!< (@ 0x00000004) FIFO level register.                                  */
-  __IOM uint32_t  FIFOTHRESHOLD;                     /*!< (@ 0x00000008) FIFO threshold register.                              */
-  __IOM uint32_t  FIFODEPTH;                         /*!< (@ 0x0000000C) FIFO depth register.                                  */
-  __IOM uint32_t  KEY[4];                            /*!< (@ 0x00000010) Key register.                                         */
-  __IOM uint32_t  TESTDATA;                          /*!< (@ 0x00000020) Test data register.                                   */
-  __IOM uint32_t  REPEATTHRESHOLD;                   /*!< (@ 0x00000024) Repetition test cut-off register.                     */
-  __IOM uint32_t  PROPTESTCUTOFF;                    /*!< (@ 0x00000028) Proportion test cut-off register.                     */
-  __IOM uint32_t  LFSRSEED;                          /*!< (@ 0x0000002C) LFSR seed register.                                   */
-  __IOM uint32_t  STATUS;                            /*!< (@ 0x00000030) Status register.                                      */
-  __IOM uint32_t  WARMUPPERIOD;                      /*!< (@ 0x00000034) Number of clock cycles in warm-up sequence.           */
-  __IOM uint32_t  DISABLEOSC;                        /*!< (@ 0x00000038) DisableOsc register.                                  */
-  __IM  uint32_t  RESERVED[2];
-  __IOM uint32_t  SAMPLINGPERIOD;                    /*!< (@ 0x00000044) Number of clock cycles between sampling moments.      */
-  __IM  uint32_t  RESERVED1[4];
-  __IOM uint32_t  HWCONFIG;                          /*!< (@ 0x00000058) Hardware configuration register.                      */
-  __IOM uint32_t  COOLDOWNPERIOD;                    /*!< (@ 0x0000005C) Number of clock cycles in cool-down sequence.         */
-  __IOM uint32_t  AUTOCORRTESTCUTOFF0;               /*!< (@ 0x00000060) AutoCorrTestCutoff register 0                         */
-  __IOM uint32_t  AUTOCORRTESTCUTOFF1;               /*!< (@ 0x00000064) AutoCorrTestCutoff register 1                         */
-  __IOM uint32_t  CORRTESTCUTOFF0;                   /*!< (@ 0x00000068) CorrTestCutoff register 0                             */
-  __IOM uint32_t  CORRTESTCUTOFF1;                   /*!< (@ 0x0000006C) CorrTestCutoff register 1                             */
-  __IOM uint32_t  AUTOCORRTESTFAILED;                /*!< (@ 0x00000070) Auto-correlation test failing ring(s).                */
-  __IOM uint32_t  CORRTESTFAILED;                    /*!< (@ 0x00000074) Correlation test failing ring.                        */
-  __IM  uint32_t  RESERVED2;
-  __IOM uint32_t  HWVERSION;                         /*!< (@ 0x0000007C) Fixed to 1 for this version.                          */
-  __IM  uint32_t  FIFO[32];                          /*!< (@ 0x00000080) FIFO data                                             */
-} NRF_TRNG_RNGCONTROL_Type;                          /*!< Size = 256 (0x100)                                                   */
-
-/* TRNG_RNGCONTROL_CONTROL: Control register */
-  #define TRNG_RNGCONTROL_CONTROL_ResetValue (0x00040000UL) /*!< Reset value of CONTROL register.                              */
-
-/* ENABLE @Bit 0 : Start/enable the NDRNG. */
-  #define TRNG_RNGCONTROL_CONTROL_ENABLE_Pos (0UL)   /*!< Position of ENABLE field.                                            */
-  #define TRNG_RNGCONTROL_CONTROL_ENABLE_Msk (0x1UL << TRNG_RNGCONTROL_CONTROL_ENABLE_Pos) /*!< Bit mask of ENABLE field.      */
-
-/* LFSREN @Bit 1 : Select between the NDRNG with asynchronous free running oscillators (when 0) and the Pseudo-Random generator
-                   with synchronous oscillators for simulation purpose (when 1). */
-
-  #define TRNG_RNGCONTROL_CONTROL_LFSREN_Pos (1UL)   /*!< Position of LFSREN field.                                            */
-  #define TRNG_RNGCONTROL_CONTROL_LFSREN_Msk (0x1UL << TRNG_RNGCONTROL_CONTROL_LFSREN_Pos) /*!< Bit mask of LFSREN field.      */
-
-/* TESTEN @Bit 2 : Select input for conditioning function and continuous tests: */
-  #define TRNG_RNGCONTROL_CONTROL_TESTEN_Pos (2UL)   /*!< Position of TESTEN field.                                            */
-  #define TRNG_RNGCONTROL_CONTROL_TESTEN_Msk (0x1UL << TRNG_RNGCONTROL_CONTROL_TESTEN_Pos) /*!< Bit mask of TESTEN field.      */
-  #define TRNG_RNGCONTROL_CONTROL_TESTEN_Min (0x0UL) /*!< Min enumerator value of TESTEN field.                                */
-  #define TRNG_RNGCONTROL_CONTROL_TESTEN_Max (0x1UL) /*!< Max enumerator value of TESTEN field.                                */
-  #define TRNG_RNGCONTROL_CONTROL_TESTEN_NORMAL (0x0UL) /*!< Noise source (normal mode).                                       */
-  #define TRNG_RNGCONTROL_CONTROL_TESTEN_TEST (0x1UL) /*!< Test data register (test mode).                                     */
-
-/* CONDBYPASS @Bit 3 : Conditioning function bypass. */
-  #define TRNG_RNGCONTROL_CONTROL_CONDBYPASS_Pos (3UL) /*!< Position of CONDBYPASS field.                                      */
-  #define TRNG_RNGCONTROL_CONTROL_CONDBYPASS_Msk (0x1UL << TRNG_RNGCONTROL_CONTROL_CONDBYPASS_Pos) /*!< Bit mask of CONDBYPASS
-                                                                            field.*/
-  #define TRNG_RNGCONTROL_CONTROL_CONDBYPASS_Min (0x0UL) /*!< Min enumerator value of CONDBYPASS field.                        */
-  #define TRNG_RNGCONTROL_CONTROL_CONDBYPASS_Max (0x1UL) /*!< Max enumerator value of CONDBYPASS field.                        */
-  #define TRNG_RNGCONTROL_CONTROL_CONDBYPASS_NORMAL (0x0UL) /*!< the conditioning function is used (normal mode).              */
-  #define TRNG_RNGCONTROL_CONTROL_CONDBYPASS_BYPASS (0x1UL) /*!< the conditioning function is bypassed (to observe entropy
-                                                                 source directly).*/
-
-/* INTENREP @Bit 4 : Enable interrupt if any of the health test fails. */
-  #define TRNG_RNGCONTROL_CONTROL_INTENREP_Pos (4UL) /*!< Position of INTENREP field.                                          */
-  #define TRNG_RNGCONTROL_CONTROL_INTENREP_Msk (0x1UL << TRNG_RNGCONTROL_CONTROL_INTENREP_Pos) /*!< Bit mask of INTENREP field.*/
-
-/* INTENFULL @Bit 7 : Enable interrupt if FIFO is full. */
-  #define TRNG_RNGCONTROL_CONTROL_INTENFULL_Pos (7UL) /*!< Position of INTENFULL field.                                        */
-  #define TRNG_RNGCONTROL_CONTROL_INTENFULL_Msk (0x1UL << TRNG_RNGCONTROL_CONTROL_INTENFULL_Pos) /*!< Bit mask of INTENFULL
-                                                                            field.*/
-
-/* SOFTRST @Bit 8 : Datapath content flush and control FSM */
-  #define TRNG_RNGCONTROL_CONTROL_SOFTRST_Pos (8UL)  /*!< Position of SOFTRST field.                                           */
-  #define TRNG_RNGCONTROL_CONTROL_SOFTRST_Msk (0x1UL << TRNG_RNGCONTROL_CONTROL_SOFTRST_Pos) /*!< Bit mask of SOFTRST field.   */
-
-/* FORCEACTIVEROS @Bit 11 : Force oscillators to run when FIFO is full. */
-  #define TRNG_RNGCONTROL_CONTROL_FORCEACTIVEROS_Pos (11UL) /*!< Position of FORCEACTIVEROS field.                             */
-  #define TRNG_RNGCONTROL_CONTROL_FORCEACTIVEROS_Msk (0x1UL << TRNG_RNGCONTROL_CONTROL_FORCEACTIVEROS_Pos) /*!< Bit mask of
-                                                                            FORCEACTIVEROS field.*/
-
-/* IGNOREHEALTHTESTSFAILFORFSM @Bit 12 : Results of the health tests during start-up and online test do not affect the control
-                                         FSM state. */
-
-  #define TRNG_RNGCONTROL_CONTROL_IGNOREHEALTHTESTSFAILFORFSM_Pos (12UL) /*!< Position of IGNOREHEALTHTESTSFAILFORFSM field.   */
-  #define TRNG_RNGCONTROL_CONTROL_IGNOREHEALTHTESTSFAILFORFSM_Msk (0x1UL << TRNG_RNGCONTROL_CONTROL_IGNOREHEALTHTESTSFAILFORFSM_Pos)
-                                                                            /*!< Bit mask of IGNOREHEALTHTESTSFAILFORFSM field.*/
-
-/* NB128BITBLOCKS @Bits 16..19 : Number of 128 bit blocks used in conditioning (AES-CBC-MAC) post-processing. */
-  #define TRNG_RNGCONTROL_CONTROL_NB128BITBLOCKS_Pos (16UL) /*!< Position of NB128BITBLOCKS field.                             */
-  #define TRNG_RNGCONTROL_CONTROL_NB128BITBLOCKS_Msk (0xFUL << TRNG_RNGCONTROL_CONTROL_NB128BITBLOCKS_Pos) /*!< Bit mask of
-                                                                            NB128BITBLOCKS field.*/
-
-/* FIFOWRITESTARTUP @Bit 20 : Enable write of the samples in the FIFO during start-up. */
-  #define TRNG_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Pos (20UL) /*!< Position of FIFOWRITESTARTUP field.                         */
-  #define TRNG_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Msk (0x1UL << TRNG_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Pos) /*!< Bit mask of
-                                                                            FIFOWRITESTARTUP field.*/
-
-/* DISREPETTESTS @Bit 21 : All repetition tests (each share) are disabled via this single bit. */
-  #define TRNG_RNGCONTROL_CONTROL_DISREPETTESTS_Pos (21UL) /*!< Position of DISREPETTESTS field.                               */
-  #define TRNG_RNGCONTROL_CONTROL_DISREPETTESTS_Msk (0x1UL << TRNG_RNGCONTROL_CONTROL_DISREPETTESTS_Pos) /*!< Bit mask of
-                                                                            DISREPETTESTS field.*/
-
-/* DISPROPTESTS @Bit 22 : All proportion tests (each share) are disabled via this single bit. */
-  #define TRNG_RNGCONTROL_CONTROL_DISPROPTESTS_Pos (22UL) /*!< Position of DISPROPTESTS field.                                 */
-  #define TRNG_RNGCONTROL_CONTROL_DISPROPTESTS_Msk (0x1UL << TRNG_RNGCONTROL_CONTROL_DISPROPTESTS_Pos) /*!< Bit mask of
-                                                                            DISPROPTESTS field.*/
-
-/* DISAUTOCORRTESTS @Bits 23..24 : Disable specific delay(s) check in auto-correlation test - same RO: */
-  #define TRNG_RNGCONTROL_CONTROL_DISAUTOCORRTESTS_Pos (23UL) /*!< Position of DISAUTOCORRTESTS field.                         */
-  #define TRNG_RNGCONTROL_CONTROL_DISAUTOCORRTESTS_Msk (0x3UL << TRNG_RNGCONTROL_CONTROL_DISAUTOCORRTESTS_Pos) /*!< Bit mask of
-                                                                            DISAUTOCORRTESTS field.*/
-
-/* DISCORRTESTS @Bits 27..29 : Disable specific delay(s) check in correlation test - different ROs: */
-  #define TRNG_RNGCONTROL_CONTROL_DISCORRTESTS_Pos (27UL) /*!< Position of DISCORRTESTS field.                                 */
-  #define TRNG_RNGCONTROL_CONTROL_DISCORRTESTS_Msk (0x7UL << TRNG_RNGCONTROL_CONTROL_DISCORRTESTS_Pos) /*!< Bit mask of
-                                                                            DISCORRTESTS field.*/
-
-/* BLENDINGMETHOD @Bits 30..31 : Select blending method */
-  #define TRNG_RNGCONTROL_CONTROL_BLENDINGMETHOD_Pos (30UL) /*!< Position of BLENDINGMETHOD field.                             */
-  #define TRNG_RNGCONTROL_CONTROL_BLENDINGMETHOD_Msk (0x3UL << TRNG_RNGCONTROL_CONTROL_BLENDINGMETHOD_Pos) /*!< Bit mask of
-                                                                            BLENDINGMETHOD field.*/
-  #define TRNG_RNGCONTROL_CONTROL_BLENDINGMETHOD_Min (0x0UL) /*!< Min enumerator value of BLENDINGMETHOD field.                */
-  #define TRNG_RNGCONTROL_CONTROL_BLENDINGMETHOD_Max (0x3UL) /*!< Max enumerator value of BLENDINGMETHOD field.                */
-  #define TRNG_RNGCONTROL_CONTROL_BLENDINGMETHOD_CONCATENATION (0x0UL) /*!< Concatenation                                      */
-  #define TRNG_RNGCONTROL_CONTROL_BLENDINGMETHOD_XORLEVEL1 (0x1UL) /*!< XOR level 1                                            */
-  #define TRNG_RNGCONTROL_CONTROL_BLENDINGMETHOD_XORLEVEL2 (0x2UL) /*!< XOR level 2                                            */
-  #define TRNG_RNGCONTROL_CONTROL_BLENDINGMETHOD_VONNEUMANN (0x3UL) /*!< VON-NEUMANN debiasing                                 */
-
-
-/* TRNG_RNGCONTROL_FIFOLEVEL: FIFO level register. */
-  #define TRNG_RNGCONTROL_FIFOLEVEL_ResetValue (0x00000000UL) /*!< Reset value of FIFOLEVEL register.                          */
-
-/* FIFOLEVEL @Bits 0..31 : Number of 32 bits words of random values available in the FIFO. */
-  #define TRNG_RNGCONTROL_FIFOLEVEL_FIFOLEVEL_Pos (0UL) /*!< Position of FIFOLEVEL field.                                      */
-  #define TRNG_RNGCONTROL_FIFOLEVEL_FIFOLEVEL_Msk (0xFFFFFFFFUL << TRNG_RNGCONTROL_FIFOLEVEL_FIFOLEVEL_Pos) /*!< Bit mask of
-                                                                            FIFOLEVEL field.*/
-
-
-/* TRNG_RNGCONTROL_FIFOTHRESHOLD: FIFO threshold register. */
-  #define TRNG_RNGCONTROL_FIFOTHRESHOLD_ResetValue (0x00000003UL) /*!< Reset value of FIFOTHRESHOLD register.                  */
-
-/* FIFOTHRESHOLD @Bits 0..31 : FIFO level below which the module leaves the idle state to refill the FIFO, expressed in number
-                               of 128bit blocks. */
-
-  #define TRNG_RNGCONTROL_FIFOTHRESHOLD_FIFOTHRESHOLD_Pos (0UL) /*!< Position of FIFOTHRESHOLD field.                          */
-  #define TRNG_RNGCONTROL_FIFOTHRESHOLD_FIFOTHRESHOLD_Msk (0xFFFFFFFFUL << TRNG_RNGCONTROL_FIFOTHRESHOLD_FIFOTHRESHOLD_Pos) /*!<
-                                                                            Bit mask of FIFOTHRESHOLD field.*/
-
-
-/* TRNG_RNGCONTROL_FIFODEPTH: FIFO depth register. */
-  #define TRNG_RNGCONTROL_FIFODEPTH_ResetValue (0x00000010UL) /*!< Reset value of FIFODEPTH register.                          */
-
-/* FIFODEPTH @Bits 0..31 : Maximum number of 32 bits words that can be stored in the FIFO. */
-  #define TRNG_RNGCONTROL_FIFODEPTH_FIFODEPTH_Pos (0UL) /*!< Position of FIFODEPTH field.                                      */
-  #define TRNG_RNGCONTROL_FIFODEPTH_FIFODEPTH_Msk (0xFFFFFFFFUL << TRNG_RNGCONTROL_FIFODEPTH_FIFODEPTH_Pos) /*!< Bit mask of
-                                                                            FIFODEPTH field.*/
-
-
-/* TRNG_RNGCONTROL_KEY: Key register. */
-  #define TRNG_RNGCONTROL_KEY_MaxCount (4UL)         /*!< Max size of KEY[4] array.                                            */
-  #define TRNG_RNGCONTROL_KEY_MaxIndex (3UL)         /*!< Max index of KEY[4] array.                                           */
-  #define TRNG_RNGCONTROL_KEY_MinIndex (0UL)         /*!< Min index of KEY[4] array.                                           */
-  #define TRNG_RNGCONTROL_KEY_ResetValue (0x00000000UL) /*!< Reset value of KEY[4] register.                                   */
-
-/* KEY @Bits 0..31 : Key register. */
-  #define TRNG_RNGCONTROL_KEY_KEY_Pos (0UL)          /*!< Position of KEY field.                                               */
-  #define TRNG_RNGCONTROL_KEY_KEY_Msk (0xFFFFFFFFUL << TRNG_RNGCONTROL_KEY_KEY_Pos) /*!< Bit mask of KEY field.                */
-
-
-/* TRNG_RNGCONTROL_TESTDATA: Test data register. */
-  #define TRNG_RNGCONTROL_TESTDATA_ResetValue (0x00000000UL) /*!< Reset value of TESTDATA register.                            */
-
-/* TESTDATA @Bits 0..31 : Test data register. */
-  #define TRNG_RNGCONTROL_TESTDATA_TESTDATA_Pos (0UL) /*!< Position of TESTDATA field.                                         */
-  #define TRNG_RNGCONTROL_TESTDATA_TESTDATA_Msk (0xFFFFFFFFUL << TRNG_RNGCONTROL_TESTDATA_TESTDATA_Pos) /*!< Bit mask of
-                                                                            TESTDATA field.*/
-
-
-/* TRNG_RNGCONTROL_REPEATTHRESHOLD: Repetition test cut-off register. */
-  #define TRNG_RNGCONTROL_REPEATTHRESHOLD_ResetValue (0x00000004UL) /*!< Reset value of REPEATTHRESHOLD register.              */
-
-/* REPEATTHRESHOLD @Bits 0..5 : Repetition Test cut-off value. */
-  #define TRNG_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Pos (0UL) /*!< Position of REPEATTHRESHOLD field.                    */
-  #define TRNG_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Msk (0x3FUL << TRNG_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Pos)
-                                                                            /*!< Bit mask of REPEATTHRESHOLD field.*/
-
-
-/* TRNG_RNGCONTROL_PROPTESTCUTOFF: Proportion test cut-off register. */
-  #define TRNG_RNGCONTROL_PROPTESTCUTOFF_ResetValue (0x0000000DUL) /*!< Reset value of PROPTESTCUTOFF register.                */
-
-/* PROPTESTCUTOFF @Bits 0..8 : Proportion test cut-off value. */
-  #define TRNG_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Pos (0UL) /*!< Position of PROPTESTCUTOFF field.                       */
-  #define TRNG_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Msk (0x1FFUL << TRNG_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Pos) /*!<
-                                                                            Bit mask of PROPTESTCUTOFF field.*/
-
-
-/* TRNG_RNGCONTROL_LFSRSEED: LFSR seed register. */
-  #define TRNG_RNGCONTROL_LFSRSEED_ResetValue (0x00FFFFFFUL) /*!< Reset value of LFSRSEED register.                            */
-
-/* LFSRSEED @Bits 0..23 : LFSR initialization value. */
-  #define TRNG_RNGCONTROL_LFSRSEED_LFSRSEED_Pos (0UL) /*!< Position of LFSRSEED field.                                         */
-  #define TRNG_RNGCONTROL_LFSRSEED_LFSRSEED_Msk (0xFFFFFFUL << TRNG_RNGCONTROL_LFSRSEED_LFSRSEED_Pos) /*!< Bit mask of LFSRSEED
-                                                                            field.*/
-
-/* LFSRSSELECTION @Bits 24..25 : Share index for which initialization value should be used. */
-  #define TRNG_RNGCONTROL_LFSRSEED_LFSRSSELECTION_Pos (24UL) /*!< Position of LFSRSSELECTION field.                            */
-  #define TRNG_RNGCONTROL_LFSRSEED_LFSRSSELECTION_Msk (0x3UL << TRNG_RNGCONTROL_LFSRSEED_LFSRSSELECTION_Pos) /*!< Bit mask of
-                                                                            LFSRSSELECTION field.*/
-
-
-/* TRNG_RNGCONTROL_STATUS: Status register. */
-  #define TRNG_RNGCONTROL_STATUS_ResetValue (0x00000000UL) /*!< Reset value of STATUS register.                                */
-
-/* TESTDATABUSY @Bit 0 : High when data written to TestData register is being processed. */
-  #define TRNG_RNGCONTROL_STATUS_TESTDATABUSY_Pos (0UL) /*!< Position of TESTDATABUSY field.                                   */
-  #define TRNG_RNGCONTROL_STATUS_TESTDATABUSY_Msk (0x1UL << TRNG_RNGCONTROL_STATUS_TESTDATABUSY_Pos) /*!< Bit mask of
-                                                                            TESTDATABUSY field.*/
-
-/* STATE @Bits 1..3 : State of the control FSM: */
-  #define TRNG_RNGCONTROL_STATUS_STATE_Pos (1UL)     /*!< Position of STATE field.                                             */
-  #define TRNG_RNGCONTROL_STATUS_STATE_Msk (0x7UL << TRNG_RNGCONTROL_STATUS_STATE_Pos) /*!< Bit mask of STATE field.           */
-  #define TRNG_RNGCONTROL_STATUS_STATE_Min (0x0UL)   /*!< Min enumerator value of STATE field.                                 */
-  #define TRNG_RNGCONTROL_STATUS_STATE_Max (0x5UL)   /*!< Max enumerator value of STATE field.                                 */
-  #define TRNG_RNGCONTROL_STATUS_STATE_RESET (0x0UL) /*!< Reset                                                                */
-  #define TRNG_RNGCONTROL_STATUS_STATE_STARTUP (0x1UL) /*!< Startup                                                            */
-  #define TRNG_RNGCONTROL_STATUS_STATE_IDLERON (0x2UL) /*!< Idle / FIFO full                                                   */
-  #define TRNG_RNGCONTROL_STATUS_STATE_FILLFIFO (0x4UL) /*!< Fill FIFO                                                         */
-  #define TRNG_RNGCONTROL_STATUS_STATE_ERROR (0x5UL) /*!< Error                                                                */
-
-/* REPFAIL @Bit 4 : NIST repetition test(s) failure. */
-  #define TRNG_RNGCONTROL_STATUS_REPFAIL_Pos (4UL)   /*!< Position of REPFAIL field.                                           */
-  #define TRNG_RNGCONTROL_STATUS_REPFAIL_Msk (0x1UL << TRNG_RNGCONTROL_STATUS_REPFAIL_Pos) /*!< Bit mask of REPFAIL field.     */
-
-/* PROPFAIL @Bit 5 : NIST proportion test(s) failure. */
-  #define TRNG_RNGCONTROL_STATUS_PROPFAIL_Pos (5UL)  /*!< Position of PROPFAIL field.                                          */
-  #define TRNG_RNGCONTROL_STATUS_PROPFAIL_Msk (0x1UL << TRNG_RNGCONTROL_STATUS_PROPFAIL_Pos) /*!< Bit mask of PROPFAIL field.  */
-
-/* ANYHEALTHTESTFAIL @Bit 6 : Any of the enabled health tests is failing. */
-  #define TRNG_RNGCONTROL_STATUS_ANYHEALTHTESTFAIL_Pos (6UL) /*!< Position of ANYHEALTHTESTFAIL field.                         */
-  #define TRNG_RNGCONTROL_STATUS_ANYHEALTHTESTFAIL_Msk (0x1UL << TRNG_RNGCONTROL_STATUS_ANYHEALTHTESTFAIL_Pos) /*!< Bit mask of
-                                                                            ANYHEALTHTESTFAIL field.*/
-
-/* FULLINT @Bit 7 : FIFO full status. */
-  #define TRNG_RNGCONTROL_STATUS_FULLINT_Pos (7UL)   /*!< Position of FULLINT field.                                           */
-  #define TRNG_RNGCONTROL_STATUS_FULLINT_Msk (0x1UL << TRNG_RNGCONTROL_STATUS_FULLINT_Pos) /*!< Bit mask of FULLINT field.     */
-
-/* STARTUPFAIL @Bit 10 : Start-up test(s) failure. */
-  #define TRNG_RNGCONTROL_STATUS_STARTUPFAIL_Pos (10UL) /*!< Position of STARTUPFAIL field.                                    */
-  #define TRNG_RNGCONTROL_STATUS_STARTUPFAIL_Msk (0x1UL << TRNG_RNGCONTROL_STATUS_STARTUPFAIL_Pos) /*!< Bit mask of STARTUPFAIL
-                                                                            field.*/
-
-/* REPTESTFAILPERSHARE @Bits 12..15 : NIST Repetition test failure per share. */
-  #define TRNG_RNGCONTROL_STATUS_REPTESTFAILPERSHARE_Pos (12UL) /*!< Position of REPTESTFAILPERSHARE field.                    */
-  #define TRNG_RNGCONTROL_STATUS_REPTESTFAILPERSHARE_Msk (0xFUL << TRNG_RNGCONTROL_STATUS_REPTESTFAILPERSHARE_Pos) /*!< Bit mask
-                                                                            of REPTESTFAILPERSHARE field.*/
-
-/* PROPTESTFAILPERSHARE @Bits 16..19 : NIST Proportion test failure per share. */
-  #define TRNG_RNGCONTROL_STATUS_PROPTESTFAILPERSHARE_Pos (16UL) /*!< Position of PROPTESTFAILPERSHARE field.                  */
-  #define TRNG_RNGCONTROL_STATUS_PROPTESTFAILPERSHARE_Msk (0xFUL << TRNG_RNGCONTROL_STATUS_PROPTESTFAILPERSHARE_Pos) /*!< Bit
-                                                                            mask of PROPTESTFAILPERSHARE field.*/
-
-/* CONDITIONINGISTOOSLOW @Bit 20 : Conditioning consumes data slower than they are provided to it. */
-  #define TRNG_RNGCONTROL_STATUS_CONDITIONINGISTOOSLOW_Pos (20UL) /*!< Position of CONDITIONINGISTOOSLOW field.                */
-  #define TRNG_RNGCONTROL_STATUS_CONDITIONINGISTOOSLOW_Msk (0x1UL << TRNG_RNGCONTROL_STATUS_CONDITIONINGISTOOSLOW_Pos) /*!< Bit
-                                                                            mask of CONDITIONINGISTOOSLOW field.*/
-
-
-/* TRNG_RNGCONTROL_WARMUPPERIOD: Number of clock cycles in warm-up sequence. */
-  #define TRNG_RNGCONTROL_WARMUPPERIOD_ResetValue (0x00000200UL) /*!< Reset value of WARMUPPERIOD register.                    */
-
-/* WARMUPPERIOD @Bits 0..11 : Number of clock cycles in warm-up sequence. */
-  #define TRNG_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Pos (0UL) /*!< Position of WARMUPPERIOD field.                             */
-  #define TRNG_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Msk (0xFFFUL << TRNG_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Pos) /*!< Bit mask
-                                                                            of WARMUPPERIOD field.*/
-
-
-/* TRNG_RNGCONTROL_DISABLEOSC: DisableOsc register. */
-  #define TRNG_RNGCONTROL_DISABLEOSC_ResetValue (0x00000000UL) /*!< Reset value of DISABLEOSC register.                        */
-
-/* DISABLEOSC @Bits 0..7 : Disable oscillator rings 0 to 7. */
-  #define TRNG_RNGCONTROL_DISABLEOSC_DISABLEOSC_Pos (0UL) /*!< Position of DISABLEOSC field.                                   */
-  #define TRNG_RNGCONTROL_DISABLEOSC_DISABLEOSC_Msk (0xFFUL << TRNG_RNGCONTROL_DISABLEOSC_DISABLEOSC_Pos) /*!< Bit mask of
-                                                                            DISABLEOSC field.*/
-
-
-/* TRNG_RNGCONTROL_SAMPLINGPERIOD: Number of clock cycles between sampling moments. */
-  #define TRNG_RNGCONTROL_SAMPLINGPERIOD_ResetValue (0x00000FFFUL) /*!< Reset value of SAMPLINGPERIOD register.                */
-
-/* SAMPLINGPERIOD @Bits 0..11 : Number of clock cycles between sampling moments. */
-  #define TRNG_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Pos (0UL) /*!< Position of SAMPLINGPERIOD field.                       */
-  #define TRNG_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Msk (0xFFFUL << TRNG_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Pos) /*!<
-                                                                            Bit mask of SAMPLINGPERIOD field.*/
-
-
-/* TRNG_RNGCONTROL_HWCONFIG: Hardware configuration register. */
-  #define TRNG_RNGCONTROL_HWCONFIG_ResetValue (0x0002410FUL) /*!< Reset value of HWCONFIG register.                            */
-
-/* NBOFINV @Bits 0..7 : Generic g_NbOfInverters value. */
-  #define TRNG_RNGCONTROL_HWCONFIG_NBOFINV_Pos (0UL) /*!< Position of NBOFINV field.                                           */
-  #define TRNG_RNGCONTROL_HWCONFIG_NBOFINV_Msk (0xFFUL << TRNG_RNGCONTROL_HWCONFIG_NBOFINV_Pos) /*!< Bit mask of NBOFINV field.*/
-
-/* LOG2NBOFAUTOCORRTESTSPERSHARE @Bits 8..11 : Generic g_Log2NbOfAutoCorrTestsPerShare value. */
-  #define TRNG_RNGCONTROL_HWCONFIG_LOG2NBOFAUTOCORRTESTSPERSHARE_Pos (8UL) /*!< Position of LOG2NBOFAUTOCORRTESTSPERSHARE
-                                                                            field.*/
-  #define TRNG_RNGCONTROL_HWCONFIG_LOG2NBOFAUTOCORRTESTSPERSHARE_Msk (0xFUL << TRNG_RNGCONTROL_HWCONFIG_LOG2NBOFAUTOCORRTESTSPERSHARE_Pos)
-                                                                            /*!< Bit mask of LOG2NBOFAUTOCORRTESTSPERSHARE
-                                                                            field.*/
-
-/* LOG2FIFODEPTH @Bits 12..15 : Generic g_Log2FifoDepth value. */
-  #define TRNG_RNGCONTROL_HWCONFIG_LOG2FIFODEPTH_Pos (12UL) /*!< Position of LOG2FIFODEPTH field.                              */
-  #define TRNG_RNGCONTROL_HWCONFIG_LOG2FIFODEPTH_Msk (0xFUL << TRNG_RNGCONTROL_HWCONFIG_LOG2FIFODEPTH_Pos) /*!< Bit mask of
-                                                                            LOG2FIFODEPTH field.*/
-
-/* LOG2NBOFSHARES @Bits 16..17 : Generic g_Log2NbOfShares value. */
-  #define TRNG_RNGCONTROL_HWCONFIG_LOG2NBOFSHARES_Pos (16UL) /*!< Position of LOG2NBOFSHARES field.                            */
-  #define TRNG_RNGCONTROL_HWCONFIG_LOG2NBOFSHARES_Msk (0x3UL << TRNG_RNGCONTROL_HWCONFIG_LOG2NBOFSHARES_Pos) /*!< Bit mask of
-                                                                            LOG2NBOFSHARES field.*/
-
-
-/* TRNG_RNGCONTROL_COOLDOWNPERIOD: Number of clock cycles in cool-down sequence. */
-  #define TRNG_RNGCONTROL_COOLDOWNPERIOD_ResetValue (0x00000000UL) /*!< Reset value of COOLDOWNPERIOD register.                */
-
-/* COOLDOWNPERIOD @Bits 0..11 : Number of clock cycles in cool-down sequence. */
-  #define TRNG_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Pos (0UL) /*!< Position of COOLDOWNPERIOD field.                       */
-  #define TRNG_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Msk (0xFFFUL << TRNG_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Pos) /*!<
-                                                                            Bit mask of COOLDOWNPERIOD field.*/
-
-
-/* TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF0: AutoCorrTestCutoff register 0 */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF0_ResetValue (0x007F007FUL) /*!< Reset value of AUTOCORRTESTCUTOFF0 register.      */
-
-/* DLYZEROCUTOFF @Bits 0..15 : Auto-correlation test cut-off value for delay of 0 samples. */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF0_DLYZEROCUTOFF_Pos (0UL) /*!< Position of DLYZEROCUTOFF field.                    */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF0_DLYZEROCUTOFF_Msk (0xFFFFUL << TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF0_DLYZEROCUTOFF_Pos)
-                                                                            /*!< Bit mask of DLYZEROCUTOFF field.*/
-
-/* DLYONECUTOFF @Bits 16..31 : Auto-correlation test cut-off value for delay of +1 sample. */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF0_DLYONECUTOFF_Pos (16UL) /*!< Position of DLYONECUTOFF field.                     */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF0_DLYONECUTOFF_Msk (0xFFFFUL << TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF0_DLYONECUTOFF_Pos)
-                                                                            /*!< Bit mask of DLYONECUTOFF field.*/
-
-
-/* TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF1: AutoCorrTestCutoff register 1 */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF1_ResetValue (0x007F007FUL) /*!< Reset value of AUTOCORRTESTCUTOFF1 register.      */
-
-/* DLYTWOCUTOFF @Bits 0..15 : Auto-correlation test cut-off value for delay of +2 samples. */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF1_DLYTWOCUTOFF_Pos (0UL) /*!< Position of DLYTWOCUTOFF field.                      */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF1_DLYTWOCUTOFF_Msk (0xFFFFUL << TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF1_DLYTWOCUTOFF_Pos)
-                                                                            /*!< Bit mask of DLYTWOCUTOFF field.*/
-
-/* DLYTHREECUTOFF @Bits 16..31 : Auto-correlation test cut-off value for delay of +3 samples. */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF1_DLYTHREECUTOFF_Pos (16UL) /*!< Position of DLYTHREECUTOFF field.                 */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF1_DLYTHREECUTOFF_Msk (0xFFFFUL << TRNG_RNGCONTROL_AUTOCORRTESTCUTOFF1_DLYTHREECUTOFF_Pos)
-                                                                            /*!< Bit mask of DLYTHREECUTOFF field.*/
-
-
-/* TRNG_RNGCONTROL_CORRTESTCUTOFF0: CorrTestCutoff register 0 */
-  #define TRNG_RNGCONTROL_CORRTESTCUTOFF0_ResetValue (0x007F007FUL) /*!< Reset value of CORRTESTCUTOFF0 register.              */
-
-/* DLYZEROCUTOFF @Bits 0..15 : Correlation test cut-off value for delay of 0 samples. */
-  #define TRNG_RNGCONTROL_CORRTESTCUTOFF0_DLYZEROCUTOFF_Pos (0UL) /*!< Position of DLYZEROCUTOFF field.                        */
-  #define TRNG_RNGCONTROL_CORRTESTCUTOFF0_DLYZEROCUTOFF_Msk (0xFFFFUL << TRNG_RNGCONTROL_CORRTESTCUTOFF0_DLYZEROCUTOFF_Pos) /*!<
-                                                                            Bit mask of DLYZEROCUTOFF field.*/
-
-/* DLYONECUTOFF @Bits 16..31 : Correlation test cut-off value for delay of +/-1 sample. */
-  #define TRNG_RNGCONTROL_CORRTESTCUTOFF0_DLYONECUTOFF_Pos (16UL) /*!< Position of DLYONECUTOFF field.                         */
-  #define TRNG_RNGCONTROL_CORRTESTCUTOFF0_DLYONECUTOFF_Msk (0xFFFFUL << TRNG_RNGCONTROL_CORRTESTCUTOFF0_DLYONECUTOFF_Pos) /*!<
-                                                                            Bit mask of DLYONECUTOFF field.*/
-
-
-/* TRNG_RNGCONTROL_CORRTESTCUTOFF1: CorrTestCutoff register 1 */
-  #define TRNG_RNGCONTROL_CORRTESTCUTOFF1_ResetValue (0x007F007FUL) /*!< Reset value of CORRTESTCUTOFF1 register.              */
-
-/* DLYTWOCUTOFF @Bits 0..15 : Correlation test cut-off value for delay of +/- 2 samples. */
-  #define TRNG_RNGCONTROL_CORRTESTCUTOFF1_DLYTWOCUTOFF_Pos (0UL) /*!< Position of DLYTWOCUTOFF field.                          */
-  #define TRNG_RNGCONTROL_CORRTESTCUTOFF1_DLYTWOCUTOFF_Msk (0xFFFFUL << TRNG_RNGCONTROL_CORRTESTCUTOFF1_DLYTWOCUTOFF_Pos) /*!<
-                                                                            Bit mask of DLYTWOCUTOFF field.*/
-
-/* DLYTHREECUTOFF @Bits 16..31 : Correlation test cut-off value for delay of +/- 3 samples. */
-  #define TRNG_RNGCONTROL_CORRTESTCUTOFF1_DLYTHREECUTOFF_Pos (16UL) /*!< Position of DLYTHREECUTOFF field.                     */
-  #define TRNG_RNGCONTROL_CORRTESTCUTOFF1_DLYTHREECUTOFF_Msk (0xFFFFUL << TRNG_RNGCONTROL_CORRTESTCUTOFF1_DLYTHREECUTOFF_Pos)
-                                                                            /*!< Bit mask of DLYTHREECUTOFF field.*/
-
-
-/* TRNG_RNGCONTROL_AUTOCORRTESTFAILED: Auto-correlation test failing ring(s). */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTFAILED_ResetValue (0x00000000UL) /*!< Reset value of AUTOCORRTESTFAILED register.        */
-
-/* AUTOCORRTESTFAILED @Bits 0..31 : Auto-correlation test failing ring(s). */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTFAILED_AUTOCORRTESTFAILED_Pos (0UL) /*!< Position of AUTOCORRTESTFAILED field.           */
-  #define TRNG_RNGCONTROL_AUTOCORRTESTFAILED_AUTOCORRTESTFAILED_Msk (0xFFFFFFFFUL << TRNG_RNGCONTROL_AUTOCORRTESTFAILED_AUTOCORRTESTFAILED_Pos)
-                                                                            /*!< Bit mask of AUTOCORRTESTFAILED field.*/
-
-
-/* TRNG_RNGCONTROL_CORRTESTFAILED: Correlation test failing ring. */
-  #define TRNG_RNGCONTROL_CORRTESTFAILED_ResetValue (0x00000000UL) /*!< Reset value of CORRTESTFAILED register.                */
-
-/* CORRTESTFAILED @Bits 0..31 : Correlation test failing ring. */
-  #define TRNG_RNGCONTROL_CORRTESTFAILED_CORRTESTFAILED_Pos (0UL) /*!< Position of CORRTESTFAILED field.                       */
-  #define TRNG_RNGCONTROL_CORRTESTFAILED_CORRTESTFAILED_Msk (0xFFFFFFFFUL << TRNG_RNGCONTROL_CORRTESTFAILED_CORRTESTFAILED_Pos)
-                                                                            /*!< Bit mask of CORRTESTFAILED field.*/
-
-
-/* TRNG_RNGCONTROL_HWVERSION: Fixed to 1 for this version. */
-  #define TRNG_RNGCONTROL_HWVERSION_ResetValue (0x00000001UL) /*!< Reset value of HWVERSION register.                          */
-
-/* HWVERSION @Bits 0..31 : Fixed to 1 for this version. */
-  #define TRNG_RNGCONTROL_HWVERSION_HWVERSION_Pos (0UL) /*!< Position of HWVERSION field.                                      */
-  #define TRNG_RNGCONTROL_HWVERSION_HWVERSION_Msk (0xFFFFFFFFUL << TRNG_RNGCONTROL_HWVERSION_HWVERSION_Pos) /*!< Bit mask of
-                                                                            HWVERSION field.*/
-
-
-/* TRNG_RNGCONTROL_FIFO: FIFO data */
-  #define TRNG_RNGCONTROL_FIFO_MaxCount (32UL)       /*!< Max size of FIFO[32] array.                                          */
-  #define TRNG_RNGCONTROL_FIFO_MaxIndex (31UL)       /*!< Max index of FIFO[32] array.                                         */
-  #define TRNG_RNGCONTROL_FIFO_MinIndex (0UL)        /*!< Min index of FIFO[32] array.                                         */
-  #define TRNG_RNGCONTROL_FIFO_ResetValue (0x00000000UL) /*!< Reset value of FIFO[32] register.                                */
-
-/* DATA @Bits 0..31 : FIFO data */
-  #define TRNG_RNGCONTROL_FIFO_DATA_Pos (0UL)        /*!< Position of DATA field.                                              */
-  #define TRNG_RNGCONTROL_FIFO_DATA_Msk (0xFFFFFFFFUL << TRNG_RNGCONTROL_FIFO_DATA_Pos) /*!< Bit mask of DATA field.           */
-
-
-/* ======================================================= Struct TRNG ======================================================= */
-/**
-  * @brief TRNG
-  */
-  typedef struct {                                   /*!< TRNG Structure                                                       */
-    __IM uint32_t RESERVED[65];
-    __IOM uint32_t EVENTS_RNG;                       /*!< (@ 0x00000104) Event indicating that interrupt triggered at RNG      */
-    __IM uint32_t RESERVED1[126];
-    __IOM uint32_t INTEN;                            /*!< (@ 0x00000300) Enable or disable interrupt                           */
-    __IOM uint32_t INTENSET;                         /*!< (@ 0x00000304) Enable interrupt                                      */
-    __IOM uint32_t INTENCLR;                         /*!< (@ 0x00000308) Disable interrupt                                     */
-    __IM uint32_t INTPEND;                           /*!< (@ 0x0000030C) Pending interrupts                                    */
-    __IM uint32_t RESERVED2[60];
-    __IOM uint32_t ENABLE;                           /*!< (@ 0x00000400) Enable RNG peripheral module.                         */
-    __IM uint32_t RESERVED3[63];
-    __IOM NRF_TRNG_RNGCONTROL_Type RNGCONTROL;       /*!< (@ 0x00000500) (unspecified)                                         */
-  } NRF_TRNG_Type;                                   /*!< Size = 1536 (0x600)                                                  */
-
-/* TRNG_EVENTS_RNG: Event indicating that interrupt triggered at RNG */
-  #define TRNG_EVENTS_RNG_ResetValue (0x00000000UL)  /*!< Reset value of EVENTS_RNG register.                                  */
-
-/* EVENTS_RNG @Bit 0 : Event indicating that interrupt triggered at RNG */
-  #define TRNG_EVENTS_RNG_EVENTS_RNG_Pos (0UL)       /*!< Position of EVENTS_RNG field.                                        */
-  #define TRNG_EVENTS_RNG_EVENTS_RNG_Msk (0x1UL << TRNG_EVENTS_RNG_EVENTS_RNG_Pos) /*!< Bit mask of EVENTS_RNG field.          */
-  #define TRNG_EVENTS_RNG_EVENTS_RNG_Min (0x0UL)     /*!< Min enumerator value of EVENTS_RNG field.                            */
-  #define TRNG_EVENTS_RNG_EVENTS_RNG_Max (0x1UL)     /*!< Max enumerator value of EVENTS_RNG field.                            */
-  #define TRNG_EVENTS_RNG_EVENTS_RNG_NotGenerated (0x0UL) /*!< Event not generated                                             */
-  #define TRNG_EVENTS_RNG_EVENTS_RNG_Generated (0x1UL) /*!< Event generated                                                    */
-
-
-/* TRNG_INTEN: Enable or disable interrupt */
-  #define TRNG_INTEN_ResetValue (0x00000000UL)       /*!< Reset value of INTEN register.                                       */
-
-/* RNG @Bit 1 : Enable or disable interrupt for event RNG */
-  #define TRNG_INTEN_RNG_Pos (1UL)                   /*!< Position of RNG field.                                               */
-  #define TRNG_INTEN_RNG_Msk (0x1UL << TRNG_INTEN_RNG_Pos) /*!< Bit mask of RNG field.                                         */
-  #define TRNG_INTEN_RNG_Min (0x0UL)                 /*!< Min enumerator value of RNG field.                                   */
-  #define TRNG_INTEN_RNG_Max (0x1UL)                 /*!< Max enumerator value of RNG field.                                   */
-  #define TRNG_INTEN_RNG_Disabled (0x0UL)            /*!< Disable                                                              */
-  #define TRNG_INTEN_RNG_Enabled (0x1UL)             /*!< Enable                                                               */
-
-
-/* TRNG_INTENSET: Enable interrupt */
-  #define TRNG_INTENSET_ResetValue (0x00000000UL)    /*!< Reset value of INTENSET register.                                    */
-
-/* RNG @Bit 1 : Write '1' to enable interrupt for event RNG */
-  #define TRNG_INTENSET_RNG_Pos (1UL)                /*!< Position of RNG field.                                               */
-  #define TRNG_INTENSET_RNG_Msk (0x1UL << TRNG_INTENSET_RNG_Pos) /*!< Bit mask of RNG field.                                   */
-  #define TRNG_INTENSET_RNG_Min (0x0UL)              /*!< Min enumerator value of RNG field.                                   */
-  #define TRNG_INTENSET_RNG_Max (0x1UL)              /*!< Max enumerator value of RNG field.                                   */
-  #define TRNG_INTENSET_RNG_Set (0x1UL)              /*!< Enable                                                               */
-  #define TRNG_INTENSET_RNG_Disabled (0x0UL)         /*!< Read: Disabled                                                       */
-  #define TRNG_INTENSET_RNG_Enabled (0x1UL)          /*!< Read: Enabled                                                        */
-
-
-/* TRNG_INTENCLR: Disable interrupt */
-  #define TRNG_INTENCLR_ResetValue (0x00000000UL)    /*!< Reset value of INTENCLR register.                                    */
-
-/* RNG @Bit 1 : Write '1' to disable interrupt for event RNG */
-  #define TRNG_INTENCLR_RNG_Pos (1UL)                /*!< Position of RNG field.                                               */
-  #define TRNG_INTENCLR_RNG_Msk (0x1UL << TRNG_INTENCLR_RNG_Pos) /*!< Bit mask of RNG field.                                   */
-  #define TRNG_INTENCLR_RNG_Min (0x0UL)              /*!< Min enumerator value of RNG field.                                   */
-  #define TRNG_INTENCLR_RNG_Max (0x1UL)              /*!< Max enumerator value of RNG field.                                   */
-  #define TRNG_INTENCLR_RNG_Clear (0x1UL)            /*!< Disable                                                              */
-  #define TRNG_INTENCLR_RNG_Disabled (0x0UL)         /*!< Read: Disabled                                                       */
-  #define TRNG_INTENCLR_RNG_Enabled (0x1UL)          /*!< Read: Enabled                                                        */
-
-
-/* TRNG_INTPEND: Pending interrupts */
-  #define TRNG_INTPEND_ResetValue (0x00000000UL)     /*!< Reset value of INTPEND register.                                     */
-
-/* RNG @Bit 1 : Read pending status of interrupt for event RNG */
-  #define TRNG_INTPEND_RNG_Pos (1UL)                 /*!< Position of RNG field.                                               */
-  #define TRNG_INTPEND_RNG_Msk (0x1UL << TRNG_INTPEND_RNG_Pos) /*!< Bit mask of RNG field.                                     */
-  #define TRNG_INTPEND_RNG_Min (0x0UL)               /*!< Min enumerator value of RNG field.                                   */
-  #define TRNG_INTPEND_RNG_Max (0x1UL)               /*!< Max enumerator value of RNG field.                                   */
-  #define TRNG_INTPEND_RNG_NotPending (0x0UL)        /*!< Read: Not pending                                                    */
-  #define TRNG_INTPEND_RNG_Pending (0x1UL)           /*!< Read: Pending                                                        */
-
-
-/* TRNG_ENABLE: Enable RNG peripheral module. */
-  #define TRNG_ENABLE_ResetValue (0x00000000UL)      /*!< Reset value of ENABLE register.                                      */
-
-/* RNG @Bit 1 : Enable RNG */
-  #define TRNG_ENABLE_RNG_Pos (1UL)                  /*!< Position of RNG field.                                               */
-  #define TRNG_ENABLE_RNG_Msk (0x1UL << TRNG_ENABLE_RNG_Pos) /*!< Bit mask of RNG field.                                       */
-  #define TRNG_ENABLE_RNG_Min (0x0UL)                /*!< Min enumerator value of RNG field.                                   */
-  #define TRNG_ENABLE_RNG_Max (0x1UL)                /*!< Max enumerator value of RNG field.                                   */
-  #define TRNG_ENABLE_RNG_Disabled (0x0UL)           /*!< RNG disabled.                                                        */
-  #define TRNG_ENABLE_RNG_Enabled (0x1UL)            /*!< RNG enabled.                                                         */
-
-
-#endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
-
-/* =========================================================================================================================== */
 /* ================                                           TWIM                                           ================ */
 /* =========================================================================================================================== */
 
@@ -25742,7 +25403,8 @@ typedef struct {
   * @brief RX [TWIM_EVENTS_DMA_RX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Indicates that the transfer of MAXCNT bytes between
+                                                                         memory and the peripheral has been fully completed.*/
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
@@ -25750,10 +25412,12 @@ typedef struct {
   __IOM uint32_t  MATCH[4];                          /*!< (@ 0x0000000C) Pattern match is detected on the DMA data bus.        */
 } NRF_TWIM_EVENTS_DMA_RX_Type;                       /*!< Size = 28 (0x01C)                                                    */
 
-/* TWIM_EVENTS_DMA_RX_END: Generated after all MAXCNT bytes have been transferred */
+/* TWIM_EVENTS_DMA_RX_END: Indicates that the transfer of MAXCNT bytes between memory and the peripheral has been fully
+                            completed. */
+
   #define TWIM_EVENTS_DMA_RX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                   */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Indicates that the transfer of MAXCNT bytes between memory and the peripheral has been fully completed. */
   #define TWIM_EVENTS_DMA_RX_END_END_Pos (0UL)       /*!< Position of END field.                                               */
   #define TWIM_EVENTS_DMA_RX_END_END_Msk (0x1UL << TWIM_EVENTS_DMA_RX_END_END_Pos) /*!< Bit mask of END field.                 */
   #define TWIM_EVENTS_DMA_RX_END_END_Min (0x0UL)     /*!< Min enumerator value of END field.                                   */
@@ -25812,17 +25476,20 @@ typedef struct {
   * @brief TX [TWIM_EVENTS_DMA_TX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Indicates that the transfer of MAXCNT bytes between
+                                                                         memory and the peripheral has been fully completed.*/
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
   __IOM uint32_t  BUSERROR;                          /*!< (@ 0x00000008) An error occured during the bus transfer.             */
 } NRF_TWIM_EVENTS_DMA_TX_Type;                       /*!< Size = 12 (0x00C)                                                    */
 
-/* TWIM_EVENTS_DMA_TX_END: Generated after all MAXCNT bytes have been transferred */
+/* TWIM_EVENTS_DMA_TX_END: Indicates that the transfer of MAXCNT bytes between memory and the peripheral has been fully
+                            completed. */
+
   #define TWIM_EVENTS_DMA_TX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                   */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Indicates that the transfer of MAXCNT bytes between memory and the peripheral has been fully completed. */
   #define TWIM_EVENTS_DMA_TX_END_END_Pos (0UL)       /*!< Position of END field.                                               */
   #define TWIM_EVENTS_DMA_TX_END_END_Msk (0x1UL << TWIM_EVENTS_DMA_TX_END_END_Pos) /*!< Bit mask of END field.                 */
   #define TWIM_EVENTS_DMA_TX_END_END_Min (0x0UL)     /*!< Min enumerator value of END field.                                   */
@@ -26138,7 +25805,7 @@ typedef struct {
   #define TWIM_DMA_RX_MATCH_CONFIG_ENABLE3_Disabled (0x0UL) /*!< Match filter disabled                                         */
   #define TWIM_DMA_RX_MATCH_CONFIG_ENABLE3_Enabled (0x1UL) /*!< Match filter enabled                                           */
 
-/* ONESHOT0 @Bit 16 : Configure match filter 0 as one-shot or sticky */
+/* ONESHOT0 @Bit 16 : Configure match filter 0 as one-shot or continous */
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Pos (16UL) /*!< Position of ONESHOT0 field.                                        */
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Msk (0x1UL << TWIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Pos) /*!< Bit mask of ONESHOT0
                                                                             field.*/
@@ -26147,7 +25814,7 @@ typedef struct {
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT1 @Bit 17 : Configure match filter 1 as one-shot or sticky */
+/* ONESHOT1 @Bit 17 : Configure match filter 1 as one-shot or continous */
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Pos (17UL) /*!< Position of ONESHOT1 field.                                        */
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Msk (0x1UL << TWIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Pos) /*!< Bit mask of ONESHOT1
                                                                             field.*/
@@ -26156,7 +25823,7 @@ typedef struct {
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT2 @Bit 18 : Configure match filter 2 as one-shot or sticky */
+/* ONESHOT2 @Bit 18 : Configure match filter 2 as one-shot or continous */
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Pos (18UL) /*!< Position of ONESHOT2 field.                                        */
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Msk (0x1UL << TWIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Pos) /*!< Bit mask of ONESHOT2
                                                                             field.*/
@@ -26165,7 +25832,7 @@ typedef struct {
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT3 @Bit 19 : Configure match filter 3 as one-shot or sticky */
+/* ONESHOT3 @Bit 19 : Configure match filter 3 as one-shot or continous */
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT3_Pos (19UL) /*!< Position of ONESHOT3 field.                                        */
   #define TWIM_DMA_RX_MATCH_CONFIG_ONESHOT3_Msk (0x1UL << TWIM_DMA_RX_MATCH_CONFIG_ONESHOT3_Pos) /*!< Bit mask of ONESHOT3
                                                                             field.*/
@@ -26181,10 +25848,9 @@ typedef struct {
   #define TWIM_DMA_RX_MATCH_CANDIDATE_MinIndex (0UL) /*!< Min index of CANDIDATE[4] array.                                     */
   #define TWIM_DMA_RX_MATCH_CANDIDATE_ResetValue (0x00000000UL) /*!< Reset value of CANDIDATE[4] register.                     */
 
-/* DATA @Bits 0..31 : Data to look for */
+/* DATA @Bits 0..7 : Data to look for */
   #define TWIM_DMA_RX_MATCH_CANDIDATE_DATA_Pos (0UL) /*!< Position of DATA field.                                              */
-  #define TWIM_DMA_RX_MATCH_CANDIDATE_DATA_Msk (0xFFFFFFFFUL << TWIM_DMA_RX_MATCH_CANDIDATE_DATA_Pos) /*!< Bit mask of DATA
-                                                                            field.*/
+  #define TWIM_DMA_RX_MATCH_CANDIDATE_DATA_Msk (0xFFUL << TWIM_DMA_RX_MATCH_CANDIDATE_DATA_Pos) /*!< Bit mask of DATA field.   */
 
 
 
@@ -27246,10 +26912,11 @@ typedef struct {
   #define TWIM_FREQUENCY_FREQUENCY_Pos (0UL)         /*!< Position of FREQUENCY field.                                         */
   #define TWIM_FREQUENCY_FREQUENCY_Msk (0xFFFFFFFFUL << TWIM_FREQUENCY_FREQUENCY_Pos) /*!< Bit mask of FREQUENCY field.        */
   #define TWIM_FREQUENCY_FREQUENCY_Min (0x1980000UL) /*!< Min enumerator value of FREQUENCY field.                             */
-  #define TWIM_FREQUENCY_FREQUENCY_Max (0x6400000UL) /*!< Max enumerator value of FREQUENCY field.                             */
+  #define TWIM_FREQUENCY_FREQUENCY_Max (0xFF00000UL) /*!< Max enumerator value of FREQUENCY field.                             */
   #define TWIM_FREQUENCY_FREQUENCY_K100 (0x01980000UL) /*!< 100 kbps                                                           */
   #define TWIM_FREQUENCY_FREQUENCY_K250 (0x04000000UL) /*!< 250 kbps                                                           */
   #define TWIM_FREQUENCY_FREQUENCY_K400 (0x06400000UL) /*!< 400 kbps                                                           */
+  #define TWIM_FREQUENCY_FREQUENCY_K1000 (0x0FF00000UL) /*!< 1000 kbps                                                         */
 
 
 /* TWIM_ADDRESS: Address used in the TWI transfer */
@@ -27849,14 +27516,14 @@ typedef struct {
   __IM  uint32_t  RESERVED1[3];
   __IOM uint32_t  TERMINATEONBUSERROR;               /*!< (@ 0x0000001C) Terminate the transaction if a BUSERROR event is
                                                                          detected.*/
-  __IOM uint32_t  BUSERRORADDRESS;                   /*!< (@ 0x00000020) Address of transaction that generated the last BUSERROR
+  __IM  uint32_t  BUSERRORADDRESS;                   /*!< (@ 0x00000020) Address of transaction that generated the last BUSERROR
                                                                          event.*/
   __IOM NRF_TWIS_DMA_RX_MATCH_Type MATCH;            /*!< (@ 0x00000024) Registers to control the behavior of the pattern
                                                                          matcher engine*/
 } NRF_TWIS_DMA_RX_Type;                              /*!< Size = 56 (0x038)                                                    */
 
 /* TWIS_DMA_RX_PTR: RAM buffer start address */
-  #define TWIS_DMA_RX_PTR_ResetValue (0x00000000UL)  /*!< Reset value of PTR register.                                         */
+  #define TWIS_DMA_RX_PTR_ResetValue (0x20000000UL)  /*!< Reset value of PTR register.                                         */
 
 /* PTR @Bits 0..31 : RAM buffer start address for this EasyDMA channel. This address is a word aligned Data RAM address. */
   #define TWIS_DMA_RX_PTR_PTR_Pos (0UL)              /*!< Position of PTR field.                                               */
@@ -27922,12 +27589,12 @@ typedef struct {
   __IM  uint32_t  RESERVED1[3];
   __IOM uint32_t  TERMINATEONBUSERROR;               /*!< (@ 0x0000001C) Terminate the transaction if a BUSERROR event is
                                                                          detected.*/
-  __IOM uint32_t  BUSERRORADDRESS;                   /*!< (@ 0x00000020) Address of transaction that generated the last BUSERROR
+  __IM  uint32_t  BUSERRORADDRESS;                   /*!< (@ 0x00000020) Address of transaction that generated the last BUSERROR
                                                                          event.*/
 } NRF_TWIS_DMA_TX_Type;                              /*!< Size = 36 (0x024)                                                    */
 
 /* TWIS_DMA_TX_PTR: RAM buffer start address */
-  #define TWIS_DMA_TX_PTR_ResetValue (0x00000000UL)  /*!< Reset value of PTR register.                                         */
+  #define TWIS_DMA_TX_PTR_ResetValue (0x20000000UL)  /*!< Reset value of PTR register.                                         */
 
 /* PTR @Bits 0..31 : RAM buffer start address for this EasyDMA channel. This address is a word aligned Data RAM address. */
   #define TWIS_DMA_TX_PTR_PTR_Pos (0UL)              /*!< Position of PTR field.                                               */
@@ -31001,9 +30668,9 @@ typedef struct {
   */
 typedef struct {
   __IOM uint32_t  PROTECT0;                          /*!< (@ 0x00000000) Access port protection                                */
-  __IM  uint32_t  RESERVED[6];
-  __IOM uint32_t  PROTECT1;                          /*!< (@ 0x0000001C) Access port protection                                */
-} NRF_UICR_APPROTECT_Type;                           /*!< Size = 32 (0x020)                                                    */
+  __IM  uint32_t  RESERVED[2];
+  __IOM uint32_t  PROTECT1;                          /*!< (@ 0x0000000C) Access port protection                                */
+} NRF_UICR_APPROTECT_Type;                           /*!< Size = 16 (0x010)                                                    */
   #define UICR_APPROTECT_MaxCount (1UL)              /*!< Size of APPROTECT[1] array.                                          */
   #define UICR_APPROTECT_MaxIndex (0UL)              /*!< Max index of APPROTECT[1] array.                                     */
   #define UICR_APPROTECT_MinIndex (0UL)              /*!< Min index of APPROTECT[1] array.                                     */
@@ -31030,46 +30697,6 @@ typedef struct {
   #define UICR_APPROTECT_PROTECT1_PALL_Max (0xFFFFFFFFUL) /*!< Max enumerator value of PALL field.                             */
   #define UICR_APPROTECT_PROTECT1_PALL_Unprotected (0xFFFFFFFFUL) /*!< Leaves TAMPC PROTECT.DOMAIN DBGEN and NIDEN signal
                                                                        protectors unlocked and under CPU control.*/
-
-
-
-/* =============================================== Struct UICR_SECUREAPPROTECT =============================================== */
-/**
-  * @brief SECUREAPPROTECT [UICR_SECUREAPPROTECT] Access Port Protection Registers
-  */
-typedef struct {
-  __IOM uint32_t  PROTECT0;                          /*!< (@ 0x00000000) Access port protection                                */
-  __IM  uint32_t  RESERVED[6];
-  __IOM uint32_t  PROTECT1;                          /*!< (@ 0x0000001C) Access port protection register                       */
-} NRF_UICR_SECUREAPPROTECT_Type;                     /*!< Size = 32 (0x020)                                                    */
-  #define UICR_SECUREAPPROTECT_MaxCount (1UL)        /*!< Size of SECUREAPPROTECT[1] array.                                    */
-  #define UICR_SECUREAPPROTECT_MaxIndex (0UL)        /*!< Max index of SECUREAPPROTECT[1] array.                               */
-  #define UICR_SECUREAPPROTECT_MinIndex (0UL)        /*!< Min index of SECUREAPPROTECT[1] array.                               */
-
-/* UICR_SECUREAPPROTECT_PROTECT0: Access port protection */
-  #define UICR_SECUREAPPROTECT_PROTECT0_ResetValue (0xFFFFFFFFUL) /*!< Reset value of PROTECT0 register.                       */
-
-/* PALL @Bits 0..31 : (unspecified) */
-  #define UICR_SECUREAPPROTECT_PROTECT0_PALL_Pos (0UL) /*!< Position of PALL field.                                            */
-  #define UICR_SECUREAPPROTECT_PROTECT0_PALL_Msk (0xFFFFFFFFUL << UICR_SECUREAPPROTECT_PROTECT0_PALL_Pos) /*!< Bit mask of PALL
-                                                                            field.*/
-  #define UICR_SECUREAPPROTECT_PROTECT0_PALL_Min (0xFFFFFFFFUL) /*!< Min enumerator value of PALL field.                       */
-  #define UICR_SECUREAPPROTECT_PROTECT0_PALL_Max (0xFFFFFFFFUL) /*!< Max enumerator value of PALL field.                       */
-  #define UICR_SECUREAPPROTECT_PROTECT0_PALL_Unprotected (0xFFFFFFFFUL) /*!< Leaves TAMPC PROTECT.DOMAIN SPIDEN and SPNIDEN
-                                                                            signal protectors unlocked and under CPU control.*/
-
-
-/* UICR_SECUREAPPROTECT_PROTECT1: Access port protection register */
-  #define UICR_SECUREAPPROTECT_PROTECT1_ResetValue (0xFFFFFFFFUL) /*!< Reset value of PROTECT1 register.                       */
-
-/* PALL @Bits 0..31 : (unspecified) */
-  #define UICR_SECUREAPPROTECT_PROTECT1_PALL_Pos (0UL) /*!< Position of PALL field.                                            */
-  #define UICR_SECUREAPPROTECT_PROTECT1_PALL_Msk (0xFFFFFFFFUL << UICR_SECUREAPPROTECT_PROTECT1_PALL_Pos) /*!< Bit mask of PALL
-                                                                            field.*/
-  #define UICR_SECUREAPPROTECT_PROTECT1_PALL_Min (0xFFFFFFFFUL) /*!< Min enumerator value of PALL field.                       */
-  #define UICR_SECUREAPPROTECT_PROTECT1_PALL_Max (0xFFFFFFFFUL) /*!< Max enumerator value of PALL field.                       */
-  #define UICR_SECUREAPPROTECT_PROTECT1_PALL_Unprotected (0xFFFFFFFFUL) /*!< Leaves TAMPC PROTECT.DOMAIN SPIDEN and SPNIDEN
-                                                                            signal protectors unlocked and under CPU control.*/
 
 
 
@@ -31223,8 +30850,7 @@ typedef struct {
   */
   typedef struct {                                   /*!< UICR Structure                                                       */
     __IOM NRF_UICR_APPROTECT_Type APPROTECT[1];      /*!< (@ 0x00000000) Access Port Protection Registers                      */
-    __IOM NRF_UICR_SECUREAPPROTECT_Type SECUREAPPROTECT[1]; /*!< (@ 0x00000020) Access Port Protection Registers               */
-    __IM uint32_t RESERVED[8];
+    __IM uint32_t RESERVED[20];
     __IOM NRF_UICR_ERASEPROTECT_Type ERASEPROTECT[1]; /*!< (@ 0x00000060) Erase Protection Registers                           */
     __IOM uint32_t BOOTCONF;                         /*!< (@ 0x00000080) Immutable boot region configuration.                  */
     __IM uint32_t RESERVED1[95];
@@ -31286,9 +30912,9 @@ typedef struct {
   #define UICR_BOOTCONF_LOCK_Enabled (0x1UL)         /*!< Lock is enabled, and the RRAMC configuration registers for the
                                                           immutable boot region are read-only.*/
 
-/* SIZE @Bits 16..20 : Immutable boot region size */
+/* SIZE @Bits 16..25 : Immutable boot region size */
   #define UICR_BOOTCONF_SIZE_Pos (16UL)              /*!< Position of SIZE field.                                              */
-  #define UICR_BOOTCONF_SIZE_Msk (0x1FUL << UICR_BOOTCONF_SIZE_Pos) /*!< Bit mask of SIZE field.                               */
+  #define UICR_BOOTCONF_SIZE_Msk (0x3FFUL << UICR_BOOTCONF_SIZE_Pos) /*!< Bit mask of SIZE field.                              */
 
 
 /* UICR_OTP: One time programmable memory */

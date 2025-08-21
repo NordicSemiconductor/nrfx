@@ -640,7 +640,7 @@ NRF_STATIC_INLINE nrf_uicr_dppi_link_t nrf_uicr_feature_link_get(NRF_UICR_Type c
                                                                  nrf_uicr_feature_t    feature,
                                                                  uint8_t               index)
 {
-    nrf_uicr_dppi_link_t link;
+    nrf_uicr_dppi_link_t link = {0};
 
     switch (feature)
     {
