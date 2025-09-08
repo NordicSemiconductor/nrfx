@@ -359,9 +359,9 @@ void nrfx_timer_compare_int_disable(nrfx_timer_t const * p_instance, uint32_t ch
 
 static void irq_handler(NRF_TIMER_Type * p_reg, timer_control_block_t * p_cb, uint8_t channel_count)
 {
-    uint32_t event_mask = nrfy_timer_events_process(p_reg, NRF_TIMER_ALL_CHANNELS_INT_MASK);
-    nrf_timer_event_t event;
     uint32_t active_cc_mask = nrfy_timer_int_enable_check(p_reg, NRF_TIMER_ALL_CHANNELS_INT_MASK);
+    uint32_t event_mask = nrfy_timer_events_process(p_reg, active_cc_mask);
+    nrf_timer_event_t event;
 
     for (uint8_t i = 0; i < channel_count; ++i)
     {
