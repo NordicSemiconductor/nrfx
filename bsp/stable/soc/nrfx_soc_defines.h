@@ -623,6 +623,11 @@ extern "C" {
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 6
 #define RAM_UNIFORM_SECTIONS_TOTAL     6
+#elif defined(NRF7120_ENGA_XXAA)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 32
+#define RAM_UNIFORM_SECTIONS_TOTAL     32
 #elif defined(NRF9120_XXAA) || defined(NRF9160_XXAA)
 #define RAM_SECTION_UNIT_SIZE          8192
 #define RAM_UNIFORM_BLOCKS             8
