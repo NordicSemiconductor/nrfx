@@ -161,7 +161,7 @@
  * @param[in] periph_name_small Peripheral name in small letters, e.g. spim.
  */
 #define _NRFX_IRQ_HANDLER(periph_name, prefix, i, periph_name_small)                         \
-void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void *)               \
+void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void * p_context)               \
 {                                                                                            \
     irq_handler(NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(NRFX_CONCAT(periph_name, prefix, i)), \
                                  (NRFX_CONCAT(NRF_, periph_name, prefix, i)), (NULL)),       \
@@ -183,7 +183,7 @@ void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void *)  
  * @param[in] ext_macro         Macro called as third parameter of the handler.
  */
 #define _NRFX_IRQ_HANDLER_EXT(periph_name, prefix, i, periph_name_small, ext_macro) \
-void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void *)      \
+void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void * p_context)      \
 {                                                                                   \
     irq_handler(NRFX_CONCAT(NRF_, periph_name, prefix, i),                          \
                 &m_cb[NRFX_CONCAT(NRFX_, periph_name, prefix, i, _INST_IDX)],       \
@@ -194,7 +194,7 @@ void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void *)  
     NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler),
 
 #define _NRFX_IRQ_HANDLER_DECLARE(periph_name, prefix, i, periph_name_small) \
-    void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void *);
+    void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void * p_context);
 
 #define _PERIPH_PTR_COMPARE(periph_name, prefix, idx, reg)                       \
     ((uintptr_t)reg == (uintptr_t)NRFX_CONCAT(NRF_, periph_name, prefix, idx)) ? \
