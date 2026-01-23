@@ -97,7 +97,7 @@ extern "C" {
 #define NRFX_RELEASE_VER_MICRO 0
 
 /** @brief IRQ handler type. */
-typedef void (* nrfx_irq_handler_t)(void *);
+typedef void (* nrfx_irq_handler_t)(void * p_context);
 
 /** @brief Driver state. */
 typedef enum
