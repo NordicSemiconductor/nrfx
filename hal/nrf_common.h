@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2020 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -182,6 +182,12 @@ NRF_STATIC_INLINE uint16_t nrf_address_periphid_get(uint32_t addr);
 #define NRF_ERRATA_STATIC_CHECK(series, erratum)   \
     (NRFX_CHECK(NRF##series##_ERRATA_##erratum##_ENABLE_WORKAROUND))
 
+#if defined(NRF_TRUSTZONE_NONSECURE) && \
+    (defined(NRF53_SERIES) || defined(NRF91_SERIES)) && defined(NRF_APPLICATION)
+/* Non-secure builds for nRF53 Series and nRF91 Series SoCs cannot access secure-only memory
+ * used for determining errata appliance in runtime. */
+#define NRF_ERRATA_DYNAMIC_CHECK(series, erratum) NRF_ERRATA_STATIC_CHECK(series, erratum)
+#else
 /**
  * @brief Macro for dynamically checking errata susceptibility.
  *        In addition to checking compilation-time defines, it reads the chip's hardware revision
@@ -194,6 +200,7 @@ NRF_STATIC_INLINE uint16_t nrf_address_periphid_get(uint32_t addr);
     NRFX_COND_CODE_1(NRF##series##_ERRATA_##erratum##_ENABLE_WORKAROUND,                    \
                      (NRFX_CONCAT(nrf, NRF_SERIES_LOWERCASE(series), _errata_, erratum())), \
                      (false))
+#endif
 
 #ifndef NRF_DECLARE_ONLY
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -731,7 +731,6 @@ NRF_STATIC_INLINE bool nrf_cache_line_validity_check(NRF_CACHE_Type const * p_re
  * @return The most recently used way in the specified set.
  */
 NRF_STATIC_INLINE uint8_t nrf_cache_mru_get(NRF_CACHE_Type const * p_reg, uint32_t set);
-#endif
 
 #if NRF_CACHE_HAS_CACHEINFO_DU_VALIDATION
 /**
@@ -749,7 +748,8 @@ NRF_STATIC_INLINE bool nrf_cache_data_unit_validity_check(NRF_CACHE_Type const *
                                                           uint32_t               set,
                                                           uint8_t                way,
                                                           uint8_t                word);
-#endif
+#endif // NRF_CACHE_HAS_CACHEINFO_DU_VALIDATION
+#endif // NRF_CACHE_HAS_ANY_CACHEINFO
 
 #if NRF_CACHE_HAS_CACHEINFO_DU_DIRTY
 /**

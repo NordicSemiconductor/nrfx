@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2020 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -56,7 +56,7 @@ extern "C" {
  * @{
  * @ingroup nrfx
  * @ingroup nrf_power
- * @ingroup nrf_reset
+ * @ingroup nrf_reset_hal
  * @ingroup nrf_resetinfo
  *
  * @brief Helper layer that provides a uniform way of checking the reset reason.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -139,7 +139,7 @@ extern "C" {
  *        A compilation error is generated if the DWT unit is not present
  *        in the SoC used.
  */
-#define NRFX_DELAY_DWT_BASED    0
+#define NRFX_COREDEP_DELAY_DWT_BASED    0
 
 /**
  * @brief Macro for delaying the code execution for at least the specified time.
@@ -250,16 +250,6 @@ extern "C" {
  *         If x is 0, the result is undefined.
  */
 #define NRFX_CTZ(value)
-
-//------------------------------------------------------------------------------
-
-/**
- * @brief When set to a non-zero value, this macro specifies that the
- *        @ref nrfx_error_codes and the @ref nrfx_err_t type itself are defined
- *        in a customized way and the default definitions from @c <nrfx_error.h>
- *        should not be used.
- */
-#define NRFX_CUSTOM_ERROR_CODES 0
 
 //------------------------------------------------------------------------------
 

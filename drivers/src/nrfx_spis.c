@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2013 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -216,10 +216,9 @@ int nrfx_spis_init(nrfx_spis_t *              p_instance,
     }
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
-    if (nrfx_prs_acquire(p_spis,
-            (nrfx_irq_handler_t)nrfx_spis_irq_handler, p_instance) != NRFX_SUCCESS)
+    err_code = nrfx_prs_acquire(p_spis, (nrfx_irq_handler_t)nrfx_spis_irq_handler, p_instance);
+    if (err_code < 0)
     {
-        err_code = -EBUSY;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -472,8 +471,8 @@ int nrfx_spis_buffers_set(nrfx_spis_t *   p_instance,
 
     // EasyDMA requires that transfer buffers are placed in Data RAM region;
     // signal error if they are not.
-    if ((p_tx_buffer != NULL && !nrfx_is_in_ram(p_tx_buffer)) ||
-        (p_rx_buffer != NULL && !nrfx_is_in_ram(p_rx_buffer)))
+    if ((p_tx_buffer != NULL && !nrf_dma_accessible_check(p_instance->p_reg, p_tx_buffer)) ||
+        (p_rx_buffer != NULL && !nrf_dma_accessible_check(p_instance->p_reg, p_rx_buffer)))
     {
         err_code = -EACCES;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",

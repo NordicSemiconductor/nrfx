@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -114,16 +114,18 @@ extern "C" {
     ), ())
 
 #if !defined(NRFX_INTERCONNECT_APB_GLOBAL_BUSES_PROP)
-#define NRFX_INTERCONNECT_APB_GLOBAL_BUSES_PROP                      \
-{                                                                    \
-    NRFX_INTERCONNECT_APB_PROP_ENTRY(120, NULL, 0x10000) /* APB22 */ \
-    NRFX_INTERCONNECT_APB_PROP_ENTRY(130, NULL, 0x20000) /* APB32 */ \
-    NRFX_INTERCONNECT_APB_PROP_ENTRY(131, NULL, 0x10000) /* APB38 */ \
-    NRFX_INTERCONNECT_APB_PROP_ENTRY(132, NULL, 0x10000) /* APB39 */ \
-    NRFX_INTERCONNECT_APB_PROP_ENTRY(133, NULL, 0x10000) /* APB3A */ \
-    NRFX_INTERCONNECT_APB_PROP_ENTRY(134, NULL, 0x10000) /* APB3B */ \
-    NRFX_INTERCONNECT_APB_PROP_ENTRY(135, NULL, 0x10000) /* APB3C */ \
-    NRFX_INTERCONNECT_APB_PROP_ENTRY(136, NULL, 0x10000) /* APB3D */ \
+#define NRFX_INTERCONNECT_APB_GLOBAL_BUSES_PROP                      		    \
+{                                                                    		    \
+    NRFX_INTERCONNECT_APB_PROP_ENTRY(120, NULL, 0x10000) /* APB22 */		    \
+    NRFX_INTERCONNECT_APB_PROP_ENTRY(130, NULL, 0x20000) /* APB32 */		    \
+    NRFX_INTERCONNECT_APB_PROP_ENTRY(131, NULL, 0x10000) /* APB38 */		    \
+    NRFX_INTERCONNECT_APB_PROP_ENTRY(132, NULL, 0x10000) /* APB39 */		    \
+    NRFX_INTERCONNECT_APB_PROP_ENTRY(133, NULL, 0x10000) /* APB3A */		    \
+    NRFX_INTERCONNECT_APB_PROP_ENTRY(134, NULL, 0x10000) /* APB3B */		    \
+    NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(NRF_DPPIC135),			        \
+        (NRFX_INTERCONNECT_APB_PROP_ENTRY(135, NULL, 0x10000) /* APB3C */), ()) \
+    NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(NRF_DPPIC136),			        \
+        (NRFX_INTERCONNECT_APB_PROP_ENTRY(136, NULL, 0x10000) /* APB3D */), ()) \
 }
 #endif
 

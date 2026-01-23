@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -55,7 +55,7 @@ extern "C" {
  * @{
  * @ingroup nrfx
  * @ingroup nrf_ipc
- * @ingroup nrf_vevif
+ * @ingroup nrfx_vevif
  * @ingroup nrf_bellboard
  *
  * @brief Helper layer that provides the common functionality for the inter-domain signalling (IDS) mechanisms.

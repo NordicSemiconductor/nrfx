@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2025 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -37,7 +37,7 @@
 #include <nrfx.h>
 #include <hal/nrf_clock.h>
 
-#if NRF_CLOCK_HAS_XO
+#if NRF_CLOCK_HAS_XO || defined(__NRFX_DOXYGEN__)
 #include <nrfx_power_clock.h>
 
 #ifdef __cplusplus
@@ -47,7 +47,7 @@ extern "C" {
 /**
  * @defgroup nrfx_clock_xo XO driver
  * @{
- * @ingroup nrf_clock_xo
+ * @ingroup nrf_clock
  * @brief XO clock driver.
  */
 

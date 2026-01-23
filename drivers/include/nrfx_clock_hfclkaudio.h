@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -37,16 +37,16 @@
 #include <nrfx.h>
 #include <hal/nrf_clock.h>
 
-#if NRF_CLOCK_HAS_HFCLKAUDIO
+#if NRF_CLOCK_HAS_HFCLKAUDIO || defined(__NRFX_DOXYGEN__)
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * @defgroup nrfx_clock_hfclkaudio driver
+ * @defgroup nrfx_clock_hfclkaudio HFCLKAUDIO driver
  * @{
- * @ingroup nrf_clock_hfclkaudio
+ * @ingroup nrf_clock
  * @brief   HFCLKAUDIO peripheral driver.
  */
 

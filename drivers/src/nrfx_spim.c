@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -47,7 +47,19 @@
 #define SPIM_DEDICATED_PIN_VALIDATE(requested_pin, supported_pin) \
     (((requested_pin) == NRF_SPIM_PIN_NOT_CONNECTED) || ((requested_pin) == (supported_pin)))
 
-#if NRF_ERRATA_STATIC_CHECK(52, 198)
+#if NRF_ERRATA_STATIC_CHECK(53, 135) && defined(NRF_SPIM4)
+static void anomaly_135_enable(void)
+{
+    *((volatile uint32_t *)0x5000ac04) = 1;
+}
+
+static void anomaly_135_disable(void)
+{
+    *((volatile uint32_t *)0x5000ac04) = 0;
+}
+#endif
+
+#if NRF_ERRATA_STATIC_CHECK(52, 198) && defined(NRF_SPIM3)
 static uint32_t m_anomaly_198_preserved_value;
 static void anomaly_198_enable(uint8_t const * p_buffer, size_t buf_len)
 {
@@ -82,7 +94,7 @@ static void anomaly_198_disable(void)
 {
     *((volatile uint32_t *)0x40000E00) = m_anomaly_198_preserved_value;
 }
-#endif // NRF_ERRATA_STATIC_CHECK(52, 198)
+#endif // NRF_ERRATA_STATIC_CHECK(52, 198) && defined(NRF_SPIM3)
 
 #if NRF_ERRATA_STATIC_CHECK(52, 58)
 static int nrf52_errata_58_workaround_enable(nrfx_spim_control_block_t * p_cb,
@@ -194,6 +206,18 @@ static void spim_abort(NRF_SPIM_Type * p_spim, nrfx_spim_control_block_t * p_cb)
 #endif
     {
         nrfy_spim_disable(p_spim);
+#if NRF_ERRATA_STATIC_CHECK(53, 135) && defined(NRF_SPIM4)
+        if (NRF_ERRATA_DYNAMIC_CHECK(53, 135) && p_spim == NRF_SPIM4)
+        {
+            anomaly_135_disable();
+        }
+#endif
+#if NRF_ERRATA_STATIC_CHECK(54L, 57) && defined(NRF_SPIM00)
+    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 57) && p_spim == NRF_SPIM00)
+    {
+        *(volatile uint32_t *)(((uint8_t *)p_spim) + 0xC04) = 0x0;
+    }
+#endif
     }
 }
 
@@ -536,11 +560,10 @@ int nrfx_spim_init(nrfx_spim_t *              p_instance,
     }
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
-    if (nrfx_prs_acquire(p_instance->p_reg,
-                        (nrfx_irq_handler_t)nrfx_spim_irq_handler,
-                        p_instance) != NRFX_SUCCESS)
+    err_code = nrfx_prs_acquire(p_instance->p_reg,
+                                (nrfx_irq_handler_t)nrfx_spim_irq_handler, p_instance);
+    if (err_code < 0)
     {
-        err_code = -EBUSY;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -642,7 +665,7 @@ void nrfx_spim_uninit(nrfx_spim_t * p_instance)
 #endif // NRFY_SPIM_HAS_EXTENDED
     }
 
-#if NRFX_CHECK(NRFX_SPIM3_ENABLED)
+#if defined(NRF_SPIM3)
     if (NRF_ERRATA_DYNAMIC_CHECK(52, 195) && (p_instance->p_reg == NRF_SPIM3))
     {
         *(volatile uint32_t *)0x4002F004 = 1;
@@ -750,7 +773,7 @@ static int spim_xfer(NRF_SPIM_Type *               p_spim,
         return err_code;
     }
 
-#if NRF_ERRATA_STATIC_CHECK(52, 198)
+#if NRF_ERRATA_STATIC_CHECK(52, 198) && defined(NRF_SPIM3)
     if (NRF_ERRATA_DYNAMIC_CHECK(52, 198) && p_spim == NRF_SPIM3)
     {
         anomaly_198_enable(p_xfer_desc->p_tx_buffer, p_xfer_desc->tx_length);
@@ -795,6 +818,18 @@ static int spim_xfer(NRF_SPIM_Type *               p_spim,
                                           NRFX_SPIM_FLAG_REPEATED_XFER)) ?
                                 true : !nrfy_spim_enable_check(p_spim);
 #endif
+#if NRF_ERRATA_STATIC_CHECK(53, 135) && defined(NRF_SPIM4)
+    if (NRF_ERRATA_DYNAMIC_CHECK(53, 135) && p_spim == NRF_SPIM4)
+    {
+        anomaly_135_enable();
+    }
+#endif
+#if NRF_ERRATA_STATIC_CHECK(54L, 57) && defined(NRF_SPIM00)
+    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 57) && p_spim == NRF_SPIM00)
+    {
+        *(volatile uint32_t *)(((uint8_t *)p_spim) + 0xC04) = 0x2;
+    }
+#endif
     nrfy_spim_enable(p_spim);
 
 #if NRF_ERRATA_STATIC_CHECK(54L, 55)
@@ -837,7 +872,7 @@ static int spim_xfer(NRF_SPIM_Type *               p_spim,
         }
 #endif
 
-#if NRF_ERRATA_STATIC_CHECK(52, 198)
+#if NRF_ERRATA_STATIC_CHECK(52, 198) && defined(NRF_SPIM3)
         if (NRF_ERRATA_DYNAMIC_CHECK(52, 198) && (p_spim == NRF_SPIM3))
         {
             anomaly_198_disable();
@@ -980,7 +1015,7 @@ void nrfx_spim_irq_handler(nrfx_spim_t * p_instance)
                                  NRFY_EVENT_TO_INT_BITMASK(NRF_SPIM_EVENT_END),
                                  &p_cb->evt.xfer_desc))
     {
-#if NRF_ERRATA_STATIC_CHECK(52, 198)
+#if NRF_ERRATA_STATIC_CHECK(52, 198) && defined(NRF_SPIM3)
         if (NRF_ERRATA_DYNAMIC_CHECK(52, 198) && p_spim == NRF_SPIM3)
         {
             anomaly_198_disable();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -74,16 +74,20 @@
     #include <nrfx_config_nrf54l15_application.h>
 #elif defined(NRF54L15_XXAA) && defined(NRF_FLPR)
     #include <nrfx_config_nrf54l15_flpr.h>
-#elif defined(NRF54LM20A_ENGA_XXAA) && defined(NRF_APPLICATION)
-    #include <nrfx_config_nrf54lm20a_enga_application.h>
-#elif defined(NRF54LM20A_ENGA_XXAA) && defined(NRF_FLPR)
-    #include <nrfx_config_nrf54lm20a_enga_flpr.h>
-#elif defined(NRF54LS05B_ENGA_XXAA) && defined(NRF_APPLICATION)
-    #include <nrfx_config_nrf54ls05b_enga_application.h>
-#elif defined(NRF54LV10A_ENGA_XXAA) && defined(NRF_APPLICATION)
-    #include <nrfx_config_nrf54lv10a_enga_application.h>
-#elif defined(NRF54LV10A_ENGA_XXAA) && defined(NRF_FLPR)
-    #include <nrfx_config_nrf54lv10a_enga_flpr.h>
+#elif defined(NRF54LM20A_XXAA) && defined(NRF_APPLICATION)
+    #include <nrfx_config_nrf54lm20a_application.h>
+#elif defined(NRF54LM20A_XXAA) && defined(NRF_FLPR)
+    #include <nrfx_config_nrf54lm20a_flpr.h>
+#elif defined(NRF54LM20B_XXAA) && defined(NRF_APPLICATION)
+    #include <nrfx_config_nrf54lm20b_application.h>
+#elif defined(NRF54LM20B_XXAA) && defined(NRF_FLPR)
+    #include <nrfx_config_nrf54lm20b_flpr.h>
+#elif defined(NRF54LS05B_XXAA) && defined(NRF_APPLICATION)
+    #include <nrfx_config_nrf54ls05b_application.h>
+#elif defined(NRF54LV10A_XXAA) && defined(NRF_APPLICATION)
+    #include <nrfx_config_nrf54lv10a_application.h>
+#elif defined(NRF54LV10A_XXAA) && defined(NRF_FLPR)
+    #include <nrfx_config_nrf54lv10a_flpr.h>
 #elif defined(NRF7120_ENGA_XXAA) && defined(NRF_APPLICATION)
     #include <nrfx_config_nrf7120_enga_application.h>
 #elif defined(NRF7120_ENGA_XXAA) && defined(NRF_FLPR)

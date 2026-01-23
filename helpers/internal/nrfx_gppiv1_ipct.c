@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2022 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -238,20 +238,19 @@ static void path_cleanup(nrfx_gppi_channels_path_t * p_path)
     p_path->ipct_channel = CHANNEL_INVALID;
 }
 
-static nrfx_err_t channel_free(nrfx_atomic_t * p_allocated_channels, uint8_t channel)
+static int channel_free(nrfx_atomic_t * p_allocated_channels, uint8_t channel)
 {
     NRFX_ASSERT(p_allocated_channels);
     if (channel == CHANNEL_INVALID)
     {
-        return NRFX_ERROR_INVALID_PARAM;
+        return -EINVAL;
     }
-    return (nrfx_flag32_free(p_allocated_channels, channel) == 0) ?
-        NRFX_SUCCESS : NRFX_ERROR_INVALID_PARAM;
+    return nrfx_flag32_free(p_allocated_channels, channel);
 }
 
-static nrfx_err_t channel_allocate(nrfx_atomic_t * p_channels_available,
-                                   uint8_t       * p_channel,
-                                   uint32_t        mask)
+static int channel_allocate(nrfx_atomic_t * p_channels_available,
+                            uint8_t       * p_channel,
+                            uint32_t        mask)
 {
     NRFX_ASSERT(p_channel);
     uint32_t chan_avail;
@@ -264,7 +263,7 @@ static nrfx_err_t channel_allocate(nrfx_atomic_t * p_channels_available,
         chan_avail_masked = chan_avail & mask;
         if (chan_avail_masked == 0)
         {
-            return NRFX_ERROR_NO_MEM;
+            return -ENOMEM;
         }
         else
         {
@@ -275,7 +274,7 @@ static nrfx_err_t channel_allocate(nrfx_atomic_t * p_channels_available,
                                           ~NRFX_BIT(chan_to_alloc));
     } while (prev_mask == *p_channels_available);
     *p_channel = chan_to_alloc;
-    return NRFX_SUCCESS;
+    return 0;
 }
 
 /* The main connection is needed when connecting two APBs from Global Domain.
@@ -335,9 +334,9 @@ static void apb_connection_create(interconnect_apb_t const * p_src_apb,
 /* This function removes direct connection between two domains via IPCT.
    It must be called before all local connections are removed
    (Before all `local_connection_remove()` function calls). */
-static nrfx_err_t ipct_connection_remove(interconnect_ipct_t const * p_src_ipct,
-                                         interconnect_ipct_t const * p_dst_ipct,
-                                         nrfx_gppi_channels_path_t      * p_path)
+static int ipct_connection_remove(interconnect_ipct_t const * p_src_ipct,
+                                  interconnect_ipct_t const * p_dst_ipct,
+                                  nrfx_gppi_channels_path_t      * p_path)
 {
     NRFX_ASSERT(p_src_ipct);
     NRFX_ASSERT(p_dst_ipct);
@@ -346,7 +345,7 @@ static nrfx_err_t ipct_connection_remove(interconnect_ipct_t const * p_src_ipct,
     NRFX_ASSERT(interconnect_ipct_domain_get(p_src_ipct) == NRF_DOMAIN_GLOBAL ||
                 interconnect_ipct_domain_get(p_dst_ipct) == NRF_DOMAIN_GLOBAL);
 
-    nrfx_err_t err_code;
+    int err_code;
     uint8_t src_ipct_chan = interconnect_ipct_domain_get(p_src_ipct) == NRF_DOMAIN_GLOBAL ?
                             p_path->ipct_channel :
                             p_path->local_ipct_channel;
@@ -355,11 +354,11 @@ static nrfx_err_t ipct_connection_remove(interconnect_ipct_t const * p_src_ipct,
                             p_path->local_ipct_channel;
 
     err_code = channel_free(p_src_ipct->p_ipct_channels, src_ipct_chan);
-    if (err_code == NRFX_SUCCESS)
+    if (err_code == 0)
     {
         /* Source channel is either already freed or it is not permitted by the configuration. */
         err_code = channel_free(p_dst_ipct->p_ipct_channels, dst_ipct_chan);
-        if (err_code == NRFX_SUCCESS)
+        if (err_code == 0)
         {
             /* Clearing both IPCT configurations. */
             nrf_ipct_shorts_disable(p_src_ipct->p_ipct, NRFX_BIT(src_ipct_chan));
@@ -419,9 +418,9 @@ static void dppic_channel_set(uint8_t chan, bool enable)
 /* This function creates direct connection between two domains via IPCT.
    It must be called after all local connections are created
    (After all `local_connection_create()` function calls). */
-static nrfx_err_t ipct_connection_create(interconnect_ipct_t const * p_src_ipct,
-                                         interconnect_ipct_t const * p_dst_ipct,
-                                         nrfx_gppi_channels_path_t      * p_path)
+static int ipct_connection_create(interconnect_ipct_t const * p_src_ipct,
+                                  interconnect_ipct_t const * p_dst_ipct,
+                                  nrfx_gppi_channels_path_t      * p_path)
 {
     NRFX_ASSERT(p_src_ipct);
     NRFX_ASSERT(p_dst_ipct);
@@ -430,7 +429,7 @@ static nrfx_err_t ipct_connection_create(interconnect_ipct_t const * p_src_ipct,
     NRFX_ASSERT(interconnect_ipct_domain_get(p_src_ipct) == NRF_DOMAIN_GLOBAL ||
                 interconnect_ipct_domain_get(p_dst_ipct) == NRF_DOMAIN_GLOBAL);
 
-    nrfx_err_t err_code;
+    int err_code;
     uint8_t src_dppi_channel;
     uint8_t dst_dppi_channel;
     uint8_t * src_ipct_channel;
@@ -460,17 +459,17 @@ static nrfx_err_t ipct_connection_create(interconnect_ipct_t const * p_src_ipct,
     }
     else
     {
-        return NRFX_ERROR_INVALID_PARAM;
+        return -EINVAL;
     }
 
     src_chan_mask = *p_src_ipct->p_ipct_channels & p_src_ipct->ipct_pub_channels_mask;
     dst_chan_mask = *p_dst_ipct->p_ipct_channels & p_dst_ipct->ipct_sub_channels_mask;
     err_code = channel_allocate(p_src_ipct->p_ipct_channels, src_ipct_channel, src_chan_mask);
-    if (err_code == NRFX_SUCCESS)
+    if (err_code == 0)
     {
         /* No more IPCT channels available for source domain. */
         err_code = channel_allocate(p_dst_ipct->p_ipct_channels, dst_ipct_channel, dst_chan_mask);
-        if (err_code == NRFX_SUCCESS)
+        if (err_code == 0)
         {
             /* Setting up both IPCT configurations. */
             nrf_ipct_shorts_enable(p_src_ipct->p_ipct, NRFX_BIT(*src_ipct_channel));
@@ -496,11 +495,11 @@ static nrfx_err_t ipct_connection_create(interconnect_ipct_t const * p_src_ipct,
    (and PPIB if needed).
    It must be called before IPCT connection is created
    (Before `ipct_connection_create()` function call). */
-static nrfx_err_t local_connection_create(interconnect_apb_t const * p_src_apb,
-                                          interconnect_apb_t const * p_dst_apb,
-                                          uint8_t *                       dppi_channel)
+static int local_connection_create(interconnect_apb_t const * p_src_apb,
+                                   interconnect_apb_t const * p_dst_apb,
+                                   uint8_t *                       dppi_channel)
 {
-    nrfx_err_t err_code;
+    int err_code;
     uint8_t reserved_src_channel = CHANNEL_INVALID;
     uint8_t reserved_dst_channel = CHANNEL_INVALID;
     bool use_main_apb_interconnect = false;
@@ -558,11 +557,11 @@ static nrfx_err_t local_connection_create(interconnect_apb_t const * p_src_apb,
 
         /* Allocating same channel for all involved DPPICs. */
         err_code = channel_allocate(p_src_apb->p_dppi_channels, dppi_channel, chan_mask);
-        if (err_code == NRFX_SUCCESS)
+        if (err_code == 0)
         {
             reserved_src_channel = *dppi_channel;
             err_code = channel_allocate(p_dst_apb->p_dppi_channels, dppi_channel, chan_mask);
-            if (err_code == NRFX_SUCCESS)
+            if (err_code == 0)
             {
                 reserved_dst_channel = *dppi_channel;
                 if (use_main_apb_interconnect)
@@ -576,7 +575,7 @@ static nrfx_err_t local_connection_create(interconnect_apb_t const * p_src_apb,
             }
         }
 
-        if (err_code != NRFX_SUCCESS)
+        if (err_code != 0)
         {
             /* For at least one of involved DPPICs there was no channels available. */
             (void)channel_free(p_src_apb->p_dppi_channels, reserved_src_channel);
@@ -597,11 +596,11 @@ static nrfx_err_t local_connection_create(interconnect_apb_t const * p_src_apb,
 /* This function removes connection between two APBs inside one domain.
    It must be called after IPCT connection is removed
    (After `ipct_connection_remove()` function call). */
-static nrfx_err_t local_connection_remove(interconnect_apb_t const * p_src_apb,
-                                          interconnect_apb_t const * p_dst_apb,
-                                          uint8_t                         dppi_channel)
+static int local_connection_remove(interconnect_apb_t const * p_src_apb,
+                                   interconnect_apb_t const * p_dst_apb,
+                                   uint8_t                    dppi_channel)
 {
-    nrfx_err_t err_code;
+    int err_code;
 
     NRFX_ASSERT(dppi_channel != CHANNEL_INVALID);
     NRFX_ASSERT(p_src_apb);
@@ -612,7 +611,7 @@ static nrfx_err_t local_connection_remove(interconnect_apb_t const * p_src_apb,
     {
         /* Removing connection within one APB. */
         err_code = channel_free(p_src_apb->p_dppi_channels, dppi_channel);
-        if (err_code != NRFX_SUCCESS)
+        if (err_code != 0)
         {
             return err_code;
         }
@@ -622,10 +621,10 @@ static nrfx_err_t local_connection_remove(interconnect_apb_t const * p_src_apb,
         /* Removing connection between two APBs. */
         NRFX_CRITICAL_SECTION_ENTER();
         err_code = channel_free(p_src_apb->p_dppi_channels, dppi_channel);
-        if (err_code == NRFX_SUCCESS)
+        if (err_code == 0)
         {
             err_code = channel_free(p_dst_apb->p_dppi_channels, dppi_channel);
-            if (err_code == NRFX_SUCCESS)
+            if (err_code == 0)
             {
                 if (is_main_connection_needed(p_src_apb, p_dst_apb))
                 {
@@ -638,7 +637,7 @@ static nrfx_err_t local_connection_remove(interconnect_apb_t const * p_src_apb,
         NRFX_CRITICAL_SECTION_EXIT();
     }
 
-    if (err_code != NRFX_SUCCESS)
+    if (err_code != 0)
     {
         return err_code;
     }
@@ -650,7 +649,7 @@ static nrfx_err_t local_connection_remove(interconnect_apb_t const * p_src_apb,
     return err_code;
 }
 
-nrfx_err_t nrfx_gppiv1_channel_alloc(uint8_t * p_channel)
+int nrfx_gppiv1_channel_alloc(uint8_t * p_channel)
 {
     int ch;
     nrfx_gppi_channels_path_t * chan;
@@ -658,13 +657,13 @@ nrfx_err_t nrfx_gppiv1_channel_alloc(uint8_t * p_channel)
     ch = nrfx_flag32_alloc(&m_virtual_channels);
     if (ch < 0)
     {
-        return NRFX_ERROR_NO_MEM;
+        return ch;
     }
 
     *p_channel = (uint8_t)ch;
     chan = &channels_path[*p_channel];
     path_cleanup(chan);
-    return NRFX_SUCCESS;
+    return 0;
 }
 
 void nrfx_gppiv1_event_endpoint_setup(uint8_t channel, uint32_t eep)
@@ -746,7 +745,7 @@ void nrfx_gppiv1_channel_endpoints_setup(uint8_t channel, uint32_t eep, uint32_t
     NRFX_ASSERT(tep);
     NRFX_ASSERT(eep);
 
-    nrfx_err_t err_code;
+    int err_code;
     interconnect_apb_t const * p_src_apb = (interconnect_apb_get(eep));
     interconnect_apb_t const * p_dst_apb = (interconnect_apb_get(tep));
     nrfx_gppi_channels_path_t * p_path = &channels_path[channel];
@@ -766,7 +765,7 @@ void nrfx_gppiv1_channel_endpoints_setup(uint8_t channel, uint32_t eep, uint32_t
         /* Endpoints belongs to the same domain - one local connection needed. */
         NRFX_ASSERT(src_dppi_chan == dst_dppi_chan);
         err_code = local_connection_create(p_src_apb, p_dst_apb, src_dppi_chan);
-        if (err_code != NRFX_SUCCESS)
+        if (err_code != 0)
         {
             NRFX_ASSERT(false);
             (void)local_connection_remove(p_src_apb, p_dst_apb, *src_dppi_chan);
@@ -785,20 +784,20 @@ void nrfx_gppiv1_channel_endpoints_setup(uint8_t channel, uint32_t eep, uint32_t
 
         /* Creating local connection from source to IPCT peripheral inside the first domain. */
         err_code = local_connection_create(p_src_apb, p_src_ipct_apb, src_dppi_chan);
-        NRFX_ASSERT(err_code == NRFX_SUCCESS);
-        if (err_code == NRFX_SUCCESS)
+        NRFX_ASSERT(err_code == 0);
+        if (err_code == 0)
         {
             /* Creating local connection from IPCT peripheral to destination inside the second domain. */
             err_code = local_connection_create(p_dst_ipct_apb, p_dst_apb, dst_dppi_chan);
-            NRFX_ASSERT(err_code == NRFX_SUCCESS);
-            if (err_code == NRFX_SUCCESS)
+            NRFX_ASSERT(err_code == 0);
+            if (err_code == 0)
             {
                 /* Creating IPCT connection between the first and the second domain. */
                 err_code = ipct_connection_create(p_src_ipct, p_dst_ipct, p_path);
-                NRFX_ASSERT(err_code == NRFX_SUCCESS);
+                NRFX_ASSERT(err_code == 0);
             }
         }
-        if (err_code != NRFX_SUCCESS)
+        if (err_code != 0)
         {
             (void)local_connection_remove(p_src_apb, p_src_ipct_apb, *src_dppi_chan);
             (void)local_connection_remove(p_dst_ipct_apb, p_dst_apb, *dst_dppi_chan);
@@ -806,7 +805,7 @@ void nrfx_gppiv1_channel_endpoints_setup(uint8_t channel, uint32_t eep, uint32_t
         }
     }
 
-    if (err_code == NRFX_SUCCESS)
+    if (err_code == 0)
     {
         p_path->p_src_apb = p_src_apb;
         p_path->p_dst_apb = p_dst_apb;
@@ -824,7 +823,7 @@ void nrfx_gppiv1_channel_endpoints_clear(uint8_t channel, uint32_t eep, uint32_t
     NRFX_ASSERT(tep);
     NRFX_ASSERT(eep);
 
-    nrfx_err_t err_code;
+    int err_code;
     interconnect_apb_t const * p_src_apb = (interconnect_apb_get(eep));
     interconnect_apb_t const * p_dst_apb = (interconnect_apb_get(tep));
     nrfx_gppi_channels_path_t * p_path = &channels_path[channel];
@@ -845,7 +844,7 @@ void nrfx_gppiv1_channel_endpoints_clear(uint8_t channel, uint32_t eep, uint32_t
         /* Endpoints belongs to the same domain - need to remove one local connection. */
         NRFX_ASSERT(src_dppi_chan == dst_dppi_chan);
         err_code = local_connection_remove(p_src_apb, p_dst_apb, *src_dppi_chan);
-        NRFX_ASSERT(err_code == NRFX_SUCCESS);
+        NRFX_ASSERT(err_code == 0);
     }
     else
     {
@@ -860,30 +859,30 @@ void nrfx_gppiv1_channel_endpoints_clear(uint8_t channel, uint32_t eep, uint32_t
 
         /* Removing IPCT connection between the first and the second domain. */
         err_code = ipct_connection_remove(p_src_ipct, p_dst_ipct, p_path);
-        NRFX_ASSERT(err_code == NRFX_SUCCESS);
-        if (err_code == NRFX_SUCCESS)
+        NRFX_ASSERT(err_code == 0);
+        if (err_code == 0)
         {
             /* Removing local connection from IPCT peripheral to destination inside the first domain. */
             err_code = local_connection_remove(p_src_apb, p_src_ipct_apb, *src_dppi_chan);
-            NRFX_ASSERT(err_code == NRFX_SUCCESS);
-            if (err_code == NRFX_SUCCESS)
+            NRFX_ASSERT(err_code == 0);
+            if (err_code == 0)
             {
                 /* Removing local connection from IPCT peripheral to destination inside the second domain. */
                 err_code = local_connection_remove(p_dst_ipct_apb, p_dst_apb, *dst_dppi_chan);
-                NRFX_ASSERT(err_code == NRFX_SUCCESS);
+                NRFX_ASSERT(err_code == 0);
             }
         }
     }
-    if (err_code == NRFX_SUCCESS)
+    if (err_code == 0)
     {
         path_cleanup(p_path);
         NRF_DPPI_ENDPOINT_CLEAR(eep);
         NRF_DPPI_ENDPOINT_CLEAR(tep);
     }
-    NRFX_ASSERT(err_code == NRFX_SUCCESS);
+    NRFX_ASSERT(err_code == 0);
 }
 
-nrfx_err_t nrfx_gppiv1_channel_free(uint8_t channel)
+int nrfx_gppiv1_channel_free(uint8_t channel)
 {
     int err;
     nrfx_gppi_channels_path_t * p_path;
@@ -891,11 +890,11 @@ nrfx_err_t nrfx_gppiv1_channel_free(uint8_t channel)
     err = nrfx_flag32_free(&m_virtual_channels, channel);
     if (err < 0)
     {
-        return NRFX_ERROR_INVALID_PARAM;
+        return err;
     }
     p_path = &channels_path[channel];
     path_cleanup(p_path);
-    return NRFX_SUCCESS;
+    return 0;
 }
 
 bool nrfx_gppiv1_channel_check(uint8_t channel)

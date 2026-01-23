@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -50,7 +50,7 @@ static void wdt_configure(nrfx_wdt_t *              p_instance,
 
     nrfy_wdt_periph_configure(p_instance->p_reg, &nrfy_conf);
 
-    wdt_control_block_t * p_cb = &p_instance->cb;
+    nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
 
 #if NRFX_WDT_HAS_STOP
     p_cb->stoppable = (bool)(p_config->behaviour & NRF_WDT_BEHAVIOUR_STOP_ENABLE_MASK);
@@ -85,7 +85,7 @@ static int wdt_init(nrfx_wdt_t *              p_instance,
 
     int err_code;
 
-    wdt_control_block_t * p_cb = &p_instance->cb;
+    nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
 
 #if NRFX_CHECK(NRFX_WDT_CONFIG_NO_IRQ)
     (void)wdt_event_handler;
@@ -135,7 +135,7 @@ int nrfx_wdt_reconfigure(nrfx_wdt_t *              p_instance,
     NRFX_ASSERT(p_config);
 
     int err_code;
-    wdt_control_block_t * p_cb = &p_instance->cb;
+    nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
 
     if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
     {
@@ -161,7 +161,7 @@ void nrfx_wdt_uninit(nrfx_wdt_t * p_instance)
 {
     NRFX_ASSERT(p_instance);
 
-    wdt_control_block_t * p_cb = &p_instance->cb;
+    nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
 
 #if !NRFX_CHECK(NRFX_WDT_CONFIG_NO_IRQ)
@@ -178,7 +178,7 @@ bool nrfx_wdt_init_check(nrfx_wdt_t const * p_instance)
 {
     NRFX_ASSERT(p_instance);
 
-    wdt_control_block_t const * p_cb = &p_instance->cb;
+    nrfx_wdt_control_block_t const * p_cb = &p_instance->cb;
 
     return (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 }
@@ -187,7 +187,7 @@ void nrfx_wdt_enable(nrfx_wdt_t * p_instance)
 {
     NRFX_ASSERT(p_instance);
 
-    wdt_control_block_t * p_cb = &p_instance->cb;
+    nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
     NRFX_ASSERT(p_cb->alloc_index != 0);
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
     nrfy_wdt_task_trigger(p_instance->p_reg, NRF_WDT_TASK_START);
@@ -199,7 +199,7 @@ void nrfx_wdt_feed(nrfx_wdt_t const * p_instance)
 {
     NRFX_ASSERT(p_instance);
 
-    wdt_control_block_t const * p_cb = &p_instance->cb;
+    nrfx_wdt_control_block_t const * p_cb = &p_instance->cb;
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
     for (uint8_t i = 0; i < p_cb->alloc_index; i++)
     {
@@ -212,7 +212,7 @@ int nrfx_wdt_channel_alloc(nrfx_wdt_t * p_instance, nrfx_wdt_channel_id * p_chan
     NRFX_ASSERT(p_instance);
 
     int result;
-    wdt_control_block_t * p_cb = &p_instance->cb;
+    nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
 
     NRFX_ASSERT(p_channel_id);
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
@@ -240,7 +240,7 @@ void nrfx_wdt_channels_free(nrfx_wdt_t * p_instance)
 
     uint8_t index;
     nrfx_wdt_channel_id channel_id;
-    wdt_control_block_t * p_cb = &p_instance->cb;
+    nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
 
     NRFX_CRITICAL_SECTION_ENTER();
@@ -266,7 +266,7 @@ int nrfx_wdt_stop(nrfx_wdt_t * p_instance)
 {
     NRFX_ASSERT(p_instance);
 
-    wdt_control_block_t * p_cb = &p_instance->cb;
+    nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
     if (!p_cb->stoppable)
@@ -295,7 +295,7 @@ void nrfx_wdt_irq_handler(nrfx_wdt_t * p_instance)
     NRFX_ASSERT(p_instance);
 
     NRF_WDT_Type * p_reg = p_instance->p_reg;
-    wdt_control_block_t * p_cb = &p_instance->cb;
+    nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
 
     /* Clearing timeout event also causes request status register to be cleared, so read it
      * before clearing. */

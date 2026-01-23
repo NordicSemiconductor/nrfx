@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -84,6 +84,13 @@ extern "C" {
 #define NRF_PWM_HAS_IDLEOUT 0
 #endif
 
+#if defined(PWM_EVENTS_COMPAREMATCH_EVENTS_COMPAREMATCH_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether PWM has COMPAREMATCH events. */
+#define NRF_PWM_HAS_COMPAREMATCH 1
+#else
+#define NRF_PWM_HAS_COMPAREMATCH 0
+#endif
+
 /**
  * @brief Macro getting pointer to the structure of registers of the PWM peripheral.
  *
@@ -127,25 +134,37 @@ typedef enum
 /** @brief PWM events. */
 typedef enum
 {
-    NRF_PWM_EVENT_STOPPED      = offsetof(NRF_PWM_Type, EVENTS_STOPPED),       ///< Response to STOP task, emitted when PWM pulses are no longer generated.
-    NRF_PWM_EVENT_SEQSTARTED0  = offsetof(NRF_PWM_Type, EVENTS_SEQSTARTED[0]), ///< First PWM period started on sequence 0.
-    NRF_PWM_EVENT_SEQSTARTED1  = offsetof(NRF_PWM_Type, EVENTS_SEQSTARTED[1]), ///< First PWM period started on sequence 1.
-    NRF_PWM_EVENT_SEQEND0      = offsetof(NRF_PWM_Type, EVENTS_SEQEND[0]),     ///< Emitted at the end of every sequence 0 when its last value has been read from RAM.
-    NRF_PWM_EVENT_SEQEND1      = offsetof(NRF_PWM_Type, EVENTS_SEQEND[1]),     ///< Emitted at the end of every sequence 1 when its last value has been read from RAM.
-    NRF_PWM_EVENT_PWMPERIODEND = offsetof(NRF_PWM_Type, EVENTS_PWMPERIODEND),  ///< Emitted at the end of each PWM period.
-    NRF_PWM_EVENT_LOOPSDONE    = offsetof(NRF_PWM_Type, EVENTS_LOOPSDONE)      ///< Concatenated sequences have been played the specified number of times.
+    NRF_PWM_EVENT_STOPPED       = offsetof(NRF_PWM_Type, EVENTS_STOPPED),         ///< Response to STOP task, emitted when PWM pulses are no longer generated.
+    NRF_PWM_EVENT_SEQSTARTED0   = offsetof(NRF_PWM_Type, EVENTS_SEQSTARTED[0]),   ///< First PWM period started on sequence 0.
+    NRF_PWM_EVENT_SEQSTARTED1   = offsetof(NRF_PWM_Type, EVENTS_SEQSTARTED[1]),   ///< First PWM period started on sequence 1.
+    NRF_PWM_EVENT_SEQEND0       = offsetof(NRF_PWM_Type, EVENTS_SEQEND[0]),       ///< Emitted at the end of every sequence 0 when its last value has been read from RAM.
+    NRF_PWM_EVENT_SEQEND1       = offsetof(NRF_PWM_Type, EVENTS_SEQEND[1]),       ///< Emitted at the end of every sequence 1 when its last value has been read from RAM.
+    NRF_PWM_EVENT_PWMPERIODEND  = offsetof(NRF_PWM_Type, EVENTS_PWMPERIODEND),    ///< Emitted at the end of each PWM period.
+    NRF_PWM_EVENT_LOOPSDONE     = offsetof(NRF_PWM_Type, EVENTS_LOOPSDONE),       ///< Concatenated sequences have been played the specified number of times.
+#if NRF_PWM_HAS_COMPAREMATCH
+    NRF_PWM_EVENT_COMPAREMATCH0 = offsetof(NRF_PWM_Type, EVENTS_COMPAREMATCH[0]), ///< Compare matched for channel 0.
+    NRF_PWM_EVENT_COMPAREMATCH1 = offsetof(NRF_PWM_Type, EVENTS_COMPAREMATCH[1]), ///< Compare matched for channel 1.
+    NRF_PWM_EVENT_COMPAREMATCH2 = offsetof(NRF_PWM_Type, EVENTS_COMPAREMATCH[2]), ///< Compare matched for channel 2.
+    NRF_PWM_EVENT_COMPAREMATCH3 = offsetof(NRF_PWM_Type, EVENTS_COMPAREMATCH[3])  ///< Compare matched for channel 3.
+#endif
 } nrf_pwm_event_t;
 
 /** @brief PWM interrupts. */
 typedef enum
 {
-    NRF_PWM_INT_STOPPED_MASK      = PWM_INTENSET_STOPPED_Msk,      ///< Interrupt on STOPPED event.
-    NRF_PWM_INT_SEQSTARTED0_MASK  = PWM_INTENSET_SEQSTARTED0_Msk,  ///< Interrupt on SEQSTARTED[0] event.
-    NRF_PWM_INT_SEQSTARTED1_MASK  = PWM_INTENSET_SEQSTARTED1_Msk,  ///< Interrupt on SEQSTARTED[1] event.
-    NRF_PWM_INT_SEQEND0_MASK      = PWM_INTENSET_SEQEND0_Msk,      ///< Interrupt on SEQEND[0] event.
-    NRF_PWM_INT_SEQEND1_MASK      = PWM_INTENSET_SEQEND1_Msk,      ///< Interrupt on SEQEND[1] event.
-    NRF_PWM_INT_PWMPERIODEND_MASK = PWM_INTENSET_PWMPERIODEND_Msk, ///< Interrupt on PWMPERIODEND event.
-    NRF_PWM_INT_LOOPSDONE_MASK    = PWM_INTENSET_LOOPSDONE_Msk     ///< Interrupt on LOOPSDONE event.
+    NRF_PWM_INT_STOPPED_MASK       = PWM_INTENSET_STOPPED_Msk,       ///< Interrupt on STOPPED event.
+    NRF_PWM_INT_SEQSTARTED0_MASK   = PWM_INTENSET_SEQSTARTED0_Msk,   ///< Interrupt on SEQSTARTED[0] event.
+    NRF_PWM_INT_SEQSTARTED1_MASK   = PWM_INTENSET_SEQSTARTED1_Msk,   ///< Interrupt on SEQSTARTED[1] event.
+    NRF_PWM_INT_SEQEND0_MASK       = PWM_INTENSET_SEQEND0_Msk,       ///< Interrupt on SEQEND[0] event.
+    NRF_PWM_INT_SEQEND1_MASK       = PWM_INTENSET_SEQEND1_Msk,       ///< Interrupt on SEQEND[1] event.
+    NRF_PWM_INT_PWMPERIODEND_MASK  = PWM_INTENSET_PWMPERIODEND_Msk,  ///< Interrupt on PWMPERIODEND event.
+    NRF_PWM_INT_LOOPSDONE_MASK     = PWM_INTENSET_LOOPSDONE_Msk,     ///< Interrupt on LOOPSDONE event.
+#if NRF_PWM_HAS_COMPAREMATCH
+    NRF_PWM_INT_COMPAREMATCH0_MASK = PWM_INTENSET_COMPAREMATCH0_Msk, ///< Interrupt on COMPAREMATCH[0] event.
+    NRF_PWM_INT_COMPAREMATCH1_MASK = PWM_INTENSET_COMPAREMATCH1_Msk, ///< Interrupt on COMPAREMATCH[1] event.
+    NRF_PWM_INT_COMPAREMATCH2_MASK = PWM_INTENSET_COMPAREMATCH2_Msk, ///< Interrupt on COMPAREMATCH[2] event.
+    NRF_PWM_INT_COMPAREMATCH3_MASK = PWM_INTENSET_COMPAREMATCH3_Msk  ///< Interrupt on COMPAREMATCH[3] event.
+#endif
 } nrf_pwm_int_mask_t;
 
 /** @brief PWM shortcuts. */

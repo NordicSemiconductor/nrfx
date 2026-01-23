@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -57,6 +57,14 @@ extern "C" {
 #define NRF_RADIO_HAS_DATAWHITE 1
 #else
 #define NRF_RADIO_HAS_DATAWHITE 0
+#endif
+
+#if defined(RADIO_PACKETPTR_ResetValue) || defined(RADIO_PACKETPTR_PACKETPTR_Msk) \
+    || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the packet pointer register is present. **/
+#define NRF_RADIO_HAS_PACKETPTR 1
+#else
+#define NRF_RADIO_HAS_PACKETPTR 0
 #endif
 
 /** @brief RADIO tasks. */
@@ -950,6 +958,7 @@ NRF_STATIC_INLINE uint8_t nrf_radio_pdustat_get(NRF_RADIO_Type const * p_reg);
 NRF_STATIC_INLINE uint8_t nrf_radio_cistat_get(NRF_RADIO_Type const * p_reg);
 #endif // defined(RADIO_PDUSTAT_CISTAT_Msk) || defined(__NRFX_DOXYGEN__)
 
+#if NRF_RADIO_HAS_PACKETPTR
 /**
  * @brief Function for setting packet pointer to given location in memory.
  *
@@ -966,6 +975,7 @@ NRF_STATIC_INLINE void nrf_radio_packetptr_set(NRF_RADIO_Type * p_reg, void cons
  * @return Pointer to tx or rx packet buffer.
  */
 NRF_STATIC_INLINE void * nrf_radio_packetptr_get(NRF_RADIO_Type const * p_reg);
+#endif // NRF_RADIO_HAS_PACKETPTR
 
 /**
  * @brief Function for setting the radio frequency.
@@ -1827,6 +1837,7 @@ NRF_STATIC_INLINE uint8_t nrf_radio_cistat_get(NRF_RADIO_Type const * p_reg)
 }
 #endif
 
+#if NRF_RADIO_HAS_PACKETPTR
 NRF_STATIC_INLINE void nrf_radio_packetptr_set(NRF_RADIO_Type * p_reg, void const * p_packet)
 {
     p_reg->PACKETPTR = (uint32_t)p_packet;
@@ -1836,6 +1847,7 @@ NRF_STATIC_INLINE void * nrf_radio_packetptr_get(NRF_RADIO_Type const * p_reg)
 {
     return (void *)p_reg->PACKETPTR;
 }
+#endif // NRF_RADIO_HAS_PACKETPTR
 
 NRF_STATIC_INLINE void nrf_radio_frequency_set(NRF_RADIO_Type * p_reg, uint16_t radio_frequency)
 {
@@ -1928,7 +1940,9 @@ NRF_STATIC_INLINE void nrf_radio_packet_configure(NRF_RADIO_Type *              
                     0);
 
     p_reg->PCNF1 = (((uint32_t)p_config->maxlen  << RADIO_PCNF1_MAXLEN_Pos) |
+#if defined(RADIO_PCNF1_STATLEN_Msk)
                     ((uint32_t)p_config->statlen << RADIO_PCNF1_STATLEN_Pos) |
+#endif
                     ((uint32_t)p_config->balen   << RADIO_PCNF1_BALEN_Pos) |
                     (p_config->big_endian ?
                          (RADIO_PCNF1_ENDIAN_Big    << RADIO_PCNF1_ENDIAN_Pos) :

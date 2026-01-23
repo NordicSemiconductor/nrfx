@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -84,6 +84,7 @@ typedef enum
     NRF_PPIB_TASK_SEND_13 = offsetof(NRF_PPIB_Type, TASKS_SEND[13]), /**< Send 13 task. */
     NRF_PPIB_TASK_SEND_14 = offsetof(NRF_PPIB_Type, TASKS_SEND[14]), /**< Send 14 task. */
     NRF_PPIB_TASK_SEND_15 = offsetof(NRF_PPIB_Type, TASKS_SEND[15]), /**< Send 15 task. */
+#if NRF_PPIB_TASKS_SEND_COUNT > 16
     NRF_PPIB_TASK_SEND_16 = offsetof(NRF_PPIB_Type, TASKS_SEND[16]), /**< Send 16 task. */
     NRF_PPIB_TASK_SEND_17 = offsetof(NRF_PPIB_Type, TASKS_SEND[17]), /**< Send 17 task. */
     NRF_PPIB_TASK_SEND_18 = offsetof(NRF_PPIB_Type, TASKS_SEND[18]), /**< Send 18 task. */
@@ -100,6 +101,7 @@ typedef enum
     NRF_PPIB_TASK_SEND_29 = offsetof(NRF_PPIB_Type, TASKS_SEND[29]), /**< Send 29 task. */
     NRF_PPIB_TASK_SEND_30 = offsetof(NRF_PPIB_Type, TASKS_SEND[30]), /**< Send 30 task. */
     NRF_PPIB_TASK_SEND_31 = offsetof(NRF_PPIB_Type, TASKS_SEND[31]), /**< Send 31 task. */
+#endif
 } nrf_ppib_task_t;
 
 /** @brief PPIB events. */
@@ -121,6 +123,7 @@ typedef enum
     NRF_PPIB_EVENT_RECEIVE_13 = offsetof(NRF_PPIB_Type, EVENTS_RECEIVE[13]), /**< Receive 13 event. */
     NRF_PPIB_EVENT_RECEIVE_14 = offsetof(NRF_PPIB_Type, EVENTS_RECEIVE[14]), /**< Receive 14 event. */
     NRF_PPIB_EVENT_RECEIVE_15 = offsetof(NRF_PPIB_Type, EVENTS_RECEIVE[15]), /**< Receive 15 event. */
+#if NRF_PPIB_EVENTS_RECEIVE_COUNT > 16
     NRF_PPIB_EVENT_RECEIVE_16 = offsetof(NRF_PPIB_Type, EVENTS_RECEIVE[16]), /**< Receive 16 event. */
     NRF_PPIB_EVENT_RECEIVE_17 = offsetof(NRF_PPIB_Type, EVENTS_RECEIVE[17]), /**< Receive 17 event. */
     NRF_PPIB_EVENT_RECEIVE_18 = offsetof(NRF_PPIB_Type, EVENTS_RECEIVE[18]), /**< Receive 18 event. */
@@ -137,6 +140,7 @@ typedef enum
     NRF_PPIB_EVENT_RECEIVE_29 = offsetof(NRF_PPIB_Type, EVENTS_RECEIVE[29]), /**< Receive 29 event. */
     NRF_PPIB_EVENT_RECEIVE_30 = offsetof(NRF_PPIB_Type, EVENTS_RECEIVE[30]), /**< Receive 30 event. */
     NRF_PPIB_EVENT_RECEIVE_31 = offsetof(NRF_PPIB_Type, EVENTS_RECEIVE[31]), /**< Receive 31 event. */
+#endif
 } nrf_ppib_event_t;
 
 #if defined(__GNUC__)
@@ -163,6 +167,7 @@ typedef enum
     NRF_PPIB_SEND_13_MASK = PPIB_OVERFLOW_SEND_SEND13_Msk, /* Send task 13 mask. */
     NRF_PPIB_SEND_14_MASK = PPIB_OVERFLOW_SEND_SEND14_Msk, /* Send task 14 mask. */
     NRF_PPIB_SEND_15_MASK = PPIB_OVERFLOW_SEND_SEND15_Msk, /* Send task 15 mask. */
+#if NRF_PPIB_TASKS_SEND_COUNT > 16
     NRF_PPIB_SEND_16_MASK = PPIB_OVERFLOW_SEND_SEND16_Msk, /* Send task 16 mask. */
     NRF_PPIB_SEND_17_MASK = PPIB_OVERFLOW_SEND_SEND17_Msk, /* Send task 17 mask. */
     NRF_PPIB_SEND_18_MASK = PPIB_OVERFLOW_SEND_SEND18_Msk, /* Send task 18 mask. */
@@ -179,6 +184,7 @@ typedef enum
     NRF_PPIB_SEND_29_MASK = PPIB_OVERFLOW_SEND_SEND29_Msk, /* Send task 29 mask. */
     NRF_PPIB_SEND_30_MASK = PPIB_OVERFLOW_SEND_SEND30_Msk, /* Send task 30 mask. */
     NRF_PPIB_SEND_31_MASK = PPIB_OVERFLOW_SEND_SEND31_Msk, /* Send task 31 mask. */
+#endif
 } nrf_ppib_send_mask_t;
 
 #if defined(__GNUC__)

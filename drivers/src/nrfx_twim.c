@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -252,11 +252,10 @@ int nrfx_twim_init(nrfx_twim_t *              p_instance,
     }
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
-    if (nrfx_prs_acquire(p_instance->p_twim,
-                         (nrfx_irq_handler_t)nrfx_twim_irq_handler,
-                         p_instance) != NRFX_SUCCESS)
+    err_code = nrfx_prs_acquire(p_instance->p_twim,
+                                (nrfx_irq_handler_t)nrfx_twim_irq_handler,p_instance);
+    if (err_code < 0)
     {
-        err_code = -EBUSY;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -451,7 +450,7 @@ static int twim_xfer(nrfx_twim_control_block_t   * p_cb,
     p_cb->error = false;
 
     if (p_xfer_desc->primary_length != 0 &&
-        !nrfx_is_in_ram(p_xfer_desc->p_primary_buf))
+        !nrf_dma_accessible_check(p_twim, p_xfer_desc->p_primary_buf))
     {
         err_code = -EACCES;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -462,7 +461,7 @@ static int twim_xfer(nrfx_twim_control_block_t   * p_cb,
 
     if ((p_xfer_desc->type == NRFX_TWIM_XFER_TXTX ||
          p_xfer_desc->type == NRFX_TWIM_XFER_TXRX) &&
-         !nrfx_is_in_ram(p_xfer_desc->p_secondary_buf))
+         !nrf_dma_accessible_check(p_twim, p_xfer_desc->p_secondary_buf))
     {
             err_code = -EACCES;
             NRFX_LOG_WARNING("Function: %s, error code: %s.",

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2025 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -61,6 +61,7 @@
 
 #define DPPI_CH_OFF (DPPI_INST_CNT_OFF + DPPI_INST_CNT_BITS)
 #define DPPI_CH_BITS 5
+#define DPPI_CH_RESERVED NRFX_BIT_MASK(DPPI_CH_BITS)
 
 #define DPPI_REV_OFF (DPPI_CH_OFF + DPPI_CH_BITS)
 #define DPPI_REV_BITS 1
@@ -108,6 +109,7 @@ NRFX_STATIC_ASSERT(DPPI_TOTAL_BITS == 32);
 #define DPPI_CH_MAX_CNT 5
 #define DPPI_CH_OFF 0
 #define DPPI_CH_BITS 5
+#define DPPI_CH_RESERVED NRFX_BIT_MASK(DPPI_CH_BITS)
 
 #define DPPI_REV_OFF (DPPI_CH_OFF + DPPI_CH_MAX_CNT * DPPI_CH_BITS)
 #define DPPI_REV_BITS 1
@@ -424,6 +426,10 @@ int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_han
             {
                 h |= HANDLE_CHAN(i, channels[i]);
             }
+            else if (p_node->domain_id == p_resource->domain_id)
+            {
+                h |= HANDLE_CHAN(i, DPPI_CH_RESERVED);
+            }
         }
     }
 
@@ -468,7 +474,10 @@ void nrfx_gppi_domain_conn_free(nrfx_gppi_handle_t handle)
             (void)rv;
             NRFX_ASSERT(rv == 0);
         }
-        flag_free(p_node->generic.p_channels, (uint8_t)chan);
+        if (chan != DPPI_CH_RESERVED)
+        {
+            flag_free(p_node->generic.p_channels, (uint8_t)chan);
+        }
     }
 }
 #else
@@ -524,6 +533,11 @@ void nrfx_gppi_group_channel_free(uint32_t node_id, uint8_t channel)
 int nrfx_gppi_conn_alloc(uint32_t eep, uint32_t tep, nrfx_gppi_handle_t * p_handle)
 {
     int rv;
+
+    if ((nrfx_gppi_ep_channel_get(eep) >= 0) || (nrfx_gppi_ep_channel_get(tep) >= 0))
+    {
+        return -EINVAL;
+    }
 
     rv = nrfx_gppi_domain_conn_alloc(nrfx_gppi_domain_id_get(eep),
                                      nrfx_gppi_domain_id_get(tep), p_handle);
@@ -581,7 +595,7 @@ static nrfx_atomic_t *get_group_chan_mask(uint32_t domain_id)
 			_reg = _route->p_nodes[i]->dppi.p_reg;					                        \
 	     i < _route->len;									                                \
 	     i += 2, _ch = HANDLE_GET_CHAN(_handle, i), _d_id = _route->p_nodes[i]->domain_id,	\
-	     _reg = _route->p_nodes[i]->dppi.p_reg)
+	     _reg = _route->p_nodes[i]->dppi.p_reg) if (_ch != DPPI_CH_RESERVED)
 #else
 #define FOR_EACH_DPPI(_gppi, _handle, _ch, _reg, _d_id)                                     \
     _reg = NRF_DPPIC;                                                                       \
@@ -660,22 +674,27 @@ void nrfx_gppi_ep_disable(uint32_t ep)
     NRF_DPPI_ENDPOINT_DISABLE(ep);
 }
 
-int nrfx_gppi_domain_channel_get(nrfx_gppi_handle_t handle, uint32_t domain_id)
+int nrfx_gppi_domain_channel_get(nrfx_gppi_handle_t handle, uint32_t node_id)
 {
-    NRF_DPPIC_Type * p_reg;
-    uint32_t d_id;
-    uint32_t ch;
+#if NRFX_CHECK(NRFX_GPPI_FIXED_CONNECTIONS)
+    (void)node_id;
+    return HANDLE_GET_CHAN(handle, 0);
+#elif !defined(NRFX_GPPI_MULTI_DOMAIN)
+    (void)node_id;
+    return handle;
+#else
+    const nrfx_gppi_route_t * p_route = &p_gppi->routes[HANDLE_GET_ROUTE_ID(handle)];
 
-    FOR_EACH_DPPI(p_gppi, handle, ch, p_reg, d_id)
+    for (size_t i = 0; i < p_route->len; i++)
     {
-        (void)p_reg;
-        if (d_id == domain_id)
+        if (p_route->p_nodes[i]->domain_id == node_id)
         {
-            return (int)ch;
+            return HANDLE_GET_CHAN(handle, i);
         }
     }
 
     return -EINVAL;
+#endif
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -74,6 +74,13 @@ extern "C" {
 #define NRF_REGULATORS_HAS_VREG_RADIO 1
 #else
 #define NRF_REGULATORS_HAS_VREG_RADIO 0
+#endif
+
+#if defined(REGULATORS_SYSTEMOFF_SYSTEMOFF_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SYSTEMOFF functionality is present. */
+#define NRF_REGULATORS_HAS_SYSTEMOFF 1
+#else
+#define NRF_REGULATORS_HAS_SYSTEMOFF 0
 #endif
 
 #if NRF_REGULATORS_HAS_VREG_MAIN || NRF_REGULATORS_HAS_VREG_HIGH || \
@@ -329,6 +336,7 @@ NRF_STATIC_INLINE bool nrf_regulators_vreg_enable_check(NRF_REGULATORS_Type cons
                                                        nrf_regulators_vreg_t        regulator);
 #endif // NRF_REGULATORS_HAS_VREG_ANY
 
+#if NRF_REGULATORS_HAS_SYSTEMOFF
 /**
  * @brief Function for putting the CPU in System OFF mode.
  *
@@ -337,6 +345,7 @@ NRF_STATIC_INLINE bool nrf_regulators_vreg_enable_check(NRF_REGULATORS_Type cons
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  */
 NRF_STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type * p_reg);
+#endif // NRF_REGULATORS_HAS_SYSTEMOFF
 
 #if NRF_REGULATORS_HAS_MAIN_STATUS
 /**
@@ -545,6 +554,7 @@ NRF_STATIC_INLINE bool nrf_regulators_vreg_enable_check(NRF_REGULATORS_Type cons
 }
 #endif // NRF_REGULATORS_HAS_VREG_ANY
 
+#if NRF_REGULATORS_HAS_SYSTEMOFF
 NRF_STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type * p_reg)
 {
     p_reg->SYSTEMOFF = REGULATORS_SYSTEMOFF_SYSTEMOFF_Msk;
@@ -556,6 +566,7 @@ NRF_STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type * p_reg)
         __WFE();
     }
 }
+#endif // NRF_REGULATORS_HAS_SYSTEMOFF
 
 #if NRF_REGULATORS_HAS_MAIN_STATUS
 NRF_STATIC_INLINE

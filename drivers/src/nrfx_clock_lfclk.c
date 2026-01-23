@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2025 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -32,7 +32,9 @@
  */
 
 #include <nrfx.h>
+#include <hal/nrf_clock.h>
 
+#if NRF_CLOCK_HAS_LFCLK
 #include <nrfx_clock_lfclk.h>
 
 #if NRF_CLOCK_HAS_HFCLK
@@ -498,3 +500,5 @@ void nrfx_clock_lfclk_irq_handler(void)
 #endif
     }
 }
+
+#endif /* NRF_CLOCK_HAS_LFCLK */

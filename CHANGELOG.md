@@ -1,6 +1,38 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [4.1.0] - 2026-01-23
+
+### Added
+- Added support for nRF54LM20B SoC.
+- Added support for FLUSH task and READY event in the IPCT HAL.
+- Added support for COMPAREMATCH events in the PWM HAL.
+- Added support for 8 CC channels in the RTC HAL.
+- Added support for extended CC channels allocation in the GRTC driver.
+- Added support for INTERVAL feature in the GRTC driver.
+- Added functions for setting transmit buffer address and length separately in SPIM and TWIM HALs.
+- Added support for nRF53 Series anomaly 135 in the SPIM driver.
+- Added support for nRF54 Series anomaly 57 in the SPIM driver.
+
+### Changed
+- Updated MDK to version 8.74.0.
+- Renamed nRF54LM20A Eng A to nRF54LM20A.
+- Renamed nRF54LV10A Eng A to nRF54LV10A.
+- Renamed nRF54LS05B Eng A to nRF54LS05B.
+- Reworked CRACEN driver. Now, entropy data and random CTR DRBG data are fetched using separate functions.
+- Extended nrfx_gppi_domain_channel_get() function to extract PPIB channels used in GPPI connection.
+- Moved control blocks from driver context into driver instance structure in RTC, SPI, TWI, and UART drivers.
+
+### Fixed
+- Fixed missing handling of pin retention in the SAADC driver.
+- Fixed nrfx_gppi_ext_conn_alloc() function to return error when used in single DPPI domain systems.
+- Fixed nrfx_gppi_ext_conn_alloc() function to prevent allocation of reserved channels.
+- Fixed detection of RXERROR event during frame reception in the NFCT driver.
+- Fixed nrfx_gppi_conn_alloc() function to detect already allocated endpoints.
+- Fixed incorrect procedure for checking whether transfer buffer is placed in the DMA-accessible RAM region.
+- Fixed handling of nRF52 Series anomaly 195 in the SPIM driver.
+- Fixed handling of nRF52 Series anomaly 198 in the SPIM driver.
+
 ## [4.0.1] - 2025-11-21
 
 ### Changed

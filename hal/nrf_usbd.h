@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -1224,6 +1224,7 @@ NRF_STATIC_INLINE size_t nrf_usbd_epout_size_get(NRF_USBD_Type const * p_reg, ui
 
 NRF_STATIC_INLINE size_t nrf_usbd_episoout_size_get(NRF_USBD_Type const * p_reg, uint8_t ep)
 {
+    (void) ep;
     NRFX_ASSERT(NRF_USBD_EP_VALIDATE(ep));
     NRFX_ASSERT(NRF_USBD_EPOUT_CHECK(ep));
     NRFX_ASSERT(NRF_USBD_EPISO_CHECK(ep));

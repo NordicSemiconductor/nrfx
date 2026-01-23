@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -51,6 +51,45 @@ extern "C" {
 /** @brief Macro for converting microseconds into ticks. */
 #define NRFX_RTC_US_TO_TICKS(us,freq) (((us) * (freq)) / 1000000U)
 
+#if NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief RTC driver instance handler type.
+ *
+ * @param[in] event_type RTC event type.
+ * @param[in] p_context  General purpose parameter set during initialization of
+ *                       the RTC. This parameter can be used to pass
+ *                       additional information to the handler function, for
+ *                       example, the RTC ID.
+ */
+typedef void (*nrfx_rtc_handler_t)(nrf_rtc_event_t event_type, void * p_context);
+
+/** @cond Driver internal data. */
+typedef struct
+{
+    nrfx_rtc_handler_t handler;      /**< Instance event handler. */
+    void *             p_context;    /**< Context passed to interrupt handler. */
+    nrfx_drv_state_t   state;        /**< Instance state. */
+    bool               reliable;     /**< Reliable mode flag. */
+    uint8_t            tick_latency; /**< Maximum length of interrupt handler in ticks (max 7.7 ms). */
+} nrfx_rtc_control_block_t;
+/** @endcond */
+
+/** @brief RTC driver instance structure. */
+typedef struct
+{
+    NRF_RTC_Type  *          p_reg; /**< Pointer to instance register set. */
+	nrfx_rtc_control_block_t cb;    /**< Driver internal data. */
+} nrfx_rtc_t;
+
+/** @brief Macro for creating an RTC driver instance. */
+#define NRFX_RTC_INSTANCE(reg)    \
+{                                 \
+    .p_reg = (NRF_RTC_Type *)reg, \
+    .cb = {0},                    \
+}
+
+#else /* NRFX_API_VER_AT_LEAST(4, 1, 0) */
+
 /** @brief RTC driver interrupt types. */
 typedef enum
 {
@@ -86,6 +125,11 @@ enum {
 };
 #endif
 
+/** @brief RTC driver instance handler type. */
+typedef void (*nrfx_rtc_handler_t)(nrfx_rtc_int_type_t int_type);
+
+#endif // NRFX_API_VER_AT_LEAST(4, 1, 0)
+
 /** @brief RTC driver instance configuration structure. */
 typedef struct
 {
@@ -93,6 +137,7 @@ typedef struct
     uint8_t  interrupt_priority; /**< Interrupt priority. */
     uint8_t  tick_latency;       /**< Maximum length of the interrupt handler in ticks (maximum 7.7 ms). */
     bool     reliable;           /**< Reliable mode flag. */
+    void *   p_context;          /**< Context passed to interrupt handler. */
 } nrfx_rtc_config_t;
 
 /**
@@ -111,9 +156,6 @@ typedef struct
     .reliable           = false,                                 \
 }
 
-/** @brief RTC driver instance handler type. */
-typedef void (*nrfx_rtc_handler_t)(nrfx_rtc_int_type_t int_type);
-
 /**
  * @brief Function for initializing the RTC driver instance.
  *
@@ -127,9 +169,15 @@ typedef void (*nrfx_rtc_handler_t)(nrfx_rtc_int_type_t int_type);
  * @retval 0         Successfully initialized.
  * @retval -EALREADY The driver is already initialized.
  */
+#if NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
+int nrfx_rtc_init(nrfx_rtc_t *              p_instance,
+                  nrfx_rtc_config_t const * p_config,
+                  nrfx_rtc_handler_t        handler);
+#else
 int nrfx_rtc_init(nrfx_rtc_t const *        p_instance,
                   nrfx_rtc_config_t const * p_config,
                   nrfx_rtc_handler_t        handler);
+#endif
 
 /**
  * @brief Function for uninitializing the RTC driver instance.
@@ -139,7 +187,11 @@ int nrfx_rtc_init(nrfx_rtc_t const *        p_instance,
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
+#if NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
+void nrfx_rtc_uninit(nrfx_rtc_t * p_instance);
+#else
 void nrfx_rtc_uninit(nrfx_rtc_t const * p_instance);
+#endif
 
 /**
  * @brief Function for checking if the RTC driver instance is initialized.
@@ -156,14 +208,22 @@ bool nrfx_rtc_init_check(nrfx_rtc_t const * p_instance);
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
+#if NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
+void nrfx_rtc_enable(nrfx_rtc_t * p_instance);
+#else
 void nrfx_rtc_enable(nrfx_rtc_t const * p_instance);
+#endif
 
 /**
  * @brief Function for disabling the RTC driver instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
+#if NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
+void nrfx_rtc_disable(nrfx_rtc_t * p_instance);
+#else
 void nrfx_rtc_disable(nrfx_rtc_t const * p_instance);
+#endif
 
 /**
  * @brief Function for setting a compare channel.
@@ -195,9 +255,9 @@ void nrfx_rtc_disable(nrfx_rtc_t const * p_instance);
  *                    if the reliable mode is enabled.
  */
 int nrfx_rtc_cc_set(nrfx_rtc_t const * p_instance,
-                           uint32_t           channel,
-                           uint32_t           val,
-                           bool               enable_irq);
+                    uint32_t           channel,
+                    uint32_t           val,
+                    bool               enable_irq);
 
 /**
  * @brief Function for disabling a channel.
@@ -324,6 +384,15 @@ NRFX_STATIC_INLINE uint32_t nrfx_rtc_task_address_get(nrfx_rtc_t const * p_insta
 NRFX_STATIC_INLINE uint32_t nrfx_rtc_event_address_get(nrfx_rtc_t const * p_instance,
                                                        nrf_rtc_event_t    event);
 
+#if NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Driver interrupt handler.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_rtc_irq_handler(nrfx_rtc_t * p_instance);
+#endif
+
 #ifndef NRFX_DECLARE_ONLY
 NRFX_STATIC_INLINE void nrfx_rtc_int_disable(nrfx_rtc_t const * p_instance,
                                              uint32_t *         p_mask)
@@ -362,6 +431,7 @@ NRFX_STATIC_INLINE uint32_t nrfx_rtc_event_address_get(nrfx_rtc_t const * p_inst
 }
 #endif // NRFX_DECLARE_ONLY
 
+#if !NRFX_API_VER_AT_LEAST(4, 1, 0)
 /**
  * @brief Macro returning RTC interrupt handler.
  *
@@ -387,6 +457,9 @@ NRFX_STATIC_INLINE uint32_t nrfx_rtc_event_address_get(nrfx_rtc_t const * p_inst
  *             NRFX_RTC_INST_HANDLER_GET(\<instance_index\>), 0, 0);
  */
 NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(RTC, rtc)
+#else
+/** @} */
+#endif
 
 #ifdef __cplusplus
 }

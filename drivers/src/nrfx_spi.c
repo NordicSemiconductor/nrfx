@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -33,7 +33,7 @@
 
 #include <nrfx.h>
 
-#if !NRFX_FEATURE_PRESENT(NRFX_SPI, _ENABLED)
+#if !NRFX_FEATURE_PRESENT(NRFX_SPI, _ENABLED) && !NRFX_API_VER_AT_LEAST(4, 1, 0)
 #error "No enabled SPI instances. Check <nrfx_config.h>."
 #endif
 
@@ -44,6 +44,7 @@
 #define NRFX_LOG_MODULE SPI
 #include <nrfx_log.h>
 
+#if !NRFX_API_VER_AT_LEAST(4, 1, 0)
 // Control block - driver instance local data.
 typedef struct
 {
@@ -60,6 +61,7 @@ typedef struct
     bool    skip_gpio_cfg;
 } spi_control_block_t;
 static spi_control_block_t m_cb[NRFX_SPI_ENABLED_COUNT];
+#endif
 
 static void pins_configure(nrfx_spi_config_t const * p_config)
 {
@@ -103,7 +105,370 @@ static void pins_configure(nrfx_spi_config_t const * p_config)
         }
     }
 }
+#if NRFX_API_VER_AT_LEAST(4, 1, 0)
+static void spi_configure(nrfx_spi_t *              p_instance,
+                          nrfx_spi_config_t const * p_config)
+{
+    nrfx_spi_control_block_t * p_cb = &p_instance->cb;
 
+    pins_configure(p_config);
+    p_cb->ss_pin = p_config->ss_pin;
+
+    if (!p_config->skip_psel_cfg)
+    {
+        uint32_t mosi_pin = p_config->mosi_pin != NRFX_SPI_PIN_NOT_USED ?
+                            p_config->mosi_pin : NRF_SPI_PIN_NOT_CONNECTED;
+        uint32_t miso_pin = p_config->miso_pin != NRFX_SPI_PIN_NOT_USED ?
+                            p_config->miso_pin : NRF_SPI_PIN_NOT_CONNECTED;
+
+        nrf_spi_pins_set(p_instance->p_reg, p_config->sck_pin, mosi_pin, miso_pin);
+    }
+    nrf_spi_frequency_set(p_instance->p_reg, p_config->frequency);
+    nrf_spi_configure(p_instance->p_reg, p_config->mode, p_config->bit_order);
+
+    p_cb->orc = p_config->orc;
+
+    if (p_cb->handler)
+    {
+        NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number(p_instance->p_reg),
+            p_config->irq_priority);
+        NRFX_IRQ_ENABLE(nrfx_get_irq_number(p_instance->p_reg));
+    }
+}
+
+int nrfx_spi_init(nrfx_spi_t *              p_instance,
+                  nrfx_spi_config_t const * p_config,
+                  nrfx_spi_event_handler_t  handler,
+                  void *                    p_context)
+{
+    NRFX_ASSERT(p_instance);
+    NRFX_ASSERT(p_config);
+
+    nrfx_spi_control_block_t * p_cb = &p_instance->cb;
+    int err_code;
+
+    if (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        err_code = -EALREADY;
+        NRFX_LOG_WARNING("Function: %s, error code: %s.",
+                         __func__,
+                         NRFX_LOG_ERROR_STRING_GET(err_code));
+        return err_code;
+    }
+
+#if NRFX_CHECK(NRFX_PRS_ENABLED)
+    err_code = nrfx_prs_acquire(p_instance->p_reg,
+                                (nrfx_irq_handler_t)nrfx_spi_irq_handler,
+                                p_instance);
+    if (err_code < 0)
+    {
+        NRFX_LOG_WARNING("Function: %s, error code: %s.",
+                         __func__,
+                         NRFX_LOG_ERROR_STRING_GET(err_code));
+        return err_code;
+    }
+#endif // NRFX_CHECK(NRFX_PRS_ENABLED)
+
+    p_cb->handler = handler;
+    p_cb->p_context = p_context;
+
+    if (p_config)
+    {
+        p_cb->skip_gpio_cfg = p_config->skip_gpio_cfg;
+        p_cb->ss_pin = p_config->ss_pin;
+        p_cb->orc = p_config->orc;
+
+        spi_configure(p_instance, p_config);
+    }
+    nrf_spi_enable(p_instance->p_reg);
+
+    p_cb->transfer_in_progress = false;
+    p_cb->state = NRFX_DRV_STATE_INITIALIZED;
+
+    err_code = 0;
+    NRFX_LOG_INFO("Function: %s, error code: %s.",
+                  __func__,
+                  NRFX_LOG_ERROR_STRING_GET(err_code));
+    return err_code;
+}
+
+int nrfx_spi_reconfigure(nrfx_spi_t *              p_instance,
+                         nrfx_spi_config_t const * p_config)
+{
+    NRFX_ASSERT(p_instance);
+    NRFX_ASSERT(p_config);
+
+    nrfx_spi_control_block_t * p_cb = &p_instance->cb;
+
+    if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        return -EINPROGRESS;
+    }
+    if (p_cb->transfer_in_progress)
+    {
+        return -EBUSY;
+    }
+    nrf_spi_disable(p_instance->p_reg);
+    spi_configure(p_instance, p_config);
+    nrf_spi_enable(p_instance->p_reg);
+    return 0;
+}
+
+void nrfx_spi_uninit(nrfx_spi_t * p_instance)
+{
+    NRFX_ASSERT(p_instance);
+
+    nrfx_spi_control_block_t * p_cb = &p_instance->cb;
+    NRF_SPI_Type * p_spi = p_instance->p_reg;
+
+    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+
+    if (p_cb->handler)
+    {
+        NRFX_IRQ_DISABLE(nrfx_get_irq_number(p_instance->p_reg));
+        nrf_spi_int_disable(p_spi, NRF_SPI_ALL_INTS_MASK);
+    }
+
+    nrf_spi_disable(p_spi);
+
+    if (!p_cb->skip_gpio_cfg)
+    {
+        nrf_gpio_cfg_default(nrf_spi_sck_pin_get(p_spi));
+
+        uint32_t miso_pin = nrf_spi_miso_pin_get(p_spi);
+        if (miso_pin != NRF_SPI_PIN_NOT_CONNECTED)
+        {
+            nrf_gpio_cfg_default(miso_pin);
+        }
+
+        uint32_t mosi_pin = nrf_spi_mosi_pin_get(p_spi);
+        if (mosi_pin != NRF_SPI_PIN_NOT_CONNECTED)
+        {
+            nrf_gpio_cfg_default(mosi_pin);
+        }
+
+        if (p_cb->ss_pin != NRFX_SPI_PIN_NOT_USED)
+        {
+            nrf_gpio_cfg_default(p_cb->ss_pin);
+        }
+    }
+
+#if NRFX_CHECK(NRFX_PRS_ENABLED)
+    nrfx_prs_release(p_instance->p_reg);
+#endif
+
+    p_cb->state = NRFX_DRV_STATE_UNINITIALIZED;
+    NRFX_LOG_INFO("Uninitialized.");
+}
+
+bool nrfx_spi_init_check(nrfx_spi_t const * p_instance)
+{
+    NRFX_ASSERT(p_instance);
+
+    nrfx_spi_control_block_t const * p_cb = &p_instance->cb;
+
+    return (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+}
+
+static void finish_transfer(nrfx_spi_control_block_t * p_cb)
+{
+    // If Slave Select signal is used, this is the time to deactivate it.
+    if (p_cb->ss_pin != NRFX_SPI_PIN_NOT_USED)
+    {
+        nrf_gpio_pin_write(p_cb->ss_pin, 1);
+    }
+
+    // By clearing this flag before calling the handler we allow subsequent
+    // transfers to be started directly from the handler function.
+    p_cb->transfer_in_progress = false;
+
+    p_cb->evt.type = NRFX_SPI_EVENT_DONE;
+    p_cb->handler(&p_cb->evt, p_cb->p_context);
+}
+
+// This function is called from the IRQ handler or, in blocking mode, directly
+// from the 'spi_xfer' function.
+// It returns true as long as the transfer should be continued, otherwise (when
+// there is nothing more to send/receive) it returns false.
+static bool transfer_byte(NRF_SPI_Type * p_spi, nrfx_spi_control_block_t * p_cb)
+{
+    // Read the data byte received in this transfer (always, because no further
+    // READY event can be generated until the current byte is read out from the
+    // RXD register), and store it in the RX buffer (only when needed).
+    volatile uint8_t rx_data = nrf_spi_rxd_get(p_spi);
+    if (p_cb->bytes_transferred < p_cb->evt.xfer_desc.rx_length)
+    {
+        p_cb->evt.xfer_desc.p_rx_buffer[p_cb->bytes_transferred] = rx_data;
+    }
+
+    ++p_cb->bytes_transferred;
+
+    // Check if there are more bytes to send or receive and write proper data
+    // byte (next one from TX buffer or over-run character) to the TXD register
+    // when needed.
+    // NOTE - we've already used 'p_cb->bytes_transferred + 1' bytes from our
+    //        buffers, because we take advantage of double buffering of TXD
+    //        register (so in effect one byte is still being transmitted now);
+    //        see how the transfer is started in the 'spi_xfer' function.
+    size_t bytes_used = p_cb->bytes_transferred + 1;
+
+    if (p_cb->abort)
+    {
+        if (bytes_used < p_cb->evt.xfer_desc.tx_length)
+        {
+            p_cb->evt.xfer_desc.tx_length = bytes_used;
+        }
+        if (bytes_used < p_cb->evt.xfer_desc.rx_length)
+        {
+            p_cb->evt.xfer_desc.rx_length = bytes_used;
+        }
+    }
+
+    if (bytes_used < p_cb->evt.xfer_desc.tx_length)
+    {
+        nrf_spi_txd_set(p_spi, p_cb->evt.xfer_desc.p_tx_buffer[bytes_used]);
+        return true;
+    }
+    else if (bytes_used < p_cb->evt.xfer_desc.rx_length)
+    {
+        nrf_spi_txd_set(p_spi, p_cb->orc);
+        return true;
+    }
+
+    return (p_cb->bytes_transferred < p_cb->evt.xfer_desc.tx_length ||
+            p_cb->bytes_transferred < p_cb->evt.xfer_desc.rx_length);
+}
+
+static void spi_xfer(NRF_SPI_Type               * p_spi,
+                     nrfx_spi_control_block_t   * p_cb,
+                     nrfx_spi_xfer_desc_t const * p_xfer_desc)
+{
+    p_cb->bytes_transferred = 0;
+    nrf_spi_int_disable(p_spi, NRF_SPI_INT_READY_MASK);
+
+    nrf_spi_event_clear(p_spi, NRF_SPI_EVENT_READY);
+
+    // Start the transfer by writing some byte to the TXD register;
+    // if TX buffer is not empty, take the first byte from this buffer,
+    // otherwise - use over-run character.
+    nrf_spi_txd_set(p_spi,
+        (p_xfer_desc->tx_length > 0 ? p_xfer_desc->p_tx_buffer[0] : p_cb->orc));
+
+    // TXD register is double buffered, so next byte to be transmitted can
+    // be written immediately, if needed, i.e. if TX or RX transfer is to
+    // be more that 1 byte long. Again - if there is something more in TX
+    // buffer send it, otherwise use over-run character.
+    if (p_xfer_desc->tx_length > 1)
+    {
+        nrf_spi_txd_set(p_spi, p_xfer_desc->p_tx_buffer[1]);
+    }
+    else if (p_xfer_desc->rx_length > 1)
+    {
+        nrf_spi_txd_set(p_spi, p_cb->orc);
+    }
+
+    // For blocking mode (user handler not provided) wait here for READY
+    // events (indicating that the byte from TXD register was transmitted
+    // and a new incoming byte was moved to the RXD register) and continue
+    // transaction until all requested bytes are transferred.
+    // In non-blocking mode - IRQ service routine will do this stuff.
+    if (p_cb->handler)
+    {
+        nrf_spi_int_enable(p_spi, NRF_SPI_INT_READY_MASK);
+    }
+    else
+    {
+        do {
+            while (!nrf_spi_event_check(p_spi, NRF_SPI_EVENT_READY)) {}
+            nrf_spi_event_clear(p_spi, NRF_SPI_EVENT_READY);
+            NRFX_LOG_DEBUG("SPI: Event: NRF_SPI_EVENT_READY.");
+        } while (transfer_byte(p_spi, p_cb));
+        if (p_cb->ss_pin != NRFX_SPI_PIN_NOT_USED)
+        {
+            nrf_gpio_pin_write(p_cb->ss_pin, 1);
+        }
+    }
+}
+
+int nrfx_spi_xfer(nrfx_spi_t *                 p_instance,
+                  nrfx_spi_xfer_desc_t const * p_xfer_desc,
+                  uint32_t                     flags)
+{
+    NRFX_ASSERT(p_instance);
+
+    nrfx_spi_control_block_t * p_cb = &p_instance->cb;
+
+    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+    NRFX_ASSERT(p_xfer_desc->p_tx_buffer != NULL || p_xfer_desc->tx_length == 0);
+    NRFX_ASSERT(p_xfer_desc->p_rx_buffer != NULL || p_xfer_desc->rx_length == 0);
+
+    int err_code = 0;
+
+    if (p_cb->transfer_in_progress)
+    {
+        err_code = -EBUSY;
+        NRFX_LOG_WARNING("Function: %s, error code: %s.",
+                         __func__,
+                         NRFX_LOG_ERROR_STRING_GET(err_code));
+        return err_code;
+    }
+    else
+    {
+        if (p_cb->handler)
+        {
+            p_cb->transfer_in_progress = true;
+        }
+    }
+
+    p_cb->evt.xfer_desc = *p_xfer_desc;
+    p_cb->abort = false;
+
+    if (p_cb->ss_pin != NRFX_SPI_PIN_NOT_USED)
+    {
+        nrf_gpio_pin_write(p_cb->ss_pin, 0);
+    }
+    if (flags)
+    {
+        p_cb->transfer_in_progress = false;
+        err_code = -ENOTSUP;
+    }
+    else
+    {
+        spi_xfer(p_instance->p_reg, p_cb, p_xfer_desc);
+    }
+    NRFX_LOG_INFO("Function: %s, error code: %s.",
+                  __func__,
+                  NRFX_LOG_ERROR_STRING_GET(err_code));
+    return err_code;
+}
+
+void nrfx_spi_abort(nrfx_spi_t * p_instance)
+{
+    NRFX_ASSERT(p_instance);
+
+    nrfx_spi_control_block_t * p_cb = &p_instance->cb;
+
+    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+
+    p_cb->abort = true;
+}
+
+void nrfx_spi_irq_handler(nrfx_spi_t * p_instance)
+{
+    NRFX_ASSERT(p_instance);
+
+    NRF_SPI_Type * p_spi = p_instance->p_reg;
+    nrfx_spi_control_block_t * p_cb = &p_instance->cb;
+
+    nrf_spi_event_clear(p_spi, NRF_SPI_EVENT_READY);
+    NRFX_LOG_DEBUG("Event: NRF_SPI_EVENT_READY.");
+
+    if (!transfer_byte(p_spi, p_cb))
+    {
+        finish_transfer(p_cb);
+    }
+}
+#else
 static void spi_configure(nrfx_spi_t const *        p_instance,
                           nrfx_spi_config_t const * p_config)
 {
@@ -155,10 +520,9 @@ int nrfx_spi_init(nrfx_spi_t const *        p_instance,
     static nrfx_irq_handler_t const irq_handlers[NRFX_SPI_ENABLED_COUNT] = {
         NRFX_INSTANCE_IRQ_HANDLERS_LIST(SPI, spi)
     };
-    if (nrfx_prs_acquire(p_instance->p_reg,
-            irq_handlers[p_instance->drv_inst_idx], NULL) != NRFX_SUCCESS)
+    err_code = nrfx_prs_acquire(p_instance->p_reg, irq_handlers[p_instance->drv_inst_idx], NULL);
+    if (err_code < 0)
     {
-        err_code = -EBUSY;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -455,3 +819,4 @@ static void irq_handler(NRF_SPI_Type * p_spi, spi_control_block_t * p_cb)
 }
 
 NRFX_INSTANCE_IRQ_HANDLERS(SPI, spi)
+#endif // NRFX_API_VER_AT_LEAST(4, 1, 0)

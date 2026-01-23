@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2024 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -116,13 +116,6 @@ extern "C" {
 #define nrfx_spim_01_irq_handler        SERIAL01_IRQHandler
 #endif
 
-// SERIAL02_IRQHandler
-#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_2_ENABLED)
-#define nrfx_prs_box_2_irq_handler      SERIAL02_IRQHandler
-#else
-#define nrfx_spim_02_irq_handler        SERIAL02_IRQHandler
-#endif
-
 // TODO: unsure how this ties in with nrfx bellboard drivers
 // BELLBOARDWIFI_0_IRQHandler
 
@@ -151,8 +144,8 @@ extern "C" {
 // SPU20_IRQHandler
 
 // SERIAL20_IRQHandler
-#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_1_ENABLED)
-#define nrfx_prs_box_3_irq_handler      SERIAL20_IRQHandler
+#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_2_ENABLED)
+#define nrfx_prs_box_2_irq_handler      SERIAL20_IRQHandler
 #else
 #define nrfx_spim_20_irq_handler        SERIAL20_IRQHandler
 #define nrfx_spis_20_irq_handler        SERIAL20_IRQHandler
@@ -162,8 +155,8 @@ extern "C" {
 #endif
 
 // SERIAL21_IRQHandler
-#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_2_ENABLED)
-#define nrfx_prs_box_4_irq_handler      SERIAL21_IRQHandler
+#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_3_ENABLED)
+#define nrfx_prs_box_3_irq_handler      SERIAL21_IRQHandler
 #else
 #define nrfx_spim_21_irq_handler        SERIAL21_IRQHandler
 #define nrfx_spis_21_irq_handler        SERIAL21_IRQHandler
@@ -173,8 +166,8 @@ extern "C" {
 #endif
 
 // SERIAL22_IRQHandler
-#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_3_ENABLED)
-#define nrfx_prs_box_5_irq_handler      SERIAL22_IRQHandler
+#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_4_ENABLED)
+#define nrfx_prs_box_4_irq_handler      SERIAL22_IRQHandler
 #else
 #define nrfx_spim_22_irq_handler        SERIAL22_IRQHandler
 #define nrfx_spis_22_irq_handler        SERIAL22_IRQHandler
@@ -244,8 +237,8 @@ extern "C" {
 // TDM_IRQHandler
 
 // SERIAL23_IRQHandler
-#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_3_ENABLED)
-#define nrfx_prs_box_6_irq_handler      SERIAL23_IRQHandler
+#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_5_ENABLED)
+#define nrfx_prs_box_5_irq_handler      SERIAL23_IRQHandler
 #else
 #define nrfx_spim_23_irq_handler        SERIAL23_IRQHandler
 #define nrfx_spis_23_irq_handler        SERIAL23_IRQHandler
@@ -255,8 +248,8 @@ extern "C" {
 #endif
 
 // SERIAL24_IRQHandler
-#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_3_ENABLED)
-#define nrfx_prs_box_7_irq_handler      SERIAL24_IRQHandler
+#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_6_ENABLED)
+#define nrfx_prs_box_6_irq_handler      SERIAL24_IRQHandler
 #else
 #define nrfx_spim_24_irq_handler        SERIAL24_IRQHandler
 #define nrfx_spis_24_irq_handler        SERIAL24_IRQHandler
@@ -270,8 +263,8 @@ extern "C" {
 // SPU30_IRQHandler
 
 // SERIAL30_IRQHandler
-#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_4_ENABLED)
-#define nrfx_prs_box_8_irq_handler      SERIAL30_IRQHandler
+#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_7_ENABLED)
+#define nrfx_prs_box_7_irq_handler      SERIAL30_IRQHandler
 #else
 #define nrfx_spim_30_irq_handler        SERIAL30_IRQHandler
 #define nrfx_spis_30_irq_handler        SERIAL30_IRQHandler
@@ -281,8 +274,8 @@ extern "C" {
 #endif
 
 // COMP_LPCOMP_IRQHandler
-#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_5_ENABLED)
-#define nrfx_prs_box_9_irq_handler      COMP_LPCOMP_IRQHandler
+#if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_8_ENABLED)
+#define nrfx_prs_box_8_irq_handler      COMP_LPCOMP_IRQHandler
 #else
 #define nrfx_comp_irq_handler           COMP_LPCOMP_IRQHandler
 #define nrfx_lpcomp_irq_handler         COMP_LPCOMP_IRQHandler

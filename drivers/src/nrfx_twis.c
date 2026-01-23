@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -475,11 +475,9 @@ int nrfx_twis_init(nrfx_twis_t *              p_instance,
     }
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
-    if (nrfx_prs_acquire(p_reg,
-                         (nrfx_irq_handler_t)nrfx_twis_irq_handler,
-                         p_instance) != NRFX_SUCCESS)
+    err_code = nrfx_prs_acquire(p_reg, (nrfx_irq_handler_t)nrfx_twis_irq_handler, p_instance);
+    if (err_code < 0)
     {
-        err_code = -EBUSY;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));
@@ -740,7 +738,7 @@ int nrfx_twis_tx_prepare(nrfx_twis_t * p_instance,
         return err_code;
     }
     /* Check data address */
-    if (!nrfx_is_in_ram(p_buf))
+    if (!nrf_dma_accessible_check(p_instance->p_reg, p_buf))
     {
         err_code = -EACCES;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -788,7 +786,7 @@ int nrfx_twis_rx_prepare(nrfx_twis_t * p_instance,
         return err_code;
     }
     /* Check data address */
-    if (!nrfx_is_in_ram(p_buf))
+    if (!nrf_dma_accessible_check(p_instance->p_reg, p_buf))
     {
         err_code = -EACCES;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",

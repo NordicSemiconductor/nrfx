@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -565,6 +565,22 @@ NRF_STATIC_INLINE void nrf_twim_address_set(NRF_TWIM_Type * p_reg,
 NRF_STATIC_INLINE uint8_t nrf_twim_address_get(NRF_TWIM_Type const * p_reg);
 
 /**
+ * @brief Function for setting the transmit buffer address.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] p_buffer Pointer to the buffer with data to send.
+ */
+NRF_STATIC_INLINE void nrf_twim_tx_ptr_set(NRF_TWIM_Type * p_reg, uint8_t const * p_buffer);
+
+/**
+ * @brief Function for setting the transmit buffer length.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] length Maximum number of data bytes to transmit.
+ */
+NRF_STATIC_INLINE void nrf_twim_tx_maxcnt_set(NRF_TWIM_Type * p_reg, size_t length);
+
+/**
  * @brief Function for setting the transmit buffer.
  *
  * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
@@ -574,6 +590,22 @@ NRF_STATIC_INLINE uint8_t nrf_twim_address_get(NRF_TWIM_Type const * p_reg);
 NRF_STATIC_INLINE void nrf_twim_tx_buffer_set(NRF_TWIM_Type * p_reg,
                                               uint8_t const * p_buffer,
                                               size_t          length);
+
+/**
+ * @brief Function for setting the receive buffer address.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] p_buffer Pointer to the buffer for received data.
+ */
+NRF_STATIC_INLINE void nrf_twim_rx_ptr_set(NRF_TWIM_Type * p_reg, uint8_t * p_buffer);
+
+/**
+ * @brief Function for setting the receive buffer length.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] length Maximum number of data bytes to receive.
+ */
+NRF_STATIC_INLINE void nrf_twim_rx_maxcnt_set(NRF_TWIM_Type * p_reg, size_t length);
 
 /**
  * @brief Function for setting the receive buffer.
@@ -971,34 +1003,60 @@ NRF_STATIC_INLINE uint8_t nrf_twim_address_get(NRF_TWIM_Type const * p_reg)
     return (uint8_t)(p_reg->ADDRESS & TWIM_ADDRESS_ADDRESS_Msk);
 }
 
-NRF_STATIC_INLINE void nrf_twim_tx_buffer_set(NRF_TWIM_Type * p_reg,
-                                              uint8_t const * p_buffer,
-                                              size_t          length)
+NRF_STATIC_INLINE void nrf_twim_tx_ptr_set(NRF_TWIM_Type * p_reg, uint8_t const * p_buffer)
 {
 #if NRF_TWIM_HAS_DMA_REG
     p_reg->DMA.TX.PTR    = (uint32_t)p_buffer;
-    p_reg->DMA.TX.MAXCNT = length;
 #else
     p_reg->TXD.PTR    = (uint32_t)p_buffer;
+#endif
+}
+
+NRF_STATIC_INLINE void nrf_twim_tx_maxcnt_set(NRF_TWIM_Type * p_reg, size_t length)
+{
+#if NRF_TWIM_HAS_DMA_REG
+    p_reg->DMA.TX.MAXCNT = length;
+#else
     p_reg->TXD.MAXCNT = length;
 #endif
 }
 
-NRF_STATIC_INLINE void nrf_twim_rx_buffer_set(NRF_TWIM_Type * p_reg,
-                                              uint8_t * p_buffer,
-                                              size_t    length)
+NRF_STATIC_INLINE void nrf_twim_tx_buffer_set(NRF_TWIM_Type * p_reg,
+                                              uint8_t const * p_buffer,
+                                              size_t          length)
+{
+    nrf_twim_tx_ptr_set(p_reg, p_buffer);
+    nrf_twim_tx_maxcnt_set(p_reg, length);
+}
+
+NRF_STATIC_INLINE void nrf_twim_rx_ptr_set(NRF_TWIM_Type * p_reg, uint8_t * p_buffer)
 {
 #if NRF_TWIM_HAS_DMA_REG
     p_reg->DMA.RX.PTR    = (uint32_t)p_buffer;
-    p_reg->DMA.RX.MAXCNT = length;
 #else
     p_reg->RXD.PTR    = (uint32_t)p_buffer;
+#endif
+}
+
+NRF_STATIC_INLINE void nrf_twim_rx_maxcnt_set(NRF_TWIM_Type * p_reg, size_t length)
+{
+#if NRF_TWIM_HAS_DMA_REG
+    p_reg->DMA.RX.MAXCNT = length;
+#else
     p_reg->RXD.MAXCNT = length;
 #endif
 }
 
+NRF_STATIC_INLINE void nrf_twim_rx_buffer_set(NRF_TWIM_Type * p_reg,
+                                              uint8_t *       p_buffer,
+                                              size_t          length)
+{
+    nrf_twim_rx_ptr_set(p_reg, p_buffer);
+    nrf_twim_rx_maxcnt_set(p_reg, length);
+}
+
 NRF_STATIC_INLINE void nrf_twim_shorts_set(NRF_TWIM_Type * p_reg,
-                                           uint32_t mask)
+                                           uint32_t        mask)
 {
     p_reg->SHORTS = mask;
 }

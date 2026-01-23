@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -77,11 +77,11 @@
 #endif
 
 /** @brief RISC-V delay factor. */
-#if !defined(NRFX_DELAY_RISCV_SLOWDOWN) || defined(__NRFX_DOXYGEN__)
+#if !defined(NRFX_COREDEP_DELAY_RISCV_SLOWDOWN) || defined(__NRFX_DOXYGEN__)
 #if defined(DELAY_RISCV_SLOWDOWN)
-#define NRFX_DELAY_RISCV_SLOWDOWN DELAY_RISCV_SLOWDOWN
+#define NRFX_COREDEP_DELAY_RISCV_SLOWDOWN DELAY_RISCV_SLOWDOWN
 #else
-#define NRFX_DELAY_RISCV_SLOWDOWN 50
+#define NRFX_COREDEP_DELAY_RISCV_SLOWDOWN 50
 #endif
 #endif
 
@@ -100,7 +100,7 @@ NRF_STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us);
 
 #ifndef NRF_DECLARE_ONLY
 
-#if NRFX_CHECK(NRFX_DELAY_DWT_BASED)
+#if NRFX_CHECK(NRFX_COREDEP_DELAY_DWT_BASED)
 
 #if !NRFX_COREDEP_DELAY_DWT_PRESENT
 #error "DWT unit not present in the SoC that is used."
@@ -112,7 +112,7 @@ NRF_STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
     {
         return;
     }
-    uint32_t time_cycles = time_us * NRFX_DELAY_CPU_FREQ_MHZ;
+    uint32_t time_cycles = time_us * NRFX_COREDEP_DELAY_CPU_FREQ_MHZ;
 
     // Save the current state of the DEMCR register to be able to restore it before exiting
     // this function. Enable the trace and debug blocks (including DWT).
@@ -136,7 +136,7 @@ NRF_STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
     CoreDebug->DEMCR = core_debug;
 }
 
-#else // NRFX_CHECK(NRFX_DELAY_DWT_BASED)
+#else // NRFX_CHECK(NRFX_COREDEP_DELAY_DWT_BASED)
 
 NRF_STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
 {
@@ -169,7 +169,7 @@ NRF_STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
 #else
 
     for (volatile uint32_t i = 0;
-             i < ((NRFX_COREDEP_DELAY_CPU_FREQ_MHZ * time_us) / NRFX_DELAY_RISCV_SLOWDOWN);
+             i < ((NRFX_COREDEP_DELAY_CPU_FREQ_MHZ * time_us) / NRFX_COREDEP_DELAY_RISCV_SLOWDOWN);
              i++)
         {}
 
@@ -177,7 +177,7 @@ NRF_STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
 #endif // NRFX_CHECK(ISA_ARM)
 }
 
-#endif // !NRFX_CHECK(NRFX_DELAY_DWT_BASED_DELAY)
+#endif // !NRFX_CHECK(NRFX_COREDEP_DELAY_DWT_BASED_DELAY)
 
 #endif // NRF_DECLARE_ONLY
 

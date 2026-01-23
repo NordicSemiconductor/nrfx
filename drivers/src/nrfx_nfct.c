@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2018 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -76,8 +76,7 @@ static nrfx_nfct_timer_workaround_t m_timer_workaround =
 
 /* Mask of all possible interrupts that are relevant for data reception. */
 #define NRFX_NFCT_RX_INT_MASK (NRF_NFCT_INT_RXFRAMESTART_MASK | \
-                               NRF_NFCT_INT_RXFRAMEEND_MASK   | \
-                               NRF_NFCT_INT_RXERROR_MASK)
+                               NRF_NFCT_INT_RXFRAMEEND_MASK)
 
 /* Mask of all possible interrupts that are relevant for data transmission. */
 #define NRFX_NFCT_TX_INT_MASK (NRF_NFCT_INT_TXFRAMESTART_MASK | \
@@ -951,7 +950,6 @@ void nrfx_nfct_irq_handler(void)
                                         NRFY_EVENT_TO_INT_BITMASK(NRF_NFCT_EVENT_FIELDLOST)      |
                                         NRFY_EVENT_TO_INT_BITMASK(NRF_NFCT_EVENT_RXFRAMESTART)   |
                                         NRFY_EVENT_TO_INT_BITMASK(NRF_NFCT_EVENT_RXFRAMEEND)     |
-                                        NRFY_EVENT_TO_INT_BITMASK(NRF_NFCT_EVENT_RXERROR)        |
                                         NRFY_EVENT_TO_INT_BITMASK(NRF_NFCT_EVENT_SELECTED)       |
                                         NRFY_EVENT_TO_INT_BITMASK(NRF_NFCT_EVENT_ERROR)          |
                                         NRFY_EVENT_TO_INT_BITMASK(NRF_NFCT_EVENT_TXFRAMESTART)   |
@@ -1001,8 +999,10 @@ void nrfx_nfct_irq_handler(void)
         nfct_evt.params.rx_frameend.rx_data.data_size =
             NRFX_NFCT_BITS_TO_BYTES(nrfy_nfct_rx_bits_get(NRF_NFCT, true));
 
-        if (NRFX_NFCT_EVT_ACTIVE(RXERROR, evt_mask))
+        if (nrfy_nfct_event_check(NRF_NFCT, NRF_NFCT_EVENT_RXERROR))
         {
+            nrfy_nfct_event_clear(NRF_NFCT, NRF_NFCT_EVENT_RXERROR);
+
             nfct_evt.params.rx_frameend.rx_status =
                 (nrfy_nfct_rx_frame_status_get(NRF_NFCT) & NRFX_NFCT_FRAME_STATUS_RX_ALL_MASK);
 

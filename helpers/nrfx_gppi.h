@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2025 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -93,6 +93,9 @@ typedef struct {
 /**
  * @brief Function for initializing GPPI with a structure with resources.
  *
+ * Function shall be called as early as possible to allow resource allocation. @p p_instance
+ * contains channel resources which need to be initialized before calling that function.
+ *
  * @param[in] p_instance Instance.
  */
 void nrfx_gppi_init(nrfx_gppi_t * p_instance);
@@ -138,15 +141,20 @@ NRFX_STATIC_INLINE int nrfx_gppi_ep_channel_get(uint32_t ep);
 #endif
 
 /**
- * @brief Function for getting the channel that is used in a connection for a given domain.
+ * @brief Function for getting one of a channels that is used in a connection.
  *
- * @param[in] handle    Connection handle.
- * @param[in] domain_id Domain ID.
+ * A connection may consists of a number of nodes which are domains with a unique DPPI or PPIB nodes.
+ * @ref nrfx_gppi_domain_id_get can be used to get the domain ID for a given peripheral. Node ID for
+ * PPIB is target-specific and can be found in a target-specific header file
+ * (see @ref nrfx_gppi_node_id_t).
+ *
+ * @param[in] handle  Connection handle.
+ * @param[in] node_id Domain or PPIB node ID.
  *
  * @retval non-negative Configured channel.
  * @retval -EINVAL      Invalid input arguments.
  */
-int nrfx_gppi_domain_channel_get(nrfx_gppi_handle_t handle, uint32_t domain_id);
+int nrfx_gppi_domain_channel_get(nrfx_gppi_handle_t handle, uint32_t node_id);
 
 /**
  * @brief Function for allocating and setup a connection between two domains.
@@ -196,14 +204,15 @@ int nrfx_gppi_ep_to_ch_attach(uint32_t ep, uint8_t channel);
 /**
  * @brief Function for allocating a connection between Task and Event.
  *
- * Function performs @ref nrfx_gppi_domain_conn_alloc followed by configuration of endpoints.
+ * Function performs @ref nrfx_gppi_domain_conn_alloc followed by the configuration of endpoints.
  *
- * @param[in]  eep      Event endpoint.
- * @param[in]  tep      Task endpoint.
+ * @param[in]  eep      Event endpoint address.
+ * @param[in]  tep      Task endpoint address.
  * @param[out] p_handle Handle used to control the connection.
  *
  * @retval 0       Successful connection allocation.
  * @retval -ENOMEM There is not enough resources to allocate the connection.
+ * @retval -EINVAL @p eep or @p tep is already configured to be used by the DPPI.
  */
 int nrfx_gppi_conn_alloc(uint32_t eep, uint32_t tep, nrfx_gppi_handle_t * p_handle);
 
@@ -293,7 +302,7 @@ void nrfx_gppi_conn_disable(nrfx_gppi_handle_t handle);
 /**
  * @brief Function for enabling channels in a domain.
  *
- * @param[in] domain_id Domain ID.
+ * @param[in] domain_id Domain ID. @ref nrfx_gppi_domain_id_get can be used to get @p domain_id.
  * @param[in] ch_mask   Channel mask.
  */
 void nrfx_gppi_channels_enable(uint32_t domain_id, uint32_t ch_mask);
@@ -301,7 +310,7 @@ void nrfx_gppi_channels_enable(uint32_t domain_id, uint32_t ch_mask);
 /**
  * @brief Function for disabling channels in a domain.
  *
- * @param[in] domain_id Domain ID.
+ * @param[in] domain_id Domain ID. @ref nrfx_gppi_domain_id_get can be used to get @p domain_id.
  * @param[in] ch_mask   Channel mask.
  */
 void nrfx_gppi_channels_disable(uint32_t domain_id, uint32_t ch_mask);
@@ -309,7 +318,7 @@ void nrfx_gppi_channels_disable(uint32_t domain_id, uint32_t ch_mask);
 /**
  * @brief Function for checking if a channel is enabled.
  *
- * @param[in] domain_id Domain ID.
+ * @param[in] domain_id Domain ID. @ref nrfx_gppi_domain_id_get can be used to get @p domain_id.
  * @param[in] ch        Channel.
  *
  * @retval true  Channel is enabled.
@@ -352,8 +361,8 @@ NRFX_STATIC_INLINE int nrfx_gppi_ep_chan_disable(uint32_t ep);
  * @brief Function for allocating a group for given set of endpoints.
  *
  * Group can only enable or disable channels in a single DPPI so all endpoints must
- * belong to a single domain. Provided endpoints must be set up prior to the group allocation
- * as channel numbers are retrieved from endpoints.
+ * belong to a single domain. Use @ref nrfx_gppi_domain_id_get with one of the endpoints that is
+ * intended to be added to that group to get @p domain_id.
  *
  * @param[in] domain_id Domain ID for the group.
  * @param[out] p_handle Location where handle is written.
@@ -374,6 +383,9 @@ void nrfx_gppi_group_free(nrfx_gppi_group_handle_t handle);
 /**
  * @brief Function for adding a channel to a group.
  *
+ * @ref nrfx_gppi_ep_channel_get can be used on a configured endpoint to retrieve the channel that
+ * shall be added to the group.
+ *
  * @param[in] handle  Group handle.
  * @param[in] channel Channel.
  */
@@ -381,6 +393,9 @@ void nrfx_gppi_group_ch_add(nrfx_gppi_group_handle_t handle, uint32_t channel);
 
 /**
  * @brief Function for removing a channel from a group.
+ *
+ * @ref nrfx_gppi_ep_channel_get can be used on a configured endpoint to retrieve the channel that
+ * shall be added to the group.
  *
  * @param[in] handle  Group handle.
  * @param[in] channel Channel.
@@ -459,7 +474,11 @@ uint32_t nrfx_gppi_group_task_dis_addr(nrfx_gppi_group_handle_t handle);
  *
  * Function can be used to allocate a resource and use it outside of this driver.
  *
- * @param[in] node_id SoC specific identifier of the DPPI system node (DPPIC or PPIB).
+ * @note @p node_id parameter is used only in the system with multiple domains.
+ * @ref nrfx_gppi_domain_id_get or target-specific header can be used to get the node ID
+ * (see @ref nrfx_gppi_node_id_t).
+ *
+ * @param[in] node_id Target-specific identifier of the DPPI system node (DPPIC or PPIB).
  *
  * @retval non-negative Allocated channel.
  * @retval -ENOMEM      Failed to allocate a channel.
@@ -469,9 +488,10 @@ int nrfx_gppi_channel_alloc(uint32_t node_id);
 /**
  * @brief Function for freeing a channel in a specific node of the DPPI system.
  *
- * Channel must be allocated earlier using @ref nrfx_gppi_channel_alloc.
+ * @p channel must be allocated earlier using @ref nrfx_gppi_channel_alloc. @p node_id must be
+ * the same as the one used in @ref nrfx_gppi_channel_alloc for allocating that resource.
  *
- * @param[in] node_id SoC specific identifier of the DPPI system node (DPPIC or PPIB).
+ * @param[in] node_id Target-specific identifier of the DPPI system node (DPPIC or PPIB).
  * @param[in] channel Channel.
  */
 void nrfx_gppi_channel_free(uint32_t node_id, uint8_t channel);
@@ -481,23 +501,26 @@ void nrfx_gppi_channel_free(uint32_t node_id, uint8_t channel);
  *
  * Function can be used to allocate a resource and use it outside of this driver.
  *
- * @param[in] node_id SoC specific identifier of the DPPI system node (DPPIC or PPIB).
+ * @note @p domain_id parameter is used only in the system with multiple domains.
+ * Use @ref nrfx_gppi_domain_id_get to get the ID.
+ *
+ * @param[in] domain_id Target-specific identifier of the DPPI system node.
  *
  * @retval non-negative Allocated channel.
  * @retval -ENOMEM      Failed to allocate a channel.
  */
-int nrfx_gppi_group_channel_alloc(uint32_t node_id);
+int nrfx_gppi_group_channel_alloc(uint32_t domain_id);
 
 /**
  * @brief Function for freeing a group channel in a specific node of the DPPI system.
  *
- * Channel must be allocated earlier using @ref nrfx_gppi_group_channel_alloc.
+ * @p channel must be allocated earlier using @ref nrfx_gppi_group_channel_alloc. @p domain_id must
+ * be the same as the one used in @ref nrfx_gppi_group_channel_alloc for allocating that resource.
  *
- * @param[in] node_id SoC specific identifier of the DPPI system node (DPPIC or PPIB).
- * @param[in] channel Channel.
+ * @param[in] domain_id Target-specific identifier of the DPPI system node.
+ * @param[in] channel   Channel.
  */
-void nrfx_gppi_group_channel_free(uint32_t node_id, uint8_t channel);
-
+void nrfx_gppi_group_channel_free(uint32_t domain_id, uint8_t channel);
 
 /** @brief A structure describing a DPPI resource in multi domain system. */
 typedef struct {
@@ -521,8 +544,9 @@ typedef struct {
  * @param[out] p_handle   Handle used to control the connection.
  * @param[in]  p_resource Optional external DPPI resource.
  *
- * @retval 0       Successful connection allocation.
- * @retval -ENOMEM There is not enough resources to allocate the connection.
+ * @retval 0        Successful connection allocation.
+ * @retval -ENOMEM  There is not enough resources to allocate the connection.
+ * @retval -ENOTSUP Not supported. Supported only on multi domain system.
  */
 #if NRFX_CHECK(NRFX_GPPI_MULTI_DOMAIN) || defined(__NRFX_DOXYGEN__)
 int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_handle_t * p_handle,
@@ -659,7 +683,7 @@ NRFX_STATIC_INLINE int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t cons
     (void)consumer;
     (void)p_handle;
     (void)p_resource;
-    return 0;
+    return -ENOTSUP;
 }
 #endif
 #endif // NRFX_DECLARE_ONLY

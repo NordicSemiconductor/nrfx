@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -49,12 +49,99 @@ extern "C" {
  * @brief   Two Wire Interface master (TWI) peripheral driver.
  */
 
+/** @brief TWI master driver transfer types. */
+typedef enum
+{
+    NRFX_TWI_XFER_TX,   ///< TX transfer.
+    NRFX_TWI_XFER_RX,   ///< RX transfer.
+    NRFX_TWI_XFER_TXRX, ///< TX transfer followed by RX transfer with repeated start.
+    NRFX_TWI_XFER_TXTX  ///< TX transfer followed by TX transfer with repeated start.
+} nrfx_twi_xfer_type_t;
+
+/** @brief Structure for a TWI transfer descriptor. */
+typedef struct
+{
+    nrfx_twi_xfer_type_t type;             ///< Type of transfer.
+    uint8_t              address;          ///< Slave address.
+    size_t               primary_length;   ///< Number of bytes transferred.
+    size_t               secondary_length; ///< Number of bytes transferred.
+    uint8_t *            p_primary_buf;    ///< Pointer to transferred data.
+    uint8_t *            p_secondary_buf;  ///< Pointer to transferred data.
+} nrfx_twi_xfer_desc_t;
+
+ #if NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
+/** @brief TWI master driver event types. */
+typedef enum
+{
+    NRFX_TWI_EVT_DONE,         ///< Transfer completed event.
+    NRFX_TWI_EVT_ADDRESS_NACK, ///< Error event: NACK received after sending the address.
+    NRFX_TWI_EVT_DATA_NACK,    ///< Error event: NACK received after sending a data byte.
+    NRFX_TWI_EVT_OVERRUN,      ///< Error event: The unread data is replaced by new data.
+    NRFX_TWI_EVT_BUS_ERROR     ///< Error event: An unexpected transition occurred on the bus.
+} nrfx_twi_event_type_t;
+
+/** @brief Structure for a TWI event. */
+typedef struct
+{
+    nrfx_twi_event_type_t type;      ///< Event type.
+    nrfx_twi_xfer_desc_t  xfer_desc; ///< Transfer details.
+} nrfx_twi_event_t;
+
+/** @brief TWI event handler prototype. */
+typedef void (* nrfx_twi_event_handler_t)(nrfx_twi_event_t const * p_event,
+                                          void *                   p_context);
+
+/** @cond Driver internal data. */
+typedef enum
+{
+    TWI_NO_SUSPEND, //< Last transfer was not suspended.
+    TWI_SUSPEND_TX, //< Last transfer was TX and was suspended.
+    TWI_SUSPEND_RX  //< Last transfer was RX and was suspended.
+} twi_suspend_t;
+
+typedef struct
+{
+    nrfx_twi_event_handler_t handler;
+    void *                   p_context;
+    volatile uint32_t        int_mask;
+    nrfx_twi_xfer_desc_t     xfer_desc;
+    uint32_t                 flags;
+    uint8_t *                p_curr_buf;
+    size_t                   curr_length;
+    bool                     curr_tx_no_stop;
+    twi_suspend_t            prev_suspend;
+    nrfx_drv_state_t         state;
+    bool                     error;
+    volatile bool            busy;
+    bool                     repeated;
+    size_t                   bytes_transferred;
+    bool                     hold_bus_uninit;
+    bool                     skip_gpio_cfg;
+} nrfx_twi_control_block_t;
+/** @endcond */
+
 /**
  * @brief Structure for the TWI master driver instance.
  */
 typedef struct
 {
-    NRF_TWI_Type * p_twi;        ///< Pointer to a structure with TWI registers.
+    NRF_TWI_Type *           p_reg; ///< Pointer to the structure of registers of the peripheral.
+    nrfx_twi_control_block_t cb;    ///< Driver internal data.
+} nrfx_twi_t;
+
+/** @brief Macro for creating a TWI master driver instance. */
+#define NRFX_TWI_INSTANCE(reg)    \
+{                                 \
+    .p_reg = (NRF_TWI_Type *)reg, \
+    .cb    = {0},                 \
+}
+#else
+/**
+ * @brief Structure for the TWI master driver instance.
+ */
+typedef struct
+{
+    NRF_TWI_Type * p_twi;        ///< Pointer to the structure of registers of the peripheral.
     uint8_t        drv_inst_idx; ///< Index of the driver instance. For internal use only.
 } nrfx_twi_t;
 
@@ -72,6 +159,28 @@ enum {
     NRFX_TWI_ENABLED_COUNT
 };
 #endif
+
+/** @brief TWI master driver event types. */
+typedef enum
+{
+    NRFX_TWI_EVT_DONE,         ///< Transfer completed event.
+    NRFX_TWI_EVT_ADDRESS_NACK, ///< Error event: NACK received after sending the address.
+    NRFX_TWI_EVT_DATA_NACK,    ///< Error event: NACK received after sending a data byte.
+    NRFX_TWI_EVT_OVERRUN,      ///< Error event: The unread data is replaced by new data.
+    NRFX_TWI_EVT_BUS_ERROR     ///< Error event: An unexpected transition occurred on the bus.
+} nrfx_twi_evt_type_t;
+
+/** @brief Structure for a TWI event. */
+typedef struct
+{
+    nrfx_twi_evt_type_t  type;      ///< Event type.
+    nrfx_twi_xfer_desc_t xfer_desc; ///< Transfer details.
+} nrfx_twi_evt_t;
+
+/** @brief TWI event handler prototype. */
+typedef void (* nrfx_twi_evt_handler_t)(nrfx_twi_evt_t const * p_event,
+                                        void *                 p_context);
+#endif // NRFX_API_VER_AT_LEAST(4, 1, 0)
 
 /** @brief Structure for the configuration of the TWI master driver instance. */
 typedef struct
@@ -123,37 +232,6 @@ typedef struct
 /** @brief Flag indicating that the transfer will be suspended. */
 #define NRFX_TWI_FLAG_SUSPEND             (1UL << 6)
 
-/** @brief TWI master driver event types. */
-typedef enum
-{
-    NRFX_TWI_EVT_DONE,         ///< Transfer completed event.
-    NRFX_TWI_EVT_ADDRESS_NACK, ///< Error event: NACK received after sending the address.
-    NRFX_TWI_EVT_DATA_NACK,    ///< Error event: NACK received after sending a data byte.
-    NRFX_TWI_EVT_OVERRUN,      ///< Error event: The unread data is replaced by new data.
-    NRFX_TWI_EVT_BUS_ERROR     ///< Error event: An unexpected transition occurred on the bus.
-} nrfx_twi_evt_type_t;
-
-/** @brief TWI master driver transfer types. */
-typedef enum
-{
-    NRFX_TWI_XFER_TX,   ///< TX transfer.
-    NRFX_TWI_XFER_RX,   ///< RX transfer.
-    NRFX_TWI_XFER_TXRX, ///< TX transfer followed by RX transfer with repeated start.
-    NRFX_TWI_XFER_TXTX  ///< TX transfer followed by TX transfer with repeated start.
-} nrfx_twi_xfer_type_t;
-
-/** @brief Structure for a TWI transfer descriptor. */
-typedef struct
-{
-    nrfx_twi_xfer_type_t    type;             ///< Type of transfer.
-    uint8_t                 address;          ///< Slave address.
-    size_t                  primary_length;   ///< Number of bytes transferred.
-    size_t                  secondary_length; ///< Number of bytes transferred.
-    uint8_t *               p_primary_buf;    ///< Pointer to transferred data.
-    uint8_t *               p_secondary_buf;  ///< Pointer to transferred data.
-} nrfx_twi_xfer_desc_t;
-
-
 /** @brief Macro for setting the TX transfer descriptor. */
 #define NRFX_TWI_XFER_DESC_TX(addr, p_data, length) \
 {                                                   \
@@ -198,17 +276,105 @@ typedef struct
     .p_secondary_buf  = (p_tx2),                                    \
 }
 
-/** @brief Structure for a TWI event. */
-typedef struct
-{
-    nrfx_twi_evt_type_t  type;      ///< Event type.
-    nrfx_twi_xfer_desc_t xfer_desc; ///< Transfer details.
-} nrfx_twi_evt_t;
+#if NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for initializing the TWI driver instance.
+ *
+ * @param[in] p_instance    Pointer to the driver instance structure.
+ * @param[in] p_config      Pointer to the structure with the initial configuration.
+ * @param[in] event_handler Event handler provided by the user. If NULL, blocking mode is enabled.
+ * @param[in] p_context     Context passed to event handler.
+ *
+ * @retval 0         Initialization is successful.
+ * @retval -EALREADY The driver is already initialized.
+ * @retval -EBUSY    Some other peripheral with the same instance ID is already in use.
+ *                   This is possible only if @ref nrfx_prs module is enabled.
+ */
+int nrfx_twi_init(nrfx_twi_t *              p_instance,
+                  nrfx_twi_config_t const * p_config,
+                  nrfx_twi_event_handler_t  event_handler,
+                  void *                    p_context);
 
-/** @brief TWI event handler prototype. */
-typedef void (* nrfx_twi_evt_handler_t)(nrfx_twi_evt_t const * p_event,
-                                        void *                 p_context);
+/**
+ * @brief Function for reconfiguring the TWI instance.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] p_config   Pointer to the structure with the configuration.
+ *
+ * @retval 0            Reconfiguration was successful.
+ * @retval -EBUSY       The driver is during transaction.
+ * @retval -EINPROGRESS The driver is uninitialized.
+ */
+int nrfx_twi_reconfigure(nrfx_twi_t *              p_instance,
+                         nrfx_twi_config_t const * p_config);
 
+/**
+ * @brief Function for uninitializing the TWI instance.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_twi_uninit(nrfx_twi_t * p_instance);
+
+/**
+ * @brief Function for enabling the TWI instance.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_twi_enable(nrfx_twi_t * p_instance);
+
+/**
+ * @brief Function for disabling the TWI instance.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_twi_disable(nrfx_twi_t * p_instance);
+
+/**
+ * @brief Function for performing a TWI transfer.
+ *
+ * The following transfer types can be configured (@ref nrfx_twi_xfer_desc_t.type):
+ * - @ref NRFX_TWI_XFER_TXRX - Write operation followed by a read operation (without STOP condition in between).
+ * - @ref NRFX_TWI_XFER_TXTX - Write operation followed by a write operation (without STOP condition in between).
+ * - @ref NRFX_TWI_XFER_TX - Write operation (with or without STOP condition).
+ * - @ref NRFX_TWI_XFER_RX - Read operation  (with STOP condition).
+ *
+ * @note TX-RX and TX-TX transfers are supported only in non-blocking mode.
+ *
+ * Additional options are provided using the flags parameter:
+ * - @ref NRFX_TWI_FLAG_NO_XFER_EVT_HANDLER - No user event handler after transfer completion. In most cases, this also means no interrupt at the end of the transfer.
+ * - @ref NRFX_TWI_FLAG_TX_NO_STOP - No stop condition after TX transfer.
+ * - @ref NRFX_TWI_FLAG_SUSPEND - Transfer will be suspended. This allows for combining multiple transfers into one transaction.
+ *                                Only transactions with the same direction can be combined. To finish the transaction, call the function without this flag.
+ *
+ * @note
+ * Some flag combinations are invalid:
+ * - @ref NRFX_TWI_FLAG_TX_NO_STOP with @ref nrfx_twi_xfer_desc_t.type different than @ref NRFX_TWI_XFER_TX
+ *
+ * @param[in] p_instance  Pointer to the driver instance structure.
+ * @param[in] p_xfer_desc Pointer to the transfer descriptor.
+ * @param[in] flags       Transfer options (0 for default settings).
+ *
+ * @retval 0            The procedure is successful.
+ * @retval -EBUSY       The driver is not ready for a new transfer.
+ * @retval -ECANCELED   An unexpected transition occurred on the bus.
+ * @retval -EINPROGRESS Other direction of transaction is suspended on the bus.
+ * @retval -EOVERFLOW   The unread data is replaced by new data (TXRX and RX)
+ * @retval -EIO         Negative acknowledgement (NACK) is received after sending
+ *                      the address in polling mode.
+ * @retval -EAGAIN      Negative acknowledgement (NACK) is received after sending
+ *                      a data byte in polling mode.
+ */
+int nrfx_twi_xfer(nrfx_twi_t                 * p_instance,
+                  nrfx_twi_xfer_desc_t const * p_xfer_desc,
+                  uint32_t                     flags);
+
+/**
+ * @brief Driver interrupt handler.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_twi_irq_handler(nrfx_twi_t * p_instance);
+#else
 /**
  * @brief Function for initializing the TWI driver instance.
  *
@@ -246,16 +412,6 @@ int nrfx_twi_reconfigure(nrfx_twi_t const *        p_instance,
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 void nrfx_twi_uninit(nrfx_twi_t const * p_instance);
-
-/**
- * @brief Function for checking if the TWI driver instance is initialized.
- *
- * @param[in] p_instance Pointer to the driver instance structure.
- *
- * @retval true  Instance is already initialized.
- * @retval false Instance is not initialized.
- */
-bool nrfx_twi_init_check(nrfx_twi_t const * p_instance);
 
 /**
  * @brief Function for enabling the TWI instance.
@@ -306,9 +462,20 @@ void nrfx_twi_disable(nrfx_twi_t const * p_instance);
  * @retval -EAGAIN      Negative acknowledgement (NACK) is received after sending
  *                      a data byte in polling mode.
  */
-int nrfx_twi_xfer(nrfx_twi_t           const * p_instance,
+int nrfx_twi_xfer(nrfx_twi_t const *           p_instance,
                   nrfx_twi_xfer_desc_t const * p_xfer_desc,
                   uint32_t                     flags);
+#endif // NRFX_API_VER_AT_LEAST(4, 1, 0)
+
+/**
+ * @brief Function for checking if the TWI driver instance is initialized.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  Instance is already initialized.
+ * @retval false Instance is not initialized.
+ */
+bool nrfx_twi_init_check(nrfx_twi_t const * p_instance);
 
 /**
  * @brief Function for checking the TWI driver state.
@@ -365,6 +532,7 @@ NRFX_STATIC_INLINE int nrfx_twi_bus_recover(uint32_t scl_pin, uint32_t sda_pin)
 }
 #endif
 
+#if !NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Macro returning TWI interrupt handler.
  *
@@ -390,6 +558,9 @@ NRFX_STATIC_INLINE int nrfx_twi_bus_recover(uint32_t scl_pin, uint32_t sda_pin)
  *             NRFX_TWI_INST_HANDLER_GET(\<instance_index\>), 0, 0);
  */
 NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(TWI, twi)
+#else
+/** @} */
+#endif
 
 #ifdef __cplusplus
 }

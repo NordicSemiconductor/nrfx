@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2025 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -38,9 +38,9 @@
 #include <mdk/nrf_erratas.h>
 #include <mdk/nrf_peripherals.h>
 #include <mdk/nrf_mem.h>
-#include "soc/nrfx_mdk_fixups.h"
-#include "soc/nrfx_irqs.h"
-#include "soc/nrfx_soc_defines.h"
-#include "nrfx_ext.h"
+#include <soc/nrfx_mdk_fixups.h>
+#include <soc/nrfx_irqs.h>
+#include <soc/nrfx_soc_defines.h>
+#include <nrfx_ext.h>
 
 #endif // NRFX_BSP_H__

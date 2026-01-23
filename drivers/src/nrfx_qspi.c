@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -123,7 +123,7 @@ static int qspi_xfer(void *            p_buffer,
         return -EPERM;
     }
 
-    if (!nrfx_is_in_ram(p_buffer) || !nrfx_is_word_aligned(p_buffer))
+    if (!nrf_dma_accessible_check(NRF_QSPI, p_buffer) || !nrfx_is_word_aligned(p_buffer))
     {
         return -EACCES;
     }

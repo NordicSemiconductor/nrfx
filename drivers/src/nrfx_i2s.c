@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -303,10 +303,12 @@ int nrfx_i2s_start(nrfx_i2s_t *               p_instance,
     NRFX_ASSERT(p_initial_buffers->p_rx_buffer != NULL ||
                 p_initial_buffers->p_tx_buffer != NULL);
     NRFX_ASSERT((p_initial_buffers->p_rx_buffer == NULL) ||
-                (nrfx_is_in_ram(p_initial_buffers->p_rx_buffer) &&
+                (nrf_dma_accessible_check(p_instance->p_reg,
+                                          p_initial_buffers->p_rx_buffer) &&
                  nrfx_is_word_aligned(p_initial_buffers->p_rx_buffer)));
     NRFX_ASSERT((p_initial_buffers->p_tx_buffer == NULL) ||
-                (nrfx_is_in_ram(p_initial_buffers->p_tx_buffer) &&
+                (nrf_dma_accessible_check(p_instance->p_reg,
+                                          p_initial_buffers->p_tx_buffer) &&
                  nrfx_is_word_aligned(p_initial_buffers->p_tx_buffer)));
     NRFX_ASSERT(p_initial_buffers->buffer_size != 0);
     (void)(flags);
@@ -324,10 +326,10 @@ int nrfx_i2s_start(nrfx_i2s_t *               p_instance,
     }
 
     if (((p_initial_buffers->p_rx_buffer != NULL)
-         && !nrfx_is_in_ram(p_initial_buffers->p_rx_buffer))
+         && !nrf_dma_accessible_check(p_instance->p_reg, p_initial_buffers->p_rx_buffer))
         ||
         ((p_initial_buffers->p_tx_buffer != NULL)
-         && !nrfx_is_in_ram(p_initial_buffers->p_tx_buffer)))
+         && !nrf_dma_accessible_check(p_instance->p_reg, p_initial_buffers->p_tx_buffer)))
     {
         err_code = -EACCES;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -384,10 +386,10 @@ int nrfx_i2s_next_buffers_set(nrfx_i2s_t *               p_instance,
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
     NRFX_ASSERT(p_buffers);
     NRFX_ASSERT((p_buffers->p_rx_buffer == NULL) ||
-                (nrfx_is_in_ram(p_buffers->p_rx_buffer) &&
+                (nrf_dma_accessible_check(p_instance->p_reg, p_buffers->p_rx_buffer) &&
                  nrfx_is_word_aligned(p_buffers->p_rx_buffer)));
     NRFX_ASSERT((p_buffers->p_tx_buffer == NULL) ||
-                (nrfx_is_in_ram(p_buffers->p_tx_buffer) &&
+                (nrf_dma_accessible_check(p_instance->p_reg, p_buffers->p_tx_buffer) &&
                  nrfx_is_word_aligned(p_buffers->p_tx_buffer)));
     NRFX_ASSERT(p_buffers->buffer_size != 0);
 
@@ -401,10 +403,10 @@ int nrfx_i2s_next_buffers_set(nrfx_i2s_t *               p_instance,
     }
 
     if (((p_buffers->p_rx_buffer != NULL)
-         && !nrfx_is_in_ram(p_buffers->p_rx_buffer))
+         && !nrf_dma_accessible_check(p_instance->p_reg, p_buffers->p_rx_buffer))
         ||
         ((p_buffers->p_tx_buffer != NULL)
-         && !nrfx_is_in_ram(p_buffers->p_tx_buffer)))
+         && !nrf_dma_accessible_check(p_instance->p_reg, p_buffers->p_tx_buffer)))
     {
         err_code = -EACCES;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",

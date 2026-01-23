@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -390,46 +390,44 @@ nrfx_gppi_task_t nrfx_gppiv1_group_enable_task_get(nrfx_gppi_channel_group_t gro
  *
  * @param[out] p_channel After successful allocation, index of the allocated channel.
  *
- * @retval NRFX_SUCCESS             Channel was successfully allocated.
- * @retval NRFX_ERROR_NO_MEM        There is no available channel to be used.
- * @retval NRFX_ERROR_NOT_SUPPORTED Driver is not enabled.
+ * @retval 0        Channel was successfully allocated.
+ * @retval -ENOMEM  There is no available channel to be used.
+ * @retval -ENOTSUP Driver is not enabled.
  */
-nrfx_err_t nrfx_gppiv1_channel_alloc(uint8_t * p_channel);
+int nrfx_gppiv1_channel_alloc(uint8_t * p_channel);
 
 /**
  * @brief Function for freeing a channel.
  *
  * @param[in] channel (D)PPI channel to be freed.
  *
- * @retval NRFX_SUCCESS             The channel was successfully freed.
- * @retval NRFX_ERROR_INVALID_PARAM The specified channel is not allocated or
- *                                  is not user-configurable.
- * @retval NRFX_ERROR_NOT_SUPPORTED Driver is not enabled.
+ * @retval 0        The channel was successfully freed.
+ * @retval -EINVAL  The specified channel is not allocated or is not user-configurable.
+ * @retval -ENOTSUP Driver is not enabled.
  */
-nrfx_err_t nrfx_gppiv1_channel_free(uint8_t channel);
+int nrfx_gppiv1_channel_free(uint8_t channel);
 
 /**
  * @brief Function for allocating a channel group.
  *
  * @param[out] p_group Pointer to the (D)PPI channel group that has been allocated.
  *
- * @retval NRFX_SUCCESS             The channel group was successfully allocated.
- * @retval NRFX_ERROR_NO_MEM        There is no available channel group to be used.
- * @retval NRFX_ERROR_NOT_SUPPORTED Driver is not enabled.
+ * @retval 0        The channel group was successfully allocated.
+ * @retval -ENOMEM  There is no available channel group to be used.
+ * @retval -ENOTSUP Driver is not enabled.
  */
-nrfx_err_t nrfx_gppiv1_group_alloc(nrfx_gppi_channel_group_t * p_group);
+int nrfx_gppiv1_group_alloc(nrfx_gppi_channel_group_t * p_group);
 
 /**
  * @brief Function for freeing a channel group.
  *
  * @param[in] group (D)PPI channel group to be freed.
  *
- * @retval NRFX_SUCCESS             The channel was successfully freed.
- * @retval NRFX_ERROR_INVALID_PARAM The specified channel is not allocated or
- *                                  is not user-configurable.
- * @retval NRFX_ERROR_NOT_SUPPORTED Driver is not enabled.
+ * @retval 0        The channel was successfully freed.
+ * @retval -EINVAL  The specified channel is not allocated or is not user-configurable.
+ * @retval -ENOTSUP Driver is not enabled.
  */
-nrfx_err_t nrfx_gppiv1_group_free(nrfx_gppi_channel_group_t group);
+int nrfx_gppiv1_group_free(nrfx_gppi_channel_group_t group);
 /** @} */
 
 #ifdef __cplusplus

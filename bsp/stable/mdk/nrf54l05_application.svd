@@ -8,7 +8,7 @@
   <version>1</version>
   <description>System-on-chip with a 32-bit Arm Cortex-M33 microcontroller</description>
   <licenseText>
-Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2026, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -22070,6 +22070,34 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </fields>
             </register>
             <register>
+              <name>LIST</name>
+              <description>EasyDMA list type</description>
+              <addressOffset>0x014</addressOffset>
+              <access>read-write</access>
+              <resetValue>0x00000000</resetValue>
+              <size>0x20</size>
+              <fields>
+                <field>
+                  <name>TYPE</name>
+                  <description>List type</description>
+                  <lsb>0</lsb>
+                  <msb>2</msb>
+                  <enumeratedValues>
+                    <enumeratedValue>
+                      <name>Disabled</name>
+                      <description>Disable EasyDMA list</description>
+                      <value>0x0</value>
+                    </enumeratedValue>
+                    <enumeratedValue>
+                      <name>ArrayList</name>
+                      <description>Use array list</description>
+                      <value>0x1</value>
+                    </enumeratedValue>
+                  </enumeratedValues>
+                </field>
+              </fields>
+            </register>
+            <register>
               <name>TERMINATEONBUSERROR</name>
               <description>Terminate the transaction if a BUSERROR event is detected.</description>
               <addressOffset>0x01C</addressOffset>
@@ -22342,6 +22370,34 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   <description>Number of bytes transferred in the last transaction. In case of NACK error, includes the NACK'ed byte.</description>
                   <lsb>0</lsb>
                   <msb>15</msb>
+                </field>
+              </fields>
+            </register>
+            <register>
+              <name>LIST</name>
+              <description>EasyDMA list type</description>
+              <addressOffset>0x014</addressOffset>
+              <access>read-write</access>
+              <resetValue>0x00000000</resetValue>
+              <size>0x20</size>
+              <fields>
+                <field>
+                  <name>TYPE</name>
+                  <description>List type</description>
+                  <lsb>0</lsb>
+                  <msb>2</msb>
+                  <enumeratedValues>
+                    <enumeratedValue>
+                      <name>Disabled</name>
+                      <description>Disable EasyDMA list</description>
+                      <value>0x0</value>
+                    </enumeratedValue>
+                    <enumeratedValue>
+                      <name>ArrayList</name>
+                      <description>Use array list</description>
+                      <value>0x1</value>
+                    </enumeratedValue>
+                  </enumeratedValues>
                 </field>
               </fields>
             </register>
@@ -23063,7 +23119,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             <addressOffset>0x000</addressOffset>
             <register>
               <name>END</name>
-              <description>Generated after EasyDMA has completed its operation.</description>
+              <description>Generated after all MAXCNT bytes have been transferred</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -23071,7 +23127,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <fields>
                 <field>
                   <name>END</name>
-                  <description>Generated after EasyDMA has completed its operation.</description>
+                  <description>Generated after all MAXCNT bytes have been transferred</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -23184,7 +23240,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             <addressOffset>0x01C</addressOffset>
             <register>
               <name>END</name>
-              <description>Generated after EasyDMA has completed its operation.</description>
+              <description>Generated after all MAXCNT bytes have been transferred</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -23192,7 +23248,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <fields>
                 <field>
                   <name>END</name>
-                  <description>Generated after EasyDMA has completed its operation.</description>
+                  <description>Generated after all MAXCNT bytes have been transferred</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -26051,6 +26107,34 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </fields>
             </register>
             <register>
+              <name>LIST</name>
+              <description>EasyDMA list type</description>
+              <addressOffset>0x014</addressOffset>
+              <access>read-write</access>
+              <resetValue>0x00000000</resetValue>
+              <size>0x20</size>
+              <fields>
+                <field>
+                  <name>TYPE</name>
+                  <description>List type</description>
+                  <lsb>0</lsb>
+                  <msb>2</msb>
+                  <enumeratedValues>
+                    <enumeratedValue>
+                      <name>Disabled</name>
+                      <description>Disable EasyDMA list</description>
+                      <value>0x0</value>
+                    </enumeratedValue>
+                    <enumeratedValue>
+                      <name>ArrayList</name>
+                      <description>Use array list</description>
+                      <value>0x1</value>
+                    </enumeratedValue>
+                  </enumeratedValues>
+                </field>
+              </fields>
+            </register>
+            <register>
               <name>TERMINATEONBUSERROR</name>
               <description>Terminate the transaction if a BUSERROR event is detected.</description>
               <addressOffset>0x01C</addressOffset>
@@ -26323,6 +26407,34 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   <description>Number of bytes transferred in the last transaction. In case of NACK error, includes the NACK'ed byte.</description>
                   <lsb>0</lsb>
                   <msb>15</msb>
+                </field>
+              </fields>
+            </register>
+            <register>
+              <name>LIST</name>
+              <description>EasyDMA list type</description>
+              <addressOffset>0x014</addressOffset>
+              <access>read-write</access>
+              <resetValue>0x00000000</resetValue>
+              <size>0x20</size>
+              <fields>
+                <field>
+                  <name>TYPE</name>
+                  <description>List type</description>
+                  <lsb>0</lsb>
+                  <msb>2</msb>
+                  <enumeratedValues>
+                    <enumeratedValue>
+                      <name>Disabled</name>
+                      <description>Disable EasyDMA list</description>
+                      <value>0x0</value>
+                    </enumeratedValue>
+                    <enumeratedValue>
+                      <name>ArrayList</name>
+                      <description>Use array list</description>
+                      <value>0x1</value>
+                    </enumeratedValue>
+                  </enumeratedValues>
                 </field>
               </fields>
             </register>
@@ -27703,7 +27815,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
       <description>VPR peripheral registers 0</description>
       <baseAddress>0x4004C000</baseAddress>
       <headerStructName>VPR</headerStructName>
-      <!--Security dma=NSA-->
+      <!--Security dma=NA-->
       <!--Security securemapping=US-->
       <addressBlock>
         <offset>0</offset>
@@ -29931,7 +30043,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
       <name>GLOBAL_VPR00_S</name>
       <description>VPR peripheral registers 1</description>
       <baseAddress>0x5004C000</baseAddress>
-      <!--Security dma=NSA-->
+      <!--Security dma=NA-->
       <!--Security securemapping=US-->
       <interrupt>
         <name>VPR00</name>
@@ -29939,9 +30051,138 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
       </interrupt>
     </peripheral>
     <peripheral>
+      <name>GLOBAL_GPIOHSPADCTRL_NS</name>
+      <description>GPIO high-speed pad control 0</description>
+      <baseAddress>0x40050400</baseAddress>
+      <headerStructName>GPIOHSPADCTRL</headerStructName>
+      <!--Security dma=NA-->
+      <!--Security securemapping=US-->
+      <!--Split access-->
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x1000</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <groupName>GPIOHSPADCTRL</groupName>
+      <size>0x20</size>
+      <registers>
+        <register>
+          <name>BIAS</name>
+          <description>Bias control</description>
+          <addressOffset>0x30</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>HSBIAS</name>
+              <description>Slew setting for high-speed pad (Use highest/fastest value)</description>
+              <lsb>0</lsb>
+              <msb>1</msb>
+            </field>
+            <field>
+              <name>REPLICABIAS</name>
+              <description>Slew setting for replica clock (used by the VPR coprocessor for emulating a QSPI peripheral)</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CTRL</name>
+          <description>Input sampling and buffering control (used by the VPR coprocessor for emulating a QSPI peripheral)</description>
+          <addressOffset>0x38</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>RXDELAY</name>
+              <description>Delay selection</description>
+              <lsb>0</lsb>
+              <msb>2</msb>
+            </field>
+            <field>
+              <name>SCKEN</name>
+              <description>Enable SCK</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Delay chain is reset and delayed sampling is disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Delay chain and delayed sampling is active</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SCKPHASE</name>
+              <description>SCK phase</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Inverted</name>
+                  <description>Invert SCK phase</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>NonInverted</name>
+                  <description>Non-inverted SCK phase</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CSNEN</name>
+              <description>Enable CSN synchronization of sampling</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Delay chain is reset on active edge of CSN</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Delay chain is not reset on active edge of CSN</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DATAENABLE</name>
+              <description>Enable delayed sampling</description>
+              <lsb>6</lsb>
+              <msb>9</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Delayed sampling is disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Delayed sampling is enabled</description>
+                  <value>0xF</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
       <name>GLOBAL_P2_NS</name>
       <description>GPIO Port 0</description>
       <baseAddress>0x40050400</baseAddress>
+      <alternatePeripheral>GLOBAL_GPIOHSPADCTRL_NS</alternatePeripheral>
       <headerStructName>GPIO</headerStructName>
       <!--Security dma=NA-->
       <!--Security securemapping=US-->
@@ -35886,12 +36127,12 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Pulldown</name>
-                  <description>Pull down on pin</description>
+                  <description>Pull-down on pin</description>
                   <value>0x1</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Pullup</name>
-                  <description>Pull up on pin</description>
+                  <description>Pull-up on pin</description>
                   <value>0x3</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -36002,132 +36243,13 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
         </register>
       </registers>
     </peripheral>
-    <peripheral>
+    <peripheral derivedFrom="GLOBAL_GPIOHSPADCTRL_NS">
       <name>GLOBAL_GPIOHSPADCTRL_S</name>
-      <description>GPIO high-speed pad control</description>
+      <description>GPIO high-speed pad control 1</description>
       <baseAddress>0x50050400</baseAddress>
-      <headerStructName>GPIOHSPADCTRL</headerStructName>
       <!--Security dma=NA-->
-      <!--Security securemapping=S-->
-      <addressBlock>
-        <offset>0</offset>
-        <size>0x1000</size>
-        <usage>registers</usage>
-      </addressBlock>
-      <groupName>GPIOHSPADCTRL</groupName>
-      <size>0x20</size>
-      <registers>
-        <register>
-          <name>BIAS</name>
-          <description>Bias control</description>
-          <addressOffset>0x30</addressOffset>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>HSBIAS</name>
-              <description>Slew setting for high-speed pad (higher value is faster)</description>
-              <lsb>0</lsb>
-              <msb>1</msb>
-            </field>
-            <field>
-              <name>REPLICABIAS</name>
-              <description>Slew setting for replica clock (used by the VPR coprocessor for emulating a QSPI peripheral)</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>CTRL</name>
-          <description>Input sampling and buffering control (used by the VPR coprocessor for emulating a QSPI peripheral)</description>
-          <addressOffset>0x38</addressOffset>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>RXDELAY</name>
-              <description>Delay selection</description>
-              <lsb>0</lsb>
-              <msb>2</msb>
-            </field>
-            <field>
-              <name>SCKEN</name>
-              <description>Enable SCK</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Delay chain is reset and delayed sampling is disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Delay chain and delayed sampling is active</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>SCKPHASE</name>
-              <description>SCK phase</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Inverted</name>
-                  <description>Invert SCK phase</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>NonInverted</name>
-                  <description>Non-inverted SCK phase</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>CSNEN</name>
-              <description>Enable CSN synchronization of sampling</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Delay chain is reset on active edge of CSN</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Delay chain is not reset on active edge of CSN</description>
-                  <value>0x1</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>DATAENABLE</name>
-              <description>Enable delayed sampling</description>
-              <lsb>6</lsb>
-              <msb>9</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>Disabled</name>
-                  <description>Delayed sampling is disabled</description>
-                  <value>0x0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Enabled</name>
-                  <description>Delayed sampling is enabled</description>
-                  <value>0xF</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-          </fields>
-        </register>
-      </registers>
+      <!--Security securemapping=US-->
+      <!--Split access-->
     </peripheral>
     <peripheral derivedFrom="GLOBAL_P2_NS">
       <name>GLOBAL_P2_S</name>
@@ -42399,6 +42521,24 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </enumeratedValues>
             </field>
             <field>
+              <name>PHYEND_PLLEN</name>
+              <description>Shortcut between event PHYEND and task PLLEN</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable shortcut</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable shortcut</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>RXREADY_CCASTART</name>
               <description>Shortcut between event RXREADY and task CCASTART</description>
               <lsb>10</lsb>
@@ -42583,6 +42723,42 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Shortcut between event PHYEND and task START</description>
               <lsb>20</lsb>
               <msb>20</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable shortcut</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable shortcut</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PLLREADY_TXEN</name>
+              <description>Shortcut between event PLLREADY and task TXEN</description>
+              <lsb>27</lsb>
+              <msb>27</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable shortcut</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable shortcut</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PLLREADY_RXEN</name>
+              <description>Shortcut between event PLLREADY and task RXEN</description>
+              <lsb>28</lsb>
+              <msb>28</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -45787,7 +45963,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             </field>
             <field>
               <name>RATE1M</name>
-              <description>For modes with 1 Mbps on-air bit rate, unit is 1/2 bit period (Nrf_1Mbit, Ble_1Mbit, Ble_LR125Kbit, and Ble_LR500Kbit modes)</description>
+              <description>For modes with 1 Mbps on-air bit rate, unit is 1/2 bit period (Nrf_1Mbit and Ble_1Mbit modes) Also used for Coded phy (Ble_LR125Kbit and Ble_LR500Kbit modes)</description>
               <lsb>8</lsb>
               <msb>10</msb>
             </field>
@@ -45837,6 +46013,16 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   <name>RxDisable</name>
                   <description>RADIO is in the RXDISABLE state</description>
                   <value>0x4</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Settle</name>
+                  <description>RADIO is in the SETTLE state</description>
+                  <value>0x5</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pll</name>
+                  <description>RADIO is in the PLL state</description>
+                  <value>0x6</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>TxRu</name>
@@ -45997,18 +46183,18 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <access>read-write</access>
           <addressOffset>0x548</addressOffset>
           <register>
-            <dim>0x2</dim>
+            <dim>0x1</dim>
             <dimIncrement>0x4</dimIncrement>
             <name>CNF[%s]</name>
             <description>Description collection: AUXDATA configuration</description>
-            <addressOffset>0x000</addressOffset>
+            <addressOffset>0x0</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
             <fields>
               <field>
                 <name>ACQMODE</name>
-                <description>Acquisition mode (data from RADIO written to memory)</description>
+                <description>Acquisition mode</description>
                 <lsb>0</lsb>
                 <msb>4</msb>
                 <enumeratedValues>
@@ -46019,29 +46205,11 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   </enumeratedValue>
                 </enumeratedValues>
               </field>
-              <field>
-                <name>DIR</name>
-                <description>Data acquisition or injection</description>
-                <lsb>31</lsb>
-                <msb>31</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Acq</name>
-                    <description>Peripheral to memory</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Inj</name>
-                    <description>Memory to peripheral</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
             </fields>
           </register>
         </cluster>
         <cluster>
-          <dim>2</dim>
+          <dim>1</dim>
           <dimIncrement>0x010</dimIncrement>
           <name>AUXDATADMA[%s]</name>
           <description>Unspecified</description>
@@ -47591,7 +47759,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Ieee802154</name>
-                  <description>CRC calculation starting at first byte after length field (as per 802.15.4 standard).</description>
+                  <description>CRC calculation starting at first byte after length field  (as per 802.15.4 standard).</description>
                   <value>0x2</value>
                 </enumeratedValue>
                 <enumeratedValue>
@@ -48474,7 +48642,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             <fields>
               <field>
                 <name>EN</name>
-                <description>Enable RTT Functionality. Only valid for BLE 1MBPS and 2MBPS mode</description>
+                <description>Enable RTT functionality. Only valid for BLE 1MBPS and 2MBPS mode</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
                 <enumeratedValues>
@@ -48534,7 +48702,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </field>
               <field>
                 <name>EFSDELAY</name>
-                <description>Early Frame Sync Delay, i.e., number of cycles to wait for access address to anchor correctly. For 2MBPSBLE mode, the EFSDELAY value is 64 (2us) and for 1MBPSBLE mode, it can be 256 (8us).</description>
+                <description>Early Frame Sync Delay, i.e., number of cycles to wait for access address to anchor correctly. For Ble_2Mbit, the EFSDELAY value is 64 (2us) and for Ble_1Mbit, it can be 256 (8us).</description>
                 <lsb>8</lsb>
                 <msb>16</msb>
               </field>
@@ -51745,6 +51913,34 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </fields>
             </register>
             <register>
+              <name>LIST</name>
+              <description>EasyDMA list type</description>
+              <addressOffset>0x014</addressOffset>
+              <access>read-write</access>
+              <resetValue>0x00000000</resetValue>
+              <size>0x20</size>
+              <fields>
+                <field>
+                  <name>TYPE</name>
+                  <description>List type</description>
+                  <lsb>0</lsb>
+                  <msb>2</msb>
+                  <enumeratedValues>
+                    <enumeratedValue>
+                      <name>Disabled</name>
+                      <description>Disable EasyDMA list</description>
+                      <value>0x0</value>
+                    </enumeratedValue>
+                    <enumeratedValue>
+                      <name>ArrayList</name>
+                      <description>Use array list</description>
+                      <value>0x1</value>
+                    </enumeratedValue>
+                  </enumeratedValues>
+                </field>
+              </fields>
+            </register>
+            <register>
               <name>TERMINATEONBUSERROR</name>
               <description>Terminate the transaction if a BUSERROR event is detected.</description>
               <addressOffset>0x01C</addressOffset>
@@ -52017,6 +52213,34 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   <description>Number of bytes transferred in the last transaction. In case of NACK error, includes the NACK'ed byte.</description>
                   <lsb>0</lsb>
                   <msb>15</msb>
+                </field>
+              </fields>
+            </register>
+            <register>
+              <name>LIST</name>
+              <description>EasyDMA list type</description>
+              <addressOffset>0x014</addressOffset>
+              <access>read-write</access>
+              <resetValue>0x00000000</resetValue>
+              <size>0x20</size>
+              <fields>
+                <field>
+                  <name>TYPE</name>
+                  <description>List type</description>
+                  <lsb>0</lsb>
+                  <msb>2</msb>
+                  <enumeratedValues>
+                    <enumeratedValue>
+                      <name>Disabled</name>
+                      <description>Disable EasyDMA list</description>
+                      <value>0x0</value>
+                    </enumeratedValue>
+                    <enumeratedValue>
+                      <name>ArrayList</name>
+                      <description>Use array list</description>
+                      <value>0x1</value>
+                    </enumeratedValue>
+                  </enumeratedValues>
                 </field>
               </fields>
             </register>
@@ -54824,6 +55048,34 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               </fields>
             </register>
             <register>
+              <name>LIST</name>
+              <description>EasyDMA list type</description>
+              <addressOffset>0x014</addressOffset>
+              <access>read-write</access>
+              <resetValue>0x00000000</resetValue>
+              <size>0x20</size>
+              <fields>
+                <field>
+                  <name>TYPE</name>
+                  <description>List type</description>
+                  <lsb>0</lsb>
+                  <msb>2</msb>
+                  <enumeratedValues>
+                    <enumeratedValue>
+                      <name>Disabled</name>
+                      <description>Disable EasyDMA list</description>
+                      <value>0x0</value>
+                    </enumeratedValue>
+                    <enumeratedValue>
+                      <name>ArrayList</name>
+                      <description>Use array list</description>
+                      <value>0x1</value>
+                    </enumeratedValue>
+                  </enumeratedValues>
+                </field>
+              </fields>
+            </register>
+            <register>
               <name>TERMINATEONBUSERROR</name>
               <description>Terminate the transaction if a BUSERROR event is detected.</description>
               <addressOffset>0x01C</addressOffset>
@@ -55096,6 +55348,34 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   <description>Number of bytes transferred in the last transaction. In case of NACK error, includes the NACK'ed byte.</description>
                   <lsb>0</lsb>
                   <msb>15</msb>
+                </field>
+              </fields>
+            </register>
+            <register>
+              <name>LIST</name>
+              <description>EasyDMA list type</description>
+              <addressOffset>0x014</addressOffset>
+              <access>read-write</access>
+              <resetValue>0x00000000</resetValue>
+              <size>0x20</size>
+              <fields>
+                <field>
+                  <name>TYPE</name>
+                  <description>List type</description>
+                  <lsb>0</lsb>
+                  <msb>2</msb>
+                  <enumeratedValues>
+                    <enumeratedValue>
+                      <name>Disabled</name>
+                      <description>Disable EasyDMA list</description>
+                      <value>0x0</value>
+                    </enumeratedValue>
+                    <enumeratedValue>
+                      <name>ArrayList</name>
+                      <description>Use array list</description>
+                      <value>0x1</value>
+                    </enumeratedValue>
+                  </enumeratedValues>
                 </field>
               </fields>
             </register>
@@ -64584,6 +64864,11 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                     <name>AnalogInput</name>
                     <description>Select analog input</description>
                     <value>0x1</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Internal</name>
+                    <description>Selects internal inputs.</description>
+                    <value>0x2</value>
                   </enumeratedValue>
                 </enumeratedValues>
               </field>

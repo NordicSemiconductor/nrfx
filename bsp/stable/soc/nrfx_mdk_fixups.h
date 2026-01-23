@@ -210,7 +210,6 @@
 /**************************************************************************************************/
 
 #if defined(HALTIUM_XXAA)
-    #include "mdk/haltium_interim.h"
 
     #define EASYVDMA_PRESENT
 
@@ -404,7 +403,7 @@
     #define DMA_BUFFER_UNIFIED_BYTE_ACCESS 1
 
     #if (defined(NRF_APPLICATION) && defined(NRF_TRUSTZONE_NONSECURE)) || \
-        defined(NRF_FLPR) || defined(NRF54LS05B_ENGA_XXAA)
+        defined(NRF_FLPR) || defined(NRF54LS05B_XXAA)
         #define GPIOTE20_IRQn       GPIOTE20_0_IRQn
         #define GPIOTE20_IRQHandler GPIOTE20_0_IRQHandler
         #define GPIOTE30_IRQn       GPIOTE30_0_IRQn
@@ -453,7 +452,7 @@
     #define TYPES_OWNER
 
     #define GRTC_FORCE_EXTENDED
-    #if defined(NRF_FLPR) || defined(NRF54LS05B_ENGA_XXAA)
+    #if defined(NRF_FLPR) || defined(NRF54LS05B_XXAA)
         #define GRTC_IRQn       GRTC_0_IRQn
         #define GRTC_IRQHandler GRTC_0_IRQHandler
     #elif defined(NRF_APPLICATION) && defined(NRF_TRUSTZONE_NONSECURE)
@@ -486,7 +485,6 @@
 /**************************************************************************************************/
 
 #if defined(NRF54H20_XXAA)
-    #include "mdk/nrf54h20_interim.h"
 
     #define RESETHUB_HAS_NETWORK
 
@@ -508,7 +506,6 @@
 /**************************************************************************************************/
 
 #if defined(NRF54L05_XXAA)
-    #include "mdk/nrf54l05_interim.h"
     #define CLOCK_STATIC_IRQ
     #define TRNG_CLK_DIV 0
     #define I2S_MCKFREQ_FACTOR 1048576
@@ -523,7 +520,6 @@
 /**************************************************************************************************/
 
 #if defined(NRF54L10_XXAA)
-    #include "mdk/nrf54l10_interim.h"
     #define CLOCK_STATIC_IRQ
     #define TRNG_CLK_DIV 0
     #define I2S_MCKFREQ_FACTOR 1048576
@@ -538,7 +534,6 @@
 /**************************************************************************************************/
 
 #if defined(NRF54L15_XXAA)
-    #include "mdk/nrf54l15_interim.h"
     #define CLOCK_STATIC_IRQ
     #define TRNG_CLK_DIV 0
     #define I2S_MCKFREQ_FACTOR 1048576
@@ -549,64 +544,93 @@
 /**************************************************************************************************/
 
 /**************************************************************************************************/
-/* Start fixups section for NRF54LM20A_ENGA_XXAA                                                  */
+/* Start fixups section for NRF54LM20A_XXAA                                                       */
 /**************************************************************************************************/
 
-#if defined(NRF54LM20A_ENGA_XXAA)
-    #include "mdk/nrf54lm20a_enga_interim.h"
+#if defined(NRF54LM20A_XXAA)
     #define TRNG_CLK_DIV 1
     #define I2S_MCKFREQ_FACTOR 1048576
 #endif
 
 /**************************************************************************************************/
-/* End fixups section for NRF54LM20A_ENGA_XXAA                                                    */
+/* End fixups section for NRF54LM20A_XXAA                                                         */
 /**************************************************************************************************/
 
 /**************************************************************************************************/
-/* Start fixups section for NRF54LS05B_ENGA_XXAA                                                  */
+/* Start fixups section for NRF54LM20B_XXAA                                                       */
 /**************************************************************************************************/
 
-#if defined(NRF54LS05B_ENGA_XXAA)
-    #include "mdk/nrf54ls05b_enga_interim.h"
+#if defined(NRF54LM20B_XXAA)
+    #define TRNG_CLK_DIV 1
+    #define I2S_MCKFREQ_FACTOR 1048576
+#endif
+
+/**************************************************************************************************/
+/* End fixups section for NRF54LM20B_XXAA                                                         */
+/**************************************************************************************************/
+
+/**************************************************************************************************/
+/* Start fixups section for NRF54LS05B_XXAA                                                       */
+/**************************************************************************************************/
+
+#if defined(NRF54LS05B_XXAA)
     #define GPIOTE_SECURE_SUFFIX_OVERRIDE NONSECURE
     #define TRNG_CLK_DIV 1
 #endif
 
 /**************************************************************************************************/
-/* End fixups section for NRF54LS05B_ENGA_XXAA                                                    */
+/* End fixups section for NRF54LS05B_XXAA                                                         */
 /**************************************************************************************************/
 
 /**************************************************************************************************/
-/* Start fixups section for NRF54LV10A_ENGA_XXAA                                                  */
+/* Start fixups section for NRF54LV10A_XXAA                                                       */
 /**************************************************************************************************/
 
-#if defined(NRF54LV10A_ENGA_XXAA)
+#if defined(NRF54LV10A_XXAA)
     #define TRNG_CLK_DIV 1
 #endif
 
 /**************************************************************************************************/
-/* End fixups section for NRF54LV10A_ENGA_XXAA                                                    */
+/* End fixups section for NRF54LV10A_XXAA                                                         */
 /**************************************************************************************************/
 
 /**************************************************************************************************/
-/* Start fixups section for NRF7120_ENGA_XXAA                                                         */
+/* Start fixups section for NRF7120_ENGA_XXAA                                                     */
 /**************************************************************************************************/
 
 #if defined(NRF7120_ENGA_XXAA)
-    #include "mdk/nrf7120_enga_interim.h"
 
     #define ADDRESS_BUS_Pos (18UL)
     #define ADDRESS_BUS_Msk (0x3FUL << ADDRESS_BUS_Pos)
 #endif
 
 /**************************************************************************************************/
-/* End fixups section for NRF7120_ENGA_XXAA                                                           */
+/* End fixups section for NRF7120_ENGA_XXAA                                                       */
+/**************************************************************************************************/
+
+/**************************************************************************************************/
+/* Start fixups section for NRF7140_XXAA                                                          */
+/**************************************************************************************************/
+#if defined(NRF7140_XXAA)
+    #include "mdk/haltium_interim.h"
+#endif
+/**************************************************************************************************/
+/* End fixups section for NRF7140_XXAA                                                            */
+/**************************************************************************************************/
+
+/**************************************************************************************************/
+/* Start fixups section for NRF9230_XXAA                                                          */
+/**************************************************************************************************/
+#if defined(NRF9230_XXAA)
+    #include "mdk/haltium_interim.h"
+#endif
+/**************************************************************************************************/
+/* End fixups section for NRF9230_XXAA                                                            */
 /**************************************************************************************************/
 
 /**************************************************************************************************/
 /* Start fixups section for NRF9230_ENGB_XXAA (HSOC 1.1)                                          */
 /**************************************************************************************************/
-
 #if defined(NRF9230_ENGB_XXAA)
     #if defined(NRF_APPLICATION)
         #define NRF_DOMAIN NRF_DOMAIN_APPLICATION

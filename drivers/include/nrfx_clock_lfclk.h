@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2025 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -48,7 +48,7 @@ extern "C" {
 /**
  * @defgroup nrfx_clock_lfclk LFCLK driver
  * @{
- * @ingroup nrf_clock_lfclk
+ * @ingroup nrf_clock
  * @brief   LFCLK clock driver.
  */
 

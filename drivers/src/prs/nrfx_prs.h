@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -64,15 +64,13 @@ extern "C" {
  * @param[in] p_instance  Pointer to shared peripheral instance structure used in
  *                        interrupt handling.
  *
- * @retval NRFX_SUCCESS    If resources were acquired successfully or the
- *                         specified peripheral is not handled by the PRS
- *                         subsystem and there is no need to acquire resources
- *                         for it.
- * @retval NRFX_ERROR_BUSY If resources were already acquired.
+ * @retval 0      If resources were acquired successfully or the specified peripheral is not handled
+ *                by the PRS subsystem and there is no need to acquire resources for it.
+ * @retval -EBUSY If resources were already acquired.
  */
-nrfx_err_t nrfx_prs_acquire(void const *       p_base_addr,
-                            nrfx_irq_handler_t irq_handler,
-                            void *             p_instance);
+int nrfx_prs_acquire(void const *       p_base_addr,
+                     nrfx_irq_handler_t irq_handler,
+                     void *             p_instance);
 
 /**
  * @brief Function for releasing shared resources reserved previously by

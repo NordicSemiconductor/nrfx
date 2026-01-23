@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -409,11 +409,10 @@ int nrfx_uarte_init(nrfx_uarte_t *              p_instance,
     }
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
-    if (nrfx_prs_acquire(p_instance->p_reg,
-                         (nrfx_irq_handler_t)nrfx_uarte_irq_handler,
-                         p_instance) != NRFX_SUCCESS)
+    err_code = nrfx_prs_acquire(p_instance->p_reg,
+                                (nrfx_irq_handler_t)nrfx_uarte_irq_handler, p_instance);
+    if (err_code < 0)
     {
-        err_code = -EBUSY;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));

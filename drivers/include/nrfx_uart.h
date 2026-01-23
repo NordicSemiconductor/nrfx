@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -48,6 +48,85 @@ extern "C" {
  * @brief   UART peripheral driver.
  */
 
+#if NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
+/** @brief Types of UART driver events. */
+typedef enum
+{
+    NRFX_UART_EVT_TX_DONE, ///< Requested TX transfer completed.
+    NRFX_UART_EVT_RX_DONE, ///< Requested RX transfer completed.
+    NRFX_UART_EVT_ERROR,   ///< Error reported by UART peripheral.
+} nrfx_uart_event_type_t;
+
+/** @brief Structure for the UART transfer completion event. */
+typedef struct
+{
+    uint8_t * p_data; ///< Pointer to memory used for transfer.
+    uint32_t  bytes;  ///< Number of bytes transfered.
+} nrfx_uart_xfer_event_t;
+
+/** @brief Structure for the UART error event. */
+typedef struct
+{
+    nrfx_uart_xfer_event_t rxtx;       ///< Transfer details, including number of bytes transferred.
+    uint32_t               error_mask; ///< Mask of error flags that generated the event.
+} nrfx_uart_error_event_t;
+
+/** @brief Structure for the UART event. */
+typedef struct
+{
+    nrfx_uart_event_type_t type; ///< Event type.
+    union
+    {
+        nrfx_uart_xfer_event_t  rxtx;  ///< Data provided for transfer completion events.
+        nrfx_uart_error_event_t error; ///< Data provided for error event.
+    } data;                            ///< Union to store event data.
+} nrfx_uart_event_t;
+
+/**
+ * @brief UART interrupt event handler.
+ *
+ * @param[in] p_event   Pointer to event structure. Event is allocated on the stack so it is available
+ *                      only within the context of the event handler.
+ * @param[in] p_context Context passed to the interrupt handler, set on initialization.
+ */
+typedef void (*nrfx_uart_event_handler_t)(nrfx_uart_event_t const * p_event,
+                                          void *                    p_context);
+
+/** @cond Driver internal data. */
+typedef struct
+{
+    void                    * p_context;
+    nrfx_uart_event_handler_t handler;
+    uint8_t           const * p_tx_buffer;
+    uint8_t                 * p_rx_buffer;
+    uint8_t                 * p_rx_secondary_buffer;
+    volatile size_t           tx_buffer_length;
+    size_t                    rx_buffer_length;
+    size_t                    rx_secondary_buffer_length;
+    volatile size_t           tx_counter;
+    volatile size_t           rx_counter;
+    volatile bool             tx_abort;
+    bool                      rx_enabled;
+    nrfx_drv_state_t          state;
+    bool                      skip_gpio_cfg : 1;
+    bool                      skip_psel_cfg : 1;
+} nrfx_uart_control_block_t;
+/** @endcond */
+
+/** @brief Data structure of the UART driver instance. */
+typedef struct
+{
+    NRF_UART_Type *           p_reg; ///< Pointer to a structure with UART registers.
+    nrfx_uart_control_block_t cb;    ///< Driver internal data.
+} nrfx_uart_t;
+
+/** @brief Macro for creating a UART driver instance. */
+#define NRFX_UART_INSTANCE(reg)    \
+{                                  \
+    .p_reg = (NRF_UART_Type *)reg, \
+    .cb    = {0},                  \
+}
+#else
 /** @brief Data structure of the UART driver instance. */
 typedef struct
 {
@@ -77,6 +156,42 @@ typedef enum
     NRFX_UART_EVT_RX_DONE, ///< Requested RX transfer completed.
     NRFX_UART_EVT_ERROR,   ///< Error reported by UART peripheral.
 } nrfx_uart_evt_type_t;
+
+/** @brief Structure for the UART transfer completion event. */
+typedef struct
+{
+    uint8_t * p_data; ///< Pointer to memory used for transfer.
+    uint32_t  bytes;  ///< Number of bytes transfered.
+} nrfx_uart_xfer_evt_t;
+
+/** @brief Structure for the UART error event. */
+typedef struct
+{
+    nrfx_uart_xfer_evt_t rxtx;       ///< Transfer details, including number of bytes transferred.
+    uint32_t             error_mask; ///< Mask of error flags that generated the event.
+} nrfx_uart_error_evt_t;
+
+/** @brief Structure for the UART event. */
+typedef struct
+{
+    nrfx_uart_evt_type_t type; ///< Event type.
+    union
+    {
+        nrfx_uart_xfer_evt_t  rxtx;  ///< Data provided for transfer completion events.
+        nrfx_uart_error_evt_t error; ///< Data provided for error event.
+    } data;                          ///< Union to store event data.
+} nrfx_uart_event_t;
+
+/**
+ * @brief UART interrupt event handler.
+ *
+ * @param[in] p_event   Pointer to event structure. Event is allocated on the stack so it is available
+ *                      only within the context of the event handler.
+ * @param[in] p_context Context passed to the interrupt handler, set on initialization.
+ */
+typedef void (*nrfx_uart_event_handler_t)(nrfx_uart_event_t const * p_event,
+                                          void *                    p_context);
+#endif // NRFX_API_VER_AT_LEAST(4, 1, 0)
 
 /** @brief Structure for the UART configuration. */
 typedef struct
@@ -150,41 +265,143 @@ typedef struct
     }                                                                             \
 }
 
-/** @brief Structure for the UART transfer completion event. */
-typedef struct
-{
-    uint8_t * p_data; ///< Pointer to memory used for transfer.
-    uint32_t  bytes;  ///< Number of bytes transfered.
-} nrfx_uart_xfer_evt_t;
-
-/** @brief Structure for the UART error event. */
-typedef struct
-{
-    nrfx_uart_xfer_evt_t rxtx;       ///< Transfer details, including number of bytes transferred.
-    uint32_t             error_mask; ///< Mask of error flags that generated the event.
-} nrfx_uart_error_evt_t;
-
-/** @brief Structure for the UART event. */
-typedef struct
-{
-    nrfx_uart_evt_type_t type; ///< Event type.
-    union
-    {
-        nrfx_uart_xfer_evt_t  rxtx;  ///< Data provided for transfer completion events.
-        nrfx_uart_error_evt_t error; ///< Data provided for error event.
-    } data;                          ///< Union to store event data.
-} nrfx_uart_event_t;
+#if NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for initializing the UART driver.
+ *
+ * This function configures and enables UART. After this function GPIO pins are controlled by UART.
+ *
+ * @param[in] p_instance    Pointer to the driver instance structure.
+ * @param[in] p_config      Pointer to the structure with the initial configuration.
+ * @param[in] event_handler Event handler provided by the user. If not provided, the driver works in
+ *                          blocking mode.
+ *
+ * @retval 0         Initialization is successful.
+ * @retval -EALREADY The driver is already initialized.
+ * @retval -EBUSY    Some other peripheral with the same instance ID is already in use.
+ *                   This is possible only if @ref nrfx_prs module is enabled.
+ */
+int nrfx_uart_init(nrfx_uart_t *              p_instance,
+                   nrfx_uart_config_t const * p_config,
+                   nrfx_uart_event_handler_t  event_handler);
 
 /**
- * @brief UART interrupt event handler.
+ * @brief Function for reconfiguring the UART driver.
  *
- * @param[in] p_event   Pointer to event structure. Event is allocated on the stack so it is available
- *                      only within the context of the event handler.
- * @param[in] p_context Context passed to the interrupt handler, set on initialization.
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] p_config   Pointer to the structure with the configuration.
+ *
+ * @retval 0            Reconfiguration was successful.
+ * @retval -EBUSY       The driver is during transfer.
+ * @retval -EINPROGRESS The driver is uninitialized.
  */
-typedef void (*nrfx_uart_event_handler_t)(nrfx_uart_event_t const * p_event,
-                                          void *                    p_context);
+int nrfx_uart_reconfigure(nrfx_uart_t *              p_instance,
+                          nrfx_uart_config_t const * p_config);
 
+/**
+ * @brief Function for uninitializing the UART driver.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_uart_uninit(nrfx_uart_t * p_instance);
+
+/**
+ * @brief Function for sending data over UART.
+ *
+ * If an event handler was provided in nrfx_uart_init() call, this function
+ * returns immediately and the handler is called when the transfer is done.
+ * Otherwise, the transfer is performed in blocking mode, that is this function
+ * returns when the transfer is finished. Blocking mode is not using interrupt
+ * so there is no context switching inside the function.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] p_data     Pointer to data.
+ * @param[in] length     Number of bytes to send.
+ *
+ * @retval 0      Initialization was successful.
+ * @retval -EBUSY Driver is already transferring.
+ * @retval -EPERM The transfer was aborted from a different context (blocking mode only).
+ */
+int nrfx_uart_tx(nrfx_uart_t *   p_instance,
+                 uint8_t const * p_data,
+                 size_t          length);
+
+/**
+ * @brief Function for aborting any ongoing transmission.
+ * @note @ref NRFX_UART_EVT_TX_DONE event will be generated in non-blocking mode.
+ *       It will contain number of bytes sent until the abort was called. The event
+ *       handler will be called from the function context.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_uart_tx_abort(nrfx_uart_t * p_instance);
+
+/**
+ * @brief Function for receiving data over UART.
+ *
+ * If an event handler is provided in the nrfx_uart_init() call, this function
+ * returns immediately and the handler is called when the transfer is done.
+ * Otherwise, the transfer is performed in blocking mode, that is this function
+ * returns when the transfer is finished. Blocking mode is not using interrupt so
+ * there is no context switching inside the function.
+ * The receive buffer pointer is double-buffered in non-blocking mode. The secondary
+ * buffer can be set immediately after starting the transfer and will be filled
+ * when the primary buffer is full. The double-buffering feature allows
+ * receiving data continuously.
+ *
+ * If this function is used without a previous call to @ref nrfx_uart_rx_enable, the reception
+ * will be stopped on error or when the supplied buffer fills up. In both cases,
+ * RX FIFO gets disabled. This means that, in case of error, the bytes that follow are lost.
+ * If this nrfx_uart_rx() function is used with the previous call to @ref nrfx_uart_rx_enable,
+ * the reception is stopped in case of error, but FIFO is still ongoing. The receiver is still
+ * working, so after handling the error, an immediate repeated call to this nrfx_uart_rx()
+ * function with fresh data buffer will re-establish reception. To disable the receiver,
+ * you must call @ref nrfx_uart_rx_disable explicitly.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] p_data     Pointer to data.
+ * @param[in] length     Number of bytes to receive.
+ *
+ * @retval    0           Reception is complete (in case of blocking mode) or it is
+ *                        successfully started (in case of non-blocking mode).
+ * @retval    -EBUSY      The driver is already receiving
+ *                        (and the secondary buffer has already been set in non-blocking mode).
+ * @retval    -EPERM      The transfer was aborted from a different context
+ *                        (blocking mode only, also see @ref nrfx_uart_rx_disable).
+ * @retval    -ECANCELED  The UART peripheral reported an error.
+ */
+int nrfx_uart_rx(nrfx_uart_t * p_instance,
+                 uint8_t *     p_data,
+                 size_t        length);
+
+/**
+ * @brief Function for enabling the receiver.
+ *
+ * UART has a 6-byte-long RX FIFO and it is used to store incoming data. If a user does not call the
+ * UART receive function before the FIFO is filled, an overrun error will appear. The receiver must be
+ * explicitly closed by the user @sa nrfx_uart_rx_disable.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_uart_rx_enable(nrfx_uart_t * p_instance);
+
+/**
+ * @brief Function for disabling the receiver.
+ *
+ * This function must be called to close the receiver after it has been explicitly enabled by
+ * @sa nrfx_uart_rx_enable.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_uart_rx_disable(nrfx_uart_t * p_instance);
+
+/**
+ * @brief Driver interrupt handler.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_uart_irq_handler(nrfx_uart_t * p_instance);
+#else
 /**
  * @brief Function for initializing the UART driver.
  *
@@ -225,38 +442,6 @@ int nrfx_uart_reconfigure(nrfx_uart_t const *        p_instance,
 void nrfx_uart_uninit(nrfx_uart_t const * p_instance);
 
 /**
- * @brief Function for checking if the UART driver instance is initialized.
- *
- * @param[in] p_instance Pointer to the driver instance structure.
- *
- * @retval true  Instance is already initialized.
- * @retval false Instance is not initialized.
- */
-bool nrfx_uart_init_check(nrfx_uart_t const * p_instance);
-
-/**
- * @brief Function for getting the address of the specified UART task.
- *
- * @param[in] p_instance Pointer to the driver instance structure.
- * @param[in] task       Task.
- *
- * @return Task address.
- */
-NRFX_STATIC_INLINE uint32_t nrfx_uart_task_address_get(nrfx_uart_t const * p_instance,
-                                                       nrf_uart_task_t     task);
-
-/**
- * @brief Function for getting the address of the specified UART event.
- *
- * @param[in] p_instance Pointer to the driver instance structure.
- * @param[in] event      Event.
- *
- * @return Event address.
- */
-NRFX_STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_instance,
-                                                        nrf_uart_event_t    event);
-
-/**
  * @brief Function for sending data over UART.
  *
  * If an event handler was provided in nrfx_uart_init() call, this function
@@ -276,16 +461,6 @@ NRFX_STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_in
 int nrfx_uart_tx(nrfx_uart_t const * p_instance,
                  uint8_t const *     p_data,
                  size_t              length);
-
-/**
- * @brief Function for checking if UART is currently transmitting.
- *
- * @param[in] p_instance Pointer to the driver instance structure.
- *
- * @retval true  The UART is transmitting.
- * @retval false The UART is not transmitting.
- */
-bool nrfx_uart_tx_in_progress(nrfx_uart_t const * p_instance);
 
 /**
  * @brief Function for aborting any ongoing transmission.
@@ -336,16 +511,6 @@ int nrfx_uart_rx(nrfx_uart_t const * p_instance,
                  size_t              length);
 
 /**
- * @brief Function for testing the receiver state in blocking mode.
- *
- * @param[in] p_instance Pointer to the driver instance structure.
- *
- * @retval true  The receiver has at least one byte of data to get.
- * @retval false The receiver is empty.
- */
-bool nrfx_uart_rx_ready(nrfx_uart_t const * p_instance);
-
-/**
  * @brief Function for enabling the receiver.
  *
  * UART has a 6-byte-long RX FIFO and it is used to store incoming data. If a user does not call the
@@ -365,6 +530,60 @@ void nrfx_uart_rx_enable(nrfx_uart_t const * p_instance);
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 void nrfx_uart_rx_disable(nrfx_uart_t const * p_instance);
+
+#endif // NRFX_API_VER_AT_LEAST(4, 1, 0)
+
+/**
+ * @brief Function for checking if the UART driver instance is initialized.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  Instance is already initialized.
+ * @retval false Instance is not initialized.
+ */
+bool nrfx_uart_init_check(nrfx_uart_t const * p_instance);
+
+/**
+ * @brief Function for getting the address of the specified UART task.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] task       Task.
+ *
+ * @return Task address.
+ */
+NRFX_STATIC_INLINE uint32_t nrfx_uart_task_address_get(nrfx_uart_t const * p_instance,
+                                                       nrf_uart_task_t     task);
+
+/**
+ * @brief Function for getting the address of the specified UART event.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] event      Event.
+ *
+ * @return Event address.
+ */
+NRFX_STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_instance,
+                                                        nrf_uart_event_t    event);
+
+/**
+ * @brief Function for checking if UART is currently transmitting.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  The UART is transmitting.
+ * @retval false The UART is not transmitting.
+ */
+bool nrfx_uart_tx_in_progress(nrfx_uart_t const * p_instance);
+
+/**
+ * @brief Function for testing the receiver state in blocking mode.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  The receiver has at least one byte of data to get.
+ * @retval false The receiver is empty.
+ */
+bool nrfx_uart_rx_ready(nrfx_uart_t const * p_instance);
 
 /**
  * @brief Function for aborting any ongoing reception.
@@ -387,7 +606,6 @@ void nrfx_uart_rx_abort(nrfx_uart_t const * p_instance);
  */
 uint32_t nrfx_uart_errorsrc_get(nrfx_uart_t const * p_instance);
 
-
 #ifndef NRFX_DECLARE_ONLY
 NRFX_STATIC_INLINE uint32_t nrfx_uart_task_address_get(nrfx_uart_t const * p_instance,
                                                        nrf_uart_task_t     task)
@@ -401,6 +619,8 @@ NRFX_STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_in
     return nrf_uart_event_address_get(p_instance->p_reg, event);
 }
 #endif // NRFX_DECLARE_ONLY
+
+#if !NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
 
 /**
  * @brief Macro returning UART interrupt handler.
@@ -427,6 +647,9 @@ NRFX_STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_in
  *             NRFX_UART_INST_HANDLER_GET(\<instance_index\>), 0, 0);
  */
 NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(UART, uart)
+#else
+/** @} */
+#endif
 
 #ifdef __cplusplus
 }

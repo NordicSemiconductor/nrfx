@@ -3,7 +3,7 @@
 
 /*
 
-Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2026, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -39,84 +39,84 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <stdbool.h>
 #include "compiler_abstraction.h"
 
-static bool nrf51_errata_1(void) __UNUSED;
-static bool nrf51_errata_2(void) __UNUSED;
-static bool nrf51_errata_3(void) __UNUSED;
-static bool nrf51_errata_4(void) __UNUSED;
-static bool nrf51_errata_5(void) __UNUSED;
-static bool nrf51_errata_6(void) __UNUSED;
-static bool nrf51_errata_7(void) __UNUSED;
-static bool nrf51_errata_8(void) __UNUSED;
-static bool nrf51_errata_9(void) __UNUSED;
-static bool nrf51_errata_10(void) __UNUSED;
-static bool nrf51_errata_11(void) __UNUSED;
-static bool nrf51_errata_12(void) __UNUSED;
-static bool nrf51_errata_13(void) __UNUSED;
-static bool nrf51_errata_14(void) __UNUSED;
-static bool nrf51_errata_15(void) __UNUSED;
-static bool nrf51_errata_16(void) __UNUSED;
-static bool nrf51_errata_17(void) __UNUSED;
-static bool nrf51_errata_18(void) __UNUSED;
-static bool nrf51_errata_19(void) __UNUSED;
-static bool nrf51_errata_20(void) __UNUSED;
-static bool nrf51_errata_21(void) __UNUSED;
-static bool nrf51_errata_22(void) __UNUSED;
-static bool nrf51_errata_23(void) __UNUSED;
-static bool nrf51_errata_24(void) __UNUSED;
-static bool nrf51_errata_25(void) __UNUSED;
-static bool nrf51_errata_26(void) __UNUSED;
-static bool nrf51_errata_27(void) __UNUSED;
-static bool nrf51_errata_28(void) __UNUSED;
-static bool nrf51_errata_29(void) __UNUSED;
-static bool nrf51_errata_30(void) __UNUSED;
-static bool nrf51_errata_31(void) __UNUSED;
-static bool nrf51_errata_32(void) __UNUSED;
-static bool nrf51_errata_33(void) __UNUSED;
-static bool nrf51_errata_34(void) __UNUSED;
-static bool nrf51_errata_35(void) __UNUSED;
-static bool nrf51_errata_36(void) __UNUSED;
-static bool nrf51_errata_37(void) __UNUSED;
-static bool nrf51_errata_38(void) __UNUSED;
-static bool nrf51_errata_39(void) __UNUSED;
-static bool nrf51_errata_40(void) __UNUSED;
-static bool nrf51_errata_41(void) __UNUSED;
-static bool nrf51_errata_42(void) __UNUSED;
-static bool nrf51_errata_43(void) __UNUSED;
-static bool nrf51_errata_44(void) __UNUSED;
-static bool nrf51_errata_45(void) __UNUSED;
-static bool nrf51_errata_46(void) __UNUSED;
-static bool nrf51_errata_47(void) __UNUSED;
-static bool nrf51_errata_48(void) __UNUSED;
-static bool nrf51_errata_49(void) __UNUSED;
-static bool nrf51_errata_50(void) __UNUSED;
-static bool nrf51_errata_51(void) __UNUSED;
-static bool nrf51_errata_52(void) __UNUSED;
-static bool nrf51_errata_53(void) __UNUSED;
-static bool nrf51_errata_54(void) __UNUSED;
-static bool nrf51_errata_55(void) __UNUSED;
-static bool nrf51_errata_56(void) __UNUSED;
-static bool nrf51_errata_57(void) __UNUSED;
-static bool nrf51_errata_58(void) __UNUSED;
-static bool nrf51_errata_59(void) __UNUSED;
-static bool nrf51_errata_60(void) __UNUSED;
-static bool nrf51_errata_61(void) __UNUSED;
-static bool nrf51_errata_62(void) __UNUSED;
-static bool nrf51_errata_63(void) __UNUSED;
-static bool nrf51_errata_64(void) __UNUSED;
-static bool nrf51_errata_65(void) __UNUSED;
-static bool nrf51_errata_66(void) __UNUSED;
-static bool nrf51_errata_67(void) __UNUSED;
-static bool nrf51_errata_68(void) __UNUSED;
-static bool nrf51_errata_69(void) __UNUSED;
-static bool nrf51_errata_70(void) __UNUSED;
-static bool nrf51_errata_71(void) __UNUSED;
-static bool nrf51_errata_72(void) __UNUSED;
-static bool nrf51_errata_73(void) __UNUSED;
-static bool nrf51_errata_74(void) __UNUSED;
-static bool nrf51_errata_75(void) __UNUSED;
-static bool nrf51_errata_76(void) __UNUSED;
-static bool nrf51_errata_77(void) __UNUSED;
-static bool nrf51_errata_78(void) __UNUSED;
+static inline bool nrf51_errata_1(void);
+static inline bool nrf51_errata_2(void);
+static inline bool nrf51_errata_3(void);
+static inline bool nrf51_errata_4(void);
+static inline bool nrf51_errata_5(void);
+static inline bool nrf51_errata_6(void);
+static inline bool nrf51_errata_7(void);
+static inline bool nrf51_errata_8(void);
+static inline bool nrf51_errata_9(void);
+static inline bool nrf51_errata_10(void);
+static inline bool nrf51_errata_11(void);
+static inline bool nrf51_errata_12(void);
+static inline bool nrf51_errata_13(void);
+static inline bool nrf51_errata_14(void);
+static inline bool nrf51_errata_15(void);
+static inline bool nrf51_errata_16(void);
+static inline bool nrf51_errata_17(void);
+static inline bool nrf51_errata_18(void);
+static inline bool nrf51_errata_19(void);
+static inline bool nrf51_errata_20(void);
+static inline bool nrf51_errata_21(void);
+static inline bool nrf51_errata_22(void);
+static inline bool nrf51_errata_23(void);
+static inline bool nrf51_errata_24(void);
+static inline bool nrf51_errata_25(void);
+static inline bool nrf51_errata_26(void);
+static inline bool nrf51_errata_27(void);
+static inline bool nrf51_errata_28(void);
+static inline bool nrf51_errata_29(void);
+static inline bool nrf51_errata_30(void);
+static inline bool nrf51_errata_31(void);
+static inline bool nrf51_errata_32(void);
+static inline bool nrf51_errata_33(void);
+static inline bool nrf51_errata_34(void);
+static inline bool nrf51_errata_35(void);
+static inline bool nrf51_errata_36(void);
+static inline bool nrf51_errata_37(void);
+static inline bool nrf51_errata_38(void);
+static inline bool nrf51_errata_39(void);
+static inline bool nrf51_errata_40(void);
+static inline bool nrf51_errata_41(void);
+static inline bool nrf51_errata_42(void);
+static inline bool nrf51_errata_43(void);
+static inline bool nrf51_errata_44(void);
+static inline bool nrf51_errata_45(void);
+static inline bool nrf51_errata_46(void);
+static inline bool nrf51_errata_47(void);
+static inline bool nrf51_errata_48(void);
+static inline bool nrf51_errata_49(void);
+static inline bool nrf51_errata_50(void);
+static inline bool nrf51_errata_51(void);
+static inline bool nrf51_errata_52(void);
+static inline bool nrf51_errata_53(void);
+static inline bool nrf51_errata_54(void);
+static inline bool nrf51_errata_55(void);
+static inline bool nrf51_errata_56(void);
+static inline bool nrf51_errata_57(void);
+static inline bool nrf51_errata_58(void);
+static inline bool nrf51_errata_59(void);
+static inline bool nrf51_errata_60(void);
+static inline bool nrf51_errata_61(void);
+static inline bool nrf51_errata_62(void);
+static inline bool nrf51_errata_63(void);
+static inline bool nrf51_errata_64(void);
+static inline bool nrf51_errata_65(void);
+static inline bool nrf51_errata_66(void);
+static inline bool nrf51_errata_67(void);
+static inline bool nrf51_errata_68(void);
+static inline bool nrf51_errata_69(void);
+static inline bool nrf51_errata_70(void);
+static inline bool nrf51_errata_71(void);
+static inline bool nrf51_errata_72(void);
+static inline bool nrf51_errata_73(void);
+static inline bool nrf51_errata_74(void);
+static inline bool nrf51_errata_75(void);
+static inline bool nrf51_errata_76(void);
+static inline bool nrf51_errata_77(void);
+static inline bool nrf51_errata_78(void);
 
 /* ========= Errata 1 ========= */
 #if    defined (NRF51422_XXAA) || defined (DEVELOP_IN_NRF51422) \
@@ -137,7 +137,7 @@ static bool nrf51_errata_78(void) __UNUSED;
     #define NRF51_ERRATA_1_ENABLE_WORKAROUND NRF51_ERRATA_1_PRESENT
 #endif
 
-static bool nrf51_errata_1(void)
+static inline bool nrf51_errata_1(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -351,7 +351,7 @@ static bool nrf51_errata_1(void)
     #define NRF51_ERRATA_2_ENABLE_WORKAROUND NRF51_ERRATA_2_PRESENT
 #endif
 
-static bool nrf51_errata_2(void)
+static inline bool nrf51_errata_2(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -565,7 +565,7 @@ static bool nrf51_errata_2(void)
     #define NRF51_ERRATA_3_ENABLE_WORKAROUND NRF51_ERRATA_3_PRESENT
 #endif
 
-static bool nrf51_errata_3(void)
+static inline bool nrf51_errata_3(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -767,7 +767,7 @@ static bool nrf51_errata_3(void)
     #define NRF51_ERRATA_4_ENABLE_WORKAROUND NRF51_ERRATA_4_PRESENT
 #endif
 
-static bool nrf51_errata_4(void)
+static inline bool nrf51_errata_4(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -783,7 +783,7 @@ static bool nrf51_errata_4(void)
     #define NRF51_ERRATA_5_ENABLE_WORKAROUND NRF51_ERRATA_5_PRESENT
 #endif
 
-static bool nrf51_errata_5(void)
+static inline bool nrf51_errata_5(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -811,7 +811,7 @@ static bool nrf51_errata_5(void)
     #define NRF51_ERRATA_6_ENABLE_WORKAROUND NRF51_ERRATA_6_PRESENT
 #endif
 
-static bool nrf51_errata_6(void)
+static inline bool nrf51_errata_6(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -1025,7 +1025,7 @@ static bool nrf51_errata_6(void)
     #define NRF51_ERRATA_7_ENABLE_WORKAROUND NRF51_ERRATA_7_PRESENT
 #endif
 
-static bool nrf51_errata_7(void)
+static inline bool nrf51_errata_7(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -1239,7 +1239,7 @@ static bool nrf51_errata_7(void)
     #define NRF51_ERRATA_8_ENABLE_WORKAROUND NRF51_ERRATA_8_PRESENT
 #endif
 
-static bool nrf51_errata_8(void)
+static inline bool nrf51_errata_8(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -1453,7 +1453,7 @@ static bool nrf51_errata_8(void)
     #define NRF51_ERRATA_9_ENABLE_WORKAROUND NRF51_ERRATA_9_PRESENT
 #endif
 
-static bool nrf51_errata_9(void)
+static inline bool nrf51_errata_9(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -1667,7 +1667,7 @@ static bool nrf51_errata_9(void)
     #define NRF51_ERRATA_10_ENABLE_WORKAROUND NRF51_ERRATA_10_PRESENT
 #endif
 
-static bool nrf51_errata_10(void)
+static inline bool nrf51_errata_10(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -1881,7 +1881,7 @@ static bool nrf51_errata_10(void)
     #define NRF51_ERRATA_11_ENABLE_WORKAROUND NRF51_ERRATA_11_PRESENT
 #endif
 
-static bool nrf51_errata_11(void)
+static inline bool nrf51_errata_11(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -2095,7 +2095,7 @@ static bool nrf51_errata_11(void)
     #define NRF51_ERRATA_12_ENABLE_WORKAROUND NRF51_ERRATA_12_PRESENT
 #endif
 
-static bool nrf51_errata_12(void)
+static inline bool nrf51_errata_12(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -2309,7 +2309,7 @@ static bool nrf51_errata_12(void)
     #define NRF51_ERRATA_13_ENABLE_WORKAROUND NRF51_ERRATA_13_PRESENT
 #endif
 
-static bool nrf51_errata_13(void)
+static inline bool nrf51_errata_13(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -2523,7 +2523,7 @@ static bool nrf51_errata_13(void)
     #define NRF51_ERRATA_14_ENABLE_WORKAROUND NRF51_ERRATA_14_PRESENT
 #endif
 
-static bool nrf51_errata_14(void)
+static inline bool nrf51_errata_14(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -2737,7 +2737,7 @@ static bool nrf51_errata_14(void)
     #define NRF51_ERRATA_15_ENABLE_WORKAROUND NRF51_ERRATA_15_PRESENT
 #endif
 
-static bool nrf51_errata_15(void)
+static inline bool nrf51_errata_15(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -2951,7 +2951,7 @@ static bool nrf51_errata_15(void)
     #define NRF51_ERRATA_16_ENABLE_WORKAROUND NRF51_ERRATA_16_PRESENT
 #endif
 
-static bool nrf51_errata_16(void)
+static inline bool nrf51_errata_16(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -3165,7 +3165,7 @@ static bool nrf51_errata_16(void)
     #define NRF51_ERRATA_17_ENABLE_WORKAROUND NRF51_ERRATA_17_PRESENT
 #endif
 
-static bool nrf51_errata_17(void)
+static inline bool nrf51_errata_17(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -3379,7 +3379,7 @@ static bool nrf51_errata_17(void)
     #define NRF51_ERRATA_18_ENABLE_WORKAROUND NRF51_ERRATA_18_PRESENT
 #endif
 
-static bool nrf51_errata_18(void)
+static inline bool nrf51_errata_18(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -3593,7 +3593,7 @@ static bool nrf51_errata_18(void)
     #define NRF51_ERRATA_19_ENABLE_WORKAROUND NRF51_ERRATA_19_PRESENT
 #endif
 
-static bool nrf51_errata_19(void)
+static inline bool nrf51_errata_19(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -3807,7 +3807,7 @@ static bool nrf51_errata_19(void)
     #define NRF51_ERRATA_20_ENABLE_WORKAROUND NRF51_ERRATA_20_PRESENT
 #endif
 
-static bool nrf51_errata_20(void)
+static inline bool nrf51_errata_20(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -4021,7 +4021,7 @@ static bool nrf51_errata_20(void)
     #define NRF51_ERRATA_21_ENABLE_WORKAROUND NRF51_ERRATA_21_PRESENT
 #endif
 
-static bool nrf51_errata_21(void)
+static inline bool nrf51_errata_21(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -4235,7 +4235,7 @@ static bool nrf51_errata_21(void)
     #define NRF51_ERRATA_22_ENABLE_WORKAROUND NRF51_ERRATA_22_PRESENT
 #endif
 
-static bool nrf51_errata_22(void)
+static inline bool nrf51_errata_22(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -4449,7 +4449,7 @@ static bool nrf51_errata_22(void)
     #define NRF51_ERRATA_23_ENABLE_WORKAROUND NRF51_ERRATA_23_PRESENT
 #endif
 
-static bool nrf51_errata_23(void)
+static inline bool nrf51_errata_23(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -4663,7 +4663,7 @@ static bool nrf51_errata_23(void)
     #define NRF51_ERRATA_24_ENABLE_WORKAROUND NRF51_ERRATA_24_PRESENT
 #endif
 
-static bool nrf51_errata_24(void)
+static inline bool nrf51_errata_24(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -4877,7 +4877,7 @@ static bool nrf51_errata_24(void)
     #define NRF51_ERRATA_25_ENABLE_WORKAROUND NRF51_ERRATA_25_PRESENT
 #endif
 
-static bool nrf51_errata_25(void)
+static inline bool nrf51_errata_25(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -5091,7 +5091,7 @@ static bool nrf51_errata_25(void)
     #define NRF51_ERRATA_26_ENABLE_WORKAROUND NRF51_ERRATA_26_PRESENT
 #endif
 
-static bool nrf51_errata_26(void)
+static inline bool nrf51_errata_26(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -5305,7 +5305,7 @@ static bool nrf51_errata_26(void)
     #define NRF51_ERRATA_27_ENABLE_WORKAROUND NRF51_ERRATA_27_PRESENT
 #endif
 
-static bool nrf51_errata_27(void)
+static inline bool nrf51_errata_27(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -5519,7 +5519,7 @@ static bool nrf51_errata_27(void)
     #define NRF51_ERRATA_28_ENABLE_WORKAROUND NRF51_ERRATA_28_PRESENT
 #endif
 
-static bool nrf51_errata_28(void)
+static inline bool nrf51_errata_28(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -5733,7 +5733,7 @@ static bool nrf51_errata_28(void)
     #define NRF51_ERRATA_29_ENABLE_WORKAROUND NRF51_ERRATA_29_PRESENT
 #endif
 
-static bool nrf51_errata_29(void)
+static inline bool nrf51_errata_29(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -5947,7 +5947,7 @@ static bool nrf51_errata_29(void)
     #define NRF51_ERRATA_30_ENABLE_WORKAROUND NRF51_ERRATA_30_PRESENT
 #endif
 
-static bool nrf51_errata_30(void)
+static inline bool nrf51_errata_30(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -6161,7 +6161,7 @@ static bool nrf51_errata_30(void)
     #define NRF51_ERRATA_31_ENABLE_WORKAROUND NRF51_ERRATA_31_PRESENT
 #endif
 
-static bool nrf51_errata_31(void)
+static inline bool nrf51_errata_31(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -6375,7 +6375,7 @@ static bool nrf51_errata_31(void)
     #define NRF51_ERRATA_32_ENABLE_WORKAROUND NRF51_ERRATA_32_PRESENT
 #endif
 
-static bool nrf51_errata_32(void)
+static inline bool nrf51_errata_32(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -6589,7 +6589,7 @@ static bool nrf51_errata_32(void)
     #define NRF51_ERRATA_33_ENABLE_WORKAROUND NRF51_ERRATA_33_PRESENT
 #endif
 
-static bool nrf51_errata_33(void)
+static inline bool nrf51_errata_33(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -6803,7 +6803,7 @@ static bool nrf51_errata_33(void)
     #define NRF51_ERRATA_34_ENABLE_WORKAROUND NRF51_ERRATA_34_PRESENT
 #endif
 
-static bool nrf51_errata_34(void)
+static inline bool nrf51_errata_34(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -7017,7 +7017,7 @@ static bool nrf51_errata_34(void)
     #define NRF51_ERRATA_35_ENABLE_WORKAROUND NRF51_ERRATA_35_PRESENT
 #endif
 
-static bool nrf51_errata_35(void)
+static inline bool nrf51_errata_35(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -7231,7 +7231,7 @@ static bool nrf51_errata_35(void)
     #define NRF51_ERRATA_36_ENABLE_WORKAROUND NRF51_ERRATA_36_PRESENT
 #endif
 
-static bool nrf51_errata_36(void)
+static inline bool nrf51_errata_36(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -7445,7 +7445,7 @@ static bool nrf51_errata_36(void)
     #define NRF51_ERRATA_37_ENABLE_WORKAROUND NRF51_ERRATA_37_PRESENT
 #endif
 
-static bool nrf51_errata_37(void)
+static inline bool nrf51_errata_37(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -7659,7 +7659,7 @@ static bool nrf51_errata_37(void)
     #define NRF51_ERRATA_38_ENABLE_WORKAROUND NRF51_ERRATA_38_PRESENT
 #endif
 
-static bool nrf51_errata_38(void)
+static inline bool nrf51_errata_38(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -7873,7 +7873,7 @@ static bool nrf51_errata_38(void)
     #define NRF51_ERRATA_39_ENABLE_WORKAROUND NRF51_ERRATA_39_PRESENT
 #endif
 
-static bool nrf51_errata_39(void)
+static inline bool nrf51_errata_39(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -8087,7 +8087,7 @@ static bool nrf51_errata_39(void)
     #define NRF51_ERRATA_40_ENABLE_WORKAROUND NRF51_ERRATA_40_PRESENT
 #endif
 
-static bool nrf51_errata_40(void)
+static inline bool nrf51_errata_40(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -8301,7 +8301,7 @@ static bool nrf51_errata_40(void)
     #define NRF51_ERRATA_41_ENABLE_WORKAROUND NRF51_ERRATA_41_PRESENT
 #endif
 
-static bool nrf51_errata_41(void)
+static inline bool nrf51_errata_41(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -8515,7 +8515,7 @@ static bool nrf51_errata_41(void)
     #define NRF51_ERRATA_42_ENABLE_WORKAROUND NRF51_ERRATA_42_PRESENT
 #endif
 
-static bool nrf51_errata_42(void)
+static inline bool nrf51_errata_42(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -8729,7 +8729,7 @@ static bool nrf51_errata_42(void)
     #define NRF51_ERRATA_43_ENABLE_WORKAROUND NRF51_ERRATA_43_PRESENT
 #endif
 
-static bool nrf51_errata_43(void)
+static inline bool nrf51_errata_43(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -8943,7 +8943,7 @@ static bool nrf51_errata_43(void)
     #define NRF51_ERRATA_44_ENABLE_WORKAROUND NRF51_ERRATA_44_PRESENT
 #endif
 
-static bool nrf51_errata_44(void)
+static inline bool nrf51_errata_44(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -9157,7 +9157,7 @@ static bool nrf51_errata_44(void)
     #define NRF51_ERRATA_45_ENABLE_WORKAROUND NRF51_ERRATA_45_PRESENT
 #endif
 
-static bool nrf51_errata_45(void)
+static inline bool nrf51_errata_45(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -9371,7 +9371,7 @@ static bool nrf51_errata_45(void)
     #define NRF51_ERRATA_46_ENABLE_WORKAROUND NRF51_ERRATA_46_PRESENT
 #endif
 
-static bool nrf51_errata_46(void)
+static inline bool nrf51_errata_46(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -9585,7 +9585,7 @@ static bool nrf51_errata_46(void)
     #define NRF51_ERRATA_47_ENABLE_WORKAROUND NRF51_ERRATA_47_PRESENT
 #endif
 
-static bool nrf51_errata_47(void)
+static inline bool nrf51_errata_47(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -9799,7 +9799,7 @@ static bool nrf51_errata_47(void)
     #define NRF51_ERRATA_48_ENABLE_WORKAROUND NRF51_ERRATA_48_PRESENT
 #endif
 
-static bool nrf51_errata_48(void)
+static inline bool nrf51_errata_48(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -10013,7 +10013,7 @@ static bool nrf51_errata_48(void)
     #define NRF51_ERRATA_49_ENABLE_WORKAROUND NRF51_ERRATA_49_PRESENT
 #endif
 
-static bool nrf51_errata_49(void)
+static inline bool nrf51_errata_49(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -10215,7 +10215,7 @@ static bool nrf51_errata_49(void)
     #define NRF51_ERRATA_50_ENABLE_WORKAROUND NRF51_ERRATA_50_PRESENT
 #endif
 
-static bool nrf51_errata_50(void)
+static inline bool nrf51_errata_50(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -10231,7 +10231,7 @@ static bool nrf51_errata_50(void)
     #define NRF51_ERRATA_51_ENABLE_WORKAROUND NRF51_ERRATA_51_PRESENT
 #endif
 
-static bool nrf51_errata_51(void)
+static inline bool nrf51_errata_51(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -10247,7 +10247,7 @@ static bool nrf51_errata_51(void)
     #define NRF51_ERRATA_52_ENABLE_WORKAROUND NRF51_ERRATA_52_PRESENT
 #endif
 
-static bool nrf51_errata_52(void)
+static inline bool nrf51_errata_52(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -10263,7 +10263,7 @@ static bool nrf51_errata_52(void)
     #define NRF51_ERRATA_53_ENABLE_WORKAROUND NRF51_ERRATA_53_PRESENT
 #endif
 
-static bool nrf51_errata_53(void)
+static inline bool nrf51_errata_53(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -10279,7 +10279,7 @@ static bool nrf51_errata_53(void)
     #define NRF51_ERRATA_54_ENABLE_WORKAROUND NRF51_ERRATA_54_PRESENT
 #endif
 
-static bool nrf51_errata_54(void)
+static inline bool nrf51_errata_54(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -10307,7 +10307,7 @@ static bool nrf51_errata_54(void)
     #define NRF51_ERRATA_55_ENABLE_WORKAROUND NRF51_ERRATA_55_PRESENT
 #endif
 
-static bool nrf51_errata_55(void)
+static inline bool nrf51_errata_55(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -10521,7 +10521,7 @@ static bool nrf51_errata_55(void)
     #define NRF51_ERRATA_56_ENABLE_WORKAROUND NRF51_ERRATA_56_PRESENT
 #endif
 
-static bool nrf51_errata_56(void)
+static inline bool nrf51_errata_56(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -10735,7 +10735,7 @@ static bool nrf51_errata_56(void)
     #define NRF51_ERRATA_57_ENABLE_WORKAROUND NRF51_ERRATA_57_PRESENT
 #endif
 
-static bool nrf51_errata_57(void)
+static inline bool nrf51_errata_57(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -10949,7 +10949,7 @@ static bool nrf51_errata_57(void)
     #define NRF51_ERRATA_58_ENABLE_WORKAROUND NRF51_ERRATA_58_PRESENT
 #endif
 
-static bool nrf51_errata_58(void)
+static inline bool nrf51_errata_58(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -11163,7 +11163,7 @@ static bool nrf51_errata_58(void)
     #define NRF51_ERRATA_59_ENABLE_WORKAROUND NRF51_ERRATA_59_PRESENT
 #endif
 
-static bool nrf51_errata_59(void)
+static inline bool nrf51_errata_59(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -11377,7 +11377,7 @@ static bool nrf51_errata_59(void)
     #define NRF51_ERRATA_60_ENABLE_WORKAROUND NRF51_ERRATA_60_PRESENT
 #endif
 
-static bool nrf51_errata_60(void)
+static inline bool nrf51_errata_60(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -11591,7 +11591,7 @@ static bool nrf51_errata_60(void)
     #define NRF51_ERRATA_61_ENABLE_WORKAROUND NRF51_ERRATA_61_PRESENT
 #endif
 
-static bool nrf51_errata_61(void)
+static inline bool nrf51_errata_61(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -11805,7 +11805,7 @@ static bool nrf51_errata_61(void)
     #define NRF51_ERRATA_62_ENABLE_WORKAROUND NRF51_ERRATA_62_PRESENT
 #endif
 
-static bool nrf51_errata_62(void)
+static inline bool nrf51_errata_62(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -12019,7 +12019,7 @@ static bool nrf51_errata_62(void)
     #define NRF51_ERRATA_63_ENABLE_WORKAROUND NRF51_ERRATA_63_PRESENT
 #endif
 
-static bool nrf51_errata_63(void)
+static inline bool nrf51_errata_63(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -12233,7 +12233,7 @@ static bool nrf51_errata_63(void)
     #define NRF51_ERRATA_64_ENABLE_WORKAROUND NRF51_ERRATA_64_PRESENT
 #endif
 
-static bool nrf51_errata_64(void)
+static inline bool nrf51_errata_64(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -12447,7 +12447,7 @@ static bool nrf51_errata_64(void)
     #define NRF51_ERRATA_65_ENABLE_WORKAROUND NRF51_ERRATA_65_PRESENT
 #endif
 
-static bool nrf51_errata_65(void)
+static inline bool nrf51_errata_65(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -12661,7 +12661,7 @@ static bool nrf51_errata_65(void)
     #define NRF51_ERRATA_66_ENABLE_WORKAROUND NRF51_ERRATA_66_PRESENT
 #endif
 
-static bool nrf51_errata_66(void)
+static inline bool nrf51_errata_66(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -12875,7 +12875,7 @@ static bool nrf51_errata_66(void)
     #define NRF51_ERRATA_67_ENABLE_WORKAROUND NRF51_ERRATA_67_PRESENT
 #endif
 
-static bool nrf51_errata_67(void)
+static inline bool nrf51_errata_67(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -13089,7 +13089,7 @@ static bool nrf51_errata_67(void)
     #define NRF51_ERRATA_68_ENABLE_WORKAROUND NRF51_ERRATA_68_PRESENT
 #endif
 
-static bool nrf51_errata_68(void)
+static inline bool nrf51_errata_68(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -13303,7 +13303,7 @@ static bool nrf51_errata_68(void)
     #define NRF51_ERRATA_69_ENABLE_WORKAROUND NRF51_ERRATA_69_PRESENT
 #endif
 
-static bool nrf51_errata_69(void)
+static inline bool nrf51_errata_69(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -13517,7 +13517,7 @@ static bool nrf51_errata_69(void)
     #define NRF51_ERRATA_70_ENABLE_WORKAROUND NRF51_ERRATA_70_PRESENT
 #endif
 
-static bool nrf51_errata_70(void)
+static inline bool nrf51_errata_70(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -13731,7 +13731,7 @@ static bool nrf51_errata_70(void)
     #define NRF51_ERRATA_71_ENABLE_WORKAROUND NRF51_ERRATA_71_PRESENT
 #endif
 
-static bool nrf51_errata_71(void)
+static inline bool nrf51_errata_71(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -13945,7 +13945,7 @@ static bool nrf51_errata_71(void)
     #define NRF51_ERRATA_72_ENABLE_WORKAROUND NRF51_ERRATA_72_PRESENT
 #endif
 
-static bool nrf51_errata_72(void)
+static inline bool nrf51_errata_72(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -14159,7 +14159,7 @@ static bool nrf51_errata_72(void)
     #define NRF51_ERRATA_73_ENABLE_WORKAROUND NRF51_ERRATA_73_PRESENT
 #endif
 
-static bool nrf51_errata_73(void)
+static inline bool nrf51_errata_73(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -14373,7 +14373,7 @@ static bool nrf51_errata_73(void)
     #define NRF51_ERRATA_74_ENABLE_WORKAROUND NRF51_ERRATA_74_PRESENT
 #endif
 
-static bool nrf51_errata_74(void)
+static inline bool nrf51_errata_74(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -14587,7 +14587,7 @@ static bool nrf51_errata_74(void)
     #define NRF51_ERRATA_75_ENABLE_WORKAROUND NRF51_ERRATA_75_PRESENT
 #endif
 
-static bool nrf51_errata_75(void)
+static inline bool nrf51_errata_75(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -14801,7 +14801,7 @@ static bool nrf51_errata_75(void)
     #define NRF51_ERRATA_76_ENABLE_WORKAROUND NRF51_ERRATA_76_PRESENT
 #endif
 
-static bool nrf51_errata_76(void)
+static inline bool nrf51_errata_76(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -15003,7 +15003,7 @@ static bool nrf51_errata_76(void)
     #define NRF51_ERRATA_77_ENABLE_WORKAROUND NRF51_ERRATA_77_PRESENT
 #endif
 
-static bool nrf51_errata_77(void)
+static inline bool nrf51_errata_77(void)
 {
     #ifndef NRF51_SERIES
         return false;
@@ -15031,7 +15031,7 @@ static bool nrf51_errata_77(void)
     #define NRF51_ERRATA_78_ENABLE_WORKAROUND NRF51_ERRATA_78_PRESENT
 #endif
 
-static bool nrf51_errata_78(void)
+static inline bool nrf51_errata_78(void)
 {
     #ifndef NRF51_SERIES
         return false;

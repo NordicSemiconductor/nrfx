@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -188,10 +188,9 @@ int nrfx_lpcomp_init(nrfx_lpcomp_config_t const * p_config,
     m_lpcomp_event_handler = event_handler;
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
-    if (nrfx_prs_acquire(NRF_LPCOMP, (nrfx_irq_handler_t)nrfx_lpcomp_irq_handler, NULL) !=
-        NRFX_SUCCESS)
+    err_code = nrfx_prs_acquire(NRF_LPCOMP, (nrfx_irq_handler_t)nrfx_lpcomp_irq_handler, NULL);
+    if (err_code < 0)
     {
-        err_code = -EBUSY;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
                          __func__,
                          NRFX_LOG_ERROR_STRING_GET(err_code));

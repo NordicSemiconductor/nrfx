@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -39,6 +39,10 @@
 
 #if NRF_SAADC_HAS_CAL || NRF_SAADC_HAS_CALREF ||  NRF_SAADC_HAS_LIN_CAL
 #include <hal/nrf_ficr.h>
+#endif
+
+#if NRF_SAADC_HAS_AIN_AS_PIN
+#include <hal/nrf_gpio.h>
 #endif
 
 /** @brief Bitmask of all available SAADC channels. */
@@ -184,6 +188,10 @@ static int saadc_input_convert(nrfx_analog_input_t input_p,
         return -EINVAL;
     }
 
+#if (NRF_SAADC_HAS_AIN_AS_PIN && NRF_GPIO_HAS_RETENTION_SETCLEAR)
+    nrf_gpio_pin_retain_disable(saadc_input_pos);
+#endif
+
     *p_saadc_input_p = saadc_input_pos;
 
     if (differential)
@@ -203,6 +211,10 @@ static int saadc_input_convert(nrfx_analog_input_t input_p,
             NRFX_LOG_ERROR("1v8 inputs cannot be mixed with 3v3 inputs");
             return -EINVAL;
         }
+
+#if (NRF_SAADC_HAS_AIN_AS_PIN && NRF_GPIO_HAS_RETENTION_SETCLEAR)
+        nrf_gpio_pin_retain_disable(saadc_input_neg);
+#endif
 
         *p_saadc_input_n = saadc_input_neg;
     }
@@ -603,7 +615,7 @@ int nrfx_saadc_buffer_set(nrf_saadc_value_t * p_buffer, uint16_t size)
         return -EALREADY;
     }
 
-    if (!nrfx_is_in_ram(p_buffer))
+    if (!nrf_dma_accessible_check(NRF_SAADC, p_buffer))
     {
         return -EACCES;
     }

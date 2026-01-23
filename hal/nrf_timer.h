@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -170,7 +170,7 @@ extern "C" {
  * @retval false Timer instance does not support the specified bit width resolution value.
  */
 #define NRF_TIMER_IS_BIT_WIDTH_VALID(p_reg, bit_width) \
-    NRFX_FOREACH_PRESENT(TIMER, _NRF_TIMER_IS_BIT_WIDTH_VALID_ELEM, (), (), p_reg, bit_width) 0
+    (NRFX_FOREACH_PRESENT(TIMER, _NRF_TIMER_IS_BIT_WIDTH_VALID_ELEM, (), (), p_reg, bit_width) 0)
 
 #if !defined(NRF_TIMER_IS_320MHZ_TIMER)
 /** @brief Macro for checking whether the base frequency for the specified timer is 320 MHz. */

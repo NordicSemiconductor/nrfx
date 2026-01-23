@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2025 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -36,14 +36,14 @@
 
 #include <hal/nrf_clock.h>
 
-#if NRF_CLOCK_HAS_HFCLK
+#if NRF_CLOCK_HAS_HFCLK || defined(__NRFX_DOXYGEN__)
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * @defgroup nrfx_clock_hfclk HFCLK CLOCK driver
+ * @defgroup nrfx_clock_hfclk HFCLK driver
  * @{
  * @ingroup nrf_clock
  * @brief   HFCLK CLOCK peripheral driver.

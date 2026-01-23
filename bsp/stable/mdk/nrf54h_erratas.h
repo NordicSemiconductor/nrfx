@@ -3,7 +3,7 @@
 
 /*
 
-Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2026, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -39,142 +39,142 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <stdbool.h>
 #include "compiler_abstraction.h"
 
-static bool nrf54h_errata_8(void) __UNUSED;
-static bool nrf54h_errata_12(void) __UNUSED;
-static bool nrf54h_errata_13(void) __UNUSED;
-static bool nrf54h_errata_14(void) __UNUSED;
-static bool nrf54h_errata_19(void) __UNUSED;
-static bool nrf54h_errata_20(void) __UNUSED;
-static bool nrf54h_errata_21(void) __UNUSED;
-static bool nrf54h_errata_23(void) __UNUSED;
-static bool nrf54h_errata_26(void) __UNUSED;
-static bool nrf54h_errata_31(void) __UNUSED;
-static bool nrf54h_errata_32(void) __UNUSED;
-static bool nrf54h_errata_34(void) __UNUSED;
-static bool nrf54h_errata_35(void) __UNUSED;
-static bool nrf54h_errata_36(void) __UNUSED;
-static bool nrf54h_errata_37(void) __UNUSED;
-static bool nrf54h_errata_39(void) __UNUSED;
-static bool nrf54h_errata_40(void) __UNUSED;
-static bool nrf54h_errata_41(void) __UNUSED;
-static bool nrf54h_errata_42(void) __UNUSED;
-static bool nrf54h_errata_43(void) __UNUSED;
-static bool nrf54h_errata_44(void) __UNUSED;
-static bool nrf54h_errata_45(void) __UNUSED;
-static bool nrf54h_errata_46(void) __UNUSED;
-static bool nrf54h_errata_47(void) __UNUSED;
-static bool nrf54h_errata_50(void) __UNUSED;
-static bool nrf54h_errata_51(void) __UNUSED;
-static bool nrf54h_errata_53(void) __UNUSED;
-static bool nrf54h_errata_55(void) __UNUSED;
-static bool nrf54h_errata_57(void) __UNUSED;
-static bool nrf54h_errata_58(void) __UNUSED;
-static bool nrf54h_errata_62(void) __UNUSED;
-static bool nrf54h_errata_63(void) __UNUSED;
-static bool nrf54h_errata_64(void) __UNUSED;
-static bool nrf54h_errata_65(void) __UNUSED;
-static bool nrf54h_errata_66(void) __UNUSED;
-static bool nrf54h_errata_67(void) __UNUSED;
-static bool nrf54h_errata_69(void) __UNUSED;
-static bool nrf54h_errata_72(void) __UNUSED;
-static bool nrf54h_errata_73(void) __UNUSED;
-static bool nrf54h_errata_74(void) __UNUSED;
-static bool nrf54h_errata_75(void) __UNUSED;
-static bool nrf54h_errata_76(void) __UNUSED;
-static bool nrf54h_errata_77(void) __UNUSED;
-static bool nrf54h_errata_78(void) __UNUSED;
-static bool nrf54h_errata_84(void) __UNUSED;
-static bool nrf54h_errata_92(void) __UNUSED;
-static bool nrf54h_errata_93(void) __UNUSED;
-static bool nrf54h_errata_103(void) __UNUSED;
-static bool nrf54h_errata_104(void) __UNUSED;
-static bool nrf54h_errata_105(void) __UNUSED;
-static bool nrf54h_errata_106(void) __UNUSED;
-static bool nrf54h_errata_107(void) __UNUSED;
-static bool nrf54h_errata_109(void) __UNUSED;
-static bool nrf54h_errata_110(void) __UNUSED;
-static bool nrf54h_errata_111(void) __UNUSED;
-static bool nrf54h_errata_112(void) __UNUSED;
-static bool nrf54h_errata_115(void) __UNUSED;
-static bool nrf54h_errata_116(void) __UNUSED;
-static bool nrf54h_errata_117(void) __UNUSED;
-static bool nrf54h_errata_118(void) __UNUSED;
-static bool nrf54h_errata_119(void) __UNUSED;
-static bool nrf54h_errata_120(void) __UNUSED;
-static bool nrf54h_errata_121(void) __UNUSED;
-static bool nrf54h_errata_122(void) __UNUSED;
-static bool nrf54h_errata_123(void) __UNUSED;
-static bool nrf54h_errata_124(void) __UNUSED;
-static bool nrf54h_errata_125(void) __UNUSED;
-static bool nrf54h_errata_126(void) __UNUSED;
-static bool nrf54h_errata_127(void) __UNUSED;
-static bool nrf54h_errata_128(void) __UNUSED;
-static bool nrf54h_errata_129(void) __UNUSED;
-static bool nrf54h_errata_130(void) __UNUSED;
-static bool nrf54h_errata_131(void) __UNUSED;
-static bool nrf54h_errata_132(void) __UNUSED;
-static bool nrf54h_errata_133(void) __UNUSED;
-static bool nrf54h_errata_134(void) __UNUSED;
-static bool nrf54h_errata_135(void) __UNUSED;
-static bool nrf54h_errata_136(void) __UNUSED;
-static bool nrf54h_errata_137(void) __UNUSED;
-static bool nrf54h_errata_138(void) __UNUSED;
-static bool nrf54h_errata_139(void) __UNUSED;
-static bool nrf54h_errata_140(void) __UNUSED;
-static bool nrf54h_errata_141(void) __UNUSED;
-static bool nrf54h_errata_142(void) __UNUSED;
-static bool nrf54h_errata_143(void) __UNUSED;
-static bool nrf54h_errata_146(void) __UNUSED;
-static bool nrf54h_errata_148(void) __UNUSED;
-static bool nrf54h_errata_149(void) __UNUSED;
-static bool nrf54h_errata_151(void) __UNUSED;
-static bool nrf54h_errata_152(void) __UNUSED;
-static bool nrf54h_errata_156(void) __UNUSED;
-static bool nrf54h_errata_157(void) __UNUSED;
-static bool nrf54h_errata_158(void) __UNUSED;
-static bool nrf54h_errata_159(void) __UNUSED;
-static bool nrf54h_errata_160(void) __UNUSED;
-static bool nrf54h_errata_161(void) __UNUSED;
-static bool nrf54h_errata_162(void) __UNUSED;
-static bool nrf54h_errata_163(void) __UNUSED;
-static bool nrf54h_errata_165(void) __UNUSED;
-static bool nrf54h_errata_166(void) __UNUSED;
-static bool nrf54h_errata_169(void) __UNUSED;
-static bool nrf54h_errata_171(void) __UNUSED;
-static bool nrf54h_errata_173(void) __UNUSED;
-static bool nrf54h_errata_175(void) __UNUSED;
-static bool nrf54h_errata_177(void) __UNUSED;
-static bool nrf54h_errata_178(void) __UNUSED;
-static bool nrf54h_errata_179(void) __UNUSED;
-static bool nrf54h_errata_182(void) __UNUSED;
-static bool nrf54h_errata_184(void) __UNUSED;
-static bool nrf54h_errata_185(void) __UNUSED;
-static bool nrf54h_errata_186(void) __UNUSED;
-static bool nrf54h_errata_187(void) __UNUSED;
-static bool nrf54h_errata_190(void) __UNUSED;
-static bool nrf54h_errata_192(void) __UNUSED;
-static bool nrf54h_errata_193(void) __UNUSED;
-static bool nrf54h_errata_194(void) __UNUSED;
-static bool nrf54h_errata_195(void) __UNUSED;
-static bool nrf54h_errata_196(void) __UNUSED;
-static bool nrf54h_errata_198(void) __UNUSED;
-static bool nrf54h_errata_200(void) __UNUSED;
-static bool nrf54h_errata_201(void) __UNUSED;
-static bool nrf54h_errata_202(void) __UNUSED;
-static bool nrf54h_errata_205(void) __UNUSED;
-static bool nrf54h_errata_206(void) __UNUSED;
-static bool nrf54h_errata_207(void) __UNUSED;
-static bool nrf54h_errata_208(void) __UNUSED;
-static bool nrf54h_errata_209(void) __UNUSED;
-static bool nrf54h_errata_210(void) __UNUSED;
-static bool nrf54h_errata_212(void) __UNUSED;
-static bool nrf54h_errata_213(void) __UNUSED;
-static bool nrf54h_errata_216(void) __UNUSED;
-static bool nrf54h_errata_217(void) __UNUSED;
-static bool nrf54h_errata_218(void) __UNUSED;
-static bool nrf54h_errata_229(void) __UNUSED;
-static bool nrf54h_errata_230(void) __UNUSED;
-static bool nrf54h_errata_231(void) __UNUSED;
+static inline bool nrf54h_errata_8(void);
+static inline bool nrf54h_errata_12(void);
+static inline bool nrf54h_errata_13(void);
+static inline bool nrf54h_errata_14(void);
+static inline bool nrf54h_errata_19(void);
+static inline bool nrf54h_errata_20(void);
+static inline bool nrf54h_errata_21(void);
+static inline bool nrf54h_errata_23(void);
+static inline bool nrf54h_errata_26(void);
+static inline bool nrf54h_errata_31(void);
+static inline bool nrf54h_errata_32(void);
+static inline bool nrf54h_errata_34(void);
+static inline bool nrf54h_errata_35(void);
+static inline bool nrf54h_errata_36(void);
+static inline bool nrf54h_errata_37(void);
+static inline bool nrf54h_errata_39(void);
+static inline bool nrf54h_errata_40(void);
+static inline bool nrf54h_errata_41(void);
+static inline bool nrf54h_errata_42(void);
+static inline bool nrf54h_errata_43(void);
+static inline bool nrf54h_errata_44(void);
+static inline bool nrf54h_errata_45(void);
+static inline bool nrf54h_errata_46(void);
+static inline bool nrf54h_errata_47(void);
+static inline bool nrf54h_errata_50(void);
+static inline bool nrf54h_errata_51(void);
+static inline bool nrf54h_errata_53(void);
+static inline bool nrf54h_errata_55(void);
+static inline bool nrf54h_errata_57(void);
+static inline bool nrf54h_errata_58(void);
+static inline bool nrf54h_errata_62(void);
+static inline bool nrf54h_errata_63(void);
+static inline bool nrf54h_errata_64(void);
+static inline bool nrf54h_errata_65(void);
+static inline bool nrf54h_errata_66(void);
+static inline bool nrf54h_errata_67(void);
+static inline bool nrf54h_errata_69(void);
+static inline bool nrf54h_errata_72(void);
+static inline bool nrf54h_errata_73(void);
+static inline bool nrf54h_errata_74(void);
+static inline bool nrf54h_errata_75(void);
+static inline bool nrf54h_errata_76(void);
+static inline bool nrf54h_errata_77(void);
+static inline bool nrf54h_errata_78(void);
+static inline bool nrf54h_errata_84(void);
+static inline bool nrf54h_errata_92(void);
+static inline bool nrf54h_errata_93(void);
+static inline bool nrf54h_errata_103(void);
+static inline bool nrf54h_errata_104(void);
+static inline bool nrf54h_errata_105(void);
+static inline bool nrf54h_errata_106(void);
+static inline bool nrf54h_errata_107(void);
+static inline bool nrf54h_errata_109(void);
+static inline bool nrf54h_errata_110(void);
+static inline bool nrf54h_errata_111(void);
+static inline bool nrf54h_errata_112(void);
+static inline bool nrf54h_errata_115(void);
+static inline bool nrf54h_errata_116(void);
+static inline bool nrf54h_errata_117(void);
+static inline bool nrf54h_errata_118(void);
+static inline bool nrf54h_errata_119(void);
+static inline bool nrf54h_errata_120(void);
+static inline bool nrf54h_errata_121(void);
+static inline bool nrf54h_errata_122(void);
+static inline bool nrf54h_errata_123(void);
+static inline bool nrf54h_errata_124(void);
+static inline bool nrf54h_errata_125(void);
+static inline bool nrf54h_errata_126(void);
+static inline bool nrf54h_errata_127(void);
+static inline bool nrf54h_errata_128(void);
+static inline bool nrf54h_errata_129(void);
+static inline bool nrf54h_errata_130(void);
+static inline bool nrf54h_errata_131(void);
+static inline bool nrf54h_errata_132(void);
+static inline bool nrf54h_errata_133(void);
+static inline bool nrf54h_errata_134(void);
+static inline bool nrf54h_errata_135(void);
+static inline bool nrf54h_errata_136(void);
+static inline bool nrf54h_errata_137(void);
+static inline bool nrf54h_errata_138(void);
+static inline bool nrf54h_errata_139(void);
+static inline bool nrf54h_errata_140(void);
+static inline bool nrf54h_errata_141(void);
+static inline bool nrf54h_errata_142(void);
+static inline bool nrf54h_errata_143(void);
+static inline bool nrf54h_errata_146(void);
+static inline bool nrf54h_errata_148(void);
+static inline bool nrf54h_errata_149(void);
+static inline bool nrf54h_errata_151(void);
+static inline bool nrf54h_errata_152(void);
+static inline bool nrf54h_errata_156(void);
+static inline bool nrf54h_errata_157(void);
+static inline bool nrf54h_errata_158(void);
+static inline bool nrf54h_errata_159(void);
+static inline bool nrf54h_errata_160(void);
+static inline bool nrf54h_errata_161(void);
+static inline bool nrf54h_errata_162(void);
+static inline bool nrf54h_errata_163(void);
+static inline bool nrf54h_errata_165(void);
+static inline bool nrf54h_errata_166(void);
+static inline bool nrf54h_errata_169(void);
+static inline bool nrf54h_errata_171(void);
+static inline bool nrf54h_errata_173(void);
+static inline bool nrf54h_errata_175(void);
+static inline bool nrf54h_errata_177(void);
+static inline bool nrf54h_errata_178(void);
+static inline bool nrf54h_errata_179(void);
+static inline bool nrf54h_errata_182(void);
+static inline bool nrf54h_errata_184(void);
+static inline bool nrf54h_errata_185(void);
+static inline bool nrf54h_errata_186(void);
+static inline bool nrf54h_errata_187(void);
+static inline bool nrf54h_errata_190(void);
+static inline bool nrf54h_errata_192(void);
+static inline bool nrf54h_errata_193(void);
+static inline bool nrf54h_errata_194(void);
+static inline bool nrf54h_errata_195(void);
+static inline bool nrf54h_errata_196(void);
+static inline bool nrf54h_errata_198(void);
+static inline bool nrf54h_errata_200(void);
+static inline bool nrf54h_errata_201(void);
+static inline bool nrf54h_errata_202(void);
+static inline bool nrf54h_errata_205(void);
+static inline bool nrf54h_errata_206(void);
+static inline bool nrf54h_errata_207(void);
+static inline bool nrf54h_errata_208(void);
+static inline bool nrf54h_errata_209(void);
+static inline bool nrf54h_errata_210(void);
+static inline bool nrf54h_errata_212(void);
+static inline bool nrf54h_errata_213(void);
+static inline bool nrf54h_errata_216(void);
+static inline bool nrf54h_errata_217(void);
+static inline bool nrf54h_errata_218(void);
+static inline bool nrf54h_errata_229(void);
+static inline bool nrf54h_errata_230(void);
+static inline bool nrf54h_errata_231(void);
 
 /* ========= Errata 8 ========= */
 #if    defined (NRF54H20_XXAA) || defined (DEVELOP_IN_NRF54H20)
@@ -187,7 +187,7 @@ static bool nrf54h_errata_231(void) __UNUSED;
     #define NRF54H_ERRATA_8_ENABLE_WORKAROUND NRF54H_ERRATA_8_PRESENT
 #endif
 
-static bool nrf54h_errata_8(void)
+static inline bool nrf54h_errata_8(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -223,7 +223,7 @@ static bool nrf54h_errata_8(void)
     #define NRF54H_ERRATA_12_ENABLE_WORKAROUND NRF54H_ERRATA_12_PRESENT
 #endif
 
-static bool nrf54h_errata_12(void)
+static inline bool nrf54h_errata_12(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -259,7 +259,7 @@ static bool nrf54h_errata_12(void)
     #define NRF54H_ERRATA_13_ENABLE_WORKAROUND NRF54H_ERRATA_13_PRESENT
 #endif
 
-static bool nrf54h_errata_13(void)
+static inline bool nrf54h_errata_13(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -295,7 +295,7 @@ static bool nrf54h_errata_13(void)
     #define NRF54H_ERRATA_14_ENABLE_WORKAROUND NRF54H_ERRATA_14_PRESENT
 #endif
 
-static bool nrf54h_errata_14(void)
+static inline bool nrf54h_errata_14(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -331,7 +331,7 @@ static bool nrf54h_errata_14(void)
     #define NRF54H_ERRATA_19_ENABLE_WORKAROUND NRF54H_ERRATA_19_PRESENT
 #endif
 
-static bool nrf54h_errata_19(void)
+static inline bool nrf54h_errata_19(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -367,7 +367,7 @@ static bool nrf54h_errata_19(void)
     #define NRF54H_ERRATA_20_ENABLE_WORKAROUND NRF54H_ERRATA_20_PRESENT
 #endif
 
-static bool nrf54h_errata_20(void)
+static inline bool nrf54h_errata_20(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -399,7 +399,7 @@ static bool nrf54h_errata_20(void)
     #define NRF54H_ERRATA_21_ENABLE_WORKAROUND NRF54H_ERRATA_21_PRESENT
 #endif
 
-static bool nrf54h_errata_21(void)
+static inline bool nrf54h_errata_21(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -419,7 +419,7 @@ static bool nrf54h_errata_21(void)
     #define NRF54H_ERRATA_23_ENABLE_WORKAROUND NRF54H_ERRATA_23_PRESENT
 #endif
 
-static bool nrf54h_errata_23(void)
+static inline bool nrf54h_errata_23(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -455,7 +455,7 @@ static bool nrf54h_errata_23(void)
     #define NRF54H_ERRATA_26_ENABLE_WORKAROUND NRF54H_ERRATA_26_PRESENT
 #endif
 
-static bool nrf54h_errata_26(void)
+static inline bool nrf54h_errata_26(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -491,7 +491,7 @@ static bool nrf54h_errata_26(void)
     #define NRF54H_ERRATA_31_ENABLE_WORKAROUND NRF54H_ERRATA_31_PRESENT
 #endif
 
-static bool nrf54h_errata_31(void)
+static inline bool nrf54h_errata_31(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -527,7 +527,7 @@ static bool nrf54h_errata_31(void)
     #define NRF54H_ERRATA_32_ENABLE_WORKAROUND NRF54H_ERRATA_32_PRESENT
 #endif
 
-static bool nrf54h_errata_32(void)
+static inline bool nrf54h_errata_32(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -563,7 +563,7 @@ static bool nrf54h_errata_32(void)
     #define NRF54H_ERRATA_34_ENABLE_WORKAROUND NRF54H_ERRATA_34_PRESENT
 #endif
 
-static bool nrf54h_errata_34(void)
+static inline bool nrf54h_errata_34(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -599,7 +599,7 @@ static bool nrf54h_errata_34(void)
     #define NRF54H_ERRATA_35_ENABLE_WORKAROUND NRF54H_ERRATA_35_PRESENT
 #endif
 
-static bool nrf54h_errata_35(void)
+static inline bool nrf54h_errata_35(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -635,7 +635,7 @@ static bool nrf54h_errata_35(void)
     #define NRF54H_ERRATA_36_ENABLE_WORKAROUND NRF54H_ERRATA_36_PRESENT
 #endif
 
-static bool nrf54h_errata_36(void)
+static inline bool nrf54h_errata_36(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -671,7 +671,7 @@ static bool nrf54h_errata_36(void)
     #define NRF54H_ERRATA_37_ENABLE_WORKAROUND NRF54H_ERRATA_37_PRESENT
 #endif
 
-static bool nrf54h_errata_37(void)
+static inline bool nrf54h_errata_37(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -707,7 +707,7 @@ static bool nrf54h_errata_37(void)
     #define NRF54H_ERRATA_39_ENABLE_WORKAROUND NRF54H_ERRATA_39_PRESENT
 #endif
 
-static bool nrf54h_errata_39(void)
+static inline bool nrf54h_errata_39(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -743,7 +743,7 @@ static bool nrf54h_errata_39(void)
     #define NRF54H_ERRATA_40_ENABLE_WORKAROUND NRF54H_ERRATA_40_PRESENT
 #endif
 
-static bool nrf54h_errata_40(void)
+static inline bool nrf54h_errata_40(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -779,7 +779,7 @@ static bool nrf54h_errata_40(void)
     #define NRF54H_ERRATA_41_ENABLE_WORKAROUND NRF54H_ERRATA_41_PRESENT
 #endif
 
-static bool nrf54h_errata_41(void)
+static inline bool nrf54h_errata_41(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -815,7 +815,7 @@ static bool nrf54h_errata_41(void)
     #define NRF54H_ERRATA_42_ENABLE_WORKAROUND NRF54H_ERRATA_42_PRESENT
 #endif
 
-static bool nrf54h_errata_42(void)
+static inline bool nrf54h_errata_42(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -851,7 +851,7 @@ static bool nrf54h_errata_42(void)
     #define NRF54H_ERRATA_43_ENABLE_WORKAROUND NRF54H_ERRATA_43_PRESENT
 #endif
 
-static bool nrf54h_errata_43(void)
+static inline bool nrf54h_errata_43(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -887,7 +887,7 @@ static bool nrf54h_errata_43(void)
     #define NRF54H_ERRATA_44_ENABLE_WORKAROUND NRF54H_ERRATA_44_PRESENT
 #endif
 
-static bool nrf54h_errata_44(void)
+static inline bool nrf54h_errata_44(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -923,7 +923,7 @@ static bool nrf54h_errata_44(void)
     #define NRF54H_ERRATA_45_ENABLE_WORKAROUND NRF54H_ERRATA_45_PRESENT
 #endif
 
-static bool nrf54h_errata_45(void)
+static inline bool nrf54h_errata_45(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -959,7 +959,7 @@ static bool nrf54h_errata_45(void)
     #define NRF54H_ERRATA_46_ENABLE_WORKAROUND NRF54H_ERRATA_46_PRESENT
 #endif
 
-static bool nrf54h_errata_46(void)
+static inline bool nrf54h_errata_46(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -995,7 +995,7 @@ static bool nrf54h_errata_46(void)
     #define NRF54H_ERRATA_47_ENABLE_WORKAROUND NRF54H_ERRATA_47_PRESENT
 #endif
 
-static bool nrf54h_errata_47(void)
+static inline bool nrf54h_errata_47(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1031,7 +1031,7 @@ static bool nrf54h_errata_47(void)
     #define NRF54H_ERRATA_50_ENABLE_WORKAROUND NRF54H_ERRATA_50_PRESENT
 #endif
 
-static bool nrf54h_errata_50(void)
+static inline bool nrf54h_errata_50(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1067,7 +1067,7 @@ static bool nrf54h_errata_50(void)
     #define NRF54H_ERRATA_51_ENABLE_WORKAROUND NRF54H_ERRATA_51_PRESENT
 #endif
 
-static bool nrf54h_errata_51(void)
+static inline bool nrf54h_errata_51(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1099,7 +1099,7 @@ static bool nrf54h_errata_51(void)
     #define NRF54H_ERRATA_53_ENABLE_WORKAROUND NRF54H_ERRATA_53_PRESENT
 #endif
 
-static bool nrf54h_errata_53(void)
+static inline bool nrf54h_errata_53(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1119,7 +1119,7 @@ static bool nrf54h_errata_53(void)
     #define NRF54H_ERRATA_55_ENABLE_WORKAROUND NRF54H_ERRATA_55_PRESENT
 #endif
 
-static bool nrf54h_errata_55(void)
+static inline bool nrf54h_errata_55(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1155,7 +1155,7 @@ static bool nrf54h_errata_55(void)
     #define NRF54H_ERRATA_57_ENABLE_WORKAROUND NRF54H_ERRATA_57_PRESENT
 #endif
 
-static bool nrf54h_errata_57(void)
+static inline bool nrf54h_errata_57(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1191,7 +1191,7 @@ static bool nrf54h_errata_57(void)
     #define NRF54H_ERRATA_58_ENABLE_WORKAROUND NRF54H_ERRATA_58_PRESENT
 #endif
 
-static bool nrf54h_errata_58(void)
+static inline bool nrf54h_errata_58(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1227,7 +1227,7 @@ static bool nrf54h_errata_58(void)
     #define NRF54H_ERRATA_62_ENABLE_WORKAROUND NRF54H_ERRATA_62_PRESENT
 #endif
 
-static bool nrf54h_errata_62(void)
+static inline bool nrf54h_errata_62(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1263,7 +1263,7 @@ static bool nrf54h_errata_62(void)
     #define NRF54H_ERRATA_63_ENABLE_WORKAROUND NRF54H_ERRATA_63_PRESENT
 #endif
 
-static bool nrf54h_errata_63(void)
+static inline bool nrf54h_errata_63(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1299,7 +1299,7 @@ static bool nrf54h_errata_63(void)
     #define NRF54H_ERRATA_64_ENABLE_WORKAROUND NRF54H_ERRATA_64_PRESENT
 #endif
 
-static bool nrf54h_errata_64(void)
+static inline bool nrf54h_errata_64(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1335,7 +1335,7 @@ static bool nrf54h_errata_64(void)
     #define NRF54H_ERRATA_65_ENABLE_WORKAROUND NRF54H_ERRATA_65_PRESENT
 #endif
 
-static bool nrf54h_errata_65(void)
+static inline bool nrf54h_errata_65(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1371,7 +1371,7 @@ static bool nrf54h_errata_65(void)
     #define NRF54H_ERRATA_66_ENABLE_WORKAROUND NRF54H_ERRATA_66_PRESENT
 #endif
 
-static bool nrf54h_errata_66(void)
+static inline bool nrf54h_errata_66(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1407,7 +1407,7 @@ static bool nrf54h_errata_66(void)
     #define NRF54H_ERRATA_67_ENABLE_WORKAROUND NRF54H_ERRATA_67_PRESENT
 #endif
 
-static bool nrf54h_errata_67(void)
+static inline bool nrf54h_errata_67(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1443,7 +1443,7 @@ static bool nrf54h_errata_67(void)
     #define NRF54H_ERRATA_69_ENABLE_WORKAROUND NRF54H_ERRATA_69_PRESENT
 #endif
 
-static bool nrf54h_errata_69(void)
+static inline bool nrf54h_errata_69(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1479,7 +1479,7 @@ static bool nrf54h_errata_69(void)
     #define NRF54H_ERRATA_72_ENABLE_WORKAROUND NRF54H_ERRATA_72_PRESENT
 #endif
 
-static bool nrf54h_errata_72(void)
+static inline bool nrf54h_errata_72(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1515,7 +1515,7 @@ static bool nrf54h_errata_72(void)
     #define NRF54H_ERRATA_73_ENABLE_WORKAROUND NRF54H_ERRATA_73_PRESENT
 #endif
 
-static bool nrf54h_errata_73(void)
+static inline bool nrf54h_errata_73(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1551,7 +1551,7 @@ static bool nrf54h_errata_73(void)
     #define NRF54H_ERRATA_74_ENABLE_WORKAROUND NRF54H_ERRATA_74_PRESENT
 #endif
 
-static bool nrf54h_errata_74(void)
+static inline bool nrf54h_errata_74(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1587,7 +1587,7 @@ static bool nrf54h_errata_74(void)
     #define NRF54H_ERRATA_75_ENABLE_WORKAROUND NRF54H_ERRATA_75_PRESENT
 #endif
 
-static bool nrf54h_errata_75(void)
+static inline bool nrf54h_errata_75(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1619,7 +1619,7 @@ static bool nrf54h_errata_75(void)
     #define NRF54H_ERRATA_76_ENABLE_WORKAROUND NRF54H_ERRATA_76_PRESENT
 #endif
 
-static bool nrf54h_errata_76(void)
+static inline bool nrf54h_errata_76(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1639,7 +1639,7 @@ static bool nrf54h_errata_76(void)
     #define NRF54H_ERRATA_77_ENABLE_WORKAROUND NRF54H_ERRATA_77_PRESENT
 #endif
 
-static bool nrf54h_errata_77(void)
+static inline bool nrf54h_errata_77(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1675,7 +1675,7 @@ static bool nrf54h_errata_77(void)
     #define NRF54H_ERRATA_78_ENABLE_WORKAROUND NRF54H_ERRATA_78_PRESENT
 #endif
 
-static bool nrf54h_errata_78(void)
+static inline bool nrf54h_errata_78(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1711,7 +1711,7 @@ static bool nrf54h_errata_78(void)
     #define NRF54H_ERRATA_84_ENABLE_WORKAROUND NRF54H_ERRATA_84_PRESENT
 #endif
 
-static bool nrf54h_errata_84(void)
+static inline bool nrf54h_errata_84(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1747,7 +1747,7 @@ static bool nrf54h_errata_84(void)
     #define NRF54H_ERRATA_92_ENABLE_WORKAROUND NRF54H_ERRATA_92_PRESENT
 #endif
 
-static bool nrf54h_errata_92(void)
+static inline bool nrf54h_errata_92(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1783,7 +1783,7 @@ static bool nrf54h_errata_92(void)
     #define NRF54H_ERRATA_93_ENABLE_WORKAROUND NRF54H_ERRATA_93_PRESENT
 #endif
 
-static bool nrf54h_errata_93(void)
+static inline bool nrf54h_errata_93(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1819,7 +1819,7 @@ static bool nrf54h_errata_93(void)
     #define NRF54H_ERRATA_103_ENABLE_WORKAROUND NRF54H_ERRATA_103_PRESENT
 #endif
 
-static bool nrf54h_errata_103(void)
+static inline bool nrf54h_errata_103(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1855,7 +1855,7 @@ static bool nrf54h_errata_103(void)
     #define NRF54H_ERRATA_104_ENABLE_WORKAROUND 0
 #endif
 
-static bool nrf54h_errata_104(void)
+static inline bool nrf54h_errata_104(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1891,7 +1891,7 @@ static bool nrf54h_errata_104(void)
     #define NRF54H_ERRATA_105_ENABLE_WORKAROUND NRF54H_ERRATA_105_PRESENT
 #endif
 
-static bool nrf54h_errata_105(void)
+static inline bool nrf54h_errata_105(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1927,7 +1927,7 @@ static bool nrf54h_errata_105(void)
     #define NRF54H_ERRATA_106_ENABLE_WORKAROUND NRF54H_ERRATA_106_PRESENT
 #endif
 
-static bool nrf54h_errata_106(void)
+static inline bool nrf54h_errata_106(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1963,7 +1963,7 @@ static bool nrf54h_errata_106(void)
     #define NRF54H_ERRATA_107_ENABLE_WORKAROUND NRF54H_ERRATA_107_PRESENT
 #endif
 
-static bool nrf54h_errata_107(void)
+static inline bool nrf54h_errata_107(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -1999,7 +1999,7 @@ static bool nrf54h_errata_107(void)
     #define NRF54H_ERRATA_109_ENABLE_WORKAROUND NRF54H_ERRATA_109_PRESENT
 #endif
 
-static bool nrf54h_errata_109(void)
+static inline bool nrf54h_errata_109(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2035,7 +2035,7 @@ static bool nrf54h_errata_109(void)
     #define NRF54H_ERRATA_110_ENABLE_WORKAROUND NRF54H_ERRATA_110_PRESENT
 #endif
 
-static bool nrf54h_errata_110(void)
+static inline bool nrf54h_errata_110(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2071,7 +2071,7 @@ static bool nrf54h_errata_110(void)
     #define NRF54H_ERRATA_111_ENABLE_WORKAROUND NRF54H_ERRATA_111_PRESENT
 #endif
 
-static bool nrf54h_errata_111(void)
+static inline bool nrf54h_errata_111(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2107,7 +2107,7 @@ static bool nrf54h_errata_111(void)
     #define NRF54H_ERRATA_112_ENABLE_WORKAROUND NRF54H_ERRATA_112_PRESENT
 #endif
 
-static bool nrf54h_errata_112(void)
+static inline bool nrf54h_errata_112(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2143,7 +2143,7 @@ static bool nrf54h_errata_112(void)
     #define NRF54H_ERRATA_115_ENABLE_WORKAROUND NRF54H_ERRATA_115_PRESENT
 #endif
 
-static bool nrf54h_errata_115(void)
+static inline bool nrf54h_errata_115(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2179,7 +2179,7 @@ static bool nrf54h_errata_115(void)
     #define NRF54H_ERRATA_116_ENABLE_WORKAROUND NRF54H_ERRATA_116_PRESENT
 #endif
 
-static bool nrf54h_errata_116(void)
+static inline bool nrf54h_errata_116(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2215,7 +2215,7 @@ static bool nrf54h_errata_116(void)
     #define NRF54H_ERRATA_117_ENABLE_WORKAROUND NRF54H_ERRATA_117_PRESENT
 #endif
 
-static bool nrf54h_errata_117(void)
+static inline bool nrf54h_errata_117(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2251,7 +2251,7 @@ static bool nrf54h_errata_117(void)
     #define NRF54H_ERRATA_118_ENABLE_WORKAROUND NRF54H_ERRATA_118_PRESENT
 #endif
 
-static bool nrf54h_errata_118(void)
+static inline bool nrf54h_errata_118(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2287,7 +2287,7 @@ static bool nrf54h_errata_118(void)
     #define NRF54H_ERRATA_119_ENABLE_WORKAROUND NRF54H_ERRATA_119_PRESENT
 #endif
 
-static bool nrf54h_errata_119(void)
+static inline bool nrf54h_errata_119(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2323,7 +2323,7 @@ static bool nrf54h_errata_119(void)
     #define NRF54H_ERRATA_120_ENABLE_WORKAROUND NRF54H_ERRATA_120_PRESENT
 #endif
 
-static bool nrf54h_errata_120(void)
+static inline bool nrf54h_errata_120(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2359,7 +2359,7 @@ static bool nrf54h_errata_120(void)
     #define NRF54H_ERRATA_121_ENABLE_WORKAROUND 0
 #endif
 
-static bool nrf54h_errata_121(void)
+static inline bool nrf54h_errata_121(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2395,7 +2395,7 @@ static bool nrf54h_errata_121(void)
     #define NRF54H_ERRATA_122_ENABLE_WORKAROUND NRF54H_ERRATA_122_PRESENT
 #endif
 
-static bool nrf54h_errata_122(void)
+static inline bool nrf54h_errata_122(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2431,7 +2431,7 @@ static bool nrf54h_errata_122(void)
     #define NRF54H_ERRATA_123_ENABLE_WORKAROUND NRF54H_ERRATA_123_PRESENT
 #endif
 
-static bool nrf54h_errata_123(void)
+static inline bool nrf54h_errata_123(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2467,7 +2467,7 @@ static bool nrf54h_errata_123(void)
     #define NRF54H_ERRATA_124_ENABLE_WORKAROUND 0
 #endif
 
-static bool nrf54h_errata_124(void)
+static inline bool nrf54h_errata_124(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2499,7 +2499,7 @@ static bool nrf54h_errata_124(void)
     #define NRF54H_ERRATA_125_ENABLE_WORKAROUND NRF54H_ERRATA_125_PRESENT
 #endif
 
-static bool nrf54h_errata_125(void)
+static inline bool nrf54h_errata_125(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2515,7 +2515,7 @@ static bool nrf54h_errata_125(void)
     #define NRF54H_ERRATA_126_ENABLE_WORKAROUND NRF54H_ERRATA_126_PRESENT
 #endif
 
-static bool nrf54h_errata_126(void)
+static inline bool nrf54h_errata_126(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2535,7 +2535,7 @@ static bool nrf54h_errata_126(void)
     #define NRF54H_ERRATA_127_ENABLE_WORKAROUND NRF54H_ERRATA_127_PRESENT
 #endif
 
-static bool nrf54h_errata_127(void)
+static inline bool nrf54h_errata_127(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2571,7 +2571,7 @@ static bool nrf54h_errata_127(void)
     #define NRF54H_ERRATA_128_ENABLE_WORKAROUND NRF54H_ERRATA_128_PRESENT
 #endif
 
-static bool nrf54h_errata_128(void)
+static inline bool nrf54h_errata_128(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2607,7 +2607,7 @@ static bool nrf54h_errata_128(void)
     #define NRF54H_ERRATA_129_ENABLE_WORKAROUND NRF54H_ERRATA_129_PRESENT
 #endif
 
-static bool nrf54h_errata_129(void)
+static inline bool nrf54h_errata_129(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2643,7 +2643,7 @@ static bool nrf54h_errata_129(void)
     #define NRF54H_ERRATA_130_ENABLE_WORKAROUND NRF54H_ERRATA_130_PRESENT
 #endif
 
-static bool nrf54h_errata_130(void)
+static inline bool nrf54h_errata_130(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2679,7 +2679,7 @@ static bool nrf54h_errata_130(void)
     #define NRF54H_ERRATA_131_ENABLE_WORKAROUND NRF54H_ERRATA_131_PRESENT
 #endif
 
-static bool nrf54h_errata_131(void)
+static inline bool nrf54h_errata_131(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2715,7 +2715,7 @@ static bool nrf54h_errata_131(void)
     #define NRF54H_ERRATA_132_ENABLE_WORKAROUND NRF54H_ERRATA_132_PRESENT
 #endif
 
-static bool nrf54h_errata_132(void)
+static inline bool nrf54h_errata_132(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2751,7 +2751,7 @@ static bool nrf54h_errata_132(void)
     #define NRF54H_ERRATA_133_ENABLE_WORKAROUND NRF54H_ERRATA_133_PRESENT
 #endif
 
-static bool nrf54h_errata_133(void)
+static inline bool nrf54h_errata_133(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2787,7 +2787,7 @@ static bool nrf54h_errata_133(void)
     #define NRF54H_ERRATA_134_ENABLE_WORKAROUND NRF54H_ERRATA_134_PRESENT
 #endif
 
-static bool nrf54h_errata_134(void)
+static inline bool nrf54h_errata_134(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2823,7 +2823,7 @@ static bool nrf54h_errata_134(void)
     #define NRF54H_ERRATA_135_ENABLE_WORKAROUND NRF54H_ERRATA_135_PRESENT
 #endif
 
-static bool nrf54h_errata_135(void)
+static inline bool nrf54h_errata_135(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2859,7 +2859,7 @@ static bool nrf54h_errata_135(void)
     #define NRF54H_ERRATA_136_ENABLE_WORKAROUND NRF54H_ERRATA_136_PRESENT
 #endif
 
-static bool nrf54h_errata_136(void)
+static inline bool nrf54h_errata_136(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2895,7 +2895,7 @@ static bool nrf54h_errata_136(void)
     #define NRF54H_ERRATA_137_ENABLE_WORKAROUND NRF54H_ERRATA_137_PRESENT
 #endif
 
-static bool nrf54h_errata_137(void)
+static inline bool nrf54h_errata_137(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2931,7 +2931,7 @@ static bool nrf54h_errata_137(void)
     #define NRF54H_ERRATA_138_ENABLE_WORKAROUND NRF54H_ERRATA_138_PRESENT
 #endif
 
-static bool nrf54h_errata_138(void)
+static inline bool nrf54h_errata_138(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -2967,7 +2967,7 @@ static bool nrf54h_errata_138(void)
     #define NRF54H_ERRATA_139_ENABLE_WORKAROUND NRF54H_ERRATA_139_PRESENT
 #endif
 
-static bool nrf54h_errata_139(void)
+static inline bool nrf54h_errata_139(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3003,7 +3003,7 @@ static bool nrf54h_errata_139(void)
     #define NRF54H_ERRATA_140_ENABLE_WORKAROUND NRF54H_ERRATA_140_PRESENT
 #endif
 
-static bool nrf54h_errata_140(void)
+static inline bool nrf54h_errata_140(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3039,7 +3039,7 @@ static bool nrf54h_errata_140(void)
     #define NRF54H_ERRATA_141_ENABLE_WORKAROUND NRF54H_ERRATA_141_PRESENT
 #endif
 
-static bool nrf54h_errata_141(void)
+static inline bool nrf54h_errata_141(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3075,7 +3075,7 @@ static bool nrf54h_errata_141(void)
     #define NRF54H_ERRATA_142_ENABLE_WORKAROUND NRF54H_ERRATA_142_PRESENT
 #endif
 
-static bool nrf54h_errata_142(void)
+static inline bool nrf54h_errata_142(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3111,7 +3111,7 @@ static bool nrf54h_errata_142(void)
     #define NRF54H_ERRATA_143_ENABLE_WORKAROUND NRF54H_ERRATA_143_PRESENT
 #endif
 
-static bool nrf54h_errata_143(void)
+static inline bool nrf54h_errata_143(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3147,7 +3147,7 @@ static bool nrf54h_errata_143(void)
     #define NRF54H_ERRATA_146_ENABLE_WORKAROUND NRF54H_ERRATA_146_PRESENT
 #endif
 
-static bool nrf54h_errata_146(void)
+static inline bool nrf54h_errata_146(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3183,7 +3183,7 @@ static bool nrf54h_errata_146(void)
     #define NRF54H_ERRATA_148_ENABLE_WORKAROUND NRF54H_ERRATA_148_PRESENT
 #endif
 
-static bool nrf54h_errata_148(void)
+static inline bool nrf54h_errata_148(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3219,7 +3219,7 @@ static bool nrf54h_errata_148(void)
     #define NRF54H_ERRATA_149_ENABLE_WORKAROUND NRF54H_ERRATA_149_PRESENT
 #endif
 
-static bool nrf54h_errata_149(void)
+static inline bool nrf54h_errata_149(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3255,7 +3255,7 @@ static bool nrf54h_errata_149(void)
     #define NRF54H_ERRATA_151_ENABLE_WORKAROUND NRF54H_ERRATA_151_PRESENT
 #endif
 
-static bool nrf54h_errata_151(void)
+static inline bool nrf54h_errata_151(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3291,7 +3291,7 @@ static bool nrf54h_errata_151(void)
     #define NRF54H_ERRATA_152_ENABLE_WORKAROUND NRF54H_ERRATA_152_PRESENT
 #endif
 
-static bool nrf54h_errata_152(void)
+static inline bool nrf54h_errata_152(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3327,7 +3327,7 @@ static bool nrf54h_errata_152(void)
     #define NRF54H_ERRATA_156_ENABLE_WORKAROUND NRF54H_ERRATA_156_PRESENT
 #endif
 
-static bool nrf54h_errata_156(void)
+static inline bool nrf54h_errata_156(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3363,7 +3363,7 @@ static bool nrf54h_errata_156(void)
     #define NRF54H_ERRATA_157_ENABLE_WORKAROUND NRF54H_ERRATA_157_PRESENT
 #endif
 
-static bool nrf54h_errata_157(void)
+static inline bool nrf54h_errata_157(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3399,7 +3399,7 @@ static bool nrf54h_errata_157(void)
     #define NRF54H_ERRATA_158_ENABLE_WORKAROUND NRF54H_ERRATA_158_PRESENT
 #endif
 
-static bool nrf54h_errata_158(void)
+static inline bool nrf54h_errata_158(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3435,7 +3435,7 @@ static bool nrf54h_errata_158(void)
     #define NRF54H_ERRATA_159_ENABLE_WORKAROUND NRF54H_ERRATA_159_PRESENT
 #endif
 
-static bool nrf54h_errata_159(void)
+static inline bool nrf54h_errata_159(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3471,7 +3471,7 @@ static bool nrf54h_errata_159(void)
     #define NRF54H_ERRATA_160_ENABLE_WORKAROUND NRF54H_ERRATA_160_PRESENT
 #endif
 
-static bool nrf54h_errata_160(void)
+static inline bool nrf54h_errata_160(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3507,7 +3507,7 @@ static bool nrf54h_errata_160(void)
     #define NRF54H_ERRATA_161_ENABLE_WORKAROUND NRF54H_ERRATA_161_PRESENT
 #endif
 
-static bool nrf54h_errata_161(void)
+static inline bool nrf54h_errata_161(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3543,7 +3543,7 @@ static bool nrf54h_errata_161(void)
     #define NRF54H_ERRATA_162_ENABLE_WORKAROUND NRF54H_ERRATA_162_PRESENT
 #endif
 
-static bool nrf54h_errata_162(void)
+static inline bool nrf54h_errata_162(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3579,7 +3579,7 @@ static bool nrf54h_errata_162(void)
     #define NRF54H_ERRATA_163_ENABLE_WORKAROUND NRF54H_ERRATA_163_PRESENT
 #endif
 
-static bool nrf54h_errata_163(void)
+static inline bool nrf54h_errata_163(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3615,7 +3615,7 @@ static bool nrf54h_errata_163(void)
     #define NRF54H_ERRATA_165_ENABLE_WORKAROUND NRF54H_ERRATA_165_PRESENT
 #endif
 
-static bool nrf54h_errata_165(void)
+static inline bool nrf54h_errata_165(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3647,7 +3647,7 @@ static bool nrf54h_errata_165(void)
     #define NRF54H_ERRATA_166_ENABLE_WORKAROUND NRF54H_ERRATA_166_PRESENT
 #endif
 
-static bool nrf54h_errata_166(void)
+static inline bool nrf54h_errata_166(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3667,7 +3667,7 @@ static bool nrf54h_errata_166(void)
     #define NRF54H_ERRATA_169_ENABLE_WORKAROUND NRF54H_ERRATA_169_PRESENT
 #endif
 
-static bool nrf54h_errata_169(void)
+static inline bool nrf54h_errata_169(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3703,7 +3703,7 @@ static bool nrf54h_errata_169(void)
     #define NRF54H_ERRATA_171_ENABLE_WORKAROUND NRF54H_ERRATA_171_PRESENT
 #endif
 
-static bool nrf54h_errata_171(void)
+static inline bool nrf54h_errata_171(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3739,7 +3739,7 @@ static bool nrf54h_errata_171(void)
     #define NRF54H_ERRATA_173_ENABLE_WORKAROUND NRF54H_ERRATA_173_PRESENT
 #endif
 
-static bool nrf54h_errata_173(void)
+static inline bool nrf54h_errata_173(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3775,7 +3775,7 @@ static bool nrf54h_errata_173(void)
     #define NRF54H_ERRATA_175_ENABLE_WORKAROUND NRF54H_ERRATA_175_PRESENT
 #endif
 
-static bool nrf54h_errata_175(void)
+static inline bool nrf54h_errata_175(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3811,7 +3811,7 @@ static bool nrf54h_errata_175(void)
     #define NRF54H_ERRATA_177_ENABLE_WORKAROUND NRF54H_ERRATA_177_PRESENT
 #endif
 
-static bool nrf54h_errata_177(void)
+static inline bool nrf54h_errata_177(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3847,7 +3847,7 @@ static bool nrf54h_errata_177(void)
     #define NRF54H_ERRATA_178_ENABLE_WORKAROUND NRF54H_ERRATA_178_PRESENT
 #endif
 
-static bool nrf54h_errata_178(void)
+static inline bool nrf54h_errata_178(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3883,7 +3883,7 @@ static bool nrf54h_errata_178(void)
     #define NRF54H_ERRATA_179_ENABLE_WORKAROUND NRF54H_ERRATA_179_PRESENT
 #endif
 
-static bool nrf54h_errata_179(void)
+static inline bool nrf54h_errata_179(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3919,7 +3919,7 @@ static bool nrf54h_errata_179(void)
     #define NRF54H_ERRATA_182_ENABLE_WORKAROUND NRF54H_ERRATA_182_PRESENT
 #endif
 
-static bool nrf54h_errata_182(void)
+static inline bool nrf54h_errata_182(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3955,7 +3955,7 @@ static bool nrf54h_errata_182(void)
     #define NRF54H_ERRATA_184_ENABLE_WORKAROUND NRF54H_ERRATA_184_PRESENT
 #endif
 
-static bool nrf54h_errata_184(void)
+static inline bool nrf54h_errata_184(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -3991,7 +3991,7 @@ static bool nrf54h_errata_184(void)
     #define NRF54H_ERRATA_185_ENABLE_WORKAROUND NRF54H_ERRATA_185_PRESENT
 #endif
 
-static bool nrf54h_errata_185(void)
+static inline bool nrf54h_errata_185(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4027,7 +4027,7 @@ static bool nrf54h_errata_185(void)
     #define NRF54H_ERRATA_186_ENABLE_WORKAROUND NRF54H_ERRATA_186_PRESENT
 #endif
 
-static bool nrf54h_errata_186(void)
+static inline bool nrf54h_errata_186(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4063,7 +4063,7 @@ static bool nrf54h_errata_186(void)
     #define NRF54H_ERRATA_187_ENABLE_WORKAROUND NRF54H_ERRATA_187_PRESENT
 #endif
 
-static bool nrf54h_errata_187(void)
+static inline bool nrf54h_errata_187(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4099,7 +4099,7 @@ static bool nrf54h_errata_187(void)
     #define NRF54H_ERRATA_190_ENABLE_WORKAROUND NRF54H_ERRATA_190_PRESENT
 #endif
 
-static bool nrf54h_errata_190(void)
+static inline bool nrf54h_errata_190(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4135,7 +4135,7 @@ static bool nrf54h_errata_190(void)
     #define NRF54H_ERRATA_192_ENABLE_WORKAROUND NRF54H_ERRATA_192_PRESENT
 #endif
 
-static bool nrf54h_errata_192(void)
+static inline bool nrf54h_errata_192(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4171,7 +4171,7 @@ static bool nrf54h_errata_192(void)
     #define NRF54H_ERRATA_193_ENABLE_WORKAROUND NRF54H_ERRATA_193_PRESENT
 #endif
 
-static bool nrf54h_errata_193(void)
+static inline bool nrf54h_errata_193(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4207,7 +4207,7 @@ static bool nrf54h_errata_193(void)
     #define NRF54H_ERRATA_194_ENABLE_WORKAROUND NRF54H_ERRATA_194_PRESENT
 #endif
 
-static bool nrf54h_errata_194(void)
+static inline bool nrf54h_errata_194(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4243,7 +4243,7 @@ static bool nrf54h_errata_194(void)
     #define NRF54H_ERRATA_195_ENABLE_WORKAROUND NRF54H_ERRATA_195_PRESENT
 #endif
 
-static bool nrf54h_errata_195(void)
+static inline bool nrf54h_errata_195(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4279,7 +4279,7 @@ static bool nrf54h_errata_195(void)
     #define NRF54H_ERRATA_196_ENABLE_WORKAROUND NRF54H_ERRATA_196_PRESENT
 #endif
 
-static bool nrf54h_errata_196(void)
+static inline bool nrf54h_errata_196(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4315,7 +4315,7 @@ static bool nrf54h_errata_196(void)
     #define NRF54H_ERRATA_198_ENABLE_WORKAROUND NRF54H_ERRATA_198_PRESENT
 #endif
 
-static bool nrf54h_errata_198(void)
+static inline bool nrf54h_errata_198(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4351,7 +4351,7 @@ static bool nrf54h_errata_198(void)
     #define NRF54H_ERRATA_200_ENABLE_WORKAROUND NRF54H_ERRATA_200_PRESENT
 #endif
 
-static bool nrf54h_errata_200(void)
+static inline bool nrf54h_errata_200(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4387,7 +4387,7 @@ static bool nrf54h_errata_200(void)
     #define NRF54H_ERRATA_201_ENABLE_WORKAROUND NRF54H_ERRATA_201_PRESENT
 #endif
 
-static bool nrf54h_errata_201(void)
+static inline bool nrf54h_errata_201(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4423,7 +4423,7 @@ static bool nrf54h_errata_201(void)
     #define NRF54H_ERRATA_202_ENABLE_WORKAROUND NRF54H_ERRATA_202_PRESENT
 #endif
 
-static bool nrf54h_errata_202(void)
+static inline bool nrf54h_errata_202(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4459,7 +4459,7 @@ static bool nrf54h_errata_202(void)
     #define NRF54H_ERRATA_205_ENABLE_WORKAROUND NRF54H_ERRATA_205_PRESENT
 #endif
 
-static bool nrf54h_errata_205(void)
+static inline bool nrf54h_errata_205(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4495,7 +4495,7 @@ static bool nrf54h_errata_205(void)
     #define NRF54H_ERRATA_206_ENABLE_WORKAROUND NRF54H_ERRATA_206_PRESENT
 #endif
 
-static bool nrf54h_errata_206(void)
+static inline bool nrf54h_errata_206(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4531,7 +4531,7 @@ static bool nrf54h_errata_206(void)
     #define NRF54H_ERRATA_207_ENABLE_WORKAROUND NRF54H_ERRATA_207_PRESENT
 #endif
 
-static bool nrf54h_errata_207(void)
+static inline bool nrf54h_errata_207(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4567,7 +4567,7 @@ static bool nrf54h_errata_207(void)
     #define NRF54H_ERRATA_208_ENABLE_WORKAROUND NRF54H_ERRATA_208_PRESENT
 #endif
 
-static bool nrf54h_errata_208(void)
+static inline bool nrf54h_errata_208(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4603,7 +4603,7 @@ static bool nrf54h_errata_208(void)
     #define NRF54H_ERRATA_209_ENABLE_WORKAROUND NRF54H_ERRATA_209_PRESENT
 #endif
 
-static bool nrf54h_errata_209(void)
+static inline bool nrf54h_errata_209(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4639,7 +4639,7 @@ static bool nrf54h_errata_209(void)
     #define NRF54H_ERRATA_210_ENABLE_WORKAROUND NRF54H_ERRATA_210_PRESENT
 #endif
 
-static bool nrf54h_errata_210(void)
+static inline bool nrf54h_errata_210(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4675,7 +4675,7 @@ static bool nrf54h_errata_210(void)
     #define NRF54H_ERRATA_212_ENABLE_WORKAROUND NRF54H_ERRATA_212_PRESENT
 #endif
 
-static bool nrf54h_errata_212(void)
+static inline bool nrf54h_errata_212(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4711,7 +4711,7 @@ static bool nrf54h_errata_212(void)
     #define NRF54H_ERRATA_213_ENABLE_WORKAROUND NRF54H_ERRATA_213_PRESENT
 #endif
 
-static bool nrf54h_errata_213(void)
+static inline bool nrf54h_errata_213(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4747,7 +4747,7 @@ static bool nrf54h_errata_213(void)
     #define NRF54H_ERRATA_216_ENABLE_WORKAROUND NRF54H_ERRATA_216_PRESENT
 #endif
 
-static bool nrf54h_errata_216(void)
+static inline bool nrf54h_errata_216(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4783,7 +4783,7 @@ static bool nrf54h_errata_216(void)
     #define NRF54H_ERRATA_217_ENABLE_WORKAROUND NRF54H_ERRATA_217_PRESENT
 #endif
 
-static bool nrf54h_errata_217(void)
+static inline bool nrf54h_errata_217(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4819,7 +4819,7 @@ static bool nrf54h_errata_217(void)
     #define NRF54H_ERRATA_218_ENABLE_WORKAROUND NRF54H_ERRATA_218_PRESENT
 #endif
 
-static bool nrf54h_errata_218(void)
+static inline bool nrf54h_errata_218(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4855,7 +4855,7 @@ static bool nrf54h_errata_218(void)
     #define NRF54H_ERRATA_229_ENABLE_WORKAROUND NRF54H_ERRATA_229_PRESENT
 #endif
 
-static bool nrf54h_errata_229(void)
+static inline bool nrf54h_errata_229(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4891,7 +4891,7 @@ static bool nrf54h_errata_229(void)
     #define NRF54H_ERRATA_230_ENABLE_WORKAROUND NRF54H_ERRATA_230_PRESENT
 #endif
 
-static bool nrf54h_errata_230(void)
+static inline bool nrf54h_errata_230(void)
 {
     #ifndef NRF54H_SERIES
         return false;
@@ -4927,7 +4927,7 @@ static bool nrf54h_errata_230(void)
     #define NRF54H_ERRATA_231_ENABLE_WORKAROUND NRF54H_ERRATA_231_PRESENT
 #endif
 
-static bool nrf54h_errata_231(void)
+static inline bool nrf54h_errata_231(void)
 {
     #ifndef NRF54H_SERIES
         return false;

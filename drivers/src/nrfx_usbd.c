@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -456,7 +456,7 @@ bool nrfx_usbd_consumer(
     nrfx_usbd_transfer_t * p_transfer = (nrfx_usbd_transfer_t *)p_context;
     NRFX_ASSERT(ep_size >= data_size);
     NRFX_ASSERT((p_transfer->p_data.rx == NULL) ||
-        nrfx_is_in_ram(p_transfer->p_data.rx));
+        nrf_dma_accessible_check(NRF_USBD, p_transfer->p_data.rx));
 
     size_t size = p_transfer->size;
     if (size < data_size)
@@ -493,7 +493,7 @@ bool nrfx_usbd_feeder_ram(
     size_t ep_size)
 {
     nrfx_usbd_transfer_t * p_transfer = (nrfx_usbd_transfer_t *)p_context;
-    NRFX_ASSERT(nrfx_is_in_ram(p_transfer->p_data.tx));
+    NRFX_ASSERT(nrf_dma_accessible_check(NRF_USBD, p_transfer->p_data.tx));
 
     size_t tx_size = p_transfer->size;
     if (tx_size > ep_size)
@@ -526,7 +526,7 @@ bool nrfx_usbd_feeder_ram_zlp(
     size_t ep_size)
 {
     nrfx_usbd_transfer_t * p_transfer = (nrfx_usbd_transfer_t *)p_context;
-    NRFX_ASSERT(nrfx_is_in_ram(p_transfer->p_data.tx));
+    NRFX_ASSERT(nrf_dma_accessible_check(NRF_USBD, p_transfer->p_data.tx));
 
     size_t tx_size = p_transfer->size;
     if (tx_size > ep_size)
@@ -556,7 +556,7 @@ bool nrfx_usbd_feeder_ram_zlp(
 bool nrfx_usbd_feeder_flash(nrfx_usbd_ep_transfer_t * p_next, void * p_context, size_t ep_size)
 {
     nrfx_usbd_transfer_t * p_transfer = (nrfx_usbd_transfer_t *)p_context;
-    NRFX_ASSERT(!nrfx_is_in_ram(p_transfer->p_data.tx));
+    NRFX_ASSERT(!nrf_dma_accessible_check(NRF_USBD, p_transfer->p_data.tx));
 
     size_t tx_size  = p_transfer->size;
     void * p_buffer = nrfx_usbd_feeder_buffer_get();
@@ -591,7 +591,7 @@ bool nrfx_usbd_feeder_flash(nrfx_usbd_ep_transfer_t * p_next, void * p_context, 
 bool nrfx_usbd_feeder_flash_zlp(nrfx_usbd_ep_transfer_t * p_next, void * p_context, size_t ep_size)
 {
     nrfx_usbd_transfer_t * p_transfer = (nrfx_usbd_transfer_t *)p_context;
-    NRFX_ASSERT(!nrfx_is_in_ram(p_transfer->p_data.tx));
+    NRFX_ASSERT(!nrf_dma_accessible_check(NRF_USBD, p_transfer->p_data.tx));
 
     size_t tx_size  = p_transfer->size;
     void * p_buffer = nrfx_usbd_feeder_buffer_get();
@@ -2061,7 +2061,7 @@ int nrfx_usbd_ep_transfer(
         if (NRF_USBD_EPIN_CHECK(ep))
         {
             p_context = m_ep_feeder_state + NRF_USBD_EP_NR_GET(ep);
-            if (nrfx_is_in_ram(p_transfer->p_data.tx))
+            if (nrf_dma_accessible_check(NRF_USBD, p_transfer->p_data.tx))
             {
                 /* RAM */
                 if (0 == (p_transfer->flags & NRFX_USBD_TRANSFER_ZLP_FLAG))
@@ -2113,7 +2113,8 @@ int nrfx_usbd_ep_transfer(
         else
         {
             p_context = m_ep_consumer_state + NRF_USBD_EP_NR_GET(ep);
-            NRFX_ASSERT((p_transfer->p_data.rx == NULL) || (nrfx_is_in_ram(p_transfer->p_data.rx)));
+            NRFX_ASSERT((p_transfer->p_data.rx == NULL) ||
+                        (nrf_dma_accessible_check(NRF_USBD, p_transfer->p_data.rx)));
             p_state->handler.consumer = nrfx_usbd_consumer;
         }
         *p_context = *p_transfer;

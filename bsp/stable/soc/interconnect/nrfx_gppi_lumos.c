@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2025 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -111,7 +111,7 @@ static const nrfx_gppi_route_t **dppi_route_map[] = {
 	mcu_routes, rad_routes, peri_routes, lp_routes
 };
 
-uint32_t nrfx_gppi_domain_id_get(uint32_t addr)
+__WEAK uint32_t nrfx_gppi_domain_id_get(uint32_t addr)
 {
 	return ((addr >> 18) & 0x7) - 1;
 }

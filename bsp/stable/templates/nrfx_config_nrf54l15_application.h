@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2024 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -170,6 +170,15 @@
  */
 #ifndef NRFX_CRACEN_ENABLED
 #define NRFX_CRACEN_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_CRACEN_BSIM_SUPPORT
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_CRACEN_BSIM_SUPPORT
+#define NRFX_CRACEN_BSIM_SUPPORT 0
 #endif
 
 /**

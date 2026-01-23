@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2026, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -152,7 +152,7 @@ static inline void nrf54l_handle_secureapprotect_signal(volatile uint32_t * sign
          ENABLE_SECURE_APPROTECT and ENABLE_SECURE_APPROTECT_USER_HANDLING. */
 static inline void nrf54l_handle_approtect(void)
 {
-#if defined (NRF54LS05B_ENGA_XXAA)
+#if defined (NRF54LS05B_XXAA)
     nrf54l_handle_approtect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].DBGEN.CTRL);
     nrf54l_handle_approtect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].NIDEN.CTRL);
 #else

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -135,6 +135,15 @@ typedef enum
 #endif
 } nrf_ppi_task_t;
 
+/**
+ * @brief Macro for determining if endpoint address is an event.
+ *
+ * @param[in] task_or_event Address of the event or task for which publish/subscribe
+ *                          register is to be used.
+ */
+#if !defined(NRF_PPI_ENDPOINT_IS_EVENT)
+#define NRF_PPI_ENDPOINT_IS_EVENT(task_or_event) ((task_or_event) & NRFX_BIT(8))
+#endif
 
 /**
  * @brief Function for enabling a given PPI channel.
@@ -217,6 +226,17 @@ NRF_STATIC_INLINE void nrf_ppi_channel_endpoint_setup(NRF_PPI_Type *    p_reg,
 NRF_STATIC_INLINE void nrf_ppi_event_endpoint_setup(NRF_PPI_Type *    p_reg,
                                                     nrf_ppi_channel_t channel,
                                                     uint32_t          eep);
+
+/**
+ * @brief Function for getting the event endpoint of a given PPI channel.
+ *
+ * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
+ * @param[in] channel Channel of requested task endpoint.
+ *
+ * @return Event endpoint for a given PPI channel.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ppi_event_endpoint_get(NRF_PPI_Type const * p_reg,
+                                                      nrf_ppi_channel_t    channel);
 
 /**
  * @brief Function for setting up the task endpoint for a given PPI channel.
@@ -505,6 +525,12 @@ NRF_STATIC_INLINE void nrf_ppi_event_endpoint_setup(NRF_PPI_Type *    p_reg,
                                                     uint32_t          eep)
 {
     p_reg->CH[(uint32_t) channel].EEP = eep;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_ppi_event_endpoint_get(NRF_PPI_Type const * p_reg,
+                                                      nrf_ppi_channel_t    channel)
+{
+    return p_reg->CH[(uint32_t)channel].EEP;
 }
 
 NRF_STATIC_INLINE void nrf_ppi_task_endpoint_setup(NRF_PPI_Type *    p_reg,

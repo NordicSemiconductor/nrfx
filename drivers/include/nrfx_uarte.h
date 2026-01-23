@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -170,7 +170,7 @@ typedef struct
     .cb    = {0},                   \
 }
 
-/**@defgroup NRFX_UARTE_RX_ENABLE_FLAGS Flags used for @ref nrfx_uarte_rx_enable.
+/**@defgroup NRFX_UARTE_RX_ENABLE_FLAGS Flags used for RX.
  * @{ */
 
 /**
@@ -212,7 +212,7 @@ typedef struct
 
 /**@} */
 
-/**@defgroup NRFX_UARTE_TX_FLAGS Flags used for @ref nrfx_uarte_tx.
+/**@defgroup NRFX_UARTE_TX_FLAGS Flags used for TX.
  *
  * Flags apply only if an instance is initialized with a user handler. Otherwise flags are
  * ignored and all transfers are blocking.
@@ -278,7 +278,7 @@ typedef struct
 
 /**@} */
 
-/**@defgroup NRFX_UARTE_TX_DONE_FLAGS Flags used for @ref nrfx_uarte_tx_evt_t.
+/**@defgroup NRFX_UARTE_TX_DONE_FLAGS Flags used for TX event.
  * @{ */
 
 /** @brief Flag indicating that TX transfer was aborted. */

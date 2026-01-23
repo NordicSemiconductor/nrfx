@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -96,6 +96,27 @@ extern "C" {
 #define NRF_RESET_HAS_CTRLAPPIN_RESET 0
 #endif
 
+#if defined(RESET_RESETREAS_DIF_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether DIF reset is present. */
+#define NRF_RESET_HAS_DIF_RESET 1
+#else
+#define NRF_RESET_HAS_DIF_RESET 0
+#endif
+
+#if defined(RESET_RESETREAS_DOG0_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether DOG0 reset is present. */
+#define NRF_RESET_HAS_DOG0_RESET 1
+#else
+#define NRF_RESET_HAS_DOG0_RESET 0
+#endif
+
+#if defined(RESET_RESETREAS_DOG1_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether DOG1 reset is present. */
+#define NRF_RESET_HAS_DOG1_RESET 1
+#else
+#define NRF_RESET_HAS_DOG1_RESET 0
+#endif
+
 #if defined(RESET_RESETREAS_LPCOMP_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether LPCOMP reset is present. */
 #define NRF_RESET_HAS_LPCOMP_RESET 1
@@ -145,6 +166,13 @@ extern "C" {
 #define NRF_RESET_HAS_GRTC_RESET 0
 #endif
 
+#if defined(RESET_RESETREAS_OFF_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether OFF reset is present. */
+#define NRF_RESET_HAS_OFF_RESET 1
+#else
+#define NRF_RESET_HAS_OFF_RESET 0
+#endif
+
 #if defined(RESET_RESETREAS_SECTAMPER_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether SECTAMPER reset is present. */
 #define NRF_RESET_HAS_SECTAMPER_RESET 1
@@ -156,15 +184,23 @@ extern "C" {
 typedef enum
 {
     NRF_RESET_RESETREAS_RESETPIN_MASK   = RESET_RESETREAS_RESETPIN_Msk,   ///< Bit mask of RESETPIN field.
+#if NRF_RESET_HAS_DOG0_RESET
     NRF_RESET_RESETREAS_DOG0_MASK       = RESET_RESETREAS_DOG0_Msk,       ///< Bit mask of DOG0 field.
+#endif
     NRF_RESET_RESETREAS_SREQ_MASK       = RESET_RESETREAS_SREQ_Msk,       ///< Bit mask of SREQ field.
     NRF_RESET_RESETREAS_LOCKUP_MASK     = RESET_RESETREAS_LOCKUP_Msk,     ///< Bit mask of LOCKUP field.
+#if NRF_RESET_HAS_OFF_RESET
     NRF_RESET_RESETREAS_OFF_MASK        = RESET_RESETREAS_OFF_Msk,        ///< Bit mask of OFF field.
+#endif
+#if NRF_RESET_HAS_DIF_RESET
     NRF_RESET_RESETREAS_DIF_MASK        = RESET_RESETREAS_DIF_Msk,        ///< Bit mask of DIF field.
+#endif
 #if NRF_RESET_HAS_NFC_RESET
     NRF_RESET_RESETREAS_NFC_MASK        = RESET_RESETREAS_NFC_Msk,        ///< Bit mask of NFC field.
 #endif
+#if NRF_RESET_HAS_DOG1_RESET
     NRF_RESET_RESETREAS_DOG1_MASK       = RESET_RESETREAS_DOG1_Msk,       ///< Bit mask of DOG1 field.
+#endif
 #if NRF_RESET_HAS_CTRLAPSOFT_RESET
     NRF_RESET_RESETREAS_CTRLAPSOFT_MASK = RESET_RESETREAS_CTRLAPSOFT_Msk, ///< Bit mask of CTRLAPSOFT field.
 #endif

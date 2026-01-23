@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -358,7 +358,7 @@ uint32_t nrfx_pwm_simple_playback(nrfx_pwm_t *               p_instance,
 
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
     NRFX_ASSERT(playback_count > 0);
-    NRFX_ASSERT(nrfx_is_in_ram(p_sequence->values.p_raw));
+    NRFX_ASSERT(nrf_dma_accessible_check(p_instance->p_reg, p_sequence->values.p_raw));
 
     // To take advantage of the looping mechanism, we need to use both sequences
     // (single sequence can be played back only once).
@@ -404,8 +404,8 @@ uint32_t nrfx_pwm_complex_playback(nrfx_pwm_t *               p_instance,
 
     NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
     NRFX_ASSERT(playback_count > 0);
-    NRFX_ASSERT(nrfx_is_in_ram(p_sequence_0->values.p_raw));
-    NRFX_ASSERT(nrfx_is_in_ram(p_sequence_1->values.p_raw));
+    NRFX_ASSERT(nrf_dma_accessible_check(p_instance->p_reg, p_sequence_0->values.p_raw) &&
+                nrf_dma_accessible_check(p_instance->p_reg, p_sequence_1->values.p_raw));
 
     nrfy_pwm_sequence_set(p_instance->p_reg, 0, p_sequence_0);
     nrfy_pwm_sequence_set(p_instance->p_reg, 1, p_sequence_1);

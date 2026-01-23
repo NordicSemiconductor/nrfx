@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -80,7 +80,7 @@ extern "C" {
 #define NRF_RTC_WRAP(val) ((val) & RTC_COUNTER_COUNTER_Msk)
 
 /** @brief Macro for creating the interrupt bitmask for the specified compare channel. */
-#define NRF_RTC_CHANNEL_INT_MASK(ch)    ((uint32_t)(NRF_RTC_INT_COMPARE0_MASK) << (ch))
+#define NRF_RTC_CHANNEL_INT_MASK(ch)    ((uint32_t)(NRF_RTC_INT_COMPARE_0_MASK) << (ch))
 
 /** @brief Macro for creating the interrupt bitmask for all compare channels */
 #define NRF_RTC_ALL_CHANNELS_INT_MASK \
@@ -102,29 +102,51 @@ typedef enum
     NRF_RTC_TASK_CAPTURE_1        = offsetof(NRF_RTC_Type,TASKS_CAPTURE[1]), /**< Capture the counter value on channel 1. */
     NRF_RTC_TASK_CAPTURE_2        = offsetof(NRF_RTC_Type,TASKS_CAPTURE[2]), /**< Capture the counter value on channel 2. */
     NRF_RTC_TASK_CAPTURE_3        = offsetof(NRF_RTC_Type,TASKS_CAPTURE[3]), /**< Capture the counter value on channel 3. */
+#if defined(RTC_INTENSET_COMPARE7_Pos) || defined(__NRFX_DOXYGEN__)
+    NRF_RTC_TASK_CAPTURE_4        = offsetof(NRF_RTC_Type,TASKS_CAPTURE[4]), /**< Capture the counter value on channel 4. */
+    NRF_RTC_TASK_CAPTURE_5        = offsetof(NRF_RTC_Type,TASKS_CAPTURE[5]), /**< Capture the counter value on channel 5. */
+    NRF_RTC_TASK_CAPTURE_6        = offsetof(NRF_RTC_Type,TASKS_CAPTURE[6]), /**< Capture the counter value on channel 6. */
+    NRF_RTC_TASK_CAPTURE_7        = offsetof(NRF_RTC_Type,TASKS_CAPTURE[7])  /**< Capture the counter value on channel 7. */
+#endif
 #endif
 } nrf_rtc_task_t;
 
 /** @brief RTC events. */
 typedef enum
 {
-    NRF_RTC_EVENT_TICK        = offsetof(NRF_RTC_Type,EVENTS_TICK),       /**< Tick event. */
-    NRF_RTC_EVENT_OVERFLOW    = offsetof(NRF_RTC_Type,EVENTS_OVRFLW),     /**< Overflow event. */
-    NRF_RTC_EVENT_COMPARE_0   = offsetof(NRF_RTC_Type,EVENTS_COMPARE[0]), /**< Compare 0 event. */
-    NRF_RTC_EVENT_COMPARE_1   = offsetof(NRF_RTC_Type,EVENTS_COMPARE[1]), /**< Compare 1 event. */
-    NRF_RTC_EVENT_COMPARE_2   = offsetof(NRF_RTC_Type,EVENTS_COMPARE[2]), /**< Compare 2 event. */
-    NRF_RTC_EVENT_COMPARE_3   = offsetof(NRF_RTC_Type,EVENTS_COMPARE[3])  /**< Compare 3 event. */
+    NRF_RTC_EVENT_TICK      = offsetof(NRF_RTC_Type,EVENTS_TICK),       /**< Tick event. */
+    NRF_RTC_EVENT_OVERFLOW  = offsetof(NRF_RTC_Type,EVENTS_OVRFLW),     /**< Overflow event. */
+    NRF_RTC_EVENT_COMPARE_0 = offsetof(NRF_RTC_Type,EVENTS_COMPARE[0]), /**< Compare 0 event. */
+    NRF_RTC_EVENT_COMPARE_1 = offsetof(NRF_RTC_Type,EVENTS_COMPARE[1]), /**< Compare 1 event. */
+    NRF_RTC_EVENT_COMPARE_2 = offsetof(NRF_RTC_Type,EVENTS_COMPARE[2]), /**< Compare 2 event. */
+    NRF_RTC_EVENT_COMPARE_3 = offsetof(NRF_RTC_Type,EVENTS_COMPARE[3]), /**< Compare 3 event. */
+#if defined(RTC_INTENSET_COMPARE7_Pos) || defined(__NRFX_DOXYGEN__)
+    NRF_RTC_EVENT_COMPARE_4 = offsetof(NRF_RTC_Type,EVENTS_COMPARE[4]), /**< Compare 4 event. */
+    NRF_RTC_EVENT_COMPARE_5 = offsetof(NRF_RTC_Type,EVENTS_COMPARE[5]), /**< Compare 5 event. */
+    NRF_RTC_EVENT_COMPARE_6 = offsetof(NRF_RTC_Type,EVENTS_COMPARE[6]), /**< Compare 6 event. */
+    NRF_RTC_EVENT_COMPARE_7 = offsetof(NRF_RTC_Type,EVENTS_COMPARE[7])  /**< Compare 7 event. */
+#endif
 } nrf_rtc_event_t;
 
 /** @brief RTC interrupts. */
 typedef enum
 {
-    NRF_RTC_INT_TICK_MASK     = RTC_INTENSET_TICK_Msk,     /**< RTC interrupt from tick event. */
-    NRF_RTC_INT_OVERFLOW_MASK = RTC_INTENSET_OVRFLW_Msk,   /**< RTC interrupt from overflow event. */
-    NRF_RTC_INT_COMPARE0_MASK = RTC_INTENSET_COMPARE0_Msk, /**< RTC interrupt from compare event on channel 0. */
-    NRF_RTC_INT_COMPARE1_MASK = RTC_INTENSET_COMPARE1_Msk, /**< RTC interrupt from compare event on channel 1. */
-    NRF_RTC_INT_COMPARE2_MASK = RTC_INTENSET_COMPARE2_Msk, /**< RTC interrupt from compare event on channel 2. */
-    NRF_RTC_INT_COMPARE3_MASK = RTC_INTENSET_COMPARE3_Msk  /**< RTC interrupt from compare event on channel 3. */
+    NRF_RTC_INT_TICK_MASK      = RTC_INTENSET_TICK_Msk,     /**< RTC interrupt from tick event. */
+    NRF_RTC_INT_OVERFLOW_MASK  = RTC_INTENSET_OVRFLW_Msk,   /**< RTC interrupt from overflow event. */
+    NRF_RTC_INT_COMPARE0_MASK  = RTC_INTENSET_COMPARE0_Msk, /**< RTC interrupt from compare event on channel 0. @deprecated Use @ref NRF_RTC_INT_COMPARE_0_MASK instead. */
+    NRF_RTC_INT_COMPARE1_MASK  = RTC_INTENSET_COMPARE1_Msk, /**< RTC interrupt from compare event on channel 1. @deprecated Use @ref NRF_RTC_INT_COMPARE_1_MASK instead. */
+    NRF_RTC_INT_COMPARE2_MASK  = RTC_INTENSET_COMPARE2_Msk, /**< RTC interrupt from compare event on channel 2. @deprecated Use @ref NRF_RTC_INT_COMPARE_2_MASK instead. */
+    NRF_RTC_INT_COMPARE3_MASK  = RTC_INTENSET_COMPARE3_Msk, /**< RTC interrupt from compare event on channel 3. @deprecated Use @ref NRF_RTC_INT_COMPARE_3_MASK instead. */
+    NRF_RTC_INT_COMPARE_0_MASK = RTC_INTENSET_COMPARE0_Msk, /**< RTC interrupt from compare event on channel 0. */
+    NRF_RTC_INT_COMPARE_1_MASK = RTC_INTENSET_COMPARE1_Msk, /**< RTC interrupt from compare event on channel 1. */
+    NRF_RTC_INT_COMPARE_2_MASK = RTC_INTENSET_COMPARE2_Msk, /**< RTC interrupt from compare event on channel 2. */
+    NRF_RTC_INT_COMPARE_3_MASK = RTC_INTENSET_COMPARE3_Msk, /**< RTC interrupt from compare event on channel 3. */
+#if defined(RTC_INTENSET_COMPARE7_Pos) || defined(__NRFX_DOXYGEN__)
+    NRF_RTC_INT_COMPARE_4_MASK = RTC_INTENSET_COMPARE4_Msk, /**< RTC interrupt from compare event on channel 4. */
+    NRF_RTC_INT_COMPARE_5_MASK = RTC_INTENSET_COMPARE5_Msk, /**< RTC interrupt from compare event on channel 5. */
+    NRF_RTC_INT_COMPARE_6_MASK = RTC_INTENSET_COMPARE6_Msk, /**< RTC interrupt from compare event on channel 6. */
+    NRF_RTC_INT_COMPARE_7_MASK = RTC_INTENSET_COMPARE7_Msk  /**< RTC interrupt from compare event on channel 7. */
+#endif
 } nrf_rtc_int_t;
 
 /**

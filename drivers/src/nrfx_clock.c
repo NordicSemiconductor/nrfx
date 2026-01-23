@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -72,10 +72,12 @@ static void xo_event_handler(nrfx_clock_xo_event_type_t event)
 }
 #endif // NRF_CLOCK_HAS_XO
 
+#if NRF_CLOCK_HAS_LFCLK
 static void lfclk_event_handler(nrfx_clock_lfclk_evt_type_t event)
 {
     m_clock_cb.event_handler((nrfx_clock_evt_type_t)event);
 }
+#endif // NRF_CLOCK_HAS_LFCLK
 
 #if NRF_CLOCK_HAS_HFCLK192M
 static void hfclk192m_event_handler(void)
@@ -136,6 +138,7 @@ int nrfx_clock_init(nrfx_clock_event_handler_t event_handler)
     }
 #endif
 
+#if NRF_CLOCK_HAS_LFCLK
     err_code = nrfx_clock_lfclk_init(m_clock_cb.event_handler ? &lfclk_event_handler : NULL);
     if (err_code != 0)
     {
@@ -143,6 +146,7 @@ int nrfx_clock_init(nrfx_clock_event_handler_t event_handler)
                       NRFX_LOG_ERROR_STRING_GET(err_code));
         return err_code;
     }
+#endif // NRF_CLOCK_HAS_LFCLK
 
 #if NRF_CLOCK_HAS_HFCLK24M
     err_code = nrfx_clock_xo24m_init(m_clock_cb.event_handler ? &xo24m_event_handler : NULL);
@@ -201,7 +205,9 @@ void nrfx_clock_disable(void)
         }
     }
     nrf_clock_int_disable(NRF_CLOCK, NRF_CLOCK_INT_HF_STARTED_MASK |
+#if NRF_CLOCK_HAS_LFCLK
                                      NRF_CLOCK_INT_LF_STARTED_MASK |
+#endif
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED) && (NRF_CLOCK_HAS_CALIBRATION)
                                      NRF_CLOCK_INT_DONE_MASK |
 #if NRF_CLOCK_HAS_CALIBRATION_TIMER
@@ -223,8 +229,9 @@ void nrfx_clock_uninit(void)
 {
     NRFX_ASSERT(m_clock_cb.module_initialized);
 
+#if NRF_CLOCK_HAS_LFCLK
     nrfx_clock_lfclk_uninit();
-
+#endif
 #if NRF_CLOCK_HAS_HFCLK192M
     nrfx_clock_hfclk192m_uninit();
 #endif
@@ -254,9 +261,11 @@ void nrfx_clock_start(nrf_clock_domain_t domain)
     NRFX_ASSERT(m_clock_cb.module_initialized);
     switch (domain)
     {
+#if NRF_CLOCK_HAS_LFCLK
     case NRF_CLOCK_DOMAIN_LFCLK:
         nrfx_clock_lfclk_start();
         return;
+#endif
     case NRF_CLOCK_DOMAIN_HFCLK:
 #if NRF_CLOCK_HAS_XO
         nrfx_clock_xo_start();
@@ -297,9 +306,11 @@ void nrfx_clock_stop(nrf_clock_domain_t domain)
         nrfx_clock_xo_stop();
 #endif // NRF_CLOCK_HAS_HFCLK
         break;
+#if NRF_CLOCK_HAS_LFCLK
     case NRF_CLOCK_DOMAIN_LFCLK:
         nrfx_clock_lfclk_stop();
         break;
+#endif
 #if NRF_CLOCK_HAS_HFCLK192M
     case NRF_CLOCK_DOMAIN_HFCLK192M:
         nrfx_clock_hfclk192m_stop();
@@ -379,7 +390,9 @@ void nrfx_clock_irq_handler(void)
     nrfx_clock_xo_irq_handler();
 #endif
 
+#if NRF_CLOCK_HAS_LFCLK
     nrfx_clock_lfclk_irq_handler();
+#endif
 
 #if NRF_CLOCK_HAS_HFCLK192M
     nrfx_clock_hfclk192m_irq_handler();

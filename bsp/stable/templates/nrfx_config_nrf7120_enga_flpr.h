@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2024 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -846,12 +846,39 @@
 #endif
 
 /**
- * @brief NRFX_PRS_BOX_9_ENABLED
+ * @brief NRFX_PRS_BOX_5_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
  */
-#ifndef NRFX_PRS_BOX_9_ENABLED
-#define NRFX_PRS_BOX_9_ENABLED 0
+#ifndef NRFX_PRS_BOX_5_ENABLED
+#define NRFX_PRS_BOX_5_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_PRS_BOX_6_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_PRS_BOX_6_ENABLED
+#define NRFX_PRS_BOX_6_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_PRS_BOX_7_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_PRS_BOX_7_ENABLED
+#define NRFX_PRS_BOX_7_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_PRS_BOX_8_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_PRS_BOX_8_ENABLED
+#define NRFX_PRS_BOX_8_ENABLED 0
 #endif
 
 /**

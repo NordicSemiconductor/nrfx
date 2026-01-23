@@ -9,7 +9,11 @@ nrfx 4.0 introduces API and structure changes. This guide lists actions required
   - SoC-specific templates
   - SoC-specific defines from nrfx drivers
   - Soc-specific files from soc/ directory (IRQ handlers and interconnect)
-<br>Action : Always include `nrfx.h` header globally, do not include sub-headers like `nrf.h` or `nrf_erratas.h`.
+<br>Action : Always include `nrfx.h` header globally, do not include sub-headers like:
+- `nrf.h`
+- `nrf_erratas.h`
+- `nrf_mem.h`
+- `nrf_peripherals.h`
 
 ## Errata
 
@@ -37,7 +41,7 @@ nrfx 4.0 introduces API and structure changes. This guide lists actions required
 
 ## Error codes
 
-All nrfx drivers and helpers now return int errno values. Failed function execution is indicated by negative return value. `nrfx_err_t` type is deprecated.
+All nrfx drivers and helpers now return int errno values. Failed function execution is indicated by negative return value. `nrfx_err_t` type is deprecated. Expressions like `NRFX_ASSERT(err == NRFX_SUCCESS)` will no longer work as expected.
 <br>Action : Update the affected code. Update implementation of `NRFX_LOG_ERROR_STRING_GET` macro to new error type.
 
 ## Instance interrupt handlers
@@ -89,8 +93,44 @@ HALY is now deprecated for all peripherals.
 
 ### DPPI
 
-- Removed DPPI driver.
-    <br>Action : Use GPPI helper layer instead.
+- Removed DPPI driver. Use GPPI helper layer instead. If GPPI connection API is used then DPPI channels are handled internally. However, it is possible to allocate a specific group or channel and handle it outside of the GPPI driver, e.g. using HAL.
+
+- Each domain has one unique DPPI instance and domain ID can be used to identify which DPPI instance shall be used to allocate resources. `nrfx_gppi_domain_id_get(addr)` is used to derive the domain ID from a peripheral register address.
+
+    <br>Action : Replace following template code to allocate a specific DPPI channels
+```
+nrfx_dppi_t dppi = NRFX_DPPI_INSTANCE(20);
+uint8_t chan;
+nrf_dppi_channel_group_t group_chan;
+nrfx_err_t err;
+
+err = nrfx_dppi_channel_alloc(&dppi, &chan);
+if (err != NRFX_SUCCESS) return err;
+
+err = nrfx_dppi_group_alloc(&dppi, &group_chan);
+if (err != NRFX_SUCCESS) return err;
+
+...
+
+nrfx_dppi_channel_free(&dppi, chan);
+nrfx_dppi_group_free(&dppi, group_chan);
+```
+
+with
+
+```
+uint32_t domain_id = nrfx_gppi_domain_id_get(NRF_DPPIC20);
+int chan = nrfx_gppi_channel_alloc(domain_id);
+if (chan < 0) return chan; // Negative error code
+
+int group_chan = nrfx_gppi_group_channel_alloc(domain_id);
+if (chan < 0) return chan; // Negative error code
+
+...
+
+nrfx_gppi_channel_free(domain_id, (uint8_t)chan);
+nrfx_gppi_group_channel_free(domain_id, (uint8_t)group_chan);
+```
 
 ### EGU
 
@@ -162,13 +202,58 @@ HALY is now deprecated for all peripherals.
 
 ### PPI
 
-- Removed PPI driver.
-    <br>Action : Use GPPI helper layer instead.
+- Removed PPI driver. Use GPPI helper layer instead. If GPPI connection API is used then PPI channel is handled internally. However, it is possible to allocate a specific group or channel and handle it outside of the GPPI driver, e.g. using HAL.
+
+    <br>Action : Replace following template code to allocate a specific PPI channel
+```
+uint8_t chan;
+nrf_ppi_channel_group_t group_chan;
+nrfx_err_t err;
+
+err = nrfx_ppi_channel_alloc(&chan);
+if (err != NRFX_SUCCESS) return err;
+
+err = nrfx_ppi_group_alloc(&group_chan);
+if (err != NRFX_SUCCESS) return err;
+
+...
+
+nrfx_ppi_channel_free(chan);
+nrfx_ppi_group_free(group_chan);
+```
+
+with
+
+```
+int chan = nrfx_gppi_channel_alloc(0);
+if (chan < 0) return chan; // Negative error code
+
+int group_chan = nrfx_gppi_group_channel_alloc(0);
+if (group_chan < 0) return chan; // Negative error code
+
+...
+
+nrfx_gppi_channel_free(0, (uint8_t)chan);
+nrfx_gppi_group_channel_free(0, (uint8_t)group_chan);
+```
 
 ### PPIB
 
-- Removed PPIB driver.
-    <br>Action : Use GPPI helper layer instead.
+- Removed PPIB driver. Use GPPI helper layer instead. If GPPI connection API is used then PPIB are handled internally. However, it is possible to allocate a channel in a SoC specific pair of PPIB instances and handle it outside of the GPPI driver, e.g. using HAL.
+
+    <br>Action : Use following code to allocate a PPIB channel
+```
+#include <soc/interconnect/nrfx_gppi_lumos.h>
+
+...
+
+int chan = nrfx_gppi_channel_alloc(NRFX_GPPI_NODE_PPIB01_20);
+if (chan < 0) return chan; // Negative error code
+
+...
+
+nrfx_gppi_channel_free(NRFX_GPPI_NODE_PPIB01_20, (uint8_t)chan);
+```
 
 ### PWM
 
@@ -315,7 +400,9 @@ HALY is now deprecated for all peripherals.
 ### GPPI
 
 GPPI has been reworked to accommodate for a multi-instance DPPI architecture present in the newest SoC, e.g. nRF54 famlily. GPPI focuses on establishing and managing connections between endpoints or domains rather than a particular channels. Connection can spread across multiple and consists of resources in mutliple DPPIC and PPIB instances. Legacy architecture with a single PPI or DPPIC instance can be seen as the simplest example. GPPI API provides API for a basic one-to-one connection and API that allows to setup more complex many-to-many, spreading across multiple domains, connections.
-
+- New GPPI API has limited support on nRF54H20. Full support requires a dedicated Ironside service which is planned in the near future. Support is limited to one-to-one connections: `nrfx_gppi_conn_alloc`, `nrfx_gppi_conn_free`, `nrfx_gppi_conn_enable`, `nrfx_gppi_conn_disable`. It is using legacy GPPI implementation underneath.
+- Contrary to the legacy solution, GPPI needs to be initialized prior to using the GPPI API. Ensure
+  that `nrfx_gppi_init` is called before calling any GPPI API.
 - Removed `nrfx_gppi_channel_group_t` and `nrfx_gppi_task_t` enumerators and `nrfx_gppi_channel_check`, `nrfx_gppi_channels_disable_all`, `nrfx_gppi_task_endpoint_setup`, `nrfx_gppi_channel_endpoints_setup`, `nrfx_gppi_channel_endpoints_clear`, `nrfx_gppi_task_endpoint_clear`, `nrfx_gppi_fork_endpoint_setup`, `nrfx_gppi_fork_endpoint_clear`, `nrfx_gppi_fork_endpoint_clear` , `nrfx_gppi_task_trigger`, `nrfx_gppi_task_address_get`, `nrfx_gppi_group_disable_task_get`, `nrfx_gppi_group_enable_task_get` and `nrfx_gppi_edge_connection_setup` functions.
     <br>Action : Use new API.
 - Removed `nrfx_gppi_event_endpoint_setup`.
@@ -324,6 +411,8 @@ GPPI has been reworked to accommodate for a multi-instance DPPI architecture pre
     <br>Action : Use nrfx_gppi_ep_clear.
 - `nrfx_gppi_channels_enable` and `nrfx_gppi_channels_enable` functions now expects additional `domain_id` parameter which enables a particular channel in a specific domain.
     <br>Action : Update the affected code. Use domain ID returned by `nrfx_gppi_domain_id_get`. For controlling all channels within a connection, use `nrfx_gppi_conn_enable` and `nrfx_gppi_conn_disable`.
+
+- Some API accepts domain ID as a parameter. Each domain has one unique DPPI instance and domain ID can be used to identify which DPPI instance shall be used to allocate resources. `nrfx_gppi_domain_id_get(addr)` is used to derive the domain ID from a peripheral register address.
 - Reworked connection workflow using DPPI.
     <br>Action : Replace following template code
 ```
@@ -492,3 +581,10 @@ nrfx_gppi_ep_clear(tep_c);
     <br>Action : Update the affected code, all SAADC samples are 16 bits wide now.
 - Defined `nrf_saadc_value_t` type as `int16_t`. `nrf_saadc_value_min_get`, `nrf_saadc_value_max_get`, `nrf_saadc_value_min_get` and `nrf_saadc_value_max_get` functions now return `nrf_saadc_value_t` type.
     <br>Action : Update the affected code.
+
+## Others
+
+### nrfx_coredep
+
+- Moved from `soc` directory to `lib` directory.
+    <br>Action : Update the inclusion paths.

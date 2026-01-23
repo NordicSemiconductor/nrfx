@@ -3,7 +3,7 @@
 
 /*
 
-Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2026, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -39,34 +39,34 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <stdbool.h>
 #include "compiler_abstraction.h"
 
-static bool nrf91_errata_1(void) __UNUSED;
-static bool nrf91_errata_2(void) __UNUSED;
-static bool nrf91_errata_4(void) __UNUSED;
-static bool nrf91_errata_6(void) __UNUSED;
-static bool nrf91_errata_7(void) __UNUSED;
-static bool nrf91_errata_8(void) __UNUSED;
-static bool nrf91_errata_9(void) __UNUSED;
-static bool nrf91_errata_10(void) __UNUSED;
-static bool nrf91_errata_12(void) __UNUSED;
-static bool nrf91_errata_14(void) __UNUSED;
-static bool nrf91_errata_15(void) __UNUSED;
-static bool nrf91_errata_16(void) __UNUSED;
-static bool nrf91_errata_17(void) __UNUSED;
-static bool nrf91_errata_20(void) __UNUSED;
-static bool nrf91_errata_21(void) __UNUSED;
-static bool nrf91_errata_23(void) __UNUSED;
-static bool nrf91_errata_24(void) __UNUSED;
-static bool nrf91_errata_26(void) __UNUSED;
-static bool nrf91_errata_27(void) __UNUSED;
-static bool nrf91_errata_28(void) __UNUSED;
-static bool nrf91_errata_29(void) __UNUSED;
-static bool nrf91_errata_30(void) __UNUSED;
-static bool nrf91_errata_31(void) __UNUSED;
-static bool nrf91_errata_32(void) __UNUSED;
-static bool nrf91_errata_33(void) __UNUSED;
-static bool nrf91_errata_35(void) __UNUSED;
-static bool nrf91_errata_36(void) __UNUSED;
-static bool nrf91_errata_37(void) __UNUSED;
+static inline bool nrf91_errata_1(void);
+static inline bool nrf91_errata_2(void);
+static inline bool nrf91_errata_4(void);
+static inline bool nrf91_errata_6(void);
+static inline bool nrf91_errata_7(void);
+static inline bool nrf91_errata_8(void);
+static inline bool nrf91_errata_9(void);
+static inline bool nrf91_errata_10(void);
+static inline bool nrf91_errata_12(void);
+static inline bool nrf91_errata_14(void);
+static inline bool nrf91_errata_15(void);
+static inline bool nrf91_errata_16(void);
+static inline bool nrf91_errata_17(void);
+static inline bool nrf91_errata_20(void);
+static inline bool nrf91_errata_21(void);
+static inline bool nrf91_errata_23(void);
+static inline bool nrf91_errata_24(void);
+static inline bool nrf91_errata_26(void);
+static inline bool nrf91_errata_27(void);
+static inline bool nrf91_errata_28(void);
+static inline bool nrf91_errata_29(void);
+static inline bool nrf91_errata_30(void);
+static inline bool nrf91_errata_31(void);
+static inline bool nrf91_errata_32(void);
+static inline bool nrf91_errata_33(void);
+static inline bool nrf91_errata_35(void);
+static inline bool nrf91_errata_36(void);
+static inline bool nrf91_errata_37(void);
 
 /* ========= Errata 1 ========= */
 #if    defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120) \
@@ -80,7 +80,7 @@ static bool nrf91_errata_37(void) __UNUSED;
     #define NRF91_ERRATA_1_ENABLE_WORKAROUND NRF91_ERRATA_1_PRESENT
 #endif
 
-static bool nrf91_errata_1(void)
+static inline bool nrf91_errata_1(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -141,7 +141,7 @@ static bool nrf91_errata_1(void)
     #define NRF91_ERRATA_2_ENABLE_WORKAROUND NRF91_ERRATA_2_PRESENT
 #endif
 
-static bool nrf91_errata_2(void)
+static inline bool nrf91_errata_2(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -202,7 +202,7 @@ static bool nrf91_errata_2(void)
     #define NRF91_ERRATA_4_ENABLE_WORKAROUND NRF91_ERRATA_4_PRESENT
 #endif
 
-static bool nrf91_errata_4(void)
+static inline bool nrf91_errata_4(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -263,7 +263,7 @@ static bool nrf91_errata_4(void)
     #define NRF91_ERRATA_6_ENABLE_WORKAROUND NRF91_ERRATA_6_PRESENT
 #endif
 
-static bool nrf91_errata_6(void)
+static inline bool nrf91_errata_6(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -324,7 +324,7 @@ static bool nrf91_errata_6(void)
     #define NRF91_ERRATA_7_ENABLE_WORKAROUND NRF91_ERRATA_7_PRESENT
 #endif
 
-static bool nrf91_errata_7(void)
+static inline bool nrf91_errata_7(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -385,7 +385,7 @@ static bool nrf91_errata_7(void)
     #define NRF91_ERRATA_8_ENABLE_WORKAROUND NRF91_ERRATA_8_PRESENT
 #endif
 
-static bool nrf91_errata_8(void)
+static inline bool nrf91_errata_8(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -446,7 +446,7 @@ static bool nrf91_errata_8(void)
     #define NRF91_ERRATA_9_ENABLE_WORKAROUND NRF91_ERRATA_9_PRESENT
 #endif
 
-static bool nrf91_errata_9(void)
+static inline bool nrf91_errata_9(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -507,7 +507,7 @@ static bool nrf91_errata_9(void)
     #define NRF91_ERRATA_10_ENABLE_WORKAROUND NRF91_ERRATA_10_PRESENT
 #endif
 
-static bool nrf91_errata_10(void)
+static inline bool nrf91_errata_10(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -568,7 +568,7 @@ static bool nrf91_errata_10(void)
     #define NRF91_ERRATA_12_ENABLE_WORKAROUND NRF91_ERRATA_12_PRESENT
 #endif
 
-static bool nrf91_errata_12(void)
+static inline bool nrf91_errata_12(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -629,7 +629,7 @@ static bool nrf91_errata_12(void)
     #define NRF91_ERRATA_14_ENABLE_WORKAROUND NRF91_ERRATA_14_PRESENT
 #endif
 
-static bool nrf91_errata_14(void)
+static inline bool nrf91_errata_14(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -690,7 +690,7 @@ static bool nrf91_errata_14(void)
     #define NRF91_ERRATA_15_ENABLE_WORKAROUND NRF91_ERRATA_15_PRESENT
 #endif
 
-static bool nrf91_errata_15(void)
+static inline bool nrf91_errata_15(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -751,7 +751,7 @@ static bool nrf91_errata_15(void)
     #define NRF91_ERRATA_16_ENABLE_WORKAROUND NRF91_ERRATA_16_PRESENT
 #endif
 
-static bool nrf91_errata_16(void)
+static inline bool nrf91_errata_16(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -812,7 +812,7 @@ static bool nrf91_errata_16(void)
     #define NRF91_ERRATA_17_ENABLE_WORKAROUND NRF91_ERRATA_17_PRESENT
 #endif
 
-static bool nrf91_errata_17(void)
+static inline bool nrf91_errata_17(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -873,7 +873,7 @@ static bool nrf91_errata_17(void)
     #define NRF91_ERRATA_20_ENABLE_WORKAROUND NRF91_ERRATA_20_PRESENT
 #endif
 
-static bool nrf91_errata_20(void)
+static inline bool nrf91_errata_20(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -934,7 +934,7 @@ static bool nrf91_errata_20(void)
     #define NRF91_ERRATA_21_ENABLE_WORKAROUND NRF91_ERRATA_21_PRESENT
 #endif
 
-static bool nrf91_errata_21(void)
+static inline bool nrf91_errata_21(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -995,7 +995,7 @@ static bool nrf91_errata_21(void)
     #define NRF91_ERRATA_23_ENABLE_WORKAROUND NRF91_ERRATA_23_PRESENT
 #endif
 
-static bool nrf91_errata_23(void)
+static inline bool nrf91_errata_23(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -1056,7 +1056,7 @@ static bool nrf91_errata_23(void)
     #define NRF91_ERRATA_24_ENABLE_WORKAROUND NRF91_ERRATA_24_PRESENT
 #endif
 
-static bool nrf91_errata_24(void)
+static inline bool nrf91_errata_24(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -1117,7 +1117,7 @@ static bool nrf91_errata_24(void)
     #define NRF91_ERRATA_26_ENABLE_WORKAROUND NRF91_ERRATA_26_PRESENT
 #endif
 
-static bool nrf91_errata_26(void)
+static inline bool nrf91_errata_26(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -1178,7 +1178,7 @@ static bool nrf91_errata_26(void)
     #define NRF91_ERRATA_27_ENABLE_WORKAROUND NRF91_ERRATA_27_PRESENT
 #endif
 
-static bool nrf91_errata_27(void)
+static inline bool nrf91_errata_27(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -1239,7 +1239,7 @@ static bool nrf91_errata_27(void)
     #define NRF91_ERRATA_28_ENABLE_WORKAROUND NRF91_ERRATA_28_PRESENT
 #endif
 
-static bool nrf91_errata_28(void)
+static inline bool nrf91_errata_28(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -1300,7 +1300,7 @@ static bool nrf91_errata_28(void)
     #define NRF91_ERRATA_29_ENABLE_WORKAROUND NRF91_ERRATA_29_PRESENT
 #endif
 
-static bool nrf91_errata_29(void)
+static inline bool nrf91_errata_29(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -1361,7 +1361,7 @@ static bool nrf91_errata_29(void)
     #define NRF91_ERRATA_30_ENABLE_WORKAROUND NRF91_ERRATA_30_PRESENT
 #endif
 
-static bool nrf91_errata_30(void)
+static inline bool nrf91_errata_30(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -1422,7 +1422,7 @@ static bool nrf91_errata_30(void)
     #define NRF91_ERRATA_31_ENABLE_WORKAROUND NRF91_ERRATA_31_PRESENT
 #endif
 
-static bool nrf91_errata_31(void)
+static inline bool nrf91_errata_31(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -1483,7 +1483,7 @@ static bool nrf91_errata_31(void)
     #define NRF91_ERRATA_32_ENABLE_WORKAROUND NRF91_ERRATA_32_PRESENT
 #endif
 
-static bool nrf91_errata_32(void)
+static inline bool nrf91_errata_32(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -1544,7 +1544,7 @@ static bool nrf91_errata_32(void)
     #define NRF91_ERRATA_33_ENABLE_WORKAROUND NRF91_ERRATA_33_PRESENT
 #endif
 
-static bool nrf91_errata_33(void)
+static inline bool nrf91_errata_33(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -1605,7 +1605,7 @@ static bool nrf91_errata_33(void)
     #define NRF91_ERRATA_35_ENABLE_WORKAROUND 0
 #endif
 
-static bool nrf91_errata_35(void)
+static inline bool nrf91_errata_35(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -1665,7 +1665,7 @@ static bool nrf91_errata_35(void)
     #define NRF91_ERRATA_36_ENABLE_WORKAROUND NRF91_ERRATA_36_PRESENT
 #endif
 
-static bool nrf91_errata_36(void)
+static inline bool nrf91_errata_36(void)
 {
     #ifndef NRF91_SERIES
         return false;
@@ -1707,7 +1707,7 @@ static bool nrf91_errata_36(void)
     #define NRF91_ERRATA_37_ENABLE_WORKAROUND NRF91_ERRATA_37_PRESENT
 #endif
 
-static bool nrf91_errata_37(void)
+static inline bool nrf91_errata_37(void)
 {
     #ifndef NRF91_SERIES
         return false;

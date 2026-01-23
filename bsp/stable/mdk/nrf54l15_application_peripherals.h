@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2026, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -528,6 +528,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE00_CORE_FREQUENCY 128                   /*!< Peripheral clock frequency is 128 MHz.                               */
 #define UARTE00_CORE_CLOCK_128 1                     /*!< (unspecified)                                                        */
 #define UARTE00_SHORTS_ENDTX_STOPTX 1                /*!< (unspecified)                                                        */
+#define UARTE00_DMAEND_PRESENT 0                     /*!< (unspecified)                                                        */
 #define UARTE00_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                  */
 
 #define UARTE20_EASYDMA_MAXCNT_MIN 0                 /*!< (unspecified)                                                        */
@@ -538,6 +539,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE20_CORE_FREQUENCY 16                    /*!< Peripheral clock frequency is 16 MHz.                                */
 #define UARTE20_CORE_CLOCK_16 1                      /*!< (unspecified)                                                        */
 #define UARTE20_SHORTS_ENDTX_STOPTX 1                /*!< (unspecified)                                                        */
+#define UARTE20_DMAEND_PRESENT 0                     /*!< (unspecified)                                                        */
 #define UARTE20_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                  */
 
 #define UARTE21_EASYDMA_MAXCNT_MIN 0                 /*!< (unspecified)                                                        */
@@ -548,6 +550,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE21_CORE_FREQUENCY 16                    /*!< Peripheral clock frequency is 16 MHz.                                */
 #define UARTE21_CORE_CLOCK_16 1                      /*!< (unspecified)                                                        */
 #define UARTE21_SHORTS_ENDTX_STOPTX 1                /*!< (unspecified)                                                        */
+#define UARTE21_DMAEND_PRESENT 0                     /*!< (unspecified)                                                        */
 #define UARTE21_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                  */
 
 #define UARTE22_EASYDMA_MAXCNT_MIN 0                 /*!< (unspecified)                                                        */
@@ -558,6 +561,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE22_CORE_FREQUENCY 16                    /*!< Peripheral clock frequency is 16 MHz.                                */
 #define UARTE22_CORE_CLOCK_16 1                      /*!< (unspecified)                                                        */
 #define UARTE22_SHORTS_ENDTX_STOPTX 1                /*!< (unspecified)                                                        */
+#define UARTE22_DMAEND_PRESENT 0                     /*!< (unspecified)                                                        */
 #define UARTE22_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                  */
 
 #define UARTE30_EASYDMA_MAXCNT_MIN 0                 /*!< (unspecified)                                                        */
@@ -568,6 +572,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define UARTE30_CORE_FREQUENCY 16                    /*!< Peripheral clock frequency is 16 MHz.                                */
 #define UARTE30_CORE_CLOCK_16 1                      /*!< (unspecified)                                                        */
 #define UARTE30_SHORTS_ENDTX_STOPTX 1                /*!< (unspecified)                                                        */
+#define UARTE30_DMAEND_PRESENT 0                     /*!< (unspecified)                                                        */
 #define UARTE30_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                  */
 
 /*Voltage glitch detectors*/
@@ -897,6 +902,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define RADIO_IRQ_COUNT 2
 #define RADIO_WHITENINGPOLY 1                        /*!< (unspecified)                                                        */
+#define RADIO_IEEE802154 1                           /*!< IEEE 802.15.4 support                                                */
+#define RADIO_LONGRANGE 1                            /*!< Long range (LE Coded PHY) support                                    */
+#define RADIO_DIRECTIONFINDING 1                     /*!< Direction finding support (DFE)                                      */
+#define RADIO_CHANNELSOUNDING 1                      /*!< Channel sounding support (CSTONES)                                   */
 #define RADIO_ADPLLCOMPANION_INCLUDE_DMA 0           /*!< No internal instantiation of DmaChannelPeripheral                    */
 
 /*I2C compatible Two-Wire Master Interface with EasyDMA*/
@@ -906,21 +915,25 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM20_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM20_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM20_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
+#define TWIM20_CORE_FREQUENCY 16                     /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM20_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 
 #define TWIM21_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM21_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM21_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
+#define TWIM21_CORE_FREQUENCY 16                     /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM21_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 
 #define TWIM22_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM22_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM22_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
+#define TWIM22_CORE_FREQUENCY 16                     /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM22_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 
 #define TWIM30_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM30_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM30_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
+#define TWIM30_CORE_FREQUENCY 16                     /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM30_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 
 /*I2C compatible Two-Wire Slave Interface with EasyDMA*/
@@ -1014,7 +1027,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_TCONV_VALUE_RANGE_MIN 1                /*!< (unspecified)                                                        */
 #define SAADC_TCONV_VALUE_RANGE_MAX 7                /*!< (unspecified)                                                        */
 #define SAADC_TCONV_VALUE_RANGE_SIZE 8               /*!< (unspecified)                                                        */
-#define SAADC_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< CURRENTAMOUNT register not included.                             */
+#define SAADC_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< CURRENTAMOUNT register included.                                 */
 
 /*NFC-A compatible radio NFC-A compatible radio*/
 #define NFCT_PRESENT 1
@@ -1058,6 +1071,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TAMPC_PRESENT 1
 #define TAMPC_COUNT 1
 
+#define TAMPC_GPIOSWD 0                              /*!< (unspecified)                                                        */
 #define TAMPC_APSPIDEN 0                             /*!< (unspecified)                                                        */
 #define TAMPC_PROTECT_INTRESETEN_CTRL_VALUE_RESET 1  /*!< Reset value of field VALUE in register PROTECT.INTRESETEN.CTRL: 1    */
 #define TAMPC_TAMPERSWITCH 0                         /*!< (unspecified)                                                        */

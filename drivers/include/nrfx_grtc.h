@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2021 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -164,6 +164,26 @@ void nrfx_grtc_sleep_configuration_get(nrfx_grtc_sleep_config_t * p_sleep_cfg);
 int nrfx_grtc_channel_alloc(uint8_t * p_channel);
 
 /**
+ * @brief Function for allocating the extended GRTC capture/compare channel.
+ *
+ * @note The periodic CC event (interval) is the special feature, that requires
+ *       allocating channel such way. See @ref nrfx_grtc_syscounter_cc_interval_set.
+ * @note The channels supporting special features are defined by the hardware.
+         Refer to Product Specification for more details.
+ * @note Function is thread safe as it uses @ref nrfx_flag32_alloc.
+ * @note Routines that allocate and free the GRTC channels are independent
+ *       from the rest of the driver. In particular, the driver does not need
+ *       to be initialized when this function is called.
+ * @note To free the special channel, just use @ref nrfx_grtc_channel_free.
+ *
+ * @param[out] p_channel Pointer to the capture/compare channel.
+ *
+ * @retval 0       Allocation was successful.
+ * @retval -ENOMEM No resource available.
+ */
+int nrfx_grtc_extended_channel_alloc(uint8_t * p_channel);
+
+/**
  * @brief Function for setting a callback to a channel.
  *
  * Function enables the interrupt for that channel.
@@ -286,7 +306,8 @@ void nrfx_grtc_syscountervalid_int_disable(void);
  * @brief Function for starting the 1 MHz SYSCOUNTER.
  *
  * @note This function automatically allocates and marks as used the special-purpose main
- *       capture/compare channel. It is available only for GRTC manager.
+ *       capture/compare channel. It is available only for GRTC manager. It can be freed by
+ *       @ref nrfx_grtc_channel_free.
  *
  * @note Use auxiliary structure of type @ref nrfx_grtc_channel_t when working with SYSCOUNTER.
  *
@@ -361,6 +382,35 @@ int nrfx_grtc_syscounter_cc_disable(uint8_t channel);
 int nrfx_grtc_syscounter_cc_absolute_set(nrfx_grtc_channel_t * p_chan_data,
                                          uint64_t              val,
                                          bool                  enable_irq);
+
+#if NRFY_GRTC_HAS_INTERVAL || NRFY_GRTC_HAS_MINTERVAL || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for setting the interval compare value for the SYSCOUNTER.
+ *
+ * @note This function configures a periodic compare event for the given channel.
+ *       If interrupts are to be used, @ref nrfx_grtc_channel_callback_set must
+ *       also be called. The first event will occur after @p start_val.
+ * @note To stop generating periodic event @ref nrfx_grtc_syscounter_cc_interval_reset
+ *       must be called.
+ *
+ * @param[in] channel   Channel.
+ * @param[in] start_val Relative compare value (in SYSCOUNTER ticks) value after which
+ *                      the first interval event is generated.
+ * @param[in] val       Relative interval value (in SYSCOUNTER ticks), that defines 
+ *                      the period between consecutive compare events.
+ */
+void nrfx_grtc_syscounter_cc_interval_set(uint8_t channel, uint32_t start_val, uint32_t val);
+
+/**
+ * @brief Function for resetting the interval compare value for the SYSCOUNTER.
+ *
+ * @note This function stops a periodic compare event mode initiated by
+ *       @ref nrfx_grtc_syscounter_cc_interval_set.
+ *
+ * @param[in] channel Channel.
+ */
+void nrfx_grtc_syscounter_cc_interval_reset(uint8_t channel);
+#endif
 
 /**
  * @brief Function for setting the absolute compare value for the SYSCOUNTER in an optimized way.

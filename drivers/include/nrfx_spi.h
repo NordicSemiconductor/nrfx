@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -49,6 +49,66 @@ extern "C" {
  * @brief   Serial Peripheral Interface master (SPI) driver.
  */
 
+/** @brief Single transfer descriptor structure. */
+typedef struct
+{
+    uint8_t const * p_tx_buffer; ///< Pointer to TX buffer.
+    size_t          tx_length;   ///< TX buffer length.
+    uint8_t *       p_rx_buffer; ///< Pointer to RX buffer.
+    size_t          rx_length;   ///< RX buffer length.
+} nrfx_spi_xfer_desc_t;
+
+ #if NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief SPI master driver event types, passed to the handler routine provided
+ *        during initialization.
+ */
+typedef enum
+{
+    NRFX_SPI_EVENT_DONE, ///< Transfer done.
+} nrfx_spi_event_type_t;
+
+/** @brief SPI master event description with transmission details. */
+typedef struct
+{
+    nrfx_spi_event_type_t type;      ///< Event type.
+    nrfx_spi_xfer_desc_t  xfer_desc; ///< Transfer details.
+} nrfx_spi_event_t;
+
+/** @brief SPI master driver event handler type. */
+typedef void (* nrfx_spi_event_handler_t)(nrfx_spi_event_t const * p_event,
+                                          void *                   p_context);
+
+/** @cond Driver internal data. */
+typedef struct
+{
+    nrfx_spi_event_handler_t handler;
+    void *                   p_context;
+    nrfx_spi_event_t         evt;
+    nrfx_drv_state_t         state;
+    volatile bool            transfer_in_progress;
+    uint8_t                  ss_pin;
+    uint8_t                  orc;
+    size_t                   bytes_transferred;
+    bool                     abort;
+    bool                     skip_gpio_cfg;
+} nrfx_spi_control_block_t;
+/** @endcond */
+
+/** @brief Data structure of the Serial Peripheral Interface master (SPI) driver instance. */
+typedef struct
+{
+    NRF_SPI_Type *           p_reg; ///< Pointer to a structure with SPI registers.
+    nrfx_spi_control_block_t cb;    ///< Driver internal data.
+} nrfx_spi_t;
+
+/** @brief Macro for creating an instance of the SPI master driver. */
+#define NRFX_SPI_INSTANCE(reg)    \
+{                                 \
+    .p_reg = (NRF_SPI_Type *)reg, \
+    .cb    = {0},                 \
+}
+#else
 /** @brief Data structure of the Serial Peripheral Interface master (SPI) driver instance. */
 typedef struct
 {
@@ -70,6 +130,28 @@ enum {
     .p_reg        = NRFX_CONCAT(NRF_, SPI, id),             \
     .drv_inst_idx = NRFX_CONCAT(NRFX_SPI, id, _INST_IDX),   \
 }
+
+/**
+ * @brief SPI master driver event types, passed to the handler routine provided
+ *        during initialization.
+ */
+typedef enum
+{
+    NRFX_SPI_EVENT_DONE, ///< Transfer done.
+} nrfx_spi_evt_type_t;
+
+/** @brief SPI master event description with transmission details. */
+typedef struct
+{
+    nrfx_spi_evt_type_t  type;      ///< Event type.
+    nrfx_spi_xfer_desc_t xfer_desc; ///< Transfer details.
+} nrfx_spi_evt_t;
+
+/** @brief SPI master driver event handler type. */
+typedef void (* nrfx_spi_evt_handler_t)(nrfx_spi_evt_t const * p_event,
+                                        void *                 p_context);
+
+#endif // NRFX_API_VER_AT_LEAST(4, 1, 0)
 
 /**
  * @brief This value can be provided instead of a pin number for signals MOSI,
@@ -152,15 +234,6 @@ typedef struct
     .miso_pull    = NRF_GPIO_PIN_NOPULL,                                    \
 }
 
-/** @brief Single transfer descriptor structure. */
-typedef struct
-{
-    uint8_t const * p_tx_buffer; ///< Pointer to TX buffer.
-    size_t          tx_length;   ///< TX buffer length.
-    uint8_t       * p_rx_buffer; ///< Pointer to RX buffer.
-    size_t          rx_length;   ///< RX buffer length.
-}nrfx_spi_xfer_desc_t;
-
 /**
  * @brief Macro for setting up single transfer descriptor.
  *
@@ -186,26 +259,83 @@ typedef struct
 #define NRFX_SPI_XFER_RX(p_buf, length) \
         NRFX_SPI_SINGLE_XFER(NULL, 0, p_buf, length)
 
+#if NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
 /**
- * @brief SPI master driver event types, passed to the handler routine provided
- *        during initialization.
+ * @brief Function for initializing the SPI master driver instance.
+ *
+ * This function configures and enables the specified peripheral.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] p_config   Pointer to the structure with the initial configuration.
+ * @param[in] handler    Event handler provided by the user. If NULL, transfers
+ *                       will be performed in blocking mode.
+ * @param[in] p_context  Context passed to the event handler.
+ *
+ * @retval 0         Initialization was successful.
+ * @retval -EALREADY The driver is already initialized.
+ * @retval -EBUSY    Some other peripheral with the same instance ID is already in use.
+ *                   This is possible only if @ref nrfx_prs module is enabled.
  */
-typedef enum
-{
-    NRFX_SPI_EVENT_DONE, ///< Transfer done.
-} nrfx_spi_evt_type_t;
+int nrfx_spi_init(nrfx_spi_t *              p_instance,
+                  nrfx_spi_config_t const * p_config,
+                  nrfx_spi_event_handler_t  handler,
+                  void *                    p_context);
 
-/** @brief SPI master event description with transmission details. */
-typedef struct
-{
-    nrfx_spi_evt_type_t  type;      ///< Event type.
-    nrfx_spi_xfer_desc_t xfer_desc; ///< Transfer details.
-} nrfx_spi_evt_t;
+/**
+ * @brief Function for reconfiguring the SPI master driver instance.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ * @param[in] p_config   Pointer to the structure with the configuration.
+ *
+ * @retval 0            Reconfiguration was successful.
+ * @retval -EBUSY       The driver is during transfer.
+ * @retval -EINPROGRESS The driver is uninitialized.
+ */
+int nrfx_spi_reconfigure(nrfx_spi_t *              p_instance,
+                         nrfx_spi_config_t const * p_config);
 
-/** @brief SPI master driver event handler type. */
-typedef void (* nrfx_spi_evt_handler_t)(nrfx_spi_evt_t const * p_event,
-                                        void *                 p_context);
+/**
+ * @brief Function for uninitializing the SPI master driver instance.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_spi_uninit(nrfx_spi_t * p_instance);
 
+/**
+ * @brief Function for starting the SPI data transfer.
+ *
+ * If an event handler was provided in the @ref nrfx_spi_init call, this function
+ * returns immediately and the handler is called when the transfer is done.
+ * Otherwise, the transfer is performed in blocking mode, which means that this function
+ * returns when the transfer is finished.
+ *
+ * @param p_instance  Pointer to the driver instance structure.
+ * @param p_xfer_desc Pointer to the transfer descriptor.
+ * @param flags       Transfer options (0 for default settings).
+ *                    Currently, no additional flags are available.
+ *
+ * @retval 0        The procedure is successful.
+ * @retval -EBUSY   The driver is not ready for a new transfer.
+ * @retval -ENOTSUP The provided parameters are not supported.
+ */
+int nrfx_spi_xfer(nrfx_spi_t *                 p_instance,
+                  nrfx_spi_xfer_desc_t const * p_xfer_desc,
+                  uint32_t                     flags);
+
+/**
+ * @brief Function for aborting the ongoing transfer.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_spi_abort(nrfx_spi_t * p_instance);
+
+/**
+ * @brief Driver interrupt handler.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ */
+void nrfx_spi_irq_handler(nrfx_spi_t * p_instance);
+#else
 /**
  * @brief Function for initializing the SPI master driver instance.
  *
@@ -248,16 +378,6 @@ int nrfx_spi_reconfigure(nrfx_spi_t const *        p_instance,
 void nrfx_spi_uninit(nrfx_spi_t const * p_instance);
 
 /**
- * @brief Function for checking if the SPI driver instance is initialized.
- *
- * @param[in] p_instance Pointer to the driver instance structure.
- *
- * @retval true  Instance is already initialized.
- * @retval false Instance is not initialized.
- */
-bool nrfx_spi_init_check(nrfx_spi_t const * p_instance);
-
-/**
  * @brief Function for starting the SPI data transfer.
  *
  * If an event handler was provided in the @ref nrfx_spi_init call, this function
@@ -284,6 +404,19 @@ int nrfx_spi_xfer(nrfx_spi_t const *           p_instance,
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 void nrfx_spi_abort(nrfx_spi_t const * p_instance);
+#endif // NRFX_API_VER_AT_LEAST(4, 1, 0)
+
+/**
+ * @brief Function for checking if the SPI driver instance is initialized.
+ *
+ * @param[in] p_instance Pointer to the driver instance structure.
+ *
+ * @retval true  Instance is already initialized.
+ * @retval false Instance is not initialized.
+ */
+bool nrfx_spi_init_check(nrfx_spi_t const * p_instance);
+
+#if !NRFX_API_VER_AT_LEAST(4, 1, 0) || defined(__NRFX_DOXYGEN__)
 
 /**
  * @brief Macro returning SPI interrupt handler.
@@ -310,7 +443,9 @@ void nrfx_spi_abort(nrfx_spi_t const * p_instance);
  *             NRFX_SPI_INST_HANDLER_GET(\<instance_index\>), 0, 0);
  */
 NRFX_INSTANCE_IRQ_HANDLERS_DECLARE(SPI, spi)
-
+#else
+/** @} */
+#endif // NRFX_API_VER_AT_LEAST(4, 1, 0)
 
 #ifdef __cplusplus
 }

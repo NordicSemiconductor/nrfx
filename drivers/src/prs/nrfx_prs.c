@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -75,13 +75,12 @@ static prs_box_t * prs_box_get(void const * p_base_addr)
     }
 }
 
-nrfx_err_t nrfx_prs_acquire(void const *       p_base_addr,
-                            nrfx_irq_handler_t irq_handler,
-                            void *             p_instance)
+int nrfx_prs_acquire(void const *       p_base_addr,
+                     nrfx_irq_handler_t irq_handler,
+                     void *             p_instance)
 {
     NRFX_ASSERT(p_base_addr);
-
-    nrfx_err_t ret_code;
+    int ret_code;
 
     prs_box_t * p_box = prs_box_get(p_base_addr);
     if (p_box != NULL)
@@ -103,13 +102,13 @@ nrfx_err_t nrfx_prs_acquire(void const *       p_base_addr,
 
         if (busy)
         {
-            ret_code = NRFX_ERROR_BUSY;
+            ret_code = -EBUSY;
             LOG_FUNCTION_EXIT(WARNING, ret_code);
             return ret_code;
         }
     }
 
-    ret_code = NRFX_SUCCESS;
+    ret_code = 0;
     LOG_FUNCTION_EXIT(INFO, ret_code);
     return ret_code;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2025 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -36,30 +36,22 @@
 void nrfx_gppi_init(nrfx_gppi_t * p_instance)
 {
     (void)p_instance;
+    NRFX_ASSERT(0);
 }
 
-#if NRFX_CHECK(NRFX_GPPI_MULTI_DOMAIN)
 uint32_t nrfx_gppi_group_domain_id_get(nrfx_gppi_group_handle_t handle)
 {
     (void)handle;
+    NRFX_ASSERT(0);
     return 0;
 }
 
 uint32_t nrfx_gppi_domain_id_get(uint32_t addr)
 {
     (void)addr;
+    NRFX_ASSERT(0);
     return 0;
 }
-#endif
-
-#ifdef PPI_PRESENT
-int nrfx_gppi_ep_channel_get(uint32_t ep)
-{
-    (void)ep;
-    NRFX_ASSERT(0);
-    return -ENOTSUP;
-}
-#endif
 
 int nrfx_gppi_domain_channel_get(nrfx_gppi_handle_t handle, uint32_t domain_id)
 {
@@ -74,45 +66,23 @@ int nrfx_gppi_domain_conn_alloc(uint32_t producer, uint32_t consumer,
 {
     (void)producer;
     (void)consumer;
-    nrfx_err_t err = nrfx_gppiv1_channel_alloc((uint8_t *)p_handle);
-    if (err != NRFX_SUCCESS)
-    {
-        return -ENOMEM;
-    }
-    return 0;
+    (void)p_handle;
+    NRFX_ASSERT(0);
+    return -ENOTSUP;
 }
 
 int nrfx_gppi_ep_attach(uint32_t ep, nrfx_gppi_handle_t handle)
 {
-#ifdef PPI_PRESENT
-    if ((ep & 0x300) != 0)
-    {
-        nrfx_gppiv1_event_endpoint_setup((uint8_t)handle, ep);
-    }
-    else
-    {
-        if (nrf_ppi_task_endpoint_get(NRF_PPI, (nrf_ppi_channel_t)handle) != 0)
-        {
-            nrfx_gppiv1_fork_endpoint_setup((uint8_t)handle, ep);
-        }
-        else
-        {
-            nrfx_gppiv1_task_endpoint_setup((uint8_t)handle, ep);
-        }
-    }
-#else
-    // For DPPI each endpoint is set up in the same way.
-    nrfx_gppiv1_event_endpoint_setup((uint8_t)handle, ep);
-#endif
+    nrfx_gppiv1_fork_endpoint_setup((uint8_t)handle, ep);
     return 0;
 }
 
 int nrfx_gppi_conn_alloc(uint32_t eep, uint32_t tep, nrfx_gppi_handle_t * p_handle)
 {
-    nrfx_err_t err = nrfx_gppiv1_channel_alloc((uint8_t *)p_handle);
-    if (err != NRFX_SUCCESS)
+    int err = nrfx_gppiv1_channel_alloc((uint8_t *)p_handle);
+    if (err != 0)
     {
-        return -ENOMEM;
+        return err;
     }
     nrfx_gppiv1_channel_endpoints_setup((uint8_t)*p_handle, eep, tep);
     return 0;
@@ -125,14 +95,19 @@ void nrfx_gppi_domain_conn_free(nrfx_gppi_handle_t handle)
 
 void nrfx_gppi_ep_clear(uint32_t ep)
 {
+    NRF_DPPI_ENDPOINT_CLEAR(ep);
 }
 
 void nrfx_gppi_ep_enable(uint32_t ep)
 {
+    (void)ep;
+    NRFX_ASSERT(0);
 }
 
 void nrfx_gppi_ep_disable(uint32_t ep)
 {
+    (void)ep;
+    NRFX_ASSERT(0);
 }
 
 void nrfx_gppi_conn_free(uint32_t eep, uint32_t tep, nrfx_gppi_handle_t handle)
@@ -155,12 +130,14 @@ void nrfx_gppi_channels_enable(uint32_t domain_id, uint32_t ch_mask)
 {
     (void)domain_id;
     (void)ch_mask;
+    NRFX_ASSERT(0);
 }
 
 bool nrfx_gppi_chan_is_enabled(uint32_t domain_id, uint32_t ch)
 {
     (void)domain_id;
     (void)ch;
+    NRFX_ASSERT(0);
     return false;
 }
 
@@ -173,94 +150,66 @@ void nrfx_gppi_channels_disable(uint32_t domain_id, uint32_t ch_mask)
 
 int nrfx_gppi_group_alloc(uint32_t domain_id, nrfx_gppi_group_handle_t * p_handle)
 {
-    (void)domain_id;
-#ifdef NRFX_GPPI_MULTI_DOMAIN
     (void)p_handle;
     NRFX_ASSERT(0);
     return -ENOTSUP;
-#else
-    nrfx_gppiv1_group_alloc((nrfx_gppi_channel_group_t *)p_handle);
-    return 0;
-#endif
 }
 
 void nrfx_gppi_group_free(nrfx_gppi_group_handle_t handle)
 {
-#ifdef NRFX_GPPI_MULTI_DOMAIN
     (void)handle;
     NRFX_ASSERT(0);
-#else
-    nrfx_gppiv1_group_clear((nrfx_gppi_channel_group_t)handle);
-    nrfx_gppiv1_group_free((nrfx_gppi_channel_group_t)handle);
-#endif
 }
 
 void nrfx_gppi_group_ch_add(nrfx_gppi_group_handle_t handle, uint32_t channel)
 {
-#ifdef NRFX_GPPI_MULTI_DOMAIN
     (void)handle;
     (void)channel;
     NRFX_ASSERT(0);
-#else
-    nrfx_gppiv1_channels_include_in_group(NRFX_BIT(channel), (nrfx_gppi_channel_group_t)handle);
-#endif
 }
 
 void nrfx_gppi_group_ch_remove(nrfx_gppi_group_handle_t handle, uint32_t channel)
 {
-#ifdef NRFX_GPPI_MULTI_DOMAIN
     (void)handle;
     (void)channel;
     NRFX_ASSERT(0);
-#else
-    nrfx_gppiv1_channels_remove_from_group(NRFX_BIT(channel), (nrfx_gppi_channel_group_t)handle);
-#endif
 }
 
 uint32_t nrfx_gppi_group_channels_get(nrfx_gppi_group_handle_t handle)
 {
-    NRFX_ASSERT(0);
     (void)handle;
+    NRFX_ASSERT(0);
     return 0;
 }
 
 void nrfx_gppi_group_enable(nrfx_gppi_group_handle_t handle)
 {
-    nrfx_gppiv1_group_enable((nrfx_gppi_channel_group_t)handle);
+	(void)handle;
+    NRFX_ASSERT(0);
 }
 
 void nrfx_gppi_group_disable(nrfx_gppi_group_handle_t handle)
 {
-    nrfx_gppiv1_group_disable((nrfx_gppi_channel_group_t)handle);
+	(void)handle;
+    NRFX_ASSERT(0);
 }
 
 uint32_t nrfx_gppi_group_task_en_addr(nrfx_gppi_group_handle_t handle)
 {
-#ifdef NRFX_GPPI_MULTI_DOMAIN
-    /* Not supported. */
     NRFX_ASSERT(0);
     return 0;
-#else
-    nrfx_gppi_task_t task = nrfx_gppiv1_group_enable_task_get((nrfx_gppi_channel_group_t)handle);
-    return nrfx_gppiv1_task_address_get(task);
-#endif
 }
 
 uint32_t nrfx_gppi_group_task_dis_addr(nrfx_gppi_group_handle_t handle)
 {
-#ifdef NRFX_GPPI_MULTI_DOMAIN
-    /* Not supported. */
     NRFX_ASSERT(0);
     return 0;
-#else
-    nrfx_gppi_task_t task = nrfx_gppiv1_group_disable_task_get((nrfx_gppi_channel_group_t)handle);
-    return nrfx_gppiv1_task_address_get(task);
-#endif
 }
 
 int nrfx_gppi_channel_alloc(uint32_t node_id)
 {
     (void)node_id;
+    NRFX_ASSERT(0);
     return -ENOTSUP;
 }
 
@@ -268,11 +217,13 @@ void nrfx_gppi_channel_free(uint32_t node_id, uint8_t channel)
 {
     (void)node_id;
     (void)channel;
+    NRFX_ASSERT(0);
 }
 
 int nrfx_gppi_group_channel_alloc(uint32_t node_id)
 {
     (void)node_id;
+    NRFX_ASSERT(0);
     return -ENOTSUP;
 }
 
@@ -280,6 +231,7 @@ void nrfx_gppi_group_channel_free(uint32_t node_id, uint8_t channel)
 {
     (void)node_id;
     (void)channel;
+    NRFX_ASSERT(0);
 }
 
 int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_handle_t * p_handle,
@@ -289,5 +241,6 @@ int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_han
     (void)consumer;
     (void)p_handle;
     (void)p_resource;
+    NRFX_ASSERT(0);
     return -ENOTSUP;
 }

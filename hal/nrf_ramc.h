@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -40,6 +40,13 @@
 extern "C" {
 #endif
 
+#if defined(RAMC_EVENTS_ERRORFIX_EVENTS_ERRORFIX_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether RAMC has events. */
+#define NRF_RAMC_HAS_EVENTS 1
+#else
+#define NRF_RAMC_HAS_EVENTS 0
+#endif
+
 #define NRF_RAMC_WAITSTATES_MAX RAMC_WAITSTATES_WAITSTATES_Max
 
 /**
@@ -50,6 +57,7 @@ extern "C" {
  *          peripheral.
  */
 
+#if NRF_RAMC_HAS_EVENTS
 /** @brief RAMC events. */
 typedef enum
 {
@@ -86,6 +94,7 @@ NRF_STATIC_INLINE bool nrf_ramc_event_check(NRF_RAMC_Type const * p_reg, nrf_ram
  */
 NRF_STATIC_INLINE uint32_t nrf_ramc_event_address_get(NRF_RAMC_Type const * p_reg,
                                                       nrf_ramc_event_t      event);
+#endif
 
 /**
  * @brief Function for setting number of waitstates for a read from the RAM.
@@ -146,6 +155,7 @@ NRF_STATIC_INLINE bool nrf_ramc_secenable_check(NRF_RAMC_Type const * p_reg);
 
 #ifndef NRF_DECLARE_ONLY
 
+#if NRF_RAMC_HAS_EVENTS
 NRF_STATIC_INLINE void nrf_ramc_event_clear(NRF_RAMC_Type * p_reg, nrf_ramc_event_t event)
 {
     *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event)) = 0x0UL;
@@ -162,6 +172,7 @@ NRF_STATIC_INLINE uint32_t nrf_ramc_event_address_get(NRF_RAMC_Type const * p_re
 {
     return nrf_task_event_address_get(p_reg, event);
 }
+#endif
 
 NRF_STATIC_INLINE void nrf_ramc_waitstates_set(NRF_RAMC_Type * p_reg, uint8_t waitstates)
 {

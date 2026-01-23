@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -91,14 +91,14 @@ typedef struct
 #if NRFX_WDT_HAS_STOP
     bool                     stoppable;
 #endif
-} wdt_control_block_t;
+} nrfx_wdt_control_block_t;
 /** @endcond */
 
 /** @brief Data structure of the Watchdog (WDT) driver instance. */
 typedef struct
 {
-    NRF_WDT_Type *      p_reg; ///< Pointer to a structure with WDT registers.
-    wdt_control_block_t cb;    ///< Driver internal data.
+    NRF_WDT_Type *           p_reg; ///< Pointer to a structure with WDT registers.
+    nrfx_wdt_control_block_t cb;    ///< Driver internal data.
 } nrfx_wdt_t;
 
 /** @brief Macro for creating an instance of the WDT driver. */

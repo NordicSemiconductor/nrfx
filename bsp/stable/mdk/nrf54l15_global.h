@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2026, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -101,6 +101,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_RRAMC_S_BASE                  0x5004B000UL
 #define NRF_VPR00_NS_BASE                 0x4004C000UL
 #define NRF_VPR00_S_BASE                  0x5004C000UL
+#define NRF_GPIOHSPADCTRL_NS_BASE         0x40050400UL
 #define NRF_P2_NS_BASE                    0x40050400UL
 #define NRF_GPIOHSPADCTRL_S_BASE          0x50050400UL
 #define NRF_P2_S_BASE                     0x50050400UL
@@ -276,6 +277,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_RRAMC_S                       ((NRF_RRAMC_Type*)                    NRF_RRAMC_S_BASE)
 #define NRF_VPR00_NS                      ((NRF_VPR_Type*)                      NRF_VPR00_NS_BASE)
 #define NRF_VPR00_S                       ((NRF_VPR_Type*)                      NRF_VPR00_S_BASE)
+#define NRF_GPIOHSPADCTRL_NS              ((NRF_GPIOHSPADCTRL_Type*)            NRF_GPIOHSPADCTRL_NS_BASE)
 #define NRF_P2_NS                         ((NRF_GPIO_Type*)                     NRF_P2_NS_BASE)
 #define NRF_GPIOHSPADCTRL_S               ((NRF_GPIOHSPADCTRL_Type*)            NRF_GPIOHSPADCTRL_S_BASE)
 #define NRF_P2_S                          ((NRF_GPIO_Type*)                     NRF_P2_S_BASE)
@@ -433,6 +435,7 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_SPIS00                              NRF_SPIS00_NS
   #define NRF_UARTE00                             NRF_UARTE00_NS
   #define NRF_VPR00                               NRF_VPR00_NS
+  #define NRF_GPIOHSPADCTRL                       NRF_GPIOHSPADCTRL_NS
   #define NRF_P2                                  NRF_P2_NS
   #define NRF_CTRLAP                              NRF_CTRLAP_NS
   #define NRF_TAD                                 NRF_TAD_NS

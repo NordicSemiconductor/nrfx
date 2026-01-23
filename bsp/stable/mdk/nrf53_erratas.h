@@ -3,7 +3,7 @@
 
 /*
 
-Copyright (c) 2010 - 2025, Nordic Semiconductor ASA All rights reserved.
+Copyright (c) 2010 - 2026, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
 
@@ -39,122 +39,122 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <stdbool.h>
 #include "compiler_abstraction.h"
 
-static bool nrf53_errata_1(void) __UNUSED;
-static bool nrf53_errata_2(void) __UNUSED;
-static bool nrf53_errata_3(void) __UNUSED;
-static bool nrf53_errata_4(void) __UNUSED;
-static bool nrf53_errata_5(void) __UNUSED;
-static bool nrf53_errata_6(void) __UNUSED;
-static bool nrf53_errata_7(void) __UNUSED;
-static bool nrf53_errata_8(void) __UNUSED;
-static bool nrf53_errata_9(void) __UNUSED;
-static bool nrf53_errata_10(void) __UNUSED;
-static bool nrf53_errata_11(void) __UNUSED;
-static bool nrf53_errata_12(void) __UNUSED;
-static bool nrf53_errata_13(void) __UNUSED;
-static bool nrf53_errata_14(void) __UNUSED;
-static bool nrf53_errata_15(void) __UNUSED;
-static bool nrf53_errata_16(void) __UNUSED;
-static bool nrf53_errata_18(void) __UNUSED;
-static bool nrf53_errata_19(void) __UNUSED;
-static bool nrf53_errata_20(void) __UNUSED;
-static bool nrf53_errata_21(void) __UNUSED;
-static bool nrf53_errata_22(void) __UNUSED;
-static bool nrf53_errata_23(void) __UNUSED;
-static bool nrf53_errata_26(void) __UNUSED;
-static bool nrf53_errata_27(void) __UNUSED;
-static bool nrf53_errata_28(void) __UNUSED;
-static bool nrf53_errata_29(void) __UNUSED;
-static bool nrf53_errata_30(void) __UNUSED;
-static bool nrf53_errata_31(void) __UNUSED;
-static bool nrf53_errata_32(void) __UNUSED;
-static bool nrf53_errata_33(void) __UNUSED;
-static bool nrf53_errata_34(void) __UNUSED;
-static bool nrf53_errata_36(void) __UNUSED;
-static bool nrf53_errata_37(void) __UNUSED;
-static bool nrf53_errata_42(void) __UNUSED;
-static bool nrf53_errata_43(void) __UNUSED;
-static bool nrf53_errata_44(void) __UNUSED;
-static bool nrf53_errata_45(void) __UNUSED;
-static bool nrf53_errata_46(void) __UNUSED;
-static bool nrf53_errata_47(void) __UNUSED;
-static bool nrf53_errata_49(void) __UNUSED;
-static bool nrf53_errata_50(void) __UNUSED;
-static bool nrf53_errata_51(void) __UNUSED;
-static bool nrf53_errata_52(void) __UNUSED;
-static bool nrf53_errata_53(void) __UNUSED;
-static bool nrf53_errata_54(void) __UNUSED;
-static bool nrf53_errata_55(void) __UNUSED;
-static bool nrf53_errata_57(void) __UNUSED;
-static bool nrf53_errata_58(void) __UNUSED;
-static bool nrf53_errata_59(void) __UNUSED;
-static bool nrf53_errata_62(void) __UNUSED;
-static bool nrf53_errata_64(void) __UNUSED;
-static bool nrf53_errata_65(void) __UNUSED;
-static bool nrf53_errata_66(void) __UNUSED;
-static bool nrf53_errata_67(void) __UNUSED;
-static bool nrf53_errata_69(void) __UNUSED;
-static bool nrf53_errata_70(void) __UNUSED;
-static bool nrf53_errata_71(void) __UNUSED;
-static bool nrf53_errata_72(void) __UNUSED;
-static bool nrf53_errata_73(void) __UNUSED;
-static bool nrf53_errata_74(void) __UNUSED;
-static bool nrf53_errata_75(void) __UNUSED;
-static bool nrf53_errata_76(void) __UNUSED;
-static bool nrf53_errata_77(void) __UNUSED;
-static bool nrf53_errata_79(void) __UNUSED;
-static bool nrf53_errata_80(void) __UNUSED;
-static bool nrf53_errata_81(void) __UNUSED;
-static bool nrf53_errata_82(void) __UNUSED;
-static bool nrf53_errata_83(void) __UNUSED;
-static bool nrf53_errata_84(void) __UNUSED;
-static bool nrf53_errata_85(void) __UNUSED;
-static bool nrf53_errata_86(void) __UNUSED;
-static bool nrf53_errata_87(void) __UNUSED;
-static bool nrf53_errata_90(void) __UNUSED;
-static bool nrf53_errata_91(void) __UNUSED;
-static bool nrf53_errata_93(void) __UNUSED;
-static bool nrf53_errata_95(void) __UNUSED;
-static bool nrf53_errata_97(void) __UNUSED;
-static bool nrf53_errata_99(void) __UNUSED;
-static bool nrf53_errata_103(void) __UNUSED;
-static bool nrf53_errata_105(void) __UNUSED;
-static bool nrf53_errata_106(void) __UNUSED;
-static bool nrf53_errata_107(void) __UNUSED;
-static bool nrf53_errata_109(void) __UNUSED;
-static bool nrf53_errata_110(void) __UNUSED;
-static bool nrf53_errata_112(void) __UNUSED;
-static bool nrf53_errata_113(void) __UNUSED;
-static bool nrf53_errata_114(void) __UNUSED;
-static bool nrf53_errata_115(void) __UNUSED;
-static bool nrf53_errata_116(void) __UNUSED;
-static bool nrf53_errata_117(void) __UNUSED;
-static bool nrf53_errata_119(void) __UNUSED;
-static bool nrf53_errata_121(void) __UNUSED;
-static bool nrf53_errata_122(void) __UNUSED;
-static bool nrf53_errata_133(void) __UNUSED;
-static bool nrf53_errata_134(void) __UNUSED;
-static bool nrf53_errata_135(void) __UNUSED;
-static bool nrf53_errata_136(void) __UNUSED;
-static bool nrf53_errata_137(void) __UNUSED;
-static bool nrf53_errata_138(void) __UNUSED;
-static bool nrf53_errata_140(void) __UNUSED;
-static bool nrf53_errata_152(void) __UNUSED;
-static bool nrf53_errata_153(void) __UNUSED;
-static bool nrf53_errata_154(void) __UNUSED;
-static bool nrf53_errata_155(void) __UNUSED;
-static bool nrf53_errata_157(void) __UNUSED;
-static bool nrf53_errata_158(void) __UNUSED;
-static bool nrf53_errata_159(void) __UNUSED;
-static bool nrf53_errata_160(void) __UNUSED;
-static bool nrf53_errata_161(void) __UNUSED;
-static bool nrf53_errata_162(void) __UNUSED;
-static bool nrf53_errata_163(void) __UNUSED;
-static bool nrf53_errata_165(void) __UNUSED;
-static bool nrf53_errata_166(void) __UNUSED;
-static bool nrf53_errata_167(void) __UNUSED;
-static bool nrf53_errata_168(void) __UNUSED;
-static bool nrf53_errata_169(void) __UNUSED;
+static inline bool nrf53_errata_1(void);
+static inline bool nrf53_errata_2(void);
+static inline bool nrf53_errata_3(void);
+static inline bool nrf53_errata_4(void);
+static inline bool nrf53_errata_5(void);
+static inline bool nrf53_errata_6(void);
+static inline bool nrf53_errata_7(void);
+static inline bool nrf53_errata_8(void);
+static inline bool nrf53_errata_9(void);
+static inline bool nrf53_errata_10(void);
+static inline bool nrf53_errata_11(void);
+static inline bool nrf53_errata_12(void);
+static inline bool nrf53_errata_13(void);
+static inline bool nrf53_errata_14(void);
+static inline bool nrf53_errata_15(void);
+static inline bool nrf53_errata_16(void);
+static inline bool nrf53_errata_18(void);
+static inline bool nrf53_errata_19(void);
+static inline bool nrf53_errata_20(void);
+static inline bool nrf53_errata_21(void);
+static inline bool nrf53_errata_22(void);
+static inline bool nrf53_errata_23(void);
+static inline bool nrf53_errata_26(void);
+static inline bool nrf53_errata_27(void);
+static inline bool nrf53_errata_28(void);
+static inline bool nrf53_errata_29(void);
+static inline bool nrf53_errata_30(void);
+static inline bool nrf53_errata_31(void);
+static inline bool nrf53_errata_32(void);
+static inline bool nrf53_errata_33(void);
+static inline bool nrf53_errata_34(void);
+static inline bool nrf53_errata_36(void);
+static inline bool nrf53_errata_37(void);
+static inline bool nrf53_errata_42(void);
+static inline bool nrf53_errata_43(void);
+static inline bool nrf53_errata_44(void);
+static inline bool nrf53_errata_45(void);
+static inline bool nrf53_errata_46(void);
+static inline bool nrf53_errata_47(void);
+static inline bool nrf53_errata_49(void);
+static inline bool nrf53_errata_50(void);
+static inline bool nrf53_errata_51(void);
+static inline bool nrf53_errata_52(void);
+static inline bool nrf53_errata_53(void);
+static inline bool nrf53_errata_54(void);
+static inline bool nrf53_errata_55(void);
+static inline bool nrf53_errata_57(void);
+static inline bool nrf53_errata_58(void);
+static inline bool nrf53_errata_59(void);
+static inline bool nrf53_errata_62(void);
+static inline bool nrf53_errata_64(void);
+static inline bool nrf53_errata_65(void);
+static inline bool nrf53_errata_66(void);
+static inline bool nrf53_errata_67(void);
+static inline bool nrf53_errata_69(void);
+static inline bool nrf53_errata_70(void);
+static inline bool nrf53_errata_71(void);
+static inline bool nrf53_errata_72(void);
+static inline bool nrf53_errata_73(void);
+static inline bool nrf53_errata_74(void);
+static inline bool nrf53_errata_75(void);
+static inline bool nrf53_errata_76(void);
+static inline bool nrf53_errata_77(void);
+static inline bool nrf53_errata_79(void);
+static inline bool nrf53_errata_80(void);
+static inline bool nrf53_errata_81(void);
+static inline bool nrf53_errata_82(void);
+static inline bool nrf53_errata_83(void);
+static inline bool nrf53_errata_84(void);
+static inline bool nrf53_errata_85(void);
+static inline bool nrf53_errata_86(void);
+static inline bool nrf53_errata_87(void);
+static inline bool nrf53_errata_90(void);
+static inline bool nrf53_errata_91(void);
+static inline bool nrf53_errata_93(void);
+static inline bool nrf53_errata_95(void);
+static inline bool nrf53_errata_97(void);
+static inline bool nrf53_errata_99(void);
+static inline bool nrf53_errata_103(void);
+static inline bool nrf53_errata_105(void);
+static inline bool nrf53_errata_106(void);
+static inline bool nrf53_errata_107(void);
+static inline bool nrf53_errata_109(void);
+static inline bool nrf53_errata_110(void);
+static inline bool nrf53_errata_112(void);
+static inline bool nrf53_errata_113(void);
+static inline bool nrf53_errata_114(void);
+static inline bool nrf53_errata_115(void);
+static inline bool nrf53_errata_116(void);
+static inline bool nrf53_errata_117(void);
+static inline bool nrf53_errata_119(void);
+static inline bool nrf53_errata_121(void);
+static inline bool nrf53_errata_122(void);
+static inline bool nrf53_errata_133(void);
+static inline bool nrf53_errata_134(void);
+static inline bool nrf53_errata_135(void);
+static inline bool nrf53_errata_136(void);
+static inline bool nrf53_errata_137(void);
+static inline bool nrf53_errata_138(void);
+static inline bool nrf53_errata_140(void);
+static inline bool nrf53_errata_152(void);
+static inline bool nrf53_errata_153(void);
+static inline bool nrf53_errata_154(void);
+static inline bool nrf53_errata_155(void);
+static inline bool nrf53_errata_157(void);
+static inline bool nrf53_errata_158(void);
+static inline bool nrf53_errata_159(void);
+static inline bool nrf53_errata_160(void);
+static inline bool nrf53_errata_161(void);
+static inline bool nrf53_errata_162(void);
+static inline bool nrf53_errata_163(void);
+static inline bool nrf53_errata_165(void);
+static inline bool nrf53_errata_166(void);
+static inline bool nrf53_errata_167(void);
+static inline bool nrf53_errata_168(void);
+static inline bool nrf53_errata_169(void);
 
 /* ========= Errata 1 ========= */
 #if    defined (NRF5340_XXAA) || defined (DEVELOP_IN_NRF5340)
@@ -171,7 +171,7 @@ static bool nrf53_errata_169(void) __UNUSED;
     #define NRF53_ERRATA_1_ENABLE_WORKAROUND NRF53_ERRATA_1_PRESENT
 #endif
 
-static bool nrf53_errata_1(void)
+static inline bool nrf53_errata_1(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -226,7 +226,7 @@ static bool nrf53_errata_1(void)
     #define NRF53_ERRATA_2_ENABLE_WORKAROUND NRF53_ERRATA_2_PRESENT
 #endif
 
-static bool nrf53_errata_2(void)
+static inline bool nrf53_errata_2(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -281,7 +281,7 @@ static bool nrf53_errata_2(void)
     #define NRF53_ERRATA_3_ENABLE_WORKAROUND NRF53_ERRATA_3_PRESENT
 #endif
 
-static bool nrf53_errata_3(void)
+static inline bool nrf53_errata_3(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -336,7 +336,7 @@ static bool nrf53_errata_3(void)
     #define NRF53_ERRATA_4_ENABLE_WORKAROUND NRF53_ERRATA_4_PRESENT
 #endif
 
-static bool nrf53_errata_4(void)
+static inline bool nrf53_errata_4(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -391,7 +391,7 @@ static bool nrf53_errata_4(void)
     #define NRF53_ERRATA_5_ENABLE_WORKAROUND NRF53_ERRATA_5_PRESENT
 #endif
 
-static bool nrf53_errata_5(void)
+static inline bool nrf53_errata_5(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -446,7 +446,7 @@ static bool nrf53_errata_5(void)
     #define NRF53_ERRATA_6_ENABLE_WORKAROUND NRF53_ERRATA_6_PRESENT
 #endif
 
-static bool nrf53_errata_6(void)
+static inline bool nrf53_errata_6(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -496,7 +496,7 @@ static bool nrf53_errata_6(void)
     #define NRF53_ERRATA_7_ENABLE_WORKAROUND NRF53_ERRATA_7_PRESENT
 #endif
 
-static bool nrf53_errata_7(void)
+static inline bool nrf53_errata_7(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -551,7 +551,7 @@ static bool nrf53_errata_7(void)
     #define NRF53_ERRATA_8_ENABLE_WORKAROUND NRF53_ERRATA_8_PRESENT
 #endif
 
-static bool nrf53_errata_8(void)
+static inline bool nrf53_errata_8(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -606,7 +606,7 @@ static bool nrf53_errata_8(void)
     #define NRF53_ERRATA_9_ENABLE_WORKAROUND NRF53_ERRATA_9_PRESENT
 #endif
 
-static bool nrf53_errata_9(void)
+static inline bool nrf53_errata_9(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -661,7 +661,7 @@ static bool nrf53_errata_9(void)
     #define NRF53_ERRATA_10_ENABLE_WORKAROUND NRF53_ERRATA_10_PRESENT
 #endif
 
-static bool nrf53_errata_10(void)
+static inline bool nrf53_errata_10(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -711,7 +711,7 @@ static bool nrf53_errata_10(void)
     #define NRF53_ERRATA_11_ENABLE_WORKAROUND NRF53_ERRATA_11_PRESENT
 #endif
 
-static bool nrf53_errata_11(void)
+static inline bool nrf53_errata_11(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -761,7 +761,7 @@ static bool nrf53_errata_11(void)
     #define NRF53_ERRATA_12_ENABLE_WORKAROUND NRF53_ERRATA_12_PRESENT
 #endif
 
-static bool nrf53_errata_12(void)
+static inline bool nrf53_errata_12(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -817,7 +817,7 @@ static bool nrf53_errata_12(void)
     #define NRF53_ERRATA_13_ENABLE_WORKAROUND NRF53_ERRATA_13_PRESENT
 #endif
 
-static bool nrf53_errata_13(void)
+static inline bool nrf53_errata_13(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -876,7 +876,7 @@ static bool nrf53_errata_13(void)
     #define NRF53_ERRATA_14_ENABLE_WORKAROUND NRF53_ERRATA_14_PRESENT
 #endif
 
-static bool nrf53_errata_14(void)
+static inline bool nrf53_errata_14(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -927,7 +927,7 @@ static bool nrf53_errata_14(void)
     #define NRF53_ERRATA_15_ENABLE_WORKAROUND NRF53_ERRATA_15_PRESENT
 #endif
 
-static bool nrf53_errata_15(void)
+static inline bool nrf53_errata_15(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -986,7 +986,7 @@ static bool nrf53_errata_15(void)
     #define NRF53_ERRATA_16_ENABLE_WORKAROUND NRF53_ERRATA_16_PRESENT
 #endif
 
-static bool nrf53_errata_16(void)
+static inline bool nrf53_errata_16(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1036,7 +1036,7 @@ static bool nrf53_errata_16(void)
     #define NRF53_ERRATA_18_ENABLE_WORKAROUND NRF53_ERRATA_18_PRESENT
 #endif
 
-static bool nrf53_errata_18(void)
+static inline bool nrf53_errata_18(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1091,7 +1091,7 @@ static bool nrf53_errata_18(void)
     #define NRF53_ERRATA_19_ENABLE_WORKAROUND NRF53_ERRATA_19_PRESENT
 #endif
 
-static bool nrf53_errata_19(void)
+static inline bool nrf53_errata_19(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1147,7 +1147,7 @@ static bool nrf53_errata_19(void)
     #define NRF53_ERRATA_20_ENABLE_WORKAROUND NRF53_ERRATA_20_PRESENT
 #endif
 
-static bool nrf53_errata_20(void)
+static inline bool nrf53_errata_20(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1207,7 +1207,7 @@ static bool nrf53_errata_20(void)
     #define NRF53_ERRATA_21_ENABLE_WORKAROUND NRF53_ERRATA_21_PRESENT
 #endif
 
-static bool nrf53_errata_21(void)
+static inline bool nrf53_errata_21(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1266,7 +1266,7 @@ static bool nrf53_errata_21(void)
     #define NRF53_ERRATA_22_ENABLE_WORKAROUND NRF53_ERRATA_22_PRESENT
 #endif
 
-static bool nrf53_errata_22(void)
+static inline bool nrf53_errata_22(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1321,7 +1321,7 @@ static bool nrf53_errata_22(void)
     #define NRF53_ERRATA_23_ENABLE_WORKAROUND NRF53_ERRATA_23_PRESENT
 #endif
 
-static bool nrf53_errata_23(void)
+static inline bool nrf53_errata_23(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1377,7 +1377,7 @@ static bool nrf53_errata_23(void)
     #define NRF53_ERRATA_26_ENABLE_WORKAROUND NRF53_ERRATA_26_PRESENT
 #endif
 
-static bool nrf53_errata_26(void)
+static inline bool nrf53_errata_26(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1437,7 +1437,7 @@ static bool nrf53_errata_26(void)
     #define NRF53_ERRATA_27_ENABLE_WORKAROUND NRF53_ERRATA_27_PRESENT
 #endif
 
-static bool nrf53_errata_27(void)
+static inline bool nrf53_errata_27(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1497,7 +1497,7 @@ static bool nrf53_errata_27(void)
     #define NRF53_ERRATA_28_ENABLE_WORKAROUND NRF53_ERRATA_28_PRESENT
 #endif
 
-static bool nrf53_errata_28(void)
+static inline bool nrf53_errata_28(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1556,7 +1556,7 @@ static bool nrf53_errata_28(void)
     #define NRF53_ERRATA_29_ENABLE_WORKAROUND NRF53_ERRATA_29_PRESENT
 #endif
 
-static bool nrf53_errata_29(void)
+static inline bool nrf53_errata_29(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1606,7 +1606,7 @@ static bool nrf53_errata_29(void)
     #define NRF53_ERRATA_30_ENABLE_WORKAROUND NRF53_ERRATA_30_PRESENT
 #endif
 
-static bool nrf53_errata_30(void)
+static inline bool nrf53_errata_30(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1657,7 +1657,7 @@ static bool nrf53_errata_30(void)
     #define NRF53_ERRATA_31_ENABLE_WORKAROUND NRF53_ERRATA_31_PRESENT
 #endif
 
-static bool nrf53_errata_31(void)
+static inline bool nrf53_errata_31(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1716,7 +1716,7 @@ static bool nrf53_errata_31(void)
     #define NRF53_ERRATA_32_ENABLE_WORKAROUND NRF53_ERRATA_32_PRESENT
 #endif
 
-static bool nrf53_errata_32(void)
+static inline bool nrf53_errata_32(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1766,7 +1766,7 @@ static bool nrf53_errata_32(void)
     #define NRF53_ERRATA_33_ENABLE_WORKAROUND NRF53_ERRATA_33_PRESENT
 #endif
 
-static bool nrf53_errata_33(void)
+static inline bool nrf53_errata_33(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1821,7 +1821,7 @@ static bool nrf53_errata_33(void)
     #define NRF53_ERRATA_34_ENABLE_WORKAROUND NRF53_ERRATA_34_PRESENT
 #endif
 
-static bool nrf53_errata_34(void)
+static inline bool nrf53_errata_34(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1871,7 +1871,7 @@ static bool nrf53_errata_34(void)
     #define NRF53_ERRATA_36_ENABLE_WORKAROUND NRF53_ERRATA_36_PRESENT
 #endif
 
-static bool nrf53_errata_36(void)
+static inline bool nrf53_errata_36(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1918,7 +1918,7 @@ static bool nrf53_errata_36(void)
     #define NRF53_ERRATA_37_ENABLE_WORKAROUND NRF53_ERRATA_37_PRESENT
 #endif
 
-static bool nrf53_errata_37(void)
+static inline bool nrf53_errata_37(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1942,7 +1942,7 @@ static bool nrf53_errata_37(void)
     #define NRF53_ERRATA_42_ENABLE_WORKAROUND NRF53_ERRATA_42_PRESENT
 #endif
 
-static bool nrf53_errata_42(void)
+static inline bool nrf53_errata_42(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -1997,7 +1997,7 @@ static bool nrf53_errata_42(void)
     #define NRF53_ERRATA_43_ENABLE_WORKAROUND NRF53_ERRATA_43_PRESENT
 #endif
 
-static bool nrf53_errata_43(void)
+static inline bool nrf53_errata_43(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2053,7 +2053,7 @@ static bool nrf53_errata_43(void)
     #define NRF53_ERRATA_44_ENABLE_WORKAROUND NRF53_ERRATA_44_PRESENT
 #endif
 
-static bool nrf53_errata_44(void)
+static inline bool nrf53_errata_44(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2112,7 +2112,7 @@ static bool nrf53_errata_44(void)
     #define NRF53_ERRATA_45_ENABLE_WORKAROUND NRF53_ERRATA_45_PRESENT
 #endif
 
-static bool nrf53_errata_45(void)
+static inline bool nrf53_errata_45(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2167,7 +2167,7 @@ static bool nrf53_errata_45(void)
     #define NRF53_ERRATA_46_ENABLE_WORKAROUND NRF53_ERRATA_46_PRESENT
 #endif
 
-static bool nrf53_errata_46(void)
+static inline bool nrf53_errata_46(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2223,7 +2223,7 @@ static bool nrf53_errata_46(void)
     #define NRF53_ERRATA_47_ENABLE_WORKAROUND NRF53_ERRATA_47_PRESENT
 #endif
 
-static bool nrf53_errata_47(void)
+static inline bool nrf53_errata_47(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2283,7 +2283,7 @@ static bool nrf53_errata_47(void)
     #define NRF53_ERRATA_49_ENABLE_WORKAROUND NRF53_ERRATA_49_PRESENT
 #endif
 
-static bool nrf53_errata_49(void)
+static inline bool nrf53_errata_49(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2342,7 +2342,7 @@ static bool nrf53_errata_49(void)
     #define NRF53_ERRATA_50_ENABLE_WORKAROUND NRF53_ERRATA_50_PRESENT
 #endif
 
-static bool nrf53_errata_50(void)
+static inline bool nrf53_errata_50(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2397,7 +2397,7 @@ static bool nrf53_errata_50(void)
     #define NRF53_ERRATA_51_ENABLE_WORKAROUND NRF53_ERRATA_51_PRESENT
 #endif
 
-static bool nrf53_errata_51(void)
+static inline bool nrf53_errata_51(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2453,7 +2453,7 @@ static bool nrf53_errata_51(void)
     #define NRF53_ERRATA_52_ENABLE_WORKAROUND NRF53_ERRATA_52_PRESENT
 #endif
 
-static bool nrf53_errata_52(void)
+static inline bool nrf53_errata_52(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2512,7 +2512,7 @@ static bool nrf53_errata_52(void)
     #define NRF53_ERRATA_53_ENABLE_WORKAROUND NRF53_ERRATA_53_PRESENT
 #endif
 
-static bool nrf53_errata_53(void)
+static inline bool nrf53_errata_53(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2567,7 +2567,7 @@ static bool nrf53_errata_53(void)
     #define NRF53_ERRATA_54_ENABLE_WORKAROUND NRF53_ERRATA_54_PRESENT
 #endif
 
-static bool nrf53_errata_54(void)
+static inline bool nrf53_errata_54(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2618,7 +2618,7 @@ static bool nrf53_errata_54(void)
     #define NRF53_ERRATA_55_ENABLE_WORKAROUND NRF53_ERRATA_55_PRESENT
 #endif
 
-static bool nrf53_errata_55(void)
+static inline bool nrf53_errata_55(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2677,7 +2677,7 @@ static bool nrf53_errata_55(void)
     #define NRF53_ERRATA_57_ENABLE_WORKAROUND NRF53_ERRATA_57_PRESENT
 #endif
 
-static bool nrf53_errata_57(void)
+static inline bool nrf53_errata_57(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2732,7 +2732,7 @@ static bool nrf53_errata_57(void)
     #define NRF53_ERRATA_58_ENABLE_WORKAROUND NRF53_ERRATA_58_PRESENT
 #endif
 
-static bool nrf53_errata_58(void)
+static inline bool nrf53_errata_58(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2787,7 +2787,7 @@ static bool nrf53_errata_58(void)
     #define NRF53_ERRATA_59_ENABLE_WORKAROUND NRF53_ERRATA_59_PRESENT
 #endif
 
-static bool nrf53_errata_59(void)
+static inline bool nrf53_errata_59(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2843,7 +2843,7 @@ static bool nrf53_errata_59(void)
     #define NRF53_ERRATA_62_ENABLE_WORKAROUND NRF53_ERRATA_62_PRESENT
 #endif
 
-static bool nrf53_errata_62(void)
+static inline bool nrf53_errata_62(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2902,7 +2902,7 @@ static bool nrf53_errata_62(void)
     #define NRF53_ERRATA_64_ENABLE_WORKAROUND NRF53_ERRATA_64_PRESENT
 #endif
 
-static bool nrf53_errata_64(void)
+static inline bool nrf53_errata_64(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -2957,7 +2957,7 @@ static bool nrf53_errata_64(void)
     #define NRF53_ERRATA_65_ENABLE_WORKAROUND NRF53_ERRATA_65_PRESENT
 #endif
 
-static bool nrf53_errata_65(void)
+static inline bool nrf53_errata_65(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3012,7 +3012,7 @@ static bool nrf53_errata_65(void)
     #define NRF53_ERRATA_66_ENABLE_WORKAROUND NRF53_ERRATA_66_PRESENT
 #endif
 
-static bool nrf53_errata_66(void)
+static inline bool nrf53_errata_66(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3068,7 +3068,7 @@ static bool nrf53_errata_66(void)
     #define NRF53_ERRATA_67_ENABLE_WORKAROUND NRF53_ERRATA_67_PRESENT
 #endif
 
-static bool nrf53_errata_67(void)
+static inline bool nrf53_errata_67(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3127,7 +3127,7 @@ static bool nrf53_errata_67(void)
     #define NRF53_ERRATA_69_ENABLE_WORKAROUND NRF53_ERRATA_69_PRESENT
 #endif
 
-static bool nrf53_errata_69(void)
+static inline bool nrf53_errata_69(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3182,7 +3182,7 @@ static bool nrf53_errata_69(void)
     #define NRF53_ERRATA_70_ENABLE_WORKAROUND NRF53_ERRATA_70_PRESENT
 #endif
 
-static bool nrf53_errata_70(void)
+static inline bool nrf53_errata_70(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3237,7 +3237,7 @@ static bool nrf53_errata_70(void)
     #define NRF53_ERRATA_71_ENABLE_WORKAROUND NRF53_ERRATA_71_PRESENT
 #endif
 
-static bool nrf53_errata_71(void)
+static inline bool nrf53_errata_71(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3292,7 +3292,7 @@ static bool nrf53_errata_71(void)
     #define NRF53_ERRATA_72_ENABLE_WORKAROUND NRF53_ERRATA_72_PRESENT
 #endif
 
-static bool nrf53_errata_72(void)
+static inline bool nrf53_errata_72(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3348,7 +3348,7 @@ static bool nrf53_errata_72(void)
     #define NRF53_ERRATA_73_ENABLE_WORKAROUND NRF53_ERRATA_73_PRESENT
 #endif
 
-static bool nrf53_errata_73(void)
+static inline bool nrf53_errata_73(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3408,7 +3408,7 @@ static bool nrf53_errata_73(void)
     #define NRF53_ERRATA_74_ENABLE_WORKAROUND NRF53_ERRATA_74_PRESENT
 #endif
 
-static bool nrf53_errata_74(void)
+static inline bool nrf53_errata_74(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3467,7 +3467,7 @@ static bool nrf53_errata_74(void)
     #define NRF53_ERRATA_75_ENABLE_WORKAROUND NRF53_ERRATA_75_PRESENT
 #endif
 
-static bool nrf53_errata_75(void)
+static inline bool nrf53_errata_75(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3522,7 +3522,7 @@ static bool nrf53_errata_75(void)
     #define NRF53_ERRATA_76_ENABLE_WORKAROUND NRF53_ERRATA_76_PRESENT
 #endif
 
-static bool nrf53_errata_76(void)
+static inline bool nrf53_errata_76(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3578,7 +3578,7 @@ static bool nrf53_errata_76(void)
     #define NRF53_ERRATA_77_ENABLE_WORKAROUND NRF53_ERRATA_77_PRESENT
 #endif
 
-static bool nrf53_errata_77(void)
+static inline bool nrf53_errata_77(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3637,7 +3637,7 @@ static bool nrf53_errata_77(void)
     #define NRF53_ERRATA_79_ENABLE_WORKAROUND NRF53_ERRATA_79_PRESENT
 #endif
 
-static bool nrf53_errata_79(void)
+static inline bool nrf53_errata_79(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3692,7 +3692,7 @@ static bool nrf53_errata_79(void)
     #define NRF53_ERRATA_80_ENABLE_WORKAROUND NRF53_ERRATA_80_PRESENT
 #endif
 
-static bool nrf53_errata_80(void)
+static inline bool nrf53_errata_80(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3747,7 +3747,7 @@ static bool nrf53_errata_80(void)
     #define NRF53_ERRATA_81_ENABLE_WORKAROUND NRF53_ERRATA_81_PRESENT
 #endif
 
-static bool nrf53_errata_81(void)
+static inline bool nrf53_errata_81(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3802,7 +3802,7 @@ static bool nrf53_errata_81(void)
     #define NRF53_ERRATA_82_ENABLE_WORKAROUND NRF53_ERRATA_82_PRESENT
 #endif
 
-static bool nrf53_errata_82(void)
+static inline bool nrf53_errata_82(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3857,7 +3857,7 @@ static bool nrf53_errata_82(void)
     #define NRF53_ERRATA_83_ENABLE_WORKAROUND NRF53_ERRATA_83_PRESENT
 #endif
 
-static bool nrf53_errata_83(void)
+static inline bool nrf53_errata_83(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3912,7 +3912,7 @@ static bool nrf53_errata_83(void)
     #define NRF53_ERRATA_84_ENABLE_WORKAROUND NRF53_ERRATA_84_PRESENT
 #endif
 
-static bool nrf53_errata_84(void)
+static inline bool nrf53_errata_84(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -3967,7 +3967,7 @@ static bool nrf53_errata_84(void)
     #define NRF53_ERRATA_85_ENABLE_WORKAROUND NRF53_ERRATA_85_PRESENT
 #endif
 
-static bool nrf53_errata_85(void)
+static inline bool nrf53_errata_85(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4023,7 +4023,7 @@ static bool nrf53_errata_85(void)
     #define NRF53_ERRATA_86_ENABLE_WORKAROUND NRF53_ERRATA_86_PRESENT
 #endif
 
-static bool nrf53_errata_86(void)
+static inline bool nrf53_errata_86(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4082,7 +4082,7 @@ static bool nrf53_errata_86(void)
     #define NRF53_ERRATA_87_ENABLE_WORKAROUND NRF53_ERRATA_87_PRESENT
 #endif
 
-static bool nrf53_errata_87(void)
+static inline bool nrf53_errata_87(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4132,7 +4132,7 @@ static bool nrf53_errata_87(void)
     #define NRF53_ERRATA_90_ENABLE_WORKAROUND NRF53_ERRATA_90_PRESENT
 #endif
 
-static bool nrf53_errata_90(void)
+static inline bool nrf53_errata_90(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4187,7 +4187,7 @@ static bool nrf53_errata_90(void)
     #define NRF53_ERRATA_91_ENABLE_WORKAROUND NRF53_ERRATA_91_PRESENT
 #endif
 
-static bool nrf53_errata_91(void)
+static inline bool nrf53_errata_91(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4237,7 +4237,7 @@ static bool nrf53_errata_91(void)
     #define NRF53_ERRATA_93_ENABLE_WORKAROUND NRF53_ERRATA_93_PRESENT
 #endif
 
-static bool nrf53_errata_93(void)
+static inline bool nrf53_errata_93(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4287,7 +4287,7 @@ static bool nrf53_errata_93(void)
     #define NRF53_ERRATA_95_ENABLE_WORKAROUND NRF53_ERRATA_95_PRESENT
 #endif
 
-static bool nrf53_errata_95(void)
+static inline bool nrf53_errata_95(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4338,7 +4338,7 @@ static bool nrf53_errata_95(void)
     #define NRF53_ERRATA_97_ENABLE_WORKAROUND NRF53_ERRATA_97_PRESENT
 #endif
 
-static bool nrf53_errata_97(void)
+static inline bool nrf53_errata_97(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4397,7 +4397,7 @@ static bool nrf53_errata_97(void)
     #define NRF53_ERRATA_99_ENABLE_WORKAROUND NRF53_ERRATA_99_PRESENT
 #endif
 
-static bool nrf53_errata_99(void)
+static inline bool nrf53_errata_99(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4444,7 +4444,7 @@ static bool nrf53_errata_99(void)
     #define NRF53_ERRATA_103_ENABLE_WORKAROUND NRF53_ERRATA_103_PRESENT
 #endif
 
-static bool nrf53_errata_103(void)
+static inline bool nrf53_errata_103(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4468,7 +4468,7 @@ static bool nrf53_errata_103(void)
     #define NRF53_ERRATA_105_ENABLE_WORKAROUND NRF53_ERRATA_105_PRESENT
 #endif
 
-static bool nrf53_errata_105(void)
+static inline bool nrf53_errata_105(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4523,7 +4523,7 @@ static bool nrf53_errata_105(void)
     #define NRF53_ERRATA_106_ENABLE_WORKAROUND NRF53_ERRATA_106_PRESENT
 #endif
 
-static bool nrf53_errata_106(void)
+static inline bool nrf53_errata_106(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4578,7 +4578,7 @@ static bool nrf53_errata_106(void)
     #define NRF53_ERRATA_107_ENABLE_WORKAROUND NRF53_ERRATA_107_PRESENT
 #endif
 
-static bool nrf53_errata_107(void)
+static inline bool nrf53_errata_107(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4633,7 +4633,7 @@ static bool nrf53_errata_107(void)
     #define NRF53_ERRATA_109_ENABLE_WORKAROUND NRF53_ERRATA_109_PRESENT
 #endif
 
-static bool nrf53_errata_109(void)
+static inline bool nrf53_errata_109(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4688,7 +4688,7 @@ static bool nrf53_errata_109(void)
     #define NRF53_ERRATA_110_ENABLE_WORKAROUND NRF53_ERRATA_110_PRESENT
 #endif
 
-static bool nrf53_errata_110(void)
+static inline bool nrf53_errata_110(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4743,7 +4743,7 @@ static bool nrf53_errata_110(void)
     #define NRF53_ERRATA_112_ENABLE_WORKAROUND NRF53_ERRATA_112_PRESENT
 #endif
 
-static bool nrf53_errata_112(void)
+static inline bool nrf53_errata_112(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4798,7 +4798,7 @@ static bool nrf53_errata_112(void)
     #define NRF53_ERRATA_113_ENABLE_WORKAROUND NRF53_ERRATA_113_PRESENT
 #endif
 
-static bool nrf53_errata_113(void)
+static inline bool nrf53_errata_113(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4848,7 +4848,7 @@ static bool nrf53_errata_113(void)
     #define NRF53_ERRATA_114_ENABLE_WORKAROUND NRF53_ERRATA_114_PRESENT
 #endif
 
-static bool nrf53_errata_114(void)
+static inline bool nrf53_errata_114(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4898,7 +4898,7 @@ static bool nrf53_errata_114(void)
     #define NRF53_ERRATA_115_ENABLE_WORKAROUND NRF53_ERRATA_115_PRESENT
 #endif
 
-static bool nrf53_errata_115(void)
+static inline bool nrf53_errata_115(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -4953,7 +4953,7 @@ static bool nrf53_errata_115(void)
     #define NRF53_ERRATA_116_ENABLE_WORKAROUND NRF53_ERRATA_116_PRESENT
 #endif
 
-static bool nrf53_errata_116(void)
+static inline bool nrf53_errata_116(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5003,7 +5003,7 @@ static bool nrf53_errata_116(void)
     #define NRF53_ERRATA_117_ENABLE_WORKAROUND NRF53_ERRATA_117_PRESENT
 #endif
 
-static bool nrf53_errata_117(void)
+static inline bool nrf53_errata_117(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5053,7 +5053,7 @@ static bool nrf53_errata_117(void)
     #define NRF53_ERRATA_119_ENABLE_WORKAROUND NRF53_ERRATA_119_PRESENT
 #endif
 
-static bool nrf53_errata_119(void)
+static inline bool nrf53_errata_119(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5103,7 +5103,7 @@ static bool nrf53_errata_119(void)
     #define NRF53_ERRATA_121_ENABLE_WORKAROUND NRF53_ERRATA_121_PRESENT
 #endif
 
-static bool nrf53_errata_121(void)
+static inline bool nrf53_errata_121(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5158,7 +5158,7 @@ static bool nrf53_errata_121(void)
     #define NRF53_ERRATA_122_ENABLE_WORKAROUND NRF53_ERRATA_122_PRESENT
 #endif
 
-static bool nrf53_errata_122(void)
+static inline bool nrf53_errata_122(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5208,7 +5208,7 @@ static bool nrf53_errata_122(void)
     #define NRF53_ERRATA_133_ENABLE_WORKAROUND NRF53_ERRATA_133_PRESENT
 #endif
 
-static bool nrf53_errata_133(void)
+static inline bool nrf53_errata_133(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5263,7 +5263,7 @@ static bool nrf53_errata_133(void)
     #define NRF53_ERRATA_134_ENABLE_WORKAROUND NRF53_ERRATA_134_PRESENT
 #endif
 
-static bool nrf53_errata_134(void)
+static inline bool nrf53_errata_134(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5314,7 +5314,7 @@ static bool nrf53_errata_134(void)
     #define NRF53_ERRATA_135_ENABLE_WORKAROUND NRF53_ERRATA_135_PRESENT
 #endif
 
-static bool nrf53_errata_135(void)
+static inline bool nrf53_errata_135(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5373,7 +5373,7 @@ static bool nrf53_errata_135(void)
     #define NRF53_ERRATA_136_ENABLE_WORKAROUND NRF53_ERRATA_136_PRESENT
 #endif
 
-static bool nrf53_errata_136(void)
+static inline bool nrf53_errata_136(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5429,7 +5429,7 @@ static bool nrf53_errata_136(void)
     #define NRF53_ERRATA_137_ENABLE_WORKAROUND NRF53_ERRATA_137_PRESENT
 #endif
 
-static bool nrf53_errata_137(void)
+static inline bool nrf53_errata_137(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5488,7 +5488,7 @@ static bool nrf53_errata_137(void)
     #define NRF53_ERRATA_138_ENABLE_WORKAROUND NRF53_ERRATA_138_PRESENT
 #endif
 
-static bool nrf53_errata_138(void)
+static inline bool nrf53_errata_138(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5543,7 +5543,7 @@ static bool nrf53_errata_138(void)
     #define NRF53_ERRATA_140_ENABLE_WORKAROUND NRF53_ERRATA_140_PRESENT
 #endif
 
-static bool nrf53_errata_140(void)
+static inline bool nrf53_errata_140(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5599,7 +5599,7 @@ static bool nrf53_errata_140(void)
     #define NRF53_ERRATA_152_ENABLE_WORKAROUND NRF53_ERRATA_152_PRESENT
 #endif
 
-static bool nrf53_errata_152(void)
+static inline bool nrf53_errata_152(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5658,7 +5658,7 @@ static bool nrf53_errata_152(void)
     #define NRF53_ERRATA_153_ENABLE_WORKAROUND NRF53_ERRATA_153_PRESENT
 #endif
 
-static bool nrf53_errata_153(void)
+static inline bool nrf53_errata_153(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5714,7 +5714,7 @@ static bool nrf53_errata_153(void)
     #define NRF53_ERRATA_154_ENABLE_WORKAROUND NRF53_ERRATA_154_PRESENT
 #endif
 
-static bool nrf53_errata_154(void)
+static inline bool nrf53_errata_154(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5773,7 +5773,7 @@ static bool nrf53_errata_154(void)
     #define NRF53_ERRATA_155_ENABLE_WORKAROUND NRF53_ERRATA_155_PRESENT
 #endif
 
-static bool nrf53_errata_155(void)
+static inline bool nrf53_errata_155(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5823,7 +5823,7 @@ static bool nrf53_errata_155(void)
     #define NRF53_ERRATA_157_ENABLE_WORKAROUND NRF53_ERRATA_157_PRESENT
 #endif
 
-static bool nrf53_errata_157(void)
+static inline bool nrf53_errata_157(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5873,7 +5873,7 @@ static bool nrf53_errata_157(void)
     #define NRF53_ERRATA_158_ENABLE_WORKAROUND NRF53_ERRATA_158_PRESENT
 #endif
 
-static bool nrf53_errata_158(void)
+static inline bool nrf53_errata_158(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5923,7 +5923,7 @@ static bool nrf53_errata_158(void)
     #define NRF53_ERRATA_159_ENABLE_WORKAROUND NRF53_ERRATA_159_PRESENT
 #endif
 
-static bool nrf53_errata_159(void)
+static inline bool nrf53_errata_159(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -5979,7 +5979,7 @@ static bool nrf53_errata_159(void)
     #define NRF53_ERRATA_160_ENABLE_WORKAROUND NRF53_ERRATA_160_PRESENT
 #endif
 
-static bool nrf53_errata_160(void)
+static inline bool nrf53_errata_160(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -6039,7 +6039,7 @@ static bool nrf53_errata_160(void)
     #define NRF53_ERRATA_161_ENABLE_WORKAROUND NRF53_ERRATA_161_PRESENT
 #endif
 
-static bool nrf53_errata_161(void)
+static inline bool nrf53_errata_161(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -6099,7 +6099,7 @@ static bool nrf53_errata_161(void)
     #define NRF53_ERRATA_162_ENABLE_WORKAROUND NRF53_ERRATA_162_PRESENT
 #endif
 
-static bool nrf53_errata_162(void)
+static inline bool nrf53_errata_162(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -6158,7 +6158,7 @@ static bool nrf53_errata_162(void)
     #define NRF53_ERRATA_163_ENABLE_WORKAROUND NRF53_ERRATA_163_PRESENT
 #endif
 
-static bool nrf53_errata_163(void)
+static inline bool nrf53_errata_163(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -6214,7 +6214,7 @@ static bool nrf53_errata_163(void)
     #define NRF53_ERRATA_165_ENABLE_WORKAROUND NRF53_ERRATA_165_PRESENT
 #endif
 
-static bool nrf53_errata_165(void)
+static inline bool nrf53_errata_165(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -6273,7 +6273,7 @@ static bool nrf53_errata_165(void)
     #define NRF53_ERRATA_166_ENABLE_WORKAROUND NRF53_ERRATA_166_PRESENT
 #endif
 
-static bool nrf53_errata_166(void)
+static inline bool nrf53_errata_166(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -6328,7 +6328,7 @@ static bool nrf53_errata_166(void)
     #define NRF53_ERRATA_167_ENABLE_WORKAROUND NRF53_ERRATA_167_PRESENT
 #endif
 
-static bool nrf53_errata_167(void)
+static inline bool nrf53_errata_167(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -6384,7 +6384,7 @@ static bool nrf53_errata_167(void)
     #define NRF53_ERRATA_168_ENABLE_WORKAROUND NRF53_ERRATA_168_PRESENT
 #endif
 
-static bool nrf53_errata_168(void)
+static inline bool nrf53_errata_168(void)
 {
     #ifndef NRF53_SERIES
         return false;
@@ -6444,7 +6444,7 @@ static bool nrf53_errata_168(void)
     #define NRF53_ERRATA_169_ENABLE_WORKAROUND NRF53_ERRATA_169_PRESENT
 #endif
 
-static bool nrf53_errata_169(void)
+static inline bool nrf53_errata_169(void)
 {
     #ifndef NRF53_SERIES
         return false;

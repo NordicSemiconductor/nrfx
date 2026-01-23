@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2023 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -55,114 +55,174 @@ extern "C" {
 #define NRF_IPCT_HAS_ACK 0
 #endif
 
+/** @brief Symbol indicating presence of READY event. */
+#if defined(IPCT_INTEN0_READY0_Msk) || defined(__NRFX_DOXYGEN__)
+#define NRF_IPCT_HAS_READY 1
+#else
+#define NRF_IPCT_HAS_READY 0
+#endif
+
+/** @brief Symbol indicating presence of FLUSH task. */
+#if defined(IPCT_TASKS_FLUSH_TASKS_FLUSH_Msk) || defined(__NRFX_DOXYGEN__)
+#define NRF_IPCT_HAS_FLUSH 1
+#else
+#define NRF_IPCT_HAS_FLUSH 0
+#endif
+
 /** @brief Number of send tasks. */
 #define NRF_IPCT_TASKS_SEND_COUNT IPCT_TASKS_SEND_MaxCount
 
 /** @brief Number of recieve tasks. */
 #define NRF_IPCT_EVENTS_RECEIVE_COUNT IPCT_EVENTS_RECEIVE_MaxCount
 
+/** @brief Number of flush tasks. */
+#define NRF_IPCT_TASKS_FLUSH_COUNT IPCT_TASKS_FLUSH_MaxCount
+
+/** @brief Number of ready events. */
+#define NRF_IPCT_EVENTS_READY_COUNT IPCT_EVENTS_READY_MaxCount
+
 /** @brief IPCT tasks. */
 typedef enum
 {
-    NRF_IPCT_TASK_SEND_0  = offsetof(NRF_IPCT_Type, TASKS_SEND[0]),  /**< Send [0] task. */
-    NRF_IPCT_TASK_SEND_1  = offsetof(NRF_IPCT_Type, TASKS_SEND[1]),  /**< Send [1] task. */
-    NRF_IPCT_TASK_SEND_2  = offsetof(NRF_IPCT_Type, TASKS_SEND[2]),  /**< Send [2] task. */
-    NRF_IPCT_TASK_SEND_3  = offsetof(NRF_IPCT_Type, TASKS_SEND[3]),  /**< Send [3] task. */
-    NRF_IPCT_TASK_SEND_4  = offsetof(NRF_IPCT_Type, TASKS_SEND[4]),  /**< Send [4] task. */
-#if NRF_IPCT_TASKS_SEND_COUNT > 5
-    NRF_IPCT_TASK_SEND_5  = offsetof(NRF_IPCT_Type, TASKS_SEND[5]),  /**< Send [5] task. */
-    NRF_IPCT_TASK_SEND_6  = offsetof(NRF_IPCT_Type, TASKS_SEND[6]),  /**< Send [6] task. */
-    NRF_IPCT_TASK_SEND_7  = offsetof(NRF_IPCT_Type, TASKS_SEND[7]),  /**< Send [7] task. */
-    NRF_IPCT_TASK_SEND_8  = offsetof(NRF_IPCT_Type, TASKS_SEND[8]),  /**< Send [8] task. */
-    NRF_IPCT_TASK_SEND_9  = offsetof(NRF_IPCT_Type, TASKS_SEND[9]),  /**< Send [9] task. */
-    NRF_IPCT_TASK_SEND_10 = offsetof(NRF_IPCT_Type, TASKS_SEND[10]), /**< Send [10] task. */
-    NRF_IPCT_TASK_SEND_11 = offsetof(NRF_IPCT_Type, TASKS_SEND[11]), /**< Send [11] task. */
-    NRF_IPCT_TASK_SEND_12 = offsetof(NRF_IPCT_Type, TASKS_SEND[12]), /**< Send [12] task. */
-    NRF_IPCT_TASK_SEND_13 = offsetof(NRF_IPCT_Type, TASKS_SEND[13]), /**< Send [13] task. */
-    NRF_IPCT_TASK_SEND_14 = offsetof(NRF_IPCT_Type, TASKS_SEND[14]), /**< Send [14] task. */
-    NRF_IPCT_TASK_SEND_15 = offsetof(NRF_IPCT_Type, TASKS_SEND[15]), /**< Send [15] task. */
+    NRF_IPCT_TASK_SEND_0  = offsetof(NRF_IPCT_Type, TASKS_SEND[0]),     /**< Send [0] task. */
+    NRF_IPCT_TASK_SEND_1  = offsetof(NRF_IPCT_Type, TASKS_SEND[1]),     /**< Send [1] task. */
+    NRF_IPCT_TASK_SEND_2  = offsetof(NRF_IPCT_Type, TASKS_SEND[2]),     /**< Send [2] task. */
+    NRF_IPCT_TASK_SEND_3  = offsetof(NRF_IPCT_Type, TASKS_SEND[3]),     /**< Send [3] task. */
+#if NRF_IPCT_TASKS_SEND_COUNT > 4
+    NRF_IPCT_TASK_SEND_4  = offsetof(NRF_IPCT_Type, TASKS_SEND[4]),     /**< Send [4] task. */
+    NRF_IPCT_TASK_SEND_5  = offsetof(NRF_IPCT_Type, TASKS_SEND[5]),     /**< Send [5] task. */
+    NRF_IPCT_TASK_SEND_6  = offsetof(NRF_IPCT_Type, TASKS_SEND[6]),     /**< Send [6] task. */
+    NRF_IPCT_TASK_SEND_7  = offsetof(NRF_IPCT_Type, TASKS_SEND[7]),     /**< Send [7] task. */
+    NRF_IPCT_TASK_SEND_8  = offsetof(NRF_IPCT_Type, TASKS_SEND[8]),     /**< Send [8] task. */
+    NRF_IPCT_TASK_SEND_9  = offsetof(NRF_IPCT_Type, TASKS_SEND[9]),     /**< Send [9] task. */
+    NRF_IPCT_TASK_SEND_10 = offsetof(NRF_IPCT_Type, TASKS_SEND[10]),    /**< Send [10] task. */
+    NRF_IPCT_TASK_SEND_11 = offsetof(NRF_IPCT_Type, TASKS_SEND[11]),    /**< Send [11] task. */
+    NRF_IPCT_TASK_SEND_12 = offsetof(NRF_IPCT_Type, TASKS_SEND[12]),    /**< Send [12] task. */
+    NRF_IPCT_TASK_SEND_13 = offsetof(NRF_IPCT_Type, TASKS_SEND[13]),    /**< Send [13] task. */
+    NRF_IPCT_TASK_SEND_14 = offsetof(NRF_IPCT_Type, TASKS_SEND[14]),    /**< Send [14] task. */
+    NRF_IPCT_TASK_SEND_15 = offsetof(NRF_IPCT_Type, TASKS_SEND[15]),    /**< Send [15] task. */
 #endif
 #if NRF_IPCT_HAS_ACK
-    NRF_IPCT_TASK_ACK_0   = offsetof(NRF_IPCT_Type, TASKS_ACK[0]),   /**< Acknowledge the RECEIVE[0] task. */
-    NRF_IPCT_TASK_ACK_1   = offsetof(NRF_IPCT_Type, TASKS_ACK[1]),   /**< Acknowledge the RECEIVE[1] task. */
-    NRF_IPCT_TASK_ACK_2   = offsetof(NRF_IPCT_Type, TASKS_ACK[2]),   /**< Acknowledge the RECEIVE[2] task. */
-    NRF_IPCT_TASK_ACK_3   = offsetof(NRF_IPCT_Type, TASKS_ACK[3]),   /**< Acknowledge the RECEIVE[3] task. */
-    NRF_IPCT_TASK_ACK_4   = offsetof(NRF_IPCT_Type, TASKS_ACK[4]),   /**< Acknowledge the RECEIVE[4] task. */
-    NRF_IPCT_TASK_ACK_5   = offsetof(NRF_IPCT_Type, TASKS_ACK[5]),   /**< Acknowledge the RECEIVE[5] task. */
-    NRF_IPCT_TASK_ACK_6   = offsetof(NRF_IPCT_Type, TASKS_ACK[6]),   /**< Acknowledge the RECEIVE[6] task. */
-    NRF_IPCT_TASK_ACK_7   = offsetof(NRF_IPCT_Type, TASKS_ACK[7]),   /**< Acknowledge the RECEIVE[7] task. */
-    NRF_IPCT_TASK_ACK_8   = offsetof(NRF_IPCT_Type, TASKS_ACK[8]),   /**< Acknowledge the RECEIVE[8] task. */
-    NRF_IPCT_TASK_ACK_9   = offsetof(NRF_IPCT_Type, TASKS_ACK[9]),   /**< Acknowledge the RECEIVE[9] task. */
-    NRF_IPCT_TASK_ACK_10  = offsetof(NRF_IPCT_Type, TASKS_ACK[10]),  /**< Acknowledge the RECEIVE[10] task. */
-    NRF_IPCT_TASK_ACK_11  = offsetof(NRF_IPCT_Type, TASKS_ACK[11]),  /**< Acknowledge the RECEIVE[11] task. */
-    NRF_IPCT_TASK_ACK_12  = offsetof(NRF_IPCT_Type, TASKS_ACK[12]),  /**< Acknowledge the RECEIVE[12] task. */
-    NRF_IPCT_TASK_ACK_13  = offsetof(NRF_IPCT_Type, TASKS_ACK[13]),  /**< Acknowledge the RECEIVE[13] task. */
-    NRF_IPCT_TASK_ACK_14  = offsetof(NRF_IPCT_Type, TASKS_ACK[14]),  /**< Acknowledge the RECEIVE[14] task. */
-    NRF_IPCT_TASK_ACK_15  = offsetof(NRF_IPCT_Type, TASKS_ACK[15]),  /**< Acknowledge the RECEIVE[15] task. */
+    NRF_IPCT_TASK_ACK_0   = offsetof(NRF_IPCT_Type, TASKS_ACK[0]),      /**< Acknowledge the RECEIVE[0] task. */
+    NRF_IPCT_TASK_ACK_1   = offsetof(NRF_IPCT_Type, TASKS_ACK[1]),      /**< Acknowledge the RECEIVE[1] task. */
+    NRF_IPCT_TASK_ACK_2   = offsetof(NRF_IPCT_Type, TASKS_ACK[2]),      /**< Acknowledge the RECEIVE[2] task. */
+    NRF_IPCT_TASK_ACK_3   = offsetof(NRF_IPCT_Type, TASKS_ACK[3]),      /**< Acknowledge the RECEIVE[3] task. */
+    NRF_IPCT_TASK_ACK_4   = offsetof(NRF_IPCT_Type, TASKS_ACK[4]),      /**< Acknowledge the RECEIVE[4] task. */
+    NRF_IPCT_TASK_ACK_5   = offsetof(NRF_IPCT_Type, TASKS_ACK[5]),      /**< Acknowledge the RECEIVE[5] task. */
+    NRF_IPCT_TASK_ACK_6   = offsetof(NRF_IPCT_Type, TASKS_ACK[6]),      /**< Acknowledge the RECEIVE[6] task. */
+    NRF_IPCT_TASK_ACK_7   = offsetof(NRF_IPCT_Type, TASKS_ACK[7]),      /**< Acknowledge the RECEIVE[7] task. */
+    NRF_IPCT_TASK_ACK_8   = offsetof(NRF_IPCT_Type, TASKS_ACK[8]),      /**< Acknowledge the RECEIVE[8] task. */
+    NRF_IPCT_TASK_ACK_9   = offsetof(NRF_IPCT_Type, TASKS_ACK[9]),      /**< Acknowledge the RECEIVE[9] task. */
+    NRF_IPCT_TASK_ACK_10  = offsetof(NRF_IPCT_Type, TASKS_ACK[10]),     /**< Acknowledge the RECEIVE[10] task. */
+    NRF_IPCT_TASK_ACK_11  = offsetof(NRF_IPCT_Type, TASKS_ACK[11]),     /**< Acknowledge the RECEIVE[11] task. */
+    NRF_IPCT_TASK_ACK_12  = offsetof(NRF_IPCT_Type, TASKS_ACK[12]),     /**< Acknowledge the RECEIVE[12] task. */
+    NRF_IPCT_TASK_ACK_13  = offsetof(NRF_IPCT_Type, TASKS_ACK[13]),     /**< Acknowledge the RECEIVE[13] task. */
+    NRF_IPCT_TASK_ACK_14  = offsetof(NRF_IPCT_Type, TASKS_ACK[14]),     /**< Acknowledge the RECEIVE[14] task. */
+    NRF_IPCT_TASK_ACK_15  = offsetof(NRF_IPCT_Type, TASKS_ACK[15]),     /**< Acknowledge the RECEIVE[15] task. */
 #endif
+#if NRF_IPCT_HAS_FLUSH
+    NRF_IPCT_TASK_FLUSH_0   = offsetof(NRF_IPCT_Type, TASKS_FLUSH[0]),  /**< Flush the RECEIVE[0] task. */
+    NRF_IPCT_TASK_FLUSH_1   = offsetof(NRF_IPCT_Type, TASKS_FLUSH[1]),  /**< Flush the RECEIVE[1] task. */
+    NRF_IPCT_TASK_FLUSH_2   = offsetof(NRF_IPCT_Type, TASKS_FLUSH[2]),  /**< Flush the RECEIVE[2] task. */
+    NRF_IPCT_TASK_FLUSH_3   = offsetof(NRF_IPCT_Type, TASKS_FLUSH[3]),  /**< Flush the RECEIVE[3] task. */
+#if NRF_IPCT_TASKS_FLUSH_COUNT > 4
+    NRF_IPCT_TASK_FLUSH_4   = offsetof(NRF_IPCT_Type, TASKS_FLUSH[4]),  /**< Flush the RECEIVE[4] task. */
+    NRF_IPCT_TASK_FLUSH_5   = offsetof(NRF_IPCT_Type, TASKS_FLUSH[5]),  /**< Flush the RECEIVE[5] task. */
+    NRF_IPCT_TASK_FLUSH_6   = offsetof(NRF_IPCT_Type, TASKS_FLUSH[6]),  /**< Flush the RECEIVE[6] task. */
+    NRF_IPCT_TASK_FLUSH_7   = offsetof(NRF_IPCT_Type, TASKS_FLUSH[7]),  /**< Flush the RECEIVE[7] task. */
+    NRF_IPCT_TASK_FLUSH_8   = offsetof(NRF_IPCT_Type, TASKS_FLUSH[8]),  /**< Flush the RECEIVE[8] task. */
+    NRF_IPCT_TASK_FLUSH_9   = offsetof(NRF_IPCT_Type, TASKS_FLUSH[9]),  /**< Flush the RECEIVE[9] task. */
+    NRF_IPCT_TASK_FLUSH_10  = offsetof(NRF_IPCT_Type, TASKS_FLUSH[10]), /**< Flush the RECEIVE[10] task. */
+    NRF_IPCT_TASK_FLUSH_11  = offsetof(NRF_IPCT_Type, TASKS_FLUSH[11]), /**< Flush the RECEIVE[11] task. */
+    NRF_IPCT_TASK_FLUSH_12  = offsetof(NRF_IPCT_Type, TASKS_FLUSH[12]), /**< Flush the RECEIVE[12] task. */
+    NRF_IPCT_TASK_FLUSH_13  = offsetof(NRF_IPCT_Type, TASKS_FLUSH[13]), /**< Flush the RECEIVE[13] task. */
+    NRF_IPCT_TASK_FLUSH_14  = offsetof(NRF_IPCT_Type, TASKS_FLUSH[14]), /**< Flush the RECEIVE[14] task. */
+    NRF_IPCT_TASK_FLUSH_15  = offsetof(NRF_IPCT_Type, TASKS_FLUSH[15]), /**< Flush the RECEIVE[15] task. */
+#endif // NRF_IPCT_TASKS_FLUSH_COUNT
+#endif // NRF_IPCT_HAS_FLUSH
 } nrf_ipct_task_t;
 
 /** @brief IPCT events. */
 typedef enum
 {
-    NRF_IPCT_EVENT_RECEIVE_0  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[0]),  /**< Receive [0] event. */
-    NRF_IPCT_EVENT_RECEIVE_1  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[1]),  /**< Receive [1] event. */
-    NRF_IPCT_EVENT_RECEIVE_2  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[2]),  /**< Receive [2] event. */
-    NRF_IPCT_EVENT_RECEIVE_3  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[3]),  /**< Receive [3] event. */
-    NRF_IPCT_EVENT_RECEIVE_4  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[4]),  /**< Receive [4] event. */
-#if NRF_IPCT_EVENTS_RECEIVE_COUNT > 5
-    NRF_IPCT_EVENT_RECEIVE_5  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[5]),  /**< Receive [5] event. */
-    NRF_IPCT_EVENT_RECEIVE_6  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[6]),  /**< Receive [6] event. */
-    NRF_IPCT_EVENT_RECEIVE_7  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[7]),  /**< Receive [7] event. */
-    NRF_IPCT_EVENT_RECEIVE_8  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[8]),  /**< Receive [8] event. */
-    NRF_IPCT_EVENT_RECEIVE_9  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[9]),  /**< Receive [9] event. */
-    NRF_IPCT_EVENT_RECEIVE_10 = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[10]), /**< Receive [10] event. */
-    NRF_IPCT_EVENT_RECEIVE_11 = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[11]), /**< Receive [11] event. */
-    NRF_IPCT_EVENT_RECEIVE_12 = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[12]), /**< Receive [12] event. */
-    NRF_IPCT_EVENT_RECEIVE_13 = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[13]), /**< Receive [13] event. */
-    NRF_IPCT_EVENT_RECEIVE_14 = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[14]), /**< Receive [14] event. */
-    NRF_IPCT_EVENT_RECEIVE_15 = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[15]), /**< Receive [15] event. */
+    NRF_IPCT_EVENT_RECEIVE_0  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[0]),    /**< Receive [0] event. */
+    NRF_IPCT_EVENT_RECEIVE_1  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[1]),    /**< Receive [1] event. */
+    NRF_IPCT_EVENT_RECEIVE_2  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[2]),    /**< Receive [2] event. */
+    NRF_IPCT_EVENT_RECEIVE_3  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[3]),    /**< Receive [3] event. */
+#if NRF_IPCT_EVENTS_RECEIVE_COUNT > 4
+    NRF_IPCT_EVENT_RECEIVE_4  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[4]),    /**< Receive [4] event. */
+    NRF_IPCT_EVENT_RECEIVE_5  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[5]),    /**< Receive [5] event. */
+    NRF_IPCT_EVENT_RECEIVE_6  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[6]),    /**< Receive [6] event. */
+    NRF_IPCT_EVENT_RECEIVE_7  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[7]),    /**< Receive [7] event. */
+    NRF_IPCT_EVENT_RECEIVE_8  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[8]),    /**< Receive [8] event. */
+    NRF_IPCT_EVENT_RECEIVE_9  = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[9]),    /**< Receive [9] event. */
+    NRF_IPCT_EVENT_RECEIVE_10 = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[10]),   /**< Receive [10] event. */
+    NRF_IPCT_EVENT_RECEIVE_11 = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[11]),   /**< Receive [11] event. */
+    NRF_IPCT_EVENT_RECEIVE_12 = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[12]),   /**< Receive [12] event. */
+    NRF_IPCT_EVENT_RECEIVE_13 = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[13]),   /**< Receive [13] event. */
+    NRF_IPCT_EVENT_RECEIVE_14 = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[14]),   /**< Receive [14] event. */
+    NRF_IPCT_EVENT_RECEIVE_15 = offsetof(NRF_IPCT_Type, EVENTS_RECEIVE[15]),   /**< Receive [15] event. */
 #endif
 #if NRF_IPCT_HAS_ACK
-    NRF_IPCT_EVENT_ACKED_0    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[0]),    /**< Acknowledged event for the SEND[0] task. */
-    NRF_IPCT_EVENT_ACKED_1    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[1]),    /**< Acknowledged event for the SEND[1] task. */
-    NRF_IPCT_EVENT_ACKED_2    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[2]),    /**< Acknowledged event for the SEND[2] task. */
-    NRF_IPCT_EVENT_ACKED_3    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[3]),    /**< Acknowledged event for the SEND[3] task. */
-    NRF_IPCT_EVENT_ACKED_4    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[4]),    /**< Acknowledged event for the SEND[4] task. */
-    NRF_IPCT_EVENT_ACKED_5    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[5]),    /**< Acknowledged event for the SEND[5] task. */
-    NRF_IPCT_EVENT_ACKED_6    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[6]),    /**< Acknowledged event for the SEND[6] task. */
-    NRF_IPCT_EVENT_ACKED_7    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[7]),    /**< Acknowledged event for the SEND[7] task. */
-    NRF_IPCT_EVENT_ACKED_8    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[8]),    /**< Acknowledged event for the SEND[8] task. */
-    NRF_IPCT_EVENT_ACKED_9    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[9]),    /**< Acknowledged event for the SEND[9] task. */
-    NRF_IPCT_EVENT_ACKED_10   = offsetof(NRF_IPCT_Type, EVENTS_ACKED[10]),   /**< Acknowledged event for the SEND[10] task. */
-    NRF_IPCT_EVENT_ACKED_11   = offsetof(NRF_IPCT_Type, EVENTS_ACKED[11]),   /**< Acknowledged event for the SEND[11] task. */
-    NRF_IPCT_EVENT_ACKED_12   = offsetof(NRF_IPCT_Type, EVENTS_ACKED[12]),   /**< Acknowledged event for the SEND[12] task. */
-    NRF_IPCT_EVENT_ACKED_13   = offsetof(NRF_IPCT_Type, EVENTS_ACKED[13]),   /**< Acknowledged event for the SEND[13] task. */
-    NRF_IPCT_EVENT_ACKED_14   = offsetof(NRF_IPCT_Type, EVENTS_ACKED[14]),   /**< Acknowledged event for the SEND[14] task. */
-    NRF_IPCT_EVENT_ACKED_15   = offsetof(NRF_IPCT_Type, EVENTS_ACKED[15]),   /**< Acknowledged event for the SEND[15] task. */
+    NRF_IPCT_EVENT_ACKED_0    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[0]),      /**< Acknowledged event for the SEND[0] task. */
+    NRF_IPCT_EVENT_ACKED_1    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[1]),      /**< Acknowledged event for the SEND[1] task. */
+    NRF_IPCT_EVENT_ACKED_2    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[2]),      /**< Acknowledged event for the SEND[2] task. */
+    NRF_IPCT_EVENT_ACKED_3    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[3]),      /**< Acknowledged event for the SEND[3] task. */
+    NRF_IPCT_EVENT_ACKED_4    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[4]),      /**< Acknowledged event for the SEND[4] task. */
+    NRF_IPCT_EVENT_ACKED_5    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[5]),      /**< Acknowledged event for the SEND[5] task. */
+    NRF_IPCT_EVENT_ACKED_6    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[6]),      /**< Acknowledged event for the SEND[6] task. */
+    NRF_IPCT_EVENT_ACKED_7    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[7]),      /**< Acknowledged event for the SEND[7] task. */
+    NRF_IPCT_EVENT_ACKED_8    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[8]),      /**< Acknowledged event for the SEND[8] task. */
+    NRF_IPCT_EVENT_ACKED_9    = offsetof(NRF_IPCT_Type, EVENTS_ACKED[9]),      /**< Acknowledged event for the SEND[9] task. */
+    NRF_IPCT_EVENT_ACKED_10   = offsetof(NRF_IPCT_Type, EVENTS_ACKED[10]),     /**< Acknowledged event for the SEND[10] task. */
+    NRF_IPCT_EVENT_ACKED_11   = offsetof(NRF_IPCT_Type, EVENTS_ACKED[11]),     /**< Acknowledged event for the SEND[11] task. */
+    NRF_IPCT_EVENT_ACKED_12   = offsetof(NRF_IPCT_Type, EVENTS_ACKED[12]),     /**< Acknowledged event for the SEND[12] task. */
+    NRF_IPCT_EVENT_ACKED_13   = offsetof(NRF_IPCT_Type, EVENTS_ACKED[13]),     /**< Acknowledged event for the SEND[13] task. */
+    NRF_IPCT_EVENT_ACKED_14   = offsetof(NRF_IPCT_Type, EVENTS_ACKED[14]),     /**< Acknowledged event for the SEND[14] task. */
+    NRF_IPCT_EVENT_ACKED_15   = offsetof(NRF_IPCT_Type, EVENTS_ACKED[15]),     /**< Acknowledged event for the SEND[15] task. */
 #endif // NRF_IPCT_HAS_ACK
+#if NRF_IPCT_HAS_READY
+    NRF_IPCT_EVENT_READY_0    = offsetof(NRF_IPCT_Type, EVENTS_READY[0]),      /**< Ready event for the SEND[0] task. */
+    NRF_IPCT_EVENT_READY_1    = offsetof(NRF_IPCT_Type, EVENTS_READY[1]),      /**< Ready event for the SEND[1] task. */
+    NRF_IPCT_EVENT_READY_2    = offsetof(NRF_IPCT_Type, EVENTS_READY[2]),      /**< Ready event for the SEND[2] task. */
+    NRF_IPCT_EVENT_READY_3    = offsetof(NRF_IPCT_Type, EVENTS_READY[3]),      /**< Ready event for the SEND[3] task. */
+#if NRF_IPCT_EVENTS_READY_COUNT > 4
+    NRF_IPCT_EVENT_READY_4    = offsetof(NRF_IPCT_Type, EVENTS_READY[4]),      /**< Ready event for the SEND[4] task. */
+    NRF_IPCT_EVENT_READY_5    = offsetof(NRF_IPCT_Type, EVENTS_READY[5]),      /**< Ready event for the SEND[5] task. */
+    NRF_IPCT_EVENT_READY_6    = offsetof(NRF_IPCT_Type, EVENTS_READY[6]),      /**< Ready event for the SEND[6] task. */
+    NRF_IPCT_EVENT_READY_7    = offsetof(NRF_IPCT_Type, EVENTS_READY[7]),      /**< Ready event for the SEND[7] task. */
+    NRF_IPCT_EVENT_READY_8    = offsetof(NRF_IPCT_Type, EVENTS_READY[8]),      /**< Ready event for the SEND[8] task. */
+    NRF_IPCT_EVENT_READY_9    = offsetof(NRF_IPCT_Type, EVENTS_READY[9]),      /**< Ready event for the SEND[9] task. */
+    NRF_IPCT_EVENT_READY_10   = offsetof(NRF_IPCT_Type, EVENTS_READY[10]),     /**< Ready event for the SEND[10] task. */
+    NRF_IPCT_EVENT_READY_11   = offsetof(NRF_IPCT_Type, EVENTS_READY[11]),     /**< Ready event for the SEND[11] task. */
+    NRF_IPCT_EVENT_READY_12   = offsetof(NRF_IPCT_Type, EVENTS_READY[12]),     /**< Ready event for the SEND[12] task. */
+    NRF_IPCT_EVENT_READY_13   = offsetof(NRF_IPCT_Type, EVENTS_READY[13]),     /**< Ready event for the SEND[13] task. */
+    NRF_IPCT_EVENT_READY_14   = offsetof(NRF_IPCT_Type, EVENTS_READY[14]),     /**< Ready event for the SEND[14] task. */
+    NRF_IPCT_EVENT_READY_15   = offsetof(NRF_IPCT_Type, EVENTS_READY[15]),     /**< Ready event for the SEND[15] task. */
+#endif // NRF_IPCT_EVENTS_READY_COUNT
+#endif // NRF_IPCT_HAS_READY
 } nrf_ipct_event_t;
 
-#if NRF_IPCT_HAS_ACK
 /** @brief IPCT shortcuts. */
 typedef enum
 {
-    NRF_IPCT_SHORT_RECEIVE0_ACK0_MASK   = IPCT_SHORTS_RECEIVE0_ACK0_Msk,   /**< Shortcut between event RECEIVE[0] and task ACK[0]. */
-    NRF_IPCT_SHORT_RECEIVE1_ACK1_MASK   = IPCT_SHORTS_RECEIVE1_ACK1_Msk,   /**< Shortcut between event RECEIVE[1] and task ACK[1]. */
-    NRF_IPCT_SHORT_RECEIVE2_ACK2_MASK   = IPCT_SHORTS_RECEIVE2_ACK2_Msk,   /**< Shortcut between event RECEIVE[2] and task ACK[2]. */
-    NRF_IPCT_SHORT_RECEIVE3_ACK3_MASK   = IPCT_SHORTS_RECEIVE3_ACK3_Msk,   /**< Shortcut between event RECEIVE[3] and task ACK[3]. */
-    NRF_IPCT_SHORT_RECEIVE4_ACK4_MASK   = IPCT_SHORTS_RECEIVE4_ACK4_Msk,   /**< Shortcut between event RECEIVE[4] and task ACK[4]. */
-    NRF_IPCT_SHORT_RECEIVE5_ACK5_MASK   = IPCT_SHORTS_RECEIVE5_ACK5_Msk,   /**< Shortcut between event RECEIVE[5] and task ACK[5]. */
-    NRF_IPCT_SHORT_RECEIVE6_ACK6_MASK   = IPCT_SHORTS_RECEIVE6_ACK6_Msk,   /**< Shortcut between event RECEIVE[6] and task ACK[6]. */
-    NRF_IPCT_SHORT_RECEIVE7_ACK7_MASK   = IPCT_SHORTS_RECEIVE7_ACK7_Msk,   /**< Shortcut between event RECEIVE[7] and task ACK[7]. */
-    NRF_IPCT_SHORT_RECEIVE8_ACK8_MASK   = IPCT_SHORTS_RECEIVE8_ACK8_Msk,   /**< Shortcut between event RECEIVE[8] and task ACK[8]. */
-    NRF_IPCT_SHORT_RECEIVE9_ACK9_MASK   = IPCT_SHORTS_RECEIVE9_ACK9_Msk,   /**< Shortcut between event RECEIVE[9] and task ACK[9]. */
-    NRF_IPCT_SHORT_RECEIVE10_ACK10_MASK = IPCT_SHORTS_RECEIVE10_ACK10_Msk, /**< Shortcut between event RECEIVE[10] and task ACK[10]. */
-    NRF_IPCT_SHORT_RECEIVE11_ACK11_MASK = IPCT_SHORTS_RECEIVE11_ACK11_Msk, /**< Shortcut between event RECEIVE[11] and task ACK[11]. */
-    NRF_IPCT_SHORT_RECEIVE12_ACK12_MASK = IPCT_SHORTS_RECEIVE12_ACK12_Msk, /**< Shortcut between event RECEIVE[12] and task ACK[12]. */
-    NRF_IPCT_SHORT_RECEIVE13_ACK13_MASK = IPCT_SHORTS_RECEIVE13_ACK13_Msk, /**< Shortcut between event RECEIVE[13] and task ACK[13]. */
-    NRF_IPCT_SHORT_RECEIVE14_ACK14_MASK = IPCT_SHORTS_RECEIVE14_ACK14_Msk, /**< Shortcut between event RECEIVE[14] and task ACK[14]. */
-    NRF_IPCT_SHORT_RECEIVE15_ACK15_MASK = IPCT_SHORTS_RECEIVE15_ACK15_Msk, /**< Shortcut between event RECEIVE[15] and task ACK[15]. */
+#if NRF_IPCT_HAS_ACK
+    NRF_IPCT_SHORT_RECEIVE0_ACK0_MASK   = IPCT_SHORTS_RECEIVE0_ACK0_Msk,       /**< Shortcut between event RECEIVE[0] and task ACK[0]. */
+    NRF_IPCT_SHORT_RECEIVE1_ACK1_MASK   = IPCT_SHORTS_RECEIVE1_ACK1_Msk,       /**< Shortcut between event RECEIVE[1] and task ACK[1]. */
+    NRF_IPCT_SHORT_RECEIVE2_ACK2_MASK   = IPCT_SHORTS_RECEIVE2_ACK2_Msk,       /**< Shortcut between event RECEIVE[2] and task ACK[2]. */
+    NRF_IPCT_SHORT_RECEIVE3_ACK3_MASK   = IPCT_SHORTS_RECEIVE3_ACK3_Msk,       /**< Shortcut between event RECEIVE[3] and task ACK[3]. */
+    NRF_IPCT_SHORT_RECEIVE4_ACK4_MASK   = IPCT_SHORTS_RECEIVE4_ACK4_Msk,       /**< Shortcut between event RECEIVE[4] and task ACK[4]. */
+    NRF_IPCT_SHORT_RECEIVE5_ACK5_MASK   = IPCT_SHORTS_RECEIVE5_ACK5_Msk,       /**< Shortcut between event RECEIVE[5] and task ACK[5]. */
+    NRF_IPCT_SHORT_RECEIVE6_ACK6_MASK   = IPCT_SHORTS_RECEIVE6_ACK6_Msk,       /**< Shortcut between event RECEIVE[6] and task ACK[6]. */
+    NRF_IPCT_SHORT_RECEIVE7_ACK7_MASK   = IPCT_SHORTS_RECEIVE7_ACK7_Msk,       /**< Shortcut between event RECEIVE[7] and task ACK[7]. */
+    NRF_IPCT_SHORT_RECEIVE8_ACK8_MASK   = IPCT_SHORTS_RECEIVE8_ACK8_Msk,       /**< Shortcut between event RECEIVE[8] and task ACK[8]. */
+    NRF_IPCT_SHORT_RECEIVE9_ACK9_MASK   = IPCT_SHORTS_RECEIVE9_ACK9_Msk,       /**< Shortcut between event RECEIVE[9] and task ACK[9]. */
+    NRF_IPCT_SHORT_RECEIVE10_ACK10_MASK = IPCT_SHORTS_RECEIVE10_ACK10_Msk,     /**< Shortcut between event RECEIVE[10] and task ACK[10]. */
+    NRF_IPCT_SHORT_RECEIVE11_ACK11_MASK = IPCT_SHORTS_RECEIVE11_ACK11_Msk,     /**< Shortcut between event RECEIVE[11] and task ACK[11]. */
+    NRF_IPCT_SHORT_RECEIVE12_ACK12_MASK = IPCT_SHORTS_RECEIVE12_ACK12_Msk,     /**< Shortcut between event RECEIVE[12] and task ACK[12]. */
+    NRF_IPCT_SHORT_RECEIVE13_ACK13_MASK = IPCT_SHORTS_RECEIVE13_ACK13_Msk,     /**< Shortcut between event RECEIVE[13] and task ACK[13]. */
+    NRF_IPCT_SHORT_RECEIVE14_ACK14_MASK = IPCT_SHORTS_RECEIVE14_ACK14_Msk,     /**< Shortcut between event RECEIVE[14] and task ACK[14]. */
+    NRF_IPCT_SHORT_RECEIVE15_ACK15_MASK = IPCT_SHORTS_RECEIVE15_ACK15_Msk,     /**< Shortcut between event RECEIVE[15] and task ACK[15]. */
     NRF_IPCT_ALL_SHORTS_MASK            = NRF_IPCT_SHORT_RECEIVE0_ACK0_MASK   |
                                           NRF_IPCT_SHORT_RECEIVE1_ACK1_MASK   |
                                           NRF_IPCT_SHORT_RECEIVE2_ACK2_MASK   |
@@ -179,8 +239,47 @@ typedef enum
                                           NRF_IPCT_SHORT_RECEIVE13_ACK13_MASK |
                                           NRF_IPCT_SHORT_RECEIVE14_ACK14_MASK |
                                           NRF_IPCT_SHORT_RECEIVE15_ACK15_MASK, /**< All IPCT shortcuts. */
-} nrf_ipct_short_mask_t;
+#endif // NRF_IPCT_HAS_ACK
+#if NRF_IPCT_HAS_FLUSH
+    NRF_IPCT_SHORT_RECEIVE0_FLUSH0_MASK   = IPCT_SHORTS_RECEIVE0_FLUSH0_Msk,   /**< Shortcut between event RECEIVE[0] and task FLUSH[0]. */
+    NRF_IPCT_SHORT_RECEIVE1_FLUSH1_MASK   = IPCT_SHORTS_RECEIVE1_FLUSH1_Msk,   /**< Shortcut between event RECEIVE[1] and task FLUSH[1]. */
+    NRF_IPCT_SHORT_RECEIVE2_FLUSH2_MASK   = IPCT_SHORTS_RECEIVE2_FLUSH2_Msk,   /**< Shortcut between event RECEIVE[2] and task FLUSH[2]. */
+    NRF_IPCT_SHORT_RECEIVE3_FLUSH3_MASK   = IPCT_SHORTS_RECEIVE3_FLUSH3_Msk,   /**< Shortcut between event RECEIVE[3] and task FLUSH[3]. */
+#if NRF_IPCT_TASKS_FLUSH_COUNT > 4
+    NRF_IPCT_SHORT_RECEIVE4_FLUSH4_MASK   = IPCT_SHORTS_RECEIVE4_FLUSH4_Msk,   /**< Shortcut between event RECEIVE[4] and task FLUSH[4]. */
+    NRF_IPCT_SHORT_RECEIVE5_FLUSH5_MASK   = IPCT_SHORTS_RECEIVE5_FLUSH5_Msk,   /**< Shortcut between event RECEIVE[5] and task FLUSH[5]. */
+    NRF_IPCT_SHORT_RECEIVE6_FLUSH6_MASK   = IPCT_SHORTS_RECEIVE6_FLUSH6_Msk,   /**< Shortcut between event RECEIVE[6] and task FLUSH[6]. */
+    NRF_IPCT_SHORT_RECEIVE7_FLUSH7_MASK   = IPCT_SHORTS_RECEIVE7_FLUSH7_Msk,   /**< Shortcut between event RECEIVE[7] and task FLUSH[7]. */
+    NRF_IPCT_SHORT_RECEIVE8_FLUSH8_MASK   = IPCT_SHORTS_RECEIVE8_FLUSH8_Msk,   /**< Shortcut between event RECEIVE[8] and task FLUSH[8]. */
+    NRF_IPCT_SHORT_RECEIVE9_FLUSH9_MASK   = IPCT_SHORTS_RECEIVE9_FLUSH9_Msk,   /**< Shortcut between event RECEIVE[9] and task FLUSH[9]. */
+    NRF_IPCT_SHORT_RECEIVE10_FLUSH10_MASK = IPCT_SHORTS_RECEIVE10_FLUSH10_Msk, /**< Shortcut between event RECEIVE[10] and task FLUSH[10]. */
+    NRF_IPCT_SHORT_RECEIVE11_FLUSH11_MASK = IPCT_SHORTS_RECEIVE11_FLUSH11_Msk, /**< Shortcut between event RECEIVE[11] and task FLUSH[11]. */
+    NRF_IPCT_SHORT_RECEIVE12_FLUSH12_MASK = IPCT_SHORTS_RECEIVE12_FLUSH12_Msk, /**< Shortcut between event RECEIVE[12] and task FLUSH[12]. */
+    NRF_IPCT_SHORT_RECEIVE13_FLUSH13_MASK = IPCT_SHORTS_RECEIVE13_FLUSH13_Msk, /**< Shortcut between event RECEIVE[13] and task FLUSH[13]. */
+    NRF_IPCT_SHORT_RECEIVE14_FLUSH14_MASK = IPCT_SHORTS_RECEIVE14_FLUSH14_Msk, /**< Shortcut between event RECEIVE[14] and task FLUSH[14]. */
+    NRF_IPCT_SHORT_RECEIVE15_FLUSH15_MASK = IPCT_SHORTS_RECEIVE15_FLUSH15_Msk, /**< Shortcut between event RECEIVE[15] and task FLUSH[15]. */
+#endif // NRF_IPCT_TASKS_FLUSH_COUNT
+    NRF_IPCT_ALL_SHORTS_MASK            = NRF_IPCT_SHORT_RECEIVE0_FLUSH0_MASK   |
+                                          NRF_IPCT_SHORT_RECEIVE1_FLUSH1_MASK   |
+                                          NRF_IPCT_SHORT_RECEIVE2_FLUSH2_MASK   |
+                                          NRF_IPCT_SHORT_RECEIVE3_FLUSH3_MASK   |
+#if NRF_IPCT_TASKS_FLUSH_COUNT > 4
+                                          NRF_IPCT_SHORT_RECEIVE4_FLUSH4_MASK   |
+                                          NRF_IPCT_SHORT_RECEIVE5_FLUSH5_MASK   |
+                                          NRF_IPCT_SHORT_RECEIVE6_FLUSH6_MASK   |
+                                          NRF_IPCT_SHORT_RECEIVE7_FLUSH7_MASK   |
+                                          NRF_IPCT_SHORT_RECEIVE8_FLUSH8_MASK   |
+                                          NRF_IPCT_SHORT_RECEIVE9_FLUSH9_MASK   |
+                                          NRF_IPCT_SHORT_RECEIVE10_FLUSH10_MASK |
+                                          NRF_IPCT_SHORT_RECEIVE11_FLUSH11_MASK |
+                                          NRF_IPCT_SHORT_RECEIVE12_FLUSH12_MASK |
+                                          NRF_IPCT_SHORT_RECEIVE13_FLUSH13_MASK |
+                                          NRF_IPCT_SHORT_RECEIVE14_FLUSH14_MASK |
+                                          NRF_IPCT_SHORT_RECEIVE15_FLUSH15_MASK |
 #endif
+                                          0, /**< All IPCT shortcuts. */
+#endif // NRF_IPCT_HAS_FLUSH
+} nrf_ipct_short_mask_t;
 
 /** @brief IPCT interrupts. */
 typedef enum
@@ -220,7 +319,27 @@ typedef enum
     NRF_IPCT_INT_ACKED_13   = IPCT_INTEN0_ACKED13_Msk,   /**< Interrupt for event ACKED[13]. */
     NRF_IPCT_INT_ACKED_14   = IPCT_INTEN0_ACKED14_Msk,   /**< Interrupt for event ACKED[14]. */
     NRF_IPCT_INT_ACKED_15   = IPCT_INTEN0_ACKED15_Msk,   /**< Interrupt for event ACKED[15]. */
-#endif
+#endif // NRF_IPCT_HAS_ACK
+#if NRF_IPCT_HAS_READY
+    NRF_IPCT_INT_READY_0    = IPCT_INTEN0_READY0_Msk,    /**< Interrupt for event READY[0]. */
+    NRF_IPCT_INT_READY_1    = IPCT_INTEN0_READY1_Msk,    /**< Interrupt for event READY[1]. */
+    NRF_IPCT_INT_READY_2    = IPCT_INTEN0_READY2_Msk,    /**< Interrupt for event READY[2]. */
+    NRF_IPCT_INT_READY_3    = IPCT_INTEN0_READY3_Msk,    /**< Interrupt for event READY[3]. */
+#if NRF_IPCT_EVENTS_READY_COUNT > 4
+    NRF_IPCT_INT_READY_4    = IPCT_INTEN0_READY4_Msk,    /**< Interrupt for event READY[4]. */
+    NRF_IPCT_INT_READY_5    = IPCT_INTEN0_READY5_Msk,    /**< Interrupt for event READY[5]. */
+    NRF_IPCT_INT_READY_6    = IPCT_INTEN0_READY6_Msk,    /**< Interrupt for event READY[6]. */
+    NRF_IPCT_INT_READY_7    = IPCT_INTEN0_READY7_Msk,    /**< Interrupt for event READY[7]. */
+    NRF_IPCT_INT_READY_8    = IPCT_INTEN0_READY8_Msk,    /**< Interrupt for event READY[8]. */
+    NRF_IPCT_INT_READY_9    = IPCT_INTEN0_READY9_Msk,    /**< Interrupt for event READY[9]. */
+    NRF_IPCT_INT_READY_10   = IPCT_INTEN0_READY10_Msk,   /**< Interrupt for event READY[10]. */
+    NRF_IPCT_INT_READY_11   = IPCT_INTEN0_READY11_Msk,   /**< Interrupt for event READY[11]. */
+    NRF_IPCT_INT_READY_12   = IPCT_INTEN0_READY12_Msk,   /**< Interrupt for event READY[12]. */
+    NRF_IPCT_INT_READY_13   = IPCT_INTEN0_READY13_Msk,   /**< Interrupt for event READY[13]. */
+    NRF_IPCT_INT_READY_14   = IPCT_INTEN0_READY14_Msk,   /**< Interrupt for event READY[14]. */
+    NRF_IPCT_INT_READY_15   = IPCT_INTEN0_READY15_Msk,   /**< Interrupt for event READY[15]. */
+#endif // NRF_IPCT_EVENTS_READY_COUNT
+#endif // NRF_IPCT_HAS_READY
 } nrf_ipct_int_mask_t;
 
 /**
@@ -412,6 +531,7 @@ NRF_STATIC_INLINE bool nrf_ipct_overflow_send_get(NRF_IPCT_Type const * p_reg, u
  */
 NRF_STATIC_INLINE nrf_ipct_task_t nrf_ipct_send_task_get(uint8_t index);
 
+#if NRF_IPCT_HAS_ACK
 /**
  * @brief Function for getting ACK task by its index.
  *
@@ -422,6 +542,16 @@ NRF_STATIC_INLINE nrf_ipct_task_t nrf_ipct_send_task_get(uint8_t index);
 NRF_STATIC_INLINE nrf_ipct_task_t nrf_ipct_ack_task_get(uint8_t index);
 
 /**
+ * @brief Function for getting ACKED event by its index.
+ *
+ * @param[in] index Index of the ACKED event.
+ *
+ * @return ACKED event.
+ */
+NRF_STATIC_INLINE nrf_ipct_event_t nrf_ipct_acked_event_get(uint8_t index);
+#endif // NRF_IPCT_HAS_ACK
+
+/**
  * @brief Function for getting RECEIVE event by its index.
  *
  * @param[in] index Index of the RECEIVE event.
@@ -430,14 +560,27 @@ NRF_STATIC_INLINE nrf_ipct_task_t nrf_ipct_ack_task_get(uint8_t index);
  */
 NRF_STATIC_INLINE nrf_ipct_event_t nrf_ipct_receive_event_get(uint8_t index);
 
+#if NRF_IPCT_HAS_FLUSH
 /**
- * @brief Function for getting ACKED event by its index.
+ * @brief Function for getting FLUSH task by its index.
  *
- * @param[in] index Index of the ACKED event.
+ * @param[in] index Index of the FLUSH task.
  *
- * @return ACKED event.
+ * @return FLUSH task.
  */
-NRF_STATIC_INLINE nrf_ipct_event_t nrf_ipct_acked_event_get(uint8_t index);
+NRF_STATIC_INLINE nrf_ipct_task_t nrf_ipct_flush_task_get(uint8_t index);
+#endif // NRF_IPCT_HAS_FLUSH
+
+#if NRF_IPCT_HAS_READY
+/**
+ * @brief Function for getting READY event by its index.
+ *
+ * @param[in] index Index of the READY event.
+ *
+ * @return READY event.
+ */
+NRF_STATIC_INLINE nrf_ipct_event_t nrf_ipct_ready_event_get(uint8_t index);
+#endif // NRF_IPCT_HAS_READY
 
 /**
  * @brief Function for enabling the specified shortcuts.
@@ -732,30 +875,36 @@ NRF_STATIC_INLINE nrf_ipct_task_t nrf_ipct_send_task_get(uint8_t index)
     return (nrf_ipct_task_t)(NRFX_OFFSETOF(NRF_IPCT_Type, TASKS_SEND[index]));
 }
 
-NRF_STATIC_INLINE nrf_ipct_task_t nrf_ipct_ack_task_get(uint8_t index)
-{
-#if NRF_IPCT_HAS_ACK
-    return (nrf_ipct_task_t)(NRFX_OFFSETOF(NRF_IPCT_Type, TASKS_ACK[index]));
-#else
-    (void)index;
-    return (nrf_ipct_task_t)0;
-#endif
-}
-
 NRF_STATIC_INLINE nrf_ipct_event_t nrf_ipct_receive_event_get(uint8_t index)
 {
     return (nrf_ipct_event_t)(NRFX_OFFSETOF(NRF_IPCT_Type, EVENTS_RECEIVE[index]));
 }
 
+#if NRF_IPCT_HAS_ACK
+NRF_STATIC_INLINE nrf_ipct_task_t nrf_ipct_ack_task_get(uint8_t index)
+{
+    return (nrf_ipct_task_t)(NRFX_OFFSETOF(NRF_IPCT_Type, TASKS_ACK[index]));
+}
+
 NRF_STATIC_INLINE nrf_ipct_event_t nrf_ipct_acked_event_get(uint8_t index)
 {
-#if NRF_IPCT_HAS_ACK
     return (nrf_ipct_event_t)(NRFX_OFFSETOF(NRF_IPCT_Type, EVENTS_ACKED[index]));
-#else
-    (void)index;
-    return (nrf_ipct_event_t)0;
-#endif
 }
+#endif // NRF_IPCT_HAS_ACK
+
+#if NRF_IPCT_HAS_FLUSH
+NRF_STATIC_INLINE nrf_ipct_task_t nrf_ipct_flush_task_get(uint8_t index)
+{
+    return (nrf_ipct_task_t)(NRFX_OFFSETOF(NRF_IPCT_Type, TASKS_FLUSH[index]));
+}
+#endif // NRF_IPCT_HAS_FLUSH
+
+#if NRF_IPCT_HAS_READY
+NRF_STATIC_INLINE nrf_ipct_event_t nrf_ipct_ready_event_get(uint8_t index)
+{
+    return (nrf_ipct_event_t)(NRFX_OFFSETOF(NRF_IPCT_Type, EVENTS_READY[index]));
+}
+#endif // NRF_IPCT_HAS_READY
 
 NRF_STATIC_INLINE void nrf_ipct_shorts_enable(NRF_IPCT_Type * p_reg, uint32_t mask)
 {

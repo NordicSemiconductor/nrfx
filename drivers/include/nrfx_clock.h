@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2025, Nordic Semiconductor ASA
+ * Copyright (c) 2016 - 2026, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -43,18 +43,20 @@
 #if NRF_CLOCK_HAS_HFCLK
 #include <nrfx_clock_hfclk.h>
 #endif
-#if NRF_CLOCK_HAS_XO
-#include <nrfx_clock_xo.h>
-#endif
-#include <nrfx_clock_lfclk.h>
 #if NRF_CLOCK_HAS_HFCLK192M
 #include <nrfx_clock_hfclk192m.h>
 #endif
-#if NRF_CLOCK_HAS_HFCLK24M
-#include <nrfx_clock_xo24m.h>
-#endif
 #if NRF_CLOCK_HAS_HFCLKAUDIO
 #include <nrfx_clock_hfclkaudio.h>
+#endif
+#if NRF_CLOCK_HAS_LFCLK
+#include <nrfx_clock_lfclk.h>
+#endif
+#if NRF_CLOCK_HAS_XO
+#include <nrfx_clock_xo.h>
+#endif
+#if NRF_CLOCK_HAS_HFCLK24M
+#include <nrfx_clock_xo24m.h>
 #endif
 
 #ifdef __cplusplus
@@ -79,7 +81,9 @@ typedef enum
 #if NRF_CLOCK_HAS_PLL
     NRFX_CLOCK_EVT_PLL_STARTED        = NRFX_CLOCK_XO_EVT_PLL_STARTED,                ///< PLL has been started.
 #endif
+#if NRF_CLOCK_HAS_LFCLK
     NRFX_CLOCK_EVT_LFCLK_STARTED      = NRFX_CLOCK_LFCLK_EVT_LFCLK_STARTED,           ///< LFCLK has been started.
+#endif
 #if NRF_CLOCK_HAS_CALIBRATION_TIMER
     NRFX_CLOCK_EVT_CTTO               = NRFX_CLOCK_LFCLK_EVT_CTTO,                    ///< Calibration timeout.
 #endif
@@ -294,8 +298,10 @@ NRFX_STATIC_INLINE bool nrfx_clock_is_running(nrf_clock_domain_t domain, void * 
 #elif NRF_CLOCK_HAS_XO
             return nrfx_clock_xo_running_check((nrf_clock_hfclk_t *)p_clk_src);
 #endif
+#if NRF_CLOCK_HAS_LFCLK
         case NRF_CLOCK_DOMAIN_LFCLK:
             return nrfx_clock_lfclk_running_check((nrf_clock_lfclk_t *)p_clk_src);
+#endif
 #if NRF_CLOCK_HAS_HFCLK192M
         case NRF_CLOCK_DOMAIN_HFCLK192M:
             return nrfx_clock_hfclk192m_running_check((nrf_clock_hfclk_t *)p_clk_src);
