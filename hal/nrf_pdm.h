@@ -988,8 +988,7 @@ NRF_STATIC_INLINE nrf_pdm_freq_t nrf_pdm_clock_get(NRF_PDM_Type const * p_reg)
 #if NRF_PDM_HAS_PRESCALER
 NRF_STATIC_INLINE void nrf_pdm_prescaler_set(NRF_PDM_Type * p_reg, uint32_t prescaler)
 {
-    NRFX_ASSERT(prescaler >= NRF_PDM_PRESCALER_MIN);
-    NRFX_ASSERT(prescaler <= NRF_PDM_PRESCALER_MAX);
+    NRFX_ASSERT((prescaler >= NRF_PDM_PRESCALER_MIN) && (prescaler <= NRF_PDM_PRESCALER_MAX));
     p_reg->PRESCALER = prescaler;
 }
 
@@ -1075,8 +1074,7 @@ NRF_STATIC_INLINE void nrf_pdm_ratio_set(NRF_PDM_Type * p_reg, nrf_pdm_ratio_t r
 #if NRF_PDM_HAS_CUSTOM_RATIO
 NRF_STATIC_INLINE void nrf_pdm_custom_ratio_set(NRF_PDM_Type * p_reg, uint8_t ratio)
 {
-    NRFX_ASSERT(ratio >= PDM_FILTER_CTRL_DECRATIO_Min);
-    NRFX_ASSERT(ratio <= PDM_FILTER_CTRL_DECRATIO_Max);
+    NRFX_ASSERT((ratio >= PDM_FILTER_CTRL_DECRATIO_Min) && (ratio <= PDM_FILTER_CTRL_DECRATIO_Max));
     p_reg->FILTER.CTRL = (p_reg->FILTER.CTRL & ~PDM_FILTER_CTRL_DECRATIO_Msk) |
                           (((uint32_t)ratio << PDM_FILTER_CTRL_DECRATIO_Pos)
                                              & PDM_FILTER_CTRL_DECRATIO_Msk);
@@ -1099,10 +1097,10 @@ NRF_STATIC_INLINE void nrf_pdm_mclksrc_configure(NRF_PDM_Type * p_reg, nrf_pdm_m
 NRF_STATIC_INLINE
 void nrf_pdm_filter_ctrl_set(NRF_PDM_Type * p_reg, nrf_pdm_filter_ctrl_t const * fctrl)
 {
-    NRFX_ASSERT(fctrl->gain_step_custom >= PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Min);
-    NRFX_ASSERT(fctrl->gain_step_custom <= PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Max);
-    NRFX_ASSERT(fctrl->soft_cycles >= PDM_FILTER_CTRL_SOFTCYCLES_Min);
-    NRFX_ASSERT(fctrl->soft_cycles <= PDM_FILTER_CTRL_SOFTCYCLES_Max);
+    NRFX_ASSERT((fctrl->gain_step_custom >= PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Min) &&
+                (fctrl->gain_step_custom <= PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Max) &&
+                (fctrl->soft_cycles >= PDM_FILTER_CTRL_SOFTCYCLES_Min) &&
+                (fctrl->soft_cycles <= PDM_FILTER_CTRL_SOFTCYCLES_Max));
     p_reg->FILTER.CTRL = (((fctrl->r_mute ? PDM_FILTER_CTRL_OVERRIDERIGHTSOFTMUTE_Enable
                                           : PDM_FILTER_CTRL_OVERRIDERIGHTSOFTMUTE_Disable)
                                          << PDM_FILTER_CTRL_OVERRIDERIGHTSOFTMUTE_Pos) |

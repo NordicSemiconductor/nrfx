@@ -278,8 +278,7 @@ static int channel_allocate(nrfx_atomic_t * p_channels_available,
 }
 
 /* The main connection is needed when connecting two APBs from Global Domain.
-   In addition no of them is main APB. In case of Haltium microcontrollers the main APB
-   is APB32. */
+   In addition no of them is main APB. In case of nRF54H20 microcontroller the main APB is APB32. */
 static bool is_main_connection_needed(interconnect_apb_t const * p_src_apb,
                                       interconnect_apb_t const * p_dst_apb)
 {
@@ -298,12 +297,9 @@ static void apb_connection_remove(interconnect_apb_t const * p_src_apb,
                                   interconnect_apb_t const * p_dst_apb,
                                   uint8_t                         ppib_channel)
 {
-    NRFX_ASSERT(p_src_apb != p_dst_apb);
-    NRFX_ASSERT(p_src_apb);
-    NRFX_ASSERT(p_dst_apb);
-    NRFX_ASSERT(interconnect_apb_domain_get(p_src_apb) ==
-                interconnect_apb_domain_get(p_dst_apb));
-    NRFX_ASSERT(interconnect_apb_domain_get(p_src_apb) == NRF_DOMAIN);
+    NRFX_ASSERT((p_src_apb != p_dst_apb) && p_src_apb && p_dst_apb &&
+                (interconnect_apb_domain_get(p_src_apb) == NRF_DOMAIN) &&
+                (interconnect_apb_domain_get(p_src_apb) == interconnect_apb_domain_get(p_dst_apb)));
     // Inside local domain PPIB connection should be cleared here.
     nrf_ppib_subscribe_clear(p_src_apb->p_ppib,
                              nrf_ppib_send_task_get(ppib_channel));
@@ -316,12 +312,9 @@ static void apb_connection_create(interconnect_apb_t const * p_src_apb,
                                   interconnect_apb_t const * p_dst_apb,
                                   uint8_t                         ppib_channel)
 {
-    NRFX_ASSERT(p_src_apb != p_dst_apb);
-    NRFX_ASSERT(p_src_apb);
-    NRFX_ASSERT(p_dst_apb);
-    NRFX_ASSERT(interconnect_apb_domain_get(p_src_apb) ==
-                interconnect_apb_domain_get(p_dst_apb));
-    NRFX_ASSERT(interconnect_apb_domain_get(p_src_apb) == NRF_DOMAIN);
+    NRFX_ASSERT((p_src_apb != p_dst_apb) && p_src_apb && p_dst_apb &&
+                (interconnect_apb_domain_get(p_src_apb) == NRF_DOMAIN) &&
+                (interconnect_apb_domain_get(p_src_apb) == interconnect_apb_domain_get(p_dst_apb)));
     // Inside local domain PPIB connection should be set here.
     nrf_ppib_subscribe_set(p_src_apb->p_ppib,
                            nrf_ppib_send_task_get(ppib_channel),
@@ -338,12 +331,9 @@ static int ipct_connection_remove(interconnect_ipct_t const * p_src_ipct,
                                   interconnect_ipct_t const * p_dst_ipct,
                                   nrfx_gppi_channels_path_t      * p_path)
 {
-    NRFX_ASSERT(p_src_ipct);
-    NRFX_ASSERT(p_dst_ipct);
-    NRFX_ASSERT(p_dst_ipct != p_src_ipct);
-    NRFX_ASSERT(p_path);
-    NRFX_ASSERT(interconnect_ipct_domain_get(p_src_ipct) == NRF_DOMAIN_GLOBAL ||
-                interconnect_ipct_domain_get(p_dst_ipct) == NRF_DOMAIN_GLOBAL);
+    NRFX_ASSERT(p_src_ipct && p_dst_ipct && (p_dst_ipct != p_src_ipct) && p_path &&
+                (interconnect_ipct_domain_get(p_src_ipct) == NRF_DOMAIN_GLOBAL ||
+                 interconnect_ipct_domain_get(p_dst_ipct) == NRF_DOMAIN_GLOBAL));
 
     int err_code;
     uint8_t src_ipct_chan = interconnect_ipct_domain_get(p_src_ipct) == NRF_DOMAIN_GLOBAL ?
@@ -383,9 +373,7 @@ static void dppic_channel_set(uint8_t chan, bool enable)
                             p_path->dppi_channel :
                             p_path->local_dppi_channel;
 
-    NRFX_ASSERT(nrfx_flag32_is_allocated(m_virtual_channels, chan));
-    NRFX_ASSERT(p_src_apb);
-    NRFX_ASSERT(p_dst_apb);
+    NRFX_ASSERT(nrfx_flag32_is_allocated(m_virtual_channels, chan) && p_src_apb && p_dst_apb);
     nrfy_dppi_channels_set(p_src_apb->p_dppi, NRFX_BIT(src_dppi_chan), enable);
     nrfy_dppi_channels_set(p_dst_apb->p_dppi, NRFX_BIT(dst_dppi_chan), enable);
     if (is_main_connection_needed(p_src_apb, p_dst_apb))
@@ -404,8 +392,8 @@ static void dppic_channel_set(uint8_t chan, bool enable)
         interconnect_apb_t const * p_dst_ipct_apb =
                                         (interconnect_apb_get((uint32_t)p_dst_ipct->p_ipct));
 
-        NRFX_ASSERT(p_src_ipct && p_src_ipct_apb);
-        NRFX_ASSERT(p_dst_ipct && p_dst_ipct_apb);
+        NRFX_ASSERT(p_src_ipct && p_src_ipct_apb &&
+                    p_dst_ipct && p_dst_ipct_apb);
         nrfy_dppi_channels_set(p_src_ipct_apb->p_dppi,
                                NRFX_BIT(src_dppi_chan),
                                enable);
@@ -422,12 +410,9 @@ static int ipct_connection_create(interconnect_ipct_t const * p_src_ipct,
                                   interconnect_ipct_t const * p_dst_ipct,
                                   nrfx_gppi_channels_path_t      * p_path)
 {
-    NRFX_ASSERT(p_src_ipct);
-    NRFX_ASSERT(p_dst_ipct);
-    NRFX_ASSERT(p_dst_ipct != p_src_ipct);
-    NRFX_ASSERT(p_path);
-    NRFX_ASSERT(interconnect_ipct_domain_get(p_src_ipct) == NRF_DOMAIN_GLOBAL ||
-                interconnect_ipct_domain_get(p_dst_ipct) == NRF_DOMAIN_GLOBAL);
+    NRFX_ASSERT(p_src_ipct && p_dst_ipct && (p_dst_ipct != p_src_ipct) && p_path &&
+                (interconnect_ipct_domain_get(p_src_ipct) == NRF_DOMAIN_GLOBAL ||
+                 interconnect_ipct_domain_get(p_dst_ipct) == NRF_DOMAIN_GLOBAL));
 
     int err_code;
     uint8_t src_dppi_channel;
@@ -506,8 +491,7 @@ static int local_connection_create(interconnect_apb_t const * p_src_apb,
     uint32_t chan_mask;
     uint32_t chan_mask_to_exclude = UINT32_MAX;
 
-    NRFX_ASSERT(p_src_apb);
-    NRFX_ASSERT(p_dst_apb);
+    NRFX_ASSERT(p_src_apb && p_dst_apb);
 
     NRFX_CRITICAL_SECTION_ENTER();
     if (p_src_apb == p_dst_apb)
@@ -602,11 +586,8 @@ static int local_connection_remove(interconnect_apb_t const * p_src_apb,
 {
     int err_code;
 
-    NRFX_ASSERT(dppi_channel != CHANNEL_INVALID);
-    NRFX_ASSERT(p_src_apb);
-    NRFX_ASSERT(p_dst_apb);
-    NRFX_ASSERT(interconnect_apb_domain_get(p_src_apb) ==
-                interconnect_apb_domain_get(p_dst_apb));
+    NRFX_ASSERT((dppi_channel != CHANNEL_INVALID) && p_src_apb && p_dst_apb &&
+                (interconnect_apb_domain_get(p_src_apb) == interconnect_apb_domain_get(p_dst_apb)));
     if (p_src_apb == p_dst_apb)
     {
         /* Removing connection within one APB. */
@@ -700,8 +681,7 @@ void nrfx_gppiv1_task_endpoint_clear(uint8_t channel, uint32_t tep)
 
 void nrfx_gppiv1_fork_endpoint_setup(uint8_t channel, uint32_t fork_tep)
 {
-    NRFX_ASSERT(fork_tep);
-    NRFX_ASSERT(nrfx_flag32_is_allocated(m_virtual_channels, channel));
+    NRFX_ASSERT(fork_tep && nrfx_flag32_is_allocated(m_virtual_channels, channel));
     interconnect_apb_t const * p_apb = interconnect_apb_get(fork_tep);
     nrfx_gppi_channels_path_t * p_path = &channels_path[channel];
     uint8_t dppi_chan = interconnect_apb_domain_get(p_apb) == NRF_DOMAIN_GLOBAL ?
@@ -722,8 +702,7 @@ void nrfx_gppiv1_fork_endpoint_setup(uint8_t channel, uint32_t fork_tep)
 
 void nrfx_gppiv1_fork_endpoint_clear(uint8_t channel, uint32_t fork_tep)
 {
-    NRFX_ASSERT(fork_tep);
-    NRFX_ASSERT(nrfx_flag32_is_allocated(m_virtual_channels, channel));
+    NRFX_ASSERT(fork_tep && nrfx_flag32_is_allocated(m_virtual_channels, channel));
     interconnect_apb_t const * p_apb = interconnect_apb_get(fork_tep);
     nrfx_gppi_channels_path_t * p_path = &channels_path[channel];
 
@@ -742,16 +721,14 @@ void nrfx_gppiv1_fork_endpoint_clear(uint8_t channel, uint32_t fork_tep)
 
 void nrfx_gppiv1_channel_endpoints_setup(uint8_t channel, uint32_t eep, uint32_t tep)
 {
-    NRFX_ASSERT(tep);
-    NRFX_ASSERT(eep);
+    NRFX_ASSERT(tep && eep);
 
     int err_code;
     interconnect_apb_t const * p_src_apb = (interconnect_apb_get(eep));
     interconnect_apb_t const * p_dst_apb = (interconnect_apb_get(tep));
     nrfx_gppi_channels_path_t * p_path = &channels_path[channel];
 
-    NRFX_ASSERT(p_src_apb);
-    NRFX_ASSERT(p_dst_apb);
+    NRFX_ASSERT(p_src_apb && p_dst_apb);
 
     uint8_t * src_dppi_chan = interconnect_apb_domain_get(p_src_apb) == NRF_DOMAIN_GLOBAL ?
                               &p_path->dppi_channel :
@@ -820,8 +797,7 @@ void nrfx_gppiv1_channel_endpoints_setup(uint8_t channel, uint32_t eep, uint32_t
 
 void nrfx_gppiv1_channel_endpoints_clear(uint8_t channel, uint32_t eep, uint32_t tep)
 {
-    NRFX_ASSERT(tep);
-    NRFX_ASSERT(eep);
+    NRFX_ASSERT(tep && eep);
 
     int err_code;
     interconnect_apb_t const * p_src_apb = (interconnect_apb_get(eep));
@@ -834,10 +810,8 @@ void nrfx_gppiv1_channel_endpoints_clear(uint8_t channel, uint32_t eep, uint32_t
                               &p_path->dppi_channel :
                               &p_path->local_dppi_channel;
 
-    NRFX_ASSERT(p_src_apb);
-    NRFX_ASSERT(p_dst_apb);
-    NRFX_ASSERT(p_path->p_src_apb == p_src_apb);
-    NRFX_ASSERT(p_path->p_dst_apb == p_dst_apb);
+    NRFX_ASSERT(p_src_apb && p_dst_apb && (p_path->p_src_apb == p_src_apb) &&
+                (p_path->p_dst_apb == p_dst_apb));
 
     if (interconnect_apb_domain_get(p_src_apb) == interconnect_apb_domain_get(p_dst_apb))
     {
@@ -906,8 +880,7 @@ bool nrfx_gppiv1_channel_check(uint8_t channel)
     NRFX_ASSERT(nrfx_flag32_is_allocated(m_virtual_channels, channel));
     if (dppi_channel != CHANNEL_INVALID)
     {
-        NRFX_ASSERT(p_src_apb);
-        NRFX_ASSERT(p_dst_apb);
+        NRFX_ASSERT(p_src_apb && p_dst_apb);
         if (!nrf_dppi_channel_check(p_src_apb->p_dppi, dppi_channel) ||
             !nrf_dppi_channel_check(p_dst_apb->p_dppi, dppi_channel))
         {

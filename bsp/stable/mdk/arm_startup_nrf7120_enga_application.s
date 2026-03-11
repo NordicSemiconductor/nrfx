@@ -175,8 +175,8 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     EGU00_IRQHandler
                 DCD     CRACEN_IRQHandler
                 DCD     USBHS_IRQHandler
-                DCD     QSPI00_IRQHandler
-                DCD     QSPI01_IRQHandler
+                DCD     MSPI00_IRQHandler
+                DCD     MSPI01_IRQHandler
                 DCD     SERIAL01_IRQHandler
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
@@ -480,8 +480,8 @@ Default_Handler PROC
                 EXPORT   EGU00_IRQHandler [WEAK]
                 EXPORT   CRACEN_IRQHandler [WEAK]
                 EXPORT   USBHS_IRQHandler [WEAK]
-                EXPORT   QSPI00_IRQHandler [WEAK]
-                EXPORT   QSPI01_IRQHandler [WEAK]
+                EXPORT   MSPI00_IRQHandler [WEAK]
+                EXPORT   MSPI01_IRQHandler [WEAK]
                 EXPORT   SERIAL01_IRQHandler [WEAK]
                 EXPORT   BELLBOARD_0_IRQHandler [WEAK]
                 EXPORT   BELLBOARD_1_IRQHandler [WEAK]
@@ -557,8 +557,8 @@ TIMER00_IRQHandler
 EGU00_IRQHandler
 CRACEN_IRQHandler
 USBHS_IRQHandler
-QSPI00_IRQHandler
-QSPI01_IRQHandler
+MSPI00_IRQHandler
+MSPI01_IRQHandler
 SERIAL01_IRQHandler
 BELLBOARD_0_IRQHandler
 BELLBOARD_1_IRQHandler

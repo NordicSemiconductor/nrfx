@@ -91,9 +91,7 @@ static int pdm_init(nrfx_pdm_t *              p_instance,
                     nrfx_pdm_config_t const * p_config,
                     nrfx_pdm_event_handler_t  event_handler)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
-    NRFX_ASSERT(event_handler);
+    NRFX_ASSERT(p_instance && p_config && event_handler);
     int err_code;
 
     nrfx_pdm_control_block_t * p_cb = &p_instance->cb;
@@ -511,8 +509,7 @@ static bool pdm_prescalers_check(uint32_t *                best_freq,
 int nrfx_pdm_prescalers_calc(nrfx_pdm_output_t const * output_config,
                              nrfx_pdm_prescalers_t *   prescalers)
 {
-    NRFX_ASSERT(output_config);
-    NRFX_ASSERT(prescalers);
+    NRFX_ASSERT(output_config && prescalers);
 
     uint32_t best_diff = UINT32_MAX;
 	uint32_t best_rate = 0;

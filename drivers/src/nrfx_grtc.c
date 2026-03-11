@@ -476,8 +476,7 @@ int nrfx_grtc_rtcounter_cc_absolute_set(nrfx_grtc_rtcounter_handler_data_t * p_h
                                         bool                                 enable_irq,
                                         bool                                 sync)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(p_handler_data);
+    NRFX_ASSERT((m_cb.state != NRFX_DRV_STATE_UNINITIALIZED) && p_handler_data);
     int err_code = 0;
 
     if (is_syscounter_running())
@@ -604,8 +603,12 @@ void nrfx_grtc_uninit(void)
 #if NRFY_GRTC_HAS_EXTENDED && NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_AUTOSTART)
     nrfy_grtc_sys_counter_auto_mode_set(NRF_GRTC, false);
     nrfy_grtc_sys_counter_set(NRF_GRTC, false);
+#if NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_STOP_AT_UNINIT)
     nrf_grtc_task_trigger(NRF_GRTC, NRF_GRTC_TASK_STOP);
+#endif
+#if NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_CLEAR_AT_UNINIT)
     nrf_grtc_task_trigger(NRF_GRTC, NRF_GRTC_TASK_CLEAR);
+#endif
 #endif // NRFY_GRTC_HAS_EXTENDED && NRFX_IS_ENABLED(NRFX_GRTC_CONFIG_AUTOSTART)
 
     m_cb.state = NRFX_DRV_STATE_UNINITIALIZED;
@@ -720,8 +723,7 @@ int nrfx_grtc_syscounter_cc_absolute_set(nrfx_grtc_channel_t * p_chan_data,
                                          uint64_t              val,
                                          bool                  enable_irq)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(p_chan_data);
+    NRFX_ASSERT((m_cb.state != NRFX_DRV_STATE_UNINITIALIZED) && p_chan_data);
     int err_code = syscounter_check(p_chan_data->channel);
     if (err_code != 0)
     {
@@ -752,9 +754,9 @@ int nrfx_grtc_syscounter_cc_absolute_set(nrfx_grtc_channel_t * p_chan_data,
 #if NRFY_GRTC_HAS_INTERVAL || NRFY_GRTC_HAS_MINTERVAL
 void nrfx_grtc_syscounter_cc_interval_set(uint8_t channel, uint32_t start_val, uint32_t val)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(syscounter_check(channel) == 0);
-    NRFX_ASSERT(NRFX_BIT(channel) && NRFX_GRTC_CONFIG_EXTENDED_CC_CHANNELS_MASK != 0);
+    NRFX_ASSERT((m_cb.state != NRFX_DRV_STATE_UNINITIALIZED) &&
+                (syscounter_check(channel) == 0) &&
+                (NRFX_GRTC_CONFIG_EXTENDED_CC_CHANNELS_MASK != 0));
 
     nrfy_grtc_sys_counter_compare_event_clear(NRF_GRTC, channel);
 #if NRFY_GRTC_HAS_MINTERVAL
@@ -770,9 +772,9 @@ void nrfx_grtc_syscounter_cc_interval_set(uint8_t channel, uint32_t start_val, u
 
 void nrfx_grtc_syscounter_cc_interval_reset(uint8_t channel)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(syscounter_check(channel) == 0);
-    NRFX_ASSERT(NRFX_BIT(channel) && NRFX_GRTC_CONFIG_EXTENDED_CC_CHANNELS_MASK != 0);
+    NRFX_ASSERT((m_cb.state != NRFX_DRV_STATE_UNINITIALIZED) &&
+                (syscounter_check(channel) == 0) &&
+                (NRFX_GRTC_CONFIG_EXTENDED_CC_CHANNELS_MASK != 0));
 
     nrfy_grtc_sys_counter_compare_event_disable(NRF_GRTC, channel);
 #if NRFY_GRTC_HAS_MINTERVAL
@@ -802,8 +804,7 @@ int nrfx_grtc_syscounter_cc_relative_set(nrfx_grtc_channel_t *             p_cha
                                          bool                              enable_irq,
                                          nrfx_grtc_cc_relative_reference_t reference)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(p_chan_data);
+    NRFX_ASSERT((m_cb.state != NRFX_DRV_STATE_UNINITIALIZED) && p_chan_data);
     int err_code = syscounter_check(p_chan_data->channel);
     if (err_code != 0)
     {
@@ -880,8 +881,8 @@ int nrfx_grtc_syscounter_cc_int_enable(uint8_t channel)
 
 bool nrfx_grtc_syscounter_cc_int_enable_check(uint8_t channel)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(channel < NRF_GRTC_SYSCOUNTER_CC_COUNT);
+    NRFX_ASSERT((m_cb.state != NRFX_DRV_STATE_UNINITIALIZED) &&
+                (channel < NRF_GRTC_SYSCOUNTER_CC_COUNT));
     return nrfy_grtc_int_enable_check(NRF_GRTC, GRTC_CHANNEL_TO_BITMASK(channel));
 }
 
@@ -905,8 +906,7 @@ int nrfx_grtc_syscounter_capture(uint8_t channel)
 
 int nrfx_grtc_syscounter_cc_value_read(uint8_t channel, uint64_t * p_val)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(p_val);
+    NRFX_ASSERT((m_cb.state != NRFX_DRV_STATE_UNINITIALIZED) && p_val);
     int err_code = syscounter_check(channel);
     if (err_code != 0)
     {

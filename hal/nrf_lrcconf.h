@@ -523,9 +523,9 @@ NRF_STATIC_INLINE void nrf_lrcconf_axi_waitstates_set(NRF_LRCCONF_Type * p_reg,
                                                       uint8_t            domain,
                                                       uint8_t            waitstates_num)
 {
-    NRFX_ASSERT(domain < NRF_LRCCONF_AXI_WAITSTATES_ARRAY_SIZE);
-    NRFX_ASSERT(waitstates_num <=
-               (LRCCONF_AX2XWAITSTATES_WAITSTATES_Msk >> LRCCONF_AX2XWAITSTATES_WAITSTATES_Pos));
+    NRFX_ASSERT((domain < NRF_LRCCONF_AXI_WAITSTATES_ARRAY_SIZE) &&
+                (waitstates_num <=
+                 (LRCCONF_AX2XWAITSTATES_WAITSTATES_Msk >> LRCCONF_AX2XWAITSTATES_WAITSTATES_Pos)));
     p_reg->AX2XWAITSTATES[domain] = ((uint32_t)waitstates_num <<
                                     LRCCONF_AX2XWAITSTATES_WAITSTATES_Pos) &
                                     LRCCONF_AX2XWAITSTATES_WAITSTATES_Msk;

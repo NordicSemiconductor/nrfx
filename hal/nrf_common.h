@@ -107,6 +107,45 @@ extern "C" {
 #define NRF_CTZ(value) __builtin_ctz(value)
 #endif
 
+#if defined(STATIC_CPU_FREQ_CONFIG_PRESENT)
+    #if defined(NRF_TRUSTZONE_NONSECURE)
+    /* Non-secure images must have CPU frequency specified and cannot rely on default values,
+     * as NRF_OSCILLATORS might be assigned and configured by Secure image. */
+        #if defined(STATIC_CPU_FREQ_CONFIG_64_MHZ_PRESENT) && \
+            defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 64)
+            #define NRF_CPU_FREQ_IS_64MHZ 1
+        #elif defined(STATIC_CPU_FREQ_CONFIG_128_MHZ_PRESENT) && \
+            defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 128)
+            #define NRF_CPU_FREQ_IS_128MHZ 1
+        #elif defined(STATIC_CPU_FREQ_CONFIG_256_MHZ_PRESENT) && \
+            defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 256)
+            #define NRF_CPU_FREQ_IS_256MHZ 1
+        #elif !defined(NRF_CONFIG_CPU_FREQ_MHZ)
+            #error "MCU frequency not specified"
+        #else
+            #error "Invalid MCU frequency"
+        #endif
+    #else
+        #if defined(NRF_SKIP_CLOCK_CONFIGURATION) || \
+            (defined(STATIC_CPU_FREQ_CONFIG_64_MHZ_PRESENT) && \
+             defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 64))
+            #define NRF_CPU_FREQ_IS_64MHZ 1
+        #elif defined(STATIC_CPU_FREQ_CONFIG_128_MHZ_PRESENT) && \
+              defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 128)
+            #define NRF_CPU_FREQ_IS_128MHZ 1
+        #elif !defined(NRF_CONFIG_CPU_FREQ_MHZ)
+            /* If clock configuration is not skipped and frequency not specified,
+            * SystemInit() applies 128 MHz setting. */
+            #define NRF_CPU_FREQ_IS_128MHZ 1
+        #elif defined(STATIC_CPU_FREQ_CONFIG_256_MHZ_PRESENT) && \
+              defined(NRF_CONFIG_CPU_FREQ_MHZ) && (NRF_CONFIG_CPU_FREQ_MHZ == 256)
+            #define NRF_CPU_FREQ_IS_256MHZ 1
+        #else
+            #error "Invalid MCU frequency"
+        #endif
+    #endif
+#endif
+
 /** @brief Macro for extracting relative pin number from the absolute pin number. */
 #define NRF_PIN_NUMBER_TO_PIN(pin) ((pin) & 0x1F)
 

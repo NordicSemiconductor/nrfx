@@ -103,6 +103,13 @@ extern "C" {
 #define NRF_UICR_HAS_BOOTCONF 0
 #endif
 
+#if defined(UICR_BOOTCONF_SECURE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SECURE field in the BOOTCONF register is present. */
+#define NRF_UICR_HAS_BOOTCONF_SECURE 1
+#else
+#define NRF_UICR_HAS_BOOTCONF_SECURE 0
+#endif
+
 #if (defined(UICR_DPPI_GLOBAL_CH_LINK_DIR_CH0_Msk) & \
     defined(UICR_DPPI_GLOBAL_CH_LINK_EN_CH0_Msk)) || defined(__NRFX_DOXYGEN__)
 /**
@@ -144,8 +151,12 @@ extern "C" {
 #define NRF_UICR_MAILBOX_COUNT     UICR_MAILBOX_MaxCount
 
 /** @brief Immutable boot region permissions bitmask. */
-#define NRF_UICR_BOOTCONF_PERM_MASK (UICR_BOOTCONF_READ_Msk | UICR_BOOTCONF_WRITE_Msk | \
-                                     UICR_BOOTCONF_EXECUTE_Msk | UICR_BOOTCONF_SECURE_Msk)
+#define NRF_UICR_BOOTCONF_PERM_MASK (UICR_BOOTCONF_READ_Msk | \
+                                    UICR_BOOTCONF_WRITE_Msk | \
+                                    UICR_BOOTCONF_EXECUTE_Msk | \
+                                    NRFX_COND_CODE_1(NRF_UICR_HAS_BOOTCONF_SECURE, \
+                                                     (UICR_BOOTCONF_SECURE_Msk), (0)))
+
 
 #if NRF_UICR_HAS_MEM_CONFIG
 /**
@@ -282,7 +293,9 @@ typedef enum
     NRF_UICR_BOOT_REGION_PERM_READ_MASK    = UICR_BOOTCONF_READ_Msk,    ///< Read access.
     NRF_UICR_BOOT_REGION_PERM_WRITE_MASK   = UICR_BOOTCONF_WRITE_Msk,   ///< Write access.
     NRF_UICR_BOOT_REGION_PERM_EXECUTE_MASK = UICR_BOOTCONF_EXECUTE_Msk, ///< Software execute.
+#if NRF_UICR_HAS_BOOTCONF_SECURE
     NRF_UICR_BOOT_REGION_PERM_SECURE_MASK  = UICR_BOOTCONF_SECURE_Msk,  ///< Secure-only access.
+#endif
 } nrf_uicr_boot_region_perm_mask_t;
 
 /** @brief Immutable boot region configuration. */
@@ -294,6 +307,20 @@ typedef struct
     uint16_t size_kb;     ///< Region size in kBs. */
 } nrf_uicr_boot_region_config_t;
 #endif
+
+/**
+ * @brief Function for checking whether the specified range of addresses fits in UICR.
+ *
+ * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
+ * @param[in] addr      Starting address of the range to be checked.
+ * @param[in] len_bytes Length of the range to be checked in bytes.
+ *
+ * @retval true  Range fits in UICR.
+ * @retval false Range doesn't fit in UICR.
+ */
+NRF_STATIC_INLINE bool nrf_uicr_fits_check(NRF_UICR_Type const * p_reg,
+                                           uint32_t              addr,
+                                           uint32_t              len_bytes);
 
 #if NRF_UICR_HAS_MEM_CONFIG
 /**
@@ -488,6 +515,23 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_gpio_ctrlsel_get(NRF_UICREXTENDED_Type const
 
 #ifndef NRF_DECLARE_ONLY
 
+NRF_STATIC_INLINE bool nrf_uicr_fits_check(NRF_UICR_Type const * p_reg,
+                                           uint32_t              addr,
+                                           uint32_t              len_bytes)
+{
+#if !defined(NRF_TRUSTZONE_NONSECURE)
+    /* The unsigned subtraction in the first condition catches both addresses above and below
+     * the UICR memory range (for lower values it wraps to >2^31 > sizeof(NRF_UICR_Type)).
+     */
+    return ((addr - (uint32_t)p_reg) < sizeof(NRF_UICR_Type)) &&
+           (len_bytes <= ((uint32_t)p_reg + sizeof(NRF_UICR_Type) - addr));
+#else
+    (void)addr;
+    (void)len_bytes;
+    return false;
+#endif
+}
+
 #if NRF_UICR_HAS_MEM_CONFIG
 NRF_STATIC_INLINE nrf_uicr_mem_config_t nrf_uicr_mem_config_get(NRF_UICR_Type const * p_reg,
                                                                 uint8_t               index)
@@ -546,7 +590,7 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_feature_own_get(NRF_UICR_Type const * p_reg,
 {
     switch (feature)
     {
-#if NRF_UICR_HAS_FEATURE_GPIO
+#if NRF_UICR_HAS_FEATURE_GPIO && NRF_UICR_HAS_PTREXT
         case NRF_UICR_FEATURE_GPIO:
             NRFX_ASSERT(index < NRF_UICR_GPIO_COUNT);
             return ((NRF_UICREXTENDED_Type *)nrf_uicr_ptrextuicr_get(p_reg))->GPIO[index].OWN;
@@ -587,7 +631,7 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_feature_secure_get(NRF_UICR_Type const * p_r
 {
     switch (feature)
     {
-#if NRF_UICR_HAS_FEATURE_GPIO
+#if NRF_UICR_HAS_FEATURE_GPIO && NRF_UICR_HAS_PTREXT
         case NRF_UICR_FEATURE_GPIO:
             NRFX_ASSERT(index < NRF_UICR_GPIO_COUNT);
             return ((NRF_UICREXTENDED_Type *)nrf_uicr_ptrextuicr_get(p_reg))->GPIO[index].SECURE;

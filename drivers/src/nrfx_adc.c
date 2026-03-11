@@ -131,8 +131,7 @@ void nrfx_adc_channel_enable(nrfx_adc_channel_t * const p_channel)
 
 void nrfx_adc_channel_disable(nrfx_adc_channel_t * const p_channel)
 {
-    NRFX_ASSERT(m_cb.p_head);
-    NRFX_ASSERT(!nrfx_adc_is_busy());
+    NRFX_ASSERT(m_cb.p_head && !nrfx_adc_is_busy());
 
     nrfx_adc_channel_t * p_curr_channel = m_cb.p_head;
     nrfx_adc_channel_t * p_prev_channel = NULL;
@@ -163,8 +162,7 @@ void nrfx_adc_all_channels_disable(void)
 
 void nrfx_adc_sample(void)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(!nrf_adc_busy_check(NRF_ADC));
+    NRFX_ASSERT((m_cb.state != NRFX_DRV_STATE_UNINITIALIZED) && !nrf_adc_busy_check(NRF_ADC));
     nrf_adc_task_trigger(NRF_ADC, NRF_ADC_TASK_START);
 }
 
@@ -251,8 +249,7 @@ static bool adc_sample_process(void)
 
 int nrfx_adc_buffer_convert(nrf_adc_value_t * buffer, uint16_t size)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(buffer);
+    NRFX_ASSERT((m_cb.state != NRFX_DRV_STATE_UNINITIALIZED) && buffer);
 
     int err_code;
 

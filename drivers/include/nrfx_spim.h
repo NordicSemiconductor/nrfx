@@ -84,17 +84,17 @@ typedef struct
     nrfx_spim_event_t         evt;
     nrfx_drv_state_t          state;
     volatile bool             transfer_in_progress;
-    bool                      skip_gpio_cfg          : 1;
-    bool                      ss_active_high         : 1;
-    bool                      disable_on_xfer_end    : 1;
+    bool                      skip_gpio_cfg             : 1;
+    bool                      ss_active_high            : 1;
+    bool                      disable_on_xfer_end       : 1;
 #if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 212)
-    bool                      apply_errata_8_212     : 1;
+    bool                      apply_errata_8_212        : 1;
 #endif
 #if NRF_ERRATA_STATIC_CHECK(54L, 55)
-    bool                      apply_nrf54l_errata_55 : 1;
+    bool                      apply_nrf54l_errata_55_69 : 1;
 #endif
 #if NRF_ERRATA_STATIC_CHECK(52, 58)
-    bool                      apply_nrf52_errata_58  : 1;
+    bool                      apply_nrf52_errata_58     : 1;
     nrfx_gpiote_t *           p_gpiote_inst;
     uint8_t                   gpiote_ch;
     nrfx_gppi_handle_t        gppi_handle;

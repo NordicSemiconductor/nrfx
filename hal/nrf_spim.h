@@ -1271,9 +1271,9 @@ NRF_STATIC_INLINE uint32_t nrf_spim_int_enable_check(NRF_SPIM_Type const * p_reg
 NRF_STATIC_INLINE void nrf_spim_prescaler_set(NRF_SPIM_Type * p_reg,
                                               uint32_t        prescaler)
 {
-    NRFX_ASSERT(prescaler >= NRF_SPIM_PRESCALER_MIN_GET(p_reg));
-    NRFX_ASSERT(prescaler <= NRF_SPIM_PRESCALER_MAX_GET(p_reg));
-    NRFX_ASSERT(NRFX_IS_EVEN(prescaler));
+    NRFX_ASSERT((prescaler >= NRF_SPIM_PRESCALER_MIN_GET(p_reg)) &&
+                (prescaler <= NRF_SPIM_PRESCALER_MAX_GET(p_reg)) &&
+                NRFX_IS_EVEN(prescaler));
     p_reg->PRESCALER = prescaler;
 }
 

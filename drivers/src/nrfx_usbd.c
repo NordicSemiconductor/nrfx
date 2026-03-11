@@ -454,9 +454,9 @@ bool nrfx_usbd_consumer(
     size_t data_size)
 {
     nrfx_usbd_transfer_t * p_transfer = (nrfx_usbd_transfer_t *)p_context;
-    NRFX_ASSERT(ep_size >= data_size);
-    NRFX_ASSERT((p_transfer->p_data.rx == NULL) ||
-        nrf_dma_accessible_check(NRF_USBD, p_transfer->p_data.rx));
+    NRFX_ASSERT((ep_size >= data_size) &&
+                ((p_transfer->p_data.rx == NULL) ||
+                 nrf_dma_accessible_check(NRF_USBD, p_transfer->p_data.rx)));
 
     size_t size = p_transfer->size;
     if (size < data_size)
@@ -946,9 +946,8 @@ static inline void nrf_usbd_ep0in_dma_handler(void)
 static inline void nrf_usbd_epin_dma_handler(nrfx_usbd_ep_t ep)
 {
     NRFX_LOG_DEBUG("USB event: DMA ready IN: %x", ep);
-    NRFX_ASSERT(NRF_USBD_EPIN_CHECK(ep));
-    NRFX_ASSERT(!NRF_USBD_EPISO_CHECK(ep));
-    NRFX_ASSERT(NRF_USBD_EP_NR_GET(ep) > 0);
+    NRFX_ASSERT(NRF_USBD_EPIN_CHECK(ep) && !NRF_USBD_EPISO_CHECK(ep) &&
+                (NRF_USBD_EP_NR_GET(ep) > 0));
     usbd_dma_pending_clear();
 
     usbd_ep_state_t * p_state = ep_state_access(ep);
@@ -976,8 +975,7 @@ static inline void nrf_usbd_epiniso_dma_handler(nrfx_usbd_ep_t ep)
     {
         NRFX_LOG_DEBUG("USB event: DMA ready ISOIN: %x", ep);
     }
-    NRFX_ASSERT(NRF_USBD_EPIN_CHECK(ep));
-    NRFX_ASSERT(NRF_USBD_EPISO_CHECK(ep));
+    NRFX_ASSERT(NRF_USBD_EPIN_CHECK(ep) && NRF_USBD_EPISO_CHECK(ep));
     usbd_dma_pending_clear();
 
     usbd_ep_state_t * p_state = ep_state_access(ep);
@@ -1040,9 +1038,8 @@ static inline void nrf_usbd_ep0out_dma_handler(void)
 static inline void nrf_usbd_epout_dma_handler(nrfx_usbd_ep_t ep)
 {
     NRFX_LOG_DEBUG("DMA ready OUT: %x", ep);
-    NRFX_ASSERT(NRF_USBD_EPOUT_CHECK(ep));
-    NRFX_ASSERT(!NRF_USBD_EPISO_CHECK(ep));
-    NRFX_ASSERT(NRF_USBD_EP_NR_GET(ep) > 0);
+    NRFX_ASSERT(NRF_USBD_EPOUT_CHECK(ep) && !NRF_USBD_EPISO_CHECK(ep) &&
+                (NRF_USBD_EP_NR_GET(ep) > 0));
     usbd_dma_pending_clear();
 
     usbd_ep_state_t * p_state = ep_state_access(ep);
@@ -1957,13 +1954,15 @@ void nrfx_usbd_force_bus_wakeup(void)
 
 void nrfx_usbd_ep_max_packet_size_set(nrfx_usbd_ep_t ep, uint16_t size)
 {
-    /* Only the power of 2 size allowed for Control Endpoints */
-    NRFX_ASSERT((((size & (size - 1)) == 0) || (NRF_USBD_EP_NR_GET(ep) != 0)));
-    /* Only non zero size allowed for Control Endpoints */
-    NRFX_ASSERT((size != 0) || (NRF_USBD_EP_NR_GET(ep) != 0));
-    /* Packet size cannot be higher than maximum buffer size */
-    NRFX_ASSERT((NRF_USBD_EPISO_CHECK(ep) && (size <= usbd_ep_iso_capacity(ep))) ||
-                (!NRF_USBD_EPISO_CHECK(ep) && (size <= NRFX_USBD_EPSIZE)));
+    /*
+     * 1. Only the power of 2 size allowed for Control Endpoints.
+     * 2. Only non zero size allowed for Control Endpoints.
+     * 3. Packet size cannot be higher than maximum buffer size.
+     */
+    NRFX_ASSERT((((size & (size - 1)) == 0) || (NRF_USBD_EP_NR_GET(ep) != 0)) &&
+                ((size != 0) || (NRF_USBD_EP_NR_GET(ep) != 0)) &&
+                ((NRF_USBD_EPISO_CHECK(ep) && (size <= usbd_ep_iso_capacity(ep))) ||
+                 (!NRF_USBD_EPISO_CHECK(ep) && (size <= NRFX_USBD_EPSIZE))));
 
     usbd_ep_state_t * p_state = ep_state_access(ep);
     p_state->max_packet_size = size;

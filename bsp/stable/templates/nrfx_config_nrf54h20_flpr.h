@@ -268,6 +268,24 @@
 #endif
 
 /**
+ * @brief NRFX_GRTC_CONFIG_STOP_AT_UNINIT
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GRTC_CONFIG_STOP_AT_UNINIT
+#define NRFX_GRTC_CONFIG_STOP_AT_UNINIT 1
+#endif
+
+/**
+ * @brief NRFX_GRTC_CONFIG_CLEAR_AT_UNINIT
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GRTC_CONFIG_CLEAR_AT_UNINIT
+#define NRFX_GRTC_CONFIG_CLEAR_AT_UNINIT 1
+#endif
+
+/**
  * @brief NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS
  *
  * Integer value.
@@ -923,6 +941,48 @@
  */
 #ifndef NRFX_SPIS_CONFIG_LOG_LEVEL
 #define NRFX_SPIS_CONFIG_LOG_LEVEL 3
+#endif
+
+/**
+ * @brief NRFX_TDM_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_TDM_ENABLED
+#define NRFX_TDM_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_TDM_DEFAULT_CONFIG_IRQ_PRIORITY
+ *
+ * Integer value. Minimum: 0. Maximum: 3.
+ */
+#ifndef NRFX_TDM_DEFAULT_CONFIG_IRQ_PRIORITY
+#define NRFX_TDM_DEFAULT_CONFIG_IRQ_PRIORITY NRFX_DEFAULT_IRQ_PRIORITY
+#endif
+
+/**
+ * @brief NRFX_TDM_CONFIG_LOG_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_TDM_CONFIG_LOG_ENABLED
+#define NRFX_TDM_CONFIG_LOG_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_TDM_CONFIG_LOG_LEVEL
+ *
+ * Integer value.
+ * Supported values:
+ * - Off     = 0
+ * - Error   = 1
+ * - Warning = 2
+ * - Info    = 3
+ * - Debug   = 4
+ */
+#ifndef NRFX_TDM_CONFIG_LOG_LEVEL
+#define NRFX_TDM_CONFIG_LOG_LEVEL 3
 #endif
 
 /**

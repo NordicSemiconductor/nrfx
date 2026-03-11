@@ -115,8 +115,7 @@ static int qspi_xfer(void *            p_buffer,
                      uint32_t          address,
                      nrfx_qspi_state_t desired_state)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED);
-    NRFX_ASSERT(p_buffer != NULL);
+    NRFX_ASSERT((m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED) && (p_buffer != NULL));
 
     if (qspi_errata_159_conditions_check())
     {
@@ -562,8 +561,7 @@ int nrfx_qspi_cinstr_quick_send(uint8_t               opcode,
                                 nrf_qspi_cinstr_len_t length,
                                 void const *          p_tx_buffer)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED);
-    NRFX_ASSERT(p_tx_buffer);
+    NRFX_ASSERT((m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED) && p_tx_buffer);
 
     nrf_qspi_cinstr_conf_t config = NRFX_QSPI_DEFAULT_CINSTR(opcode, length);
     return nrfx_qspi_cinstr_xfer(&config, p_tx_buffer, NULL);
@@ -571,8 +569,8 @@ int nrfx_qspi_cinstr_quick_send(uint8_t               opcode,
 
 int nrfx_qspi_lfm_start(nrf_qspi_cinstr_conf_t const * p_config)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED);
-    NRFX_ASSERT(p_config->length == NRF_QSPI_CINSTR_LEN_1B);
+    NRFX_ASSERT((m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED) &&
+                (p_config->length == NRF_QSPI_CINSTR_LEN_1B));
 
     if (qspi_errata_159_conditions_check())
     {
@@ -627,8 +625,8 @@ int nrfx_qspi_lfm_xfer(void const * p_tx_buffer,
                        size_t       transfer_length,
                        bool         finalize)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED);
-    NRFX_ASSERT(nrf_qspi_cinstr_long_transfer_is_ongoing(NRF_QSPI));
+    NRFX_ASSERT((m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED) &&
+                nrf_qspi_cinstr_long_transfer_is_ongoing(NRF_QSPI));
 
     if (qspi_errata_159_conditions_check())
     {
@@ -853,8 +851,8 @@ int nrfx_qspi_chip_erase(void)
 
 nrfx_qspi_evt_ext_t const * nrfx_qspi_event_extended_get(void)
 {
-    NRFX_ASSERT(m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED);
-    NRFX_ASSERT(m_cb.evt_ext.type != NRFX_QSPI_EVENT_NONE);
+    NRFX_ASSERT((m_cb.state != NRFX_QSPI_STATE_UNINITIALIZED) &&
+                (m_cb.evt_ext.type != NRFX_QSPI_EVENT_NONE));
     return &m_cb.evt_ext;
 }
 

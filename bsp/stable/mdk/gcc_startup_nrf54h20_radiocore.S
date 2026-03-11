@@ -236,8 +236,8 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
+    .long   MRAMC110_IRQHandler
+    .long   MRAMC111_IRQHandler
     .long   0                           /*Reserved */
     .long   EXMIF_IRQHandler
     .long   0                           /*Reserved */
@@ -287,7 +287,7 @@ __isr_vector:
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
-    .long   0                           /*Reserved */
+    .long   OTPC_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -832,7 +832,10 @@ Default_Handler:
     IRQ  GRTC_2_IRQHandler
     IRQ  TBM_IRQHandler
     IRQ  USBHS_IRQHandler
+    IRQ  MRAMC110_IRQHandler
+    IRQ  MRAMC111_IRQHandler
     IRQ  EXMIF_IRQHandler
+    IRQ  OTPC_IRQHandler
     IRQ  IPCT120_0_IRQHandler
     IRQ  VPR121_IRQHandler
     IRQ  CAN120_IRQHandler

@@ -62,8 +62,7 @@ int nrfx_rtc_init(nrfx_rtc_t const *        p_instance,
                   nrfx_rtc_config_t const * p_config,
                   nrfx_rtc_handler_t        handler)
 {
-    NRFX_ASSERT(p_config);
-    NRFX_ASSERT(handler);
+    NRFX_ASSERT(p_config && handler);
     int err_code;
 
     m_cb[p_instance->instance_id].handler = handler;
@@ -136,8 +135,8 @@ void nrfx_rtc_disable(nrfx_rtc_t const * p_instance)
 
 int nrfx_rtc_cc_disable(nrfx_rtc_t const * p_instance, uint32_t channel)
 {
-    NRFX_ASSERT(m_cb[p_instance->instance_id].state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(channel < p_instance->cc_channel_count);
+    NRFX_ASSERT((m_cb[p_instance->instance_id].state != NRFX_DRV_STATE_UNINITIALIZED) &&
+                (channel < p_instance->cc_channel_count));
 
     int err_code;
     uint32_t int_mask = NRF_RTC_CHANNEL_INT_MASK(channel);
@@ -172,8 +171,8 @@ int nrfx_rtc_cc_set(nrfx_rtc_t const * p_instance,
                     uint32_t           val,
                     bool               enable_irq)
 {
-    NRFX_ASSERT(m_cb[p_instance->instance_id].state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(channel < p_instance->cc_channel_count);
+    NRFX_ASSERT((m_cb[p_instance->instance_id].state != NRFX_DRV_STATE_UNINITIALIZED) &&
+                (channel < p_instance->cc_channel_count));
 
     int err_code;
     uint32_t int_mask = NRF_RTC_CHANNEL_INT_MASK(channel);

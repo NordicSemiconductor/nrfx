@@ -74,12 +74,24 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_NETWORK)
         #include "nrf5340_network_vectors.h"
     #endif
-#elif defined(NRF54LV10A_XXAA)
+#elif defined(NRF54H20_XXAA)
+    #if defined(NRF_SECURE)
+        #include "nrf54h20_secure_vectors.h"
+    #endif
     #if defined(NRF_APPLICATION)
-        #include "nrf54lv10a_application_vectors.h"
+        #include "nrf54h20_application_vectors.h"
+    #endif
+    #if defined(NRF_RADIOCORE)
+        #include "nrf54h20_radiocore_vectors.h"
+    #endif
+    #if defined(NRF_SYSCTRL)
+        #include "nrf54h20_sysctrl_vectors.h"
+    #endif
+    #if defined(NRF_PPR)
+        #include "nrf54h20_ppr_vectors.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf54lv10a_flpr_vectors.h"
+        #include "nrf54h20_flpr_vectors.h"
     #endif
 #elif defined(NRF54L05_XXAA)
     #if defined(NRF_APPLICATION)
@@ -102,6 +114,13 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_FLPR)
         #include "nrf54l15_flpr_vectors.h"
     #endif
+#elif defined(NRF54LC10A_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf54lc10a_application_vectors.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf54lc10a_flpr_vectors.h"
+    #endif
 #elif defined(NRF54LM20A_XXAA)
     #if defined(NRF_APPLICATION)
         #include "nrf54lm20a_application_vectors.h"
@@ -116,20 +135,16 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_FLPR)
         #include "nrf54lm20b_flpr_vectors.h"
     #endif
+#elif defined(NRF54LS05A_XXAA)
+    #include "nrf54ls05a_application_vectors.h"
 #elif defined(NRF54LS05B_XXAA)
     #include "nrf54ls05b_application_vectors.h"
-#elif defined(NRF54H20_XXAA)
+#elif defined(NRF54LV10A_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf54h20_application_vectors.h"
-    #endif
-    #if defined(NRF_RADIOCORE)
-        #include "nrf54h20_radiocore_vectors.h"
-    #endif
-    #if defined(NRF_PPR)
-        #include "nrf54h20_ppr_vectors.h"
+        #include "nrf54lv10a_application_vectors.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf54h20_flpr_vectors.h"
+        #include "nrf54lv10a_flpr_vectors.h"
     #endif
 #elif defined(NRF7120_ENGA_XXAA)
     #if defined(NRF_APPLICATION)
@@ -148,6 +163,16 @@ POSSIBILITY OF SUCH DAMAGE.
     #include "nrf9120_vectors.h"
 #elif defined(NRF9160_XXAA)
     #include "nrf9160_vectors.h"
+#elif defined(NRF9220_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf9220_application_vectors.h"
+    #endif
+    #if defined(NRF_PPR)
+        #include "nrf9220_ppr_vectors.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf9220_flpr_vectors.h"
+    #endif
 #elif defined(NRF9230_ENGB_XXAA)
     #if defined(NRF_APPLICATION)
         #include "nrf9230_engb_application_vectors.h"

@@ -178,9 +178,7 @@ int nrfx_i2s_init(nrfx_i2s_t *              p_instance,
                   nrfx_i2s_config_t const * p_config,
                   nrfx_i2s_data_handler_t   handler)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
-    NRFX_ASSERT(handler);
+    NRFX_ASSERT(p_instance && p_config && handler);
 
     int err_code;
     nrfx_i2s_control_block_t * p_cb = &p_instance->cb;
@@ -254,9 +252,9 @@ int nrfx_i2s_init(nrfx_i2s_t *              p_instance,
 
 void nrfx_i2s_uninit(nrfx_i2s_t * p_instance)
 {
-    NRFX_ASSERT(p_instance);
+    NRFX_ASSERT(p_instance && (p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED));
+
     nrfx_i2s_control_block_t * p_cb = &p_instance->cb;
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
     nrfx_i2s_stop(p_instance);
 
@@ -298,19 +296,10 @@ int nrfx_i2s_start(nrfx_i2s_t *               p_instance,
                    nrfx_i2s_buffers_t const * p_initial_buffers,
                    uint8_t                    flags)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_initial_buffers != NULL);
-    NRFX_ASSERT(p_initial_buffers->p_rx_buffer != NULL ||
-                p_initial_buffers->p_tx_buffer != NULL);
-    NRFX_ASSERT((p_initial_buffers->p_rx_buffer == NULL) ||
-                (nrf_dma_accessible_check(p_instance->p_reg,
-                                          p_initial_buffers->p_rx_buffer) &&
-                 nrfx_is_word_aligned(p_initial_buffers->p_rx_buffer)));
-    NRFX_ASSERT((p_initial_buffers->p_tx_buffer == NULL) ||
-                (nrf_dma_accessible_check(p_instance->p_reg,
-                                          p_initial_buffers->p_tx_buffer) &&
-                 nrfx_is_word_aligned(p_initial_buffers->p_tx_buffer)));
-    NRFX_ASSERT(p_initial_buffers->buffer_size != 0);
+    NRFX_ASSERT(p_instance && (p_initial_buffers != NULL) &&
+                ((p_initial_buffers->p_rx_buffer != NULL) ||
+                 (p_initial_buffers->p_tx_buffer != NULL)) &&
+                (p_initial_buffers->buffer_size != 0));
     (void)(flags);
 
     int err_code;
@@ -325,11 +314,12 @@ int nrfx_i2s_start(nrfx_i2s_t *               p_instance,
         return err_code;
     }
 
-    if (((p_initial_buffers->p_rx_buffer != NULL)
-         && !nrf_dma_accessible_check(p_instance->p_reg, p_initial_buffers->p_rx_buffer))
-        ||
-        ((p_initial_buffers->p_tx_buffer != NULL)
-         && !nrf_dma_accessible_check(p_instance->p_reg, p_initial_buffers->p_tx_buffer)))
+    if (((p_initial_buffers->p_rx_buffer != NULL) &&
+         (!nrf_dma_accessible_check(p_instance->p_reg, p_initial_buffers->p_rx_buffer) ||
+          !nrfx_is_word_aligned(p_initial_buffers->p_rx_buffer))) ||
+        ((p_initial_buffers->p_tx_buffer != NULL) &&
+         (!nrf_dma_accessible_check(p_instance->p_reg, p_initial_buffers->p_tx_buffer) ||
+          !nrfx_is_word_aligned(p_initial_buffers->p_tx_buffer))))
     {
         err_code = -EACCES;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -378,20 +368,12 @@ int nrfx_i2s_start(nrfx_i2s_t *               p_instance,
 int nrfx_i2s_next_buffers_set(nrfx_i2s_t *               p_instance,
                               nrfx_i2s_buffers_t const * p_buffers)
 {
-    NRFX_ASSERT(p_instance);
+    NRFX_ASSERT(p_instance && (p_instance->cb.state == NRFX_DRV_STATE_POWERED_ON) && p_buffers &&
+                ((p_buffers->p_rx_buffer != NULL) || (p_buffers->p_tx_buffer != NULL)) &&
+                (p_buffers->buffer_size != 0));
 
     int err_code;
     nrfx_i2s_control_block_t * p_cb = &p_instance->cb;
-
-    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
-    NRFX_ASSERT(p_buffers);
-    NRFX_ASSERT((p_buffers->p_rx_buffer == NULL) ||
-                (nrf_dma_accessible_check(p_instance->p_reg, p_buffers->p_rx_buffer) &&
-                 nrfx_is_word_aligned(p_buffers->p_rx_buffer)));
-    NRFX_ASSERT((p_buffers->p_tx_buffer == NULL) ||
-                (nrf_dma_accessible_check(p_instance->p_reg, p_buffers->p_tx_buffer) &&
-                 nrfx_is_word_aligned(p_buffers->p_tx_buffer)));
-    NRFX_ASSERT(p_buffers->buffer_size != 0);
 
     if (!p_cb->buffers_needed)
     {
@@ -402,11 +384,12 @@ int nrfx_i2s_next_buffers_set(nrfx_i2s_t *               p_instance,
         return err_code;
     }
 
-    if (((p_buffers->p_rx_buffer != NULL)
-         && !nrf_dma_accessible_check(p_instance->p_reg, p_buffers->p_rx_buffer))
-        ||
-        ((p_buffers->p_tx_buffer != NULL)
-         && !nrf_dma_accessible_check(p_instance->p_reg, p_buffers->p_tx_buffer)))
+    if (((p_buffers->p_rx_buffer != NULL) &&
+         (!nrf_dma_accessible_check(p_instance->p_reg, p_buffers->p_rx_buffer) ||
+          !nrfx_is_word_aligned(p_buffers->p_rx_buffer))) ||
+        ((p_buffers->p_tx_buffer != NULL) &&
+         (!nrf_dma_accessible_check(p_instance->p_reg, p_buffers->p_tx_buffer) ||
+          !nrfx_is_word_aligned(p_buffers->p_tx_buffer))))
     {
         err_code = -EACCES;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -434,11 +417,9 @@ int nrfx_i2s_next_buffers_set(nrfx_i2s_t *               p_instance,
 
 void nrfx_i2s_stop(nrfx_i2s_t * p_instance)
 {
-    NRFX_ASSERT(p_instance);
+    NRFX_ASSERT(p_instance && (p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED));
 
     nrfx_i2s_control_block_t * p_cb = &p_instance->cb;
-
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
 
     p_cb->buffers_needed = false;
 
@@ -463,8 +444,7 @@ void nrfx_i2s_stop(nrfx_i2s_t * p_instance)
 int nrfx_i2s_prescalers_calc(nrfx_i2s_clk_params_t const * clk_params,
                              nrfx_i2s_prescalers_t *       prescalers)
 {
-    NRFX_ASSERT(clk_params);
-    NRFX_ASSERT(prescalers);
+    NRFX_ASSERT(clk_params && prescalers);
 
     static const struct
     {

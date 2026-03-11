@@ -184,8 +184,7 @@ int nrfx_twi_init(nrfx_twi_t *              p_instance,
                   nrfx_twi_event_handler_t  event_handler,
                   void *                    p_context)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
 
     nrfx_twi_control_block_t * p_cb  = &p_instance->cb;
     int err_code;
@@ -249,8 +248,7 @@ int nrfx_twi_init(nrfx_twi_t *              p_instance,
 int nrfx_twi_reconfigure(nrfx_twi_t *              p_instance,
                          nrfx_twi_config_t const * p_config)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
 
     nrfx_twi_control_block_t * p_cb = &p_instance->cb;
 
@@ -681,8 +679,7 @@ static int twi_xfer(NRF_TWI_Type               * p_reg,
 
 bool nrfx_twi_is_busy(nrfx_twi_t const * p_instance)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    NRFX_ASSERT(p_instance && (p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED));
 
     return p_instance->cb.state;
 }
@@ -696,13 +693,12 @@ int nrfx_twi_xfer(nrfx_twi_t *                 p_instance,
     int err_code = 0;
     nrfx_twi_control_block_t * p_cb = &p_instance->cb;
 
-    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
-    NRFX_ASSERT(p_xfer_desc->p_primary_buf != NULL || p_xfer_desc->primary_length == 0);
-    NRFX_ASSERT(p_xfer_desc->p_secondary_buf != NULL || p_xfer_desc->secondary_length == 0);
-
     // TXRX and TXTX transfers are supported only in non-blocking mode.
-    NRFX_ASSERT( !((p_cb->handler == NULL) && (p_xfer_desc->type == NRFX_TWI_XFER_TXRX)));
-    NRFX_ASSERT( !((p_cb->handler == NULL) && (p_xfer_desc->type == NRFX_TWI_XFER_TXTX)));
+    NRFX_ASSERT((p_cb->state == NRFX_DRV_STATE_POWERED_ON) &&
+                ((p_xfer_desc->p_primary_buf   != NULL) || (p_xfer_desc->primary_length   == 0)) &&
+                ((p_xfer_desc->p_secondary_buf != NULL) || (p_xfer_desc->secondary_length == 0)) &&
+                !((p_cb->handler == NULL) && (p_xfer_desc->type == NRFX_TWI_XFER_TXRX)) &&
+                !((p_cb->handler == NULL) && (p_xfer_desc->type == NRFX_TWI_XFER_TXTX)));
 
     NRFX_LOG_INFO("Transfer type: %s.", TRANSFER_TO_STR(p_xfer_desc->type));
     NRFX_LOG_INFO("Transfer buffers length: primary: %d, secondary: %d.",
@@ -724,16 +720,14 @@ int nrfx_twi_xfer(nrfx_twi_t *                 p_instance,
 
 size_t nrfx_twi_data_count_get(nrfx_twi_t const * p_instance)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    NRFX_ASSERT(p_instance && (p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED));
 
     return p_instance->cb.bytes_transferred;
 }
 
 uint32_t nrfx_twi_stopped_event_get(nrfx_twi_t const * p_instance)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    NRFX_ASSERT(p_instance && (p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED));
 
     return nrf_twi_event_address_get(p_instance->p_reg, NRF_TWI_EVENT_STOPPED);
 }
@@ -1357,13 +1351,12 @@ int nrfx_twi_xfer(nrfx_twi_t const *           p_instance,
     int err_code = 0;
     twi_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
-    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
-    NRFX_ASSERT(p_xfer_desc->p_primary_buf != NULL || p_xfer_desc->primary_length == 0);
-    NRFX_ASSERT(p_xfer_desc->p_secondary_buf != NULL || p_xfer_desc->secondary_length == 0);
-
     // TXRX and TXTX transfers are supported only in non-blocking mode.
-    NRFX_ASSERT( !((p_cb->handler == NULL) && (p_xfer_desc->type == NRFX_TWI_XFER_TXRX)));
-    NRFX_ASSERT( !((p_cb->handler == NULL) && (p_xfer_desc->type == NRFX_TWI_XFER_TXTX)));
+    NRFX_ASSERT((p_cb->state == NRFX_DRV_STATE_POWERED_ON) &&
+                ((p_xfer_desc->p_primary_buf   != NULL) || (p_xfer_desc->primary_length   == 0)) &&
+                ((p_xfer_desc->p_secondary_buf != NULL) || (p_xfer_desc->secondary_length == 0)) &&
+                !((p_cb->handler == NULL) && (p_xfer_desc->type == NRFX_TWI_XFER_TXRX)) &&
+                !((p_cb->handler == NULL) && (p_xfer_desc->type == NRFX_TWI_XFER_TXTX)));
 
     NRFX_LOG_INFO("Transfer type: %s.", TRANSFER_TO_STR(p_xfer_desc->type));
     NRFX_LOG_INFO("Transfer buffers length: primary: %d, secondary: %d.",

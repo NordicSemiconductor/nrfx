@@ -107,7 +107,10 @@ typedef enum {
   GRTC_2_IRQn                            = 110,      /*!< 110 GRTC_2                                                           */
   TBM_IRQn                               = 127,      /*!< 127 TBM                                                              */
   USBHS_IRQn                             = 134,      /*!< 134 USBHS                                                            */
+  MRAMC110_IRQn                          = 146,      /*!< 146 MRAMC110                                                         */
+  MRAMC111_IRQn                          = 147,      /*!< 147 MRAMC111                                                         */
   EXMIF_IRQn                             = 149,      /*!< 149 EXMIF                                                            */
+  OTPC_IRQn                              = 197,      /*!< 197 OTPC                                                             */
   IPCT120_0_IRQn                         = 209,      /*!< 209 IPCT120_0                                                        */
   VPR121_IRQn                            = 212,      /*!< 212 VPR121                                                           */
   CAN120_IRQn                            = 216,      /*!< 216 CAN120                                                           */

@@ -992,9 +992,9 @@ NRF_STATIC_INLINE uint32_t nrf_cache_data_get(NRF_CACHE_Type const * p_reg,
 #if NRF_CACHE_HAS_CACHEDATA
     (void)p_reg;
 
-    NRFX_ASSERT(word < NRF_CACHEDATA_WORD_INDEX_MAX);
-    NRFX_ASSERT(way < NRF_CACHEDATA_WAY_INDEX_MAX);
-    NRFX_ASSERT(set < NRF_CACHEDATA_SET_INDEX_MAX);
+    NRFX_ASSERT((word < NRF_CACHEDATA_WORD_INDEX_MAX) &&
+                (way < NRF_CACHEDATA_WAY_INDEX_MAX) &&
+                (set < NRF_CACHEDATA_SET_INDEX_MAX));
 
     uint8_t du   = (word / NRF_CACHEDATA_DATA_WORDS_IN_UNIT_MAX);
     uint8_t data = (uint8_t)(word - (du * NRF_CACHEDATA_DATA_WORDS_IN_UNIT_MAX));
@@ -1004,9 +1004,9 @@ NRF_STATIC_INLINE uint32_t nrf_cache_data_get(NRF_CACHE_Type const * p_reg,
 #if NRF_CACHE_HAS_DCACHEDATA
     if (p_reg == NRF_DCACHE)
     {
-        NRFX_ASSERT(word < NRF_DCACHEDATA_WORD_INDEX_MAX);
-        NRFX_ASSERT(way < NRF_DCACHEDATA_WAY_INDEX_MAX);
-        NRFX_ASSERT(set < NRF_DCACHEDATA_SET_INDEX_MAX);
+        NRFX_ASSERT((word < NRF_DCACHEDATA_WORD_INDEX_MAX) &&
+                    (way < NRF_DCACHEDATA_WAY_INDEX_MAX) &&
+                    (set < NRF_DCACHEDATA_SET_INDEX_MAX));
 
         uint8_t du   = (word / NRF_DCACHEDATA_DATA_WORDS_IN_UNIT_MAX);
         uint8_t data = (uint8_t)(word - (du * NRF_DCACHEDATA_DATA_WORDS_IN_UNIT_MAX));
@@ -1017,9 +1017,9 @@ NRF_STATIC_INLINE uint32_t nrf_cache_data_get(NRF_CACHE_Type const * p_reg,
 #if NRF_CACHE_HAS_ICACHEDATA
     if (p_reg == NRF_ICACHE)
     {
-        NRFX_ASSERT(word < NRF_ICACHEDATA_WORD_INDEX_MAX);
-        NRFX_ASSERT(way < NRF_ICACHEDATA_WAY_INDEX_MAX);
-        NRFX_ASSERT(set < NRF_ICACHEDATA_SET_INDEX_MAX);
+        NRFX_ASSERT((word < NRF_ICACHEDATA_WORD_INDEX_MAX) &&
+                    (way < NRF_ICACHEDATA_WAY_INDEX_MAX) &&
+                    (set < NRF_ICACHEDATA_SET_INDEX_MAX));
 
         uint8_t du   = (word / NRF_ICACHEDATA_DATA_WORDS_IN_UNIT_MAX);
         uint8_t data = (uint8_t)(word - (du * NRF_ICACHEDATA_DATA_WORDS_IN_UNIT_MAX));
@@ -1055,8 +1055,8 @@ NRF_STATIC_INLINE uint32_t nrf_cache_tag_get(NRF_CACHE_Type const * p_reg,
 #if NRF_CACHE_HAS_CACHEINFO
     (void)p_reg;
 #if defined(CACHEINFO_SET_WAY_INFO_TAG_Msk)
-    NRFX_ASSERT(way < NRF_CACHEINFO_WAY_INDEX_MAX);
-    NRFX_ASSERT(set < NRF_CACHEINFO_SET_INDEX_MAX);
+    NRFX_ASSERT((way < NRF_CACHEINFO_WAY_INDEX_MAX) &&
+                (set < NRF_CACHEINFO_SET_INDEX_MAX));
     return (NRF_CACHEINFO->SET[set].WAY[way].INFO & CACHEINFO_SET_WAY_INFO_TAG_Msk);
 #else
     return (NRF_CACHEINFO->SET[set].WAY[way] & CACHEINFO_SET_WAY_TAG_Msk);
@@ -1065,16 +1065,16 @@ NRF_STATIC_INLINE uint32_t nrf_cache_tag_get(NRF_CACHE_Type const * p_reg,
 #if NRF_CACHE_HAS_DCACHEINFO
     if (p_reg == NRF_DCACHE)
     {
-        NRFX_ASSERT(way < NRF_DCACHEINFO_WAY_INDEX_MAX);
-        NRFX_ASSERT(set < NRF_DCACHEINFO_SET_INDEX_MAX);
+        NRFX_ASSERT((way < NRF_DCACHEINFO_WAY_INDEX_MAX) &&
+                    (set < NRF_DCACHEINFO_SET_INDEX_MAX));
         return (NRF_DCACHEINFO->SET[set].WAY[way].INFO & DCACHEINFO_SET_WAY_INFO_TAG_Msk);
     }
 #endif // NRF_CACHE_HAS_DCACHEINFO
 #if NRF_CACHE_HAS_ICACHEINFO
     if (p_reg == NRF_ICACHE)
     {
-        NRFX_ASSERT(way < NRF_ICACHEINFO_WAY_INDEX_MAX);
-        NRFX_ASSERT(set < NRF_ICACHEINFO_SET_INDEX_MAX);
+        NRFX_ASSERT((way < NRF_ICACHEINFO_WAY_INDEX_MAX) &&
+                    (set < NRF_ICACHEINFO_SET_INDEX_MAX));
         return (NRF_ICACHEINFO->SET[set].WAY[way].INFO & NRF_ICACHEINFO_TAG_MASK);
     }
 #endif // NRF_CACHE_HAS_ICACHEINFO
@@ -1089,8 +1089,8 @@ NRF_STATIC_INLINE bool nrf_cache_line_validity_check(NRF_CACHE_Type const * p_re
 #if NRF_CACHE_HAS_CACHEINFO
     (void)p_reg;
 #if defined(CACHEINFO_SET_WAY_INFO_V_Msk)
-    NRFX_ASSERT(way < NRF_CACHEINFO_WAY_INDEX_MAX);
-    NRFX_ASSERT(set < NRF_CACHEINFO_SET_INDEX_MAX);
+    NRFX_ASSERT((way < NRF_CACHEINFO_WAY_INDEX_MAX) &&
+                (set < NRF_CACHEINFO_SET_INDEX_MAX));
     return (NRF_CACHEINFO->SET[set].WAY[way].INFO & CACHEINFO_SET_WAY_INFO_V_Msk) ==
         (CACHEINFO_SET_WAY_INFO_V_Valid << CACHEINFO_SET_WAY_INFO_V_Pos);
 #else
@@ -1101,8 +1101,8 @@ NRF_STATIC_INLINE bool nrf_cache_line_validity_check(NRF_CACHE_Type const * p_re
 #if NRF_CACHE_HAS_DCACHEINFO
     if (p_reg == NRF_DCACHE)
     {
-        NRFX_ASSERT(way < NRF_DCACHEINFO_WAY_INDEX_MAX);
-        NRFX_ASSERT(set < NRF_DCACHEINFO_SET_INDEX_MAX);
+        NRFX_ASSERT((way < NRF_DCACHEINFO_WAY_INDEX_MAX) &&
+                    (set < NRF_DCACHEINFO_SET_INDEX_MAX));
         return (NRF_DCACHEINFO->SET[set].WAY[way].INFO & DCACHEINFO_SET_WAY_INFO_V_Msk) ==
             (DCACHEINFO_SET_WAY_INFO_V_Valid << DCACHEINFO_SET_WAY_INFO_V_Pos);
     }
@@ -1110,8 +1110,8 @@ NRF_STATIC_INLINE bool nrf_cache_line_validity_check(NRF_CACHE_Type const * p_re
 #if NRF_CACHE_HAS_ICACHEINFO
     if (p_reg == NRF_ICACHE)
     {
-        NRFX_ASSERT(way < NRF_ICACHEINFO_WAY_INDEX_MAX);
-        NRFX_ASSERT(set < NRF_ICACHEINFO_SET_INDEX_MAX);
+        NRFX_ASSERT((way < NRF_ICACHEINFO_WAY_INDEX_MAX) &&
+                    (set < NRF_ICACHEINFO_SET_INDEX_MAX));
         return (NRF_ICACHEINFO->SET[set].WAY[way].INFO & NRF_ICACHEINFO_V_MASK) ==
             (NRF_ICACHEINFO_V_VALID << NRF_ICACHEINFO_V_POS);
     }
@@ -1162,9 +1162,9 @@ NRF_STATIC_INLINE bool nrf_cache_data_unit_validity_check(NRF_CACHE_Type const *
 #if NRF_CACHE_HAS_CACHEINFO
     (void)p_reg;
 
-    NRFX_ASSERT(word < NRF_CACHEINFO_WORD_INDEX_MAX);
-    NRFX_ASSERT(way < NRF_CACHEINFO_WAY_INDEX_MAX);
-    NRFX_ASSERT(set < NRF_CACHEINFO_SET_INDEX_MAX);
+    NRFX_ASSERT((word < NRF_CACHEINFO_WORD_INDEX_MAX) &&
+                (way < NRF_CACHEINFO_WAY_INDEX_MAX) &&
+                (set < NRF_CACHEINFO_SET_INDEX_MAX));
 
     uint8_t du = (word / NRF_CACHEINFO_DATA_WORDS_IN_UNIT_MAX);
     switch (du)
@@ -1208,9 +1208,9 @@ NRF_STATIC_INLINE bool nrf_cache_data_unit_validity_check(NRF_CACHE_Type const *
 #if NRF_CACHE_HAS_DCACHEINFO
     if (p_reg == NRF_DCACHE)
     {
-        NRFX_ASSERT(word < NRF_DCACHEINFO_WORD_INDEX_MAX);
-        NRFX_ASSERT(way < NRF_DCACHEINFO_WAY_INDEX_MAX);
-        NRFX_ASSERT(set < NRF_DCACHEINFO_SET_INDEX_MAX);
+        NRFX_ASSERT((word < NRF_DCACHEINFO_WORD_INDEX_MAX) &&
+                    (way < NRF_DCACHEINFO_WAY_INDEX_MAX) &&
+                    (set < NRF_DCACHEINFO_SET_INDEX_MAX));
 
         uint8_t du = (word / NRF_DCACHEINFO_DATA_WORDS_IN_UNIT_MAX);
         switch (du)
@@ -1240,9 +1240,9 @@ NRF_STATIC_INLINE bool nrf_cache_data_unit_validity_check(NRF_CACHE_Type const *
 #if NRF_CACHE_HAS_ICACHEINFO
     if (p_reg == NRF_ICACHE)
     {
-        NRFX_ASSERT(word < NRF_ICACHEINFO_WORD_INDEX_MAX);
-        NRFX_ASSERT(way < NRF_ICACHEINFO_WAY_INDEX_MAX);
-        NRFX_ASSERT(set < NRF_ICACHEINFO_SET_INDEX_MAX);
+        NRFX_ASSERT((word < NRF_ICACHEINFO_WORD_INDEX_MAX) &&
+                    (way < NRF_ICACHEINFO_WAY_INDEX_MAX) &&
+                    (set < NRF_ICACHEINFO_SET_INDEX_MAX));
 
         uint8_t du = (word / NRF_ICACHEINFO_DATA_WORDS_IN_UNIT_MAX);
         switch (du)
@@ -1283,9 +1283,9 @@ NRF_STATIC_INLINE bool nrf_cache_is_data_unit_dirty_check(NRF_CACHE_Type const *
 #if NRF_CACHE_HAS_CACHEINFO
     (void)p_reg;
 
-    NRFX_ASSERT(word < NRF_CACHEINFO_WORD_INDEX_MAX);
-    NRFX_ASSERT(way < NRF_CACHEINFO_WAY_INDEX_MAX);
-    NRFX_ASSERT(set < NRF_CACHEINFO_SET_INDEX_MAX);
+    NRFX_ASSERT((word < NRF_CACHEINFO_WORD_INDEX_MAX) &&
+                (way < NRF_CACHEINFO_WAY_INDEX_MAX) &&
+                (set < NRF_CACHEINFO_SET_INDEX_MAX));
 
     uint8_t du = (word / NRF_CACHEINFO_DATA_WORDS_IN_UNIT_MAX);
     switch (du)
@@ -1308,9 +1308,9 @@ NRF_STATIC_INLINE bool nrf_cache_is_data_unit_dirty_check(NRF_CACHE_Type const *
 #if NRF_CACHE_HAS_DCACHEINFO
     if (p_reg == NRF_DCACHE)
     {
-        NRFX_ASSERT(word < NRF_DCACHEINFO_WORD_INDEX_MAX);
-        NRFX_ASSERT(way < NRF_DCACHEINFO_WAY_INDEX_MAX);
-        NRFX_ASSERT(set < NRF_DCACHEINFO_SET_INDEX_MAX);
+        NRFX_ASSERT((word < NRF_DCACHEINFO_WORD_INDEX_MAX) &&
+                    (way < NRF_DCACHEINFO_WAY_INDEX_MAX) &&
+                    (set < NRF_DCACHEINFO_SET_INDEX_MAX));
 
         uint8_t du = (word / NRF_DCACHEINFO_DATA_WORDS_IN_UNIT_MAX);
         switch (du)
@@ -1334,9 +1334,9 @@ NRF_STATIC_INLINE bool nrf_cache_is_data_unit_dirty_check(NRF_CACHE_Type const *
 #if NRF_CACHE_HAS_ICACHEINFO
     if (p_reg == NRF_ICACHE)
     {
-        NRFX_ASSERT(word < NRF_ICACHEINFO_WORD_INDEX_MAX);
-        NRFX_ASSERT(way < NRF_ICACHEINFO_WAY_INDEX_MAX);
-        NRFX_ASSERT(set < NRF_ICACHEINFO_SET_INDEX_MAX);
+        NRFX_ASSERT((word < NRF_ICACHEINFO_WORD_INDEX_MAX) &&
+                    (way < NRF_ICACHEINFO_WAY_INDEX_MAX) &&
+                    (set < NRF_ICACHEINFO_SET_INDEX_MAX));
 
         uint8_t du = (word / NRF_ICACHEINFO_DATA_WORDS_IN_UNIT_MAX);
         switch (du)

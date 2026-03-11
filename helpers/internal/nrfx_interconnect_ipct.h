@@ -34,24 +34,24 @@
 #ifndef NRFX_INTERCONNECT_IPCT_H__
 #define NRFX_INTERCONNECT_IPCT_H__
 
-#include "nrfx_interconnect_apb_haltium_global.h"
-#include "nrfx_interconnect_ipct_haltium_global.h"
+#include "nrfx_interconnect_apb_sd2ppi_global.h"
+#include "nrfx_interconnect_ipct_sd2ppi_global.h"
 
 #if defined(NRF_RADIOCORE)
-    #include "nrfx_interconnect_apb_haltium_radiocore.h"
-    #include "nrfx_interconnect_ipct_haltium_radiocore.h"
+    #include "nrfx_interconnect_apb_sd2ppi_radiocore.h"
+    #include "nrfx_interconnect_ipct_sd2ppi_radiocore.h"
 #elif defined(NRF_APPLICATION)
-    #include "nrfx_interconnect_apb_haltium_application.h"
-    #include "nrfx_interconnect_ipct_haltium_application.h"
+    #include "nrfx_interconnect_apb_sd2ppi_application.h"
+    #include "nrfx_interconnect_ipct_sd2ppi_application.h"
 #elif defined(NRF_PPR)
-    #include "nrfx_interconnect_apb_haltium_ppr.h"
-    #include "nrfx_interconnect_ipct_haltium_ppr.h"
+    #include "nrfx_interconnect_apb_sd2ppi_ppr.h"
+    #include "nrfx_interconnect_ipct_sd2ppi_ppr.h"
 #elif defined(NRF_FLPR)
-    #include "nrfx_interconnect_apb_haltium_flpr.h"
-    #include "nrfx_interconnect_ipct_haltium_flpr.h"
+    #include "nrfx_interconnect_apb_sd2ppi_flpr.h"
+    #include "nrfx_interconnect_ipct_sd2ppi_flpr.h"
 #else
-    #include "nrfx_interconnect_apb_haltium_ext.h"
-    #include "nrfx_interconnect_ipct_haltium_ext.h"
+    #include "nrfx_interconnect_apb_sd2ppi_ext.h"
+    #include "nrfx_interconnect_ipct_sd2ppi_ext.h"
 #endif
 
 #endif // NRFX_INTERCONNECT_IPCT_H__

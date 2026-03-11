@@ -66,7 +66,11 @@ POSSIBILITY OF SUCH DAMAGE.
         NRF_REGION_CPU_INTERNAL = 7,
     } nrf_region_t;
 
-    #define GPIOTE_INT_COUNT 7
+    #if defined(NRF9220_XXAA)
+        #define GPIOTE_INT_COUNT 8
+    #else
+        #define GPIOTE_INT_COUNT 7
+    #endif
 
     #define GPIOTE_CH_NUM   8
     #define GPIOTE130_CH_NUM (GPIOTE130_GPIOTE_NCHANNELS_MAX + 1UL)
@@ -81,15 +85,22 @@ POSSIBILITY OF SUCH DAMAGE.
     #define GLOBAL_IRQN_START (96)
     #define GLOBAL_IRQN_MAX   (480)
 
-    #define SPU000_PERIPH_COUNT 16
-    #define SPU010_PERIPH_COUNT 16
-    #define SPU020_PERIPH_COUNT 16
-    #define SPU030_PERIPH_COUNT 16
+    #if defined(NRF9220_XXAA)
+        #define SPU000_PERIPH_COUNT 16
+        #define SPU010_PERIPH_COUNT 16
+    #else
+        #define SPU000_PERIPH_COUNT 16
+        #define SPU010_PERIPH_COUNT 16
+        #define SPU020_PERIPH_COUNT 16
+        #define SPU030_PERIPH_COUNT 16
+    #endif
 
     #define SAADC_CH_NUM 8
     #define SAADC_EASYDMA_MAXCNT_SIZE 15
 
-    #define LPCOMP_REFSEL_RESOLUTION 16
+    #if !defined(NRF9220_XXAA)
+        #define LPCOMP_REFSEL_RESOLUTION 16
+    #endif
 
     #if !defined(DPPI_PRESENT)
         #define DPPI_PRESENT
@@ -109,10 +120,16 @@ POSSIBILITY OF SUCH DAMAGE.
         #define LOCAL_IPCT_NUM 4
     #endif
 
-    #if defined(NRF_PPR) || defined(NRF_FLPR)
-        #define MVDMA_JOBLISTCOUNT 4
+    #if defined(NRF9220_XXAA)
+        #if defined(NRF_APPLICATION)
+            #define MVDMA_JOBLISTCOUNT 1
+        #endif
     #else
-        #define MVDMA_JOBLISTCOUNT 1
+        #if defined(NRF_PPR) || defined(NRF_FLPR)
+            #define MVDMA_JOBLISTCOUNT 4
+        #else
+            #define MVDMA_JOBLISTCOUNT 1
+        #endif
     #endif
 
     #define MVDMA_AXI_BUS_WIDTH 8

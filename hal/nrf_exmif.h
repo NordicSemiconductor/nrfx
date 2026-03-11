@@ -173,8 +173,8 @@ NRF_STATIC_INLINE void nrf_exmif_device_config(NRF_EXMIF_Type *           p_reg,
                                                uint8_t                    device_idx,
                                                nrf_exmif_config_t const * p_device)
 {
-    NRFX_ASSERT(p_device->size <= NRF_EXMIF_MAX_MEMORY_DEVICE_SIZE);
-    NRFX_ASSERT(device_idx < NRF_EXMIF_MAX_NUMBER_OF_DEVICES);
+    NRFX_ASSERT((p_device->size <= NRF_EXMIF_MAX_MEMORY_DEVICE_SIZE) &&
+                (device_idx < NRF_EXMIF_MAX_NUMBER_OF_DEVICES));
     switch (device_idx)
     {
         case 0:

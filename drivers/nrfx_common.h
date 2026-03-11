@@ -91,13 +91,17 @@ extern "C" {
 #define NRFX_RELEASE_VER_MAJOR 4
 
 /** @brief Symbol specifying minor number of the current nrfx version. */
-#define NRFX_RELEASE_VER_MINOR 1
+#define NRFX_RELEASE_VER_MINOR 2
 
 /** @brief Symbol specifying micro number of the current nrfx version. */
 #define NRFX_RELEASE_VER_MICRO 0
 
-/** @brief IRQ handler type. */
-typedef void (* nrfx_irq_handler_t)(void *);
+/**
+ * @brief IRQ handler type.
+ *
+ * @param[in] p_context Context passed to the interrupt handler.
+*/
+typedef void (* nrfx_irq_handler_t)(void * p_context);
 
 /** @brief Driver state. */
 typedef enum

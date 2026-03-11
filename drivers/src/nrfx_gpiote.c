@@ -486,9 +486,9 @@ static void pin_trigger_disable(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pi
 
 static nrf_gpiote_event_t pin_in_event_get(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_is_input(p_instance, pin));
-    NRFX_ASSERT(pin_has_trigger(p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) &&
+                pin_is_input(p_instance, pin) &&
+                pin_has_trigger(p_instance, pin));
 
     if (pin_in_use_by_te(p_instance, pin))
     {
@@ -596,6 +596,11 @@ static int pin_uninit(nrfx_gpiote_t * p_instance, nrfx_gpiote_pin_t pin)
     pin_trigger_disable(p_instance, pin);
     pin_handler_trigger_uninit(p_instance, pin);
     nrfy_gpio_cfg_default(pin);
+
+#if NRF_GPIO_HAS_RETENTION_SETCLEAR
+    NRF_GPIO_Type * p_reg = nrf_gpio_pin_port_decode(&pin);
+    nrf_gpio_port_retain_enable(p_reg, NRFX_BIT(pin));
+#endif
 
     return 0;
 }
@@ -715,6 +720,11 @@ static int gpiote_input_configure(nrfx_gpiote_t *                        p_insta
         err = 0;
     }
 
+#if NRF_GPIO_HAS_RETENTION_SETCLEAR
+    NRF_GPIO_Type * p_reg = nrf_gpio_pin_port_decode(&pin);
+    nrf_gpio_port_retain_disable(p_reg, NRFX_BIT(pin));
+#endif
+
     return err;
 }
 
@@ -769,6 +779,11 @@ static int gpiote_output_configure(nrfx_gpiote_t *                     p_instanc
             p_instance->cb.pin_flags[idx] |= (uint16_t)PIN_FLAG_TE_ID(ch);
         }
     }
+
+#if NRF_GPIO_HAS_RETENTION_SETCLEAR
+    NRF_GPIO_Type * p_reg = nrf_gpio_pin_port_decode(&pin);
+    nrf_gpio_port_retain_disable(p_reg, NRFX_BIT(pin));
+#endif
 
     return 0;
 }
@@ -910,49 +925,73 @@ static int pin_channel_alloc(nrfx_gpiote_t * p_instance)
 
 static void pin_out_set(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_is_output(p_instance, pin) && !pin_in_use_by_te(p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) &&
+                pin_is_output(p_instance, pin) &&
+                !pin_in_use_by_te(p_instance, pin));
 
+#if NRF_GPIO_HAS_RETENTION_SETCLEAR
+    nrfx_gpiote_pin_t p = pin;
+    NRF_GPIO_Type * p_reg = nrf_gpio_pin_port_decode(&p);
+    nrf_gpio_port_retain_disable(p_reg, NRFX_BIT(p));
+#endif
     nrfy_gpio_pin_set(pin);
+#if NRF_GPIO_HAS_RETENTION_SETCLEAR
+    nrf_gpio_port_retain_enable(p_reg, NRFX_BIT(p));
+#endif
 }
 
 static void pin_out_clear(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_is_output(p_instance, pin) && !pin_in_use_by_te(p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) &&
+                pin_is_output(p_instance, pin) &&
+                !pin_in_use_by_te(p_instance, pin));
 
+#if NRF_GPIO_HAS_RETENTION_SETCLEAR
+    nrfx_gpiote_pin_t p = pin;
+    NRF_GPIO_Type * p_reg = nrf_gpio_pin_port_decode(&p);
+    nrf_gpio_port_retain_disable(p_reg, NRFX_BIT(p));
+#endif
     nrfy_gpio_pin_clear(pin);
+#if NRF_GPIO_HAS_RETENTION_SETCLEAR
+    nrf_gpio_port_retain_enable(p_reg, NRFX_BIT(p));
+#endif
 }
 
 static void pin_out_toggle(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_is_output(p_instance, pin) && !pin_in_use_by_te(p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) &&
+                pin_is_output(p_instance, pin) &&
+                !pin_in_use_by_te(p_instance, pin));
 
+#if NRF_GPIO_HAS_RETENTION_SETCLEAR
+    nrfx_gpiote_pin_t p = pin;
+    NRF_GPIO_Type * p_reg = nrf_gpio_pin_port_decode(&p);
+    nrf_gpio_port_retain_disable(p_reg, NRFX_BIT(p));
+#endif
     nrfy_gpio_pin_toggle(pin);
+#if NRF_GPIO_HAS_RETENTION_SETCLEAR
+    nrf_gpio_port_retain_enable(p_reg, NRFX_BIT(p));
+#endif
 }
 
 static void pin_out_task_enable(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin)
 {
     (void)pin_is_task_output; /* Add to avoid compiler warnings when asserts disabled.*/
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_is_task_output(p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) && pin_is_task_output(p_instance, pin));
 
     nrfy_gpiote_task_enable(p_instance->p_reg, (uint32_t)pin_te_get(p_instance, pin));
 }
 
 static void pin_out_task_disable(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_is_task_output(p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) && pin_is_task_output(p_instance, pin));
 
     nrfy_gpiote_task_disable(p_instance->p_reg, (uint32_t)pin_te_get(p_instance, pin));
 }
 
 static nrf_gpiote_task_t pin_out_task_get(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_is_task_output(p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) && pin_is_task_output(p_instance, pin));
 
     return nrfy_gpiote_out_task_get((uint8_t)pin_te_get(p_instance, pin));
 }
@@ -966,8 +1005,7 @@ static uint32_t pin_out_task_address_get(nrfx_gpiote_t const * p_instance, nrfx_
 #if defined(GPIOTE_FEATURE_SET_PRESENT)
 static nrf_gpiote_task_t pin_set_task_get(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_is_task_output(p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) && pin_is_task_output(p_instance, pin));
 
     return nrfy_gpiote_set_task_get((uint8_t)pin_te_get(p_instance, pin));
 }
@@ -982,8 +1020,7 @@ static uint32_t pin_set_task_address_get(nrfx_gpiote_t const * p_instance, nrfx_
 #if defined(GPIOTE_FEATURE_CLR_PRESENT)
 static nrf_gpiote_task_t pin_clr_task_get(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_is_task_output(p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) && pin_is_task_output(p_instance, pin));
 
     return nrfy_gpiote_clr_task_get((uint8_t)pin_te_get(p_instance, pin));
 }
@@ -993,8 +1030,7 @@ static void pin_out_task_force(nrfx_gpiote_t const * p_instance,
                                nrfx_gpiote_pin_t     pin,
                                uint8_t               state)
 {
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_is_task_output(p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) && pin_is_task_output(p_instance, pin));
 
     nrf_gpiote_outinit_t init_val =
         state ? NRF_GPIOTE_INITIAL_VALUE_HIGH : NRF_GPIOTE_INITIAL_VALUE_LOW;
@@ -1003,8 +1039,8 @@ static void pin_out_task_force(nrfx_gpiote_t const * p_instance,
 
 static void pin_out_task_trigger(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_is_task_output((nrfx_gpiote_t const *)p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) &&
+                pin_is_task_output((nrfx_gpiote_t const *)p_instance, pin));
 
     nrf_gpiote_task_t task = nrfy_gpiote_out_task_get((uint8_t)pin_te_get(p_instance, pin));
     nrfy_gpiote_task_trigger(p_instance->p_reg, task);
@@ -1013,9 +1049,9 @@ static void pin_out_task_trigger(nrfx_gpiote_t const * p_instance, nrfx_gpiote_p
 #if defined(GPIOTE_FEATURE_SET_PRESENT)
 static void pin_set_task_trigger(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_in_use(p_instance, pin));
-    NRFX_ASSERT(pin_in_use_by_te(p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) &&
+                pin_in_use(p_instance, pin) &&
+                pin_in_use_by_te(p_instance, pin));
 
     nrf_gpiote_task_t task = nrfy_gpiote_set_task_get((uint8_t)pin_te_get(p_instance, pin));
     nrfy_gpiote_task_trigger(p_instance->p_reg, task);
@@ -1025,9 +1061,9 @@ static void pin_set_task_trigger(nrfx_gpiote_t const * p_instance, nrfx_gpiote_p
 #if  defined(GPIOTE_FEATURE_CLR_PRESENT)
 static void pin_clr_task_trigger(nrfx_gpiote_t const * p_instance, nrfx_gpiote_pin_t pin)
 {
-    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin));
-    NRFX_ASSERT(pin_in_use(p_instance, pin));
-    NRFX_ASSERT(pin_in_use_by_te(p_instance, pin));
+    NRFX_ASSERT(nrfy_gpio_pin_present_check(pin) &&
+                pin_in_use(p_instance, pin) &&
+                pin_in_use_by_te(p_instance, pin));
 
     nrf_gpiote_task_t task = nrfy_gpiote_clr_task_get((uint8_t)pin_te_get(p_instance, pin));
     nrfy_gpiote_task_trigger(p_instance->p_reg, task);

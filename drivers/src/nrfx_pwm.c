@@ -219,8 +219,7 @@ int nrfx_pwm_init(nrfx_pwm_t *              p_instance,
 
 int nrfx_pwm_reconfigure(nrfx_pwm_t const * p_instance, nrfx_pwm_config_t const * p_config)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
 
     nrfx_pwm_control_block_t const * p_cb = &p_instance->cb;
 
@@ -240,10 +239,9 @@ int nrfx_pwm_reconfigure(nrfx_pwm_t const * p_instance, nrfx_pwm_config_t const 
 
 void nrfx_pwm_uninit(nrfx_pwm_t * p_instance)
 {
-    NRFX_ASSERT(p_instance);
-    nrfx_pwm_control_block_t * p_cb = &p_instance->cb;
+    NRFX_ASSERT(p_instance && (p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED));
 
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+    nrfx_pwm_control_block_t * p_cb = &p_instance->cb;
 
     nrfy_pwm_int_uninit(p_instance->p_reg);
 #if NRF_ERRATA_STATIC_CHECK(52, 109)
@@ -353,12 +351,11 @@ uint32_t nrfx_pwm_simple_playback(nrfx_pwm_t *               p_instance,
                                   uint16_t                   playback_count,
                                   uint32_t                   flags)
 {
-    NRFX_ASSERT(p_instance);
-    nrfx_pwm_control_block_t * p_cb = &p_instance->cb;
+    NRFX_ASSERT(p_instance && (p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED) &&
+                (playback_count > 0) &&
+                nrf_dma_accessible_check(p_instance->p_reg, p_sequence->values.p_raw));
 
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(playback_count > 0);
-    NRFX_ASSERT(nrf_dma_accessible_check(p_instance->p_reg, p_sequence->values.p_raw));
+    nrfx_pwm_control_block_t * p_cb = &p_instance->cb;
 
     // To take advantage of the looping mechanism, we need to use both sequences
     // (single sequence can be played back only once).
@@ -399,13 +396,12 @@ uint32_t nrfx_pwm_complex_playback(nrfx_pwm_t *               p_instance,
                                    uint16_t                   playback_count,
                                    uint32_t                   flags)
 {
-    NRFX_ASSERT(p_instance);
-    nrfx_pwm_control_block_t * p_cb = &p_instance->cb;
-
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(playback_count > 0);
-    NRFX_ASSERT(nrf_dma_accessible_check(p_instance->p_reg, p_sequence_0->values.p_raw) &&
+    NRFX_ASSERT(p_instance && (p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED) &&
+                (playback_count > 0) &&
+                nrf_dma_accessible_check(p_instance->p_reg, p_sequence_0->values.p_raw) &&
                 nrf_dma_accessible_check(p_instance->p_reg, p_sequence_1->values.p_raw));
+
+    nrfx_pwm_control_block_t * p_cb = &p_instance->cb;
 
     nrfy_pwm_sequence_set(p_instance->p_reg, 0, p_sequence_0);
     nrfy_pwm_sequence_set(p_instance->p_reg, 1, p_sequence_1);
@@ -443,10 +439,9 @@ uint32_t nrfx_pwm_complex_playback(nrfx_pwm_t *               p_instance,
 
 bool nrfx_pwm_stop(nrfx_pwm_t * p_instance, bool wait_until_stopped)
 {
-    NRFX_ASSERT(p_instance);
-    nrfx_pwm_control_block_t * p_cb = &p_instance->cb;
+    NRFX_ASSERT(p_instance && (p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED));
 
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
+    nrfx_pwm_control_block_t * p_cb = &p_instance->cb;
 
     bool ret_val = false;
 
@@ -476,8 +471,7 @@ bool nrfx_pwm_stop(nrfx_pwm_t * p_instance, bool wait_until_stopped)
 
 bool nrfx_pwm_stopped_check(nrfx_pwm_t * p_instance)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    NRFX_ASSERT(p_instance && (p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED));
 
     bool ret_val = pwm_stopped_check(p_instance);
 

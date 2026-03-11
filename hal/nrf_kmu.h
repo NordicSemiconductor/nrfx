@@ -82,6 +82,13 @@ extern "C" {
 #define NRF_KMU_HAS_PUSH_BLOCK 0
 #endif
 
+#if defined(KMU_TASKS_BLOCK_TASKS_BLOCK_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether KMU has BLOCK registers. */
+#define NRF_KMU_HAS_BLOCK 1
+#else
+#define NRF_KMU_HAS_BLOCK 0
+#endif
+
 #if defined(KMU_SRC_SRC_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether KMU has SRC registers. */
 #define NRF_KMU_HAS_SRC 1
@@ -94,6 +101,20 @@ extern "C" {
 #define NRF_KMU_HAS_METADATA 1
 #else
 #define NRF_KMU_HAS_METADATA 0
+#endif
+
+#if defined(KMU_METADATAEXT_METADATAEXT_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether KMU has METADATAEXT registers. */
+#define NRF_KMU_HAS_METADATAEXT 1
+#else
+#define NRF_KMU_HAS_METADATAEXT 0
+#endif
+
+#if defined(KMU_TASKS_REVOKE_POLICY_Locked) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether revoke policy option is available. */
+#define NRF_KMU_HAS_REVOKE_POLICY 1
+#else
+#define NRF_KMU_HAS_REVOKE_POLICY 0
 #endif
 
 /** @brief KMU tasks. */
@@ -115,6 +136,9 @@ typedef enum
 #endif
 #if NRF_KMU_HAS_PUSH_BLOCK
     NRF_KMU_TASK_PUSH_BLOCK        = offsetof(NRF_KMU_Type, TASKS_PUSHBLOCK),    ///< Block the PUSH operation of key slot, preventing the key slot being PUSH until next reset.
+#endif
+#if NRF_KMU_HAS_BLOCK
+    NRF_KMU_TASK_BLOCK             = offsetof(NRF_KMU_Type, TASKS_BLOCK),        ///< Block the PUSH, PROVISION and REVOKE operations of key slot until next reset.
 #endif
 } nrf_kmu_task_t;
 
@@ -149,6 +173,10 @@ typedef enum
 
 #if NRF_KMU_HAS_PUSH_BLOCK
     NRF_KMU_EVENT_EVENTS_EVENTS_PUSHBLOCKED   = offsetof(NRF_KMU_Type, EVENTS_PUSHBLOCKED),     ///< The PUSHBLOCK operation was succesful.
+#endif
+
+#if NRF_KMU_HAS_BLOCK
+    NRF_KMU_EVENT_EVENTS_EVENTS_BLOCKED       = offsetof(NRF_KMU_Type, EVENTS_BLOCKED),         ///< The BLOCK operation was succesful.
 #endif
 } nrf_kmu_event_t;
 
@@ -288,7 +316,7 @@ NRF_STATIC_INLINE uint32_t nrf_kmu_status_get(NRF_KMU_Type const * p_reg);
  * @param[in] keyslot_id Key slot ID to be read over AHB or pushed over
  *                       secure APB when TASKS_PUSH_KEYSLOT is started.
  */
-NRF_STATIC_INLINE void nrf_kmu_keyslot_set(NRF_KMU_Type * p_reg, uint8_t keyslot_id);
+NRF_STATIC_INLINE void nrf_kmu_keyslot_set(NRF_KMU_Type * p_reg, uint32_t keyslot_id);
 
 /**
  * @brief Function for getting the key slot ID.
@@ -320,15 +348,10 @@ NRF_STATIC_INLINE uint32_t nrf_kmu_src_get(NRF_KMU_Type const * p_reg);
 
 #if NRF_KMU_HAS_METADATA
 /**
- * @brief Function for setting the key slot metadata.
- *
- * @param[in] p_reg   Pointer to the structure of registers of the peripheral.
- * @param[in] metdata Key slot metadata.
- */
-NRF_STATIC_INLINE void nrf_kmu_metadata_set(NRF_KMU_Type * p_reg, uint32_t metdata);
-
-/**
  * @brief Function for getting the key slot metadata.
+ *
+ * @note The register value will only be valid after triggering @ref NRF_KMU_TASK_READ_METADATA task
+ *       for selected key slot and receiving @ref NRF_KMU_EVENT_EVENTS_EVENTS_METADATA_READ event.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  *
@@ -336,6 +359,20 @@ NRF_STATIC_INLINE void nrf_kmu_metadata_set(NRF_KMU_Type * p_reg, uint32_t metda
  */
 NRF_STATIC_INLINE uint32_t nrf_kmu_metadata_get(NRF_KMU_Type const * p_reg);
 #endif // NRF_KMU_HAS_METADATA
+
+#if NRF_KMU_HAS_METADATAEXT
+/**
+ * @brief Function for getting the extended metadata of a key slot.
+ *
+ * @note The register value will only be valid after triggering @ref NRF_KMU_TASK_READ_METADATA task
+ *       for selected key slot and receiving @ref NRF_KMU_EVENT_EVENTS_EVENTS_METADATA_READ event.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Key slot metadata.
+ */
+NRF_STATIC_INLINE uint32_t nrf_kmu_metadataext_get(NRF_KMU_Type const * p_reg);
+#endif // NRF_KMU_HAS_METADATAEXT
 
 #ifndef NRF_DECLARE_ONLY
 
@@ -394,8 +431,9 @@ NRF_STATIC_INLINE uint32_t nrf_kmu_status_get(NRF_KMU_Type const * p_reg)
     return p_reg->STATUS;
 }
 
-NRF_STATIC_INLINE void nrf_kmu_keyslot_set(NRF_KMU_Type * p_reg, uint8_t keyslot_id)
+NRF_STATIC_INLINE void nrf_kmu_keyslot_set(NRF_KMU_Type * p_reg, uint32_t keyslot_id)
 {
+    NRFX_ASSERT(keyslot_id < KMU_KEYSLOTNUM);
 #if defined(KMU_SELECTKEYSLOT_ID_Msk)
     p_reg->SELECTKEYSLOT = (uint32_t)keyslot_id;
 #elif defined(KMU_KEYSLOT_ID_Msk)
@@ -429,16 +467,18 @@ NRF_STATIC_INLINE uint32_t nrf_kmu_src_get(NRF_KMU_Type const * p_reg)
 #endif // NRF_KMU_HAS_SRC
 
 #if NRF_KMU_HAS_METADATA
-NRF_STATIC_INLINE void nrf_kmu_metadata_set(NRF_KMU_Type * p_reg, uint32_t metdata)
-{
-    p_reg->METADATA = metdata;
-}
-
 NRF_STATIC_INLINE uint32_t nrf_kmu_metadata_get(NRF_KMU_Type const * p_reg)
 {
     return p_reg->METADATA;
 }
 #endif // NRF_KMU_HAS_METADATA
+
+#if NRF_KMU_HAS_METADATAEXT
+NRF_STATIC_INLINE uint32_t nrf_kmu_metadataext_get(NRF_KMU_Type const * p_reg)
+{
+    return p_reg->METADATAEXT;
+}
+#endif // NRF_KMU_HAS_METADATAEXT
 
 #endif // NRF_DECLARE_ONLY
 

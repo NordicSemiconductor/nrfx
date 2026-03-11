@@ -1206,8 +1206,7 @@ NRF_STATIC_INLINE uint16_t nrf_usbd_setup_wlength_get(NRF_USBD_Type const * p_re
 
 NRF_STATIC_INLINE size_t nrf_usbd_epout_size_get(NRF_USBD_Type const * p_reg, uint8_t ep)
 {
-    NRFX_ASSERT(NRF_USBD_EP_VALIDATE(ep));
-    NRFX_ASSERT(NRF_USBD_EPOUT_CHECK(ep));
+    NRFX_ASSERT(NRF_USBD_EP_VALIDATE(ep) && NRF_USBD_EPOUT_CHECK(ep));
     if (NRF_USBD_EPISO_CHECK(ep))
     {
         size_t size_isoout = p_reg->SIZE.ISOOUT;
@@ -1225,9 +1224,7 @@ NRF_STATIC_INLINE size_t nrf_usbd_epout_size_get(NRF_USBD_Type const * p_reg, ui
 NRF_STATIC_INLINE size_t nrf_usbd_episoout_size_get(NRF_USBD_Type const * p_reg, uint8_t ep)
 {
     (void) ep;
-    NRFX_ASSERT(NRF_USBD_EP_VALIDATE(ep));
-    NRFX_ASSERT(NRF_USBD_EPOUT_CHECK(ep));
-    NRFX_ASSERT(NRF_USBD_EPISO_CHECK(ep));
+    NRFX_ASSERT(NRF_USBD_EP_VALIDATE(ep) && NRF_USBD_EPOUT_CHECK(ep) && NRF_USBD_EPISO_CHECK(ep));
 
     size_t size_isoout = p_reg->SIZE.ISOOUT;
     if (size_isoout == 0)
@@ -1275,8 +1272,7 @@ NRF_STATIC_INLINE void nrf_usbd_dtoggle_set(NRF_USBD_Type *    p_reg,
                                             uint8_t            ep,
                                             nrf_usbd_dtoggle_t op)
 {
-    NRFX_ASSERT(NRF_USBD_EP_VALIDATE(ep));
-    NRFX_ASSERT(!NRF_USBD_EPISO_CHECK(ep));
+    NRFX_ASSERT(NRF_USBD_EP_VALIDATE(ep) && !NRF_USBD_EPISO_CHECK(ep));
     p_reg->DTOGGLE = ep | (NRF_USBD_DTOGGLE_NOP << USBD_DTOGGLE_VALUE_Pos);
     p_reg->DTOGGLE = ep | ((uint32_t)op << USBD_DTOGGLE_VALUE_Pos);
     (void) p_reg->DTOGGLE;

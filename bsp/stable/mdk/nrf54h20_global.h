@@ -102,12 +102,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_TBM_S_BASE                    0xBF003000UL
 #define NRF_USBHS_NS_BASE                 0x4F086000UL
 #define NRF_USBHS_S_BASE                  0x5F086000UL
+#define NRF_MRAMC110_NS_BASE              0x4F092000UL
+#define NRF_MRAMC110_S_BASE               0x5F092000UL
+#define NRF_MRAMC111_NS_BASE              0x4F093000UL
+#define NRF_MRAMC111_S_BASE               0x5F093000UL
 #define NRF_EXMIF_NS_BASE                 0x4F095000UL
 #define NRF_EXMIF_S_BASE                  0x5F095000UL
 #define NRF_SECDOMBELLBOARD_NS_BASE       0x4F099000UL
 #define NRF_SECDOMBELLBOARD_S_BASE        0x5F099000UL
 #define NRF_CANPLL_NS_BASE                0x4F8C2000UL
 #define NRF_CANPLL_S_BASE                 0x5F8C2000UL
+#define NRF_OTPC_S_BASE                   0x5F8C5000UL
 #define NRF_VPR120_NS_BASE                0x4F8C8000UL
 #define NRF_VPR120_S_BASE                 0x5F8C8000UL
 #define NRF_IPCT120_NS_BASE               0x4F8D1000UL
@@ -338,12 +343,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_TBM_S                         ((NRF_TBM_Type*)                      NRF_TBM_S_BASE)
 #define NRF_USBHS_NS                      ((NRF_USBHS_Type*)                    NRF_USBHS_NS_BASE)
 #define NRF_USBHS_S                       ((NRF_USBHS_Type*)                    NRF_USBHS_S_BASE)
+#define NRF_MRAMC110_NS                   ((NRF_MRAMC_Type*)                    NRF_MRAMC110_NS_BASE)
+#define NRF_MRAMC110_S                    ((NRF_MRAMC_Type*)                    NRF_MRAMC110_S_BASE)
+#define NRF_MRAMC111_NS                   ((NRF_MRAMC_Type*)                    NRF_MRAMC111_NS_BASE)
+#define NRF_MRAMC111_S                    ((NRF_MRAMC_Type*)                    NRF_MRAMC111_S_BASE)
 #define NRF_EXMIF_NS                      ((NRF_EXMIF_Type*)                    NRF_EXMIF_NS_BASE)
 #define NRF_EXMIF_S                       ((NRF_EXMIF_Type*)                    NRF_EXMIF_S_BASE)
 #define NRF_SECDOMBELLBOARD_NS            ((NRF_BELLBOARDPUBLIC_Type*)          NRF_SECDOMBELLBOARD_NS_BASE)
 #define NRF_SECDOMBELLBOARD_S             ((NRF_BELLBOARDPUBLIC_Type*)          NRF_SECDOMBELLBOARD_S_BASE)
 #define NRF_CANPLL_NS                     ((NRF_AUXPLL_Type*)                   NRF_CANPLL_NS_BASE)
 #define NRF_CANPLL_S                      ((NRF_AUXPLL_Type*)                   NRF_CANPLL_S_BASE)
+#define NRF_OTPC_S                        ((NRF_OTPC_Type*)                     NRF_OTPC_S_BASE)
 #define NRF_VPR120_NS                     ((NRF_VPRPUBLIC_Type*)                NRF_VPR120_NS_BASE)
 #define NRF_VPR120_S                      ((NRF_VPRPUBLIC_Type*)                NRF_VPR120_S_BASE)
 #define NRF_IPCT120_NS                    ((NRF_IPCT_Type*)                     NRF_IPCT120_NS_BASE)
@@ -568,6 +578,8 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_GRTC                                NRF_GRTC_NS
   #define NRF_TBM                                 NRF_TBM_NS
   #define NRF_USBHS                               NRF_USBHS_NS
+  #define NRF_MRAMC110                            NRF_MRAMC110_NS
+  #define NRF_MRAMC111                            NRF_MRAMC111_NS
   #define NRF_EXMIF                               NRF_EXMIF_NS
   #define NRF_SECDOMBELLBOARD                     NRF_SECDOMBELLBOARD_NS
   #define NRF_CANPLL                              NRF_CANPLL_NS
@@ -694,9 +706,12 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_GRTC                                NRF_GRTC_S
   #define NRF_TBM                                 NRF_TBM_S
   #define NRF_USBHS                               NRF_USBHS_S
+  #define NRF_MRAMC110                            NRF_MRAMC110_S
+  #define NRF_MRAMC111                            NRF_MRAMC111_S
   #define NRF_EXMIF                               NRF_EXMIF_S
   #define NRF_SECDOMBELLBOARD                     NRF_SECDOMBELLBOARD_S
   #define NRF_CANPLL                              NRF_CANPLL_S
+  #define NRF_OTPC                                NRF_OTPC_S
   #define NRF_VPR120                              NRF_VPR120_S
   #define NRF_IPCT120                             NRF_IPCT120_S
   #define NRF_MUTEX120                            NRF_MUTEX120_NS

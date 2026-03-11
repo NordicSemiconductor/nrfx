@@ -181,8 +181,8 @@ __isr_vector:
     .long   EGU00_IRQHandler
     .long   CRACEN_IRQHandler
     .long   USBHS_IRQHandler
-    .long   QSPI00_IRQHandler
-    .long   QSPI01_IRQHandler
+    .long   MSPI00_IRQHandler
+    .long   MSPI01_IRQHandler
     .long   SERIAL01_IRQHandler
     .long   0                           /*Reserved */
     .long   0                           /*Reserved */
@@ -631,8 +631,8 @@ Default_Handler:
     IRQ  EGU00_IRQHandler
     IRQ  CRACEN_IRQHandler
     IRQ  USBHS_IRQHandler
-    IRQ  QSPI00_IRQHandler
-    IRQ  QSPI01_IRQHandler
+    IRQ  MSPI00_IRQHandler
+    IRQ  MSPI01_IRQHandler
     IRQ  SERIAL01_IRQHandler
     IRQ  BELLBOARD_0_IRQHandler
     IRQ  BELLBOARD_1_IRQHandler

@@ -196,7 +196,7 @@ static void uarte_configure(nrfx_uarte_t *              p_instance,
     };
     nrfy_config.config = p_config->config;
 
-#if defined(LUMOS_XXAA)
+#if defined(UARTE_NEEDS_BAUDRATE_FACTOR)
     uint32_t base_frequency = NRF_UARTE_BASE_FREQUENCY_GET(p_instance->p_reg);
     if (base_frequency != NRF_UARTE_BASE_FREQUENCY_16MHZ)
     {
@@ -394,8 +394,7 @@ int nrfx_uarte_init(nrfx_uarte_t *              p_instance,
                     nrfx_uarte_config_t const * p_config,
                     nrfx_uarte_event_handler_t  event_handler)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
     nrfx_uarte_control_block_t * p_cb = &p_instance->cb;
     int err_code;
 
@@ -504,8 +503,7 @@ int nrfx_uarte_init(nrfx_uarte_t *              p_instance,
 int nrfx_uarte_reconfigure(nrfx_uarte_t *              p_instance,
                            nrfx_uarte_config_t const * p_config)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
 
     nrfx_uarte_control_block_t * p_cb = &p_instance->cb;
 
@@ -828,9 +826,7 @@ int nrfx_uarte_tx(nrfx_uarte_t *  p_instance,
     nrfx_uarte_control_block_t * p_cb = &p_instance->cb;
     NRF_UARTE_Type * p_uarte = p_instance->p_reg;
 
-    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(p_data);
-    NRFX_ASSERT(length > 0);
+    NRFX_ASSERT((p_cb->state == NRFX_DRV_STATE_INITIALIZED) && (length > 0) && p_data);
 
     int err_code = 0;
     bool use_cache;
@@ -1397,9 +1393,7 @@ int nrfx_uarte_rx_buffer_set(nrfx_uarte_t * p_instance,
 
     nrfx_uarte_control_block_t * p_cb = &p_instance->cb;
 
-    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(p_data);
-    NRFX_ASSERT(length > 0);
+    NRFX_ASSERT((p_cb->state == NRFX_DRV_STATE_INITIALIZED) && (length > 0) && p_data);
 
     NRF_UARTE_Type * p_uarte = p_instance->p_reg;
     bool cont = false;
@@ -1592,8 +1586,7 @@ static int rx_abort(nrfx_uarte_t * p_instance,
 
 int nrfx_uarte_rx_abort(nrfx_uarte_t * p_instance, bool disable_all, bool sync)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_instance->cb.state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(p_instance && (p_instance->cb.state == NRFX_DRV_STATE_INITIALIZED));
 
     return rx_abort(p_instance, disable_all, sync);
 }

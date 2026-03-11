@@ -1,6 +1,34 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [4.2.0] - 2026-03-12
+
+### Added
+- Added support for nRF54LC10A and nRF54LS05A SoCs.
+- Added driver for the KMU peripheral.
+- Added driver for the TDM peripheral.
+- Added HAL for the VREGUSB peripheral.
+- Added functions for buffered unshifted parts control in the VPR CSR VIO HAL.
+- Added functions for privileged mapping control in the SPU HAL.
+- Added support for PRIVILEGED perimission mask in the MPC HAL.
+- Added support for ORS feature mask in the TDM HAL.
+- Added support for nRF54H Series anomaly 236 in the SAADC driver.
+- Added support for nRF54L Series anomaly 69 in the SPIM driver.
+
+### Changed
+- Updated MDK to version 8.75.1.
+- Reworked GRTC driver to allow preventing execution of SYSCOUNTER stop and clear operations during deinitialization.
+- Reworked nrfx_gppi helper layer to support batch write operations.
+- Renamed `nrfx_gppi_lumos.h` header file to `nrfx_gppi_d2ppi.h`.
+
+### Fixed
+- Fixed incorrect order of status reading during writing 32-bit words in the MRAMC driver.
+- Fixed handling of nRF53 Series anomaly 135 in the SPIM driver.
+
+### Removed
+- Removed nrf_kmu_metadata_set() function. Use key slot operations instead.
+- Removed inclusion of `nrfx_irqs.h` header from `nrfx_bsp.h` header. Now, it must be included explicitly in `nrfx_config.h` header file, if used.
+
 ## [4.1.0] - 2026-01-23
 
 ### Added

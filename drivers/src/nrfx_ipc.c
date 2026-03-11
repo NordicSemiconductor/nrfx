@@ -68,8 +68,7 @@ int nrfx_ipc_init(uint8_t irq_priority, nrfx_ipc_handler_t handler, void * p_con
 
 void nrfx_ipc_config_load(const nrfx_ipc_config_t * p_config)
 {
-    NRFX_ASSERT(p_config);
-    NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(p_config && (m_cb.state == NRFX_DRV_STATE_INITIALIZED));
 
     uint8_t i;
     for (i = 0; i < IPC_CONF_NUM; ++i)
@@ -148,8 +147,7 @@ void nrfx_ipc_receive_event_group_disable(uint32_t event_bitmask)
 
 void nrfx_ipc_receive_event_channel_assign(uint8_t event_index, uint8_t channel_index)
 {
-    NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(channel_index < IPC_CH_NUM);
+    NRFX_ASSERT((m_cb.state == NRFX_DRV_STATE_INITIALIZED) && (channel_index < IPC_CH_NUM));
 
     uint32_t channel_bitmask = (1UL << channel_index);
     channel_bitmask |= nrf_ipc_receive_config_get(NRF_IPC, event_index);
@@ -160,8 +158,7 @@ void nrfx_ipc_receive_event_channel_assign(uint8_t event_index, uint8_t channel_
 
 void nrfx_ipc_send_task_channel_assign(uint8_t send_index, uint8_t channel_index)
 {
-    NRFX_ASSERT(m_cb.state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(channel_index < IPC_CH_NUM);
+    NRFX_ASSERT((m_cb.state == NRFX_DRV_STATE_INITIALIZED) && (channel_index < IPC_CH_NUM));
 
     uint32_t channel_bitmask = (1UL << channel_index);
     channel_bitmask |= nrf_ipc_send_config_get(NRF_IPC, send_index);

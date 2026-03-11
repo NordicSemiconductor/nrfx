@@ -230,8 +230,8 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
-                DCD     0                         ; Reserved
-                DCD     0                         ; Reserved
+                DCD     MRAMC110_IRQHandler
+                DCD     MRAMC111_IRQHandler
                 DCD     0                         ; Reserved
                 DCD     EXMIF_IRQHandler
                 DCD     0                         ; Reserved
@@ -281,7 +281,7 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
-                DCD     0                         ; Reserved
+                DCD     OTPC_IRQHandler
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
@@ -667,7 +667,10 @@ Default_Handler PROC
                 EXPORT   GRTC_2_IRQHandler [WEAK]
                 EXPORT   TBM_IRQHandler [WEAK]
                 EXPORT   USBHS_IRQHandler [WEAK]
+                EXPORT   MRAMC110_IRQHandler [WEAK]
+                EXPORT   MRAMC111_IRQHandler [WEAK]
                 EXPORT   EXMIF_IRQHandler [WEAK]
+                EXPORT   OTPC_IRQHandler [WEAK]
                 EXPORT   IPCT120_0_IRQHandler [WEAK]
                 EXPORT   VPR121_IRQHandler [WEAK]
                 EXPORT   CAN120_IRQHandler [WEAK]
@@ -744,7 +747,10 @@ GRTC_1_IRQHandler
 GRTC_2_IRQHandler
 TBM_IRQHandler
 USBHS_IRQHandler
+MRAMC110_IRQHandler
+MRAMC111_IRQHandler
 EXMIF_IRQHandler
+OTPC_IRQHandler
 IPCT120_0_IRQHandler
 VPR121_IRQHandler
 CAN120_IRQHandler

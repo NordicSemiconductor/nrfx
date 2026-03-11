@@ -106,7 +106,7 @@ static inline void nrfx_twis_config_pin(uint32_t pin, nrf_gpio_pin_pull_t pull)
 {
     nrf_gpio_cfg(pin,
                  NRF_GPIO_PIN_DIR_INPUT,
-                 NRF_GPIO_PIN_INPUT_DISCONNECT,
+                 NRF_GPIO_PIN_INPUT_CONNECT,
                  pull,
                  NRF_GPIO_PIN_S0D1,
                  NRF_GPIO_PIN_NOSENSE);
@@ -458,8 +458,7 @@ int nrfx_twis_init(nrfx_twis_t *              p_instance,
                    nrfx_twis_config_t const * p_config,
                    nrfx_twis_event_handler_t  event_handler)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
     int err_code;
 
     NRF_TWIS_Type *             p_reg = p_instance->p_reg;
@@ -529,8 +528,7 @@ int nrfx_twis_init(nrfx_twis_t *              p_instance,
 int nrfx_twis_reconfigure(nrfx_twis_t *              p_instance,
                           nrfx_twis_config_t const * p_config)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
     nrfx_twis_control_block_t * p_cb  = &p_instance->cb;
 
     if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
@@ -722,8 +720,7 @@ int nrfx_twis_tx_prepare(nrfx_twis_t * p_instance,
                          void const *  p_buf,
                          size_t        size)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_buf);
+    NRFX_ASSERT(p_instance && p_buf);
 
     int err_code;
     nrfx_twis_control_block_t * p_cb = &p_instance->cb;
@@ -770,8 +767,7 @@ int nrfx_twis_rx_prepare(nrfx_twis_t * p_instance,
                          void *        p_buf,
                          size_t        size)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_buf);
+    NRFX_ASSERT(p_instance && p_buf);
 
     int err_code;
     nrfx_twis_control_block_t * p_cb = &p_instance->cb;

@@ -172,8 +172,7 @@ void nrfx_lpcomp_irq_handler(void)
 int nrfx_lpcomp_init(nrfx_lpcomp_config_t const * p_config,
                      nrfx_lpcomp_event_handler_t  event_handler)
 {
-    NRFX_ASSERT(p_config);
-    NRFX_ASSERT(event_handler);
+    NRFX_ASSERT(p_config && event_handler);
     int err_code;
 
     if (m_state != NRFX_DRV_STATE_UNINITIALIZED)

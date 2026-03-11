@@ -120,7 +120,7 @@ void SystemInit(void)
                 /* Workaround for Errata 37 */
                 if (nrf54l_errata_37())
                 {
-                    *((volatile uint32_t *)0x5005340C) = 1ul;
+                    *((volatile uint32_t *)(((uint32_t)NRF_TAD) + 0x40C)) = 1ul;
                 }
             #endif
 
@@ -142,7 +142,7 @@ void SystemInit(void)
                 until one ADDR is not initialized. */
                 uint32_t index = 0ul;
 
-                #if defined (NRF54LS05B_XXAA)
+                #if defined (NRF54LS05A_XXAA) || defined (NRF54LS05B_XXAA)
 
                     for (index = 0ul; index < FICR_TRIMCNF_MaxCount && NRF_FICR->TRIMCNF[index].ADDR != 0xFFFFFFFFul && NRF_FICR->TRIMCNF[index].ADDR != 0x00000000ul; index++) {
                     #if defined ( __ICCARM__ )
@@ -160,7 +160,7 @@ void SystemInit(void)
                     #endif
                     * ((volatile uint32_t*)NRF_FICR_NS->TRIMCNF[index].ADDR) = NRF_FICR_NS->TRIMCNF[index].DATA;
 
-                #endif  //NRF54LS05B_XXAA
+                #endif  //NRF54LS05A_XXAA || NRF54LS05B_XXAA
 
                 #if defined ( __ICCARM__ )
                     #pragma diag_default=Pa082
@@ -210,7 +210,8 @@ void SystemInit(void)
 
             #ifndef NRF_DISABLE_RRAM_POWER_OFF
                 /* Allow RRAMC to go into poweroff mode during System on idle for lower power consumption at a penalty of 9us extra RRAM ready time */
-                NRF_RRAMC->POWER.LOWPOWERCONFIG = (RRAMC_POWER_LOWPOWERCONFIG_MODE_PowerOff << RRAMC_POWER_LOWPOWERCONFIG_MODE_Pos);
+                NRF_RRAMC->POWER.LOWPOWERCONFIG &= ~RRAMC_POWER_LOWPOWERCONFIG_MODE_Msk;
+                NRF_RRAMC->POWER.LOWPOWERCONFIG |= (RRAMC_POWER_LOWPOWERCONFIG_MODE_PowerOff << RRAMC_POWER_LOWPOWERCONFIG_MODE_Pos);
             #endif
 
             #if defined (DEVELOP_IN_NRF54L15) && defined(NRF54L10_XXAA)

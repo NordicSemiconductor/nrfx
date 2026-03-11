@@ -93,9 +93,8 @@ int nrfx_egu_init(nrfx_egu_t *             p_instance,
 
 void nrfx_egu_int_enable(nrfx_egu_t * p_instance, uint32_t mask)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_instance->cb.state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(p_instance->cb.handler);
+    NRFX_ASSERT(p_instance && p_instance->cb.handler &&
+                (p_instance->cb.state == NRFX_DRV_STATE_INITIALIZED));
 
     (void)egu_event_mask_get_and_clear(p_instance->p_reg, mask);
     nrf_egu_int_enable(p_instance->p_reg, mask);
@@ -103,17 +102,15 @@ void nrfx_egu_int_enable(nrfx_egu_t * p_instance, uint32_t mask)
 
 void nrfx_egu_int_disable(nrfx_egu_t * p_instance, uint32_t mask)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_instance->cb.state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(p_instance && (p_instance->cb.state == NRFX_DRV_STATE_INITIALIZED));
 
     nrf_egu_int_disable(p_instance->p_reg, mask);
 }
 
 void nrfx_egu_trigger(nrfx_egu_t * p_instance, uint8_t event_idx)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_instance->cb.state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(event_idx < nrf_egu_channel_count(p_instance->p_reg));
+    NRFX_ASSERT(p_instance && (p_instance->cb.state == NRFX_DRV_STATE_INITIALIZED) &&
+                (event_idx < nrf_egu_channel_count(p_instance->p_reg)));
 
     nrf_egu_task_trigger(p_instance->p_reg, nrf_egu_trigger_task_get(event_idx));
 }

@@ -4,6 +4,7 @@
  * @{
  * @ingroup nrfx_power
  */
+
 /** @brief Enable POWER driver
  *
  *  Set to 1 to activate.
@@ -27,26 +28,5 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_POWER_CONFIG_IRQ_PRIORITY
-
-/** @brief The default configuration of main DCDC regulator
- *
- * This settings means only that components for DCDC regulator are installed and it can be enabled.
- *
- *  Set to 1 to activate.
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_POWER_CONFIG_DEFAULT_DCDCEN
-
-/** @brief The default configuration of High Voltage DCDC regulator
- *
- * This settings means only that components for DCDC regulator are installed and it can be enabled.
- *
- *  Set to 1 to activate.
- *
- * @note This is an NRF_CONFIG macro.
- */
-#define NRFX_POWER_CONFIG_DEFAULT_DCDCENHV
-
 
 /** @} */

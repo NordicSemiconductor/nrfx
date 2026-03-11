@@ -413,10 +413,11 @@
  * @param[in] inst_idx          Instance index.
  * @param[in] p_instance        Pointer to the driver instance object.
  */
-#define NRFX_INSTANCE_IRQ_HANDLER_DEFINE(periph_name_small, inst_idx, p_instance) \
-    void NRFX_CONCAT(nrfx_, periph_name_small, _, inst_idx, _irq_handler)(void *) \
-    {                                                                             \
-        NRFX_CONCAT(nrfx_, periph_name_small, _irq_handler)(p_instance);          \
+#define NRFX_INSTANCE_IRQ_HANDLER_DEFINE(periph_name_small, inst_idx, p_instance)           \
+    void NRFX_CONCAT(nrfx_, periph_name_small, _, inst_idx, _irq_handler)(void * p_context) \
+    {                                                                                       \
+        (void)p_context;                                                                    \
+        NRFX_CONCAT(nrfx_, periph_name_small, _irq_handler)(p_instance);                    \
     }
 
 /**

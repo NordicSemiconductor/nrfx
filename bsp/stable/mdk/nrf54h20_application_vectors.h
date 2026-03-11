@@ -119,7 +119,10 @@ __WEAK void SysTick_Handler(void)
  __HANDLER("Default_Handler") void GRTC_2_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void TBM_IRQHandler                                              (void);
  __HANDLER("Default_Handler") void USBHS_IRQHandler                                            (void);
+ __HANDLER("Default_Handler") void MRAMC110_IRQHandler                                         (void);
+ __HANDLER("Default_Handler") void MRAMC111_IRQHandler                                         (void);
  __HANDLER("Default_Handler") void EXMIF_IRQHandler                                            (void);
+ __HANDLER("Default_Handler") void OTPC_IRQHandler                                             (void);
  __HANDLER("Default_Handler") void IPCT120_0_IRQHandler                                        (void);
  __HANDLER("Default_Handler") void VPR121_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void CAN120_IRQHandler                                           (void);
@@ -341,8 +344,8 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     0,
     0,
-    0,
-    0,
+    MRAMC110_IRQHandler,
+    MRAMC111_IRQHandler,
     0,
     EXMIF_IRQHandler,
     0,
@@ -392,7 +395,7 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     0,
     0,
     0,
-    0,
+    OTPC_IRQHandler,
     0,
     0,
     0,

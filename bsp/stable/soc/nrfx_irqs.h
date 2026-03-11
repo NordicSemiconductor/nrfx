@@ -50,9 +50,9 @@
     #include "soc/irqs/nrfx_irqs_nrf52833.h"
 #elif defined(NRF52840_XXAA)
     #include "soc/irqs/nrfx_irqs_nrf52840.h"
-#elif defined(NRF5340_XXAA_APPLICATION)
+#elif defined(NRF5340_XXAA_APPLICATION) || (defined(NRF5340_XXAA) && defined(NRF_APPLICATION))
     #include "soc/irqs/nrfx_irqs_nrf5340_application.h"
-#elif defined(NRF5340_XXAA_NETWORK)
+#elif defined(NRF5340_XXAA_NETWORK) || (defined(NRF5340_XXAA) && defined(NRF_NETWORK))
     #include "soc/irqs/nrfx_irqs_nrf5340_network.h"
 #elif defined(NRF54H20_XXAA) && defined(NRF_APPLICATION)
     #include "soc/irqs/nrfx_irqs_nrf54h20_application.h"
@@ -74,6 +74,10 @@
     #include "soc/irqs/nrfx_irqs_nrf54l15_application.h"
 #elif defined(NRF54L15_XXAA) && defined(NRF_FLPR)
     #include "soc/irqs/nrfx_irqs_nrf54l15_flpr.h"
+#elif defined(NRF54LC10A_XXAA) && defined(NRF_APPLICATION)
+    #include "soc/irqs/nrfx_irqs_nrf54lc10a_application.h"
+#elif defined(NRF54LC10A_XXAA) && defined(NRF_FLPR)
+    #include "soc/irqs/nrfx_irqs_nrf54lc10a_flpr.h"
 #elif defined(NRF54LM20A_XXAA) && defined(NRF_APPLICATION)
     #include "soc/irqs/nrfx_irqs_nrf54lm20a_application.h"
 #elif defined(NRF54LM20A_XXAA) && defined(NRF_FLPR)
@@ -82,6 +86,8 @@
     #include "soc/irqs/nrfx_irqs_nrf54lm20b_application.h"
 #elif defined(NRF54LM20B_XXAA) && defined(NRF_FLPR)
     #include "soc/irqs/nrfx_irqs_nrf54lm20b_flpr.h"
+#elif defined(NRF54LS05A_XXAA) && defined(NRF_APPLICATION)
+    #include "soc/irqs/nrfx_irqs_nrf54ls05a_application.h"
 #elif defined(NRF54LS05B_XXAA) && defined(NRF_APPLICATION)
     #include "soc/irqs/nrfx_irqs_nrf54ls05b_application.h"
 #elif defined(NRF54LV10A_XXAA) && defined(NRF_APPLICATION)
@@ -92,8 +98,14 @@
     #include "soc/irqs/nrfx_irqs_nrf7120_enga_application.h"
 #elif defined(NRF7120_ENGA_XXAA) && defined(NRF_FLPR)
     #include "soc/irqs/nrfx_irqs_nrf7120_enga_flpr.h"
-#elif defined(NRF91_SERIES)
+#elif defined(NRF91_SERIES) || defined(NRF9120_XXAA) || defined(NRF9160_XXAA)
     #include "soc/irqs/nrfx_irqs_nrf91.h"
+#elif defined(NRF9220_XXAA) && defined(NRF_APPLICATION)
+    #include "soc/irqs/nrfx_irqs_nrf9220_application.h"
+#elif defined(NRF9220_XXAA) && defined(NRF_PPR)
+    #include "soc/irqs/nrfx_irqs_nrf9220_ppr.h"
+#elif defined(NRF9220_XXAA) && defined(NRF_FLPR)
+    #include "soc/irqs/nrfx_irqs_nrf9220_flpr.h"
 #elif defined(NRF9230_ENGB_XXAA) && defined(NRF_APPLICATION)
     #include "soc/irqs/nrfx_irqs_nrf9230_engb_application.h"
 #elif defined(NRF9230_ENGB_XXAA) && defined(NRF_RADIOCORE)

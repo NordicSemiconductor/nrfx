@@ -101,13 +101,11 @@ extern "C" {
 
 // USBHS_IRQHandler
 
-/*TODO: assumed notation for nrfx_qspi_*_irq_handler
-- no current support in nrfx for these*/
-// QSPI00_IRQHandler
-#define nrfx_qspi_00_irq_handler QSPI00_IRQHandler
+// MSPI00_IRQHandler
+#define nrfx_mspi_00_irq_handler MSPI00_IRQHandler
 
-// QSPI01_IRQHandler
-#define nrfx_qspi_01_irq_handler QSPI01_IRQHandler
+// MSPI01_IRQHandler
+#define nrfx_mspi_01_irq_handler MSPI01_IRQHandler
 
 // SERIAL01_IRQHandler
 #if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_1_ENABLED)

@@ -52,7 +52,7 @@ static inline void nrf91_handle_approtect(void)
 
         /* Workaround for Errata 36 "Debug and Trace: Access port gets locked in WFI and WFE" found at the Errata document
             for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-        #if defined (NRF_CONSTANT_LATENCY_WORKAROUND)
+        #if NRF91_ERRATA_36_ENABLE_WORKAROUND
            NRF_POWER_S->TASKS_CONSTLAT = 1;
         #endif
 

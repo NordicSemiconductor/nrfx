@@ -110,8 +110,8 @@ __WEAK void CLICSoftware_Handler(void)
  __HANDLER("Default_Handler") void EGU00_IRQHandler                                            (void);
  __HANDLER("Default_Handler") void CRACEN_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void USBHS_IRQHandler                                            (void);
- __HANDLER("Default_Handler") void QSPI00_IRQHandler                                           (void);
- __HANDLER("Default_Handler") void QSPI01_IRQHandler                                           (void);
+ __HANDLER("Default_Handler") void MSPI00_IRQHandler                                           (void);
+ __HANDLER("Default_Handler") void MSPI01_IRQHandler                                           (void);
  __HANDLER("Default_Handler") void SERIAL01_IRQHandler                                         (void);
  __HANDLER("Default_Handler") void SPU10_IRQHandler                                            (void);
  __HANDLER("Default_Handler") void TIMER10_IRQHandler                                          (void);
@@ -288,8 +288,8 @@ __VECTOR_TABLE_ATTRIBUTE const VECTOR_TABLE_Type __VECTOR_TABLE[] = {
     EGU00_IRQHandler,
     CRACEN_IRQHandler,
     USBHS_IRQHandler,
-    QSPI00_IRQHandler,
-    QSPI01_IRQHandler,
+    MSPI00_IRQHandler,
+    MSPI01_IRQHandler,
     SERIAL01_IRQHandler,
     0,
     0,

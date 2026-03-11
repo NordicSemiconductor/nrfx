@@ -877,8 +877,7 @@ NRF_STATIC_INLINE void nrf_pwm_seq_ptr_set(NRF_PWM_Type *   p_reg,
                                            uint8_t          seq_id,
                                            uint16_t const * p_values)
 {
-    NRFX_ASSERT(seq_id <= 1);
-    NRFX_ASSERT(p_values != NULL);
+    NRFX_ASSERT((seq_id <= 1) && (p_values != NULL));
 #if NRF_PWM_HAS_DMA_REG
     p_reg->DMA.SEQ[seq_id].PTR = (uint32_t)p_values;
 #else
@@ -890,8 +889,7 @@ NRF_STATIC_INLINE void nrf_pwm_seq_cnt_set(NRF_PWM_Type * p_reg,
                                            uint8_t        seq_id,
                                            uint16_t       length)
 {
-    NRFX_ASSERT(seq_id <= 1);
-    NRFX_ASSERT(length != 0);
+    NRFX_ASSERT((seq_id <= 1) && (length != 0));
 #if NRF_PWM_HAS_DMA_REG
     NRFX_ASSERT(length * sizeof(uint16_t) <= PWM_DMA_SEQ_MAXCNT_MAXCNT_Msk);
     p_reg->DMA.SEQ[seq_id].MAXCNT = length * sizeof(uint16_t);
@@ -905,8 +903,7 @@ NRF_STATIC_INLINE void nrf_pwm_seq_refresh_set(NRF_PWM_Type * p_reg,
                                                uint8_t        seq_id,
                                                uint32_t       refresh)
 {
-    NRFX_ASSERT(seq_id <= 1);
-    NRFX_ASSERT(refresh <= PWM_SEQ_REFRESH_CNT_Msk);
+    NRFX_ASSERT((seq_id <= 1) && (refresh <= PWM_SEQ_REFRESH_CNT_Msk));
     p_reg->SEQ[seq_id].REFRESH  = refresh;
 }
 
@@ -914,8 +911,7 @@ NRF_STATIC_INLINE void nrf_pwm_seq_end_delay_set(NRF_PWM_Type * p_reg,
                                                  uint8_t        seq_id,
                                                  uint32_t       end_delay)
 {
-    NRFX_ASSERT(seq_id <= 1);
-    NRFX_ASSERT(end_delay <= PWM_SEQ_ENDDELAY_CNT_Msk);
+    NRFX_ASSERT((seq_id <= 1) && (end_delay <= PWM_SEQ_ENDDELAY_CNT_Msk));
     p_reg->SEQ[seq_id].ENDDELAY = end_delay;
 }
 

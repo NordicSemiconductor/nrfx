@@ -218,12 +218,12 @@ NRFY_STATIC_INLINE void nrfy_mramc_word_write(NRF_MRAMC_Type * p_reg,
     mramc_config.mode_write = NRF_MRAMC_MODE_WRITE_DIRECT;
 
     __nrfy_internal_mramc_config_set(p_reg, &mramc_config);
-    __nrfy_internal_mramc_word_write(address, value);
 
     nrf_barrier_r();
     while (!nrf_mramc_ready_get(p_reg))
     {}
     nrf_barrier_r();
+    __nrfy_internal_mramc_word_write(address, value);
 
     __nrfy_internal_mramc_config_set(p_reg, &prev_mramc_config);
 }
@@ -257,12 +257,12 @@ NRFY_STATIC_INLINE void nrfy_mramc_words_write(NRF_MRAMC_Type * p_reg,
     __nrfy_internal_mramc_config_set(p_reg, &mramc_config);
     for (uint32_t i = 0; i < num_words; i++)
     {
-        __nrfy_internal_mramc_word_write(address + (NRFY_MRAMC_BYTES_IN_WORD * i),
-                                         ((uint32_t const *)src)[i]);
         nrf_barrier_r();
         while (!nrf_mramc_ready_get(p_reg))
         {}
         nrf_barrier_r();
+        __nrfy_internal_mramc_word_write(address + (NRFY_MRAMC_BYTES_IN_WORD * i),
+                                         ((uint32_t const *)src)[i]);
     }
     __nrfy_internal_mramc_config_set(p_reg, &prev_mramc_config);
 }

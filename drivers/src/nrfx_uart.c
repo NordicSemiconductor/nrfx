@@ -347,9 +347,7 @@ int nrfx_uart_tx(nrfx_uart_t *   p_instance,
 
     nrfx_uart_control_block_t * p_cb = &p_instance->cb;
 
-    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(p_data);
-    NRFX_ASSERT(length > 0);
+    NRFX_ASSERT((p_cb->state == NRFX_DRV_STATE_INITIALIZED) && p_data && (length > 0));
 
     int err_code;
 
@@ -440,9 +438,7 @@ int nrfx_uart_rx(nrfx_uart_t * p_instance,
 
     nrfx_uart_control_block_t * p_cb = &p_instance->cb;
 
-    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(p_data);
-    NRFX_ASSERT(length > 0);
+    NRFX_ASSERT((p_cb->state == NRFX_DRV_STATE_INITIALIZED) && p_data && (length > 0));
 
     int err_code;
 
@@ -913,9 +909,7 @@ int nrfx_uart_tx(nrfx_uart_t const * p_instance,
 {
     uart_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
-    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(p_data);
-    NRFX_ASSERT(length > 0);
+    NRFX_ASSERT((p_cb->state == NRFX_DRV_STATE_INITIALIZED) && p_data && (length > 0));
 
     int err_code;
 
@@ -1000,9 +994,7 @@ int nrfx_uart_rx(nrfx_uart_t const * p_instance,
 {
     uart_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
 
-    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
-    NRFX_ASSERT(p_data);
-    NRFX_ASSERT(length > 0);
+    NRFX_ASSERT((p_cb->state == NRFX_DRV_STATE_INITIALIZED) && p_data && (length > 0));
 
     int err_code;
 

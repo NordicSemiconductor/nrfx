@@ -151,8 +151,7 @@ static void saadc_anomaly_212_workaround_apply(void)
 static int saadc_channel_count_get(uint32_t  ch_to_activate_mask,
                                    uint8_t * p_active_ch_count)
 {
-    NRFX_ASSERT(ch_to_activate_mask);
-    NRFX_ASSERT(ch_to_activate_mask < (1 << SAADC_CH_NUM));
+    NRFX_ASSERT(ch_to_activate_mask && (ch_to_activate_mask < (1 << SAADC_CH_NUM)));
 
     uint8_t active_ch_count = 0;
     for (uint32_t ch_mask = 1; ch_mask < (1 << SAADC_CH_NUM); ch_mask <<= 1)
@@ -204,7 +203,7 @@ static int saadc_input_convert(nrfx_analog_input_t input_p,
             NRFX_LOG_ERROR("Invalid analog negative input number: %d", input_n);
             return -EINVAL;
         }
-        else if (NRFX_IS_ENABLED(HALTIUM_XXAA) &&
+        else if (NRFX_IS_ENABLED(SAADC_HAS_3V3_OUTPUTS) &&
                  ((input_p > NRFX_ANALOG_EXTERNAL_AIN7) !=
                   (input_n > NRFX_ANALOG_EXTERNAL_AIN7)))
         {
@@ -398,6 +397,11 @@ int nrfx_saadc_init(uint8_t interrupt_priority)
     }
 #endif
 
+    if (NRF_ERRATA_DYNAMIC_CHECK(54H, 236))
+    {
+        *((volatile uint32_t *)((uint8_t *)NRF_SAADC + 0x63C)) = 0x10000000UL;
+    }
+
     err_code = 0;
     NRFX_LOG_INFO("Function: %s, error code: %s.",
                   __func__,
@@ -432,9 +436,8 @@ uint16_t nrfx_saadc_interval_to_cc(uint16_t interval_us)
 int nrfx_saadc_channels_config(nrfx_saadc_channel_t const * p_channels,
                                uint32_t                     channel_count)
 {
-    NRFX_ASSERT(m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED);
-    NRFX_ASSERT(p_channels);
-    NRFX_ASSERT(channel_count <= SAADC_CH_NUM);
+    NRFX_ASSERT((m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED) && p_channels &&
+                (channel_count <= SAADC_CH_NUM));
 
     if (saadc_busy_check())
     {
@@ -462,8 +465,7 @@ int nrfx_saadc_channels_config(nrfx_saadc_channel_t const * p_channels,
 
 int nrfx_saadc_channel_config(nrfx_saadc_channel_t const * p_channel)
 {
-    NRFX_ASSERT(m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED);
-    NRFX_ASSERT(p_channel);
+    NRFX_ASSERT((m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED) && p_channel);
 
     if (saadc_busy_check())
     {
@@ -547,8 +549,7 @@ int nrfx_saadc_advanced_mode_set(uint32_t                        channel_mask,
                                  nrfx_saadc_adv_config_t const * p_config,
                                  nrfx_saadc_event_handler_t      event_handler)
 {
-    NRFX_ASSERT(m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT((m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED) && p_config);
 
     if (saadc_busy_check())
     {
@@ -665,8 +666,8 @@ int nrfx_saadc_buffer_set(nrf_saadc_value_t * p_buffer, uint16_t size)
 
 int nrfx_saadc_mode_trigger(void)
 {
-    NRFX_ASSERT(m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED);
-    NRFX_ASSERT(m_cb.saadc_state != NRF_SAADC_STATE_IDLE);
+    NRFX_ASSERT((m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED) &&
+                (m_cb.saadc_state != NRF_SAADC_STATE_IDLE));
 
     if (!m_cb.buffer_primary.p_buffer)
     {
@@ -779,8 +780,8 @@ void nrfx_saadc_abort(void)
 
 int nrfx_saadc_limits_set(uint8_t channel, int16_t limit_low, int16_t limit_high)
 {
-    NRFX_ASSERT(m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED);
-    NRFX_ASSERT(limit_high >= limit_low);
+    NRFX_ASSERT((m_cb.saadc_state != NRF_SAADC_STATE_UNINITIALIZED) &&
+                (limit_high >= limit_low));
 
     if (!m_cb.event_handler)
     {
@@ -925,6 +926,15 @@ static void saadc_event_started_handle(void)
     }
 }
 
+static void saadc_disable(void)
+{
+    nrfy_saadc_disable(NRF_SAADC);
+    if (NRF_ERRATA_DYNAMIC_CHECK(54H, 233))
+    {
+        nrfy_saadc_disable(NRF_SAADC);
+    }
+}
+
 static void saadc_event_end_handle(void)
 {
     nrfx_saadc_evt_t evt_data;
@@ -935,8 +945,7 @@ static void saadc_event_end_handle(void)
     switch (m_cb.saadc_state)
     {
         case NRF_SAADC_STATE_SIMPLE_MODE_SAMPLE:
-            nrfy_saadc_disable(NRF_SAADC);
-            nrfy_saadc_disable(NRF_SAADC);
+            saadc_disable();
             m_cb.saadc_state = NRF_SAADC_STATE_SIMPLE_MODE;
             /* In the simple, non-blocking mode the event handler must be
              * called after the internal driver state is updated. This will
@@ -955,8 +964,7 @@ static void saadc_event_end_handle(void)
             m_cb.buffer_secondary.p_buffer = NULL;
             if (!m_cb.buffer_primary.p_buffer)
             {
-                nrfy_saadc_disable(NRF_SAADC);
-                nrfy_saadc_disable(NRF_SAADC);
+                saadc_disable();
                 m_cb.saadc_state = NRF_SAADC_STATE_ADV_MODE;
                 evt_data.type = NRFX_SAADC_EVT_FINISHED;
                 m_cb.event_handler(&evt_data);

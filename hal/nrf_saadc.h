@@ -1468,8 +1468,7 @@ NRF_STATIC_INLINE void nrf_saadc_linearity_calibration_coeff_set(NRF_SAADC_Type 
                                                                  uint8_t          index,
                                                                  uint32_t         coeff)
 {
-    NRFX_ASSERT(index < NRF_SAADC_LIN_CAL_MAX_COUNT);
-    NRFX_ASSERT(coeff <= NRF_SAADC_LIN_CAL_MAX);
+    NRFX_ASSERT((index < NRF_SAADC_LIN_CAL_MAX_COUNT) && (coeff <= NRF_SAADC_LIN_CAL_MAX));
     p_reg->TRIM.LINCALCOEFF[index] = coeff;
 }
 

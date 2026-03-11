@@ -39,8 +39,6 @@
 #include <mdk/nrf_peripherals.h>
 #include <mdk/nrf_mem.h>
 #include <soc/nrfx_mdk_fixups.h>
-#include <soc/nrfx_irqs.h>
 #include <soc/nrfx_soc_defines.h>
-#include <nrfx_ext.h>
 
 #endif // NRFX_BSP_H__

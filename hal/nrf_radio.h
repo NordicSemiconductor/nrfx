@@ -67,6 +67,20 @@ extern "C" {
 #define NRF_RADIO_HAS_PACKETPTR 0
 #endif
 
+#if defined(RADIO_SHORTS0_ResetValue) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether multiple SHORTS register are present. **/
+#define NRF_RADIO_HAS_SHORTS0 1
+#else
+#define NRF_RADIO_HAS_SHORTS0 0
+#endif
+
+#if defined(RADIO_TXPOWER_TXPOWER_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether transmit power configuration register is present. **/
+#define NRF_RADIO_HAS_TXPOWER 1
+#else
+#define NRF_RADIO_HAS_TXPOWER 0
+#endif
+
 /** @brief RADIO tasks. */
 typedef enum
 {
@@ -324,7 +338,12 @@ typedef enum
 #endif
 } nrf_radio_int_mask_t;
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#endif
 /** @brief RADIO shortcuts. */
+#if !NRF_RADIO_HAS_SHORTS0
 typedef enum
 {
     NRF_RADIO_SHORT_READY_START_MASK        = RADIO_SHORTS_READY_START_Msk,        /**< Shortcut between READY event and START task. */
@@ -374,6 +393,135 @@ typedef enum
 #endif
 } nrf_radio_short_mask_t;
 
+#else
+typedef enum
+{
+#if defined(RADIO_SHORTS0_READY_START_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_READY_START_MASK                = RADIO_SHORTS0_READY_START_Msk,                /**< Shortcut between READY event and START task. */
+#endif
+#if defined(RADIO_SHORTS0_END_DISABLE_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_END_DISABLE_MASK                = RADIO_SHORTS0_END_DISABLE_Msk,                /**< Shortcut between END event and DISABLE task. */
+#endif
+#if defined(RADIO_SHORTS0_DISABLED_TXEN_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_DISABLED_TXEN_MASK              = RADIO_SHORTS0_DISABLED_TXEN_Msk,              /**< Shortcut between DISABLED event and TXEN task. */
+ #endif
+#if defined(RADIO_SHORTS0_DISABLED_RXEN_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_DISABLED_RXEN_MASK              = RADIO_SHORTS0_DISABLED_RXEN_Msk,              /**< Shortcut between DISABLED event and RXEN task. */
+#endif
+#if defined(RADIO_SHORTS0_ADDRESS_RSSISTART_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_ADDRESS_RSSISTART_MASK          = RADIO_SHORTS0_ADDRESS_RSSISTART_Msk,          /**< Shortcut between ADDRESS event and RSSISTART task. */
+#endif
+#if defined(RADIO_SHORTS0_END_START_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_END_START_MASK                  = RADIO_SHORTS0_END_START_Msk,                  /**< Shortcut between END event and START task. */
+ #endif
+#if defined(RADIO_SHORTS0_ADDRESS_BCSTART_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_ADDRESS_BCSTART_MASK            = RADIO_SHORTS0_ADDRESS_BCSTART_Msk,            /**< Shortcut between ADDRESS event and BCSTART task. */
+#endif
+#if defined(RADIO_SHORTS0_PHYEND_PLLEN_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_PHYEND_PLLEN_MASK               = RADIO_SHORTS0_PHYEND_PLLEN_Msk,               /**< Shortcut between event PHYEND and task PLLEN task. */
+#endif
+#if defined(RADIO_SHORTS0_PHYEND_TXEN_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_PHYEND_TXEN_MASK                = RADIO_SHORTS0_PHYEND_TXEN_Msk,                /**< Shortcut between event PHYEND and task TXEN task. */
+#endif
+#if defined(RADIO_SHORTS0_PHYEND_RXEN_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_PHYEND_RXEN_MASK                = RADIO_SHORTS0_PHYEND_RXEN_Msk,                /**< Shortcut between event PHYEND and task RXEN task. */
+#endif
+#if defined(RADIO_SHORTS0_RXREADY_CCASTART_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_RXREADY_CCASTART_MASK           = RADIO_SHORTS0_RXREADY_CCASTART_Msk,           /**< Shortcut between RXREADY event and CCASTART task. */
+#endif
+#if defined(RADIO_SHORTS0_CCAIDLE_TXEN_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_CCAIDLE_TXEN_MASK               = RADIO_SHORTS0_CCAIDLE_TXEN_Msk,               /**< Shortcut between CCAIDLE event and TXEN task. */
+#endif
+#if defined(RADIO_SHORTS0_CCABUSY_DISABLE_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_CCABUSY_DISABLE_MASK            = RADIO_SHORTS0_CCABUSY_DISABLE_Msk,            /**< Shortcut between CCABUSY event and DISABLE task. */
+#endif
+#if defined(RADIO_SHORTS0_FRAMESTART_BCSTART_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_FRAMESTART_BCSTART_MASK         = RADIO_SHORTS0_FRAMESTART_BCSTART_Msk,         /**< Shortcut between FRAMESTART event and BCSTART task. */
+#endif
+#if defined(RADIO_SHORTS0_READY_EDSTART_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_READY_EDSTART_MASK              = RADIO_SHORTS0_READY_EDSTART_Msk,              /**< Shortcut between READY event and EDSTART task. */
+#endif
+#if defined(RADIO_SHORTS0_EDEND_DISABLE_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_EDEND_DISABLE_MASK              = RADIO_SHORTS0_EDEND_DISABLE_Msk,              /**< Shortcut between EDEND event and DISABLE task. */
+#endif
+#if defined(RADIO_SHORTS0_CCAIDLE_STOP_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_CCAIDLE_STOP_MASK               = RADIO_SHORTS0_CCAIDLE_STOP_Msk,               /**< Shortcut between CCAIDLE event and STOP task. */
+#endif
+#if defined(RADIO_SHORTS0_TXREADY_START_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_TXREADY_START_MASK              = RADIO_SHORTS0_TXREADY_START_Msk,              /**< Shortcut between TXREADY event and START task. */
+#endif
+#if defined(RADIO_SHORTS0_RXREADY_START_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_RXREADY_START_MASK              = RADIO_SHORTS0_RXREADY_START_Msk,              /**< Shortcut between RXREADY event and START task. */
+#endif
+#if defined(RADIO_SHORTS0_PHYEND_DISABLE_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_PHYEND_DISABLE_MASK             = RADIO_SHORTS0_PHYEND_DISABLE_Msk,             /**< Shortcut between PHYEND event and DISABLE task. */
+#endif
+#if defined(RADIO_SHORTS0_PHYEND_START_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_PHYEND_START_MASK               = RADIO_SHORTS0_PHYEND_START_Msk,               /**< Shortcut between PHYEND event and START task. */
+#endif
+#if defined(RADIO_SHORTS0_PHYEND_RESTARTHDT_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_PHYEND_RESTARTHDT_MASK          = RADIO_SHORTS0_PHYEND_RESTARTHDT_Msk,          /**< Shortcut between event PHYEND and task RESTARTHDT task. */
+#endif
+#if defined(RADIO_SHORTS0_ADDRESSMISMATCH_RESTARTHDT_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_ADDRESSMISMATCH_RESTARTHDT_MASK = RADIO_SHORTS0_ADDRESSMISMATCH_RESTARTHDT_Msk, /**< Shortcut between event ADDRESSMISMATCH and task RESTARTHD task. */
+#endif
+#if defined(RADIO_SHORTS0_HECCERROR_RESTARTHDT_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_HECCERROR_RESTARTHDT_MASK       = RADIO_SHORTS0_HECCERROR_RESTARTHDT_Msk,       /**< Shortcut between event HECCERROR and task RESTARTHDT task. */
+#endif
+#if defined(RADIO_SHORTS0_HECPERROR_RESTARTHDT_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_HECPERROR_RESTARTHDT_MASK       = RADIO_SHORTS0_HECPERROR_RESTARTHDT_Msk,       /**< Shortcut between event HECPERROR and task RESTARTHDT task. */
+#endif
+#if defined(RADIO_SHORTS0_SOAERROR_RESTARTHDT_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_SOAERROR_RESTARTHDT_MASK        = RADIO_SHORTS0_SOAERROR_RESTARTHDT_Msk,        /**< Shortcut between event SOAERROR and task RESTARTHDT task. */
+#endif
+#if defined(RADIO_SHORTS0_ADDRESSMISMATCH_DISABLE_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_ADDRESSMISMATCH_DISABLE_MASK    = RADIO_SHORTS0_ADDRESSMISMATCH_DISABLE_Msk,    /**< Shortcut between event ADDRESSMISMATCH and task DISABLE task. */
+#endif
+#if defined(RADIO_SHORTS0_PLLREADY_TXEN_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_PLLREADY_TXEN_MASK              = RADIO_SHORTS0_PLLREADY_TXEN_Msk,              /**< Shortcut between event PLLREADY and task TXEN task. */
+#endif
+#if defined(RADIO_SHORTS0_PLLREADY_RXEN_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_PLLREADY_RXEN_MASK              = RADIO_SHORTS0_PLLREADY_RXEN_Msk,              /**< Shortcut between event PLLREADY and task RXEN task. */
+#endif
+#if defined(RADIO_SHORTS0_HECCERROR_DISABLE_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_HECCERROR_DISABLE_MASK          = RADIO_SHORTS0_HECCERROR_DISABLE_Msk,          /**< Shortcut between event HECCERROR and task DISABLE task. */
+#endif
+#if defined(RADIO_SHORTS0_HECPERROR_DISABLE_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_HECPERROR_DISABLE_MASK          = RADIO_SHORTS0_HECPERROR_DISABLE_Msk,          /**< Shortcut between event HECPERROR and task DISABLE task. */
+#endif
+#if defined(RADIO_SHORTS0_SOAERROR_DISABLE_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_SOAERROR_DISABLE_MASK           = RADIO_SHORTS0_SOAERROR_DISABLE_Msk,           /**< Shortcut between event SOAERROR and task DISABLE task. */
+#endif
+#if defined(RADIO_SHORTS1_DISABLED_LOOPBACKEN_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_DISABLED_LOOPBACKEN_MASK        = RADIO_SHORTS1_DISABLED_LOOPBACKEN_Msk,        /**< Shortcut between event DISABLED and task LOOPBACKEN task. */
+#endif
+#if defined(RADIO_SHORTS1_DISABLED_CHNOINCR_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_DISABLED_CHNOINCR_MASK          = RADIO_SHORTS1_DISABLED_CHNOINCR_Msk,          /**< Shortcut between event DISABLED and task CHNOINCR task. */
+#endif
+#if defined(RADIO_SHORTS1_CHNOUPDATED_TXEN_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_CHNOUPDATED_TXEN_MASK           = RADIO_SHORTS1_CHNOUPDATED_TXEN_Msk,           /**< Shortcut between event CHNOUPDATED and task TXEN task. */
+#endif
+#if defined(RADIO_SHORTS1_CHNOUPDATED_RXEN_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_CHNOUPDATED_RXEN_MASK           = RADIO_SHORTS1_CHNOUPDATED_RXEN_Msk,           /**< Shortcut between event CHNOUPDATED and task RXEN task. */
+#endif
+#if defined(RADIO_SHORTS1_CHNOUPDATED_LOOPBACKEN_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_CHNOUPDATED_LOOPBACKEN_MASK     = RADIO_SHORTS1_CHNOUPDATED_LOOPBACKEN_Msk,     /**< Shortcut between event CHNOUPDATED and task LOOPBACKEN task. */
+#endif
+#if defined(RADIO_SHORTS1_CTEEND_DISABLE_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_CTEEND_DISABLE_MASK             = RADIO_SHORTS1_CTEEND_DISABLE_Msk,             /**< Shortcut between event CTEEND and task DISABLE task. */
+#endif
+#if defined(RADIO_SHORTS1_CTEEND_START_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_CTEEND_START_MASK               = RADIO_SHORTS1_CTEEND_START_Msk,               /**< Shortcut between event CTEEND and task START task. */
+#endif
+#if defined(RADIO_SHORTS1_DFEEND_STOP_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_SHORT_DFEEND_STOP_MASK                = RADIO_SHORTS1_DFEEND_STOP_Msk,                /**< Shortcut between event DFEEND and task STOP task. */
+#endif
+} nrf_radio_short_mask_t;
+#endif
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
 #if defined(RADIO_CCACTRL_CCAMODE_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief RADIO Clear Channel Assessment modes. */
 typedef enum
@@ -400,6 +548,7 @@ typedef enum
     NRF_RADIO_STATE_TXDISABLE = RADIO_STATE_STATE_TxDisable, /**< The radio is disabling the transmitter. */
 } nrf_radio_state_t;
 
+#if NRF_RADIO_HAS_TXPOWER
 /** @brief Types of RADIO TX power. */
 typedef enum
 {
@@ -491,6 +640,7 @@ typedef enum
     NRF_RADIO_TXPOWER_NEG100DBM = RADIO_TXPOWER_TXPOWER_Neg100dBm, /**< -100 dBm. */
 #endif
 } nrf_radio_txpower_t;
+#endif
 
 /** @brief Types of RADIO modes (data rate and modulation). */
 typedef enum
@@ -769,7 +919,52 @@ NRF_STATIC_INLINE uint32_t nrf_radio_event_address_get(NRF_RADIO_Type const * p_
  * @brief Function for enabling specified RADIO shortcuts.
  *
  * @param[in] p_reg       Pointer to the structure of registers of the peripheral.
- * @param[in] shorts_mask Mask of shortcuts.
+ * @param[in] group_idx   Index of SHORT register.
+ * @param[in] shorts_mask Mask of shortcuts, created using @ref nrf_radio_short_mask_t.
+ */
+NRF_STATIC_INLINE void nrf_radio_shorts_group_enable(NRF_RADIO_Type * p_reg,
+                                                     uint8_t          group_idx,
+                                                     uint32_t         shorts_mask);
+
+/**
+ * @brief Function for disabling specified RADIO shortcuts.
+ *
+ * @param[in] p_reg       Pointer to the structure of registers of the peripheral.
+ * @param[in] group_idx   Index of SHORT register.
+ * @param[in] shorts_mask Mask of shortcuts, created using @ref nrf_radio_short_mask_t.
+ */
+NRF_STATIC_INLINE void nrf_radio_shorts_group_disable(NRF_RADIO_Type * p_reg,
+                                                      uint8_t          group_idx,
+                                                      uint32_t         shorts_mask);
+
+/**
+ * @brief Function for setting the configuration of RADIO shortcuts.
+ *
+ * @param[in] p_reg       Pointer to the structure of registers of the peripheral.
+ * @param[in] group_idx   Index of SHORT register.
+ * @param[in] shorts_mask Mask of shortcuts, created using @ref nrf_radio_short_mask_t.
+ */
+NRF_STATIC_INLINE void nrf_radio_shorts_group_set(NRF_RADIO_Type * p_reg,
+                                                  uint8_t          group_idx,
+                                                  uint32_t         shorts_mask);
+/**
+ * @brief Function for getting the configuration of RADIO shortcuts.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] group_idx   Index of SHORT register.
+ *
+ * @return Mask of currently enabled shortcuts.
+ */
+NRF_STATIC_INLINE uint32_t nrf_radio_shorts_group_get(NRF_RADIO_Type const * p_reg,
+                                                      uint8_t                group_idx);
+
+/**
+ * @brief Function for enabling specified RADIO shortcuts.
+ *
+ * @note This function is deprecated. Use @ref nrf_radio_shorts_group_enable instead.
+ *
+ * @param[in] p_reg       Pointer to the structure of registers of the peripheral.
+ * @param[in] shorts_mask Mask of shortcuts, created using @ref nrf_radio_short_mask_t.
  */
 NRF_STATIC_INLINE void nrf_radio_shorts_enable(NRF_RADIO_Type * p_reg, uint32_t shorts_mask);
 
@@ -994,6 +1189,7 @@ NRF_STATIC_INLINE void nrf_radio_frequency_set(NRF_RADIO_Type * p_reg, uint16_t 
  */
 NRF_STATIC_INLINE uint16_t nrf_radio_frequency_get(NRF_RADIO_Type const * p_reg);
 
+#if NRF_RADIO_HAS_TXPOWER
 /**
  * @brief Function for setting the radio transmit power.
  *
@@ -1010,6 +1206,7 @@ NRF_STATIC_INLINE void nrf_radio_txpower_set(NRF_RADIO_Type * p_reg, nrf_radio_t
  * @return Transmit power of the radio.
  */
 NRF_STATIC_INLINE nrf_radio_txpower_t nrf_radio_txpower_get(NRF_RADIO_Type const * p_reg);
+#endif // NRF_RADIO_HAS_TXPOWER
 
 /**
  * @brief Function for setting the radio data rate and modulation settings.
@@ -1711,24 +1908,148 @@ NRF_STATIC_INLINE uint32_t nrf_radio_event_address_get(NRF_RADIO_Type const * p_
     return ((uint32_t)p_reg + (uint32_t)event);
 }
 
+NRF_STATIC_INLINE void nrf_radio_shorts_group_enable(NRF_RADIO_Type * p_reg,
+                                                     uint8_t          group_idx,
+                                                     uint32_t         shorts_mask)
+{
+    volatile uint32_t * p_shorts_reg;
+
+    switch (group_idx)
+    {
+        case 0:
+#if NRF_RADIO_HAS_SHORTS0
+            p_shorts_reg = &p_reg->SHORTS0;
+#else
+            p_shorts_reg = &p_reg->SHORTS;
+#endif
+            break;
+#if NRF_RADIO_HAS_SHORTS0
+        case 1:
+            p_shorts_reg = &p_reg->SHORTS1;
+            break;
+#endif
+        default:
+            NRFX_ASSERT(false);
+            return;
+    }
+    *p_shorts_reg |= shorts_mask;
+}
+
+
+NRF_STATIC_INLINE void nrf_radio_shorts_group_disable(NRF_RADIO_Type * p_reg,
+                                                      uint8_t          group_idx,
+                                                      uint32_t         shorts_mask)
+{
+    volatile uint32_t * p_shorts_reg;
+
+    switch (group_idx)
+    {
+        case 0:
+#if NRF_RADIO_HAS_SHORTS0
+            p_shorts_reg = &p_reg->SHORTS0;
+#else
+            p_shorts_reg = &p_reg->SHORTS;
+#endif
+            break;
+#if NRF_RADIO_HAS_SHORTS0
+        case 1:
+            p_shorts_reg = &p_reg->SHORTS1;
+            break;
+#endif
+        default:
+            NRFX_ASSERT(false);
+            return;
+    }
+    *p_shorts_reg &= ~shorts_mask;
+}
+
+NRF_STATIC_INLINE void nrf_radio_shorts_group_set(NRF_RADIO_Type * p_reg,
+                                                  uint8_t          group_idx,
+                                                  uint32_t         shorts_mask)
+{
+    volatile uint32_t * p_shorts_reg;
+
+    switch (group_idx)
+    {
+        case 0:
+#if NRF_RADIO_HAS_SHORTS0
+            p_shorts_reg = &p_reg->SHORTS0;
+#else
+            p_shorts_reg = &p_reg->SHORTS;
+#endif
+            break;
+#if NRF_RADIO_HAS_SHORTS0
+        case 1:
+            p_shorts_reg = &p_reg->SHORTS1;
+            break;
+#endif
+        default:
+            NRFX_ASSERT(false);
+            return;
+    }
+    *p_shorts_reg = shorts_mask;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_radio_shorts_group_get(NRF_RADIO_Type const * p_reg,
+                                                      uint8_t                group_idx)
+{
+    uint32_t result;
+
+    switch (group_idx)
+    {
+        case 0:
+#if NRF_RADIO_HAS_SHORTS0
+            result = p_reg->SHORTS0;
+#else
+            result = p_reg->SHORTS;
+#endif
+            break;
+#if NRF_RADIO_HAS_SHORTS0
+        case 1:
+            result = p_reg->SHORTS1;
+            break;
+#endif
+        default:
+            NRFX_ASSERT(false);
+            return 0;
+    }
+    return result;
+}
+
 NRF_STATIC_INLINE void nrf_radio_shorts_enable(NRF_RADIO_Type * p_reg, uint32_t shorts_mask)
 {
+#if NRF_RADIO_HAS_SHORTS0
+    p_reg->SHORTS0 |= shorts_mask;
+#else
     p_reg->SHORTS |= shorts_mask;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_radio_shorts_disable(NRF_RADIO_Type * p_reg, uint32_t shorts_mask)
 {
+#if NRF_RADIO_HAS_SHORTS0
+    p_reg->SHORTS0 &= ~shorts_mask;
+#else
     p_reg->SHORTS &= ~shorts_mask;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_radio_shorts_set(NRF_RADIO_Type * p_reg, uint32_t shorts_mask)
 {
+#if NRF_RADIO_HAS_SHORTS0
+    p_reg->SHORTS0 = shorts_mask;
+#else
     p_reg->SHORTS = shorts_mask;
+#endif
 }
 
 NRF_STATIC_INLINE uint32_t nrf_radio_shorts_get(NRF_RADIO_Type const * p_reg)
 {
+#if NRF_RADIO_HAS_SHORTS0
+    return p_reg->SHORTS0;
+#else
     return p_reg->SHORTS;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_radio_int_enable(NRF_RADIO_Type * p_reg, uint32_t mask)
@@ -1892,6 +2213,7 @@ NRF_STATIC_INLINE uint16_t nrf_radio_frequency_get(NRF_RADIO_Type const * p_reg)
     return (uint16_t)freq;
 }
 
+#if NRF_RADIO_HAS_TXPOWER
 NRF_STATIC_INLINE void nrf_radio_txpower_set(NRF_RADIO_Type * p_reg, nrf_radio_txpower_t tx_power)
 {
     p_reg->TXPOWER = (((uint32_t)tx_power) << RADIO_TXPOWER_TXPOWER_Pos);
@@ -1901,6 +2223,7 @@ NRF_STATIC_INLINE nrf_radio_txpower_t nrf_radio_txpower_get(NRF_RADIO_Type const
 {
     return (nrf_radio_txpower_t)(p_reg->TXPOWER >> RADIO_TXPOWER_TXPOWER_Pos);
 }
+#endif /* NRF_RADIO_HAS_TXPOWER */
 
 NRF_STATIC_INLINE void nrf_radio_mode_set(NRF_RADIO_Type * p_reg, nrf_radio_mode_t radio_mode)
 {
@@ -1950,6 +2273,10 @@ NRF_STATIC_INLINE void nrf_radio_packet_configure(NRF_RADIO_Type *              
                     (p_config->whiteen ?
                          (RADIO_PCNF1_WHITEEN_Enabled  << RADIO_PCNF1_WHITEEN_Pos) :
                          (RADIO_PCNF1_WHITEEN_Disabled << RADIO_PCNF1_WHITEEN_Pos) ));
+
+#if defined(RADIO_PCNF2_STATLEN_Msk)
+    p_reg->PCNF2 = ((uint32_t)p_config->statlen << RADIO_PCNF2_STATLEN_Pos);
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_radio_base0_set(NRF_RADIO_Type * p_reg, uint32_t address)

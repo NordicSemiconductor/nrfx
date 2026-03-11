@@ -231,8 +231,8 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
-        DCD     0                         ; Reserved
-        DCD     0                         ; Reserved
+        DCD     MRAMC110_IRQHandler
+        DCD     MRAMC111_IRQHandler
         DCD     0                         ; Reserved
         DCD     EXMIF_IRQHandler
         DCD     0                         ; Reserved
@@ -282,7 +282,7 @@ __vector_table
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
-        DCD     0                         ; Reserved
+        DCD     OTPC_IRQHandler
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
@@ -859,9 +859,24 @@ TBM_IRQHandler
 USBHS_IRQHandler
         B .
 
+        PUBWEAK  MRAMC110_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+MRAMC110_IRQHandler
+        B .
+
+        PUBWEAK  MRAMC111_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+MRAMC111_IRQHandler
+        B .
+
         PUBWEAK  EXMIF_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
 EXMIF_IRQHandler
+        B .
+
+        PUBWEAK  OTPC_IRQHandler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+OTPC_IRQHandler
         B .
 
         PUBWEAK  IPCT120_0_IRQHandler

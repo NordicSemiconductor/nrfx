@@ -92,7 +92,9 @@ static inline bool nrf91_errata_1(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -153,7 +155,9 @@ static inline bool nrf91_errata_2(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -214,7 +218,9 @@ static inline bool nrf91_errata_4(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -275,7 +281,9 @@ static inline bool nrf91_errata_6(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -336,7 +344,9 @@ static inline bool nrf91_errata_7(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -397,7 +407,9 @@ static inline bool nrf91_errata_8(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -458,7 +470,9 @@ static inline bool nrf91_errata_9(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -519,7 +533,9 @@ static inline bool nrf91_errata_10(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -580,7 +596,9 @@ static inline bool nrf91_errata_12(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -641,7 +659,9 @@ static inline bool nrf91_errata_14(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -702,7 +722,9 @@ static inline bool nrf91_errata_15(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -763,7 +785,9 @@ static inline bool nrf91_errata_16(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -824,7 +848,9 @@ static inline bool nrf91_errata_17(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -885,7 +911,9 @@ static inline bool nrf91_errata_20(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -946,7 +974,9 @@ static inline bool nrf91_errata_21(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -1007,7 +1037,9 @@ static inline bool nrf91_errata_23(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -1068,7 +1100,9 @@ static inline bool nrf91_errata_24(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -1129,7 +1163,9 @@ static inline bool nrf91_errata_26(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -1190,7 +1226,9 @@ static inline bool nrf91_errata_27(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -1251,7 +1289,9 @@ static inline bool nrf91_errata_28(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -1312,7 +1352,9 @@ static inline bool nrf91_errata_29(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -1373,7 +1415,9 @@ static inline bool nrf91_errata_30(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -1434,7 +1478,9 @@ static inline bool nrf91_errata_31(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -1495,7 +1541,9 @@ static inline bool nrf91_errata_32(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -1556,7 +1604,9 @@ static inline bool nrf91_errata_33(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -1617,7 +1667,9 @@ static inline bool nrf91_errata_35(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)
@@ -1662,7 +1714,7 @@ static inline bool nrf91_errata_35(void)
 #endif
 
 #ifndef NRF91_ERRATA_36_ENABLE_WORKAROUND
-    #define NRF91_ERRATA_36_ENABLE_WORKAROUND NRF91_ERRATA_36_PRESENT
+    #define NRF91_ERRATA_36_ENABLE_WORKAROUND 0
 #endif
 
 static inline bool nrf91_errata_36(void)
@@ -1676,7 +1728,9 @@ static inline bool nrf91_errata_36(void)
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_NS + 0x00000134ul));
             #else
                 uint32_t var1 = (*((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000130ul))) & 0x00000FFFul;
+                __DSB();
                 uint32_t var2 = *((volatile uint32_t *)((uint32_t)NRF_FICR_S + 0x00000134ul));
+                __DSB();
             #endif
         #endif
         #if defined (NRF9120_XXAA) || defined (DEVELOP_IN_NRF9120)

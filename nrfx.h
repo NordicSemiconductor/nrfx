@@ -40,5 +40,6 @@
 #include <nrfx_glue.h>
 #include <hal/nrf_common.h>
 #include <haly/nrfy_common.h>
+#include <nrfx_ext.h>
 
 #endif // NRFX_H__

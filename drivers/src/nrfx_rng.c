@@ -49,8 +49,7 @@ static nrfx_rng_evt_handler_t m_rng_hndl;
 
 int nrfx_rng_init(nrfx_rng_config_t const * p_config, nrfx_rng_evt_handler_t handler)
 {
-    NRFX_ASSERT(p_config);
-    NRFX_ASSERT(handler);
+    NRFX_ASSERT(p_config && handler);
     if (m_rng_state != NRFX_DRV_STATE_UNINITIALIZED)
     {
         return -EALREADY;

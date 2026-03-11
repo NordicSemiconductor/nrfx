@@ -55,9 +55,7 @@ int nrfx_rtc_init(nrfx_rtc_t *              p_instance,
                   nrfx_rtc_config_t const * p_config,
                   nrfx_rtc_handler_t        handler)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
-    NRFX_ASSERT(handler);
+    NRFX_ASSERT(p_instance && p_config && handler);
     int err_code;
 
     p_instance->cb.handler = handler;

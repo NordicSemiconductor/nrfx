@@ -100,8 +100,7 @@ static void ram_ctrl_block_section_iterate(void const *                p_object,
                                            bool                        enable,
                                            ram_ctrl_block_section_op_t handler)
 {
-    NRFX_ASSERT(nrfx_is_in_ram(p_object));
-    NRFX_ASSERT(length);
+    NRFX_ASSERT(nrfx_is_in_ram(p_object) && length);
 
     size_t rel_obj_adr    = (size_t)p_object - NRF_MEMORY_RAM_BASE;
     size_t obj_start_addr = rel_obj_adr;

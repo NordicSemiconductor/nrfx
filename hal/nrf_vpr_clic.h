@@ -282,8 +282,7 @@ NRF_STATIC_INLINE void nrf_vpr_clic_int_priority_set(NRF_CLIC_Type *         p_r
                                                      uint32_t                irq_num,
                                                      nrf_vpr_clic_priority_t priority)
 {
-    NRFX_ASSERT(irq_num < NRF_VPR_CLIC_IRQ_COUNT);
-    NRFX_ASSERT(priority != 0);
+    NRFX_ASSERT((irq_num < NRF_VPR_CLIC_IRQ_COUNT) && (priority != 0));
 
     p_reg->CLIC.CLICINT[irq_num] = (p_reg->CLIC.CLICINT[irq_num] & ~CLIC_CLIC_CLICINT_PRIORITY_Msk)
                                    | (priority << CLIC_CLIC_CLICINT_PRIORITY_Pos);
@@ -303,8 +302,7 @@ NRF_STATIC_INLINE void nrf_vpr_clic_int_attr_get(NRF_CLIC_Type const *  p_reg,
                                                  uint32_t               irq_num,
                                                  nrf_vpr_clic_attr_t *  p_attr)
 {
-    NRFX_ASSERT(irq_num < NRF_VPR_CLIC_IRQ_COUNT);
-    NRFX_ASSERT(p_attr);
+    NRFX_ASSERT((irq_num < NRF_VPR_CLIC_IRQ_COUNT) && p_attr);
     uint32_t att = p_reg->CLIC.CLICINT[irq_num];
 
     p_attr->hw_vectoring = (att & CLIC_CLIC_CLICINT_SHV_Msk) >> CLIC_CLIC_CLICINT_SHV_Pos;

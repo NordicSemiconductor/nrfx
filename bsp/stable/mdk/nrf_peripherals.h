@@ -35,6 +35,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef NRF_PERIPHERALS_H__
 #define NRF_PERIPHERALS_H__
 
+#ifdef __ZEPHYR__
+#include <mdk_config.h>
+#endif
+
 /*lint ++flb "Enter library region */
 
 #if defined(NRF51)
@@ -94,6 +98,15 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #elif defined (NRF9230_ENGB_XXAA)
     #include "nrf9230_engb_peripherals.h"
+
+#elif defined (NRF54LC10A_XXAA)
+    #include "nrf54lc10a_peripherals.h"
+
+#elif defined (NRF54LS05A_XXAA)
+    #include "nrf54ls05a_peripherals.h"
+
+#elif defined (NRF9220_XXAA)
+    #include "nrf9220_peripherals.h"
 
 #else
     #error "Device must be defined. See nrf_peripherals.h."

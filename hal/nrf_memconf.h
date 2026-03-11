@@ -429,8 +429,8 @@ NRF_STATIC_INLINE void nrf_memconf_ramblock_control_enable_set(NRF_MEMCONF_Type 
                                                                uint8_t            ramblock,
                                                                bool               enable)
 {
-    NRFX_ASSERT(power_id < NRF_MEMCONF_POWERBLOCK_COUNT);
-    NRFX_ASSERT(ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_CONTROL_COUNT);
+    NRFX_ASSERT((power_id < NRF_MEMCONF_POWERBLOCK_COUNT) &&
+                (ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_CONTROL_COUNT));
 
     p_reg->POWER[power_id].CONTROL = ((p_reg->POWER[power_id].CONTROL &
                                        ~(MEMCONF_POWER_CONTROL_MEM0_On << ramblock)) |
@@ -470,8 +470,8 @@ NRF_STATIC_INLINE bool nrf_memconf_ramblock_control_enable_check(NRF_MEMCONF_Typ
                                                                  uint8_t                  power_id,
                                                                  uint8_t                  ramblock)
 {
-    NRFX_ASSERT(power_id < NRF_MEMCONF_POWERBLOCK_COUNT);
-    NRFX_ASSERT(ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_CONTROL_COUNT);
+    NRFX_ASSERT((power_id < NRF_MEMCONF_POWERBLOCK_COUNT) &&
+                (ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_CONTROL_COUNT));
 
     return (bool)(p_reg->POWER[power_id].CONTROL & (MEMCONF_POWER_CONTROL_MEM0_Msk << ramblock));
 }
@@ -481,8 +481,8 @@ NRF_STATIC_INLINE void nrf_memconf_ramblock_ret_enable_set(NRF_MEMCONF_Type * p_
                                                            uint8_t            ramblock,
                                                            bool               enable)
 {
-    NRFX_ASSERT(power_id < NRF_MEMCONF_POWERBLOCK_COUNT);
-    NRFX_ASSERT(ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_RET_COUNT);
+    NRFX_ASSERT((power_id < NRF_MEMCONF_POWERBLOCK_COUNT) &&
+                (ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_CONTROL_COUNT));
 
     p_reg->POWER[power_id].RET = ((p_reg->POWER[power_id].RET &
                                    ~(MEMCONF_POWER_RET_MEM0_On << ramblock)) |
@@ -521,8 +521,8 @@ NRF_STATIC_INLINE bool nrf_memconf_ramblock_ret_enable_check(NRF_MEMCONF_Type co
                                                              uint8_t                  power_id,
                                                              uint8_t                  ramblock)
 {
-    NRFX_ASSERT(power_id < NRF_MEMCONF_POWERBLOCK_COUNT);
-    NRFX_ASSERT(ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_RET_COUNT);
+    NRFX_ASSERT((power_id < NRF_MEMCONF_POWERBLOCK_COUNT) &&
+                (ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_CONTROL_COUNT));
 
     return (bool)(p_reg->POWER[power_id].RET & (MEMCONF_POWER_RET_MEM0_Msk << ramblock));
 }
@@ -533,8 +533,8 @@ NRF_STATIC_INLINE void nrf_memconf_ramblock_ret2_enable_set(NRF_MEMCONF_Type * p
                                                             uint8_t            ramblock,
                                                             bool               enable)
 {
-    NRFX_ASSERT(power_id < NRF_MEMCONF_POWERBLOCK_COUNT);
-    NRFX_ASSERT(ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_RET2_COUNT);
+    NRFX_ASSERT((power_id < NRF_MEMCONF_POWERBLOCK_COUNT) &&
+                (ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_CONTROL_COUNT));
 
     p_reg->POWER[power_id].RET2 = ((p_reg->POWER[power_id].RET2 &
                                     ~(MEMCONF_POWER_RET2_MEM0_On << ramblock)) |
@@ -547,8 +547,8 @@ NRF_STATIC_INLINE bool nrf_memconf_ramblock_ret2_enable_check(NRF_MEMCONF_Type c
                                                               uint8_t                  power_id,
                                                               uint8_t                  ramblock)
 {
-    NRFX_ASSERT(power_id < NRF_MEMCONF_POWERBLOCK_COUNT);
-    NRFX_ASSERT(ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_RET2_COUNT);
+    NRFX_ASSERT((power_id < NRF_MEMCONF_POWERBLOCK_COUNT) &&
+                (ramblock <= NRF_MEMCONF_POWERBLOCK_RAMBLOCK_CONTROL_COUNT));
 
     return (bool)(p_reg->POWER[power_id].RET2 & (MEMCONF_POWER_RET2_MEM0_Msk << ramblock));
 }

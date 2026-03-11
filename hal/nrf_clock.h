@@ -194,11 +194,12 @@ extern "C" {
 #define NRF_CLOCK_HAS_LFCLKCTRL 0
 #endif
 
-#if defined(CLOCK_LFCLKSTAT_RUN_ResetValue) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether the CLOCK type contains LFCLKSTAT subtype. */
-#define NRF_CLOCK_HAS_LFCLKSTAT 1
+#if (defined(CLOCK_LFCLKSTAT_RUN_ResetValue) && defined(CLOCK_LFCLKSTAT_SRC_ResetValue)) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the CLOCK type contains LFCLKSTAT subtype with SRC and RUN registers. */
+#define NRF_CLOCK_HAS_LFCLKSTAT_SRC_RUN 1
 #else
-#define NRF_CLOCK_HAS_LFCLKSTAT 0
+#define NRF_CLOCK_HAS_LFCLKSTAT_SRC_RUN 0
 #endif
 
 #if defined(CLOCK_CONFIG_SETUP_ResetValue) || defined(__NRFX_DOXYGEN__)
@@ -332,7 +333,7 @@ extern "C" {
  */
 typedef enum
 {
-#if NRF_CLOCK_HAS_LFCLKSTAT
+#if NRF_CLOCK_HAS_LFCLKSTAT_SRC_RUN
     NRF_CLOCK_LFCLK_LPRC       = (CLOCK_LFCLKSTAT_SRC_LFLPRC_Active << CLOCK_LFCLKSTAT_SRC_LFLPRC_Pos), /**< Internal 32 kHz low power RC oscillator. */
 #endif
 #if defined(CLOCK_LFCLKSRC_SRC_LFULP) || defined(__NRFX_DOXYGEN__)
@@ -343,7 +344,7 @@ typedef enum
     NRF_CLOCK_LFCLK_RC         = CLOCK_LFCLKSRC_SRC_RC,                                                 /**< Internal 32 kHz RC oscillator. */
 #elif NRF_CLOCK_HAS_LFCLK_TYPE
     NRF_CLOCK_LFCLK_RC         = CLOCK_LFCLK_SRC_SRC_LFRC,                                              /**< Internal 32 kHz RC oscillator. */
-#elif NRF_CLOCK_HAS_LFCLKSTAT
+#elif NRF_CLOCK_HAS_LFCLKSTAT_SRC_RUN
     NRF_CLOCK_LFCLK_RC         = (CLOCK_LFCLKSTAT_SRC_LFRC_Active << CLOCK_LFCLKSTAT_SRC_LFRC_Pos),     /**< Internal 32 kHz RC oscillator. */
 #else
     NRF_CLOCK_LFCLK_RC         = CLOCK_LFCLKSRC_SRC_LFRC,                                               /**< Internal 32 kHz RC oscillator. */
@@ -354,7 +355,7 @@ typedef enum
     NRF_CLOCK_LFCLK_XTAL       = CLOCK_LFCLKSRC_SRC_Xtal,                                               /**< External 32 kHz crystal. */
 #elif NRF_CLOCK_HAS_LFCLK_LFXO
     NRF_CLOCK_LFCLK_XTAL       = CLOCK_LFCLK_SRC_SRC_LFXO,                                              /**< External 32 kHz crystal. */
-#elif NRF_CLOCK_HAS_LFCLKSTAT
+#elif NRF_CLOCK_HAS_LFCLKSTAT_SRC_RUN
     NRF_CLOCK_LFCLK_XTAL       = (CLOCK_LFCLKSTAT_SRC_LFXO_Active << CLOCK_LFCLKSTAT_SRC_LFXO_Pos),     /**< External 32 kHz crystal. */
 #else
     NRF_CLOCK_LFCLK_XTAL       = CLOCK_LFCLKSRC_SRC_LFXO,                                               /**< External 32 kHz crystal. */
@@ -367,11 +368,11 @@ typedef enum
     NRF_CLOCK_LFCLK_SYNTH      = CLOCK_LFCLK_SRC_SRC_LFSYNT,                                            /**< Internal 32 kHz synthesized from HFCLK system clock. */
 #elif defined(CLOCK_LFCLKSRC_SRC_LFSYNT)
     NRF_CLOCK_LFCLK_SYNTH      = CLOCK_LFCLKSRC_SRC_LFSYNT,                                             /**< Internal 32 kHz synthesized from HFCLK system clock. */
-#elif NRF_CLOCK_HAS_LFCLKSTAT
+#elif NRF_CLOCK_HAS_LFCLKSTAT_SRC_RUN
     NRF_CLOCK_LFCLK_SYNTH      = (CLOCK_LFCLKSTAT_SRC_SYNTH_Active << CLOCK_LFCLKSTAT_SRC_SYNTH_Pos),   /**< Internal 32 kHz synthesized. */
 #endif
 
-#if NRF_CLOCK_HAS_LFCLKSTAT
+#if NRF_CLOCK_HAS_LFCLKSTAT_SRC_RUN
     NRF_CLOCK_LFCLK_LPRC_XTAL  = NRF_CLOCK_LFCLK_LPRC  | NRF_CLOCK_LFCLK_XTAL,                          /**< Internal 32 kHz low power RC oscillator and external 32 kHz crystal. */
     NRF_CLOCK_LFCLK_RC_XTAL    = NRF_CLOCK_LFCLK_RC    | NRF_CLOCK_LFCLK_XTAL,                          /**< Internal 32 kHz RC oscillator and external 32 kHz crystal. */
     NRF_CLOCK_LFCLK_SYNTH_XTAL = NRF_CLOCK_LFCLK_SYNTH | NRF_CLOCK_LFCLK_XTAL,                          /**< Internal 32 kHz synthesized and external 32 kHz crystal. */
@@ -1154,7 +1155,7 @@ NRF_STATIC_INLINE bool nrf_clock_is_running(NRF_CLOCK_Type const * p_reg,
     {
 #if NRF_CLOCK_HAS_LFCLK
         case NRF_CLOCK_DOMAIN_LFCLK:
-#if NRF_CLOCK_HAS_LFCLKSTAT
+#if NRF_CLOCK_HAS_LFCLKSTAT_SRC_RUN
             clock_running = p_reg->LFCLKSTAT.SRC;
             if (p_clk_src != NULL)
             {

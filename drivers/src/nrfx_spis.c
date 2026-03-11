@@ -197,9 +197,7 @@ int nrfx_spis_init(nrfx_spis_t *              p_instance,
                    nrfx_spis_event_handler_t  event_handler,
                    void *                     p_context)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
-    NRFX_ASSERT(event_handler);
+    NRFX_ASSERT(p_instance && p_config && event_handler);
 
     nrfx_spis_control_block_t * p_cb = &p_instance->cb;
     int err_code;
@@ -298,8 +296,7 @@ int nrfx_spis_init(nrfx_spis_t *              p_instance,
 int nrfx_spis_reconfigure(nrfx_spis_t *              p_instance,
                           nrfx_spis_config_t const * p_config)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
 
     int err_code;
     nrfx_spis_control_block_t * p_cb = &p_instance->cb;
@@ -465,9 +462,9 @@ int nrfx_spis_buffers_set(nrfx_spis_t *   p_instance,
     nrfx_spis_control_block_t * p_cb = &p_instance->cb;
     int err_code;
 
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(p_tx_buffer != NULL || tx_buffer_length == 0);
-    NRFX_ASSERT(p_rx_buffer != NULL || rx_buffer_length == 0);
+    NRFX_ASSERT((p_cb->state != NRFX_DRV_STATE_UNINITIALIZED) &&
+                ((p_tx_buffer != NULL) || (tx_buffer_length == 0)) &&
+                ((p_rx_buffer != NULL) || (rx_buffer_length == 0)));
 
     // EasyDMA requires that transfer buffers are placed in Data RAM region;
     // signal error if they are not.

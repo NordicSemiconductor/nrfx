@@ -116,10 +116,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_CRACEN_S_BASE                 0x50059000UL
 #define NRF_USBHS_NS_BASE                 0x4005A000UL
 #define NRF_USBHS_S_BASE                  0x5005A000UL
-#define NRF_QSPI00_NS_BASE                0x4005B000UL
-#define NRF_QSPI00_S_BASE                 0x5005B000UL
-#define NRF_QSPI01_NS_BASE                0x4005C000UL
-#define NRF_QSPI01_S_BASE                 0x5005C000UL
+#define NRF_MSPI00_NS_BASE                0x4005B000UL
+#define NRF_MSPI00_S_BASE                 0x5005B000UL
+#define NRF_MSPI01_NS_BASE                0x4005C000UL
+#define NRF_MSPI01_S_BASE                 0x5005C000UL
 #define NRF_SPIM01_NS_BASE                0x4005D000UL
 #define NRF_SPIS01_NS_BASE                0x4005D000UL
 #define NRF_SPIM01_S_BASE                 0x5005D000UL
@@ -348,10 +348,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_CRACEN_S                      ((NRF_CRACEN_Type*)                   NRF_CRACEN_S_BASE)
 #define NRF_USBHS_NS                      ((NRF_USBHS_Type*)                    NRF_USBHS_NS_BASE)
 #define NRF_USBHS_S                       ((NRF_USBHS_Type*)                    NRF_USBHS_S_BASE)
-#define NRF_QSPI00_NS                     ((NRF_QSPI_Type*)                     NRF_QSPI00_NS_BASE)
-#define NRF_QSPI00_S                      ((NRF_QSPI_Type*)                     NRF_QSPI00_S_BASE)
-#define NRF_QSPI01_NS                     ((NRF_QSPI_Type*)                     NRF_QSPI01_NS_BASE)
-#define NRF_QSPI01_S                      ((NRF_QSPI_Type*)                     NRF_QSPI01_S_BASE)
+#define NRF_MSPI00_NS                     ((NRF_MSPI_Type*)                     NRF_MSPI00_NS_BASE)
+#define NRF_MSPI00_S                      ((NRF_MSPI_Type*)                     NRF_MSPI00_S_BASE)
+#define NRF_MSPI01_NS                     ((NRF_MSPI_Type*)                     NRF_MSPI01_NS_BASE)
+#define NRF_MSPI01_S                      ((NRF_MSPI_Type*)                     NRF_MSPI01_S_BASE)
 #define NRF_SPIM01_NS                     ((NRF_SPIM_Type*)                     NRF_SPIM01_NS_BASE)
 #define NRF_SPIS01_NS                     ((NRF_SPIS_Type*)                     NRF_SPIS01_NS_BASE)
 #define NRF_SPIM01_S                      ((NRF_SPIM_Type*)                     NRF_SPIM01_S_BASE)
@@ -555,8 +555,8 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_TIMER00                             NRF_TIMER00_NS
   #define NRF_EGU00                               NRF_EGU00_NS
   #define NRF_USBHS                               NRF_USBHS_NS
-  #define NRF_QSPI00                              NRF_QSPI00_NS
-  #define NRF_QSPI01                              NRF_QSPI01_NS
+  #define NRF_MSPI00                              NRF_MSPI00_NS
+  #define NRF_MSPI01                              NRF_MSPI01_NS
   #define NRF_SPIM01                              NRF_SPIM01_NS
   #define NRF_SPIS01                              NRF_SPIS01_NS
   #define NRF_DPPIC10                             NRF_DPPIC10_NS
@@ -672,8 +672,8 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_EGU00                               NRF_EGU00_S
   #define NRF_CRACEN                              NRF_CRACEN_S
   #define NRF_USBHS                               NRF_USBHS_S
-  #define NRF_QSPI00                              NRF_QSPI00_S
-  #define NRF_QSPI01                              NRF_QSPI01_S
+  #define NRF_MSPI00                              NRF_MSPI00_S
+  #define NRF_MSPI01                              NRF_MSPI01_S
   #define NRF_SPIM01                              NRF_SPIM01_S
   #define NRF_SPIS01                              NRF_SPIS01_S
   #define NRF_SPU10                               NRF_SPU10_S

@@ -125,9 +125,9 @@ int nrfx_power_init(nrfx_power_config_t const * p_config)
 
 #if NRF_POWER_HAS_DCDCEN
     nrf_power_dcdcen_set(NRF_POWER, p_config->dcdcen);
-#elif defined(REGULATORS_PRESENT)
+#elif defined(REGULATORS_PRESENT) && NRF_REGULATORS_HAS_VREG_MAIN
     nrf_regulators_vreg_enable_set(NRF_REGULATORS, NRF_REGULATORS_VREG_MAIN, p_config->dcdcen);
-#endif // defined(REGULATORS_PRESENT)
+#endif
 
     nrfx_power_clock_irq_init();
 

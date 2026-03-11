@@ -793,6 +793,72 @@ POSSIBILITY OF SUCH DAMAGE.
 #define USBHS_HAS_SOF_EVENT 0                        /*!< (unspecified)                                                        */
 #define USBHS_RTUNE_AVAILABLE 0                      /*!< (unspecified)                                                        */
 
+/*MRAM controller*/
+#define MRAMC_PRESENT 1
+#define MRAMC_COUNT 2
+
+#define MRAMC110_NMRAMWORDSIZE 128                   /*!< (unspecified)                                                        */
+#define MRAMC110_NMRAMPAGESIZE 4                     /*!< (unspecified)                                                        */
+#define MRAMC110_NNVRPAGESIZE 2                      /*!< (unspecified)                                                        */
+#define MRAMC110_NMAINMEMORYSIZE 1                   /*!< MRAM main memory size: 1 MB                                          */
+#define MRAMC110_NNVRPAGES_MIN 0                     /*!< Number of MRAM NVR pages: 0..3                                       */
+#define MRAMC110_NNVRPAGES_MAX 3                     /*!< Number of MRAM NVR pages: 0..3                                       */
+#define MRAMC110_NNVRPAGES_SIZE 4                    /*!< Number of MRAM NVR pages: 0..3                                       */
+#define MRAMC110_NSIZEMRAMWORDS_MIN 1                /*!< Register ERASE.SIZE.SIZE range: 1..65536                             */
+#define MRAMC110_NSIZEMRAMWORDS_MAX 65536            /*!< Register ERASE.SIZE.SIZE range: 1..65536                             */
+#define MRAMC110_NSIZEMRAMWORDS_SIZE 65537           /*!< Register ERASE.SIZE.SIZE range: 1..65536                             */
+#define MRAMC110_MARMDATAWIDTHWORDS_MIN 0            /*!< (unspecified)                                                        */
+#define MRAMC110_MARMDATAWIDTHWORDS_MAX 3            /*!< (unspecified)                                                        */
+#define MRAMC110_MARMDATAWIDTHWORDS_SIZE 4           /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGEUPPER 0                      /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELOWER 1                      /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGEENABLENORMALWRITE 1          /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELRSIZEBITS_MIN 24            /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELRSIZEBITS_MAX 27            /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELRSIZEBITS_SIZE 28           /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELRSIZERESET 15               /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELRSIZEVALUE_MIN 0            /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELRSIZEVALUE_MAX 15           /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELRSIZEVALUE_SIZE 16          /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELWSIZEBITS_MIN 28            /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELWSIZEBITS_MAX 31            /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELWSIZEBITS_SIZE 32           /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELWSIZERESET 15               /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELWSIZEVALUE_MIN 0            /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELWSIZEVALUE_MAX 15           /*!< (unspecified)                                                        */
+#define MRAMC110_NVRPAGELWSIZEVALUE_SIZE 16          /*!< (unspecified)                                                        */
+
+#define MRAMC111_NMRAMWORDSIZE 128                   /*!< (unspecified)                                                        */
+#define MRAMC111_NMRAMPAGESIZE 4                     /*!< (unspecified)                                                        */
+#define MRAMC111_NNVRPAGESIZE 2                      /*!< (unspecified)                                                        */
+#define MRAMC111_NMAINMEMORYSIZE 1                   /*!< MRAM main memory size: 1 MB                                          */
+#define MRAMC111_NNVRPAGES_MIN 0                     /*!< Number of MRAM NVR pages: 0..3                                       */
+#define MRAMC111_NNVRPAGES_MAX 3                     /*!< Number of MRAM NVR pages: 0..3                                       */
+#define MRAMC111_NNVRPAGES_SIZE 4                    /*!< Number of MRAM NVR pages: 0..3                                       */
+#define MRAMC111_NSIZEMRAMWORDS_MIN 1                /*!< Register ERASE.SIZE.SIZE range: 1..65536                             */
+#define MRAMC111_NSIZEMRAMWORDS_MAX 65536            /*!< Register ERASE.SIZE.SIZE range: 1..65536                             */
+#define MRAMC111_NSIZEMRAMWORDS_SIZE 65537           /*!< Register ERASE.SIZE.SIZE range: 1..65536                             */
+#define MRAMC111_MARMDATAWIDTHWORDS_MIN 0            /*!< (unspecified)                                                        */
+#define MRAMC111_MARMDATAWIDTHWORDS_MAX 3            /*!< (unspecified)                                                        */
+#define MRAMC111_MARMDATAWIDTHWORDS_SIZE 4           /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGEUPPER 0                      /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELOWER 0                      /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGEENABLENORMALWRITE 1          /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELRSIZEBITS_MIN 24            /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELRSIZEBITS_MAX 27            /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELRSIZEBITS_SIZE 28           /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELRSIZERESET 15               /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELRSIZEVALUE_MIN 0            /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELRSIZEVALUE_MAX 15           /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELRSIZEVALUE_SIZE 16          /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELWSIZEBITS_MIN 28            /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELWSIZEBITS_MAX 31            /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELWSIZEBITS_SIZE 32           /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELWSIZERESET 15               /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELWSIZEVALUE_MIN 0            /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELWSIZEVALUE_MAX 15           /*!< (unspecified)                                                        */
+#define MRAMC111_NVRPAGELWSIZEVALUE_SIZE 16          /*!< (unspecified)                                                        */
+
 /*External Memory Interface*/
 #define EXMIF_PRESENT 1
 #define EXMIF_COUNT 1
@@ -804,6 +870,29 @@ POSSIBILITY OF SUCH DAMAGE.
 /*AUXPLL*/
 #define AUXPLL_PRESENT 1
 #define AUXPLL_COUNT 1
+
+/*OTP controller*/
+#define OTPC_PRESENT 1
+#define OTPC_COUNT 1
+
+#define OTPC_REGION_NO_EXTENSION 0                   /*!< (unspecified)                                                        */
+#define OTPC_REGION_EXTENSION 1                      /*!< (unspecified)                                                        */
+#define OTPC_TESTMODE_WRITEBACK_EVENT 0              /*!< (unspecified)                                                        */
+#define OTPC_NREGIONS_MIN 0                          /*!< (unspecified)                                                        */
+#define OTPC_NREGIONS_MAX 5                          /*!< (unspecified)                                                        */
+#define OTPC_NREGIONS_SIZE 6                         /*!< (unspecified)                                                        */
+#define OTPC_REGION0ADDR 797179904                   /*!< (unspecified)                                                        */
+#define OTPC_REGION0SIZE 768                         /*!< (unspecified)                                                        */
+#define OTPC_REGION1ADDR 797180672                   /*!< (unspecified)                                                        */
+#define OTPC_REGION1SIZE 256                         /*!< (unspecified)                                                        */
+#define OTPC_REGION2ADDR 797180928                   /*!< (unspecified)                                                        */
+#define OTPC_REGION2SIZE 768                         /*!< (unspecified)                                                        */
+#define OTPC_REGION3ADDR 797181696                   /*!< (unspecified)                                                        */
+#define OTPC_REGION3SIZE 768                         /*!< (unspecified)                                                        */
+#define OTPC_REGION4ADDR 797182464                   /*!< (unspecified)                                                        */
+#define OTPC_REGION4SIZE 512                         /*!< (unspecified)                                                        */
+#define OTPC_REGION5ADDR 797182976                   /*!< (unspecified)                                                        */
+#define OTPC_REGION5SIZE 13312                       /*!< (unspecified)                                                        */
 
 /*VPR peripheral registers*/
 #define VPRPUBLIC_PRESENT 1

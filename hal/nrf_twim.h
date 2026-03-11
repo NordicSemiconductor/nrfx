@@ -126,6 +126,13 @@ extern "C" {
 #define NRF_TWIM_DMA_RX_PATTERN_MAX_COUNT TWIM_DMA_RX_MATCH_CANDIDATE_MaxCount
 #endif
 
+#if defined(TWIM_HAS_CUSTOM_FREQUENCIES) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether TWIM supports custom frequencies. */
+#define NRF_TWIM_HAS_CUSTOM_FREQUENCIES 1
+#else
+#define NRF_TWIM_HAS_CUSTOM_FREQUENCIES 0
+#endif
+
 /** @brief TWIM tasks. */
 typedef enum
 {

@@ -43,8 +43,7 @@ nrfx_usbreg_event_handler_t nrfx_usbreg_handler_get(void)
 
 void nrfx_usbreg_init(nrfx_usbreg_config_t const * p_config)
 {
-    NRFX_ASSERT(p_config != NULL);
-    NRFX_ASSERT(p_config->handler != NULL);
+    NRFX_ASSERT((p_config != NULL) && (p_config->handler != NULL));
 
     nrfx_usbreg_uninit();
     m_usbevt_handler = p_config->handler;

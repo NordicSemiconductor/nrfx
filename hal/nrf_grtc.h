@@ -1299,8 +1299,8 @@ NRF_STATIC_INLINE void nrf_grtc_sys_counter_cc_add_set(NRF_GRTC_Type *          
                                                        uint32_t                    value,
                                                        nrf_grtc_cc_add_reference_t reference)
 {
-    NRFX_ASSERT(cc_channel < NRF_GRTC_SYSCOUNTER_CC_COUNT);
-    NRFX_ASSERT(value <= NRF_GRTC_SYSCOUNTER_CCADD_MASK);
+    NRFX_ASSERT((cc_channel < NRF_GRTC_SYSCOUNTER_CC_COUNT) &&
+                (value <= NRF_GRTC_SYSCOUNTER_CCADD_MASK));
 
     p_reg->CC[cc_channel].CCADD = ((uint32_t)reference << GRTC_CC_CCADD_REFERENCE_Pos) |
                                (value & NRF_GRTC_SYSCOUNTER_CCADD_MASK);
@@ -1955,8 +1955,8 @@ NRF_STATIC_INLINE void nrf_grtc_sys_counter_minterval_set(NRF_GRTC_Type * p_reg,
                                                           uint8_t         cc_channel,
                                                           uint32_t        value)
 {
-    NRFX_ASSERT(value <= NRF_GRTC_MINTERVAL_MAX_VALUE);
-    NRFX_ASSERT(cc_channel < NRF_GRTC_MINTERVAL_COUNT);
+    NRFX_ASSERT((value <= NRF_GRTC_MINTERVAL_MAX_VALUE) &&
+                (cc_channel < NRF_GRTC_MINTERVAL_COUNT));
 
     p_reg->MINTERVAL[cc_channel] = (value << GRTC_MINTERVAL_VALUE_Pos);
 }
@@ -1967,7 +1967,7 @@ NRF_STATIC_INLINE uint32_t nrf_grtc_sys_counter_minterval_get(NRF_GRTC_Type cons
 {
     NRFX_ASSERT(cc_channel < NRF_GRTC_MINTERVAL_COUNT);
 
-    return (p_reg->INTERVAL[cc_channel] >> GRTC_MINTERVAL_VALUE_Pos);
+    return (p_reg->MINTERVAL[cc_channel] >> GRTC_MINTERVAL_VALUE_Pos);
 }
 #endif
 

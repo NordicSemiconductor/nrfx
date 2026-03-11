@@ -4,6 +4,7 @@
  * @{
  * @ingroup nrfx_usbd
  */
+
 /** @brief Enable USB driver
  *
  *  Set to 1 to activate.
@@ -11,6 +12,7 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_USBD_ENABLED
+
 /** @brief Interrupt priority
  *
  *  Following options are available:
@@ -51,6 +53,5 @@
  * @note This is an NRF_CONFIG macro.
  */
 #define NRFX_USBD_CONFIG_ISO_IN_ZLP
-
 
 /** @} */

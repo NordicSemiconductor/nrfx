@@ -33,6 +33,7 @@
 
 #include <nrfx.h>
 #include <nrfx_nvmc.h>
+#include <hal/nrf_uicr.h>
 
 /**
  * Value representing the number of bytes in a word.
@@ -301,7 +302,7 @@ bool nrfx_nvmc_fits_memory_check(uint32_t addr, bool uicr_allowed, uint32_t len_
         return true;
     }
 #if !defined(NRF_TRUSTZONE_NONSECURE)
-    if (uicr_allowed && nrfx_nvmc_fits_uicr_check(addr, len_bytes))
+    if (uicr_allowed && nrf_uicr_fits_check(NRF_UICR, addr, len_bytes))
     {
         return true;
     }
@@ -315,11 +316,11 @@ bool nrfx_nvmc_fits_memory_check(uint32_t addr, bool uicr_allowed, uint32_t len_
 bool nrfx_nvmc_fits_uicr_check(uint32_t addr, uint32_t len_bytes)
 {
 #if !defined(NRF_TRUSTZONE_NONSECURE)
-    return ((addr - (uint32_t)NRF_UICR) < sizeof(NRF_UICR_Type))
-        && (len_bytes <= ((uint32_t)NRF_UICR + sizeof(NRF_UICR_Type) - addr));
+    return nrf_uicr_fits_check(NRF_UICR, addr, len_bytes);
 #else
     (void)addr;
     (void)len_bytes;
+
     return false;
 #endif
 }
@@ -334,8 +335,7 @@ bool nrfx_nvmc_byte_writable_check(uint32_t addr, uint8_t val_to_check)
 
 bool nrfx_nvmc_halfword_writable_check(uint32_t addr, uint16_t val_to_check)
 {
-    NRFX_ASSERT(is_valid_address(addr, true));
-    NRFX_ASSERT(is_halfword_aligned(addr));
+    NRFX_ASSERT(is_valid_address(addr, true) && is_halfword_aligned(addr));
 
     uint16_t val_on_addr;
 
@@ -352,8 +352,7 @@ bool nrfx_nvmc_halfword_writable_check(uint32_t addr, uint16_t val_to_check)
 
 bool nrfx_nvmc_word_writable_check(uint32_t addr, uint32_t val_to_check)
 {
-    NRFX_ASSERT(is_valid_address(addr, true));
-    NRFX_ASSERT(nrfx_is_word_aligned((void const *)addr));
+    NRFX_ASSERT(is_valid_address(addr, true) && nrfx_is_word_aligned((void const *)addr));
 
     uint32_t val_on_addr = nrf_nvmc_word_read(addr);
     return (val_to_check & val_on_addr) == val_to_check;
@@ -370,8 +369,7 @@ void nrfx_nvmc_byte_write(uint32_t addr, uint8_t value)
 
 void nrfx_nvmc_halfword_write(uint32_t addr, uint16_t value)
 {
-    NRFX_ASSERT(is_valid_address(addr, true));
-    NRFX_ASSERT(is_halfword_aligned(addr));
+    NRFX_ASSERT(is_valid_address(addr, true) && is_halfword_aligned(addr));
 
     uint32_t aligned_addr = addr & ~(0x03UL);
 
@@ -380,8 +378,7 @@ void nrfx_nvmc_halfword_write(uint32_t addr, uint16_t value)
 
 void nrfx_nvmc_word_write(uint32_t addr, uint32_t value)
 {
-    NRFX_ASSERT(is_valid_address(addr, true));
-    NRFX_ASSERT(nrfx_is_word_aligned((void const *)addr));
+    NRFX_ASSERT(is_valid_address(addr, true) && nrfx_is_word_aligned((void const *)addr));
 
     nvmc_write_mode_set();
 
@@ -454,9 +451,8 @@ void nrfx_nvmc_bytes_write(uint32_t addr, void const * src, uint32_t num_bytes)
 
 void nrfx_nvmc_words_write(uint32_t addr, void const * src, uint32_t num_words)
 {
-    NRFX_ASSERT(is_valid_address(addr, true));
-    NRFX_ASSERT(nrfx_is_word_aligned((void const *)addr));
-    NRFX_ASSERT(nrfx_is_word_aligned(src));
+    NRFX_ASSERT(is_valid_address(addr, true) && nrfx_is_word_aligned((void const *)addr) &&
+                nrfx_is_word_aligned(src));
 
     nvmc_write_mode_set();
 

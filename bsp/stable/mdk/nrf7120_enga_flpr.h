@@ -72,8 +72,8 @@ typedef enum {
   EGU00_IRQn                             = 88,       /*!< 88 EGU00                                                             */
   CRACEN_IRQn                            = 89,       /*!< 89 CRACEN                                                            */
   USBHS_IRQn                             = 90,       /*!< 90 USBHS                                                             */
-  QSPI00_IRQn                            = 91,       /*!< 91 QSPI00                                                            */
-  QSPI01_IRQn                            = 92,       /*!< 92 QSPI01                                                            */
+  MSPI00_IRQn                            = 91,       /*!< 91 MSPI00                                                            */
+  MSPI01_IRQn                            = 92,       /*!< 92 MSPI01                                                            */
   SERIAL01_IRQn                          = 93,       /*!< 93 SERIAL01                                                          */
   SPU10_IRQn                             = 128,      /*!< 128 SPU10                                                            */
   TIMER10_IRQn                           = 133,      /*!< 133 TIMER10                                                          */

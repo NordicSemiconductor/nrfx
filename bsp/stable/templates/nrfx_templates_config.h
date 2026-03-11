@@ -106,4 +106,8 @@
     #include "nrfx_config_ext.h"
 #endif
 
+// Uncomment this line to use the standard MDK way of binding IRQ handlers
+// at linking time.
+//#include <soc/nrfx_irqs.h>
+
 #endif // NRFX_TEMPLATES_CONFIG_H__

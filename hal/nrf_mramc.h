@@ -1039,9 +1039,9 @@ void nrf_mramc_readynext_timeout_get(NRF_MRAMC_Type const *          p_reg,
 NRF_STATIC_INLINE void nrf_mramc_lowavgcurr_set(NRF_MRAMC_Type *               p_reg,
                                                 nrf_mramc_lowavgcurr_t const * p_data)
 {
-    NRFX_ASSERT(p_data->read  <= NRF_MRAMC_LOWAVGCURR_READ_MAX);
-    NRFX_ASSERT(p_data->write <= NRF_MRAMC_LOWAVGCURR_WRITE_MAX);
-    NRFX_ASSERT(p_data->erase <= NRF_MRAMC_LOWAVGCURR_ERASE_MAX);
+    NRFX_ASSERT((p_data->read  <= NRF_MRAMC_LOWAVGCURR_READ_MAX) &&
+                (p_data->write <= NRF_MRAMC_LOWAVGCURR_WRITE_MAX) &&
+                (p_data->erase <= NRF_MRAMC_LOWAVGCURR_ERASE_MAX));
 
     p_reg->LOWAVGCURR.READ  = p_data->read;
     p_reg->LOWAVGCURR.WRITE = p_data->write;

@@ -41,18 +41,22 @@ extern "C" {
 #endif
 
 /* Analog pins definitions. */
-
+#ifndef ANALOG_REF_INTERNAL_VAL
 #if defined(NRF54LV10A_XXAA)
 #define ANALOG_REF_INTERNAL_VAL 1300
-#elif defined(HALTIUM_XXAA) || defined(NRF7120_ENGA_XXAA) || defined(NRF54LS05B_XXAA)
+#elif defined(NRF9220_XXAA) || defined(NRF9230_ENGB_XXAA) ||  \
+    defined(NRF54H20_XXAA) || defined(NRF7120_ENGA_XXAA) || \
+    defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
 #define ANALOG_REF_INTERNAL_VAL 1024
-#elif defined(LUMOS_XXAA)
+#elif defined(NRF54L_SERIES)
 #define ANALOG_REF_INTERNAL_VAL 900
 #else
 #define ANALOG_REF_INTERNAL_VAL 600
 #endif
+#endif
 
-#if defined(HALTIUM_XXAA)
+#ifndef COMP_EXTERNAL_AIN_PSELS
+#if defined(NRF9220_XXAA) || defined(NRF9230_ENGB_XXAA) || defined(NRF54H20_XXAA)
     #define COMP_EXTERNAL_AIN_PSELS        \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 1), \
@@ -82,7 +86,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(3U, 1)
-#elif defined(NRF54LV10A_XXAA)
+#elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
     #define COMP_EXTERNAL_AIN_PSELS         \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 1),  \
@@ -92,7 +96,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(10U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(11U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(12U, 1)
-#elif defined(NRF54LS05B_XXAA)
+#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
     #define COMP_EXTERNAL_AIN_PSELS         \
         NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1),  \
@@ -130,8 +134,10 @@ extern "C" {
         NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(COMP_PSEL_PSEL_AnalogInput7), \
             (NRF_COMP_INPUT_7,), ())
 #endif
+#endif
 
-#if defined(HALTIUM_XXAA)
+#ifndef COMP_EXTERNAL_REF_PSELS
+#if defined(NRF9220_XXAA) || defined(NRF9230_ENGB_XXAA) || defined(NRF54H20_XXAA)
     #define COMP_EXTERNAL_REF_PSELS        \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 1), \
@@ -161,7 +167,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(3U, 1),
-#elif defined(NRF54LV10A_XXAA)
+#elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
     #define COMP_EXTERNAL_REF_PSELS         \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 1),  \
@@ -171,7 +177,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(10U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(11U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(12U, 1),
-#elif defined(NRF54LS05B_XXAA)
+#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
     #define COMP_EXTERNAL_REF_PSELS        \
         NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
@@ -209,8 +215,10 @@ extern "C" {
         NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(COMP_EXTREFSEL_EXTREFSEL_AnalogReference7), \
             (NRF_COMP_EXT_REF_7,), ())
 #endif
+#endif
 
-#if defined(HALTIUM_XXAA)
+#ifndef LPCOMP_EXTERNAL_AIN_PSELS
+#if defined(NRF9220_XXAA) || defined(NRF9230_ENGB_XXAA) || defined(NRF54H20_XXAA)
     #define LPCOMP_EXTERNAL_AIN_PSELS      \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 1), \
@@ -240,7 +248,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(3U, 1),
-#elif defined(NRF54LV10A_XXAA)
+#elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
     #define LPCOMP_EXTERNAL_AIN_PSELS       \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 1),  \
@@ -250,7 +258,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(10U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(11U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(12U, 1),
-#elif defined(NRF54LS05B_XXAA)
+#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
     #define LPCOMP_EXTERNAL_AIN_PSELS      \
         NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
@@ -284,8 +292,10 @@ extern "C" {
         NRF_LPCOMP_INPUT_6,           \
         NRF_LPCOMP_INPUT_7,
 #endif
+#endif
 
-#if defined(HALTIUM_XXAA)
+#ifndef LPCOMP_EXTERNAL_REF_PSELS
+#if defined(NRF9220_XXAA) || defined(NRF9230_ENGB_XXAA) || defined(NRF54H20_XXAA)
     #define LPCOMP_EXTERNAL_REF_PSELS      \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 1), \
@@ -315,7 +325,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(3U, 1),
-#elif defined(NRF54LV10A_XXAA)
+#elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
     #define LPCOMP_EXTERNAL_REF_PSELS       \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 1),  \
@@ -325,7 +335,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(10U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(11U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(12U, 1),
-#elif defined(NRF54LS05B_XXAA)
+#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
     #define LPCOMP_EXTERNAL_REF_PSELS      \
         NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
@@ -353,8 +363,10 @@ extern "C" {
         NRF_LPCOMP_EXT_REF_REF0,      \
         NRF_LPCOMP_EXT_REF_REF1,
 #endif
+#endif
 
-#if defined(HALTIUM_XXAA)
+#ifndef SAADC_EXTERNAL_AIN_PSELS
+#if defined(NRF9220_XXAA) || defined(NRF9230_ENGB_XXAA) || defined(NRF54H20_XXAA)
     #define SAADC_EXTERNAL_AIN_PSELS       \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 1), \
@@ -390,7 +402,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(3U, 1),
-#elif defined(NRF54LV10A_XXAA)
+#elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
     #define SAADC_EXTERNAL_AIN_PSELS        \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 1),  \
@@ -400,7 +412,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(10U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(11U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(12U, 1),
-#elif defined(NRF54LS05B_XXAA)
+#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
     #define SAADC_EXTERNAL_AIN_PSELS       \
         NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
@@ -446,7 +458,9 @@ extern "C" {
         NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(SAADC_CH_PSELP_PSELP_AnalogInput13), \
             (NRF_SAADC_INPUT_AIN13,), ())
 #endif
+#endif
 
+#ifndef SAADC_INTERNAL_AIN_PSELS
 #if defined(NRF54L05_XXAA) || defined(NRF54L10_XXAA) || defined(NRF54L15_XXAA)
     #define SAADC_INTERNAL_AIN_PSELS                                     \
         NRF_SAADC_INPUT_VDD,                                             \
@@ -461,7 +475,7 @@ extern "C" {
         NRF_SAADC_INPUT_AVDD,                                            \
         NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(NRF_SAADC_INPUT_DVDD), \
             (NRF_SAADC_INPUT_DVDD,), (NRFX_SAADC_INPUT_NOT_PRESENT,))
-#elif defined(NRF54LV10A_XXAA)
+#elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
     #define SAADC_INTERNAL_AIN_PSELS                                     \
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
@@ -469,10 +483,11 @@ extern "C" {
         NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(NRF_SAADC_INPUT_DVDD), \
             (NRF_SAADC_INPUT_DVDD,), (NRFX_SAADC_INPUT_NOT_PRESENT,))    \
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
-        NRF_SAADC_INPUT_VDDL,                                            \
+        NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(NRF_SAADC_INPUT_VDDL), \
+            (NRF_SAADC_INPUT_VDDL,), (NRFX_SAADC_INPUT_NOT_PRESENT,))    \
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
         NRF_SAADC_INPUT_VSS,
-#elif defined(NRF54LS05B_XXAA)
+#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
     #define SAADC_INTERNAL_AIN_PSELS                                     \
         NRF_SAADC_INPUT_VDD,                                             \
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
@@ -507,6 +522,11 @@ extern "C" {
         NRFX_SAADC_INPUT_NOT_PRESENT,                                             \
         NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(SAADC_CH_PSELP_PSELP_VDDHDIV5), \
             (NRF_SAADC_INPUT_VDDHDIV5,), (NRFX_SAADC_INPUT_NOT_PRESENT,))
+#endif
+#endif
+
+#if defined(NRF9220_XXAA) || defined(NRF9230_ENGB_XXAA) || defined(NRF54H20_XXAA)
+#define SAADC_HAS_3V3_OUTPUTS 1
 #endif
 
 /* Ram sections definitions. */
@@ -613,12 +633,12 @@ extern "C" {
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 16
 #define RAM_UNIFORM_SECTIONS_TOTAL     16
-#elif defined(NRF54LS05B_XXAA)
+#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 2
 #define RAM_UNIFORM_SECTIONS_TOTAL     2
-#elif defined(NRF54LV10A_XXAA)
+#elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 6
@@ -735,14 +755,14 @@ extern "C" {
     #define NRFX_PRS_BOX_6_ADDR     NRF_UARTE30
     // COMP, LPCOMP
     #define NRFX_PRS_BOX_7_ADDR     NRF_COMP
-#elif defined(NRF54LS05B_XXAA)
+#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
     // SPIM20, SPIS20, TWIM20, TWIS20, UARTE20
     #define NRFX_PRS_BOX_0_ADDR     NRF_UARTE20
     // SPIM21, SPIS21, TWIM21, TWIS21, UARTE21
     #define NRFX_PRS_BOX_1_ADDR     NRF_UARTE21
     // SPIM32, SPIS32, TWIM32, TWIS32, UARTE32
     #define NRFX_PRS_BOX_2_ADDR     NRF_UARTE22
-#elif defined(NRF54LV10A_XXAA)
+#elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
     // SPIM20, SPIS20, TWIM20, TWIS20, UARTE20
     #define NRFX_PRS_BOX_0_ADDR     NRF_UARTE20
     // SPIM21, SPIS21, TWIM21, TWIS21, UARTE21
@@ -815,6 +835,10 @@ extern "C" {
          >> FICR_XOSC32MTRIM_SLOPE_Pos) + 791) * (uint32_t)(cap_val * 4 - 22) + \
         (((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_OFFSET_Msk)               \
          >> FICR_XOSC32MTRIM_OFFSET_Pos) << 4)) >> 10)
+#endif
+
+#if defined(NRF54L_SERIES) || defined(NRF7120_ENGA_XXAA)
+    #define UARTE_NEEDS_BAUDRATE_FACTOR 1
 #endif
 
 #ifdef __cplusplus

@@ -104,6 +104,13 @@ extern "C" {
 #define NRF_MPC_HAS_OVERRIDE_SECUREMASK 0
 #endif
 
+#if defined(MPC_OVERRIDE_PERM_PRIVL_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether privilege level configuration is present. */
+#define NRF_MPC_HAS_OVERRIDE_PRIVILEGED 1
+#else
+#define NRF_MPC_HAS_OVERRIDE_PRIVILEGED 0
+#endif
+
 #if defined(MPC_REGION_MaxCount) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether region configuration is present. */
 #define NRF_MPC_HAS_REGION 1
@@ -155,10 +162,13 @@ typedef enum
  */
 typedef enum
 {
-    NRF_MPC_PERM_READ_MASK    = MPC_OVERRIDE_PERM_READ_Msk,    /**< Read access. */
-    NRF_MPC_PERM_WRITE_MASK   = MPC_OVERRIDE_PERM_WRITE_Msk,   /**< Write access. */
-    NRF_MPC_PERM_EXECUTE_MASK = MPC_OVERRIDE_PERM_EXECUTE_Msk, /**< Software execute. */
-    NRF_MPC_PERM_SECURE_MASK  = MPC_OVERRIDE_PERM_SECATTR_Msk, /**< Security mapping. */
+    NRF_MPC_PERM_READ_MASK       = MPC_OVERRIDE_PERM_READ_Msk,    /**< Read access. */
+    NRF_MPC_PERM_WRITE_MASK      = MPC_OVERRIDE_PERM_WRITE_Msk,   /**< Write access. */
+    NRF_MPC_PERM_EXECUTE_MASK    = MPC_OVERRIDE_PERM_EXECUTE_Msk, /**< Software execute. */
+    NRF_MPC_PERM_SECURE_MASK     = MPC_OVERRIDE_PERM_SECATTR_Msk, /**< Security mapping. */
+#if NRF_MPC_HAS_OVERRIDE_PRIVILEGED
+    NRF_MPC_PERM_PRIVILEGED_MASK = MPC_OVERRIDE_PERM_PRIVL_Msk,   /**< Privilege mapping. */
+#endif
 } nrf_mpc_permission_mask_t;
 
 #if NRF_MPC_HAS_REGION
@@ -777,8 +787,7 @@ NRF_STATIC_INLINE void nrf_mpc_region_config_set(NRF_MPC_Type *                 
                                                  uint8_t                         index,
                                                  nrf_mpc_region_config_t const * p_config)
 {
-    NRFX_ASSERT(index < NRF_MPC_REGION_COUNT);
-    NRFX_ASSERT(p_config != NULL);
+    NRFX_ASSERT((index < NRF_MPC_REGION_COUNT) && (p_config != NULL));
 
     p_reg->REGION[index].CONFIG = (((p_config->slave_number <<
                                      MPC_REGION_CONFIG_SLAVENUMBER_Pos) &
@@ -791,8 +800,12 @@ NRF_STATIC_INLINE void nrf_mpc_region_config_set(NRF_MPC_Type *                 
                                     MPC_REGION_CONFIG_ENABLE_Pos) |
                                    ((p_config->permissions << MPC_REGION_CONFIG_READ_Pos) &
                                     (MPC_REGION_CONFIG_READ_Msk | MPC_REGION_CONFIG_WRITE_Msk |
+#if NRF_MPC_HAS_OVERRIDE_PRIVILEGED
+                                     MPC_REGION_CONFIG_PRIVL_Msk |
+#endif
                                      MPC_REGION_CONFIG_EXECUTE_Msk |
-                                     MPC_REGION_CONFIG_SECATTR_Msk)) |
+                                     MPC_REGION_CONFIG_SECATTR_Msk
+                                    )) |
                                    ((p_config->owner <<
                                      MPC_REGION_CONFIG_OWNERID_Pos) &
                                     MPC_REGION_CONFIG_OWNERID_Msk));
@@ -816,6 +829,9 @@ NRF_STATIC_INLINE nrf_mpc_region_config_t nrf_mpc_region_config_get(NRF_MPC_Type
 
     ret.permissions = (p_reg->REGION[index].CONFIG &
                        (MPC_REGION_CONFIG_READ_Msk | MPC_REGION_CONFIG_WRITE_Msk |
+#if NRF_MPC_HAS_OVERRIDE_PRIVILEGED
+                        MPC_REGION_CONFIG_PRIVL_Msk |
+#endif
                         MPC_REGION_CONFIG_EXECUTE_Msk | MPC_REGION_CONFIG_SECATTR_Msk))
                       >> MPC_REGION_CONFIG_READ_Pos;
 
@@ -829,8 +845,7 @@ NRF_STATIC_INLINE void nrf_mpc_region_startaddr_set(NRF_MPC_Type * p_reg,
                                                     uint8_t        index,
                                                     uint32_t       address)
 {
-    NRFX_ASSERT(index < NRF_MPC_REGION_COUNT);
-    NRFX_ASSERT((address & 0xFFFUL) == 0);
+    NRFX_ASSERT((index < NRF_MPC_REGION_COUNT) && ((address & 0xFFFUL) == 0));
 
     p_reg->REGION[index].STARTADDR = address;
 }
@@ -846,8 +861,7 @@ NRF_STATIC_INLINE void nrf_mpc_region_addrmask_set(NRF_MPC_Type * p_reg,
                                                    uint8_t        index,
                                                    uint32_t       address)
 {
-    NRFX_ASSERT(index < NRF_MPC_REGION_COUNT);
-    NRFX_ASSERT((address & 0xFFFUL) == 0);
+    NRFX_ASSERT((index < NRF_MPC_REGION_COUNT) && ((address & 0xFFFUL) == 0));
 
     p_reg->REGION[index].ADDRMASK = address;
 }
@@ -880,8 +894,7 @@ NRF_STATIC_INLINE void nrf_mpc_override_config_set(NRF_MPC_Type *               
                                                    uint8_t                           index,
                                                    nrf_mpc_override_config_t const * p_config)
 {
-    NRFX_ASSERT(index < NRF_MPC_OVERRIDE_COUNT);
-    NRFX_ASSERT(p_config != NULL);
+    NRFX_ASSERT((index < NRF_MPC_OVERRIDE_COUNT) && (p_config != NULL));
 
     p_reg->OVERRIDE[index].CONFIG = (((p_config->lock ? MPC_OVERRIDE_CONFIG_LOCK_Locked :
                                        MPC_OVERRIDE_CONFIG_LOCK_Unlocked) <<
@@ -937,8 +950,7 @@ NRF_STATIC_INLINE void nrf_mpc_override_startaddr_set(NRF_MPC_Type * p_reg,
                                                       uint8_t        index,
                                                       uint32_t       address)
 {
-    NRFX_ASSERT(index < NRF_MPC_OVERRIDE_COUNT);
-    NRFX_ASSERT((address & 0xFFFUL) == 0);
+    NRFX_ASSERT((index < NRF_MPC_OVERRIDE_COUNT) && ((address & 0xFFFUL) == 0));
 
     p_reg->OVERRIDE[index].STARTADDR = address;
 }
@@ -955,8 +967,7 @@ NRF_STATIC_INLINE void nrf_mpc_override_endaddr_set(NRF_MPC_Type * p_reg,
                                                     uint8_t        index,
                                                     uint32_t       address)
 {
-    NRFX_ASSERT(index < NRF_MPC_OVERRIDE_COUNT);
-    NRFX_ASSERT((address & 0xFFFUL) == 0);
+    NRFX_ASSERT((index < NRF_MPC_OVERRIDE_COUNT) && ((address & 0xFFFUL) == 0));
 
     p_reg->OVERRIDE[index].ENDADDR = address;
 }
@@ -974,8 +985,7 @@ NRF_STATIC_INLINE void nrf_mpc_override_offset_set(NRF_MPC_Type * p_reg,
                                                    uint8_t        index,
                                                    uint32_t       offset)
 {
-    NRFX_ASSERT(index < NRF_MPC_OVERRIDE_COUNT);
-    NRFX_ASSERT((offset & 0x3FFUL) == 0);
+    NRFX_ASSERT((index < NRF_MPC_OVERRIDE_COUNT) && ((offset & 0x3FFUL) == 0));
 
     p_reg->OVERRIDE[index].OFFSET = (int32_t)offset;
 }
@@ -1087,7 +1097,11 @@ NRF_STATIC_INLINE uint32_t nrf_mpc_memaccerr_info_perm_get(NRF_MPC_Type const * 
 {
     return ((p_reg->MEMACCERR.INFO &
              (MPC_MEMACCERR_INFO_READ_Msk | MPC_MEMACCERR_INFO_WRITE_Msk |
-              MPC_MEMACCERR_INFO_EXECUTE_Msk | MPC_MEMACCERR_INFO_SECURE_Msk))
+#if NRF_MPC_HAS_OVERRIDE_PRIVILEGED
+              MPC_MEMACCERR_INFO_PRIVILEGED_Msk |
+#endif
+              MPC_MEMACCERR_INFO_EXECUTE_Msk | MPC_MEMACCERR_INFO_SECURE_Msk
+            ))
             >> MPC_MEMACCERR_INFO_READ_Pos);
 }
 

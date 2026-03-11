@@ -131,8 +131,7 @@ int nrfx_wdt_init(nrfx_wdt_t *              p_instance,
 int nrfx_wdt_reconfigure(nrfx_wdt_t *              p_instance,
                          nrfx_wdt_config_t const * p_config)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
 
     int err_code;
     nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
@@ -185,11 +184,10 @@ bool nrfx_wdt_init_check(nrfx_wdt_t const * p_instance)
 
 void nrfx_wdt_enable(nrfx_wdt_t * p_instance)
 {
-    NRFX_ASSERT(p_instance);
+    NRFX_ASSERT(p_instance && (p_instance->cb.alloc_index != 0) &&
+                (p_instance->cb.state == NRFX_DRV_STATE_INITIALIZED));
 
     nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
-    NRFX_ASSERT(p_cb->alloc_index != 0);
-    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
     nrfy_wdt_task_trigger(p_instance->p_reg, NRF_WDT_TASK_START);
     p_cb->state = NRFX_DRV_STATE_POWERED_ON;
     NRFX_LOG_INFO("Enabled.");
@@ -214,8 +212,7 @@ int nrfx_wdt_channel_alloc(nrfx_wdt_t * p_instance, nrfx_wdt_channel_id * p_chan
     int result;
     nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
 
-    NRFX_ASSERT(p_channel_id);
-    NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_INITIALIZED);
+    NRFX_ASSERT(p_channel_id && (p_cb->state == NRFX_DRV_STATE_INITIALIZED));
 
     NRFX_CRITICAL_SECTION_ENTER();
     if (p_cb->alloc_index < NRF_WDT_CHANNEL_NUMBER)

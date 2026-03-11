@@ -236,8 +236,7 @@ int nrfx_twim_init(nrfx_twim_t *              p_instance,
                    nrfx_twim_event_handler_t    event_handler,
                    void *                     p_context)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
 
     nrfx_twim_control_block_t * p_cb = &p_instance->cb;
     int err_code;
@@ -301,8 +300,7 @@ int nrfx_twim_init(nrfx_twim_t *              p_instance,
 int nrfx_twim_reconfigure(nrfx_twim_t *              p_instance,
                           nrfx_twim_config_t const * p_config)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
 
     nrfx_twim_control_block_t * p_cb = &p_instance->cb;
 
@@ -345,8 +343,7 @@ int nrfx_twim_callback_set(nrfx_twim_t *             p_instance,
                            nrfx_twim_event_handler_t event_handler,
                            void *                    p_context)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(event_handler);
+    NRFX_ASSERT(p_instance && event_handler);
 
     nrfx_twim_control_block_t * p_cb = &p_instance->cb;
 
@@ -520,9 +517,9 @@ static int twim_xfer(nrfx_twim_control_block_t   * p_cb,
     switch (p_xfer_desc->type)
     {
         case NRFX_TWIM_XFER_TXTX:
-            NRFX_ASSERT(!(flags & NRFX_TWIM_FLAG_REPEATED_XFER));
-            NRFX_ASSERT(!(flags & NRFX_TWIM_FLAG_HOLD_XFER));
-            NRFX_ASSERT(!(flags & NRFX_TWIM_FLAG_NO_XFER_EVT_HANDLER));
+            NRFX_ASSERT(!(flags & NRFX_TWIM_FLAG_REPEATED_XFER) &&
+                        !(flags & NRFX_TWIM_FLAG_HOLD_XFER) &&
+                        !(flags & NRFX_TWIM_FLAG_NO_XFER_EVT_HANDLER));
             nrfy_twim_shorts_set(p_twim, NRF_TWIM_SHORT_LASTTX_SUSPEND_MASK);
             nrfy_twim_tx_buffer_set(p_twim, &p_cb->xfer_desc_primary);
             nrfy_twim_tx_start(p_twim, NULL);
@@ -667,8 +664,9 @@ int nrfx_twim_xfer(nrfx_twim_t                 * p_instance,
     NRFX_ASSERT(p_cb->state == NRFX_DRV_STATE_POWERED_ON);
 
     // TXRX and TXTX transfers are supported only in non-blocking mode.
-    NRFX_ASSERT( !((p_cb->handler == NULL) && (p_xfer_desc->type == NRFX_TWIM_XFER_TXRX)));
-    NRFX_ASSERT( !((p_cb->handler == NULL) && (p_xfer_desc->type == NRFX_TWIM_XFER_TXTX)));
+    NRFX_ASSERT(!((p_cb->handler == NULL) &&
+                  ((p_xfer_desc->type == NRFX_TWIM_XFER_TXRX) ||
+                   (p_xfer_desc->type == NRFX_TWIM_XFER_TXTX))));
 
     NRFX_LOG_INFO("Transfer type: %s.", TRANSFER_TO_STR(p_xfer_desc->type));
     NRFX_LOG_INFO("Transfer buffers length: primary: %d, secondary: %d.",
@@ -689,8 +687,7 @@ int nrfx_twim_xfer(nrfx_twim_t                 * p_instance,
 uint32_t nrfx_twim_start_task_address_get(nrfx_twim_t const *   p_instance,
                                           nrfx_twim_xfer_type_t xfer_type)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    NRFX_ASSERT(p_instance && (p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED));
 
     return nrfy_twim_task_address_get(p_instance->p_twim,
         (xfer_type != NRFX_TWIM_XFER_RX) ? NRF_TWIM_TASK_STARTTX : NRF_TWIM_TASK_STARTRX);
@@ -698,8 +695,7 @@ uint32_t nrfx_twim_start_task_address_get(nrfx_twim_t const *   p_instance,
 
 uint32_t nrfx_twim_stopped_event_address_get(nrfx_twim_t const * p_instance)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED);
+    NRFX_ASSERT(p_instance && (p_instance->cb.state != NRFX_DRV_STATE_UNINITIALIZED));
 
     return nrfy_twim_event_address_get(p_instance->p_twim, NRF_TWIM_EVENT_STOPPED);
 }

@@ -192,6 +192,7 @@ extern "C" {
 #define nrfx_grtc_irq_handler           GRTC_IRQHandler
 
 // TDM_IRQHandler
+#define nrfx_tdm_0_irq_handler          TDM_IRQHandler
 
 // SERIAL23_IRQHandler
 #if NRFX_CHECK(NRFX_PRS_ENABLED) && NRFX_CHECK(NRFX_PRS_BOX_4_ENABLED)

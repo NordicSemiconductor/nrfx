@@ -48,7 +48,8 @@ extern "C" {
  */
 
 #if defined(REGULATORS_DCDCEN_DCDCEN_Msk) || defined(REGULATORS_VREGMAIN_DCDCEN_VAL_Msk) || \
-    defined(REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Msk) || defined(__NRFX_DOXYGEN__)
+    defined(REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Msk) || \
+    defined(REGULATORS_CTRL_CONFIG_CONFIG_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether the main voltage regulator (VREGMAIN) is present. */
 #define NRF_REGULATORS_HAS_VREG_MAIN 1
 #else
@@ -133,7 +134,8 @@ extern "C" {
 #define NRF_REGULATORS_HAS_MAIN_STATUS 0
 #endif
 
-#if defined(REGULATORS_VREGMAIN_INDUCTORDET_DETECTED_Msk) || defined(__NRFX_DOXYGEN__)
+#if defined(REGULATORS_VREGMAIN_INDUCTORDET_DETECTED_Msk) || \
+    defined(REGULATORS_PWRDCDC_INDUCTORDET_DETECTED_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether inductor detection is present. */
 #define NRF_REGULATORS_HAS_INDUCTOR_DET 1
 #else
@@ -475,6 +477,10 @@ NRF_STATIC_INLINE void nrf_regulators_vreg_enable_set(NRF_REGULATORS_Type * p_re
             p_reg->VREGMAIN.DCDCEN = (enable ? REGULATORS_VREGMAIN_DCDCEN_VAL_Enabled :
                                       REGULATORS_VREGMAIN_DCDCEN_VAL_Disabled)
                                      << REGULATORS_VREGMAIN_DCDCEN_VAL_Pos;
+#elif defined(REGULATORS_CTRL_CONFIG_CONFIG_Msk)
+           p_reg->CTRL.CONFIG = (enable ? REGULATORS_CTRL_CONFIG_CONFIG_Dcdc :
+                                 REGULATORS_CTRL_CONFIG_CONFIG_Ldo)
+                                << REGULATORS_CTRL_CONFIG_CONFIG_Pos;
 #else
             p_reg->VREGMAIN.DCDCEN = (enable ? REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Enabled :
                                       REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Disabled)
@@ -524,6 +530,9 @@ NRF_STATIC_INLINE bool nrf_regulators_vreg_enable_check(NRF_REGULATORS_Type cons
 #elif defined(REGULATORS_VREGMAIN_DCDCEN_VAL_Msk)
             return (p_reg->VREGMAIN.DCDCEN >> REGULATORS_VREGMAIN_DCDCEN_VAL_Pos) ==
                    REGULATORS_VREGMAIN_DCDCEN_VAL_Enabled;
+#elif defined(REGULATORS_CTRL_CONFIG_CONFIG_Msk)
+            return (p_reg->CTRL.CONFIG >> REGULATORS_CTRL_CONFIG_CONFIG_Pos) ==
+                   REGULATORS_CTRL_CONFIG_CONFIG_Dcdc;
 #else
             return (p_reg->VREGMAIN.DCDCEN >> REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Pos) ==
                     REGULATORS_VREGMAIN_DCDCEN_DCDCEN_Enabled;
@@ -647,9 +656,14 @@ NRF_STATIC_INLINE uint32_t nrf_regulators_elv_mode_allow_get(NRF_REGULATORS_Type
 #if NRF_REGULATORS_HAS_INDUCTOR_DET
 NRF_STATIC_INLINE bool nrf_regulators_inductor_check(NRF_REGULATORS_Type const * p_reg)
 {
+#if defined(REGULATORS_VREGMAIN_INDUCTORDET_DETECTED_Msk)
     return (p_reg->VREGMAIN.INDUCTORDET & REGULATORS_VREGMAIN_INDUCTORDET_DETECTED_Msk)
            >> REGULATORS_VREGMAIN_INDUCTORDET_DETECTED_Pos
            == REGULATORS_VREGMAIN_INDUCTORDET_DETECTED_InductorDetected;
+#elif defined(REGULATORS_PWRDCDC_INDUCTORDET_DETECTED_Msk)
+    return (p_reg->PWRDCDC.INDUCTORDET >> REGULATORS_PWRDCDC_INDUCTORDET_DETECTED_Pos) ==
+           REGULATORS_PWRDCDC_INDUCTORDET_DETECTED_InductorDetected;
+#endif
 }
 #endif
 

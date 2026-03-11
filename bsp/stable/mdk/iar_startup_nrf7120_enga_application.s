@@ -176,8 +176,8 @@ __vector_table
         DCD     EGU00_IRQHandler
         DCD     CRACEN_IRQHandler
         DCD     USBHS_IRQHandler
-        DCD     QSPI00_IRQHandler
-        DCD     QSPI01_IRQHandler
+        DCD     MSPI00_IRQHandler
+        DCD     MSPI01_IRQHandler
         DCD     SERIAL01_IRQHandler
         DCD     0                         ; Reserved
         DCD     0                         ; Reserved
@@ -554,14 +554,14 @@ CRACEN_IRQHandler
 USBHS_IRQHandler
         B .
 
-        PUBWEAK  QSPI00_IRQHandler
+        PUBWEAK  MSPI00_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
-QSPI00_IRQHandler
+MSPI00_IRQHandler
         B .
 
-        PUBWEAK  QSPI01_IRQHandler
+        PUBWEAK  MSPI01_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
-QSPI01_IRQHandler
+MSPI01_IRQHandler
         B .
 
         PUBWEAK  SERIAL01_IRQHandler

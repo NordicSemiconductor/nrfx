@@ -40,6 +40,10 @@
 extern "C" {
 #endif
 
+#if !defined(NRF_TDM0) && defined(NRF_TDM)
+#define NRF_TDM0 NRF_TDM
+#endif
+
 #if defined(TDM_CLOCKPIN_SCK_NEEDED)
 #define NRF_TDM_CLOCKPIN_SCK_NEEDED 1
 #endif
@@ -59,17 +63,32 @@ extern "C" {
  */
 
 /**
+ * @brief Macro for getting a pointer to the structure of registers of the TDM peripheral.
+ *
+ * @param[in] idx TDM instance index.
+ *
+ * @return Pointer to the structure of registers of the TDM peripheral.
+ */
+#define NRF_TDM_INST_GET(idx) NRFX_CONCAT(NRF_, TDM, idx)
+
+/**
  * @brief This value can be provided as a parameter for the @ref nrf_tdm_pins_set
  *        function call to specify that the given TDM signal (SDOUT, SDIN, or MCK)
  *        shall not be connected to a physical pin.
  */
-#define NRF_TDM_PIN_NOT_CONNECTED UINT32_MAX 
+#define NRF_TDM_PIN_NOT_CONNECTED UINT32_MAX
 
 /** @brief TDM SCK pin selection mask. */
 #define NRF_TDM_PSEL_SCK_PIN_MASK  TDM_PSEL_SCK_PIN_Msk
 
 /** @brief TDM SCK port selection mask. */
 #define NRF_TDM_PSEL_SCK_PORT_MASK TDM_PSEL_SCK_PORT_Msk
+
+/** @brief Minimum value of TDM clock divisor. */
+#define NRF_TDM_CK_DIV_MIN TDM_CONFIG_MCK_DIV_DIV_Min
+
+/** @brief Maximum value of TDM clock divisor. */
+#define NRF_TDM_CK_DIV_MAX TDM_CONFIG_MCK_DIV_DIV_Max
 
 /** @brief TDM tasks. */
 typedef enum
@@ -467,6 +486,14 @@ NRF_STATIC_INLINE uint32_t nrf_tdm_publish_get(NRF_TDM_Type const * p_reg,
 NRF_STATIC_INLINE void nrf_tdm_pins_set(NRF_TDM_Type * p_reg, nrf_tdm_pins_t const * p_pins);
 
 /**
+ * @brief Function for getting TDM pins configuration.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] p_pins Pointer to the structure to be filled with TDM pins configuration.
+ */
+NRF_STATIC_INLINE void nrf_tdm_pins_get(NRF_TDM_Type * p_reg, nrf_tdm_pins_t * p_pins);
+
+/**
  * @brief Function for getting the SCK pin selection.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -668,6 +695,15 @@ NRF_STATIC_INLINE void nrf_tdm_sck_configure(NRF_TDM_Type * p_reg,
                                              nrf_tdm_src_t  clksrc,
                                              bool           enable_bypass);
 
+/**
+ * @brief Function for setting over-read sample.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] ors   Value that will be transmitted in case of over-read of
+ *                  TXD buffer.
+ */
+NRF_STATIC_INLINE void nrf_tdm_ors_set(NRF_TDM_Type * p_reg, uint32_t ors);
+
 #ifndef NRF_DECLARE_ONLY
 
 NRF_STATIC_INLINE void nrf_tdm_task_trigger(NRF_TDM_Type * p_reg,
@@ -782,6 +818,15 @@ NRF_STATIC_INLINE void nrf_tdm_pins_set(NRF_TDM_Type * p_reg, nrf_tdm_pins_t con
     p_reg->PSEL.MCK   = p_pins->mck_pin;
     p_reg->PSEL.SDOUT = p_pins->sdout_pin;
     p_reg->PSEL.SDIN  = p_pins->sdin_pin;
+}
+
+NRF_STATIC_INLINE void nrf_tdm_pins_get(NRF_TDM_Type * p_reg, nrf_tdm_pins_t * p_pins)
+{
+    p_pins->sck_pin   = p_reg->PSEL.SCK;
+    p_pins->fsync_pin = p_reg->PSEL.FSYNC;
+    p_pins->mck_pin   = p_reg->PSEL.MCK;
+    p_pins->sdout_pin = p_reg->PSEL.SDOUT;
+    p_pins->sdin_pin  = p_reg->PSEL.SDIN;
 }
 
 NRF_STATIC_INLINE uint32_t nrf_tdm_sck_pin_get(NRF_TDM_Type const * p_reg)
@@ -919,6 +964,11 @@ NRF_STATIC_INLINE void nrf_tdm_sck_configure(NRF_TDM_Type * p_reg,
 {
     p_reg->CONFIG.SCK.SRC = ((uint32_t) clksrc << TDM_CONFIG_SCK_SRC_CLKSRC_Pos) |
                             ((uint32_t) enable_bypass << TDM_CONFIG_SCK_SRC_BYPASS_Pos);
+}
+
+NRF_STATIC_INLINE void nrf_tdm_ors_set(NRF_TDM_Type * p_reg, uint32_t ors)
+{
+    p_reg->CONFIG.ORS = ors;
 }
 
 #endif // NRF_DECLARE_ONLY

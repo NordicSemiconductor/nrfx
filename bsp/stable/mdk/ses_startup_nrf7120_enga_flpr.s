@@ -232,8 +232,8 @@ _vectors:
   ISR_HANDLER   EGU00_IRQHandler
   ISR_HANDLER   CRACEN_IRQHandler
   ISR_HANDLER   USBHS_IRQHandler
-  ISR_HANDLER   QSPI00_IRQHandler
-  ISR_HANDLER   QSPI01_IRQHandler
+  ISR_HANDLER   MSPI00_IRQHandler
+  ISR_HANDLER   MSPI01_IRQHandler
   ISR_HANDLER   SERIAL01_IRQHandler
   ISR_RESERVED_DUMMY                           /* Reserved */
   ISR_RESERVED_DUMMY                           /* Reserved */

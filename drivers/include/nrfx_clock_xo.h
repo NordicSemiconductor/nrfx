@@ -38,7 +38,6 @@
 #include <hal/nrf_clock.h>
 
 #if NRF_CLOCK_HAS_XO || defined(__NRFX_DOXYGEN__)
-#include <nrfx_power_clock.h>
 
 #ifdef __cplusplus
 extern "C" {

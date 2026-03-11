@@ -116,11 +116,11 @@ NRF_STATIC_INLINE void nrf_acl_region_set(NRF_ACL_Type * p_reg,
                                           size_t         size,
                                           nrf_acl_perm_t perm)
 {
-    NRFX_ASSERT(region_id < ACL_REGIONS_COUNT);
-    NRFX_ASSERT(address % nrf_ficr_codepagesize_get(NRF_FICR) == 0);
-    NRFX_ASSERT(size <= NRF_ACL_REGION_SIZE_MAX);
-    NRFX_ASSERT(size != 0);
-    NRFX_ASSERT(size % nrf_ficr_codepagesize_get(NRF_FICR) == 0);
+    NRFX_ASSERT((region_id < ACL_REGIONS_COUNT) &&
+                (address % nrf_ficr_codepagesize_get(NRF_FICR) == 0) &&
+                (size <= NRF_ACL_REGION_SIZE_MAX) &&
+                (size != 0) &&
+                (size % nrf_ficr_codepagesize_get(NRF_FICR) == 0));
 
     p_reg->ACL[region_id].ADDR = address;
     p_reg->ACL[region_id].SIZE = size;

@@ -48,6 +48,13 @@ extern "C" {
  *          and Status Registers for VPR IO (VPR CSR VIO).
  */
 
+#if defined(VPRCSR_NORDIC_OUTUB_OUT_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether buffered write to unshifted parts of OUT is present. */
+#define NRF_VPR_HAS_OUTUB_OUT 1
+#else
+#define NRF_VPR_HAS_OUTUB_OUT 0
+#endif
+
 /** @brief Maximum number of frames to be shifted from buffered input before new data is required. */
 #define NRF_VPR_CSR_VIO_SHIFT_CNT_IN_MAX VPRCSR_NORDIC_SHIFTCNTIN_VALUE_Max
 
@@ -96,6 +103,20 @@ typedef struct
     bool stop_cnt;     ///< Stop counters CNT0 and CNT1 on OUTB under-run.
     bool input_sel;    ///< Input pin selection. True if sample on separate pin, false if sample on same OUT pin.
 } nrf_vpr_csr_vio_config_t;
+
+#if NRF_VPR_HAS_OUTUB_OUT
+/** @brief Unshifted pins trigger condition for transferring OUTUB to OUT. */
+typedef enum
+{
+    NRF_VPR_CSR_VIO_OUTUBTRIG_IEVENTCNT0        = VPRCSR_NORDIC_OUTUBTRIG_SEL_IEVENTCNT0,        ///< Trigger on counter 0 event.
+    NRF_VPR_CSR_VIO_OUTUBTRIG_IEVENTCNT1        = VPRCSR_NORDIC_OUTUBTRIG_SEL_IEVENTCNT1,        ///< Trigger on counter 1 event.
+    NRF_VPR_CSR_VIO_OUTUBTRIG_IEVENTVIO         = VPRCSR_NORDIC_OUTUBTRIG_SEL_IEVENTVIO,         ///< Trigger on specific VIO pin event.
+    NRF_VPR_CSR_VIO_OUTUBTRIG_IEVENTVIOANY      = VPRCSR_NORDIC_OUTUBTRIG_SEL_IEVENTVIOANY,      ///< Trigger on change in any VIO pin event.
+    NRF_VPR_CSR_VIO_OUTUBTRIG_IEVENTVTASKSANY   = VPRCSR_NORDIC_OUTUBTRIG_SEL_IEVENTVTASKSANY,   ///< Trigger on any VIO task event.
+    NRF_VPR_CSR_VIO_OUTUBTRIG_IEVENTSHIFTCNTOUT = VPRCSR_NORDIC_OUTUBTRIG_SEL_IEVENTSHIFTCNTOUT, ///< Trigger on shift count out event.
+    NRF_VPR_CSR_VIO_OUTUBTRIG_IEVENTSHIFTCNTIN  = VPRCSR_NORDIC_OUTUBTRIG_SEL_IEVENTSHIFTCNTIN,  ///< Trigger on shift count in event.
+} nrf_vpr_csr_vio_out_unshifted_trigger_t;
+#endif // NRF_VPR_HAS_OUTUB_OUT
 
 /**
  * @brief Function for getting the pin directions mask.
@@ -657,6 +678,53 @@ NRF_STATIC_INLINE uint8_t nrf_vpr_csr_vio_shift_cnt_out_buffered_get(void);
  */
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_shift_cnt_out_buffered_set(uint8_t cnt);
 
+#if NRF_VPR_HAS_OUTUB_OUT
+/**
+ * @brief Function for setting the buffered unshifted parts of OUT register.
+ *
+ * @param[in] value Buffered unshifted parts of OUT register.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_unshifted_buffered_set(uint32_t value);
+
+/**
+ * @brief Function for getting the buffered unshifted parts of OUT register.
+ *
+ * @return Buffered unshifted parts of OUT register.
+ */
+NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_unshifted_buffered_get(void);
+
+/**
+ * @brief Function for setting the trigger for buffered unshifted parts of OUT register.
+ *
+ * @param[in] trigger Trigger for buffered unshifted parts of OUT register.
+ */
+NRF_STATIC_INLINE void
+nrf_vpr_csr_vio_out_unshifted_buffered_trigger_set(nrf_vpr_csr_vio_out_unshifted_trigger_t trigger);
+
+/**
+ * @brief Function for getting the trigger for buffered unshifted parts of OUT register.
+ *
+ * @return Trigger for buffered unshifted parts of OUT register.
+ */
+NRF_STATIC_INLINE
+nrf_vpr_csr_vio_out_unshifted_trigger_t nrf_vpr_csr_vio_out_unshifted_buffered_trigger_get(void);
+
+/**
+ * @brief Function for setting the toggle mask for buffered unshifted parts of OUT register.
+ *
+ * @param[in] mask Mask of buffered unshifted parts of OUT register to be toggled.
+ */
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_unshifted_buffered_toggle_set(uint32_t mask);
+
+/**
+ * @brief Function for checking the dirty status of buffered unshifted parts of OUT register.
+ *
+ * @retval true  Buffer is dirty.
+ * @retval false Buffer is clean.
+ */
+NRF_STATIC_INLINE bool nrf_vpr_csr_vio_out_unshifted_buffered_dirty_check(void);
+#endif // NRF_VPR_HAS_OUTUB_OUT
+
 #ifndef NRF_DECLARE_ONLY
 
 NRF_STATIC_INLINE uint16_t nrf_vpr_csr_vio_dir_get(void)
@@ -915,22 +983,22 @@ NRF_STATIC_INLINE
 void nrf_vpr_csr_vio_shift_ctrl_buffered_set(nrf_vpr_csr_vio_shift_ctrl_t const * p_shift_ctrl)
 {
     uint32_t reg = ((p_shift_ctrl->shift_count << VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Pos)
-                    & VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Msk) | 
+                    & VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Msk) |
                    ((p_shift_ctrl->out_mode << VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_MODE_Pos)
-		    & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_MODE_Msk) | 
+		    & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_MODE_Msk) |
                    ((p_shift_ctrl->frame_width << VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_FRAMEWIDTH_Pos)
 		    & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_FRAMEWIDTH_Msk) |
                    ((p_shift_ctrl->in_mode << VPRCSR_NORDIC_SHIFTCTRLB_INMODEB_MODE_Pos)
 		    & VPRCSR_NORDIC_SHIFTCTRLB_INMODEB_MODE_Msk);
-    
+
     nrf_csr_write(VPRCSR_NORDIC_SHIFTCTRLB, reg);
 }
 
 NRF_STATIC_INLINE
 void nrf_vpr_csr_vio_shift_ctrl_buffered_get(nrf_vpr_csr_vio_shift_ctrl_t * p_shift_ctrl)
-{	
+{
     uint32_t reg = nrf_csr_read(VPRCSR_NORDIC_SHIFTCTRLB);
-    
+
     p_shift_ctrl->shift_count = (reg & VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Msk)
                                 >> VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Pos;
     p_shift_ctrl->out_mode    = (reg & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_MODE_Msk)
@@ -1060,6 +1128,49 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_shift_cnt_out_buffered_set(uint8_t cnt)
     NRFX_ASSERT(cnt <= NRF_VPR_CSR_VIO_SHIFT_CNT_OUT_BUFFERED_MAX);
     nrf_csr_write(VPRCSR_NORDIC_SHIFTCNTB, cnt);
 }
+
+#if NRF_VPR_HAS_OUTUB_OUT
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_unshifted_buffered_set(uint32_t value)
+{
+    nrf_csr_write(VPRCSR_NORDIC_OUTUB, value);
+}
+
+NRF_STATIC_INLINE uint32_t nrf_vpr_csr_vio_out_unshifted_buffered_get(void)
+{
+    return nrf_csr_read(VPRCSR_NORDIC_OUTUB);
+}
+
+NRF_STATIC_INLINE void
+nrf_vpr_csr_vio_out_unshifted_buffered_trigger_set(nrf_vpr_csr_vio_out_unshifted_trigger_t trigger)
+{
+    NRFX_ASSERT((uint32_t)trigger <= VPRCSR_NORDIC_OUTUBTRIG_SEL_Max);
+
+    uint32_t reg = ((uint32_t)trigger << VPRCSR_NORDIC_OUTUBTRIG_SEL_Pos) &
+                    VPRCSR_NORDIC_OUTUBTRIG_SEL_Msk;
+
+    nrf_csr_write(VPRCSR_NORDIC_OUTUBTRIG, reg);
+}
+
+NRF_STATIC_INLINE
+nrf_vpr_csr_vio_out_unshifted_trigger_t nrf_vpr_csr_vio_out_unshifted_buffered_trigger_get(void)
+{
+    uint32_t reg = nrf_csr_read(VPRCSR_NORDIC_OUTUBTRIG);
+
+    return (nrf_vpr_csr_vio_out_unshifted_trigger_t)((reg & VPRCSR_NORDIC_OUTUBTRIG_SEL_Msk) >>
+                                                      VPRCSR_NORDIC_OUTUBTRIG_SEL_Pos);
+}
+
+NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_unshifted_buffered_toggle_set(uint32_t mask)
+{
+    nrf_csr_write(VPRCSR_NORDIC_OUTUBTGL, mask);
+}
+
+NRF_STATIC_INLINE bool nrf_vpr_csr_vio_out_unshifted_buffered_dirty_check(void)
+{
+    return ((nrf_csr_read(VPRCSR_NORDIC_OUTUBS) & VPRCSR_NORDIC_OUTUBS_DIRTYBIT_Msk)
+            >> VPRCSR_NORDIC_OUTUBS_DIRTYBIT_Pos) == VPRCSR_NORDIC_OUTUBS_DIRTYBIT_DIRTY;
+}
+#endif // NRF_VPR_HAS_OUTUB_OUT
 
 #endif // NRF_DECLARE_ONLY
 

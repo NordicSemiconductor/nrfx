@@ -866,7 +866,7 @@ NRFY_STATIC_INLINE uint32_t nrfy_grtc_sys_counter_minterval_get(NRF_GRTC_Type co
                                                                 uint8_t               cc_channel)
 {
     nrf_barrier_rw();
-    uint32_t minterval = nrf_grtc_sys_counter_minterval_get(p_reg);
+    uint32_t minterval = nrf_grtc_sys_counter_minterval_get(p_reg, cc_channel);
     nrf_barrier_r();
     return minterval;
 }

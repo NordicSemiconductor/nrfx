@@ -32,12 +32,21 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 /*lint ++flb "Enter library region" */
 
 #define __SYSTEM_CLOCK_MHZ (1000000UL)
-#if defined(NRF_PPR)
-    #define __SYSTEM_CLOCK_DEFAULT (16ul * __SYSTEM_CLOCK_MHZ)
-#elif defined(NRF_RADIOCORE)
-    #define __SYSTEM_CLOCK_DEFAULT (256ul * __SYSTEM_CLOCK_MHZ)
-#else
-    #define __SYSTEM_CLOCK_DEFAULT (320ul * __SYSTEM_CLOCK_MHZ)
+#if defined(NRF9220_XXAA)
+    #if defined(NRF_PPR)
+        #define __SYSTEM_CLOCK_DEFAULT (16ul * __SYSTEM_CLOCK_MHZ)
+    #else
+        #define __SYSTEM_CLOCK_DEFAULT (256ul * __SYSTEM_CLOCK_MHZ)
+    #endif
+#endif
+#if defined (NRF9230_ENGB_XXAA)
+    #if defined(NRF_PPR)
+        #define __SYSTEM_CLOCK_DEFAULT (16ul * __SYSTEM_CLOCK_MHZ)
+    #elif defined(NRF_RADIOCORE)
+        #define __SYSTEM_CLOCK_DEFAULT (256ul * __SYSTEM_CLOCK_MHZ)
+    #else
+        #define __SYSTEM_CLOCK_DEFAULT (320ul * __SYSTEM_CLOCK_MHZ)
+    #endif
 #endif
 
 #if defined ( __CC_ARM ) || defined ( __GNUC__ )

@@ -94,9 +94,7 @@ int nrfx_qdec_init(nrfx_qdec_t *              p_instance,
                    nrfx_qdec_event_handler_t  handler,
                    void *                     p_context)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
-    NRFX_ASSERT(handler);
+    NRFX_ASSERT(p_instance && p_config && handler);
 
     nrfx_qdec_control_block_t * const p_cb = &p_instance->cb;
 
@@ -130,8 +128,7 @@ int nrfx_qdec_init(nrfx_qdec_t *              p_instance,
 int nrfx_qdec_reconfigure(nrfx_qdec_t *              p_instance,
                           nrfx_qdec_config_t const * p_config)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
     nrfx_qdec_control_block_t const * p_cb = &p_instance->cb;
 
     if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
@@ -214,10 +211,8 @@ void nrfx_qdec_accumulators_read(nrfx_qdec_t const * p_instance,
                                  int32_t *           p_acc,
                                  uint32_t *          p_accdbl)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_accdbl);
-    NRFX_ASSERT(p_acc);
-    NRFX_ASSERT(p_instance->cb.state == NRFX_DRV_STATE_POWERED_ON);
+    NRFX_ASSERT(p_instance && p_accdbl && p_acc &&
+                (p_instance->cb.state == NRFX_DRV_STATE_POWERED_ON));
 
     nrfy_qdec_task_trigger(p_instance->p_reg, NRF_QDEC_TASK_READCLRACC);
     nrfy_qdec_accumulators_read(p_instance->p_reg, p_acc, p_accdbl);

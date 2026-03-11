@@ -221,6 +221,10 @@ void SystemInit(void)
             }
         #endif
 
+        #if !defined(NRF_TRUSTZONE_NONSECURE) && !defined(NRF_DONT_RESET_BOOTCOUNT)
+            // Invert the BOOTCOUNT mask to force the BOOTCOUNT field to 0
+            NRF_REGULATORS->MRAMRECOVERY &= (~REGULATORS_MRAMRECOVERY_BOOTCOUNT_Msk);
+        #endif
     #endif
 }
 

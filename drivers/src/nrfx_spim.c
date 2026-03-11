@@ -50,12 +50,12 @@
 #if NRF_ERRATA_STATIC_CHECK(53, 135) && defined(NRF_SPIM4)
 static void anomaly_135_enable(void)
 {
-    *((volatile uint32_t *)0x5000ac04) = 1;
+    *((volatile uint32_t *)((uint8_t *)NRF_SPIM4) + 0xc04) = 1;
 }
 
 static void anomaly_135_disable(void)
 {
-    *((volatile uint32_t *)0x5000ac04) = 0;
+    *((volatile uint32_t *)((uint8_t *)NRF_SPIM4) + 0xc04) = 0;
 }
 #endif
 
@@ -441,10 +441,10 @@ static void spim_configure(nrfx_spim_t *              p_instance,
     uint32_t prescaler = spim_prescaler_calculate(p_instance, p_config->frequency);
 #endif
 
-#if NRF_ERRATA_STATIC_CHECK(54L, 55)
-    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 55))
+#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69)
+    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 55) || NRF_ERRATA_DYNAMIC_CHECK(54L, 69))
     {
-        p_cb->apply_nrf54l_errata_55 = 1;
+        p_cb->apply_nrf54l_errata_55_69 = 1;
     }
 #endif
 
@@ -535,8 +535,7 @@ int nrfx_spim_init(nrfx_spim_t *              p_instance,
                    nrfx_spim_event_handler_t  handler,
                    void *                     p_context)
 {
-    NRFX_ASSERT(p_instance);
-    NRFX_ASSERT(p_config);
+    NRFX_ASSERT(p_instance && p_config);
 
     nrfx_spim_control_block_t * p_cb = &p_instance->cb;
     int err_code;
@@ -832,8 +831,8 @@ static int spim_xfer(NRF_SPIM_Type *               p_spim,
 #endif
     nrfy_spim_enable(p_spim);
 
-#if NRF_ERRATA_STATIC_CHECK(54L, 55)
-    if (p_cb->apply_nrf54l_errata_55)
+#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69)
+    if (p_cb->apply_nrf54l_errata_55_69)
     {
         *(volatile uint32_t *)((uint8_t *)p_spim + 0xc80) = 0x82;
     }
@@ -858,8 +857,8 @@ static int spim_xfer(NRF_SPIM_Type *               p_spim,
 
     if (!p_cb->handler)
     {
-#if NRF_ERRATA_STATIC_CHECK(54L, 55)
-        if (p_cb->apply_nrf54l_errata_55)
+#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69)
+        if (p_cb->apply_nrf54l_errata_55_69)
         {
             *(volatile uint32_t *)((uint8_t *)p_spim + 0xc80) = 0;
         }
@@ -910,11 +909,11 @@ int nrfx_spim_xfer(nrfx_spim_t *                 p_instance,
 
     nrfx_spim_control_block_t * p_cb = &p_instance->cb;
 
-    NRFX_ASSERT(p_cb->state != NRFX_DRV_STATE_UNINITIALIZED);
-    NRFX_ASSERT(p_xfer_desc->p_tx_buffer != NULL || p_xfer_desc->tx_length == 0);
-    NRFX_ASSERT(p_xfer_desc->p_rx_buffer != NULL || p_xfer_desc->rx_length == 0);
-    NRFX_ASSERT(!(flags & NRFX_SPIM_FLAG_HOLD_XFER) ||
-                (p_cb->ss_pin == NRF_SPIM_PIN_NOT_CONNECTED));
+    NRFX_ASSERT((p_cb->state != NRFX_DRV_STATE_UNINITIALIZED) &&
+                ((p_xfer_desc->p_tx_buffer != NULL) || (p_xfer_desc->tx_length == 0)) &&
+                ((p_xfer_desc->p_rx_buffer != NULL) || (p_xfer_desc->rx_length == 0)) &&
+                (!(flags & NRFX_SPIM_FLAG_HOLD_XFER) ||
+                 (p_cb->ss_pin == NRF_SPIM_PIN_NOT_CONNECTED)));
 
     int err_code = 0;
 
@@ -971,8 +970,8 @@ void nrfx_spim_irq_handler(nrfx_spim_t * p_instance)
     NRF_SPIM_Type * p_spim = p_instance->p_reg;
     nrfx_spim_control_block_t * p_cb = &p_instance->cb;
 
-#if NRF_ERRATA_STATIC_CHECK(54L, 55)
-    if (p_cb->apply_nrf54l_errata_55 && nrfy_spim_event_check(p_spim, NRF_SPIM_EVENT_END))
+#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69)
+    if (p_cb->apply_nrf54l_errata_55_69 && nrfy_spim_event_check(p_spim, NRF_SPIM_EVENT_END))
     {
         *(volatile uint32_t *)((uint8_t *)p_spim + 0xc80) = 0;
     }
@@ -999,8 +998,8 @@ void nrfx_spim_irq_handler(nrfx_spim_t * p_instance)
         nrfy_spim_event_clear(p_spim, NRF_SPIM_EVENT_STARTED);
         nrfy_spim_event_clear(p_spim, NRF_SPIM_EVENT_END);
 
-        NRFX_ASSERT(nrfy_spim_tx_maxcnt_get(p_spim) == 0);
-        NRFX_ASSERT(nrfy_spim_rx_maxcnt_get(p_spim) == 0);
+        NRFX_ASSERT((nrfy_spim_tx_maxcnt_get(p_spim) == 0) &&
+                    (nrfy_spim_rx_maxcnt_get(p_spim) == 0));
 
         /* Disable STARTED interrupt, used only in auxiliary transmission. */
         nrfy_spim_int_disable(p_spim, NRF_SPIM_INT_STARTED_MASK);

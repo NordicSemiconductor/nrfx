@@ -40,6 +40,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 
+/* ========================================= Enumerator NoDelay AltName Definitions ========================================== */
+#define PDM_FILTER_SAMPLEDELAY_DELAY_no_delay       PDM_FILTER_SAMPLEDELAY_DELAY_NoDelay
+
+/* ========================================= Enumerator Delay1Ck AltName Definitions ========================================= */
+#define PDM_FILTER_SAMPLEDELAY_DELAY_x1             PDM_FILTER_SAMPLEDELAY_DELAY_Delay1Ck
+
+/* ========================================= Enumerator INACTIVE AltName Definitions ========================================= */
+#define USBHSCORE_GINTSTS_SOF_INTACTIVE             USBHSCORE_GINTSTS_SOF_INACTIVE
 
 
 #ifdef __cplusplus

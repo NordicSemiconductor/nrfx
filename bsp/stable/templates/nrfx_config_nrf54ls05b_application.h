@@ -323,6 +323,24 @@
 #endif
 
 /**
+ * @brief NRFX_GRTC_CONFIG_STOP_AT_UNINIT
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GRTC_CONFIG_STOP_AT_UNINIT
+#define NRFX_GRTC_CONFIG_STOP_AT_UNINIT 1
+#endif
+
+/**
+ * @brief NRFX_GRTC_CONFIG_CLEAR_AT_UNINIT
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GRTC_CONFIG_CLEAR_AT_UNINIT
+#define NRFX_GRTC_CONFIG_CLEAR_AT_UNINIT 1
+#endif
+
+/**
  * @brief NRFX_GRTC_CONFIG_NUM_OF_CC_CHANNELS
  *
  * Integer value.
