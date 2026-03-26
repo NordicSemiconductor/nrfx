@@ -79,7 +79,7 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
     uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_DEFAULT;
 #elif defined ( __ICCARM__ )
     __root uint32_t SystemCoreClock = __SYSTEM_CLOCK_DEFAULT;
-#endif    
+#endif
 
 void SystemCoreClockUpdate(void)
 {
@@ -133,9 +133,9 @@ void SystemInit(void)
                 SCB->NSACR |= (3UL << 10ul);
             #endif
 
-            #ifndef NRF_SKIP_SAU_CONFIGURATION   
+            #ifndef NRF_SKIP_SAU_CONFIGURATION
                 configure_default_sau();
-            #endif          
+            #endif
 
             #if !defined (NRF_DISABLE_FICR_TRIMCNF)
                 /* Trimming of the device. Copy all the trimming values from FICR into the target addresses. Trim
@@ -231,7 +231,7 @@ void SystemInit(void)
         /* Enable the FPU if the compiler used floating point unit instructions. __FPU_USED is a MACRO defined by the
         * compiler. Since the FPU consumes energy, remember to disable FPU use in the compiler if floating point unit
         * operations are not used in your code. */
-        
+
         /* Allow Non-Secure code to run FPU instructions.
          * If only the secure code should control FPU power state these registers should be configured accordingly in the secure application code. */
         SCB->NSACR |= (3UL << 10ul);
@@ -316,7 +316,7 @@ void SystemInit(void)
         #endif
 
         #if !defined(NRF_TRUSTZONE_NONSECURE) && defined(__ARM_FEATURE_CMSE) && !defined (NRF_SKIP_KMU_WAIT_FOR_READY)
-            #if defined (NRF54LM20A_XXAA) || defined (NRF54LM20B_XXAA) || defined (NRF54LV10A_XXAA)
+            #if defined (NRF54LM20A_XXAA) || defined (NRF54LM20B_XXAA) || defined (NRF54LC10A_XXAA) || defined (NRF54LV10A_XXAA)
                 /* KMU is ready by now, but to be sure allow it to run to completion */
                 while(NRF_KMU->STATUS == KMU_STATUS_STATUS_Busy)
                 {

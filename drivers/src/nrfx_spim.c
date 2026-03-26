@@ -50,12 +50,12 @@
 #if NRF_ERRATA_STATIC_CHECK(53, 135) && defined(NRF_SPIM4)
 static void anomaly_135_enable(void)
 {
-    *((volatile uint32_t *)((uint8_t *)NRF_SPIM4) + 0xc04) = 1;
+    *((volatile uint32_t *)((uint8_t *)NRF_SPIM4 + 0xc04)) = 1;
 }
 
 static void anomaly_135_disable(void)
 {
-    *((volatile uint32_t *)((uint8_t *)NRF_SPIM4) + 0xc04) = 0;
+    *((volatile uint32_t *)((uint8_t *)NRF_SPIM4 + 0xc04)) = 0;
 }
 #endif
 

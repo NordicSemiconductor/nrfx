@@ -475,7 +475,18 @@ extern "C" {
         NRF_SAADC_INPUT_AVDD,                                            \
         NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(NRF_SAADC_INPUT_DVDD), \
             (NRF_SAADC_INPUT_DVDD,), (NRFX_SAADC_INPUT_NOT_PRESENT,))
-#elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
+#elif defined(NRF54LC10A_XXAA)
+    #define SAADC_INTERNAL_AIN_PSELS                                     \
+        NRF_SAADC_INPUT_VDD,                                             \
+        NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
+        NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
+        NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(NRF_SAADC_INPUT_DVDD), \
+            (NRF_SAADC_INPUT_DVDD,), (NRFX_SAADC_INPUT_NOT_PRESENT,))    \
+        NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
+        NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
+        NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
+        NRF_SAADC_INPUT_VSS,
+#elif defined(NRF54LV10A_XXAA)
     #define SAADC_INTERNAL_AIN_PSELS                                     \
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
@@ -483,8 +494,7 @@ extern "C" {
         NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(NRF_SAADC_INPUT_DVDD), \
             (NRF_SAADC_INPUT_DVDD,), (NRFX_SAADC_INPUT_NOT_PRESENT,))    \
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
-        NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(NRF_SAADC_INPUT_VDDL), \
-            (NRF_SAADC_INPUT_VDDL,), (NRFX_SAADC_INPUT_NOT_PRESENT,))    \
+        NRF_SAADC_INPUT_VDDL,                                            \
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
         NRF_SAADC_INPUT_VSS,
 #elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)

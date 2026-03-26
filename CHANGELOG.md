@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [4.2.1] - 2026-03-27
+
+### Fixed
+- Fixed peripheral not being disabled in some cases in the SAADC driver.
+- Fixed incorrect parenthesis in the workaround for nRF53 Series anomaly 135 in the SPIM driver.
+- Fixed missing entries for nRF54LC10A and nRF54LS05A SoCs in the templates files.
+- Fixed missing symbol for 256 MHz CPU frequency for the nRF7120 Eng A SoC.
+- Fixed symbol indicating MPU presence for the nRF54LS05A SoC.
+- Fixed initialization code for the nRF54LC10A SoC where the KMU peripheral was not accessed but it should.
+
 ## [4.2.0] - 2026-03-12
 
 ### Added

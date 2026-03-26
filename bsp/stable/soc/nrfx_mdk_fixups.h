@@ -1024,6 +1024,7 @@
     #define STATIC_CPU_FREQ_CONFIG_PRESENT 1
     #define STATIC_CPU_FREQ_CONFIG_64_MHZ_PRESENT 1
     #define STATIC_CPU_FREQ_CONFIG_128_MHZ_PRESENT 1
+    #define STATIC_CPU_FREQ_CONFIG_256_MHZ_PRESENT 1
 
     #if (defined(NRF_APPLICATION) && defined(NRF_TRUSTZONE_NONSECURE)) || defined(NRF_FLPR)
         #define GPIOTE20_IRQn       GPIOTE20_0_IRQn
@@ -1119,15 +1120,17 @@
     #if defined(NRF_TRUSTZONE_NONSECURE)
         #if defined(NRF_APPLICATION)
             #define GRTC_IRQ_GROUP 2
-            #define GPIOTE_IRQ_GROUP 0
+            #define GPIOTE_IRQ_GROUP 2
         #endif
     #elif defined(NRF_PPR)
         #define GRTC_IRQ_GROUP 7
-        #define GPIOTE_IRQ_GROUP 0
+        #define GPIOTE_IRQ_GROUP 2
+    #elif defined(NRF_FLPR)
+        #define GRTC_IRQ_GROUP 8
     #else
         #if defined(NRF_APPLICATION)
             #define GRTC_IRQ_GROUP 3
-            #define GPIOTE_IRQ_GROUP 1
+            #define GPIOTE_IRQ_GROUP 3
         #endif
     #endif
 

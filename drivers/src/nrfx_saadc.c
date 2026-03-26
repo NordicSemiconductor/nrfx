@@ -929,10 +929,7 @@ static void saadc_event_started_handle(void)
 static void saadc_disable(void)
 {
     nrfy_saadc_disable(NRF_SAADC);
-    if (NRF_ERRATA_DYNAMIC_CHECK(54H, 233))
-    {
-        nrfy_saadc_disable(NRF_SAADC);
-    }
+    nrfy_saadc_disable(NRF_SAADC);
 }
 
 static void saadc_event_end_handle(void)

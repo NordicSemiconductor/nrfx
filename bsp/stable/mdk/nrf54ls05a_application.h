@@ -149,7 +149,7 @@ typedef enum {
 #define __DSP_PRESENT                  0             /*!< DSP present or not                                                   */
 #define __NVIC_PRIO_BITS               3             /*!< Number of Bits used for Priority Levels                              */
 #define __VTOR_PRESENT                 1             /*!< CPU supports alternate Vector Table address                          */
-#define __MPU_PRESENT                  0             /*!< MPU present                                                          */
+#define __MPU_PRESENT                  1             /*!< MPU present                                                          */
 #define __FPU_PRESENT                  0             /*!< FPU present                                                          */
 #define __FPU_DP                       0             /*!< Double Precision FPU                                                 */
 #define __INTERRUPTS_MAX             270             /*!< Size of interrupt vector table                                       */
@@ -256,4 +256,3 @@ typedef enum {
 }
 #endif
 #endif /* NRF54LS05A_APPLICATION_H */
-
