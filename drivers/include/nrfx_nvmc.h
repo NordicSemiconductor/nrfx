@@ -370,8 +370,9 @@ NRFX_STATIC_INLINE bool nrfx_nvmc_write_done_check(void)
 NRFX_STATIC_INLINE uint32_t nrfx_nvmc_uicr_word_read(uint32_t const volatile *address)
 {
 #if NRF_ERRATA_STATIC_CHECK(91, 7)
+    const bool errata_7 = NRF_ERRATA_DYNAMIC_CHECK(91, 7);
     bool irq_disabled = __get_PRIMASK() == 1;
-    if (NRF_ERRATA_DYNAMIC_CHECK(91, 7) && !irq_disabled)
+    if (errata_7 && !irq_disabled)
     {
         __disable_irq();
     }
@@ -380,7 +381,7 @@ NRFX_STATIC_INLINE uint32_t nrfx_nvmc_uicr_word_read(uint32_t const volatile *ad
     uint32_t value = nrf_nvmc_word_read((uint32_t)address);
 
 #if NRF_ERRATA_STATIC_CHECK(91, 7)
-    if (NRF_ERRATA_DYNAMIC_CHECK(91, 7))
+    if (errata_7)
     {
         __DSB();
         if (!irq_disabled)
@@ -396,8 +397,9 @@ NRFX_STATIC_INLINE uint32_t nrfx_nvmc_uicr_word_read(uint32_t const volatile *ad
 NRFX_STATIC_INLINE void nrfx_nvmc_uicr_word_write(uint32_t volatile *address, uint32_t value)
 {
 #if NRF_ERRATA_STATIC_CHECK(91, 7)
+    const bool errata_7 = NRF_ERRATA_DYNAMIC_CHECK(91, 7);
     bool irq_disabled = __get_PRIMASK() == 1;
-    if (NRF_ERRATA_DYNAMIC_CHECK(91, 7) && !irq_disabled)
+    if (errata_7 && !irq_disabled)
     {
         __disable_irq();
     }
@@ -406,7 +408,7 @@ NRFX_STATIC_INLINE void nrfx_nvmc_uicr_word_write(uint32_t volatile *address, ui
     nrfx_nvmc_word_write((uint32_t)address, value);
 
 #if NRF_ERRATA_STATIC_CHECK(91, 7)
-    if (NRF_ERRATA_DYNAMIC_CHECK(91, 7))
+    if (errata_7)
     {
         __DSB();
         if (!irq_disabled)
