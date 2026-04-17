@@ -823,11 +823,11 @@ int nrfx_saadc_offset_calibrate(nrfx_saadc_event_handler_t calib_event_handler)
     nrfy_saadc_int_set(NRF_SAADC, 0);
     if (calib_event_handler)
     {
-        nrfy_saadc_calibrate(NRF_SAADC, false);
         // Make sure that LIMIT feature is disabled before offset calibration.
         int_mask &= ~(uint32_t)(NRF_SAADC_INT_CH0LIMITL | NRF_SAADC_INT_CH0LIMITH);
         nrfy_saadc_int_set(NRF_SAADC, int_mask | NRF_SAADC_INT_STARTED | NRF_SAADC_INT_STOPPED |
                                       NRF_SAADC_INT_END | NRF_SAADC_INT_CALIBRATEDONE);
+        nrfy_saadc_calibrate(NRF_SAADC, false);
     }
     else
     {
