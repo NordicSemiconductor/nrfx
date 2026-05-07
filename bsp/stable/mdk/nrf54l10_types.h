@@ -27778,8 +27778,8 @@ typedef struct {
 /* BALEN @Bits 16..18 : Base address length in number of bytes */
   #define RADIO_PCNF1_BALEN_Pos (16UL)               /*!< Position of BALEN field.                                             */
   #define RADIO_PCNF1_BALEN_Msk (0x7UL << RADIO_PCNF1_BALEN_Pos) /*!< Bit mask of BALEN field.                                 */
-  #define RADIO_PCNF1_BALEN_Min (0x1UL)              /*!< Min value of BALEN field.                                            */
-  #define RADIO_PCNF1_BALEN_Max (0x1UL)              /*!< Max size of BALEN field.                                             */
+  #define RADIO_PCNF1_BALEN_Min (0x2UL)              /*!< Min value of BALEN field.                                            */
+  #define RADIO_PCNF1_BALEN_Max (0x4UL)              /*!< Max size of BALEN field.                                             */
 
 /* ENDIAN @Bit 24 : On-air endianness of packet, this applies to the S0, LENGTH, S1, and the PAYLOAD fields. */
   #define RADIO_PCNF1_ENDIAN_Pos (24UL)              /*!< Position of ENDIAN field.                                            */
