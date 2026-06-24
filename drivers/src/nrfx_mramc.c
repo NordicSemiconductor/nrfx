@@ -128,8 +128,7 @@ void nrfx_mramc_words_write(uint32_t address, void const * src, uint32_t num_wor
                 nrfx_mramc_valid_address_check(address, true) &&
                 nrfx_mramc_fits_memory_check(address, true, (num_words * NRFY_MRAMC_BYTES_IN_WORD))
                 &&
-                nrfx_is_word_aligned((void const *)address) &&
-                nrfx_is_word_aligned(src));
+                nrfx_is_word_aligned((void const *)address));
 
     nrfy_mramc_words_write(NRF_MRAMC, address, src, num_words);
 }

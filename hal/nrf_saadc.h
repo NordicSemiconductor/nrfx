@@ -66,6 +66,13 @@ extern "C" {
 #define NRF_SAADC_HAS_ACQTIME_ENUM 0
 #endif
 
+#if defined(SAADC_SHORTS_ResetValue) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SHORTS register is present. */
+#define NRF_SAADC_HAS_SHORTS 1
+#else
+#define NRF_SAADC_HAS_SHORTS 0
+#endif
+
 #if defined(SAADC_CH_CONFIG_TCONV_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether the configuration of conversion time is present. */
 #define NRF_SAADC_HAS_CONVTIME 1
@@ -258,6 +265,20 @@ extern "C" {
 #define NRF_SAADC_HAS_REFERENCE_EXTERNAL 0
 #endif
 
+#if defined(SAADC_CH_CONFIG_REFSEL_Vdd) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SAADC channels can be configured to use VDD as a reference. */
+#define NRF_SAADC_HAS_REFERENCE_VDD 1
+#else
+#define NRF_SAADC_HAS_REFERENCE_VDD 0
+#endif
+
+#if defined(SAADC_HAS_INTERNAL_TIMER_SCAN) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SAADC internal timer can be used with scan mode. */
+#define NRF_SAADC_HAS_INTERNAL_TIMER_SCAN 1
+#else
+#define NRF_SAADC_HAS_INTERNAL_TIMER_SCAN 0
+#endif
+
 #if !NRF_SAADC_HAS_ACQTIME_ENUM || defined(__NRFX_DOXYGEN__)
 /** @brief Maximum value of acquire time. */
 #define NRF_SAADC_ACQTIME_MAX SAADC_CH_CONFIG_TACQ_Max
@@ -294,6 +315,15 @@ typedef enum
     NRF_SAADC_RESOLUTION_12BIT = SAADC_RESOLUTION_VAL_12bit, ///< 12 bit resolution.
     NRF_SAADC_RESOLUTION_14BIT = SAADC_RESOLUTION_VAL_14bit  ///< 14 bit resolution.
 } nrf_saadc_resolution_t;
+
+#if NRF_SAADC_HAS_SHORTS
+/** @brief SAADC shorts. */
+typedef enum
+{
+    NRF_SAADC_SHORT_DONE_SAMPLE_MASK = SAADC_SHORTS_DONE_SAMPLE_Msk, /**< Shortcut between event DONE and task SAMPLE. */
+    NRF_SAADC_SHORT_END_START_MASK   = SAADC_SHORTS_END_START_Msk,   /**< Shortcut between event END and task START. */
+} nrf_saadc_short_mask_t;
+#endif
 
 #if NRF_SAADC_HAS_AIN_AS_PIN
 /** @brief Analog input type. */
@@ -496,10 +526,13 @@ typedef enum
     NRF_SAADC_REFERENCE_INTERNAL = SAADC_CH_CONFIG_REFSEL_Internal, ///< Internal reference.
 #endif
 #if NRF_SAADC_HAS_REFERENCE_VDD4
-    NRF_SAADC_REFERENCE_VDD4     = SAADC_CH_CONFIG_REFSEL_VDD1_4    ///< VDD/4 as reference.
+    NRF_SAADC_REFERENCE_VDD4     = SAADC_CH_CONFIG_REFSEL_VDD1_4,   ///< VDD/4 as reference.
 #endif
 #if NRF_SAADC_HAS_REFERENCE_EXTERNAL
     NRF_SAADC_REFERENCE_EXTERNAL = SAADC_CH_CONFIG_REFSEL_External, ///< External reference.
+#endif
+#if NRF_SAADC_HAS_REFERENCE_VDD
+    NRF_SAADC_REFERENCE_VDD      = SAADC_CH_CONFIG_REFSEL_Vdd,      ///< VDD as reference.
 #endif
 } nrf_saadc_reference_t;
 
@@ -721,6 +754,34 @@ NRF_STATIC_INLINE void nrf_saadc_event_clear(NRF_SAADC_Type *  p_reg,
  */
 NRF_STATIC_INLINE uint32_t nrf_saadc_event_address_get(NRF_SAADC_Type const * p_reg,
                                                        nrf_saadc_event_t      event);
+
+#if NRF_SAADC_HAS_SHORTS
+/**
+ * @brief Function for enabling the specified shortcuts.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Shortcuts to be enabled.
+ */
+NRF_STATIC_INLINE void nrf_saadc_shorts_enable(NRF_SAADC_Type * p_reg, uint32_t mask);
+
+/**
+ * @brief Function for disabling the specified shortcuts.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] mask  Shortcuts to be disabled.
+ */
+NRF_STATIC_INLINE void nrf_saadc_shorts_disable(NRF_SAADC_Type * p_reg, uint32_t mask);
+
+/**
+ * @brief Function for getting the shortcut setting.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Current shortcut configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_saadc_shorts_get(NRF_SAADC_Type const * p_reg);
+
+#endif // NRF_SAADC_HAS_SHORTS
 
 #if defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 /**
@@ -1206,6 +1267,25 @@ NRF_STATIC_INLINE uint32_t  nrf_saadc_event_address_get(NRF_SAADC_Type const * p
 {
     return nrf_task_event_address_get(p_reg, event);
 }
+
+#if NRF_SAADC_HAS_SHORTS
+
+NRF_STATIC_INLINE void nrf_saadc_shorts_enable(NRF_SAADC_Type * p_reg, uint32_t mask)
+{
+    p_reg->SHORTS |= mask;
+}
+
+NRF_STATIC_INLINE void nrf_saadc_shorts_disable(NRF_SAADC_Type * p_reg, uint32_t mask)
+{
+    p_reg->SHORTS &= ~mask;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_saadc_shorts_get(NRF_SAADC_Type const * p_reg)
+{
+    return p_reg->SHORTS;
+}
+
+#endif // NRF_SAADC_HAS_SHORTS
 
 #if defined(DPPI_PRESENT)
 NRF_STATIC_INLINE void nrf_saadc_subscribe_set(NRF_SAADC_Type * p_reg,

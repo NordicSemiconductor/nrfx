@@ -34,157 +34,157 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_MEM_H_
 
 #if defined(NRF51422_XXAA)
-    #include "nrf51422_xxaa_memory.h"
+    #include "nrf51/nrf51422/nrf51422_xxaa_memory.h"
 #elif defined(NRF51422_XXAB)
-    #include "nrf51422_xxab_memory.h"
+    #include "nrf51/nrf51422/nrf51422_xxab_memory.h"
 #elif defined(NRF51422_XXAC)
-    #include "nrf51422_xxac_memory.h"
+    #include "nrf51/nrf51422/nrf51422_xxac_memory.h"
 #elif defined(NRF51801_XXAB)
-    #include "nrf51801_xxab_memory.h"
+    #include "nrf51/nrf51801/nrf51801_xxab_memory.h"
 #elif defined(NRF51802_XXAA)
-    #include "nrf51802_xxaa_memory.h"
+    #include "nrf51/nrf51802/nrf51802_xxaa_memory.h"
 #elif defined(NRF51822_XXAA)
-    #include "nrf51822_xxaa_memory.h"
+    #include "nrf51/nrf51822/nrf51822_xxaa_memory.h"
 #elif defined(NRF51822_XXAB)
-    #include "nrf51822_xxab_memory.h"
+    #include "nrf51/nrf51822/nrf51822_xxab_memory.h"
 #elif defined(NRF51822_XXAC)
-    #include "nrf51822_xxac_memory.h"
+    #include "nrf51/nrf51822/nrf51822_xxac_memory.h"
 #elif defined(NRF51824_XXAA)
-    #include "nrf51824_xxaa_memory.h"
+    #include "nrf51/nrf51824/nrf51824_xxaa_memory.h"
 #elif defined(NRF52805_XXAA)
-    #include "nrf52805_xxaa_memory.h"
+    #include "nrf52/nrf52805/nrf52805_xxaa_memory.h"
 #elif defined(NRF52810_XXAA)
-    #include "nrf52810_xxaa_memory.h"
+    #include "nrf52/nrf52810/nrf52810_xxaa_memory.h"
 #elif defined(NRF52811_XXAA)
-    #include "nrf52811_xxaa_memory.h"
+    #include "nrf52/nrf52811/nrf52811_xxaa_memory.h"
 #elif defined(NRF52820_XXAA)
-    #include "nrf52820_xxaa_memory.h"
+    #include "nrf52/nrf52820/nrf52820_xxaa_memory.h"
 #elif defined(NRF52832_XXAA)
-    #include "nrf52832_xxaa_memory.h"
+    #include "nrf52/nrf52832/nrf52832_xxaa_memory.h"
 #elif defined(NRF52832_XXAB)
-    #include "nrf52832_xxab_memory.h"
+    #include "nrf52/nrf52832/nrf52832_xxab_memory.h"
 #elif defined(NRF52833_XXAA)
-    #include "nrf52833_xxaa_memory.h"
+    #include "nrf52/nrf52833/nrf52833_xxaa_memory.h"
 #elif defined(NRF52840_XXAA)
-    #include "nrf52840_xxaa_memory.h"
+    #include "nrf52/nrf52840/nrf52840_xxaa_memory.h"
 #elif defined(NRF5340_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf5340_xxaa_application_memory.h"
+        #include "nrf53/nrf5340/nrf5340_xxaa_application_memory.h"
     #endif
     #if defined(NRF_NETWORK)
-        #include "nrf5340_xxaa_network_memory.h"
-    #endif
-#elif defined(NRF54H20_XXAA)
-    #if defined(NRF_SECURE)
-        #include "nrf54h20_xxaa_secure_memory.h"
-    #endif
-    #if defined(NRF_APPLICATION)
-        #include "nrf54h20_xxaa_application_memory.h"
-    #endif
-    #if defined(NRF_RADIOCORE)
-        #include "nrf54h20_xxaa_radiocore_memory.h"
-    #endif
-    #if defined(NRF_SYSCTRL)
-        #include "nrf54h20_xxaa_sysctrl_memory.h"
-    #endif
-    #if defined(NRF_PPR)
-        #include "nrf54h20_xxaa_ppr_memory.h"
-    #endif
-    #if defined(NRF_FLPR)
-        #include "nrf54h20_xxaa_flpr_memory.h"
+        #include "nrf53/nrf5340/nrf5340_xxaa_network_memory.h"
     #endif
 #elif defined(NRF54L05_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf54l05_xxaa_application_memory.h"
+        #include "nrf54l/nrf54l05/nrf54l05_xxaa_application_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf54l05_xxaa_flpr_memory.h"
+        #include "nrf54l/nrf54l05/nrf54l05_xxaa_flpr_memory.h"
     #endif
 #elif defined(NRF54L10_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf54l10_xxaa_application_memory.h"
+        #include "nrf54l/nrf54l10/nrf54l10_xxaa_application_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf54l10_xxaa_flpr_memory.h"
+        #include "nrf54l/nrf54l10/nrf54l10_xxaa_flpr_memory.h"
     #endif
 #elif defined(NRF54L15_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf54l15_xxaa_application_memory.h"
+        #include "nrf54l/nrf54l15/nrf54l15_xxaa_application_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf54l15_xxaa_flpr_memory.h"
+        #include "nrf54l/nrf54l15/nrf54l15_xxaa_flpr_memory.h"
     #endif
 #elif defined(NRF54LC10A_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf54lc10a_xxaa_application_memory.h"
+        #include "nrf54l/nrf54lc10a/nrf54lc10a_xxaa_application_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf54lc10a_xxaa_flpr_memory.h"
+        #include "nrf54l/nrf54lc10a/nrf54lc10a_xxaa_flpr_memory.h"
     #endif
 #elif defined(NRF54LM20A_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf54lm20a_xxaa_application_memory.h"
+        #include "nrf54l/nrf54lm20a/nrf54lm20a_xxaa_application_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf54lm20a_xxaa_flpr_memory.h"
+        #include "nrf54l/nrf54lm20a/nrf54lm20a_xxaa_flpr_memory.h"
     #endif
 #elif defined(NRF54LM20B_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf54lm20b_xxaa_application_memory.h"
+        #include "nrf54l/nrf54lm20b/nrf54lm20b_xxaa_application_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf54lm20b_xxaa_flpr_memory.h"
+        #include "nrf54l/nrf54lm20b/nrf54lm20b_xxaa_flpr_memory.h"
     #endif
 #elif defined(NRF54LS05A_XXAA)
-    #include "nrf54ls05a_xxaa_application_memory.h"
+    #include "nrf54l/nrf54ls05a/nrf54ls05a_xxaa_application_memory.h"
 #elif defined(NRF54LS05B_XXAA)
-    #include "nrf54ls05b_xxaa_application_memory.h"
+    #include "nrf54l/nrf54ls05b/nrf54ls05b_xxaa_application_memory.h"
 #elif defined(NRF54LV10A_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf54lv10a_xxaa_application_memory.h"
+        #include "nrf54l/nrf54lv10a/nrf54lv10a_xxaa_application_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf54lv10a_xxaa_flpr_memory.h"
+        #include "nrf54l/nrf54lv10a/nrf54lv10a_xxaa_flpr_memory.h"
+    #endif
+#elif defined(NRF54H20_XXAA)
+    #if defined(NRF_SECURE)
+        #include "nrf54h/nrf54h20/nrf54h20_xxaa_secure_memory.h"
+    #endif
+    #if defined(NRF_APPLICATION)
+        #include "nrf54h/nrf54h20/nrf54h20_xxaa_application_memory.h"
+    #endif
+    #if defined(NRF_RADIOCORE)
+        #include "nrf54h/nrf54h20/nrf54h20_xxaa_radiocore_memory.h"
+    #endif
+    #if defined(NRF_SYSCTRL)
+        #include "nrf54h/nrf54h20/nrf54h20_xxaa_sysctrl_memory.h"
+    #endif
+    #if defined(NRF_PPR)
+        #include "nrf54h/nrf54h20/nrf54h20_xxaa_ppr_memory.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf54h/nrf54h20/nrf54h20_xxaa_flpr_memory.h"
     #endif
 #elif defined(NRF7120_ENGA_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf7120_enga_xxaa_application_memory.h"
+        #include "nrf71/nrf7120_enga/nrf7120_enga_xxaa_application_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf7120_enga_xxaa_flpr_memory.h"
+        #include "nrf71/nrf7120_enga/nrf7120_enga_xxaa_flpr_memory.h"
     #endif
     #if defined(NRF_UMAC)
-        #include "nrf7120_enga_xxaa_umac_memory.h"
+        #include "nrf71/nrf7120_enga/nrf7120_enga_xxaa_umac_memory.h"
     #endif
     #if defined(NRF_LMAC)
-        #include "nrf7120_enga_xxaa_lmac_memory.h"
+        #include "nrf71/nrf7120_enga/nrf7120_enga_xxaa_lmac_memory.h"
     #endif
 #elif defined(NRF9120_XXAA)
-    #include "nrf9120_xxaa_memory.h"
+    #include "nrf91/nrf9120/nrf9120_xxaa_memory.h"
 #elif defined(NRF9160_XXAA)
-    #include "nrf9160_xxaa_memory.h"
+    #include "nrf91/nrf9160/nrf9160_xxaa_memory.h"
 #elif defined(NRF9220_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf9220_xxaa_application_memory.h"
+        #include "nrf92/nrf9220/nrf9220_xxaa_application_memory.h"
     #endif
     #if defined(NRF_PPR)
-        #include "nrf9220_xxaa_ppr_memory.h"
+        #include "nrf92/nrf9220/nrf9220_xxaa_ppr_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf9220_xxaa_flpr_memory.h"
+        #include "nrf92/nrf9220/nrf9220_xxaa_flpr_memory.h"
     #endif
 #elif defined(NRF9230_ENGB_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf9230_engb_xxaa_application_memory.h"
+        #include "nrf92/nrf9230_engb/nrf9230_engb_xxaa_application_memory.h"
     #endif
     #if defined(NRF_RADIOCORE)
-        #include "nrf9230_engb_xxaa_radiocore_memory.h"
+        #include "nrf92/nrf9230_engb/nrf9230_engb_xxaa_radiocore_memory.h"
     #endif
     #if defined(NRF_PPR)
-        #include "nrf9230_engb_xxaa_ppr_memory.h"
+        #include "nrf92/nrf9230_engb/nrf9230_engb_xxaa_ppr_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf9230_engb_xxaa_flpr_memory.h"
+        #include "nrf92/nrf9230_engb/nrf9230_engb_xxaa_flpr_memory.h"
     #endif
 #else
     #error "Device must be defined. See nrf_mem.h."
@@ -192,7 +192,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 #ifdef  __STARTUP_CONFIG
-    #include "startup_config.h"
+    #include "common/startup_config.h"
     #ifndef __STARTUP_CONFIG_STACK_ALIGNEMENT
         #define __STARTUP_CONFIG_STACK_ALIGNEMENT 3
     #endif

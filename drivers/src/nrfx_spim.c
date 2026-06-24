@@ -524,6 +524,7 @@ static void spim_configure(nrfx_spim_t *              p_instance,
     };
 
     nrfy_spim_periph_configure(p_instance->p_reg, &nrfy_config);
+
     if (p_cb->handler)
     {
         nrfy_spim_int_init(p_instance->p_reg, 0, p_config->irq_priority, false);

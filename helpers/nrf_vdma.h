@@ -222,7 +222,9 @@ __STATIC_INLINE size_t nrf_vdma_job_size_get(nrf_vdma_job_t const * p_job)
  */
 __STATIC_INLINE void nrf_vdma_job_terminate(nrf_vdma_job_t * p_job)
 {
-    p_job->p_buffer = NULL;
+    p_job->p_buffer   = NULL;
+    p_job->size       = 0;
+    p_job->attributes = 0;
 }
 
 /**

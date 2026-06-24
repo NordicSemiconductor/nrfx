@@ -3,7 +3,7 @@
   <navindex>
     <tab type="mainpage" visible="yes" title="Home"/>
     <tab type="pages" visible="yes" title="" intro=""/>
-    <tab type="modules" visible="yes" title="API Reference" intro=""/>
+    <tab type="topics" visible="yes" title="API Reference" intro=""/>
     <tab type="namespaces" visible="no" title="">
       <tab type="namespacelist" visible="yes" title="" intro=""/>
       <tab type="namespacemembers" visible="yes" title="" intro=""/>

@@ -174,6 +174,42 @@ extern "C" {
 #define NRF_FICR_HAS_GLOBAL_SAADC_LINCALCOEFF 0
 #endif
 
+#if (defined(NRF_APPLICATION) && defined(FICR_TRIM_APPLICATION_HSFLL_TRIM_VSUP_VALUE_Pos)) || \
+    (defined(NRF_RADIOCORE) && defined(FICR_TRIM_RADIOCORE_HSFLL_TRIM_VSUP_VALUE_Pos)) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether FICR HSFLL.TRIM.VSUP register for the current domain is present. */
+#define NRF_FICR_HAS_HSFLL_TRIM_VSUP 1
+#else
+#define NRF_FICR_HAS_HSFLL_TRIM_VSUP 0
+#endif
+
+#if (defined(NRF_APPLICATION) && defined(FICR_TRIM_APPLICATION_HSFLL_TRIM_COARSE_VALUE_Pos)) || \
+    (defined(NRF_RADIOCORE) && defined(FICR_TRIM_RADIOCORE_HSFLL_TRIM_COARSE_VALUE_Pos)) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether FICR HSFLL.TRIM.COARSE register for the current domain is present. */
+#define NRF_FICR_HAS_HSFLL_TRIM_COARSE 1
+#else
+#define NRF_FICR_HAS_HSFLL_TRIM_COARSE 0
+#endif
+
+#if (defined(NRF_APPLICATION) && defined(FICR_TRIM_APPLICATION_HSFLL_TRIM_FINE_VALUE_Pos)) || \
+    (defined(NRF_RADIOCORE) && defined(FICR_TRIM_RADIOCORE_HSFLL_TRIM_FINE_VALUE_Pos)) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether FICR HSFLL.TRIM.FINE register for the current domain is present. */
+#define NRF_FICR_HAS_HSFLL_TRIM_FINE 1
+#else
+#define NRF_FICR_HAS_HSFLL_TRIM_FINE 0
+#endif
+
+#if (defined(NRF_APPLICATION) && defined(FICR_TRIM_APPLICATION_HSFLL_TRIM_TCOEF_VALUE_Pos)) || \
+    (defined(NRF_RADIOCORE) && defined(FICR_TRIM_RADIOCORE_HSFLL_TRIM_TCOEF_VALUE_Pos)) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether FICR HSFLL.TRIM.TCOEF register for the current domain is present. */
+#define NRF_FICR_HAS_HSFLL_TRIM_TCOEF 1
+#else
+#define NRF_FICR_HAS_HSFLL_TRIM_TCOEF 0
+#endif
+
 #if NRF_FICR_HAS_CODE_PAGE_SIZE || NRF_FICR_HAS_INFO_CODE_PAGE_SIZE
 /**
  * @brief Function for getting the size of the code memory page.
@@ -306,6 +342,56 @@ NRF_STATIC_INLINE uint32_t nrf_ficr_global_saadc_lincalcoeff_get(NRF_FICR_Type c
                                                                  uint8_t               reg_id);
 #endif
 
+#if NRF_FICR_HAS_HSFLL_TRIM_VSUP
+/**
+ * @brief Function for getting the VSUP trim value for HSFLL for the current domain.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return VSUP trim value for HSFLL.
+ */
+NRF_STATIC_INLINE uint8_t nrf_ficr_hsfll_trim_vsup_get(NRF_FICR_Type const * p_reg);
+#endif
+
+#if NRF_FICR_HAS_HSFLL_TRIM_COARSE
+/**
+ * @brief Function for getting the COARSE trim value for HSFLL for the current domain.
+ *
+ * @param[in] p_reg      Pointer to the structure of registers of the peripheral.
+ * @param[in] trim_index Index of the COARSE trim value.
+ *
+ * @return COARSE trim value for HSFLL.
+ */
+NRF_STATIC_INLINE
+uint16_t nrf_ficr_hsfll_trim_coarse_get(NRF_FICR_Type const * p_reg,
+                                        uint8_t               trim_index);
+#endif
+
+#if NRF_FICR_HAS_HSFLL_TRIM_FINE
+/**
+ * @brief Function for getting the FINE trim value for HSFLL for the current domain.
+ *
+ * @param[in] p_reg      Pointer to the structure of registers of the peripheral.
+ * @param[in] trim_index Index of the FINE trim value.
+ *
+ * @return FINE trim value for HSFLL.
+ */
+NRF_STATIC_INLINE
+uint16_t nrf_ficr_hsfll_trim_fine_get(NRF_FICR_Type const * p_reg,
+                                      uint8_t               trim_index);
+#endif
+
+#if NRF_FICR_HAS_HSFLL_TRIM_TCOEF
+/**
+ * @brief Function for getting the temperature coefficient trim value for HSFLL for the current domain.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Temperature coefficient trim value for HSFLL.
+ */
+NRF_STATIC_INLINE uint8_t nrf_ficr_hsfll_trim_tcoef_get(NRF_FICR_Type const * p_reg);
+#endif
+
 #ifndef NRF_DECLARE_ONLY
 
 #if NRF_FICR_HAS_CODE_PAGE_SIZE || NRF_FICR_HAS_INFO_CODE_PAGE_SIZE
@@ -435,6 +521,54 @@ NRF_STATIC_INLINE uint32_t nrf_ficr_global_saadc_lincalcoeff_get(NRF_FICR_Type c
                                                                  uint8_t               reg_id)
 {
     return p_reg->TRIM.GLOBAL.SAADC.LINCALCOEFF[reg_id];
+}
+#endif
+
+#if NRF_FICR_HAS_HSFLL_TRIM_VSUP
+NRF_STATIC_INLINE uint8_t nrf_ficr_hsfll_trim_vsup_get(NRF_FICR_Type const * p_reg)
+{
+#if defined(NRF_APPLICATION)
+    return (uint8_t)p_reg->TRIM.APPLICATION.HSFLL.TRIM.VSUP;
+#elif defined(NRF_RADIOCORE)
+    return (uint8_t)p_reg->TRIM.RADIOCORE.HSFLL.TRIM.VSUP;
+#endif
+}
+#endif
+
+#if NRF_FICR_HAS_HSFLL_TRIM_COARSE
+NRF_STATIC_INLINE
+uint16_t nrf_ficr_hsfll_trim_coarse_get(NRF_FICR_Type const * p_reg,
+                                        uint8_t               trim_index)
+{
+#if defined(NRF_APPLICATION)
+    return (uint16_t)p_reg->TRIM.APPLICATION.HSFLL.TRIM.COARSE[trim_index];
+#elif defined(NRF_RADIOCORE)
+    return (uint16_t)p_reg->TRIM.RADIOCORE.HSFLL.TRIM.COARSE[trim_index];
+#endif
+}
+#endif
+
+#if NRF_FICR_HAS_HSFLL_TRIM_FINE
+NRF_STATIC_INLINE
+uint16_t nrf_ficr_hsfll_trim_fine_get(NRF_FICR_Type const * p_reg,
+                                      uint8_t               trim_index)
+{
+#if defined(NRF_APPLICATION)
+    return (uint16_t)p_reg->TRIM.APPLICATION.HSFLL.TRIM.FINE[trim_index];
+#elif defined(NRF_RADIOCORE)
+    return (uint16_t)p_reg->TRIM.RADIOCORE.HSFLL.TRIM.FINE[trim_index];
+#endif
+}
+#endif
+
+#if NRF_FICR_HAS_HSFLL_TRIM_TCOEF
+NRF_STATIC_INLINE uint8_t nrf_ficr_hsfll_trim_tcoef_get(NRF_FICR_Type const * p_reg)
+{
+#if defined(NRF_APPLICATION)
+    return (uint8_t)p_reg->TRIM.APPLICATION.HSFLL.TRIM.TCOEF;
+#elif defined(NRF_RADIOCORE)
+    return (uint8_t)p_reg->TRIM.RADIOCORE.HSFLL.TRIM.TCOEF;
+#endif
 }
 #endif
 

@@ -179,13 +179,6 @@ extern "C" {
 #define NRF_PDM_HAS_RATIO192 0
 #endif
 
-#if defined(PDM_RATIO_RATIO_Custom) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether PDM custom ratio configuration is available. */
-#define NRF_PDM_HAS_CUSTOM_RATIO 1
-#else
-#define NRF_PDM_HAS_CUSTOM_RATIO 0
-#endif
-
 #if defined(PDM_FILTER_CTRL_DECRATIO_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether PDM filter registers are available. */
 #define NRF_PDM_HAS_FILTER 1
@@ -193,18 +186,11 @@ extern "C" {
 #define NRF_PDM_HAS_FILTER 0
 #endif
 
-/** @brief Minimum value of PDM gain. */
-#define NRF_PDM_GAIN_MINIMUM  0x00
-/** @brief Default value of PDM gain. */
-#define NRF_PDM_GAIN_DEFAULT  0x28
-/** @brief Maximum value of PDM gain. */
-#define NRF_PDM_GAIN_MAXIMUM  0x50
-
-#if NRF_PDM_HAS_PRESCALER
-/** @brief Minimum value of PDM prescaler. */
-#define NRF_PDM_PRESCALER_MIN PDM_PRESCALER_DIVISOR_Min
-/** @brief Maximum value of PDM prescaler. */
-#define NRF_PDM_PRESCALER_MAX PDM_PRESCALER_DIVISOR_Max
+#if (defined(PDM_RATIO_RATIO_Custom) && NRF_PDM_HAS_FILTER) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether PDM custom ratio configuration is available. */
+#define NRF_PDM_HAS_CUSTOM_RATIO 1
+#else
+#define NRF_PDM_HAS_CUSTOM_RATIO 0
 #endif
 
 #if NRF_PDM_HAS_MCLKCONFIG || NRF_PDM_HAS_CLKSELECT
@@ -214,7 +200,21 @@ extern "C" {
 #define NRF_PDM_HAS_SELECTABLE_CLOCK 0
 #endif
 
-/** @brief PDM gain type. */
+/** @brief Minimum value of PDM gain. */
+#define NRF_PDM_GAIN_MINIMUM PDM_GAINL_GAINL_MinGain
+/** @brief Default value of PDM gain. */
+#define NRF_PDM_GAIN_DEFAULT PDM_GAINL_GAINL_DefaultGain
+/** @brief Maximum value of PDM gain. */
+#define NRF_PDM_GAIN_MAXIMUM PDM_GAINL_GAINL_MaxGain
+
+#if NRF_PDM_HAS_PRESCALER
+/** @brief Minimum value of PDM prescaler. */
+#define NRF_PDM_PRESCALER_MIN PDM_PRESCALER_DIVISOR_Min
+/** @brief Maximum value of PDM prescaler. */
+#define NRF_PDM_PRESCALER_MAX PDM_PRESCALER_DIVISOR_Max
+#endif
+
+/** @brief PDM gain type. Describes gain value in 0.5 dB steps. */
 typedef uint8_t nrf_pdm_gain_t;
 
 /** @brief PDM tasks. */
@@ -412,6 +412,17 @@ typedef struct
     nrf_pdm_sample_delay_t sample_delay;           ///< Input data sample delay.
     nrf_pdm_filter_cic_t   cic_filter;             ///< MSB for CIC filter.
 } nrf_pdm_filter_ctrl_t;
+#endif
+
+#if NRF_PDM_HAS_CUSTOM_RATIO
+/** @brief PDM custom ratio configuration structure. */
+typedef struct
+{
+    uint16_t             ratio;                   ///< Custom ratio between PDM_CLK and output sample rate.
+    nrf_pdm_filter_cic_t filter_msb;              ///< CIC filter's most significant bit, adjusted to custom ratio range.
+    nrf_pdm_gain_t       compensation_gain;       ///< Compensation gain in 0.5 dB steps.
+    bool                 minor_compensation_gain; ///< Additional 0.25 dB compensation gain.
+} nrf_pdm_custom_ratio_t;
 #endif
 
 /**
@@ -753,15 +764,18 @@ NRF_STATIC_INLINE void nrf_pdm_ratio_set(NRF_PDM_Type * p_reg, nrf_pdm_ratio_t r
 
 #if NRF_PDM_HAS_CUSTOM_RATIO
 /**
- * @brief Function for setting custom ratio between PDM_CLK and output sample rate.
+ * @brief Function for setting custom ratio between PDM_CLK and output sample rate
+ *        and configuring filters accordingly.
  *
  * @warning Before calling this function, the caller must ensure that custom ratio
  *          configuration has been set using @ref nrf_pdm_ratio_set.
  *
- * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] ratio Custom ratio between PDM_CLK and output sample rate.
+ * @param[in] p_reg        Pointer to the structure of registers of the peripheral.
+ * @param[in] custom_ratio Custom ratio configuration.
  */
-NRF_STATIC_INLINE void nrf_pdm_custom_ratio_set(NRF_PDM_Type * p_reg, uint8_t ratio);
+NRF_STATIC_INLINE void nrf_pdm_custom_ratio_set(NRF_PDM_Type *                 p_reg,
+                                                nrf_pdm_custom_ratio_t const * custom_ratio);
+
 #endif
 #endif // NRF_PDM_HAS_RATIO_CONFIG
 
@@ -1072,12 +1086,27 @@ NRF_STATIC_INLINE void nrf_pdm_ratio_set(NRF_PDM_Type * p_reg, nrf_pdm_ratio_t r
 }
 
 #if NRF_PDM_HAS_CUSTOM_RATIO
-NRF_STATIC_INLINE void nrf_pdm_custom_ratio_set(NRF_PDM_Type * p_reg, uint8_t ratio)
+NRF_STATIC_INLINE void nrf_pdm_custom_ratio_set(NRF_PDM_Type *                 p_reg,
+                                                nrf_pdm_custom_ratio_t const * custom_ratio)
 {
-    NRFX_ASSERT((ratio >= PDM_FILTER_CTRL_DECRATIO_Min) && (ratio <= PDM_FILTER_CTRL_DECRATIO_Max));
-    p_reg->FILTER.CTRL = (p_reg->FILTER.CTRL & ~PDM_FILTER_CTRL_DECRATIO_Msk) |
-                          (((uint32_t)ratio << PDM_FILTER_CTRL_DECRATIO_Pos)
-                                             & PDM_FILTER_CTRL_DECRATIO_Msk);
+    NRFX_ASSERT((custom_ratio->ratio >= PDM_FILTER_CTRL_DECRATIO_Min) &&
+                (custom_ratio->ratio <= PDM_FILTER_CTRL_DECRATIO_Max) &&
+                (custom_ratio->compensation_gain <= PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Max));
+    uint32_t to_update = PDM_FILTER_CTRL_DECRATIO_Msk           |
+                         PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Msk |
+                         PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Msk |
+                         PDM_FILTER_CTRL_MINORSTEP025CUSTOM_Msk;
+    uint32_t ctrl = (p_reg->FILTER.CTRL & ~to_update)                                              |
+            (((uint32_t)((custom_ratio->ratio / 2) - 1)  << PDM_FILTER_CTRL_DECRATIO_Pos)
+                                                          & PDM_FILTER_CTRL_DECRATIO_Msk)          |
+            (((uint32_t)custom_ratio->filter_msb << PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Pos)
+                                                  & PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Msk)        |
+            (((uint32_t)custom_ratio->compensation_gain << PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Pos)
+                                                         & PDM_FILTER_CTRL_MINORSTEP050CUSTOM_Msk) |
+            ((custom_ratio->minor_compensation_gain ? PDM_FILTER_CTRL_MINORSTEP025CUSTOM_Enable
+                                                    : PDM_FILTER_CTRL_MINORSTEP025CUSTOM_Disable)
+                                                   << PDM_FILTER_CTRL_MINORSTEP025CUSTOM_Pos);
+    p_reg->FILTER.CTRL = ctrl;
 }
 #endif
 #endif // NRF_PDM_HAS_RATIO_CONFIG

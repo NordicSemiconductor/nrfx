@@ -41,12 +41,8 @@
 extern "C" {
 #endif
 
-#if NRF_TDM_HAS_CONFIG_FSYNC_DURATION_ENUM || defined(__NRFX_DOXYGEN__)
-/** @brief Auxiliary symbol specifying default value for the TDM CONFIG_FSYNC_DURATION register. */
-#define NRFX_TDM_DEFAULT_FSYNC_DURATION NRF_TDM_FSYNC_DURATION_CHANNEL
-#else
-#define NRFX_TDM_DEFAULT_FSYNC_DURATION 1
-#endif
+/** @brief Mapping of default FSYNC duration. */
+#define NRFX_TDM_DEFAULT_FSYNC_DURATION NRF_TDM_DEFAULT_FSYNC_DURATION
 
 /** @brief Minimal transfer size of TDM buffer in 32-bit words. */
 #define NRFX_TDM_MIN_TRANSFER_SIZE TDM_MIN_TRANSFER_SIZE

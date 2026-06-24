@@ -83,10 +83,17 @@ extern "C" {
 #endif
 
 #if defined(RESETINFO_RESETREAS_LOCAL_WDT0_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether WDT local reset reason is present. */
-#define NRF_RESETINFO_HAS_LOCAL_WDT 1
+/** @brief Symbol indicating whether WDT0 local reset reason is present. */
+#define NRF_RESETINFO_HAS_LOCAL_WDT0 1
 #else
-#define NRF_RESETINFO_HAS_LOCAL_WDT 0
+#define NRF_RESETINFO_HAS_LOCAL_WDT0 0
+#endif
+
+#if defined(RESETINFO_RESETREAS_LOCAL_WDT1_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether WDT1 local reset reason is present. */
+#define NRF_RESETINFO_HAS_LOCAL_WDT1 1
+#else
+#define NRF_RESETINFO_HAS_LOCAL_WDT1 0
 #endif
 
 #if defined(RESETINFO_ERROR_STATUS_ERRORSTATUS_Msk) || defined(__NRFX_DOXYGEN__)
@@ -132,8 +139,10 @@ typedef enum
 /** @brief Local reset reason mask. */
 typedef enum
 {
-#if NRF_RESETINFO_HAS_LOCAL_WDT
+#if NRF_RESETINFO_HAS_LOCAL_WDT0
     NRF_RESETINFO_RESETREAS_LOCAL_WDT0_MASK        = RESETINFO_RESETREAS_LOCAL_WDT0_Msk,           /**< Reset from the local watchdog timer 0. */
+#endif
+#if NRF_RESETINFO_HAS_LOCAL_WDT1
     NRF_RESETINFO_RESETREAS_LOCAL_WDT1_MASK        = RESETINFO_RESETREAS_LOCAL_WDT1_Msk,           /**< Reset from the local watchdog timer 1. */
 #endif
 #if NRF_RESETINFO_HAS_LOCAL_DOG

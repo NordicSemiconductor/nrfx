@@ -69,6 +69,13 @@ NRFY_STATIC_INLINE void __nrfy_internal_saadc_stop(NRF_SAADC_Type * p_reg, bool 
  * @note    Extended Hardware Access Layer (HALY) is deprecated.
  */
 
+#if NRF_SAADC_HAS_SHORTS || defined(__NRFX_DOXYGEN__)
+/** @refhal{NRF_SAADC_HAS_SHORTS} */
+#define NRFY_SAADC_HAS_SHORTS 1
+#else
+#define NRFY_SAADC_HAS_SHORTS 0
+#endif
+
  #if NRF_SAADC_HAS_CAL || defined(__NRFX_DOXYGEN__)
 /** @refhal{NRF_SAADC_HAS_CAL} */
 #define NRFY_SAADC_HAS_CAL 1
@@ -373,6 +380,33 @@ NRFY_STATIC_INLINE uint32_t nrfy_saadc_event_address_get(NRF_SAADC_Type const * 
 {
     return nrf_saadc_event_address_get(p_reg, event);
 }
+
+#if NRFY_SAADC_HAS_SHORTS
+
+/** @refhal{nrf_saadc_shorts_enable} */
+NRFY_STATIC_INLINE void nrfy_saadc_shorts_enable(NRF_SAADC_Type * p_reg, uint32_t mask)
+{
+    nrf_saadc_shorts_enable(p_reg, mask);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_saadc_shorts_disable} */
+NRFY_STATIC_INLINE void nrfy_saadc_shorts_disable(NRF_SAADC_Type * p_reg, uint32_t mask)
+{
+    nrf_saadc_shorts_disable(p_reg, mask);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_saadc_shorts_get} */
+NRFY_STATIC_INLINE uint32_t nrfy_saadc_shorts_get(NRF_SAADC_Type const * p_reg)
+{
+    nrf_barrier_r();
+    uint32_t shorts = nrf_saadc_shorts_get(p_reg);
+    nrf_barrier_r();
+    return shorts;
+}
+
+#endif // NRFY_SAADC_HAS_SHORTS
 
 #if defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 /** @refhal{nrf_saadc_subscribe_set} */

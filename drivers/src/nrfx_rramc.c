@@ -215,14 +215,14 @@ int nrfx_rramc_init(nrfx_rramc_config_t const * p_config,
     err_code = rramc_configure(p_config);
     if (err_code != 0)
     {
+        NRFX_LOG_WARNING("Function: %s, error code: %s.",
+                         __func__,
+                         NRFX_LOG_ERROR_STRING_GET(err_code));
         return err_code;
     }
 
     m_cb.state = NRFX_DRV_STATE_INITIALIZED;
 
-    NRFX_LOG_INFO("Function: %s, error code: %s.",
-                  __func__,
-                  NRFX_LOG_ERROR_STRING_GET(err_code));
     return err_code;
 }
 

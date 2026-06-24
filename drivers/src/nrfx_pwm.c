@@ -133,8 +133,10 @@ static void pwm_configure(nrfx_pwm_t const * p_instance, nrfx_pwm_config_t const
     };
 
     nrfy_pwm_periph_configure(p_instance->p_reg, &nrfy_config);
-    uint32_t to_clear = NRF_PWM_EVENT_LOOPSDONE | NRF_PWM_EVENT_SEQEND0 |
-                        NRF_PWM_EVENT_SEQEND1 | NRF_PWM_EVENT_STOPPED;
+    uint32_t to_clear = NRFY_EVENT_TO_INT_BITMASK(NRF_PWM_EVENT_LOOPSDONE) |
+                        NRFY_EVENT_TO_INT_BITMASK(NRF_PWM_EVENT_SEQEND0) |
+                        NRFY_EVENT_TO_INT_BITMASK(NRF_PWM_EVENT_SEQEND1) |
+                        NRFY_EVENT_TO_INT_BITMASK(NRF_PWM_EVENT_STOPPED);
     nrfy_pwm_int_init(p_instance->p_reg, to_clear, p_config->irq_priority, false);
 
 #if NRF_PWM_HAS_IDLEOUT
@@ -190,16 +192,17 @@ int nrfx_pwm_init(nrfx_pwm_t *              p_instance,
     p_cb->handler = handler;
     p_cb->p_context = p_context;
 #if NRF_ERRATA_STATIC_CHECK(52, 109)
-    switch ((uint32_t)p_instance->p_reg) {
-        case (uint32_t)NRF_PWM0:
-            p_cb->egu_channel = 13;
-            break;
-        case (uint32_t)NRF_PWM1:
-            p_cb->egu_channel = 14;
-            break;
-        case (uint32_t)NRF_PWM2:
-            p_cb->egu_channel = 15;
-            break;
+    if (p_instance->p_reg == NRF_PWM0)
+    {
+        p_cb->egu_channel = 13;
+    }
+    else if (p_instance->p_reg == NRF_PWM1)
+    {
+        p_cb->egu_channel = 14;
+    }
+    else if (p_instance->p_reg == NRF_PWM2)
+    {
+        p_cb->egu_channel = 15;
     }
 #endif // NRF_ERRATA_STATIC_CHECK(52, 109)
     if (p_config)

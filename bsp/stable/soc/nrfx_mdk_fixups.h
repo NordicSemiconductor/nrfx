@@ -88,6 +88,7 @@
     #define SPIM_PSEL_DCX_ResetValue         0xFFFFFFFFUL
     #define SPIM_PSEL_CSN_ResetValue         0xFFFFFFFFUL
     #define SPIM_IFTIMING_CSNDUR_ResetValue  0x2UL
+    #define SPIM_IFTIMING_CSNDUR_CSNDUR_Max  0xFFUL
     #define SPIM_CSNPOL_ResetValue           0x0UL
     #define SPIM_IFTIMING_RXDELAY_ResetValue 0x2UL
     #define WDT_RR_MaxCount 8
@@ -149,6 +150,7 @@
     #define SPIM_PSEL_DCX_ResetValue         0xFFFFFFFFUL
     #define SPIM_PSEL_CSN_ResetValue         0xFFFFFFFFUL
     #define SPIM_IFTIMING_CSNDUR_ResetValue  0x2UL
+    #define SPIM_IFTIMING_CSNDUR_CSNDUR_Max  0xFFUL
     #define SPIM_CSNPOL_ResetValue           0x0UL
     #define SPIM_IFTIMING_RXDELAY_ResetValue 0x2UL
     #define SPIM_DCX_DISCONNECTED_READBACK   0x11F
@@ -1137,7 +1139,7 @@
 /* Start fixups section for NRF9220_XXAA                                                          */
 /**************************************************************************************************/
 #if defined(NRF9220_XXAA)
-    #include "mdk/haltium_interim.h"
+    #include "mdk/common/haltium_interim.h"
 
     #define DPPIC120_CH_NUM (DPPIC120_CH_NUM_MAX + 1UL)
     #define DPPIC130_CH_NUM (DPPIC130_CH_NUM_MAX + 1UL)
@@ -1432,7 +1434,7 @@
     #define PWM_SHORTS_LOOPSDONE_DMA_SEQ1_START_Disabled (0x0UL)
     #define PWM_SHORTS_LOOPSDONE_DMA_SEQ1_START_Enabled (0x1UL)
 
-    #include "mdk/nrf9230_engb_interim.h"
+    #include "mdk/nrf92/nrf9230_engb/nrf9230_engb_interim.h"
 
     // Old HFXO modes are not supported
     #ifdef BICR_HFXO_CONFIG_MODE_Pierce

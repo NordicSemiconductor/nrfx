@@ -535,12 +535,66 @@ extern "C" {
 #endif
 #endif
 
+/* SAADC internal timer scan mode support definition. */
+#if defined(NRF54L_SERIES) || defined(NRF7120_ENGA_XXAA) || defined(NRF9220_XXAA)
+#define SAADC_HAS_INTERNAL_TIMER_SCAN 1
+#endif
+
+/* SAADC 3V3 outputs support definition. */
 #if defined(NRF9220_XXAA) || defined(NRF9230_ENGB_XXAA) || defined(NRF54H20_XXAA)
 #define SAADC_HAS_3V3_OUTPUTS 1
 #endif
 
-/* Ram sections definitions. */
+/* FLPR VIO pin indices definitions. */
+#if defined(NRF54L05_XXAA) || defined(NRF54L10_XXAA) || defined(NRF54L15_XXAA) || \
+    defined(NRF54LM20A_XXAA) || defined(NRF54LM20B_XXAA)
+    #define FLPR_VIO_PORT 2
+    #define FLPR_VIO_PIN_OFFSET 0
+    #define FLPR_VIO_PIN_INDICES \
+        4, \
+        0, \
+        1, \
+        3, \
+        2, \
+        5, \
+        6, \
+        7, \
+        8, \
+        9, \
+        10,
+#elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
+    #define FLPR_VIO_PORT 1
+    #define FLPR_VIO_PIN_OFFSET 15
+    #define FLPR_VIO_PIN_INDICES \
+        4, \
+        0, \
+        1, \
+        3, \
+        2, \
+        5, \
+        6, \
+        7, \
+        8, \
+        9,
+#elif defined(NRF7120_ENGA_XXAA)
+    #define FLPR_VIO_PORT 2
+    #define FLPR_VIO_PIN_OFFSET 0
+    #define FLPR_VIO_PIN_INDICES \
+        6,  \
+        7,  \
+        8,  \
+        9,  \
+        10, \
+        11, \
+        0,  \
+        1,  \
+        2,  \
+        3,  \
+        4,  \
+        5,
+#endif
 
+/* Ram sections definitions. */
 #define RAM_NON_UNIFORM_SECTION_DECLARE(i, _block, _section) {.decoded = {_block, _section}}
 
 #if defined(NRF51)
@@ -653,6 +707,11 @@ extern "C" {
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 6
 #define RAM_UNIFORM_SECTIONS_TOTAL     6
+#elif defined(NRF7120_ENGA_XXAA)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 32
+#define RAM_UNIFORM_SECTIONS_TOTAL     32
 #elif defined(NRF9120_XXAA) || defined(NRF9160_XXAA)
 #define RAM_SECTION_UNIT_SIZE          8192
 #define RAM_UNIFORM_BLOCKS             8

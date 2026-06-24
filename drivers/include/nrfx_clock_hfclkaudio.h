@@ -50,9 +50,9 @@ extern "C" {
  * @brief   HFCLKAUDIO peripheral driver.
  */
 
-/** @brief HFCLKAUDIO events. */
+/** @brief HFCLKAUDIO started event. */
 #define NRFX_CLOCK_HFCLKAUDIO_EVT_HFCLKAUDIO_STARTED \
-        NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_HFAUDIO_STARTED_MASK) ///< HFCLKAUDIO has been started.
+        NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_HFAUDIO_STARTED_MASK)
 
 /** @brief Clock event handler. */
 typedef void (*nrfx_clock_hfclkaudio_event_handler_t)(void);

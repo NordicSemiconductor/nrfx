@@ -209,6 +209,11 @@ extern "C" {
 #define NRF_SPIM_CSNDUR_DEFAULT SPIM_IFTIMING_CSNDUR_ResetValue
 #endif
 
+#if defined(SPIM_IFTIMING_CSNDUR_CSNDUR_Max) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol specifying maximum value of CSN duration setting. */
+#define NRF_SPIM_CSNDUR_MAX SPIM_IFTIMING_CSNDUR_CSNDUR_Max
+#endif
+
 #if defined(SPIM_CSNPOL_ResetValue) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol specifying default value of CSN polarity setting. */
 #define NRF_SPIM_CSNPOL_DEFAULT SPIM_CSNPOL_ResetValue
@@ -830,14 +835,44 @@ NRF_STATIC_INLINE uint32_t nrf_spim_miso_pin_get(NRF_SPIM_Type const * p_reg);
  * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
  * @param[in] pin      CSN pin number.
  * @param[in] polarity CSN pin polarity.
- * @param[in] duration Minimum duration between the edge of CSN and the edge of SCK
- *                     and minimum duration of CSN must stay unselected between transactions.
- *                     The value is specified in number of 64 MHz clock cycles (15.625 ns).
+ * @param[in] duration Minimum duration between the edge of CSN and the edge of SCK.
+ *                     Also, minimum duration of CSN to remain unasserted between transactions.
+ *                     The value is specified in number of SPIM core clock cycles.
  */
 NRF_STATIC_INLINE void nrf_spim_csn_configure(NRF_SPIM_Type *    p_reg,
                                               uint32_t           pin,
                                               nrf_spim_csn_pol_t polarity,
                                               uint32_t           duration);
+
+/**
+ * @brief Function for setting the SPIM hardware CSN pin duration.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] duration Minimum duration between the edge of CSN and the edge of SCK
+ *                     Also, minimum duration of CSN to remain unasserted between transactions.
+ *                     The value is specified in number of SPIM core clock cycles.
+ */
+NRF_STATIC_INLINE void nrf_spim_csn_duration_set(NRF_SPIM_Type * p_reg, uint32_t duration);
+
+/**
+ * @brief Function for getting the SPIM hardware CSN pin duration.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return CSN pin duration in number of SPIM core clock cycles.
+ */
+NRF_STATIC_INLINE uint32_t nrf_spim_csn_duration_get(NRF_SPIM_Type const * p_reg);
+
+/**
+ * @brief Function for setting the SPIM hardware CSN pin selection.
+ *
+ * If this signal is not needed, pass the @ref NRF_SPIM_PIN_NOT_CONNECTED
+ * value instead of its pin number.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] pin   CSN pin number.
+ */
+NRF_STATIC_INLINE void nrf_spim_csn_pin_set(NRF_SPIM_Type * p_reg, uint32_t pin);
 
 /**
  * @brief Function for getting the CSN pin selection.
@@ -847,6 +882,24 @@ NRF_STATIC_INLINE void nrf_spim_csn_configure(NRF_SPIM_Type *    p_reg,
  * @return CSN pin selection.
  */
 NRF_STATIC_INLINE uint32_t nrf_spim_csn_pin_get(NRF_SPIM_Type const * p_reg);
+
+/**
+ * @brief Function for setting the SPIM hardware CSN pin polarity.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] polarity CSN pin polarity.
+ */
+NRF_STATIC_INLINE void nrf_spim_csn_polarity_set(NRF_SPIM_Type *    p_reg,
+                                                 nrf_spim_csn_pol_t polarity);
+
+/**
+ * @brief Function for getting the SPIM hardware CSN pin polarity.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return CSN pin polarity.
+ */
+NRF_STATIC_INLINE nrf_spim_csn_pol_t nrf_spim_csn_polarity_get(NRF_SPIM_Type const * p_reg);
 #endif
 
 #if NRF_SPIM_HAS_DCX
@@ -1424,13 +1477,34 @@ NRF_STATIC_INLINE void nrf_spim_csn_configure(NRF_SPIM_Type *    p_reg,
                                               nrf_spim_csn_pol_t polarity,
                                               uint32_t           duration)
 {
+    NRFX_ASSERT(duration <= NRF_SPIM_CSNDUR_MAX);
 #if defined(SPIM_CSNPOL_CSNPOL0_LOW) && defined(SPIM_PSEL_CSN_MaxCount)
     p_reg->PSEL.CSN[0] = pin;
 #else
     p_reg->PSEL.CSN = pin;
 #endif
-    p_reg->CSNPOL = polarity;
+    p_reg->CSNPOL = (uint32_t)polarity;
     p_reg->IFTIMING.CSNDUR = duration;
+}
+
+NRF_STATIC_INLINE void nrf_spim_csn_duration_set(NRF_SPIM_Type * p_reg, uint32_t duration)
+{
+    NRFX_ASSERT(duration <= NRF_SPIM_CSNDUR_MAX);
+    p_reg->IFTIMING.CSNDUR = duration;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_spim_csn_duration_get(NRF_SPIM_Type const * p_reg)
+{
+    return p_reg->IFTIMING.CSNDUR;
+}
+
+NRF_STATIC_INLINE void nrf_spim_csn_pin_set(NRF_SPIM_Type * p_reg, uint32_t pin)
+{
+#if defined(SPIM_CSNPOL_CSNPOL0_LOW) && defined(SPIM_PSEL_CSN_MaxCount)
+    p_reg->PSEL.CSN[0] = pin;
+#else
+    p_reg->PSEL.CSN = pin;
+#endif
 }
 
 NRF_STATIC_INLINE uint32_t nrf_spim_csn_pin_get(NRF_SPIM_Type const * p_reg)
@@ -1440,6 +1514,16 @@ NRF_STATIC_INLINE uint32_t nrf_spim_csn_pin_get(NRF_SPIM_Type const * p_reg)
 #else
     return p_reg->PSEL.CSN;
 #endif
+}
+
+NRF_STATIC_INLINE void nrf_spim_csn_polarity_set(NRF_SPIM_Type * p_reg, nrf_spim_csn_pol_t polarity)
+{
+    p_reg->CSNPOL = (uint32_t)polarity;
+}
+
+NRF_STATIC_INLINE nrf_spim_csn_pol_t nrf_spim_csn_polarity_get(NRF_SPIM_Type const * p_reg)
+{
+    return (nrf_spim_csn_pol_t)(p_reg->CSNPOL);
 }
 #endif // NRF_SPIM_HAS_HW_CSN
 

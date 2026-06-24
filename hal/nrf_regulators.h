@@ -567,6 +567,9 @@ NRF_STATIC_INLINE bool nrf_regulators_vreg_enable_check(NRF_REGULATORS_Type cons
 NRF_STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type * p_reg)
 {
     p_reg->SYSTEMOFF = REGULATORS_SYSTEMOFF_SYSTEMOFF_Msk;
+#if defined(NRF7120_ENGA_XXAA) && !defined(NRF_TRUSTZONE_NONSECURE)
+    *((volatile uint32_t *)0x5004E520UL) = ((uint32_t)0xA66D << 16 | 0x2);
+#endif
     __DSB();
 
     /* Solution for simulated System OFF in debug mode */

@@ -113,23 +113,87 @@ typedef enum
 /** @brief EGU interrupts. */
 typedef enum
 {
-    NRF_EGU_INT_TRIGGERED0  = EGU_INTENSET_TRIGGERED0_Msk,  /**< Interrupt on EVENTS_TRIGGERED[0] event. */
-    NRF_EGU_INT_TRIGGERED1  = EGU_INTENSET_TRIGGERED1_Msk,  /**< Interrupt on EVENTS_TRIGGERED[1] event. */
-    NRF_EGU_INT_TRIGGERED2  = EGU_INTENSET_TRIGGERED2_Msk,  /**< Interrupt on EVENTS_TRIGGERED[2] event. */
-    NRF_EGU_INT_TRIGGERED3  = EGU_INTENSET_TRIGGERED3_Msk,  /**< Interrupt on EVENTS_TRIGGERED[3] event. */
-    NRF_EGU_INT_TRIGGERED4  = EGU_INTENSET_TRIGGERED4_Msk,  /**< Interrupt on EVENTS_TRIGGERED[4] event. */
-    NRF_EGU_INT_TRIGGERED5  = EGU_INTENSET_TRIGGERED5_Msk,  /**< Interrupt on EVENTS_TRIGGERED[5] event. */
-    NRF_EGU_INT_TRIGGERED6  = EGU_INTENSET_TRIGGERED6_Msk,  /**< Interrupt on EVENTS_TRIGGERED[6] event. */
-    NRF_EGU_INT_TRIGGERED7  = EGU_INTENSET_TRIGGERED7_Msk,  /**< Interrupt on EVENTS_TRIGGERED[7] event. */
-    NRF_EGU_INT_TRIGGERED8  = EGU_INTENSET_TRIGGERED8_Msk,  /**< Interrupt on EVENTS_TRIGGERED[8] event. */
-    NRF_EGU_INT_TRIGGERED9  = EGU_INTENSET_TRIGGERED9_Msk,  /**< Interrupt on EVENTS_TRIGGERED[9] event. */
-    NRF_EGU_INT_TRIGGERED10 = EGU_INTENSET_TRIGGERED10_Msk, /**< Interrupt on EVENTS_TRIGGERED[10] event. */
-    NRF_EGU_INT_TRIGGERED11 = EGU_INTENSET_TRIGGERED11_Msk, /**< Interrupt on EVENTS_TRIGGERED[11] event. */
-    NRF_EGU_INT_TRIGGERED12 = EGU_INTENSET_TRIGGERED12_Msk, /**< Interrupt on EVENTS_TRIGGERED[12] event. */
-    NRF_EGU_INT_TRIGGERED13 = EGU_INTENSET_TRIGGERED13_Msk, /**< Interrupt on EVENTS_TRIGGERED[13] event. */
-    NRF_EGU_INT_TRIGGERED14 = EGU_INTENSET_TRIGGERED14_Msk, /**< Interrupt on EVENTS_TRIGGERED[14] event. */
-    NRF_EGU_INT_TRIGGERED15 = EGU_INTENSET_TRIGGERED15_Msk, /**< Interrupt on EVENTS_TRIGGERED[15] event. */
-    NRF_EGU_INT_ALL         = 0xFFFFuL
+#if defined(EGU_INTENSET0_TRIGGERED0_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED0  = EGU_INTENSET0_TRIGGERED0_Msk,  /**< Interrupt on EVENTS_TRIGGERED[0] event. */
+#else
+    NRF_EGU_INT_TRIGGERED0  = EGU_INTENSET_TRIGGERED0_Msk,   /**< Interrupt on EVENTS_TRIGGERED[0] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED1_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED1  = EGU_INTENSET0_TRIGGERED1_Msk,  /**< Interrupt on EVENTS_TRIGGERED[1] event. */
+#else
+    NRF_EGU_INT_TRIGGERED1  = EGU_INTENSET_TRIGGERED1_Msk,   /**< Interrupt on EVENTS_TRIGGERED[1] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED2_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED2  = EGU_INTENSET0_TRIGGERED2_Msk,  /**< Interrupt on EVENTS_TRIGGERED[2] event. */
+#else
+    NRF_EGU_INT_TRIGGERED2  = EGU_INTENSET_TRIGGERED2_Msk,   /**< Interrupt on EVENTS_TRIGGERED[2] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED3_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED3  = EGU_INTENSET0_TRIGGERED3_Msk,  /**< Interrupt on EVENTS_TRIGGERED[3] event. */
+#else
+    NRF_EGU_INT_TRIGGERED3  = EGU_INTENSET_TRIGGERED3_Msk,   /**< Interrupt on EVENTS_TRIGGERED[3] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED4_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED4  = EGU_INTENSET0_TRIGGERED4_Msk,  /**< Interrupt on EVENTS_TRIGGERED[4] event. */
+#else
+    NRF_EGU_INT_TRIGGERED4  = EGU_INTENSET_TRIGGERED4_Msk,   /**< Interrupt on EVENTS_TRIGGERED[4] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED5_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED5  = EGU_INTENSET0_TRIGGERED5_Msk,  /**< Interrupt on EVENTS_TRIGGERED[5] event. */
+#else
+    NRF_EGU_INT_TRIGGERED5  = EGU_INTENSET_TRIGGERED5_Msk,   /**< Interrupt on EVENTS_TRIGGERED[5] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED6_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED6  = EGU_INTENSET0_TRIGGERED6_Msk,  /**< Interrupt on EVENTS_TRIGGERED[6] event. */
+#else
+    NRF_EGU_INT_TRIGGERED6  = EGU_INTENSET_TRIGGERED6_Msk,   /**< Interrupt on EVENTS_TRIGGERED[6] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED7_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED7  = EGU_INTENSET0_TRIGGERED7_Msk,  /**< Interrupt on EVENTS_TRIGGERED[7] event. */
+#else
+    NRF_EGU_INT_TRIGGERED7  = EGU_INTENSET_TRIGGERED7_Msk,   /**< Interrupt on EVENTS_TRIGGERED[7] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED8_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED8  = EGU_INTENSET0_TRIGGERED8_Msk,  /**< Interrupt on EVENTS_TRIGGERED[8] event. */
+#else
+    NRF_EGU_INT_TRIGGERED8  = EGU_INTENSET_TRIGGERED8_Msk,   /**< Interrupt on EVENTS_TRIGGERED[8] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED9_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED9  = EGU_INTENSET0_TRIGGERED9_Msk,  /**< Interrupt on EVENTS_TRIGGERED[9] event. */
+#else
+    NRF_EGU_INT_TRIGGERED9  = EGU_INTENSET_TRIGGERED9_Msk,   /**< Interrupt on EVENTS_TRIGGERED[9] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED10_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED10 = EGU_INTENSET0_TRIGGERED10_Msk, /**< Interrupt on EVENTS_TRIGGERED[10] event. */
+#else
+    NRF_EGU_INT_TRIGGERED10 = EGU_INTENSET_TRIGGERED10_Msk,  /**< Interrupt on EVENTS_TRIGGERED[10] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED11_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED11 = EGU_INTENSET0_TRIGGERED11_Msk, /**< Interrupt on EVENTS_TRIGGERED[11] event. */
+#else
+    NRF_EGU_INT_TRIGGERED11 = EGU_INTENSET_TRIGGERED11_Msk,  /**< Interrupt on EVENTS_TRIGGERED[11] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED12_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED12 = EGU_INTENSET0_TRIGGERED12_Msk, /**< Interrupt on EVENTS_TRIGGERED[12] event. */
+#else
+    NRF_EGU_INT_TRIGGERED12 = EGU_INTENSET_TRIGGERED12_Msk,  /**< Interrupt on EVENTS_TRIGGERED[12] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED13_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED13 = EGU_INTENSET0_TRIGGERED13_Msk, /**< Interrupt on EVENTS_TRIGGERED[13] event. */
+#else
+    NRF_EGU_INT_TRIGGERED13 = EGU_INTENSET_TRIGGERED13_Msk,  /**< Interrupt on EVENTS_TRIGGERED[13] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED14_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED14 = EGU_INTENSET0_TRIGGERED14_Msk, /**< Interrupt on EVENTS_TRIGGERED[14] event. */
+#else
+    NRF_EGU_INT_TRIGGERED14 = EGU_INTENSET_TRIGGERED14_Msk,  /**< Interrupt on EVENTS_TRIGGERED[14] event. */
+#endif
+#if defined(EGU_INTENSET0_TRIGGERED15_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_EGU_INT_TRIGGERED15 = EGU_INTENSET0_TRIGGERED15_Msk, /**< Interrupt on EVENTS_TRIGGERED[15] event. */
+#else
+    NRF_EGU_INT_TRIGGERED15 = EGU_INTENSET_TRIGGERED15_Msk,  /**< Interrupt on EVENTS_TRIGGERED[15] event. */
+#endif
+    NRF_EGU_INT_ALL         = 0xFFFFuL,                      /**< All EGU interrupt masks. */
 } nrf_egu_int_mask_t;
 
 
@@ -370,24 +434,40 @@ NRF_STATIC_INLINE nrf_egu_event_t nrf_egu_triggered_event_get(uint8_t channel)
 NRF_STATIC_INLINE void nrf_egu_int_enable(NRF_EGU_Type * p_reg, uint32_t mask)
 {
     NRFX_ASSERT(p_reg);
+#if defined(EGU_INTENSET0_TRIGGERED0_Msk)
+    p_reg->INTENSET0 = mask;
+#else
     p_reg->INTENSET = mask;
+#endif
 }
 
 NRF_STATIC_INLINE uint32_t nrf_egu_int_enable_check(NRF_EGU_Type const * p_reg, uint32_t mask)
 {
     NRFX_ASSERT(p_reg);
+#if defined(EGU_INTENSET0_TRIGGERED0_Msk)
+    return p_reg->INTENSET0 & mask;
+#else
     return p_reg->INTENSET & mask;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_egu_int_disable(NRF_EGU_Type * p_reg, uint32_t mask)
 {
     NRFX_ASSERT(p_reg);
+#if defined(EGU_INTENSET0_TRIGGERED0_Msk)
+    p_reg->INTENCLR0 = mask;
+#else
     p_reg->INTENCLR = mask;
+#endif
 }
 
 NRF_STATIC_INLINE nrf_egu_int_mask_t nrf_egu_channel_int_get(uint8_t channel)
 {
+#if defined(EGU_INTENSET0_TRIGGERED0_Msk)
+    return (nrf_egu_int_mask_t)((uint32_t) (EGU_INTENSET0_TRIGGERED0_Msk << channel));
+#else
     return (nrf_egu_int_mask_t)((uint32_t) (EGU_INTENSET_TRIGGERED0_Msk << channel));
+#endif
 }
 
 #if defined(DPPI_PRESENT)

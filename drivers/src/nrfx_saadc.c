@@ -563,10 +563,17 @@ int nrfx_saadc_advanced_mode_set(uint32_t                        channel_mask,
         return err;
     }
 
-    if ((p_config->internal_timer_cc) && ((active_ch_count > 1) || (!event_handler)))
+    if (p_config->internal_timer_cc && !event_handler)
     {
         return -ENOTSUP;
     }
+
+#if !NRF_SAADC_HAS_INTERNAL_TIMER_SCAN
+    if (p_config->internal_timer_cc && (active_ch_count > 1))
+    {
+        return -ENOTSUP;
+    }
+#endif
 
     bool oversampling_without_burst = false;
     if ((p_config->oversampling != NRF_SAADC_OVERSAMPLE_DISABLED) &&
@@ -641,6 +648,12 @@ int nrfx_saadc_buffer_set(nrf_saadc_value_t * p_buffer, uint16_t size)
 
         case NRF_SAADC_STATE_ADV_MODE_SAMPLE_STARTED:
             nrfy_saadc_buffer_set(NRF_SAADC, &buffer, false, false);
+#if NRFY_SAADC_HAS_SHORTS
+            if (m_cb.start_on_end)
+            {
+                nrfy_saadc_shorts_enable(NRF_SAADC, NRF_SAADC_SHORT_END_START_MASK);
+            }
+#endif
             /* FALLTHROUGH */
 
         case NRF_SAADC_STATE_ADV_MODE:
@@ -703,6 +716,12 @@ int nrfx_saadc_mode_trigger(void)
             nrfy_saadc_enable(NRF_SAADC);
             if (m_cb.event_handler)
             {
+#if NRFY_SAADC_HAS_SHORTS
+                if (m_cb.start_on_end)
+                {
+                    nrfy_saadc_shorts_enable(NRF_SAADC, NRF_SAADC_SHORT_END_START_MASK);
+                }
+#endif
                 // When in advanced non-blocking mode, latch whole buffer in EasyDMA.
                 // END event will arrive when whole buffer is filled with samples.
 
@@ -908,6 +927,12 @@ static void saadc_event_started_handle(void)
                 // before conversion start or outside of user's callback context.
                 evt_data.type = NRFX_SAADC_EVT_BUF_REQ;
                 m_cb.event_handler(&evt_data);
+#if NRFY_SAADC_HAS_SHORTS
+                if (m_cb.start_on_end && m_cb.buffer_secondary.p_buffer == NULL)
+                {
+                    nrfy_saadc_shorts_disable(NRF_SAADC, NRF_SAADC_SHORT_END_START_MASK);
+                }
+#endif
             }
             break;
 
@@ -958,10 +983,12 @@ static void saadc_event_end_handle(void)
             break;
 
         case NRF_SAADC_STATE_ADV_MODE_SAMPLE_STARTED:
+#if !NRFY_SAADC_HAS_SHORTS
             if (m_cb.start_on_end && m_cb.buffer_secondary.p_buffer)
             {
                 nrfy_saadc_buffer_latch(NRF_SAADC, false);
             }
+#endif
             m_cb.event_handler(&evt_data);
             m_cb.buffer_primary = m_cb.buffer_secondary;
             m_cb.buffer_secondary.p_buffer = NULL;

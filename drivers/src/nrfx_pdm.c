@@ -81,6 +81,13 @@ static void pdm_configure(nrfx_pdm_t *              p_instance,
 
     nrfy_pdm_periph_configure(p_instance->p_reg, &nrfy_config);
 
+#if NRF_PDM_HAS_CUSTOM_RATIO
+    if (p_config->prescalers.ratio == NRF_PDM_RATIO_CUSTOM)
+    {
+        nrfy_pdm_custom_ratio_set(p_instance->p_reg, &p_config->prescalers.custom_ratio);
+    }
+#endif
+
     nrfy_pdm_int_init(p_instance->p_reg,
                       NRF_PDM_INT_STARTED | NRF_PDM_INT_STOPPED,
                       p_config->interrupt_priority,

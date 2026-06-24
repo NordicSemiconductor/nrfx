@@ -194,6 +194,30 @@ extern "C" {
 #define NRFX_RESET_REASON_HAS_DOG1 0
 #endif
 
+#if (defined(NRF_RESETINFO) && NRF_RESETINFO_HAS_LOCAL_DOG) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether local DOG reset reason is present. */
+#define NRFX_RESET_REASON_HAS_LOCAL_DOG 1
+#else
+#define NRFX_RESET_REASON_HAS_LOCAL_DOG 0
+#endif
+
+#if (defined(NRF_RESETINFO) && NRF_RESETINFO_HAS_LOCAL_WDT0) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether local DOG0 reset reason is present. */
+#define NRFX_RESET_REASON_HAS_LOCAL_DOG0 1
+#else
+#define NRFX_RESET_REASON_HAS_LOCAL_DOG0 0
+#endif
+
+#if (defined(NRF_RESETINFO) && NRF_RESETINFO_HAS_LOCAL_WDT1) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether local DOG1 reset reason is present. */
+#define NRFX_RESET_REASON_HAS_LOCAL_DOG1 1
+#else
+#define NRFX_RESET_REASON_HAS_LOCAL_DOG1 0
+#endif
+
 /** @brief Reset reason bit masks. */
 typedef enum
 {
@@ -293,10 +317,18 @@ typedef enum
     NRFX_RESET_REASON_GRTC_MASK             = NRF_RESETINFO_RESETREAS_GLOBAL_GRTC_MASK,
     NRFX_RESET_REASON_NFC_MASK              = NRF_RESETINFO_RESETREAS_GLOBAL_NFC_MASK,
     NRFX_RESET_REASON_VBUS_MASK             = NRF_RESETINFO_RESETREAS_GLOBAL_VUSB_MASK,
+#if NRFX_RESET_REASON_HAS_LOCAL_DOG
+    NRFX_RESET_REASON_LOCAL_DOG_MASK        = NRF_RESETINFO_RESETREAS_LOCAL_DOG_MASK
+                                              << NRFX_RESET_REASON_LOCAL_OFFSET,
+#endif
+#if NRFX_RESET_REASON_HAS_LOCAL_DOG0
     NRFX_RESET_REASON_LOCAL_DOG0_MASK       = NRF_RESETINFO_RESETREAS_LOCAL_WDT0_MASK
                                               << NRFX_RESET_REASON_LOCAL_OFFSET,
+#endif
+#if NRFX_RESET_REASON_HAS_LOCAL_DOG1
     NRFX_RESET_REASON_LOCAL_DOG1_MASK       = NRF_RESETINFO_RESETREAS_LOCAL_WDT1_MASK
                                               << NRFX_RESET_REASON_LOCAL_OFFSET,
+#endif
     NRFX_RESET_REASON_LOCAL_SREQ_MASK       = NRF_RESETINFO_RESETREAS_LOCAL_SREQ_MASK
                                               << NRFX_RESET_REASON_LOCAL_OFFSET,
     NRFX_RESET_REASON_LOCAL_LOCKUP_MASK     = NRF_RESETINFO_RESETREAS_LOCAL_LOCKUP_MASK

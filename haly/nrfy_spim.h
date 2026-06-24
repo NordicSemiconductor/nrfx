@@ -218,12 +218,13 @@ NRFY_STATIC_INLINE void nrfy_spim_periph_configure(NRF_SPIM_Type *            p_
         nrf_spim_dcx_pin_set(p_reg, p_config->ext_config.pins.dcx_pin);
 #endif
 #if NRFY_SPIM_HAS_HW_CSN
-        nrf_spim_csn_configure(p_reg,
-                               p_config->ext_config.pins.csn_pin,
-                               p_config->ext_config.csn_pol,
-                               p_config->ext_config.csn_duration);
+        nrf_spim_csn_polarity_set(p_reg, p_config->ext_config.csn_pol);
+        nrf_spim_csn_pin_set(p_reg, p_config->ext_config.pins.csn_pin);
 #endif
     }
+#if NRFY_SPIM_HAS_HW_CSN
+    nrf_spim_csn_duration_set(p_reg, p_config->ext_config.csn_duration);
+#endif
     nrf_spim_orc_set(p_reg, p_config->orc);
 #if NRFY_SPIM_HAS_FREQUENCY
     nrf_spim_frequency_set(p_reg, p_config->frequency);
@@ -623,6 +624,29 @@ NRFY_STATIC_INLINE void nrfy_spim_csn_configure(NRF_SPIM_Type *    p_reg,
     nrf_barrier_w();
 }
 
+/** @refhal{nrf_spim_csn_duration_set} */
+NRFY_STATIC_INLINE void nrfy_spim_csn_duration_set(NRF_SPIM_Type * p_reg, uint32_t duration)
+{
+    nrf_spim_csn_duration_set(p_reg, duration);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_spim_csn_duration_get} */
+NRF_STATIC_INLINE uint32_t nrfy_spim_csn_duration_get(NRF_SPIM_Type const * p_reg)
+{
+    nrf_barrier_rw();
+    uint32_t csndur = nrf_spim_csn_duration_get(p_reg);
+    nrf_barrier_r();
+    return csndur;
+}
+
+/** @refhal{nrf_spim_csn_pin_set} */
+NRFY_STATIC_INLINE void nrfy_spim_csn_pin_set(NRF_SPIM_Type * p_reg, uint32_t pin)
+{
+    nrf_spim_csn_pin_set(p_reg, pin);
+    nrf_barrier_w();
+}
+
 /** @refhal{nrf_spim_csn_pin_get} */
 NRFY_STATIC_INLINE uint32_t nrfy_spim_csn_pin_get(NRF_SPIM_Type const * p_reg)
 {
@@ -630,6 +654,23 @@ NRFY_STATIC_INLINE uint32_t nrfy_spim_csn_pin_get(NRF_SPIM_Type const * p_reg)
     uint32_t pin = nrf_spim_csn_pin_get(p_reg);
     nrf_barrier_r();
     return pin;
+}
+
+/** @refhal{nrf_spim_csn_polarity_set} */
+NRFY_STATIC_INLINE void nrfy_spim_csn_polarity_set(NRF_SPIM_Type *    p_reg,
+                                                   nrf_spim_csn_pol_t polarity)
+{
+    nrf_spim_csn_polarity_set(p_reg, polarity);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_spim_csn_polarity_get} */
+NRFY_STATIC_INLINE nrf_spim_csn_pol_t nrfy_spim_csn_polarity_get(NRF_SPIM_Type const * p_reg)
+{
+    nrf_barrier_rw();
+    nrf_spim_csn_pol_t polarity = nrf_spim_csn_polarity_get(p_reg);
+    nrf_barrier_r();
+    return polarity;
 }
 #endif
 

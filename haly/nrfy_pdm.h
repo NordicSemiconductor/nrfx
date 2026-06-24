@@ -502,20 +502,13 @@ NRFY_STATIC_INLINE void nrfy_pdm_ratio_set(NRF_PDM_Type *  p_reg,
     nrf_pdm_ratio_set(p_reg, ratio);
     nrf_barrier_w();
 }
+
 #if NRF_PDM_HAS_CUSTOM_RATIO
-/**
- * @brief Function for setting custom ratio between PDM_CLK and output sample rate.
- *
- * @param[in] p_reg Pointer to the structure of registers of the peripheral.
- * @param[in] ratio Custom ratio between PDM_CLK and output sample rate.
- */
-NRFY_STATIC_INLINE void nrfy_pdm_custom_ratio_set(NRF_PDM_Type *  p_reg,
-                                                  uint8_t         ratio)
+/** @refhal{nrf_pdm_custom_ratio_set} */
+NRF_STATIC_INLINE void nrfy_pdm_custom_ratio_set(NRF_PDM_Type *                 p_reg,
+                                                 nrf_pdm_custom_ratio_t const * custom_ratio)
 {
-    NRFX_ASSERT(ratio % 2 == 0);
-    nrf_pdm_custom_ratio_set(p_reg, (ratio / 2) - 1);
-    nrf_barrier_w();
-    nrf_pdm_ratio_set(p_reg, NRF_PDM_RATIO_CUSTOM);
+    nrf_pdm_custom_ratio_set(p_reg, custom_ratio);
     nrf_barrier_w();
 }
 #endif

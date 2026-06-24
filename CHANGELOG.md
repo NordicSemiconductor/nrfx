@@ -1,6 +1,27 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [4.4.0] - 2026-06-25
+
+### Added
+- Added support for custom decimation ratio in the PDM driver.
+- Added support for SHORTS feature in the SAADC driver.
+- Added support for multi-channel internal timer in the SAADC driver.
+- Added the nrfx_hsfll_trim helper layer for trimming HSFLL clock based on calibration data stored in FICR.
+- Added the nrfx_memconf_trim helper layer for trimming MEMCONF based on calibration data stored in FICR.
+- Added HAL for the GPIOHSPADCTRL peripheral.
+- Added support for HSFLL.TRIM feature in the FICR HAL.
+- Added support for VDD reference in the SAADC HAL.
+
+### Changed
+- Updated MDK to version 8.75.3 with structure split into device-specific directories.
+- Extended nrf_pdm_custom_ratio_set() function with filter configuration.
+
+### Fixed
+- Fixed incorrect procedure for clearing events in the PWM driver.
+- Fixed missing application of nRF54H Series anomaly 115 and nRF54L Series anomaly 8 workarounds in case of skipped GPIO configuration in the SPIM driver.
+- Fixed nrfx_mramc_words_write() function to prevent redundant source address alignment check.
+
 ## [4.3.0] - 2026-05-07
 
 ### Added

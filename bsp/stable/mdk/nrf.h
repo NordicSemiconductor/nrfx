@@ -165,56 +165,56 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* Device selection for device includes. */
 #if defined (NRF51)
-    #include "nrf51.h"
-    #include "nrf51_bitfields.h"
-    #include "nrf51_deprecated.h"
+    #include "nrf51/nrf51.h"
+    #include "nrf51/nrf51_bitfields.h"
+    #include "nrf51/nrf51_deprecated.h"
 
 #elif defined (NRF52805_XXAA)
-    #include "nrf52805.h"
-    #include "nrf52805_bitfields.h"
-    #include "nrf51_to_nrf52810.h"
-    #include "nrf52_to_nrf52810.h"
-    #include "nrf52810_to_nrf52811.h"
+    #include "nrf52/nrf52805/nrf52805.h"
+    #include "nrf52/nrf52805/nrf52805_bitfields.h"
+    #include "nrf52/nrf51_to_nrf52810.h"
+    #include "nrf52/nrf52_to_nrf52810.h"
+    #include "nrf52/nrf52810_to_nrf52811.h"
 #elif defined (NRF52810_XXAA)
-    #include "nrf52810.h"
-    #include "nrf52810_bitfields.h"
-    #include "nrf51_to_nrf52810.h"
-    #include "nrf52_to_nrf52810.h"
-    #include "nrf52810_name_change.h"
+    #include "nrf52/nrf52810/nrf52810.h"
+    #include "nrf52/nrf52810/nrf52810_bitfields.h"
+    #include "nrf52/nrf51_to_nrf52810.h"
+    #include "nrf52/nrf52_to_nrf52810.h"
+    #include "nrf52/nrf52810/nrf52810_name_change.h"
 #elif defined (NRF52811_XXAA)
-    #include "nrf52811.h"
-    #include "nrf52811_bitfields.h"
-    #include "nrf51_to_nrf52810.h"
-    #include "nrf52_to_nrf52810.h"
-    #include "nrf52810_to_nrf52811.h"
+    #include "nrf52/nrf52811/nrf52811.h"
+    #include "nrf52/nrf52811/nrf52811_bitfields.h"
+    #include "nrf52/nrf51_to_nrf52810.h"
+    #include "nrf52/nrf52_to_nrf52810.h"
+    #include "nrf52/nrf52810_to_nrf52811.h"
 #elif defined (NRF52820_XXAA)
-    #include "nrf52820.h"
-    #include "nrf52820_bitfields.h"
-    #include "nrf51_to_nrf52.h"
-    #include "nrf52_to_nrf52833.h"
-    #include "nrf52833_to_nrf52820.h"
+    #include "nrf52/nrf52820/nrf52820.h"
+    #include "nrf52/nrf52820/nrf52820_bitfields.h"
+    #include "nrf52/nrf51_to_nrf52.h"
+    #include "nrf52/nrf52_to_nrf52833.h"
+    #include "nrf52/nrf52833_to_nrf52820.h"
 #elif defined (NRF52832_XXAA) || defined (NRF52832_XXAB)
-    #include "nrf52.h"
-    #include "nrf52_bitfields.h"
-    #include "nrf51_to_nrf52.h"
-    #include "nrf52_name_change.h"
+    #include "nrf52/nrf52.h"
+    #include "nrf52/nrf52_bitfields.h"
+    #include "nrf52/nrf51_to_nrf52.h"
+    #include "nrf52/nrf52832/nrf52_name_change.h"
 #elif defined (NRF52833_XXAA)
-    #include "nrf52833.h"
-    #include "nrf52833_bitfields.h"
-    #include "nrf52_to_nrf52833.h"
-    #include "nrf51_to_nrf52.h"
+    #include "nrf52/nrf52833/nrf52833.h"
+    #include "nrf52/nrf52833/nrf52833_bitfields.h"
+    #include "nrf52/nrf52_to_nrf52833.h"
+    #include "nrf52/nrf51_to_nrf52.h"
 #elif defined (NRF52840_XXAA)
-    #include "nrf52840.h"
-    #include "nrf52840_bitfields.h"
-    #include "nrf51_to_nrf52840.h"
-    #include "nrf52_to_nrf52840.h"
-    #include "nrf52840_name_change.h"
+    #include "nrf52/nrf52840/nrf52840.h"
+    #include "nrf52/nrf52840/nrf52840_bitfields.h"
+    #include "nrf52/nrf51_to_nrf52840.h"
+    #include "nrf52/nrf52_to_nrf52840.h"
+    #include "nrf52/nrf52840/nrf52840_name_change.h"
 
 #elif defined (NRF5340_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf5340_application.h"
-        #include "nrf5340_application_bitfields.h"
-        #include "nrf5340_application_name_change.h"
+        #include "nrf53/nrf5340/nrf5340_application.h"
+        #include "nrf53/nrf5340/nrf5340_application_bitfields.h"
+        #include "nrf53/nrf5340/nrf5340_application_name_change.h"
 
         /* Address of locations in RAM that will be used to store a NS-accessible version of FICR */
         #if !defined(NRF_FICR_NS)
@@ -222,60 +222,60 @@ POSSIBILITY OF SUCH DAMAGE.
             #define NRF_FICR_NS ((NRF_FICR_Type*)          NRF_FICR_NS_BASE)
         #endif
     #elif defined (NRF_NETWORK)
-        #include "nrf5340_network.h"
-        #include "nrf5340_network_bitfields.h"
-        #include "nrf5340_network_name_change.h"
+        #include "nrf53/nrf5340/nrf5340_network.h"
+        #include "nrf53/nrf5340/nrf5340_network_bitfields.h"
+        #include "nrf53/nrf5340/nrf5340_network_name_change.h"
     #endif
 
 #elif defined (NRF54H20_XXAA)
-    #include "nrf54h20.h"
-    #include "nrf54h20_interim.h"
-    #include "nrf54h20_name_change.h"
+    #include "nrf54h/nrf54h20/nrf54h20.h"
+    #include "nrf54h/nrf54h20/nrf54h20_interim.h"
+    #include "nrf54h/nrf54h20/nrf54h20_name_change.h"
 
 #elif defined (NRF54L05_XXAA)
-    #include "nrf54l05.h"
-    #include "nrf54l05_interim.h"
-    #include "nrf54l05_name_change.h"
+    #include "nrf54l/nrf54l05/nrf54l05.h"
+    #include "nrf54l/nrf54l05/nrf54l05_interim.h"
+    #include "nrf54l/nrf54l05/nrf54l05_name_change.h"
 
 #elif defined (NRF54LV10A_XXAA)
-    #include "nrf54lv10a.h"
-    #include "nrf54lv10a_interim.h"
-    #include "nrf54lv10a_name_change.h"
+    #include "nrf54l/nrf54lv10a/nrf54lv10a.h"
+    #include "nrf54l/nrf54lv10a/nrf54lv10a_interim.h"
+    #include "nrf54l/nrf54lv10a/nrf54lv10a_name_change.h"
 
 #elif defined (NRF54L10_XXAA)
-    #include "nrf54l10.h"
-    #include "nrf54l10_interim.h"
-    #include "nrf54l10_name_change.h"
+    #include "nrf54l/nrf54l10/nrf54l10.h"
+    #include "nrf54l/nrf54l10/nrf54l10_interim.h"
+    #include "nrf54l/nrf54l10/nrf54l10_name_change.h"
 
 #elif defined (NRF54L15_XXAA)
-    #include "nrf54l15.h"
-    #include "nrf54l15_interim.h"
-    #include "nrf54l15_name_change.h"
+    #include "nrf54l/nrf54l15/nrf54l15.h"
+    #include "nrf54l/nrf54l15/nrf54l15_interim.h"
+    #include "nrf54l/nrf54l15/nrf54l15_name_change.h"
 
 #elif defined (NRF54LM20A_XXAA)
-    #include "nrf54lm20a.h"
-    #include "nrf54lm20a_interim.h"
-    #include "nrf54lm20a_name_change.h"
+    #include "nrf54l/nrf54lm20a/nrf54lm20a.h"
+    #include "nrf54l/nrf54lm20a/nrf54lm20a_interim.h"
+    #include "nrf54l/nrf54lm20a/nrf54lm20a_name_change.h"
 
 #elif defined (NRF54LM20B_XXAA)
-    #include "nrf54lm20b.h"
-    #include "nrf54lm20b_interim.h"
-    #include "nrf54lm20b_name_change.h"
+    #include "nrf54l/nrf54lm20b/nrf54lm20b.h"
+    #include "nrf54l/nrf54lm20b/nrf54lm20b_interim.h"
+    #include "nrf54l/nrf54lm20b/nrf54lm20b_name_change.h"
 
 #elif defined (NRF54LS05B_XXAA)
-    #include "nrf54ls05b.h"
-    #include "nrf54ls05b_interim.h"
-    #include "nrf54ls05b_name_change.h"
+    #include "nrf54l/nrf54ls05b/nrf54ls05b.h"
+    #include "nrf54l/nrf54ls05b/nrf54ls05b_interim.h"
+    #include "nrf54l/nrf54ls05b/nrf54ls05b_name_change.h"
 
 #elif defined (NRF7120_ENGA_XXAA)
-    #include "nrf7120_enga.h"
-    #include "nrf7120_enga_interim.h"
-    #include "nrf7120_enga_name_change.h"
+    #include "nrf71/nrf7120_enga/nrf7120_enga.h"
+    #include "nrf71/nrf7120_enga/nrf7120_enga_interim.h"
+    #include "nrf71/nrf7120_enga/nrf7120_enga_name_change.h"
 
 #elif defined (NRF9160_XXAA)
-    #include "nrf9160.h"
-    #include "nrf9160_bitfields.h"
-    #include "nrf91_name_change.h"
+    #include "nrf91/nrf9160/nrf9160.h"
+    #include "nrf91/nrf9160/nrf9160_bitfields.h"
+    #include "nrf91/nrf91_name_change.h"
 
     /* Address of locations in RAM that will be used to store a NS-accessible version of FICR */
     #if !defined(NRF_FICR_NS)
@@ -284,9 +284,9 @@ POSSIBILITY OF SUCH DAMAGE.
     #endif
 
 #elif defined (NRF9120_XXAA)
-    #include "nrf9120.h"
-    #include "nrf9120_bitfields.h"
-    #include "nrf91_name_change.h"
+    #include "nrf91/nrf9120/nrf9120.h"
+    #include "nrf91/nrf9120/nrf9120_bitfields.h"
+    #include "nrf91/nrf91_name_change.h"
 
     /* Address of locations in RAM that will be used to store a NS-accessible version of FICR */
     #if !defined(NRF_FICR_NS)
@@ -295,31 +295,31 @@ POSSIBILITY OF SUCH DAMAGE.
     #endif
 
 #elif defined (NRF9230_ENGB_XXAA)
-    #include "nrf9230_engb.h"
-    #include "nrf9230_engb_interim.h"
-    #include "nrf9230_engb_name_change.h"
+    #include "nrf92/nrf9230_engb/nrf9230_engb.h"
+    #include "nrf92/nrf9230_engb/nrf9230_engb_interim.h"
+    #include "nrf92/nrf9230_engb/nrf9230_engb_name_change.h"
 
 #elif defined (NRF54LC10A_XXAA)
-    #include "nrf54lc10a.h"
-    #include "nrf54lc10a_interim.h"
-    #include "nrf54lc10a_name_change.h"
+    #include "nrf54l/nrf54lc10a/nrf54lc10a.h"
+    #include "nrf54l/nrf54lc10a/nrf54lc10a_interim.h"
+    #include "nrf54l/nrf54lc10a/nrf54lc10a_name_change.h"
 
 #elif defined (NRF54LS05A_XXAA)
-    #include "nrf54ls05a.h"
-    #include "nrf54ls05a_interim.h"
-    #include "nrf54ls05a_name_change.h"
+    #include "nrf54l/nrf54ls05a/nrf54ls05a.h"
+    #include "nrf54l/nrf54ls05a/nrf54ls05a_interim.h"
+    #include "nrf54l/nrf54ls05a/nrf54ls05a_name_change.h"
 
 #elif defined (NRF9220_XXAA)
-    #include "nrf9220.h"
-    #include "nrf9220_interim.h"
-    #include "nrf9220_name_change.h"
+    #include "nrf92/nrf9220/nrf9220.h"
+    #include "nrf92/nrf9220/nrf9220_interim.h"
+    #include "nrf92/nrf9220/nrf9220_name_change.h"
 
 /* Ending device selection for device includes. */
 #else
     #error "Device must be defined. See nrf.h."
 #endif /* NRF51, NRF52805_XXAA, NRF52810_XXAA, NRF52811_XXAA, NRF52820_XXAA, NRF52832_XXAA, NRF52832_XXAB, NRF52833_XXAA, NRF52840_XXAA, NRF5340_XXAA_APPLICATION, NRF5340_XXAA_NETWORK, NRF9160_XXAA */
 
-#include "compiler_abstraction.h"
+#include "common/compiler_abstraction.h"
 
 #endif /* NRF_H */
 

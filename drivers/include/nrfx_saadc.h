@@ -105,7 +105,7 @@ extern "C" {
         NRFX_COND_CODE_1(NRF_SAADC_HAS_CH_HIGHSPEED,                   \
                          (.highspeed = NRF_SAADC_HIGHSPEED_DISABLED,), \
                          ())                                           \
-        NRFX_COND_CODE_1(NRF_SAADC_HAS_CONV_TIME,                      \
+        NRFX_COND_CODE_1(NRF_SAADC_HAS_CONVTIME,                       \
                          (.conv_time = NRFX_SAADC_DEFAULT_CONV_TIME,), \
                          ())                                           \
     },                                                                 \
@@ -153,7 +153,7 @@ extern "C" {
         NRFX_COND_CODE_1(NRF_SAADC_HAS_CH_HIGHSPEED,                    \
                          (.highspeed = NRF_SAADC_HIGHSPEED_DISABLED,),  \
                          ())                                            \
-        NRFX_COND_CODE_1(NRF_SAADC_HAS_CONV_TIME,                       \
+        NRFX_COND_CODE_1(NRF_SAADC_HAS_CONVTIME,                        \
                          (.conv_time = NRFX_SAADC_DEFAULT_CONV_TIME,),  \
                          ())                                            \
     },                                                                  \
@@ -406,11 +406,15 @@ int nrfx_saadc_simple_mode_set(uint32_t                   channel_mask,
  * When performing conversions in the non-blocking manner and @ref nrfx_saadc_adv_config_t.start_on_end
  * is false, the @ref NRF_SAADC_TASK_START needs to be triggered on @ref NRF_SAADC_EVENT_END
  * externally (for example by using the PPI/DPPI).
+ * If @ref nrfx_saadc_adv_config_t.start_on_end is true, the @ref NRF_SAADC_TASK_START
+ * is triggered by the driver in the interrupt context or by the hardware using dedicated shorts, if available.
  * Sampling is initiated by calling @ref nrfx_saadc_mode_trigger(). In case of performing
  * conversions in the blocking manner, @ref nrfx_saadc_mode_trigger() may need to be called several
  * times as each call sample each requested channel once.
  *
- * @note The internal timer can only be used when a single input channel is enabled.
+ * @note Unless @ref NRF_SAADC_HAS_INTERNAL_TIMER_SCAN is set, the internal timer can only be
+ *       used when a single input channel is enabled. When the symbol is set, the internal timer
+ *       can also be used with multiple channels enabled (scan mode).
  * @note The internal timer can only be used in the non-blocking mode.
  *
  * @param[in] channel_mask  Bitmask of channels to be used in the advanced mode.
@@ -424,7 +428,8 @@ int nrfx_saadc_simple_mode_set(uint32_t                   channel_mask,
  * @retval -EINVAL  Attempt to activate channel that is not configured.
  * @retval -ENOTSUP Attempt to activate either of the following:
  *                      * internal timer in the blocking mode,
- *                      * internal timer with multiple channels enabled,
+ *                      * internal timer with multiple channels enabled when
+ *                        @ref NRF_SAADC_HAS_INTERNAL_TIMER_SCAN is not set,
  *                      * oversampling without burst with multiple channels enabled.
  */
 int nrfx_saadc_advanced_mode_set(uint32_t                        channel_mask,

@@ -55,7 +55,7 @@ extern "C" {
 #define NRF_MVDMA_HAS_AXIMODE 0
 #endif
 
-#if (MVDMA_JOBLISTCOUNT > 1) || defined(__NRFX_DOXYGEN__)
+#if (defined(MVDMA_JOBLISTCOUNT) && (MVDMA_JOBLISTCOUNT > 1)) || defined(__NRFX_DOXYGEN__)
 /** @brief Macro for checking if multi-mode operation is available. */
 #define NRF_MVDMA_HAS_MULTIMODE 1
 #else

@@ -545,24 +545,6 @@
 #endif
 
 /**
- * @brief NRFX_SPI0_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_SPI0_ENABLED
-#define NRFX_SPI0_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_SPI1_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_SPI1_ENABLED
-#define NRFX_SPI1_ENABLED 0
-#endif
-
-/**
  * @brief NRFX_SPIS_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
@@ -740,24 +722,6 @@
 #endif
 
 /**
- * @brief NRFX_TWI0_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_TWI0_ENABLED
-#define NRFX_TWI0_ENABLED 0
-#endif
-
-/**
- * @brief NRFX_TWI1_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_TWI1_ENABLED
-#define NRFX_TWI1_ENABLED 0
-#endif
-
-/**
  * @brief NRFX_UART_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
@@ -797,15 +761,6 @@
  */
 #ifndef NRFX_UART_CONFIG_LOG_LEVEL
 #define NRFX_UART_CONFIG_LOG_LEVEL 3
-#endif
-
-/**
- * @brief NRFX_UART0_ENABLED
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_UART0_ENABLED
-#define NRFX_UART0_ENABLED 0
 #endif
 
 /**

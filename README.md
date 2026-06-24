@@ -23,6 +23,11 @@ SoCs, as well as startup and initialization files for them.
 * nRF54L05
 * nRF54L10
 * nRF54L15
+* nRF54LM20A
+* nRF54LM20B
+* nRF54LS05A
+* nRF54LS05B
+* nRF54LV10A
 * nRF9131
 * nRF9160
 * nRF9161

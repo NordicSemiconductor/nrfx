@@ -69,6 +69,41 @@ extern "C" {
 #define NRF_RRAMC_HAS_LP_MODE_POWER_DOWN 0
 #endif
 
+#if defined(RRAMC_CONFIG_WRSUSPEND_Enabled) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether RRAM controller has write suspend feature. */
+#define NRF_RRAMC_HAS_WRITE_SUSPEND 1
+#else
+#define NRF_RRAMC_HAS_WRITE_SUSPEND 0
+#endif
+
+#if defined(RRAMC_TASK_TRIGGER_POF_Enabled) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether RRAM controller has power failure trigger feature. */
+#define NRF_RRAMC_HAS_TRIGGER_POF 1
+#else
+#define NRF_RRAMC_HAS_TRIGGER_POF 0
+#endif
+
+#if defined(RRAMC_TASK_CLEAR_POF_Enabled) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether RRAM controller has power failure clear feature. */
+#define NRF_RRAMC_HAS_CLEAR_POF 1
+#else
+#define NRF_RRAMC_HAS_CLEAR_POF 0
+#endif
+
+#if defined(RRAMC_EVENT_ECC_ERROR_Enabled) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether RRAM controller has ECC error feature. */
+#define NRF_RRAMC_HAS_ECC_ERROR 1
+#else
+#define NRF_RRAMC_HAS_ECC_ERROR 0
+#endif
+
+#if defined(RRAMC_EVENT_READ_ERROR_Enabled) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether RRAM controller has read error feature. */
+#define NRF_RRAMC_HAS_READ_ERROR 1
+#else
+#define NRF_RRAMC_HAS_READ_ERROR 0
+#endif
+
 /** @brief Maximum size of a write-buffer in number of 128-bit words. */
 #define NRF_RRAMC_CONFIG_WRITE_BUFF_SIZE_MAX RRAMC_CONFIG_WRITEBUFSIZE_Max
 
@@ -87,6 +122,13 @@ typedef enum
 {
     NRF_RRAMC_TASK_WAKEUP          = offsetof(NRF_RRAMC_Type, TASKS_WAKEUP),         ///< Wakeup the RRAM from low power mode.
     NRF_RRAMC_TASK_COMMIT_WRITEBUF = offsetof(NRF_RRAMC_Type, TASKS_COMMITWRITEBUF), ///< Commit the data stored in internal write-buffer to RRAM.
+#if NRF_RRAMC_HAS_TRIGGER_POF
+    NRF_RRAMC_TASK_TRIGGER_POF     = offsetof(NRF_RRAMC_Type, TASKS_TRIGGERPOF),     ///< Trigger power failure.
+#endif
+#if NRF_RRAMC_HAS_CLEAR_POF
+    NRF_RRAMC_TASK_CLEAR_POF       = offsetof(NRF_RRAMC_Type, TASKS_CLEARPOF),       ///< Clear power failure.
+#endif
+
 } nrf_rramc_task_t;
 
 /** @brief RRAMC events. */
@@ -96,6 +138,13 @@ typedef enum
     NRF_RRAMC_EVENT_READY        = offsetof(NRF_RRAMC_Type, EVENTS_READY),       ///< RRAMC is ready.
     NRF_RRAMC_EVENT_READY_NEXT   = offsetof(NRF_RRAMC_Type, EVENTS_READYNEXT),   ///< Ready to accept a new write operation.
     NRF_RRAMC_EVENT_ERROR_ACCESS = offsetof(NRF_RRAMC_Type, EVENTS_ACCESSERROR), ///< RRAM access error.
+ #if NRF_RRAMC_HAS_ECC_ERROR
+    NRF_RRAMC_EVENT_ERROR_ECC    = offsetof(NRF_RRAMC_Type, EVENTS_ECCERROR),    ///< RRAM ECC error.
+#endif
+#if NRF_RRAMC_HAS_READ_ERROR
+    NRF_RRAMC_EVENT_ERROR_READ   = offsetof(NRF_RRAMC_Type, EVENTS_READERROR),   ///< RRAM read error.
+#endif
+
 } nrf_rramc_event_t;
 
 /** @brief RRAMC interrupts. */
@@ -105,10 +154,22 @@ typedef enum
     NRF_RRAMC_INT_READY_MASK        = RRAMC_INTENSET_READY_Msk,       ///< Interrupt on READY event.
     NRF_RRAMC_INT_READY_NEXT_MASK   = RRAMC_INTENSET_READYNEXT_Msk,   ///< Interrupt on READYNEXT event.
     NRF_RRAMC_INT_ERROR_ACCESS_MASK = RRAMC_INTENSET_ACCESSERROR_Msk, ///< Interrupt on ACCESSERROR event.
+#if NRF_RRAMC_HAS_ECC_ERROR
+    NRF_RRAMC_INT_ERROR_ECC_MASK    = RRAMC_INTENSET_ECCERROR_Msk,    ///< Interrupt on ECCERROR event.
+#endif
+#if NRF_RRAMC_HAS_READ_ERROR
+    NRF_RRAMC_INT_ERROR_READ_MASK   = RRAMC_INTENSET_READERROR_Msk,   ///< Interrupt on READERROR event.
+#endif
     NRF_RRAMC_ALL_INTS_MASK         = NRF_RRAMC_INT_WOKENUP_MASK
                                     | NRF_RRAMC_INT_READY_MASK
                                     | NRF_RRAMC_INT_READY_NEXT_MASK
                                     | NRF_RRAMC_INT_ERROR_ACCESS_MASK ///< All RRAMC interrupts.
+#if NRF_RRAMC_HAS_ECC_ERROR
+                                    | NRF_RRAMC_INT_ERROR_ECC_MASK
+#endif
+#if NRF_RRAMC_HAS_READ_ERROR
+                                    | NRF_RRAMC_INT_ERROR_READ_MASK   ///< All RRAMC interrupts.
+#endif
 } nrf_rramc_int_mask_t;
 
 /** @brief RRAMC low power modes. */
@@ -130,6 +191,9 @@ typedef struct
 {
     bool    mode_write;      ///< True if write mode is to be enabled, false otherwise.
     uint8_t write_buff_size; ///< Write-buffer size in case set to 0 buffering is disabled.
+#if NRF_RRAMC_HAS_WRITE_SUSPEND
+    uint8_t write_suspend;   ///< True if the RRAM is to be suspended during write operation, false otherwise.
+#endif
 } nrf_rramc_config_t;
 
 /** @brief Preload timeout value for waiting for a next write. */
@@ -718,6 +782,10 @@ NRF_STATIC_INLINE void nrf_rramc_config_get(NRF_RRAMC_Type const * p_reg,
                                   RRAMC_CONFIG_WEN_Pos);
     p_config->write_buff_size = (uint32_t)((p_reg->CONFIG & RRAMC_CONFIG_WRITEBUFSIZE_Msk) >>
                                            RRAMC_CONFIG_WRITEBUFSIZE_Pos);
+#if NRF_RRAMC_HAS_WRITE_SUSPEND
+    p_config->write_suspend = (uint32_t)((p_reg->CONFIG & RRAMC_CONFIG_WRSUSPEND_Msk) >>
+                                         RRAMC_CONFIG_WRSUSPEND_Pos);
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_rramc_config_set(NRF_RRAMC_Type *           p_reg,
@@ -726,6 +794,9 @@ NRF_STATIC_INLINE void nrf_rramc_config_set(NRF_RRAMC_Type *           p_reg,
     NRFX_ASSERT(p_config->write_buff_size <= NRF_RRAMC_CONFIG_WRITE_BUFF_SIZE_MAX);
 
     p_reg->CONFIG = ((uint32_t)p_config->mode_write      << RRAMC_CONFIG_WEN_Pos) |
+#if NRF_RRAMC_HAS_WRITE_SUSPEND
+                    ((uint32_t)p_config->write_suspend   << RRAMC_CONFIG_WRSUSPEND_Pos) |
+#endif
                     ((uint32_t)p_config->write_buff_size << RRAMC_CONFIG_WRITEBUFSIZE_Pos);
 }
 

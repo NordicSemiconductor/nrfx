@@ -41,73 +41,75 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /*lint ++flb "Enter library region */
 
+/* Device selection for peripheral includes. */
 #if defined(NRF51)
-    #include "nrf51_peripherals.h"
+    #include "nrf51/nrf51_peripherals.h"
 
 #elif defined (NRF52805_XXAA)
-    #include "nrf52805_peripherals.h"
+    #include "nrf52/nrf52805/nrf52805_peripherals.h"
 #elif defined(NRF52810_XXAA)
-    #include "nrf52810_peripherals.h"
+    #include "nrf52/nrf52810/nrf52810_peripherals.h"
 #elif defined(NRF52811_XXAA)
-    #include "nrf52811_peripherals.h"
+    #include "nrf52/nrf52811/nrf52811_peripherals.h"
 #elif defined(NRF52820_XXAA)
-    #include "nrf52820_peripherals.h"
+    #include "nrf52/nrf52820/nrf52820_peripherals.h"
 #elif defined(NRF52832_XXAA) || defined(NRF52832_XXAB)
-    #include "nrf52832_peripherals.h"
+    #include "nrf52/nrf52832/nrf52832_peripherals.h"
 #elif defined (NRF52833_XXAA)
-    #include "nrf52833_peripherals.h"
+    #include "nrf52/nrf52833/nrf52833_peripherals.h"
 #elif defined(NRF52840_XXAA)
-    #include "nrf52840_peripherals.h"
+    #include "nrf52/nrf52840/nrf52840_peripherals.h"
 
 #elif defined (NRF5340_XXAA_APPLICATION)
-    #include "nrf5340_application_peripherals.h"
+    #include "nrf53/nrf5340/nrf5340_application_peripherals.h"
 #elif defined (NRF5340_XXAA_NETWORK)
-    #include "nrf5340_network_peripherals.h"
+    #include "nrf53/nrf5340/nrf5340_network_peripherals.h"
 
 #elif defined (NRF54H20_XXAA)
-    #include "nrf54h20_peripherals.h"
+    #include "nrf54h/nrf54h20/nrf54h20_peripherals.h"
 
 #elif defined (NRF54L05_XXAA)
-    #include "nrf54l05_peripherals.h"
+    #include "nrf54l/nrf54l05/nrf54l05_peripherals.h"
 
 #elif defined (NRF54LV10A_XXAA)
-    #include "nrf54lv10a_peripherals.h"
+    #include "nrf54l/nrf54lv10a/nrf54lv10a_peripherals.h"
 
 #elif defined (NRF54L10_XXAA)
-    #include "nrf54l10_peripherals.h"
+    #include "nrf54l/nrf54l10/nrf54l10_peripherals.h"
 
 #elif defined (NRF54L15_XXAA)
-    #include "nrf54l15_peripherals.h"
+    #include "nrf54l/nrf54l15/nrf54l15_peripherals.h"
 
 #elif defined (NRF54LM20A_XXAA)
-    #include "nrf54lm20a_peripherals.h"
+    #include "nrf54l/nrf54lm20a/nrf54lm20a_peripherals.h"
 
 #elif defined (NRF54LM20B_XXAA)
-    #include "nrf54lm20b_peripherals.h"
+    #include "nrf54l/nrf54lm20b/nrf54lm20b_peripherals.h"
 
 #elif defined (NRF54LS05B_XXAA)
-    #include "nrf54ls05b_peripherals.h"
+    #include "nrf54l/nrf54ls05b/nrf54ls05b_peripherals.h"
 
 #elif defined (NRF7120_ENGA_XXAA)
-    #include "nrf7120_enga_peripherals.h"
+    #include "nrf71/nrf7120_enga/nrf7120_enga_peripherals.h"
 
 #elif defined(NRF9120_XXAA)
-    #include "nrf9120_peripherals.h"
+    #include "nrf91/nrf9120/nrf9120_peripherals.h"
 #elif defined(NRF9160_XXAA)
-    #include "nrf9160_peripherals.h"
+    #include "nrf91/nrf9160/nrf9160_peripherals.h"
 
 #elif defined (NRF9230_ENGB_XXAA)
-    #include "nrf9230_engb_peripherals.h"
+    #include "nrf92/nrf9230_engb/nrf9230_engb_peripherals.h"
 
 #elif defined (NRF54LC10A_XXAA)
-    #include "nrf54lc10a_peripherals.h"
+    #include "nrf54l/nrf54lc10a/nrf54lc10a_peripherals.h"
 
 #elif defined (NRF54LS05A_XXAA)
-    #include "nrf54ls05a_peripherals.h"
+    #include "nrf54l/nrf54ls05a/nrf54ls05a_peripherals.h"
 
 #elif defined (NRF9220_XXAA)
-    #include "nrf9220_peripherals.h"
+    #include "nrf92/nrf9220/nrf9220_peripherals.h"
 
+/* Ending device selection for peripheral includes. */
 #else
     #error "Device must be defined. See nrf_peripherals.h."
 #endif
