@@ -32,10 +32,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-#ifndef SYSTEM_NRF7120_ENGA_APPROTECT_H
-#define SYSTEM_NRF7120_ENGA_APPROTECT_H
+#ifndef SYSTEM_NRF71_APPROTECT_H
+#define SYSTEM_NRF71_APPROTECT_H
 #ifndef NRF_TRUSTZONE_NONSECURE
-#include "../../nrf.h"
+#include "../nrf.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -61,7 +61,7 @@ extern "C" {
      TAMPC_PROTECT_DOMAIN_DBGEN_CTRL_KEY_KEY << TAMPC_PROTECT_DOMAIN_DBGEN_CTRL_KEY_Pos)
 
 
-static inline void nrf7120_handle_approtect_signal(volatile uint32_t * signal_ctrl)
+static inline void nrf71_handle_approtect_signal(volatile uint32_t * signal_ctrl)
 {
     if ((*signal_ctrl & TAMPC_SIGNAL_IS_LOCKED) != 0)
     {
@@ -101,7 +101,7 @@ static inline void nrf7120_handle_approtect_signal(volatile uint32_t * signal_ct
 #endif
 }
 
-static inline void nrf7120_handle_secureapprotect_signal(volatile uint32_t * signal_ctrl)
+static inline void nrf71_handle_secureapprotect_signal(volatile uint32_t * signal_ctrl)
 {
     if ((*signal_ctrl & TAMPC_SIGNAL_IS_LOCKED) != 0)
     {
@@ -150,19 +150,19 @@ static inline void nrf7120_handle_secureapprotect_signal(volatile uint32_t * sig
 
          The same mechanism is implemented for SECURE APPROTECT, with the macros
          ENABLE_SECURE_APPROTECT and ENABLE_SECURE_APPROTECT_USER_HANDLING. */
-static inline void nrf7120_handle_approtect(void)
+static inline void nrf71_handle_approtect(void)
 {
-    nrf7120_handle_approtect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].DBGEN.CTRL);
-    nrf7120_handle_approtect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].NIDEN.CTRL);
-    nrf7120_handle_secureapprotect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].SPIDEN.CTRL);
-    nrf7120_handle_secureapprotect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].SPNIDEN.CTRL);
+    nrf71_handle_approtect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].DBGEN.CTRL);
+    nrf71_handle_approtect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].NIDEN.CTRL);
+    nrf71_handle_secureapprotect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].SPIDEN.CTRL);
+    nrf71_handle_secureapprotect_signal(&NRF_TAMPC->PROTECT.DOMAIN[0].SPNIDEN.CTRL);
 
     /* Handle AUX AP*/
-    nrf7120_handle_approtect_signal(&NRF_TAMPC->PROTECT.AP[0].DBGEN.CTRL);
+    nrf71_handle_approtect_signal(&NRF_TAMPC->PROTECT.AP[0].DBGEN.CTRL);
 }
 
 #ifdef __cplusplus
 }
 #endif
 #endif
-#endif /* SYSTEM_NRF7120_ENGA_APPROTECT_H */
+#endif /* SYSTEM_NRF71_APPROTECT_H */

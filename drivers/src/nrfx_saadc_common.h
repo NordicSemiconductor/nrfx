@@ -64,6 +64,14 @@ static const nrf_saadc_input_t nrfx_saadc_internal_ain_psels[] =
     SAADC_INTERNAL_AIN_PSELS
 };
 
+#if NRF_SAADC_HAS_CH_PSELP_TEST
+/** @brief SAADC test inputs mapping table. */
+static const nrf_saadc_input_t nrfx_saadc_test_ain_psels[] =
+{
+    SAADC_TEST_AIN_PSELS
+};
+#endif
+
 /**
  * @brief Function for getting the SAADC input configuration for given generic analog input.
  *
@@ -83,6 +91,14 @@ NRFX_STATIC_INLINE nrf_saadc_input_t nrfx_saadc_ain_get(nrfx_analog_input_t inpu
     {
         return nrfx_saadc_internal_ain_psels[(input - NRFX_ANALOG_AIN_INTERNAL_OFFSET)];
     }
+#if NRF_SAADC_HAS_CH_PSELP_TEST
+    else if ((input >= NRFX_ANALOG_AIN_TEST_OFFSET) &&
+             ((uint8_t)(input - NRFX_ANALOG_AIN_TEST_OFFSET)
+                 < NRFX_ARRAY_SIZE(nrfx_saadc_test_ain_psels)))
+    {
+        return nrfx_saadc_test_ain_psels[(input - NRFX_ANALOG_AIN_TEST_OFFSET)];
+    }
+#endif
     else if ((uint8_t)input < NRFX_ARRAY_SIZE(nrfx_saadc_external_ain_psels))
     {
         return nrfx_saadc_external_ain_psels[input];

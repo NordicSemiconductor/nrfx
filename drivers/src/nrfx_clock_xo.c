@@ -89,7 +89,7 @@ static void clock_stop(void)
     nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_HFCLKSTOP);
     nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_HFCLKSTARTED);
 #if NRF_CLOCK_HAS_PLL
-    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 39))
+    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 39) || NRF_ERRATA_DYNAMIC_CHECK(71, 39))
     {
         nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_PLLSTOP);
     }
@@ -152,7 +152,7 @@ void nrfx_clock_xo_start(void)
 #endif
 
 #if NRF_CLOCK_HAS_PLL
-    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 39))
+    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 39) || NRF_ERRATA_DYNAMIC_CHECK(71, 39))
     {
         nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_PLLSTART);
     }

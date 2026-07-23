@@ -25,10 +25,10 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "../../nrf.h"
-#include "system_nrf7120_enga.h"
-#include "system_nrf7120_enga_approtect.h"
-#include "../../common/system_config_sau.h"
+#include "../nrf.h"
+#include "system_nrf71.h"
+#include "system_nrf71_approtect.h"
+#include "../common/system_config_sau.h"
 /*lint ++flb "Enter library region" */
 
 #define __SYSTEM_CLOCK_DEFAULT      (64000000ul)
@@ -94,7 +94,7 @@ void SystemInit(void)
             NRF_KMU->STATUS;
 
             #ifndef NRF_SKIP_TAMPC_SETUP
-                nrf7120_handle_approtect();
+                nrf71_handle_approtect();
             #endif
             #if defined(__FPU_PRESENT) && __FPU_PRESENT
                 /* Allow Non-Secure code to run FPU instructions.
@@ -207,9 +207,9 @@ void SystemInit(void)
         #if !defined(NRF_TRUSTZONE_NONSECURE) && !defined (NRF_SKIP_GLITCHDETECTOR_DISABLE)
             /* Disable glitch detector */
             #if defined (GLITCHDET_GLITCHDETECTORS)
-                NRF_GLITCHDET_S->GLITCHDETECTOR.CONFIG = (GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Disable << GLITCHDET_GLITCHDETECTOR_CONFIG_ENABLE_Pos);
+                NRF_GLITCHDET_S->GLITCHDETECTOR.CONFIG = (GLITCHDET_GLITCHDETECTOR_CONFIG_REQUESTEDSTATE_Disabled << GLITCHDET_GLITCHDETECTOR_CONFIG_REQUESTEDSTATE_Pos);
             #else
-                NRF_GLITCHDET_S->CONFIG = (GLITCHDET_CONFIG_ENABLE_Disable << GLITCHDET_CONFIG_ENABLE_Pos);
+                NRF_GLITCHDET_S->CONFIG = (GLITCHDET_CONFIG_REQUESTEDSTATE_Disabled << GLITCHDET_CONFIG_REQUESTEDSTATE_Pos);
             #endif
         #endif
 

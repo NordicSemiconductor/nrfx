@@ -41,8 +41,21 @@
 #include <lib/nrfx_coredep.h>
 
 #define TRNG_OFF_TIMER_VAL          0
-#define TRNG_INIT_WAIT_VAL        512
+#if NRF_CRACEN_HAS_RECOMMENDED_CONF
+#define TRNG_CLK_DIV_VAL            CRACENCORE_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Recommended
+#define TRNG_INIT_WAIT_VAL          CRACENCORE_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Recommended
+#define TRNG_NUMBER_128BIT_BLOCKS   CRACENCORE_RNGCONTROL_CONTROL_NB128BITBLOCKS_Recommended
+#if NRF_CRACEN_RNG_HAS_FIFOWRITESTARTUP
+#define TRNG_FIFO_WRITE_STARTUP_VAL CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Recommended
+#endif // NRF_CRACEN_RNG_HAS_FIFOWRITESTARTUP
+#else
+#define TRNG_CLK_DIV_VAL            TRNG_CLK_DIV
+#define TRNG_INIT_WAIT_VAL          512
 #define TRNG_NUMBER_128BIT_BLOCKS   4
+#if NRF_CRACEN_RNG_HAS_FIFOWRITESTARTUP
+#define TRNG_FIFO_WRITE_STARTUP_VAL 0
+#endif // NRF_CRACEN_RNG_HAS_FIFOWRITESTARTUP
+#endif // NRF_CRACEN_HAS_RECOMMENDED_CONF
 
 #define TRNG_CONDITIONING_KEY_SIZE 4 /* Size of the conditioning key: 4 words, 16 bytes */
 
@@ -93,12 +106,33 @@ static void trng_init(void)
 #if NRF_CRACEN_RNG_HAS_IDLE_TIMER
     nrf_cracen_rng_off_timer_set(NRF_CRACENCORE, TRNG_OFF_TIMER_VAL);
 #endif
-    nrf_cracen_rng_clk_div_set(NRF_CRACENCORE, TRNG_CLK_DIV);
+    nrf_cracen_rng_clk_div_set(NRF_CRACENCORE, TRNG_CLK_DIV_VAL);
     nrf_cracen_rng_init_wait_val_set(NRF_CRACENCORE, TRNG_INIT_WAIT_VAL);
+#if NRF_CRACEN_HAS_RECOMMENDED_CONF
+#if NRF_CRACEN_RNG_HAS_REPEATTHRESHOLD
+    nrf_cracen_rng_repeatthreshold_set(NRF_CRACENCORE,
+        CRACENCORE_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Recommended);
+#endif
+#if NRF_CRACEN_RNG_HAS_PROPTESTCUTOFF
+    nrf_cracen_rng_proptestcutoff_set(NRF_CRACENCORE,
+        CRACENCORE_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Recommended);
+#endif
+#if NRF_CRACEN_RNG_HAS_DISABLEOSC
+    nrf_cracen_rng_disableosc_set(NRF_CRACENCORE, 0,
+        CRACENCORE_RNGCONTROL_DISABLEOSC_DISABLEOSC_Recommended);
+#endif
+#if NRF_CRACEN_RNG_HAS_COOLDOWNPERIOD
+    nrf_cracen_rng_cooldown_period_set(NRF_CRACENCORE,
+        CRACENCORE_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Recommended);
+#endif
+#endif // NRF_CRACEN_HAS_RECOMMENDED_CONF
 
     /* Configure the control register and enable */
     static const nrf_cracen_rng_control_t control_enable = {
             .enable = true,
+#if NRF_CRACEN_RNG_HAS_FIFOWRITESTARTUP
+            .fifo_write_startup = TRNG_FIFO_WRITE_STARTUP_VAL,
+#endif
             .number_128_blocks = TRNG_NUMBER_128BIT_BLOCKS,
 #if NRF_CRACEN_RNG_HAS_BLENDING
             .blending_method = NRF_CRACEN_RNG_BLENDING_CONCATENATION,

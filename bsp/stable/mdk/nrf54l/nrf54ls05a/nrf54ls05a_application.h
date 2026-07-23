@@ -256,3 +256,4 @@ typedef enum {
 }
 #endif
 #endif /* NRF54LS05A_APPLICATION_H */
+

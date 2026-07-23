@@ -120,6 +120,20 @@ extern "C" {
 #define NRF_UARTE_HAS_FRAME_SIZE 0
 #endif
 
+#if defined(UARTE_TASKS_DMAEND_TASKS_DMAEND_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether DMAEND TASK is present. */
+#define NRF_UARTE_HAS_DMAEND_TASK 1
+#else
+#define NRF_UARTE_HAS_DMAEND_TASK 0
+#endif
+
+#if defined(UARTE_SHORTS_FRAMETIMEOUT_DMAEND_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether FRAMETIMEOUT_DMAEND short is present. */
+#define NRF_UARTE_HAS_FRAMETIMEOUT_DMAEND_SHORT 1
+#else
+#define NRF_UARTE_HAS_FRAMETIMEOUT_DMAEND_SHORT 0
+#endif
+
 /** @brief Base frequency value 320 MHz for UARTE. */
 #define NRF_UARTE_BASE_FREQUENCY_320MHZ (NRFX_MHZ_TO_HZ(320UL))
 /** @brief Base frequency value 128 MHz for UARTE. */
@@ -176,7 +190,10 @@ typedef enum
     NRF_UARTE_TASK_STARTTX   = offsetof(NRF_UARTE_Type, TASKS_STARTTX),      ///< Start UART transmitter.
     NRF_UARTE_TASK_STOPTX    = offsetof(NRF_UARTE_Type, TASKS_STOPTX),       ///< Stop UART transmitter.
 #endif
-    NRF_UARTE_TASK_FLUSHRX   = offsetof(NRF_UARTE_Type, TASKS_FLUSHRX)       ///< Flush RX FIFO in RX buffer.
+    NRF_UARTE_TASK_FLUSHRX   = offsetof(NRF_UARTE_Type, TASKS_FLUSHRX),      ///< Flush RX FIFO in RX buffer.
+#if NRF_UARTE_HAS_DMAEND_TASK
+    NRF_UARTE_TASK_DMAEND    = offsetof(NRF_UARTE_Type, TASKS_DMAEND),       ///< Store any buffered data into memory and stop DMA afterwards.
+#endif
 } nrf_uarte_task_t;
 
 /** @brief UARTE events. */
@@ -209,18 +226,21 @@ typedef enum
 typedef enum
 {
 #if NRF_UARTE_HAS_DMA_SHORTS
-    NRF_UARTE_SHORT_ENDRX_STARTRX         = UARTE_SHORTS_DMA_RX_END_DMA_RX_START_Msk, ///< Shortcut between ENDRX event and STARTRX task.
-    NRF_UARTE_SHORT_ENDRX_STOPRX          = UARTE_SHORTS_DMA_RX_END_DMA_RX_STOP_Msk,  ///< Shortcut between ENDRX event and STOPRX task.
-    NRF_UARTE_SHORT_ENDTX_STOPTX          = UARTE_SHORTS_DMA_TX_END_DMA_TX_STOP_Msk,  ///< Shortcut between ENDTX event and STOPTX task.
+    NRF_UARTE_SHORT_ENDRX_STARTRX         = UARTE_SHORTS_DMA_RX_END_DMA_RX_START_Msk,  ///< Shortcut between ENDRX event and STARTRX task.
+    NRF_UARTE_SHORT_ENDRX_STOPRX          = UARTE_SHORTS_DMA_RX_END_DMA_RX_STOP_Msk,   ///< Shortcut between ENDRX event and STOPRX task.
+    NRF_UARTE_SHORT_ENDTX_STOPTX          = UARTE_SHORTS_DMA_TX_END_DMA_TX_STOP_Msk,   ///< Shortcut between ENDTX event and STOPTX task.
 #else
-    NRF_UARTE_SHORT_ENDRX_STARTRX         = UARTE_SHORTS_ENDRX_STARTRX_Msk,           ///< Shortcut between ENDRX event and STARTRX task.
-    NRF_UARTE_SHORT_ENDRX_STOPRX          = UARTE_SHORTS_ENDRX_STOPRX_Msk,            ///< Shortcut between ENDRX event and STOPRX task.
+    NRF_UARTE_SHORT_ENDRX_STARTRX         = UARTE_SHORTS_ENDRX_STARTRX_Msk,            ///< Shortcut between ENDRX event and STARTRX task.
+    NRF_UARTE_SHORT_ENDRX_STOPRX          = UARTE_SHORTS_ENDRX_STOPRX_Msk,             ///< Shortcut between ENDRX event and STOPRX task.
 #if NRF_UARTE_HAS_ENDTX_STOPTX_SHORT
-    NRF_UARTE_SHORT_ENDTX_STOPTX          = UARTE_SHORTS_ENDTX_STOPTX_Msk,            ///< Shortcut between ENDTX event and STOPTX task.
+    NRF_UARTE_SHORT_ENDTX_STOPTX          = UARTE_SHORTS_ENDTX_STOPTX_Msk,             ///< Shortcut between ENDTX event and STOPTX task.
 #endif
 #endif
 #if NRF_UARTE_HAS_FRAME_TIMEOUT
-    NRF_UARTE_SHORT_FRAME_TIMEOUT_STOPRX  = UARTE_SHORTS_FRAMETIMEOUT_DMA_RX_STOP_Msk ///< Shortcut between ENDTX event and STOPTX task.
+    NRF_UARTE_SHORT_FRAME_TIMEOUT_STOPRX  = UARTE_SHORTS_FRAMETIMEOUT_DMA_RX_STOP_Msk, ///< Shortcut between FRAMETIMEOUT event and STOPRX task.
+#endif
+#if NRF_UARTE_HAS_FRAMETIMEOUT_DMAEND_SHORT
+    NRF_UARTE_SHORT_FRAMETIMEOUT_DMAEND   = UARTE_SHORTS_FRAMETIMEOUT_DMAEND_Msk,      ///< Shortcut between FRAMETIMEOUT event and DMAEND task.
 #endif
 } nrf_uarte_short_t;
 

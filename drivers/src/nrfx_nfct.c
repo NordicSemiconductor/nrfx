@@ -41,14 +41,15 @@
 #define FIELD_TIMER_FREQUENCY_HZ NRFX_MHZ_TO_HZ(1)
 
 #if NRF_ERRATA_STATIC_CHECK(52, 79) || NRF_ERRATA_STATIC_CHECK(52, 190) || \
-    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60) || \
+    NRF_ERRATA_STATIC_CHECK(71, 60)
 #include <nrfx_timer.h>
 
 typedef struct
 {
     nrfx_timer_t       timer;                     /**< Timer instance that supports the correct NFC field detection. */
 #if NRF_ERRATA_STATIC_CHECK(52, 190) || NRF_ERRATA_STATIC_CHECK(53, 70) || \
-    NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(54L, 60) || NRF_ERRATA_STATIC_CHECK(71, 60)
     bool               fieldevents_filter_active; /**< Flag that indicates that the field events are ignored. */
     bool               is_hfclk_on;               /**< HFCLK has started - one of the NFC activation conditions. */
     bool               is_delayed;                /**< Required time delay has passed - one of the NFC activation conditions. */
@@ -58,7 +59,7 @@ typedef struct
 } nrfx_nfct_timer_workaround_t;
 
 #if NRF_ERRATA_STATIC_CHECK(52, 190) || NRF_ERRATA_STATIC_CHECK(53, 70) || \
-    NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(54L, 60) || NRF_ERRATA_STATIC_CHECK(71, 60)
     #define NRFX_NFCT_ACTIVATE_DELAY     1000 /**< Minimal delay in us between NFC field detection and activation of NFCT. */
     #define NRFX_NFCT_TIMER_PERIOD       NRFX_NFCT_ACTIVATE_DELAY
 #elif  NRF_ERRATA_STATIC_CHECK(52, 79)
@@ -72,7 +73,8 @@ static nrfx_nfct_timer_workaround_t m_timer_workaround =
     .timer = NRFX_TIMER_INSTANCE(NRF_TIMER_INST_GET(NRFX_NFCT_CONFIG_TIMER_INSTANCE_ID)),
 };
 #endif // NRF_ERRATA_STATIC_CHECK(52, 79) || NRF_ERRATA_STATIC_CHECK(52, 190) ||
-       // NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60)
+       // NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60) ||
+       // NRF_ERRATA_STATIC_CHECK(71, 60)
 
 /* Mask of all possible interrupts that are relevant for data reception. */
 #define NRFX_NFCT_RX_INT_MASK (NRF_NFCT_INT_RXFRAMESTART_MASK | \
@@ -188,9 +190,9 @@ static void nfct_field_event_handler(volatile nrfx_nfct_field_state_t field_stat
     nrfx_nfct_evt_t nfct_evt;
 
 #if NRF_ERRATA_STATIC_CHECK(52, 190) || NRF_ERRATA_STATIC_CHECK(53, 70) || \
-    NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(54L, 60) || NRF_ERRATA_STATIC_CHECK(71, 60)
     if ((NRF_ERRATA_DYNAMIC_CHECK(52, 190) || NRF_ERRATA_DYNAMIC_CHECK(53, 70) ||
-         NRF_ERRATA_DYNAMIC_CHECK(54L, 60)) &&
+         NRF_ERRATA_DYNAMIC_CHECK(54L, 60) || NRF_ERRATA_DYNAMIC_CHECK(71, 60)) &&
         m_timer_workaround.fieldevents_filter_active)
     {
         return;
@@ -213,9 +215,9 @@ static void nfct_field_event_handler(volatile nrfx_nfct_field_state_t field_stat
             if (!m_nfct_cb.field_on)
             {
 #if NRF_ERRATA_STATIC_CHECK(52, 190) || NRF_ERRATA_STATIC_CHECK(53, 70) || \
-    NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(54L, 60) || NRF_ERRATA_STATIC_CHECK(71, 60)
                 if (NRF_ERRATA_DYNAMIC_CHECK(52, 190) || NRF_ERRATA_DYNAMIC_CHECK(53, 70) ||
-                    NRF_ERRATA_DYNAMIC_CHECK(54L, 60)) {
+                    NRF_ERRATA_DYNAMIC_CHECK(54L, 60) || NRF_ERRATA_DYNAMIC_CHECK(71, 60)) {
                     m_timer_workaround.is_hfclk_on               = false;
                     m_timer_workaround.is_delayed                = false;
                     m_timer_workaround.fieldevents_filter_active = true;
@@ -263,7 +265,7 @@ static void nfct_field_event_handler(volatile nrfx_nfct_field_state_t field_stat
 }
 
 #if NRF_ERRATA_STATIC_CHECK(52, 190) || NRF_ERRATA_STATIC_CHECK(53, 70) || \
-    NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(54L, 60) || NRF_ERRATA_STATIC_CHECK(71, 60)
 static void nfct_activate_check(void)
 {
     static bool is_field_validation_pending = false;
@@ -354,7 +356,8 @@ static void nfct_field_poll(void)
 #endif
 
 #if NRF_ERRATA_STATIC_CHECK(52, 79) || NRF_ERRATA_STATIC_CHECK(52, 190) || \
-    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60) || \
+    NRF_ERRATA_STATIC_CHECK(71, 60)
 static void nfct_field_timer_handler(nrf_timer_event_t event_type, void * p_context)
 {
     (void)p_context;
@@ -365,9 +368,9 @@ static void nfct_field_timer_handler(nrf_timer_event_t event_type, void * p_cont
     }
 
 #if NRF_ERRATA_STATIC_CHECK(52, 190) || NRF_ERRATA_STATIC_CHECK(53, 70) || \
-    NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(54L, 60) || NRF_ERRATA_STATIC_CHECK(71, 60)
     if (NRF_ERRATA_DYNAMIC_CHECK(52, 190) || NRF_ERRATA_DYNAMIC_CHECK(53, 70) ||
-        NRF_ERRATA_DYNAMIC_CHECK(54L, 60))
+        NRF_ERRATA_DYNAMIC_CHECK(54L, 60) || NRF_ERRATA_DYNAMIC_CHECK(71, 60))
     {
         m_timer_workaround.is_delayed = true;
         nrfx_timer_disable(&m_timer_workaround.timer);
@@ -405,7 +408,8 @@ static inline int nfct_field_timer_config(uint8_t irq_priority)
     return 0;
 }
 #endif // NRF_ERRATA_STATIC_CHECK(52, 79) || NRF_ERRATA_STATIC_CHECK(52, 190) ||
-       // NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60)
+       // NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60) ||
+       // NRF_ERRATA_STATIC_CHECK(71, 60)
 
 static inline
 nrf_nfct_sensres_nfcid1_size_t nfct_nfcid1_size_to_sensres_size(uint8_t nfcid1_size)
@@ -482,9 +486,11 @@ int nrfx_nfct_init(nrfx_nfct_config_t const * p_config)
     nrfy_nfct_int_init(NRF_NFCT, p_config->rxtx_int_mask, p_config->irq_priority, false);
 
 #if NRF_ERRATA_STATIC_CHECK(52, 79) || NRF_ERRATA_STATIC_CHECK(52, 190) || \
-    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60) || \
+    NRF_ERRATA_STATIC_CHECK(71, 60)
     if (NRF_ERRATA_DYNAMIC_CHECK(52, 79) || NRF_ERRATA_DYNAMIC_CHECK(52, 190) ||
-        NRF_ERRATA_DYNAMIC_CHECK(53, 70) || NRF_ERRATA_DYNAMIC_CHECK(54L, 60))
+        NRF_ERRATA_DYNAMIC_CHECK(53, 70) || NRF_ERRATA_DYNAMIC_CHECK(54L, 60) ||
+        NRF_ERRATA_DYNAMIC_CHECK(71, 60))
     {
         err_code = nfct_field_timer_config(p_config->irq_priority);
     }
@@ -506,9 +512,11 @@ void nrfx_nfct_uninit(void)
     nrfy_nfct_int_uninit(NRF_NFCT);
 
 #if NRF_ERRATA_STATIC_CHECK(52, 79) || NRF_ERRATA_STATIC_CHECK(52, 190) || \
-    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60) || \
+    NRF_ERRATA_STATIC_CHECK(71, 60)
     if (NRF_ERRATA_DYNAMIC_CHECK(52, 79) || NRF_ERRATA_DYNAMIC_CHECK(52, 190) ||
-        NRF_ERRATA_DYNAMIC_CHECK(53, 70) || NRF_ERRATA_DYNAMIC_CHECK(54L, 60))
+        NRF_ERRATA_DYNAMIC_CHECK(53, 70) || NRF_ERRATA_DYNAMIC_CHECK(54L, 60) ||
+        NRF_ERRATA_DYNAMIC_CHECK(71, 60))
     {
         nrfx_timer_uninit(&m_timer_workaround.timer);
     }
@@ -546,14 +554,16 @@ void nrfx_nfct_disable(void)
     nrfy_nfct_int_disable(NRF_NFCT, NRF_NFCT_DISABLE_ALL_INT);
 
 #if NRF_ERRATA_STATIC_CHECK(52, 79) || NRF_ERRATA_STATIC_CHECK(52, 190) || \
-    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60) || \
+    NRF_ERRATA_STATIC_CHECK(71, 60)
     if (NRF_ERRATA_DYNAMIC_CHECK(52, 79) || NRF_ERRATA_DYNAMIC_CHECK(52, 190) ||
-        NRF_ERRATA_DYNAMIC_CHECK(53, 70) || NRF_ERRATA_DYNAMIC_CHECK(54L, 60))
+        NRF_ERRATA_DYNAMIC_CHECK(53, 70) || NRF_ERRATA_DYNAMIC_CHECK(54L, 60) ||
+        NRF_ERRATA_DYNAMIC_CHECK(71, 60))
     {
         nrfx_timer_disable(&m_timer_workaround.timer);
 
 #if NRF_ERRATA_STATIC_CHECK(52, 190) || NRF_ERRATA_STATIC_CHECK(53, 70) || \
-    NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(54L, 60) || NRF_ERRATA_STATIC_CHECK(71, 60)
         m_timer_workaround.is_hfclk_on               = false;
         m_timer_workaround.is_delayed                = false;
         m_timer_workaround.fieldevents_filter_active = false;
@@ -783,9 +793,9 @@ void nrfx_nfct_state_force(nrfx_nfct_state_t state)
     NRFX_ASSERT(m_nfct_cb.state == NRFX_DRV_STATE_INITIALIZED);
 
 #if NRF_ERRATA_STATIC_CHECK(52, 190) || NRF_ERRATA_STATIC_CHECK(53, 70) || \
-    NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(54L, 60) || NRF_ERRATA_STATIC_CHECK(71, 60)
     if ((NRF_ERRATA_DYNAMIC_CHECK(52, 190) || NRF_ERRATA_DYNAMIC_CHECK(53, 70) ||
-         NRF_ERRATA_DYNAMIC_CHECK(54L, 60)) &&
+         NRF_ERRATA_DYNAMIC_CHECK(54L, 60) || NRF_ERRATA_DYNAMIC_CHECK(71, 60)) &&
         (state == NRFX_NFCT_STATE_ACTIVATED))
     {
         m_timer_workaround.is_hfclk_on = true;
@@ -1129,10 +1139,12 @@ void nrfx_nfct_irq_handler(void)
 }
 
 #if NRF_ERRATA_STATIC_CHECK(52, 79) || NRF_ERRATA_STATIC_CHECK(52, 190) || \
-    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60) || \
+    NRF_ERRATA_STATIC_CHECK(71, 60)
 void nrfx_nfct_workaround_timer_handler(void)
 {
     nrfx_timer_irq_handler(&m_timer_workaround.timer);
 }
 #endif // NRF_ERRATA_STATIC_CHECK(52, 79) || NRF_ERRATA_STATIC_CHECK(52, 190) ||
-       // NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60)
+       // NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60) ||
+       // NRF_ERRATA_STATIC_CHECK(71, 60)

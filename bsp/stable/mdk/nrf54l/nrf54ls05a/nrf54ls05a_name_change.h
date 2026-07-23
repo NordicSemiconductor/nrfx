@@ -40,6 +40,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 
+/* =========================================== Instance RRAMC AltName Definitions ============================================ */
+
+/* =================================== RRAMC Feature NRRAMDATAUNITSIZE AltName Definitions =================================== */
+
+#define RRAMC_NRRAMWORDSIZE                       RRAMC_NRRAMDATAUNITSIZE 
+
 /* =========================================== Instance CRACEN AltName Definitions =========================================== */
 #define NRF_TRNG                                    NRF_CRACEN
 

@@ -1,5 +1,4 @@
 /*
-
 Copyright (c) 2010 - 2026, Nordic Semiconductor ASA All rights reserved.
 
 SPDX-License-Identifier: BSD-3-Clause
@@ -29,25 +28,34 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
+ */
 
-*/
+#ifndef NRF_DEVICE_MEM_H_
+#define NRF_DEVICE_MEM_H_
 
-/* Configure stack size, stack alignement and heap size with a header file instead of project settings or modification of Nordic provided assembler files. Modify this file as needed. */
+#ifndef __DEFAULT_STACK_SIZE
+    #define __DEFAULT_STACK_SIZE 8192
+#endif
+#ifndef __DEFAULT_HEAP_SIZE
+    #define __DEFAULT_HEAP_SIZE 8192
+#endif
 
-/* In order to make use this file,
-        1. For Keil uVision IDE, in the Options for Target -> Asm tab, define symbol __STARTUP_CONFIG and use the additional assembler option --cpreproc in Misc Control text box.
-        2. For GCC compiling, add extra assembly option -D__STARTUP_CONFIG.
-        3. For IAR Embedded Workbench define symbol __STARTUP_CONFIG in the Assembler options and define symbol __STARTUP_CONFIG=1 in the linker options.
-*/
+/* Device memory Flash: */
+#define NRF_MEMORY_FLASH_BASE 0x002E0000
+#define NRF_MEMORY_FLASH_SIZE 0x00010000
 
-/* This file is a template and should be copied to the project directory. */
+/* Device memory RAM: */
+#define NRF_MEMORY_RAM_BASE 0x28000000
+#define NRF_MEMORY_RAM_SIZE 0x00020000
 
-/* Define size of stack. Size must be multiple of 4. */
-#define __STARTUP_CONFIG_STACK_SIZE   0x1000
+/* Device memory ROM: */
+#define NRF_MEMORY_ROM_BASE 0x28080000
+#define NRF_MEMORY_ROM_SIZE 0x00040000
 
-/* Define alignement of stack. Alignment will be 2 to the power of __STARTUP_CONFIG_STACK_ALIGNEMENT. Since calling convention requires that the stack is aligned to 8-bytes when a function is called, the minimum __STARTUP_CONFIG_STACK_ALIGNEMENT is therefore 3. */
-#define __STARTUP_CONFIG_STACK_ALIGNEMENT 3
+/* Device memory SystemSFR: */
+#define NRF_MEMORY_SYSTEMSFR_BASE 0xE0000000
+#define NRF_MEMORY_SYSTEMSFR_SIZE 0x00100000
 
-/* Define size of heap. Size must be multiple of 4. */
-#define __STARTUP_CONFIG_HEAP_SIZE   0x1000
 
+
+#endif

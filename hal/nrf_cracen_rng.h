@@ -49,60 +49,105 @@ extern "C" {
  */
 
 #if defined(CRACENCORE_RNGCONTROL_SWOFFTMRVAL_ResetValue) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether the TRNG FSM has an idle timer */
+/** @brief Symbol indicating whether the TRNG FSM has an idle timer. */
 #define NRF_CRACEN_RNG_HAS_IDLE_TIMER 1
 #else
 #define NRF_CRACEN_RNG_HAS_IDLE_TIMER 0
 #endif
 
 #if defined(CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_Pos) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether the TRNG has entropy blending */
+/** @brief Symbol indicating whether the TRNG has entropy blending. */
 #define NRF_CRACEN_RNG_HAS_BLENDING 1
 #else
 #define NRF_CRACEN_RNG_HAS_BLENDING 0
 #endif
 
+#if defined(CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the TRNG has FIFO start-up write configuration. */
+#define NRF_CRACEN_RNG_HAS_FIFOWRITESTARTUP 1
+#else
+#define NRF_CRACEN_RNG_HAS_FIFOWRITESTARTUP 0
+#endif
+
+#if defined(CRACENCORE_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the TRNG has REPEATTHRESHOLD register. */
+#define NRF_CRACEN_RNG_HAS_REPEATTHRESHOLD 1
+#else
+#define NRF_CRACEN_RNG_HAS_REPEATTHRESHOLD 0
+#endif
+
+#if defined(CRACENCORE_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the TRNG has PROPTESTCUTOFF register. */
+#define NRF_CRACEN_RNG_HAS_PROPTESTCUTOFF 1
+#else
+#define NRF_CRACEN_RNG_HAS_PROPTESTCUTOFF 0
+#endif
+
+#if defined(CRACENCORE_RNGCONTROL_DISABLEOSC_DISABLEOSC_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the TRNG has DISABLEOSC register. */
+#define NRF_CRACEN_RNG_HAS_DISABLEOSC 1
+#else
+#define NRF_CRACEN_RNG_HAS_DISABLEOSC 0
+#endif
+
+#if defined(CRACENCORE_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the TRNG has COOLDOWNPERIOD register. */
+#define NRF_CRACEN_RNG_HAS_COOLDOWNPERIOD 1
+#else
+#define NRF_CRACEN_RNG_HAS_COOLDOWNPERIOD 0
+#endif
+
+#if defined(CRACENCORE_RNGCONTROL_CONTROL_NB128BITBLOCKS_Recommended) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the TRNG has specified recommended configuration parameters. */
+#define NRF_CRACEN_HAS_RECOMMENDED_CONF 1
+#else
+#define NRF_CRACEN_HAS_RECOMMENDED_CONF 0
+#endif
+
 #if NRF_CRACEN_RNG_HAS_BLENDING
-/** @brief CRACEN entropy blending methods */
+/** @brief CRACEN entropy blending methods. */
 typedef enum
 {
-  NRF_CRACEN_RNG_BLENDING_CONCATENATION = CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_CONCATENATION, /**< Collate all rings oscillators outputs */
-  NRF_CRACEN_RNG_BLENDING_XOR_LEVEL_1   = CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_XORLEVEL1,     /**< XOR bits inside each ring oscillator set */
-  NRF_CRACEN_RNG_BLENDING_XOR_LEVEL_2   = CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_XORLEVEL2,     /**< Also XOR bits in-between ring oscillator sets */
-  NRF_CRACEN_RNG_BLENDING_VONNEUMANN    = CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_VONNEUMANN,    /**< On top of XOR_LEVEL_2 apply VON-NEUMANN debiasing */
+  NRF_CRACEN_RNG_BLENDING_CONCATENATION = CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_CONCATENATION, /**< Collate all rings oscillators outputs. */
+  NRF_CRACEN_RNG_BLENDING_XOR_LEVEL_1   = CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_XORLEVEL1,     /**< XOR bits inside each ring oscillator set. */
+  NRF_CRACEN_RNG_BLENDING_XOR_LEVEL_2   = CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_XORLEVEL2,     /**< Also XOR bits in-between ring oscillator sets. */
+  NRF_CRACEN_RNG_BLENDING_VONNEUMANN    = CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_VONNEUMANN,    /**< On top of XOR_LEVEL_2 apply VON-NEUMANN debiasing. */
 } nrf_cracen_rng_blending_t;
 #endif
 
-/** @brief CRACEN random generator configuration */
+/** @brief CRACEN random generator configuration. */
 typedef struct
 {
-    bool                      enable;            /**< Enable the RNG peripheral */
-    bool                      fifo_full_int_en;  /**< Enable FIFO full interrupt */
-    bool                      soft_reset;        /**< Soft reset the RNG peripheral */
-    uint8_t                   number_128_blocks; /**< Number of 128bit blocks used for AES conditioning. Must be at least 1 */
+    bool                      enable;             /**< Enable the RNG peripheral. */
+    bool                      fifo_full_int_en;   /**< Enable FIFO full interrupt. */
+    bool                      soft_reset;         /**< Soft reset the RNG peripheral. */
+#if NRF_CRACEN_RNG_HAS_FIFOWRITESTARTUP
+    bool                      fifo_write_startup; /**< Enable FIFO start-up write. */
+#endif
+    uint8_t                   number_128_blocks;  /**< Number of 128bit blocks used for AES conditioning. Must be at least 1. */
 #if NRF_CRACEN_RNG_HAS_BLENDING
-    nrf_cracen_rng_blending_t blending_method;   /**< Which blending method to use */
+    nrf_cracen_rng_blending_t blending_method;    /**< Which blending method to use. */
 #endif
 } nrf_cracen_rng_control_t;
 
-/** @brief CRACEN random generator FSM state */
+/** @brief CRACEN random generator FSM state. */
 typedef enum
 {
-    NRF_CRACEN_RNG_FSM_STATE_RESET        = CRACENCORE_RNGCONTROL_STATUS_STATE_RESET,    /**< RNG is not started */
-    NRF_CRACEN_RNG_FSM_STATE_STARTUP      = CRACENCORE_RNGCONTROL_STATUS_STATE_STARTUP,  /**< RNG is starting */
-    NRF_CRACEN_RNG_FSM_STATE_IDLE_READY   = CRACENCORE_RNGCONTROL_STATUS_STATE_IDLERON,  /**< RNG is idle, and ready to produce more data */
+    NRF_CRACEN_RNG_FSM_STATE_RESET        = CRACENCORE_RNGCONTROL_STATUS_STATE_RESET,    /**< RNG is not started. */
+    NRF_CRACEN_RNG_FSM_STATE_STARTUP      = CRACENCORE_RNGCONTROL_STATUS_STATE_STARTUP,  /**< RNG is starting. */
+    NRF_CRACEN_RNG_FSM_STATE_IDLE_READY   = CRACENCORE_RNGCONTROL_STATUS_STATE_IDLERON,  /**< RNG is idle, and ready to produce more data. */
 #if NRF_CRACEN_RNG_HAS_IDLE_TIMER
-    NRF_CRACEN_RNG_FSM_STATE_IDLE_STANDBY = CRACENCORE_RNGCONTROL_STATUS_STATE_IDLEROFF, /**< RNG is idle, with the ring oscillators off */
+    NRF_CRACEN_RNG_FSM_STATE_IDLE_STANDBY = CRACENCORE_RNGCONTROL_STATUS_STATE_IDLEROFF, /**< RNG is idle, with the ring oscillators off. */
 #endif
-    NRF_CRACEN_RNG_FSM_STATE_FILL_FIFO    = CRACENCORE_RNGCONTROL_STATUS_STATE_FILLFIFO, /**< RNG is filling the FIFO with entropy */
-    NRF_CRACEN_RNG_FSM_STATE_ERROR        = CRACENCORE_RNGCONTROL_STATUS_STATE_ERROR,    /**< RNG has halted on an error. Reset is needed */
+    NRF_CRACEN_RNG_FSM_STATE_FILL_FIFO    = CRACENCORE_RNGCONTROL_STATUS_STATE_FILLFIFO, /**< RNG is filling the FIFO with entropy. */
+    NRF_CRACEN_RNG_FSM_STATE_ERROR        = CRACENCORE_RNGCONTROL_STATUS_STATE_ERROR,    /**< RNG has halted on an error. Reset is needed. */
 } nrf_cracen_rng_fsm_state_t;
 
 /** Size of the RNG FIFO in bytes */
 #define NRF_CRACEN_RNG_FIFO_SIZE ((CRACENCORE_RNGCONTROL_FIFOTHRESHOLD_ResetValue + 1) * 16)
 
 /**
- * @brief Function for setting the control register
+ * @brief Function for setting the control register.
  *
  * @param[in] p_reg Pointer to the structure of registers of the RNG peripheral.
  * @param[in] p_config Configuration to be written in the register.
@@ -111,19 +156,19 @@ NRF_STATIC_INLINE void nrf_cracen_rng_control_set(NRF_CRACENCORE_Type *         
                                                   nrf_cracen_rng_control_t const * p_config);
 
 /**
- * @brief Function for getting the FIFO level
+ * @brief Function for getting the FIFO level.
  *
  * @param[in] p_reg Pointer to the structure of registers of the RNG peripheral.
  *
- * @return Number of random data words ready in the FIFO
+ * @return Number of random data words ready in the FIFO.
  */
 NRF_STATIC_INLINE uint32_t nrf_cracen_rng_fifo_level_get(NRF_CRACENCORE_Type const * p_reg);
 
 /**
- * @brief Function for setting the AES conditioning KEY registers
+ * @brief Function for setting the AES conditioning KEY registers.
  *
  * @param[in] p_reg Pointer to the structure of registers of the RNG peripheral.
- * @param[in] index Index of the key register to be written (0..3)
+ * @param[in] index Index of the key register to be written (0..3).
  * @param[in] value Value to be written in the register.
  */
 NRF_STATIC_INLINE void nrf_cracen_rng_key_set(NRF_CRACENCORE_Type * p_reg,
@@ -131,7 +176,7 @@ NRF_STATIC_INLINE void nrf_cracen_rng_key_set(NRF_CRACENCORE_Type * p_reg,
                                               uint32_t              value);
 
 /**
- * @brief Function for getting the RNG FSM state
+ * @brief Function for getting the RNG FSM state.
  *
  * @param[in] p_reg Pointer to the structure of registers of the RNG peripheral.
  *
@@ -141,7 +186,7 @@ NRF_STATIC_INLINE
 nrf_cracen_rng_fsm_state_t nrf_cracen_rng_fsm_state_get(NRF_CRACENCORE_Type const * p_reg);
 
 /**
- * @brief Function for setting the initialization wait counter value
+ * @brief Function for setting the initialization wait counter value.
  *
  * @param[in] p_reg Pointer to the structure of registers of the RNG peripheral.
  * @param[in] value Value to be written in the register.
@@ -151,7 +196,7 @@ NRF_STATIC_INLINE void nrf_cracen_rng_init_wait_val_set(NRF_CRACENCORE_Type * p_
 
 #if NRF_CRACEN_RNG_HAS_IDLE_TIMER
 /**
- * @brief Function for setting the switch off timer value
+ * @brief Function for setting the switch off timer value.
  *
  * @param[in] p_reg Pointer to the structure of registers of the RNG peripheral.
  * @param[in] value Value to be written in the register.
@@ -161,9 +206,9 @@ NRF_STATIC_INLINE void nrf_cracen_rng_off_timer_set(NRF_CRACENCORE_Type * p_reg,
 #endif
 
 /**
- * @brief Function for setting the entropy subsampling rate register
+ * @brief Function for setting the entropy subsampling rate register.
  *
- * @note The ring oscillators output is sampled at Fs=Fpclk/(ClkDiv+1)
+ * @note The ring oscillators output is sampled at Fs=Fpclk/(ClkDiv+1).
  *
  * @param[in] p_reg Pointer to the structure of registers of the RNG peripheral.
  * @param[in] value Value to be written in the register.
@@ -172,16 +217,64 @@ NRF_STATIC_INLINE void nrf_cracen_rng_clk_div_set(NRF_CRACENCORE_Type * p_reg,
                                                   uint16_t              value);
 
 /**
- * @brief Function for getting a word from the entropy FIFO
+ * @brief Function for getting a word from the entropy FIFO.
  *
  * @note The caller must ensure there is enough data by calling
- *       @ref nrf_cracen_rng_fifo_level_get
+ *       @ref nrf_cracen_rng_fifo_level_get.
  *
- * @param[in] p_reg Pointer to the structure of registers of the RNG peripheral
+ * @param[in] p_reg Pointer to the structure of registers of the RNG peripheral.
  *
- * @return Entropy word read from the FIFO
+ * @return Entropy word read from the FIFO.
  */
 NRF_STATIC_INLINE uint32_t nrf_cracen_rng_fifo_get(NRF_CRACENCORE_Type const * p_reg);
+
+#if NRF_CRACEN_RNG_HAS_REPEATTHRESHOLD
+/**
+ * @brief Function for setting repetition test cut-off value.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the RNG peripheral.
+ * @param[in] value Repetition test cut-off value.
+ */
+NRF_STATIC_INLINE void nrf_cracen_rng_repeatthreshold_set(NRF_CRACENCORE_Type * p_reg,
+                                                          uint32_t              value);
+#endif
+
+#if NRF_CRACEN_RNG_HAS_PROPTESTCUTOFF
+/**
+ * @brief Function for setting proportion test cut-off value.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the RNG peripheral.
+ * @param[in] value Proportion test cut-off value.
+ */
+NRF_STATIC_INLINE void nrf_cracen_rng_proptestcutoff_set(NRF_CRACENCORE_Type * p_reg,
+                                                         uint32_t              value);
+#endif
+
+#if NRF_CRACEN_RNG_HAS_DISABLEOSC
+/**
+ * @brief Function for disabling oscillator rings.
+ *
+ * @note For grouping of oscillators in the bitmask, see the Product Specification.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the RNG peripheral.
+ * @param[in] index    Oscillator group index.
+ * @param[in] osc_mask Mask of oscillator rings to be disabled.
+ */
+NRF_STATIC_INLINE void nrf_cracen_rng_disableosc_set(NRF_CRACENCORE_Type * p_reg,
+                                                     uint8_t               index,
+                                                     uint32_t              osc_mask);
+#endif
+
+#if NRF_CRACEN_RNG_HAS_COOLDOWNPERIOD
+/**
+ * @brief Function for setting the period of cool-down sequence.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the RNG peripheral.
+ * @param[in] period Number of clock cycles in cool-down sequence.
+ */
+NRF_STATIC_INLINE void nrf_cracen_rng_cooldown_period_set(NRF_CRACENCORE_Type * p_reg,
+                                                          uint32_t              period);
+#endif
 
 #ifndef NRF_DECLARE_ONLY
 
@@ -195,6 +288,10 @@ NRF_STATIC_INLINE void nrf_cracen_rng_control_set(NRF_CRACENCORE_Type *         
             & CRACENCORE_RNGCONTROL_CONTROL_INTENFULL_Msk)
         | ((p_config->soft_reset << CRACENCORE_RNGCONTROL_CONTROL_SOFTRST_Pos)
             & CRACENCORE_RNGCONTROL_CONTROL_SOFTRST_Msk)
+#if NRF_CRACEN_RNG_HAS_FIFOWRITESTARTUP
+        | ((p_config->fifo_write_startup << CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Pos)
+            & CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Msk)
+#endif
 #if NRF_CRACEN_RNG_HAS_BLENDING
         | ((p_config->blending_method << CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_Pos)
             & CRACENCORE_RNGCONTROL_CONTROL_BLENDINGMETHOD_Msk)
@@ -254,6 +351,45 @@ NRF_STATIC_INLINE uint32_t nrf_cracen_rng_fifo_get(NRF_CRACENCORE_Type const * p
 {
     return p_reg->RNGCONTROL.FIFO[0];
 }
+
+#if NRF_CRACEN_RNG_HAS_REPEATTHRESHOLD
+NRF_STATIC_INLINE void nrf_cracen_rng_repeatthreshold_set(NRF_CRACENCORE_Type * p_reg,
+                                                          uint32_t              value)
+{
+    p_reg->RNGCONTROL.REPEATTHRESHOLD = value;
+}
+#endif
+
+#if NRF_CRACEN_RNG_HAS_PROPTESTCUTOFF
+NRF_STATIC_INLINE void nrf_cracen_rng_proptestcutoff_set(NRF_CRACENCORE_Type * p_reg,
+                                                         uint32_t              value)
+{
+    p_reg->RNGCONTROL.PROPTESTCUTOFF = value;
+}
+#endif
+
+#if NRF_CRACEN_RNG_HAS_DISABLEOSC
+NRF_STATIC_INLINE void nrf_cracen_rng_disableosc_set(NRF_CRACENCORE_Type * p_reg,
+                                                     uint8_t               index,
+                                                     uint32_t              osc_mask)
+{
+#if defined(CRACENCORE_RNGCONTROL_DISABLEOSC_MaxCount)
+    NRFX_ASSERT(index < CRACENCORE_RNGCONTROL_DISABLEOSC_MaxCount);
+    p_reg->RNGCONTROL.DISABLEOSC[index] = osc_mask;
+#else
+    (void)index;
+    p_reg->RNGCONTROL.DISABLEOSC = osc_mask;
+#endif
+}
+#endif
+
+#if NRF_CRACEN_RNG_HAS_COOLDOWNPERIOD
+NRF_STATIC_INLINE void nrf_cracen_rng_cooldown_period_set(NRF_CRACENCORE_Type * p_reg,
+                                                          uint32_t              period)
+{
+    p_reg->RNGCONTROL.COOLDOWNPERIOD = period;
+}
+#endif
 
 #endif // NRF_DECLARE_ONLY
 

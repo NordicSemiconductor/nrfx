@@ -57,6 +57,9 @@ extern "C" {
 /** @brief Symbol specifying internal inputs offset. */
 #define NRFX_ANALOG_AIN_INTERNAL_OFFSET 128
 
+/** @brief Symbol specifying test inputs offset. */
+#define NRFX_ANALOG_AIN_TEST_OFFSET 64
+
 /** @brief Generic analog input types. */
 typedef enum {
     NRFX_ANALOG_EXTERNAL_AIN0 = 0,                              ///< External analog input 0
@@ -73,6 +76,7 @@ typedef enum {
     NRFX_ANALOG_EXTERNAL_AIN11,                                 ///< External analog input 11
     NRFX_ANALOG_EXTERNAL_AIN12,                                 ///< External analog input 12
     NRFX_ANALOG_EXTERNAL_AIN13,                                 ///< External analog input 13
+    NRFX_ANALOG_TEST_AVSS = NRFX_ANALOG_AIN_TEST_OFFSET,        ///< Test AVSS
     NRFX_ANALOG_INTERNAL_VDD = NRFX_ANALOG_AIN_INTERNAL_OFFSET, ///< Internal VDD
     NRFX_ANALOG_INTERNAL_VDDDIV2,                               ///< Internal VDD/2
     NRFX_ANALOG_INTERNAL_AVDD,                                  ///< Internal AVDD

@@ -140,6 +140,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CRACENCORE_FULLRESETVALUES 0                 /*!< (unspecified)                                                        */
 #define CRACENCORE_CRACENRESETVALUES 1               /*!< Using CRACENCORE configuration reset values                          */
 #define CRACENCORE_SHA3RESETVALUES 0                 /*!< (unspecified)                                                        */
+#define CRACENCORE_AESRESETVALUES 0                  /*!< (unspecified)                                                        */
 #define CRACENCORE_PKE_DATA_MEMORY 0x50018000        /*!< (unspecified)                                                        */
 #define CRACENCORE_PKE_DATA_MEMORY_SIZE 16384        /*!< (unspecified)                                                        */
 #define CRACENCORE_PKE_CODE_MEMORY 0x5001C000        /*!< (unspecified)                                                        */
@@ -311,7 +312,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CCM00_AMOUNTREG 0                            /*!< (unspecified)                                                        */
 #define CCM00_ONTHEFLYDECRYPTION 0                   /*!< Does not support on-the-fly decryption.                              */
 #define CCM00_DMAERROR 1                             /*!< (unspecified)                                                        */
-#define CCM00_BYPASSMODE 0                           /*!< No bypass mode available in the MODE register.                       */
+#define CCM00_BYPASSMODE 0                           /*!< (unspecified)                                                        */
 
 /*AES ECB Mode Encryption*/
 #define ECB_PRESENT 1
@@ -368,6 +369,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define VPR00_VEVIF_EVENTS_MASK 0x00100000           /*!< Mask of supported VEVIF events: 0x00100000                           */
 #define VPR00_DEBUGGER_OFFSET 1024                   /*!< Debugger interface register offset: 0x5004C400                       */
 #define VPR00_RTP_VPR_1_5 1                          /*!< New RTP features                                                     */
+#define VPR00_VPR_BITIS_1_6 0                        /*!< (unspecified)                                                        */
 
 /*Voltage glitch detectors*/
 #define GLITCHDET_PRESENT 1
@@ -378,7 +380,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RRAMC_COUNT 1
 
 #define RRAMC_NAPMODE 1                              /*!< (unspecified)                                                        */
-#define RRAMC_NRRAMWORDSIZE 128                      /*!< RRAM word size : 128 bits per wordline                               */
+#define RRAMC_NRRAMDATAUNITSIZE 128                  /*!< RRAM data unit size : 128 bits per data unit                         */
 #define RRAMC_NWRITEBUFSIZE 16                       /*!< Maximum write buffer size : 16                                       */
 #define RRAMC_LOWPOWERCONFIGOPTION2 0                /*!< (unspecified)                                                        */
 #define RRAMC_REGION0ADDR_WRITABLE 0                 /*!< (unspecified)                                                        */
@@ -480,6 +482,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TAD_TAD_HAS_TASKS 0                          /*!< (unspecified)                                                        */
 #define TAD_PDREQCLR 1                               /*!< (unspecified)                                                        */
 #define TAD_TAD_HAS_DBGWAKEUPREQ 1                   /*!< (unspecified)                                                        */
+#define TAD_TAD_HAS_TWO_TPIUS 0                      /*!< (unspecified)                                                        */
+#define TAD_HAS_ENABLE_REG 1                         /*!< (unspecified)                                                        */
+#define TAD_HAS_TRACEPORTSPEED_REG 1                 /*!< (unspecified)                                                        */
 
 /*Timer/Counter*/
 #define TIMER_PRESENT 1
@@ -585,6 +590,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CRACEN_SPLITKEYRAMLOCK 1                     /*!< (unspecified)                                                        */
 #define CRACEN_SEEDALIGNED 1                         /*!< (unspecified)                                                        */
 #define CRACEN_ONLYPROTECTEDRAMLOCK 0                /*!< (unspecified)                                                        */
+#define CRACEN_SPLITSEEDVALIDCTRL 0                  /*!< (unspecified)                                                        */
+#define CRACEN_EXTERNALKEYRAM 0                      /*!< (unspecified)                                                        */
 #define CRACEN_PROTECTED_RAM_SEED 0x51810000         /*!< (unspecified)                                                        */
 #define CRACEN_PROTECTED_RAM_SEED_SIZE 64            /*!< (unspecified)                                                        */
 #define CRACEN_PROTECTED_RAM_AES_KEY0 0x2002FF00     /*!< (unspecified)                                                        */
@@ -605,10 +612,9 @@ POSSIBILITY OF SUCH DAMAGE.
                                                           access, i.e. using an operation where a word-aligned address is used
                                                           for a word, or a halfword-aligned address is used for a halfword
                                                           access.*/
-#define CRACEN_PKECODE 0x5001C000                    /*!< PKE code (address 0x5001C000) must be read and written using aligned
-                                                          access, i.e. using an operation where a word-aligned address is used
-                                                          for a word, or a halfword-aligned address is used for a halfword
-                                                          access.*/
+#define CRACEN_PKECODE 0x5001C000                    /*!< PKE code (address 0x5001C000) must be accessed using aligned access,
+                                                          i.e. using an operation where a word-aligned address is used for a
+                                                          word, or a halfword-aligned address is used for a halfword access.*/
 
 /*2.4 GHz radio*/
 #define RADIO_PRESENT 1
@@ -616,11 +622,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define RADIO_IRQ_COUNT 2
 #define RADIO_WHITENINGPOLY 1                        /*!< (unspecified)                                                        */
-#define RADIO_IEEE802154 1                           /*!< IEEE 802.15.4 support                                                */
-#define RADIO_LONGRANGE 1                            /*!< Long range (LE Coded PHY) support                                    */
-#define RADIO_DIRECTIONFINDING 1                     /*!< Direction finding support (DFE)                                      */
-#define RADIO_CHANNELSOUNDING 1                      /*!< Channel sounding support (CSTONES)                                   */
-#define RADIO_ADPLLCOMPANION_INCLUDE_DMA 0           /*!< No internal instantiation of DmaChannelPeripheral                    */
+#define RADIO_IEEE802154 1                           /*!< (unspecified)                                                        */
+#define RADIO_LONGRANGE 1                            /*!< (unspecified)                                                        */
+#define RADIO_DIRECTIONFINDING 1                     /*!< (unspecified)                                                        */
+#define RADIO_CHANNELSOUNDING 1                      /*!< (unspecified)                                                        */
+#define RADIO_ADPLLCOMPANION_INCLUDE_DMA 0           /*!< (unspecified)                                                        */
 
 /*Serial Peripheral Interface Master with EasyDMA*/
 #define SPIM_PRESENT 1
@@ -651,6 +657,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM20_RXDELAY_FIELD_WIDTH_MIN 0             /*!< (unspecified)                                                        */
 #define SPIM20_RXDELAY_FIELD_WIDTH_MAX 2             /*!< (unspecified)                                                        */
 #define SPIM20_RXDELAY_FIELD_WIDTH_SIZE 3            /*!< (unspecified)                                                        */
+#define SPIM20_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 
 #define SPIM21_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 #define SPIM21_MAX_DATARATE 8                        /*!< (unspecified)                                                        */
@@ -677,6 +684,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM21_RXDELAY_FIELD_WIDTH_MIN 0             /*!< (unspecified)                                                        */
 #define SPIM21_RXDELAY_FIELD_WIDTH_MAX 2             /*!< (unspecified)                                                        */
 #define SPIM21_RXDELAY_FIELD_WIDTH_SIZE 3            /*!< (unspecified)                                                        */
+#define SPIM21_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 
 #define SPIM30_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 #define SPIM30_MAX_DATARATE 8                        /*!< (unspecified)                                                        */
@@ -703,6 +711,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM30_RXDELAY_FIELD_WIDTH_MIN 0             /*!< (unspecified)                                                        */
 #define SPIM30_RXDELAY_FIELD_WIDTH_MAX 2             /*!< (unspecified)                                                        */
 #define SPIM30_RXDELAY_FIELD_WIDTH_SIZE 3            /*!< (unspecified)                                                        */
+#define SPIM30_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 
 /*SPI Slave*/
 #define SPIS_PRESENT 1
@@ -727,18 +736,21 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_PRESENT 1
 #define TWIM_COUNT 3
 
+#define TWIM20_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 #define TWIM20_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM20_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM20_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
 #define TWIM20_CORE_FREQUENCY 16                     /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM20_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 
+#define TWIM21_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 #define TWIM21_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM21_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM21_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
 #define TWIM21_CORE_FREQUENCY 16                     /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM21_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 
+#define TWIM30_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 #define TWIM30_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM30_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM30_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
@@ -825,12 +837,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_TCONV_VALUE_RANGE_MAX 7                /*!< (unspecified)                                                        */
 #define SAADC_TCONV_VALUE_RANGE_SIZE 8               /*!< (unspecified)                                                        */
 #define SAADC_CHOPPING 1                             /*!< (unspecified)                                                        */
-#define SAADC_AUTOMATIC_CLEANPOWER 0                 /*!< (unspecified)                                                        */
+#define SAADC_HAS_EVENTSCANDONE 0                    /*!< (unspecified)                                                        */
 #define SAADC_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< CURRENTAMOUNT register not included.                             */
 
 /*Temperature Sensor*/
 #define TEMP_PRESENT 1
 #define TEMP_COUNT 1
+
+#define TEMP_HAS_INTPEND 0                           /*!< (unspecified)                                                        */
 
 /*GPIO Port*/
 #define GPIO_PRESENT 1
@@ -856,6 +870,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P1_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P1_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P1_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P1_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
 #define P0_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP2 1                            /*!< (unspecified)                                                        */
@@ -877,6 +892,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P0_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P0_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P0_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P0_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
 /*GPIO Tasks and Events*/
 #define GPIOTE_PRESENT 1
@@ -944,7 +960,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define TAMPC_GPIOSWD 0                              /*!< (unspecified)                                                        */
 #define TAMPC_APSPIDEN 0                             /*!< (unspecified)                                                        */
-#define TAMPC_PROTECT_INTRESETEN_CTRL_VALUE_RESET 1  /*!< Reset value of field VALUE in register PROTECT.INTRESETEN.CTRL: 1    */
 #define TAMPC_TAMPERSWITCH 0                         /*!< (unspecified)                                                        */
 #define TAMPC_SM4DISABLECM 0                         /*!< (unspecified)                                                        */
 #define TAMPC_PROTECTRESETBEHAVIOR 0                 /*!< (unspecified)                                                        */
@@ -965,10 +980,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #define WDT_COUNT 2
 
 #define WDT30_ALLOW_STOP 1                           /*!< (unspecified)                                                        */
-#define WDT30_HAS_INTEN 0                            /*!< (unspecified)                                                        */
+#define WDT30_HAS_INTEN 1                            /*!< (unspecified)                                                        */
+#define WDT30_HAS_INTPEND 1                          /*!< (unspecified)                                                        */
 
 #define WDT31_ALLOW_STOP 1                           /*!< (unspecified)                                                        */
-#define WDT31_HAS_INTEN 0                            /*!< (unspecified)                                                        */
+#define WDT31_HAS_INTEN 1                            /*!< (unspecified)                                                        */
+#define WDT31_HAS_INTPEND 1                          /*!< (unspecified)                                                        */
 
 /*Clock management*/
 #define CLOCK_PRESENT 1

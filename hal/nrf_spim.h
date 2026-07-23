@@ -1042,6 +1042,15 @@ NRF_STATIC_INLINE void nrf_spim_tx_buffer_set(NRF_SPIM_Type * p_reg,
 NRF_STATIC_INLINE uint32_t nrf_spim_tx_amount_get(NRF_SPIM_Type const * p_reg);
 
 /**
+ * @brief Function for getting the pointer to the transmit buffer.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Pointer to the transmit buffer.
+ */
+NRF_STATIC_INLINE uint32_t nrf_spim_tx_buffer_get(NRF_SPIM_Type const * p_reg);
+
+/**
  * @brief Function for getting number of bytes to be transmitted in the next transaction.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -1057,6 +1066,15 @@ NRF_STATIC_INLINE uint32_t nrf_spim_tx_maxcnt_get(NRF_SPIM_Type const * p_reg);
  * @param[in] p_buffer Pointer to the buffer for received data.
  */
 NRF_STATIC_INLINE void nrf_spim_rx_ptr_set(NRF_SPIM_Type * p_reg, uint8_t * p_buffer);
+
+/**
+ * @brief Function for getting the pointer to the receive buffer.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Pointer to the receive buffer.
+ */
+NRF_STATIC_INLINE uint32_t nrf_spim_rx_buffer_get(NRF_SPIM_Type const * p_reg);
 
 /**
  * @brief Function for setting the receive buffer length.
@@ -1630,6 +1648,15 @@ NRF_STATIC_INLINE uint32_t nrf_spim_tx_amount_get(NRF_SPIM_Type const * p_reg)
 #endif
 }
 
+NRF_STATIC_INLINE uint32_t nrf_spim_tx_buffer_get(NRF_SPIM_Type const * p_reg)
+{
+#if NRF_SPIM_HAS_DMA_REG
+    return p_reg->DMA.TX.PTR;
+#else
+    return p_reg->TXD.PTR;
+#endif
+}
+
 NRF_STATIC_INLINE uint32_t nrf_spim_tx_maxcnt_get(NRF_SPIM_Type const * p_reg)
 {
 #if NRF_SPIM_HAS_DMA_REG
@@ -1671,6 +1698,15 @@ NRF_STATIC_INLINE uint32_t nrf_spim_rx_amount_get(NRF_SPIM_Type const * p_reg)
     return p_reg->DMA.RX.AMOUNT;
 #else
     return p_reg->RXD.AMOUNT;
+#endif
+}
+
+NRF_STATIC_INLINE uint32_t nrf_spim_rx_buffer_get(NRF_SPIM_Type const * p_reg)
+{
+#if NRF_SPIM_HAS_DMA_REG
+    return p_reg->DMA.RX.PTR;
+#else
+    return p_reg->RXD.PTR;
 #endif
 }
 

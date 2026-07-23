@@ -114,19 +114,6 @@ extern "C" {
 #define nrfx_spim_01_irq_handler        SERIAL01_IRQHandler
 #endif
 
-// TODO: unsure how this ties in with nrfx bellboard drivers
-// BELLBOARDWIFI_0_IRQHandler
-
-// BELLBOARDWIFI_1_IRQHandler
-
-// BELLBOARDWIFI_2_IRQHandler
-
-// BELLBOARDWIFI_3_IRQHandler
-
-// BELLBOARDAPP_0_IRQHandler
-
-// BELLBOARDAPP_1_IRQHandler
-
 // SPU10_IRQHandler
 
 // TIMER10_IRQHandler
@@ -193,8 +180,10 @@ extern "C" {
 #define nrfx_timer_24_irq_handler       TIMER24_IRQHandler
 
 // PDM20_IRQHandler
+#define nrfx_pdm_20_irq_handler         PDM20_IRQHandler
 
 // PDM21_IRQHandler
+#define nrfx_pdm_21_irq_handler         PDM21_IRQHandler
 
 // PWM20_IRQHandler
 #define nrfx_pwm_20_irq_handler         PWM20_IRQHandler

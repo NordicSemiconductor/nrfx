@@ -86,13 +86,18 @@ typedef struct
     volatile bool             transfer_in_progress;
     bool                      skip_gpio_cfg             : 1;
     bool                      ss_active_high            : 1;
+#if NRFY_SPIM_HAS_ARRAY_LIST
+    bool                      rx_inc                    : 1;
+    bool                      tx_inc                    : 1;
+#endif
 #if NRF_SPIM_HAS_CHECK_DISABLE_ON_XFER_END
     bool                      disable_on_xfer_end       : 1;
 #endif
-#if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115)
+#if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115) || \
+    NRF_ERRATA_STATIC_CHECK(71, 8)
     bool                      apply_errata_8_115        : 1;
 #endif
-#if NRF_ERRATA_STATIC_CHECK(54L, 55)
+#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(71, 55)
     bool                      apply_nrf54l_errata_55_69 : 1;
 #endif
 #if NRF_ERRATA_STATIC_CHECK(52, 58)

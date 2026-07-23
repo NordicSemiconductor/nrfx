@@ -46,7 +46,8 @@ extern "C" {
 #define ANALOG_REF_INTERNAL_VAL 1350
 #elif defined(NRF9220_XXAA) || defined(NRF9230_ENGB_XXAA) ||  \
     defined(NRF54H20_XXAA) || defined(NRF7120_ENGA_XXAA) || \
-    defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
+    defined(NRF7120E_ENGA_XXAA) || defined(NRF54LS05B_XXAA) || \
+    defined(NRF54LS05A_XXAA)
 #define ANALOG_REF_INTERNAL_VAL 1024
 #elif defined(NRF54L_SERIES)
 #define ANALOG_REF_INTERNAL_VAL 900
@@ -102,7 +103,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1)
-#elif defined(NRF7120_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
     #define COMP_EXTERNAL_AIN_PSELS                     \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 0),              \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 0),              \
@@ -114,11 +115,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(8U, 0),              \
         (nrf_comp_input_t)NRFX_COMP_INPUT_NOT_PRESENT,  \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 4),              \
-        NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4),              \
-        NRF_PIN_PORT_TO_PIN_NUMBER(2U, 4),              \
-        NRF_PIN_PORT_TO_PIN_NUMBER(3U, 4),              \
-        NRF_PIN_PORT_TO_PIN_NUMBER(4U, 4),              \
-        NRF_PIN_PORT_TO_PIN_NUMBER(5U, 4)
+        NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4)
 #else /* legacy platforms */
     #define COMP_EXTERNAL_AIN_PSELS                                             \
         NRF_COMP_INPUT_0,                                                       \
@@ -183,7 +180,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1),
-#elif defined(NRF7120_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
     #define COMP_EXTERNAL_REF_PSELS                      \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 0),               \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 0),               \
@@ -195,11 +192,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(8U, 0),               \
         (nrf_comp_ext_ref_t)NRFX_COMP_INPUT_NOT_PRESENT, \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 4),               \
-        NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4),               \
-        NRF_PIN_PORT_TO_PIN_NUMBER(2U, 4),               \
-        NRF_PIN_PORT_TO_PIN_NUMBER(3U, 4),               \
-        NRF_PIN_PORT_TO_PIN_NUMBER(4U, 4),               \
-        NRF_PIN_PORT_TO_PIN_NUMBER(5U, 4),
+        NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4)
 #else /* legacy platforms */
     #define COMP_EXTERNAL_REF_PSELS                                                           \
         NRF_COMP_EXT_REF_0,                                                                   \
@@ -264,7 +257,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1),
-#elif defined(NRF7120_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
     #define LPCOMP_EXTERNAL_AIN_PSELS                      \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 0),                 \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 0),                 \
@@ -276,11 +269,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(8U, 0),                 \
         (nrf_lpcomp_input_t)NRFX_LPCOMP_INPUT_NOT_PRESENT, \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 4),                 \
-        NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4),                 \
-        NRF_PIN_PORT_TO_PIN_NUMBER(2U, 4),                 \
-        NRF_PIN_PORT_TO_PIN_NUMBER(3U, 4),                 \
-        NRF_PIN_PORT_TO_PIN_NUMBER(4U, 4),                 \
-        NRF_PIN_PORT_TO_PIN_NUMBER(5U, 4),
+        NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4)
 #else /* legacy platforms */
     #define LPCOMP_EXTERNAL_AIN_PSELS \
         NRF_LPCOMP_INPUT_0,           \
@@ -341,7 +330,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1),
-#elif defined(NRF7120_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
     #define LPCOMP_EXTERNAL_REF_PSELS                    \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 0),               \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 0),               \
@@ -353,11 +342,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(8U, 0),               \
     (nrf_lpcomp_ext_ref_t)NRFX_LPCOMP_INPUT_NOT_PRESENT, \
     NRF_PIN_PORT_TO_PIN_NUMBER(0U, 4),                   \
-    NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4),                   \
-    NRF_PIN_PORT_TO_PIN_NUMBER(2U, 4),                   \
-    NRF_PIN_PORT_TO_PIN_NUMBER(3U, 4),                   \
-    NRF_PIN_PORT_TO_PIN_NUMBER(4U, 4),                   \
-    NRF_PIN_PORT_TO_PIN_NUMBER(5U, 4),
+    NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4)
 #else /* legacy platforms */
     #define LPCOMP_EXTERNAL_REF_PSELS \
         NRF_LPCOMP_EXT_REF_REF0,      \
@@ -418,7 +403,7 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1),
-#elif defined(NRF7120_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
     #define SAADC_EXTERNAL_AIN_PSELS       \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 0), \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 0), \
@@ -457,6 +442,16 @@ extern "C" {
             (NRF_SAADC_INPUT_AIN12,), ())                                              \
         NRFX_COND_CODE_1(NRFX_ARG_HAS_PARENTHESIS(SAADC_CH_PSELP_PSELP_AnalogInput13), \
             (NRF_SAADC_INPUT_AIN13,), ())
+#endif
+#endif
+
+#ifndef SAADC_TEST_AIN_PSELS
+#if defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
+    #define SAADC_TEST_AIN_PSELS      \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRF_SAADC_INPUT_AVSS,         \
+        NRFX_SAADC_INPUT_NOT_PRESENT
 #endif
 #endif
 
@@ -508,7 +503,7 @@ extern "C" {
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
         NRF_SAADC_INPUT_VSS,
-#elif defined(NRF7120_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
     #define SAADC_INTERNAL_AIN_PSELS  \
         NRFX_SAADC_INPUT_NOT_PRESENT, \
         NRFX_SAADC_INPUT_NOT_PRESENT, \
@@ -548,8 +543,13 @@ extern "C" {
 /* FLPR VIO pin indices definitions. */
 #if defined(NRF54L05_XXAA) || defined(NRF54L10_XXAA) || defined(NRF54L15_XXAA) || \
     defined(NRF54LM20A_XXAA) || defined(NRF54LM20B_XXAA)
+    /* Number of the port accessible for VIO. */
     #define FLPR_VIO_PORT 2
+    /* GPIO pin number used for the VIO clock output. */
+    #define FLPR_VIO_PIN_CLK 1
+    /* First GPIO pin number in contiguous range of GPIO pins mapped to VIO bit indices. */
     #define FLPR_VIO_PIN_OFFSET 0
+    /* VIO register bit indices for consecutive GPIO pins, starting at FLPR_VIO_PIN_OFFSET. */
     #define FLPR_VIO_PIN_INDICES \
         4, \
         0, \
@@ -563,8 +563,13 @@ extern "C" {
         9, \
         10,
 #elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
+    /* Number of the port accessible for VIO. */
     #define FLPR_VIO_PORT 1
+    /* GPIO pin number used for the VIO clock output. */
+    #define FLPR_VIO_PIN_CLK 16
+    /* First GPIO pin number in contiguous range of GPIO pins mapped to VIO bit indices. */
     #define FLPR_VIO_PIN_OFFSET 15
+    /* VIO register bit indices for consecutive GPIO pins, starting at FLPR_VIO_PIN_OFFSET. */
     #define FLPR_VIO_PIN_INDICES \
         4, \
         0, \
@@ -576,9 +581,14 @@ extern "C" {
         7, \
         8, \
         9,
-#elif defined(NRF7120_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
+    /* Number of the port accessible for VIO. */
     #define FLPR_VIO_PORT 2
+    /* GPIO pin number used for the VIO clock output. */
+    #define FLPR_VIO_PIN_CLK 6
+    /* First GPIO pin number in contiguous range of GPIO pins mapped to VIO bit indices. */
     #define FLPR_VIO_PIN_OFFSET 0
+    /* VIO register bit indices for consecutive GPIO pins, starting at FLPR_VIO_PIN_OFFSET. */
     #define FLPR_VIO_PIN_INDICES \
         6,  \
         7,  \
@@ -707,7 +717,7 @@ extern "C" {
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 6
 #define RAM_UNIFORM_SECTIONS_TOTAL     6
-#elif defined(NRF7120_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 32
@@ -840,7 +850,7 @@ extern "C" {
     #define NRFX_PRS_BOX_2_ADDR     NRF_UARTE30
     // COMP, LPCOMP
     #define NRFX_PRS_BOX_3_ADDR     NRF_COMP
-#elif defined(NRF7120_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
     // SPIM00, UARTE00
     #define NRFX_PRS_BOX_0_ADDR     NRF_UARTE00
     // SPIM01

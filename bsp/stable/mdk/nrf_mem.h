@@ -153,11 +153,24 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_FLPR)
         #include "nrf71/nrf7120_enga/nrf7120_enga_xxaa_flpr_memory.h"
     #endif
+    #if defined(NRF_LMAC)
+        #include "nrf71/nrf7120_enga/nrf7120_enga_xxaa_lmac_memory.h"
+    #endif
     #if defined(NRF_UMAC)
         #include "nrf71/nrf7120_enga/nrf7120_enga_xxaa_umac_memory.h"
     #endif
+#elif defined(NRF7120E_ENGA_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf71/nrf7120e_enga/nrf7120e_enga_xxaa_application_memory.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf71/nrf7120e_enga/nrf7120e_enga_xxaa_flpr_memory.h"
+    #endif
     #if defined(NRF_LMAC)
-        #include "nrf71/nrf7120_enga/nrf7120_enga_xxaa_lmac_memory.h"
+        #include "nrf71/nrf7120e_enga/nrf7120e_enga_xxaa_lmac_memory.h"
+    #endif
+    #if defined(NRF_UMAC)
+        #include "nrf71/nrf7120e_enga/nrf7120e_enga_xxaa_umac_memory.h"
     #endif
 #elif defined(NRF9120_XXAA)
     #include "nrf91/nrf9120/nrf9120_xxaa_memory.h"
@@ -167,11 +180,11 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_APPLICATION)
         #include "nrf92/nrf9220/nrf9220_xxaa_application_memory.h"
     #endif
-    #if defined(NRF_PPR)
-        #include "nrf92/nrf9220/nrf9220_xxaa_ppr_memory.h"
-    #endif
     #if defined(NRF_FLPR)
         #include "nrf92/nrf9220/nrf9220_xxaa_flpr_memory.h"
+    #endif
+    #if defined(NRF_PPR)
+        #include "nrf92/nrf9220/nrf9220_xxaa_ppr_memory.h"
     #endif
 #elif defined(NRF9230_ENGB_XXAA)
     #if defined(NRF_APPLICATION)

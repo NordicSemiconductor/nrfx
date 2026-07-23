@@ -234,6 +234,9 @@ int nrfx_gppi_conn_alloc(uint32_t eep, uint32_t tep, nrfx_gppi_handle_t * p_hand
  * channels in bridges (PPIB) are cleared and all used resources are freed.. Connection shall be
  * disabled prior to clearing.
  *
+ * @note If @ref NRFX_GPPI_CONFIG_EXT_ALLOCATOR then external implementation need to
+ * be provided.
+ *
  * @param[in] handle Connection handle.
  */
 void nrfx_gppi_domain_conn_free(nrfx_gppi_handle_t handle);
@@ -489,6 +492,9 @@ uint32_t nrfx_gppi_group_task_dis_addr(nrfx_gppi_group_handle_t handle);
  * @ref nrfx_gppi_domain_id_get or target-specific header can be used to get the node ID
  * (see @ref nrfx_gppi_node_id_t).
  *
+ * @note If @ref NRFX_GPPI_CONFIG_EXT_ALLOCATOR then external implementation need to
+ * be provided.
+ *
  * @param[in] node_id Target-specific identifier of the DPPI system node (DPPIC or PPIB).
  *
  * @retval non-negative Allocated channel.
@@ -501,6 +507,9 @@ int nrfx_gppi_channel_alloc(uint32_t node_id);
  *
  * @p channel must be allocated earlier using @ref nrfx_gppi_channel_alloc. @p node_id must be
  * the same as the one used in @ref nrfx_gppi_channel_alloc for allocating that resource.
+ *
+ * @note If @ref NRFX_GPPI_CONFIG_EXT_ALLOCATOR then external implementation need to
+ * be provided.
  *
  * @param[in] node_id Target-specific identifier of the DPPI system node (DPPIC or PPIB).
  * @param[in] channel Channel.
@@ -515,6 +524,9 @@ void nrfx_gppi_channel_free(uint32_t node_id, uint8_t channel);
  * @note @p domain_id parameter is used only in the system with multiple domains.
  * Use @ref nrfx_gppi_domain_id_get to get the ID.
  *
+ * @note If @ref NRFX_GPPI_CONFIG_EXT_ALLOCATOR then external implementation need to
+ * be provided.
+ *
  * @param[in] domain_id Target-specific identifier of the DPPI system node.
  *
  * @retval non-negative Allocated channel.
@@ -527,6 +539,9 @@ int nrfx_gppi_group_channel_alloc(uint32_t domain_id);
  *
  * @p channel must be allocated earlier using @ref nrfx_gppi_group_channel_alloc. @p domain_id must
  * be the same as the one used in @ref nrfx_gppi_group_channel_alloc for allocating that resource.
+ *
+ * @note If @ref NRFX_GPPI_CONFIG_EXT_ALLOCATOR then external implementation need to
+ * be provided.
  *
  * @param[in] domain_id Target-specific identifier of the DPPI system node.
  * @param[in] channel   Channel.
@@ -549,6 +564,9 @@ typedef struct {
  * functions for enabling and disabling the connection are only changing state of channels that
  * were allocated for that connection. If %p is null then function is equivalent of
  * @ref nrfx_gppi_domain_conn_alloc.
+ *
+ * @note If @ref NRFX_GPPI_CONFIG_EXT_ALLOCATOR then external implementation need to
+ * be provided.
  *
  * @param[in]  producer   Domain that will produce (publish) events.
  * @param[in]  consumer   Domain that will consume (subsribe to) events.

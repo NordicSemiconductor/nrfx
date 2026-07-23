@@ -59,6 +59,13 @@ extern "C" {
 #define NRF_RADIO_HAS_DATAWHITE 0
 #endif
 
+#if defined(RADIO_DATAWHITEPOLY_POLY_Pos) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether separate data whitening configuration registers are present. **/
+#define NRF_RADIO_HAS_SEPARATE_DATAWHITE_POLY 1
+#else
+#define NRF_RADIO_HAS_SEPARATE_DATAWHITE_POLY 0
+#endif
+
 #if defined(RADIO_PACKETPTR_ResetValue) || defined(RADIO_PACKETPTR_PACKETPTR_Msk) \
     || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether the packet pointer register is present. **/
@@ -96,142 +103,204 @@ extern "C" {
 #define NRF_RADIO_HAS_EVDMA 0
 #endif
 
+#if defined(RADIO_MHRMATCHCONF_MHRMATCHCONF_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether MHRMATCH registers are present. **/
+#define NRF_RADIO_HAS_MHRMATCH 1
+#else
+#define NRF_RADIO_HAS_MHRMATCH 0
+#endif
+
 /** @brief RADIO tasks. */
 typedef enum
 {
-    NRF_RADIO_TASK_TXEN      = offsetof(NRF_RADIO_Type, TASKS_TXEN),      /**< Enable RADIO in TX mode. */
-    NRF_RADIO_TASK_RXEN      = offsetof(NRF_RADIO_Type, TASKS_RXEN),      /**< Enable RADIO in RX mode. */
-    NRF_RADIO_TASK_START     = offsetof(NRF_RADIO_Type, TASKS_START),     /**< Start RADIO. */
-    NRF_RADIO_TASK_STOP      = offsetof(NRF_RADIO_Type, TASKS_STOP),      /**< Stop RADIO. */
-    NRF_RADIO_TASK_DISABLE   = offsetof(NRF_RADIO_Type, TASKS_DISABLE),   /**< Disable RADIO. */
-    NRF_RADIO_TASK_RSSISTART = offsetof(NRF_RADIO_Type, TASKS_RSSISTART), /**< Start the RSSI and take one single sample of the receive signal strength. */
+    NRF_RADIO_TASK_TXEN             = offsetof(NRF_RADIO_Type, TASKS_TXEN),            /**< Enable RADIO in TX mode. */
+    NRF_RADIO_TASK_RXEN             = offsetof(NRF_RADIO_Type, TASKS_RXEN),            /**< Enable RADIO in RX mode. */
+    NRF_RADIO_TASK_START            = offsetof(NRF_RADIO_Type, TASKS_START),           /**< Start RADIO. */
+    NRF_RADIO_TASK_STOP             = offsetof(NRF_RADIO_Type, TASKS_STOP),            /**< Stop RADIO. */
+    NRF_RADIO_TASK_DISABLE          = offsetof(NRF_RADIO_Type, TASKS_DISABLE),         /**< Disable RADIO. */
+    NRF_RADIO_TASK_RSSISTART        = offsetof(NRF_RADIO_Type, TASKS_RSSISTART),       /**< Start the RSSI and take one single sample of the receive signal strength. */
 #if defined(RADIO_TASKS_RSSISTOP_TASKS_RSSISTOP_Msk) || \
     defined(RADIO_SHORTS_DISABLED_RSSISTOP_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TASK_RSSISTOP  = offsetof(NRF_RADIO_Type, TASKS_RSSISTOP),  /**< Stop the RSSI measurement. */
+    NRF_RADIO_TASK_RSSISTOP         = offsetof(NRF_RADIO_Type, TASKS_RSSISTOP),        /**< Stop the RSSI measurement. */
 #endif
-    NRF_RADIO_TASK_BCSTART   = offsetof(NRF_RADIO_Type, TASKS_BCSTART),   /**< Start the bit counter. */
-    NRF_RADIO_TASK_BCSTOP    = offsetof(NRF_RADIO_Type, TASKS_BCSTOP),    /**< Stop the bit counter. */
+    NRF_RADIO_TASK_BCSTART          = offsetof(NRF_RADIO_Type, TASKS_BCSTART),         /**< Start the bit counter. */
+    NRF_RADIO_TASK_BCSTOP           = offsetof(NRF_RADIO_Type, TASKS_BCSTOP),          /**< Stop the bit counter. */
 #if defined(RADIO_TASKS_EDSTART_TASKS_EDSTART_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TASK_EDSTART   = offsetof(NRF_RADIO_Type, TASKS_EDSTART),   /**< Start the Energy Detect measurement used in IEEE 802.15.4 mode. */
+    NRF_RADIO_TASK_EDSTART          = offsetof(NRF_RADIO_Type, TASKS_EDSTART),         /**< Start the Energy Detect measurement used in IEEE 802.15.4 mode. */
 #endif
 #if defined(RADIO_TASKS_EDSTOP_TASKS_EDSTOP_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TASK_EDSTOP    = offsetof(NRF_RADIO_Type, TASKS_EDSTOP),    /**< Stop the Energy Detect measurement. */
+    NRF_RADIO_TASK_EDSTOP           = offsetof(NRF_RADIO_Type, TASKS_EDSTOP),          /**< Stop the Energy Detect measurement. */
 #endif
 #if defined(RADIO_TASKS_CCASTART_TASKS_CCASTART_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TASK_CCASTART  = offsetof(NRF_RADIO_Type, TASKS_CCASTART),  /**< Start the Clear Channel Assessment used in IEEE 802.15.4 mode. */
+    NRF_RADIO_TASK_CCASTART         = offsetof(NRF_RADIO_Type, TASKS_CCASTART),        /**< Start the Clear Channel Assessment used in IEEE 802.15.4 mode. */
 #endif
 #if defined(RADIO_TASKS_CCASTOP_TASKS_CCASTOP_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TASK_CCASTOP   = offsetof(NRF_RADIO_Type, TASKS_CCASTOP),   /**< Stop the Clear Channel Assessment. */
+    NRF_RADIO_TASK_CCASTOP          = offsetof(NRF_RADIO_Type, TASKS_CCASTOP),         /**< Stop the Clear Channel Assessment. */
 #endif
-#if defined(RADIO_TASKS_SOFTRESET_TASKS_SOFTRESET_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TASK_SOFTRESET = offsetof(NRF_RADIO_Type, TASKS_SOFTRESET), /**< Reset all public registers, but with these exceptions:
-                                                                           *   DMA registers and EVENT/INTEN/SUBSCRIBE/PUBLISH
-                                                                           *   registers. Only to be used in DISABLED state. */
+#if defined(RADIO_TASKS_AUXDATADMASTART_ResetValue) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TASKS_AUXDATADMASTART = offsetof(NRF_RADIO_Type, TASKS_AUXDATADMASTART), /**< Start DMA transaction of acquisition. */
+#endif
+#if defined(RADIO_TASKS_AUXDATADMASTOP_ResetValue) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TASKS_AUXDATADMASTOP  = offsetof(NRF_RADIO_Type, TASKS_AUXDATADMASTOP),  /**< Stop ongoing DMA transaction of acquisition. */
 #endif
 #if defined(RADIO_TASKS_PLLEN_TASKS_PLLEN_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_TASK_PLLEN     = offsetof(NRF_RADIO_Type, TASKS_PLLEN),     /**< Enable RADIO in PLL mode */
+    NRF_RADIO_TASK_PLLEN            = offsetof(NRF_RADIO_Type, TASKS_PLLEN),           /**< Enable RADIO in PLL mode. */
+#endif
+#if defined(RADIO_TASKS_CHANGEPHASE_TASKS_CHANGEPHASE_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TASK_CHANGEPHASE      = offsetof(NRF_RADIO_Type, TASKS_CHANGEPHASE),     /**< Make a PLL phase change take effect. */
+#endif
+#if defined(RADIO_TASKS_CSTONESSTART_ResetValue) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TASKS_CSTONESSTART    = offsetof(NRF_RADIO_Type, TASKS_CSTONESSTART),    /**< Start tone processing for channel sounding. */
+#endif
+#if defined(RADIO_TASKS_SOFTRESET_TASKS_SOFTRESET_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_TASK_SOFTRESET        = offsetof(NRF_RADIO_Type, TASKS_SOFTRESET),       /**< Reset all public registers, but with these exceptions:
+                                                                                        *   DMA registers and EVENT/INTEN/SUBSCRIBE/PUBLISH
+                                                                                        *   registers. Only to be used in DISABLED state. */
 #endif
 } nrf_radio_task_t;
 
 /** @brief RADIO events. */
 typedef enum
 {
-    NRF_RADIO_EVENT_READY      = offsetof(NRF_RADIO_Type, EVENTS_READY),      /**< Radio has ramped up and is ready to be started. */
-    NRF_RADIO_EVENT_ADDRESS    = offsetof(NRF_RADIO_Type, EVENTS_ADDRESS),    /**< Address sent or received. */
-    NRF_RADIO_EVENT_PAYLOAD    = offsetof(NRF_RADIO_Type, EVENTS_PAYLOAD),    /**< Packet payload sent or received. */
-    NRF_RADIO_EVENT_END        = offsetof(NRF_RADIO_Type, EVENTS_END),        /**< Packet transmitted or received. */
-    NRF_RADIO_EVENT_DISABLED   = offsetof(NRF_RADIO_Type, EVENTS_DISABLED),   /**< RADIO has been disabled. */
-    NRF_RADIO_EVENT_DEVMATCH   = offsetof(NRF_RADIO_Type, EVENTS_DEVMATCH),   /**< A device address match occurred on the last received packet. */
-    NRF_RADIO_EVENT_DEVMISS    = offsetof(NRF_RADIO_Type, EVENTS_DEVMISS),    /**< No device address match occurred on the last received packet. */
+    NRF_RADIO_EVENT_READY              = offsetof(NRF_RADIO_Type, EVENTS_READY),             /**< Radio has ramped up and is ready to be started. */
+    NRF_RADIO_EVENT_ADDRESS            = offsetof(NRF_RADIO_Type, EVENTS_ADDRESS),           /**< Address sent or received. */
+    NRF_RADIO_EVENT_PAYLOAD            = offsetof(NRF_RADIO_Type, EVENTS_PAYLOAD),           /**< Packet payload sent or received. */
+    NRF_RADIO_EVENT_END                = offsetof(NRF_RADIO_Type, EVENTS_END),               /**< Packet transmitted or received. */
+    NRF_RADIO_EVENT_DISABLED           = offsetof(NRF_RADIO_Type, EVENTS_DISABLED),          /**< RADIO has been disabled. */
+    NRF_RADIO_EVENT_DEVMATCH           = offsetof(NRF_RADIO_Type, EVENTS_DEVMATCH),          /**< A device address match occurred on the last received packet. */
+    NRF_RADIO_EVENT_DEVMISS            = offsetof(NRF_RADIO_Type, EVENTS_DEVMISS),           /**< No device address match occurred on the last received packet. */
 #if defined(RADIO_INTENSET_RSSIEND_Msk) ||   \
     defined(RADIO_INTENSET00_RSSIEND_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_RSSIEND    = offsetof(NRF_RADIO_Type, EVENTS_RSSIEND),    /**< Sampling of receive signal strength complete. */
+    NRF_RADIO_EVENT_RSSIEND            = offsetof(NRF_RADIO_Type, EVENTS_RSSIEND),           /**< Sampling of receive signal strength complete. */
 #endif
-    NRF_RADIO_EVENT_BCMATCH    = offsetof(NRF_RADIO_Type, EVENTS_BCMATCH),    /**< Bit counter reached bit count value. */
+    NRF_RADIO_EVENT_BCMATCH            = offsetof(NRF_RADIO_Type, EVENTS_BCMATCH),           /**< Bit counter reached bit count value. */
 #if defined(RADIO_INTENSET_CRCOK_Msk) ||   \
     defined(RADIO_INTENSET00_CRCOK_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_CRCOK      = offsetof(NRF_RADIO_Type, EVENTS_CRCOK),      /**< Packet received with correct CRC. */
+    NRF_RADIO_EVENT_CRCOK              = offsetof(NRF_RADIO_Type, EVENTS_CRCOK),             /**< Packet received with correct CRC. */
 #endif
 #if defined(RADIO_INTENSET_CRCERROR_Msk) ||   \
     defined(RADIO_INTENSET00_CRCERROR_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_CRCERROR   = offsetof(NRF_RADIO_Type, EVENTS_CRCERROR),   /**< Packet received with incorrect CRC. */
+    NRF_RADIO_EVENT_CRCERROR           = offsetof(NRF_RADIO_Type, EVENTS_CRCERROR),          /**< Packet received with incorrect CRC. */
 #endif
 #if defined(RADIO_INTENSET_FRAMESTART_Msk) ||   \
     defined(RADIO_INTENSET00_FRAMESTART_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_FRAMESTART = offsetof(NRF_RADIO_Type, EVENTS_FRAMESTART), /**< IEEE 802.15.4 length field received. */
+    NRF_RADIO_EVENT_FRAMESTART         = offsetof(NRF_RADIO_Type, EVENTS_FRAMESTART),        /**< IEEE 802.15.4 length field received. */
 #endif
 #if defined(RADIO_INTENSET_EDEND_Msk) ||   \
     defined(RADIO_INTENSET00_EDEND_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_EDEND      = offsetof(NRF_RADIO_Type, EVENTS_EDEND),      /**< Energy Detection procedure ended. */
+    NRF_RADIO_EVENT_EDEND              = offsetof(NRF_RADIO_Type, EVENTS_EDEND),             /**< Energy Detection procedure ended. */
 #endif
 #if defined(RADIO_INTENSET_EDSTOPPED_Msk) ||   \
     defined(RADIO_INTENSET00_EDSTOPPED_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_EDSTOPPED  = offsetof(NRF_RADIO_Type, EVENTS_EDSTOPPED),  /**< The sampling of Energy Detection has stopped. */
+    NRF_RADIO_EVENT_EDSTOPPED          = offsetof(NRF_RADIO_Type, EVENTS_EDSTOPPED),         /**< The sampling of Energy Detection has stopped. */
 #endif
 #if defined(RADIO_INTENSET_CCAIDLE_Msk) ||   \
     defined(RADIO_INTENSET00_CCAIDLE_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_CCAIDLE    = offsetof(NRF_RADIO_Type, EVENTS_CCAIDLE),    /**< Wireless medium in idle - clear to send. */
+    NRF_RADIO_EVENT_CCAIDLE            = offsetof(NRF_RADIO_Type, EVENTS_CCAIDLE),           /**< Wireless medium in idle - clear to send. */
 #endif
 #if defined(RADIO_INTENSET_CCABUSY_Msk) ||   \
     defined(RADIO_INTENSET00_CCABUSY_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_CCABUSY    = offsetof(NRF_RADIO_Type, EVENTS_CCABUSY),    /**< Wireless medium busy - do not send. */
+    NRF_RADIO_EVENT_CCABUSY            = offsetof(NRF_RADIO_Type, EVENTS_CCABUSY),           /**< Wireless medium busy - do not send. */
 #endif
 #if defined(RADIO_INTENSET_CCASTOPPED_Msk) ||   \
     defined(RADIO_INTENSET00_CCASTOPPED_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_CCASTOPPED = offsetof(NRF_RADIO_Type, EVENTS_CCASTOPPED), /**< The CCA has stopped. */
+    NRF_RADIO_EVENT_CCASTOPPED         = offsetof(NRF_RADIO_Type, EVENTS_CCASTOPPED),        /**< The CCA has stopped. */
 #endif
 #if defined(RADIO_INTENSET_RATEBOOST_Msk) ||   \
     defined(RADIO_INTENSET00_RATEBOOST_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_RATEBOOST  = offsetof(NRF_RADIO_Type, EVENTS_RATEBOOST),  /**< Ble_LR CI field received, receive mode is changed from Ble_LR125Kbit to Ble_LR500Kbit. */
+    NRF_RADIO_EVENT_RATEBOOST          = offsetof(NRF_RADIO_Type, EVENTS_RATEBOOST),         /**< Ble_LR CI field received, receive mode is changed from Ble_LR125Kbit to Ble_LR500Kbit. */
 #endif
 #if defined(RADIO_INTENSET_TXREADY_Msk) ||   \
     defined(RADIO_INTENSET00_TXREADY_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_TXREADY    = offsetof(NRF_RADIO_Type, EVENTS_TXREADY),    /**< RADIO has ramped up and is ready to be started TX path. */
+    NRF_RADIO_EVENT_TXREADY            = offsetof(NRF_RADIO_Type, EVENTS_TXREADY),           /**< RADIO has ramped up and is ready to be started TX path. */
 #endif
 #if defined(RADIO_INTENSET_RXREADY_Msk) ||   \
     defined(RADIO_INTENSET00_RXREADY_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_RXREADY    = offsetof(NRF_RADIO_Type, EVENTS_RXREADY),    /**< RADIO has ramped up and is ready to be started RX path. */
+    NRF_RADIO_EVENT_RXREADY            = offsetof(NRF_RADIO_Type, EVENTS_RXREADY),           /**< RADIO has ramped up and is ready to be started RX path. */
 #endif
 #if defined(RADIO_INTENSET_MHRMATCH_Msk) ||   \
     defined(RADIO_INTENSET00_MHRMATCH_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_MHRMATCH   = offsetof(NRF_RADIO_Type, EVENTS_MHRMATCH),   /**< MAC Header match found. */
+    NRF_RADIO_EVENT_MHRMATCH           = offsetof(NRF_RADIO_Type, EVENTS_MHRMATCH),          /**< MAC Header match found. */
 #endif
 #if defined(RADIO_INTENSET_PHYEND_Msk) ||   \
     defined(RADIO_INTENSET00_PHYEND_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_PHYEND     = offsetof(NRF_RADIO_Type, EVENTS_PHYEND),     /**< Generated in Ble_LR125Kbit, Ble_LR500Kbit
-                                                                               *   and BleIeee802154_250Kbit modes when last
-                                                                               *   bit is sent on the air. */
+    NRF_RADIO_EVENT_PHYEND             = offsetof(NRF_RADIO_Type, EVENTS_PHYEND),            /**< Generated in Ble_LR125Kbit, Ble_LR500Kbit
+                                                                                              *   and BleIeee802154_250Kbit modes when last
+                                                                                              *   bit is sent on the air. */
 #endif
 #if defined(RADIO_INTENSET_SYNC_Msk) ||   \
     defined(RADIO_INTENSET00_SYNC_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_SYNC       = offsetof(NRF_RADIO_Type, EVENTS_SYNC),       /**< Generated in Ble_LR125Kbit, Ble_LR500Kbit
-                                                                               *   and BleIeee802154_250Kbit modes when possible
-                                                                               *   preamble has been received. */
+    NRF_RADIO_EVENT_SYNC               = offsetof(NRF_RADIO_Type, EVENTS_SYNC),              /**< Generated in Ble_LR125Kbit, Ble_LR500Kbit
+                                                                                              *   and BleIeee802154_250Kbit modes when possible
+                                                                                              *   preamble has been received. */
 #endif
 #if defined(RADIO_INTENSET_CTEPRESENT_Msk) ||   \
     defined(RADIO_INTENSET00_CTEPRESENT_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_CTEPRESENT = offsetof(NRF_RADIO_Type, EVENTS_CTEPRESENT), /**< CTE is present. */
+    NRF_RADIO_EVENT_CTEPRESENT         = offsetof(NRF_RADIO_Type, EVENTS_CTEPRESENT),        /**< CTE is present. */
 #endif
 #if defined(RADIO_EVENTS_PLLREADY_EVENTS_PLLREADY_Msk) || \
     defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_EVENT_PLLREADY   = offsetof(NRF_RADIO_Type, EVENTS_PLLREADY)    /**< PLL has settled. */
+    NRF_RADIO_EVENT_PLLREADY           = offsetof(NRF_RADIO_Type, EVENTS_PLLREADY),          /**< PLL has settled. */
+#endif
+#if defined(RADIO_EVENTS_SOAERROR_EVENTS_SOAERROR_Msk) || \
+    defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_EVENTS_SOAERROR          = offsetof(NRF_RADIO_Type, EVENTS_SOAERROR),          /**< Strong received signal has caused gain to be dumped to
+                                                                                              *   protect the circuit. Received packet is expected to be
+                                                                                              *   corrupted. */
+#endif
+#if defined(RADIO_EVENTS_CSATTACKDETECTEND_EVENTS_CSATTACKDETECTEND_Msk) || \
+    defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_EVENTS_CSATTACKDETECTEND = offsetof(NRF_RADIO_Type, EVENTS_CSATTACKDETECTEND), /**< Strong received signal has caused gain to be dumped to
+                                                                                              *   protect the circuit. Received packet is expected to be
+                                                                                              *   corrupted. */
+#endif
+#if defined(RADIO_EVENTS_FRAMESTART_ResetValue) || \
+    defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_EVENTS_FRAMESTART        = offsetof(NRF_RADIO_Type, EVENTS_FRAMESTART),        /**< IEEE 802.15.4 length field received. */
+#endif
+#if defined(RADIO_EVENTS_END_ResetValue) || \
+    defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_EVENTS_END               = offsetof(NRF_RADIO_Type, EVENTS_END),               /**< Memory access for packet data has been completed. */
+#endif
+#if defined(RADIO_EVENTS_DISABLED_ResetValue) || \
+    defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_EVENTS_DISABLED          = offsetof(NRF_RADIO_Type, EVENTS_DISABLED),          /**< RADIO has been disabled. */
+#endif
+#if defined(RADIO_EVENTS_BCMATCH_ResetValue) || \
+    defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_EVENTS_BCMATCH           = offsetof(NRF_RADIO_Type, EVENTS_BCMATCH),           /**< Bit counter reached bit count value. */
+#endif
+#if defined(RADIO_EVENTS_RXADDRESS_ResetValue) || \
+    defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_EVENTS_RXADDRESS         = offsetof(NRF_RADIO_Type, EVENTS_RXADDRESS),         /**< Address received. */
+#endif
+#if defined(RADIO_EVENTS_AUXDATADMAEND_ResetValue) || \
+    defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_EVENTS_AUXDATADMAEND     = offsetof(NRF_RADIO_Type, EVENTS_AUXDATADMAEND),     /**< AUXDATA DMA end. */
+#endif
+#if defined(RADIO_EVENTS_CSTONESEND_ResetValue) || \
+    defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_EVENTS_CSTONESEND        = offsetof(NRF_RADIO_Type, EVENTS_CSTONESEND),        /**< The channel sounding tone processing is complete. */
+#endif
+#if defined(NRF_RADIO_EVENTS_EXT)
+    NRF_RADIO_EVENTS_EXT
 #endif
 } nrf_radio_event_t;
 
@@ -239,124 +308,145 @@ typedef enum
 typedef enum
 {
 #if defined(RADIO_INTENSET_READY_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_READY_MASK      = RADIO_INTENSET_READY_Msk,        /**< Interrupt on READY event.  */
+    NRF_RADIO_INT_READY_MASK            = RADIO_INTENSET_READY_Msk,               /**< Interrupt on READY event.  */
 #elif defined(RADIO_INTENSET00_READY_Msk)
-    NRF_RADIO_INT_READY_MASK      = RADIO_INTENSET00_READY_Msk,      /**< Interrupt on READY event.  */
+    NRF_RADIO_INT_READY_MASK            = RADIO_INTENSET00_READY_Msk,             /**< Interrupt on READY event.  */
 #endif
 #if defined(RADIO_INTENSET_ADDRESS_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_ADDRESS_MASK    = RADIO_INTENSET_ADDRESS_Msk,      /**< Interrupt on ADDRESS event. */
+    NRF_RADIO_INT_ADDRESS_MASK          = RADIO_INTENSET_ADDRESS_Msk,             /**< Interrupt on ADDRESS event. */
 #elif defined(RADIO_INTENSET00_ADDRESS_Msk)
-    NRF_RADIO_INT_ADDRESS_MASK    = RADIO_INTENSET00_ADDRESS_Msk,    /**< Interrupt on ADDRESS event. */
+    NRF_RADIO_INT_ADDRESS_MASK          = RADIO_INTENSET00_ADDRESS_Msk,           /**< Interrupt on ADDRESS event. */
 #endif
 #if defined(RADIO_INTENSET_PAYLOAD_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_PAYLOAD_MASK    = RADIO_INTENSET_PAYLOAD_Msk,      /**< Interrupt on PAYLOAD event. */
+    NRF_RADIO_INT_PAYLOAD_MASK          = RADIO_INTENSET_PAYLOAD_Msk,             /**< Interrupt on PAYLOAD event. */
 #elif defined(RADIO_INTENSET00_PAYLOAD_Msk)
-    NRF_RADIO_INT_PAYLOAD_MASK    = RADIO_INTENSET00_PAYLOAD_Msk,    /**< Interrupt on PAYLOAD event. */
+    NRF_RADIO_INT_PAYLOAD_MASK          = RADIO_INTENSET00_PAYLOAD_Msk,           /**< Interrupt on PAYLOAD event. */
 #endif
 #if defined(RADIO_INTENSET_END_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_END_MASK        = RADIO_INTENSET_END_Msk,          /**< Interrupt on END event. */
+    NRF_RADIO_INT_END_MASK              = RADIO_INTENSET_END_Msk,                 /**< Interrupt on END event. */
 #elif defined(RADIO_INTENSET00_END_Msk)
-    NRF_RADIO_INT_END_MASK        = RADIO_INTENSET00_END_Msk,        /**< Interrupt on END event. */
+    NRF_RADIO_INT_END_MASK              = RADIO_INTENSET00_END_Msk,               /**< Interrupt on END event. */
 #endif
 #if defined(RADIO_INTENSET_DISABLED_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_DISABLED_MASK   = RADIO_INTENSET_DISABLED_Msk,     /**< Interrupt on DISABLED event. */
+    NRF_RADIO_INT_DISABLED_MASK         = RADIO_INTENSET_DISABLED_Msk,            /**< Interrupt on DISABLED event. */
 #elif defined(RADIO_INTENSET00_DISABLED_Msk)
-    NRF_RADIO_INT_DISABLED_MASK   = RADIO_INTENSET00_DISABLED_Msk,   /**< Interrupt on DISABLED event. */
+    NRF_RADIO_INT_DISABLED_MASK         = RADIO_INTENSET00_DISABLED_Msk,          /**< Interrupt on DISABLED event. */
 #endif
 #if defined(RADIO_INTENSET_DEVMATCH_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_DEVMATCH_MASK   = RADIO_INTENSET_DEVMATCH_Msk,     /**< Interrupt on DEVMATCH event. */
+    NRF_RADIO_INT_DEVMATCH_MASK         = RADIO_INTENSET_DEVMATCH_Msk,            /**< Interrupt on DEVMATCH event. */
 #elif defined(RADIO_INTENSET00_DEVMATCH_Msk)
-    NRF_RADIO_INT_DEVMATCH_MASK   = RADIO_INTENSET00_DEVMATCH_Msk,   /**< Interrupt on DEVMATCH event. */
+    NRF_RADIO_INT_DEVMATCH_MASK         = RADIO_INTENSET00_DEVMATCH_Msk,          /**< Interrupt on DEVMATCH event. */
 #endif
 #if defined(RADIO_INTENSET_DEVMISS_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_DEVMISS_MASK    = RADIO_INTENSET_DEVMISS_Msk,      /**< Interrupt on DEVMISS event. */
+    NRF_RADIO_INT_DEVMISS_MASK          = RADIO_INTENSET_DEVMISS_Msk,             /**< Interrupt on DEVMISS event. */
 #elif defined(RADIO_INTENSET00_DEVMISS_Msk)
-    NRF_RADIO_INT_DEVMISS_MASK    = RADIO_INTENSET00_DEVMISS_Msk,    /**< Interrupt on DEVMISS event. */
+    NRF_RADIO_INT_DEVMISS_MASK          = RADIO_INTENSET00_DEVMISS_Msk,           /**< Interrupt on DEVMISS event. */
 #endif
 #if defined(RADIO_INTENSET_RSSIEND_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_RSSIEND_MASK    = RADIO_INTENSET_RSSIEND_Msk,      /**< Interrupt on RSSIEND event. */
+    NRF_RADIO_INT_RSSIEND_MASK          = RADIO_INTENSET_RSSIEND_Msk,             /**< Interrupt on RSSIEND event. */
 #elif defined(RADIO_INTENSET00_RSSIEND_Msk)
-    NRF_RADIO_INT_RSSIEND_MASK    = RADIO_INTENSET00_RSSIEND_Msk,    /**< Interrupt on RSSIEND event. */
+    NRF_RADIO_INT_RSSIEND_MASK          = RADIO_INTENSET00_RSSIEND_Msk,           /**< Interrupt on RSSIEND event. */
 #endif
 #if defined(RADIO_INTENSET_BCMATCH_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_BCMATCH_MASK    = RADIO_INTENSET_BCMATCH_Msk,      /**< Interrupt on BCMATCH event. */
+    NRF_RADIO_INT_BCMATCH_MASK          = RADIO_INTENSET_BCMATCH_Msk,             /**< Interrupt on BCMATCH event. */
 #elif defined(RADIO_INTENSET00_BCMATCH_Msk)
-    NRF_RADIO_INT_BCMATCH_MASK    = RADIO_INTENSET00_BCMATCH_Msk,    /**< Interrupt on BCMATCH event. */
+    NRF_RADIO_INT_BCMATCH_MASK          = RADIO_INTENSET00_BCMATCH_Msk,           /**< Interrupt on BCMATCH event. */
 #endif
 #if defined(RADIO_INTENSET_CRCOK_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_CRCOK_MASK      = RADIO_INTENSET_CRCOK_Msk,        /**< Interrupt on CRCOK event. */
+    NRF_RADIO_INT_CRCOK_MASK            = RADIO_INTENSET_CRCOK_Msk,               /**< Interrupt on CRCOK event. */
 #elif defined(RADIO_INTENSET00_CRCOK_Msk)
-    NRF_RADIO_INT_CRCOK_MASK      = RADIO_INTENSET00_CRCOK_Msk,      /**< Interrupt on CRCOK event. */
+    NRF_RADIO_INT_CRCOK_MASK            = RADIO_INTENSET00_CRCOK_Msk,             /**< Interrupt on CRCOK event. */
 #endif
 #if defined(RADIO_INTENSET_CRCERROR_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_CRCERROR_MASK   = RADIO_INTENSET_CRCERROR_Msk,     /**< Interrupt on CRCERROR event. */
+    NRF_RADIO_INT_CRCERROR_MASK         = RADIO_INTENSET_CRCERROR_Msk,            /**< Interrupt on CRCERROR event. */
 #elif defined(RADIO_INTENSET00_CRCERROR_Msk)
-    NRF_RADIO_INT_CRCERROR_MASK   = RADIO_INTENSET00_CRCERROR_Msk,   /**< Interrupt on CRCERROR event. */
+    NRF_RADIO_INT_CRCERROR_MASK         = RADIO_INTENSET00_CRCERROR_Msk,          /**< Interrupt on CRCERROR event. */
 #endif
 #if defined(RADIO_INTENSET_FRAMESTART_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_FRAMESTART_MASK = RADIO_INTENSET_FRAMESTART_Msk,   /**< Interrupt on FRAMESTART event. */
+    NRF_RADIO_INT_FRAMESTART_MASK       = RADIO_INTENSET_FRAMESTART_Msk,          /**< Interrupt on FRAMESTART event. */
 #elif defined(RADIO_INTENSET00_FRAMESTART_Msk)
-    NRF_RADIO_INT_FRAMESTART_MASK = RADIO_INTENSET00_FRAMESTART_Msk, /**< Interrupt on FRAMESTART event. */
+    NRF_RADIO_INT_FRAMESTART_MASK       = RADIO_INTENSET00_FRAMESTART_Msk,        /**< Interrupt on FRAMESTART event. */
 #endif
 #if defined(RADIO_INTENSET_EDEND_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_EDEND_MASK      = RADIO_INTENSET_EDEND_Msk,        /**< Interrupt on EDEND event. */
+    NRF_RADIO_INT_EDEND_MASK            = RADIO_INTENSET_EDEND_Msk,               /**< Interrupt on EDEND event. */
 #elif defined(RADIO_INTENSET00_EDEND_Msk)
-    NRF_RADIO_INT_EDEND_MASK      = RADIO_INTENSET00_EDEND_Msk,      /**< Interrupt on EDEND event. */
+    NRF_RADIO_INT_EDEND_MASK            = RADIO_INTENSET00_EDEND_Msk,             /**< Interrupt on EDEND event. */
 #endif
 #if defined(RADIO_INTENSET_EDSTOPPED_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_EDSTOPPED_MASK  = RADIO_INTENSET_EDSTOPPED_Msk,    /**< Interrupt on EDSTOPPED event. */
+    NRF_RADIO_INT_EDSTOPPED_MASK        = RADIO_INTENSET_EDSTOPPED_Msk,           /**< Interrupt on EDSTOPPED event. */
 #elif defined(RADIO_INTENSET00_EDSTOPPED_Msk)
-    NRF_RADIO_INT_EDSTOPPED_MASK  = RADIO_INTENSET00_EDSTOPPED_Msk,  /**< Interrupt on EDSTOPPED event. */
+    NRF_RADIO_INT_EDSTOPPED_MASK        = RADIO_INTENSET00_EDSTOPPED_Msk,         /**< Interrupt on EDSTOPPED event. */
 #endif
 #if defined(RADIO_INTENSET_CCAIDLE_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_CCAIDLE_MASK    = RADIO_INTENSET_CCAIDLE_Msk,      /**< Interrupt on CCAIDLE event. */
+    NRF_RADIO_INT_CCAIDLE_MASK          = RADIO_INTENSET_CCAIDLE_Msk,             /**< Interrupt on CCAIDLE event. */
 #elif defined(RADIO_INTENSET00_CCAIDLE_Msk)
-    NRF_RADIO_INT_CCAIDLE_MASK    = RADIO_INTENSET00_CCAIDLE_Msk,    /**< Interrupt on CCAIDLE event. */
+    NRF_RADIO_INT_CCAIDLE_MASK          = RADIO_INTENSET00_CCAIDLE_Msk,           /**< Interrupt on CCAIDLE event. */
 #endif
 #if defined(RADIO_INTENSET_CCABUSY_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_CCABUSY_MASK    = RADIO_INTENSET_CCABUSY_Msk,      /**< Interrupt on CCABUSY event. */
+    NRF_RADIO_INT_CCABUSY_MASK          = RADIO_INTENSET_CCABUSY_Msk,             /**< Interrupt on CCABUSY event. */
 #elif defined(RADIO_INTENSET00_CCABUSY_Msk)
-    NRF_RADIO_INT_CCABUSY_MASK    = RADIO_INTENSET00_CCABUSY_Msk,    /**< Interrupt on CCABUSY event. */
+    NRF_RADIO_INT_CCABUSY_MASK          = RADIO_INTENSET00_CCABUSY_Msk,           /**< Interrupt on CCABUSY event. */
 #endif
 #if defined(RADIO_INTENSET_CCASTOPPED_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_CCASTOPPED_MASK = RADIO_INTENSET_CCASTOPPED_Msk,   /**< Interrupt on CCASTOPPED event. */
+    NRF_RADIO_INT_CCASTOPPED_MASK       = RADIO_INTENSET_CCASTOPPED_Msk,          /**< Interrupt on CCASTOPPED event. */
 #elif defined(RADIO_INTENSET00_CCASTOPPED_Msk)
-    NRF_RADIO_INT_CCASTOPPED_MASK = RADIO_INTENSET00_CCASTOPPED_Msk, /**< Interrupt on CCASTOPPED event. */
+    NRF_RADIO_INT_CCASTOPPED_MASK       = RADIO_INTENSET00_CCASTOPPED_Msk,        /**< Interrupt on CCASTOPPED event. */
 #endif
 #if defined(RADIO_INTENSET_RATEBOOST_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_RATEBOOST_MASK  = RADIO_INTENSET_RATEBOOST_Msk,    /**< Interrupt on RATEBOOST event. */
+    NRF_RADIO_INT_RATEBOOST_MASK        = RADIO_INTENSET_RATEBOOST_Msk,           /**< Interrupt on RATEBOOST event. */
 #elif defined(RADIO_INTENSET00_RATEBOOST_Msk)
-    NRF_RADIO_INT_RATEBOOST_MASK  = RADIO_INTENSET00_RATEBOOST_Msk,  /**< Interrupt on RATEBOOST event. */
+    NRF_RADIO_INT_RATEBOOST_MASK        = RADIO_INTENSET00_RATEBOOST_Msk,         /**< Interrupt on RATEBOOST event. */
 #endif
 #if defined(RADIO_INTENSET_TXREADY_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_TXREADY_MASK    = RADIO_INTENSET_TXREADY_Msk,      /**< Interrupt on TXREADY event. */
+    NRF_RADIO_INT_TXREADY_MASK          = RADIO_INTENSET_TXREADY_Msk,             /**< Interrupt on TXREADY event. */
 #elif defined(RADIO_INTENSET00_TXREADY_Msk)
-    NRF_RADIO_INT_TXREADY_MASK    = RADIO_INTENSET00_TXREADY_Msk,    /**< Interrupt on TXREADY event. */
+    NRF_RADIO_INT_TXREADY_MASK          = RADIO_INTENSET00_TXREADY_Msk,           /**< Interrupt on TXREADY event. */
 #endif
 #if defined(RADIO_INTENSET_RXREADY_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_RXREADY_MASK    = RADIO_INTENSET_RXREADY_Msk,      /**< Interrupt on RXREADY event. */
+    NRF_RADIO_INT_RXREADY_MASK          = RADIO_INTENSET_RXREADY_Msk,             /**< Interrupt on RXREADY event. */
 #elif defined(RADIO_INTENSET00_RXREADY_Msk)
-    NRF_RADIO_INT_RXREADY_MASK    = RADIO_INTENSET00_RXREADY_Msk,    /**< Interrupt on RXREADY event. */
+    NRF_RADIO_INT_RXREADY_MASK          = RADIO_INTENSET00_RXREADY_Msk,           /**< Interrupt on RXREADY event. */
 #endif
 #if defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_MHRMATCH_MASK   = RADIO_INTENSET_MHRMATCH_Msk,     /**< Interrupt on MHRMATCH event. */
+    NRF_RADIO_INT_MHRMATCH_MASK         = RADIO_INTENSET_MHRMATCH_Msk,            /**< Interrupt on MHRMATCH event. */
 #elif defined(RADIO_INTENSET00_MHRMATCH_Msk)
-    NRF_RADIO_INT_MHRMATCH_MASK   = RADIO_INTENSET00_MHRMATCH_Msk,   /**< Interrupt on MHRMATCH event. */
+    NRF_RADIO_INT_MHRMATCH_MASK         = RADIO_INTENSET00_MHRMATCH_Msk,          /**< Interrupt on MHRMATCH event. */
 #endif
 #if defined(RADIO_INTENSET_PHYEND_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_PHYEND_MASK     = RADIO_INTENSET_PHYEND_Msk,       /**< Interrupt on PHYEND event. */
+    NRF_RADIO_INT_PHYEND_MASK           = RADIO_INTENSET_PHYEND_Msk,              /**< Interrupt on PHYEND event. */
 #elif defined(RADIO_INTENSET00_PHYEND_Msk)
-    NRF_RADIO_INT_PHYEND_MASK     = RADIO_INTENSET00_PHYEND_Msk,     /**< Interrupt on PHYEND event. */
+    NRF_RADIO_INT_PHYEND_MASK           = RADIO_INTENSET00_PHYEND_Msk,            /**< Interrupt on PHYEND event. */
 #endif
 #if defined(RADIO_INTENSET_SYNC_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_SYNC_MASK       = RADIO_INTENSET_SYNC_Msk,         /**< Interrupt on SYNC event. */
+    NRF_RADIO_INT_SYNC_MASK             = RADIO_INTENSET_SYNC_Msk,                /**< Interrupt on SYNC event. */
 #elif defined(RADIO_INTENSET00_SYNC_Msk)
-    NRF_RADIO_INT_SYNC_MASK       = RADIO_INTENSET00_SYNC_Msk,       /**< Interrupt on SYNC event. */
+    NRF_RADIO_INT_SYNC_MASK             = RADIO_INTENSET00_SYNC_Msk,              /**< Interrupt on SYNC event. */
 #endif
 #if defined(RADIO_INTENSET_CTEPRESENT_Msk) || defined(__NRFX_DOXYGEN__)
-    NRF_RADIO_INT_CTEPRESENT_MASK = RADIO_INTENSET_CTEPRESENT_Msk    /**< Interrupt on CTEPRESENT event. */
+    NRF_RADIO_INT_CTEPRESENT_MASK       = RADIO_INTENSET_CTEPRESENT_Msk,          /**< Interrupt on CTEPRESENT event. */
 #elif defined(RADIO_INTENSET00_CTEPRESENT_Msk)
-    NRF_RADIO_INT_CTEPRESENT_MASK = RADIO_INTENSET00_CTEPRESENT_Msk  /**< Interrupt on CTEPRESENT event. */
+    NRF_RADIO_INT_CTEPRESENT_MASK       = RADIO_INTENSET00_CTEPRESENT_Msk,        /**< Interrupt on CTEPRESENT event. */
+#endif
+#if defined(RADIO_INTENSET01_PLLREADY_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_INT_PLLREADY_MASK         = RADIO_INTENSET01_PLLREADY_Msk,          /**< Interrupt on PLLREADY event. */
+#endif
+#if defined(RADIO_INTENSET01_RXADDRESS_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_INT_RXADDRESS_MASK        = RADIO_INTENSET01_RXADDRESS_Msk,         /**< Interrupt on RXADDRESS event. */
+#endif
+#if defined(RADIO_INTENSET01_AUXDATADMAEND_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_INT_AUXDATADMAEND_MASK    = RADIO_INTENSET01_AUXDATADMAEND_Msk,     /**< Interrupt on AUXDATADMAEND event. */
+#endif
+#if defined(RADIO_INTENSET01_CSTONESEND_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_INT_CSTONESEND_MASK       = RADIO_INTENSET01_CSTONESEND_Msk,        /**< Interrupt on CSTONESEND event. */
+#endif
+#if defined(RADIO_INTENSET01_SOAERROR_Msk) || defined(__NRFX_DOXYGEN__)
+    NRF_RADIO_INT_SOAERROR_MASK         = RADIO_INTENSET01_SOAERROR_Msk,          /**< Interrupt on SOAERROR event. */
+#endif
+#if defined(RADIO_INTENSET01_CSATTACKDETECTEND_Msk) || defined(__NRFX_DOXYGEN__)
+   NRF_RADIO_INT_CSATTACKDETECTEND_MASK = RADIO_INTENSET01_CSATTACKDETECTEND_Msk, /**< Interrupt on CSATTACKDETECTEND_MASK event. */
+#endif
+#if defined(NRF_RADIO_INT_EXT)
+   NRF_RADIO_INT_EXT
 #endif
 } nrf_radio_int_mask_t;
 
@@ -1460,7 +1550,7 @@ NRF_STATIC_INLINE void nrf_radio_datawhiteiv_set(NRF_RADIO_Type * p_reg, uint16_
  */
 NRF_STATIC_INLINE uint16_t nrf_radio_datawhiteiv_get(NRF_RADIO_Type const * p_reg);
 
-#if NRF_RADIO_HAS_DATAWHITE
+#if NRF_RADIO_HAS_DATAWHITE || NRF_RADIO_HAS_SEPARATE_DATAWHITE_POLY
 /**
  * @brief Function for setting the data whitening polynomial.
  *
@@ -1567,8 +1657,7 @@ NRF_STATIC_INLINE uint8_t nrf_radio_dacnf_ena_get(NRF_RADIO_Type const * p_reg);
  */
 NRF_STATIC_INLINE uint8_t nrf_radio_dacnf_txadd_get(NRF_RADIO_Type const * p_reg);
 
-#if defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(RADIO_INTENSET00_MHRMATCH_Msk) || \
-    defined(__NRFX_DOXYGEN__)
+#if NRF_RADIO_HAS_MHRMATCH
 /**
  * @brief Function for setting MAC Header Match Unit search pattern configuration.
  *
@@ -1605,8 +1694,7 @@ NRF_STATIC_INLINE void nrf_radio_mhmu_pattern_mask_set(NRF_RADIO_Type * p_reg,
  * @return Pattern mask.
  */
 NRF_STATIC_INLINE uint32_t nrf_radio_mhmu_pattern_mask_get(NRF_RADIO_Type const * p_reg);
-#endif // defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(RADIO_INTENSET00_MHRMATCH_Msk) ||
-       // defined(__NRFX_DOXYGEN__)
+#endif // NRF_RADIO_HAS_MHRMATCH
 
 #if defined(RADIO_MODECNF0_RU_Msk) || defined(__NRFX_DOXYGEN__)
 /**
@@ -2209,9 +2297,10 @@ NRF_STATIC_INLINE void * nrf_radio_packetptr_get(NRF_RADIO_Type const * p_reg)
 
 NRF_STATIC_INLINE void nrf_radio_frequency_set(NRF_RADIO_Type * p_reg, uint16_t radio_frequency)
 {
+#if NRF_RADIO_HAS_ABSOLUTE_FREQ
+    p_reg->FREQUENCY = radio_frequency;
+#elif defined(RADIO_FREQUENCY_MAP_Msk)
     NRFX_ASSERT(radio_frequency <= 2500);
-
-#if defined(RADIO_FREQUENCY_MAP_Msk)
     NRFX_ASSERT(radio_frequency >= 2360);
 
     uint32_t delta;
@@ -2228,11 +2317,14 @@ NRF_STATIC_INLINE void nrf_radio_frequency_set(NRF_RADIO_Type * p_reg, uint16_t 
 #else
     NRFX_ASSERT(radio_frequency >= 2400);
     p_reg->FREQUENCY = (uint32_t)(radio_frequency - 2400);
-#endif //defined(RADIO_FREQUENCY_MAP_Msk)
+#endif
 }
 
 NRF_STATIC_INLINE uint16_t nrf_radio_frequency_get(NRF_RADIO_Type const * p_reg)
 {
+#if NRF_RADIO_HAS_ABSOLUTE_FREQ
+    return (uint16_t)p_reg->FREQUENCY;
+#else
     uint32_t freq;
 
 #if defined(RADIO_FREQUENCY_MAP_Msk)
@@ -2248,6 +2340,7 @@ NRF_STATIC_INLINE uint16_t nrf_radio_frequency_get(NRF_RADIO_Type const * p_reg)
     freq += p_reg->FREQUENCY & RADIO_FREQUENCY_FREQUENCY_Msk;
 
     return (uint16_t)freq;
+#endif
 }
 
 #if NRF_RADIO_HAS_TXPOWER
@@ -2442,17 +2535,25 @@ NRF_STATIC_INLINE uint16_t nrf_radio_datawhiteiv_get(NRF_RADIO_Type const * p_re
 #endif
 }
 
-#if NRF_RADIO_HAS_DATAWHITE
+#if NRF_RADIO_HAS_DATAWHITE || NRF_RADIO_HAS_SEPARATE_DATAWHITE_POLY
 NRF_STATIC_INLINE void nrf_radio_datawhite_poly_set(NRF_RADIO_Type * p_reg, uint16_t poly)
 {
+#if NRF_RADIO_HAS_DATAWHITE
     p_reg->DATAWHITE = (p_reg->DATAWHITE & ~RADIO_DATAWHITE_POLY_Msk) |
                        (((uint32_t)poly << RADIO_DATAWHITE_POLY_Pos)
                                          & RADIO_DATAWHITE_POLY_Msk);
+#elif NRF_RADIO_HAS_SEPARATE_DATAWHITE_POLY
+    p_reg->DATAWHITEPOLY = poly & RADIO_LBMAC_DATAWHITEPOLY_POLY_Msk;
+#endif
 }
 
 NRF_STATIC_INLINE uint16_t nrf_radio_datawhite_poly_get(NRF_RADIO_Type const * p_reg)
 {
+#if NRF_RADIO_HAS_DATAWHITE
     return (uint16_t)((p_reg->DATAWHITE & RADIO_DATAWHITE_POLY_Msk) >> RADIO_DATAWHITE_POLY_Pos);
+#elif NRF_RADIO_HAS_SEPARATE_DATAWHITE_POLY
+    return (uint16_t)(p_reg->DATAWHITEPOLY & RADIO_LBMAC_DATAWHITEPOLY_POLY_Msk);
+#endif
 }
 #endif
 
@@ -2524,7 +2625,7 @@ NRF_STATIC_INLINE uint8_t nrf_radio_dacnf_txadd_get(NRF_RADIO_Type const * p_reg
                                       RADIO_DACNF_TXADD7_Msk)) >> RADIO_DACNF_TXADD0_Pos);
 }
 
-#if defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(RADIO_INTENSET00_MHRMATCH_Msk)
+#if NRF_RADIO_HAS_MHRMATCH
 void nrf_radio_mhmu_search_pattern_set(NRF_RADIO_Type * p_reg,
                                        uint32_t         radio_mhmu_search_pattern)
 {
@@ -2554,7 +2655,7 @@ NRF_STATIC_INLINE uint32_t nrf_radio_mhmu_pattern_mask_get(NRF_RADIO_Type const 
     return p_reg->MHRMATCHMASK;
 #endif
 }
-#endif // defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(RADIO_INTENSET00_MHRMATCH_Msk)
+#endif // NRF_RADIO_HAS_MHRMATCH
 
 #if defined(RADIO_MODECNF0_RU_Msk)
 NRF_STATIC_INLINE void nrf_radio_modecnf0_set(NRF_RADIO_Type * p_reg,

@@ -75,6 +75,9 @@ static const size_t m_ram_size =
 #if defined(NRF_MEMORY_RAM2_SIZE)
                                  NRF_MEMORY_RAM2_SIZE +
 #endif
+#if defined(NRF_MEMORY_RAM3_SIZE)
+                                 NRF_MEMORY_RAM3_SIZE +
+#endif
                                  0;
 
 typedef void (* ram_ctrl_block_section_op_t)(uint8_t  block_idx,

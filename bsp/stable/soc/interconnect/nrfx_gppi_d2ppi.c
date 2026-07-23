@@ -36,8 +36,10 @@
 #include "nrfx_gppi_d2ppi.h"
 
 /* Available channels for each node. */
+#if !NRFX_CHECK(NRFX_GPPI_CONFIG_EXT_ALLOCATOR)
 static nrfx_atomic_t channels[NRFX_GPPI_NODE_COUNT];
 static nrfx_atomic_t group_channels[NRFX_GPPI_NODE_DPPI_COUNT];
+#endif
 
 /* All nodes in the system. */
 static const nrfx_gppi_node_t nodes[] = {
@@ -142,5 +144,9 @@ void nrfx_gppi_groups_init(nrfx_gppi_node_id_t node_id, uint32_t group_mask)
 {
     NRFX_ASSERT(node_id < NRFX_GPPI_NODE_DPPI_COUNT);
 
+#if NRFX_CHECK(NRFX_GPPI_CONFIG_EXT_ALLOCATOR)
+    (void)group_mask;
+#else
     *nodes[node_id].dppi.p_group_channels = group_mask;
+#endif
 }

@@ -1427,6 +1427,10 @@ typedef struct {
   #define CLIC_CLIC_CLICINT_PRIORITY_Msk (0xFFUL << CLIC_CLIC_CLICINT_PRIORITY_Pos) /*!< Bit mask of PRIORITY field.           */
   #define CLIC_CLIC_CLICINT_PRIORITY_Min (0x3FUL)    /*!< Min enumerator value of PRIORITY field.                              */
   #define CLIC_CLIC_CLICINT_PRIORITY_Max (0xFFUL)    /*!< Max enumerator value of PRIORITY field.                              */
+  #define CLIC_CLIC_CLICINT_PRIORITY_PRIO3F (0x3FUL) /*!< Priority level 0x3F                                                  */
+  #define CLIC_CLIC_CLICINT_PRIORITY_PRIO7F (0x7FUL) /*!< Priority level 0x7F                                                  */
+  #define CLIC_CLIC_CLICINT_PRIORITY_PRIOBF (0xBFUL) /*!< Priority level 0xBF                                                  */
+  #define CLIC_CLIC_CLICINT_PRIORITY_PRIOFF (0xFFUL) /*!< Priority level 0xFF                                                  */
   #define CLIC_CLIC_CLICINT_PRIORITY_PRIOLEVEL0 (0x3FUL) /*!< Priority level 0                                                 */
   #define CLIC_CLIC_CLICINT_PRIORITY_PRIOLEVEL1 (0x7FUL) /*!< Priority level 1                                                 */
   #define CLIC_CLIC_CLICINT_PRIORITY_PRIOLEVEL2 (0xBFUL) /*!< Priority level 2                                                 */
@@ -3166,7 +3170,7 @@ typedef struct {
     __IM uint32_t RESERVED3[2];
     __OM uint32_t SEED[12];                          /*!< (@ 0x00000410) Seed word [n] for symmetric and asymmetric key
                                                                          generation. This register is only writable from KMU.*/
-    __IOM uint32_t SEEDLOCK;                         /*!< (@ 0x00000440) Lock the access to the SEED register.                 */
+    __IOM uint32_t SEEDLOCK;                         /*!< (@ 0x00000440) Lock the access to the SEED registers.                */
     __IOM uint32_t PROTECTEDRAMLOCK;                 /*!< (@ 0x00000444) Lock the access to the protected RAM.                 */
   } NRF_CRACEN_Type;                                 /*!< Size = 1096 (0x448)                                                  */
 
@@ -3377,7 +3381,7 @@ typedef struct {
   #define CRACEN_SEED_VAL_Msk (0xFFFFFFFFUL << CRACEN_SEED_VAL_Pos) /*!< Bit mask of VAL field.                                */
 
 
-/* CRACEN_SEEDLOCK: Lock the access to the SEED register. */
+/* CRACEN_SEEDLOCK: Lock the access to the SEED registers. */
   #define CRACEN_SEEDLOCK_ResetValue (0x00000000UL)  /*!< Reset value of SEEDLOCK register.                                    */
 
 /* ENABLE @Bit 0 : Enable the lock */
@@ -9583,8 +9587,8 @@ typedef struct {
   __IM  uint32_t  DEVICEID[2];                       /*!< (@ 0x00000004) Device identifier                                     */
   __IM  uint32_t  UUID[4];                           /*!< (@ 0x0000000C) 128-bit Universally Unique IDentifier (UUID).         */
   __IM  uint32_t  PART;                              /*!< (@ 0x0000001C) Part code                                             */
-  __IM  uint32_t  VARIANT;                           /*!< (@ 0x00000020) Part Variant, Hardware version and Production
-                                                                         configuration*/
+  __IM  uint32_t  VARIANT;                           /*!< (@ 0x00000020) Function variant code, Hardware version code, and
+                                                                         Production configuration code encoded as ASCII.*/
   __IM  uint32_t  PACKAGE;                           /*!< (@ 0x00000024) Package option                                        */
   __IM  uint32_t  RAM;                               /*!< (@ 0x00000028) RAM size (KB)                                         */
   __IM  uint32_t  RRAM;                              /*!< (@ 0x0000002C) RRAM size (KB)                                        */
@@ -9634,14 +9638,16 @@ typedef struct {
   #define FICR_INFO_PART_PART_Unspecified (0xFFFFFFFFUL) /*!< Unspecified                                                      */
 
 
-/* FICR_INFO_VARIANT: Part Variant, Hardware version and Production configuration */
+/* FICR_INFO_VARIANT: Function variant code, Hardware version code, and Production configuration code encoded as ASCII. */
   #define FICR_INFO_VARIANT_ResetValue (0xFFFFFFFFUL) /*!< Reset value of VARIANT register.                                    */
 
-/* VARIANT @Bits 0..31 : Part Variant, Hardware version and Production configuration, encoded as ASCII */
+/* VARIANT @Bits 0..31 : Function variant code, Hardware version code, and Production configuration code encoded as ASCII */
   #define FICR_INFO_VARIANT_VARIANT_Pos (0UL)        /*!< Position of VARIANT field.                                           */
   #define FICR_INFO_VARIANT_VARIANT_Msk (0xFFFFFFFFUL << FICR_INFO_VARIANT_VARIANT_Pos) /*!< Bit mask of VARIANT field.        */
-  #define FICR_INFO_VARIANT_VARIANT_Min (0xFFFFFFFFUL) /*!< Min enumerator value of VARIANT field.                             */
+  #define FICR_INFO_VARIANT_VARIANT_Min (0x41414230UL) /*!< Min enumerator value of VARIANT field.                             */
   #define FICR_INFO_VARIANT_VARIANT_Max (0xFFFFFFFFUL) /*!< Max enumerator value of VARIANT field.                             */
+  #define FICR_INFO_VARIANT_VARIANT_AAB0 (0x41414230UL) /*!< Example encoding for AAB0 - Function variant code AA, Hardware
+                                                             version code B, Production configuration code 0*/
   #define FICR_INFO_VARIANT_VARIANT_Unspecified (0xFFFFFFFFUL) /*!< Unspecified                                                */
 
 
@@ -15869,6 +15875,8 @@ typedef struct {
 /* COMPAREVALUE @Bits 0..7 : The PWM compare value */
   #define GRTC_PWMCONFIG_COMPAREVALUE_Pos (0UL)      /*!< Position of COMPAREVALUE field.                                      */
   #define GRTC_PWMCONFIG_COMPAREVALUE_Msk (0xFFUL << GRTC_PWMCONFIG_COMPAREVALUE_Pos) /*!< Bit mask of COMPAREVALUE field.     */
+  #define GRTC_PWMCONFIG_COMPAREVALUE_Min (0x01UL)   /*!< Min value of COMPAREVALUE field.                                     */
+  #define GRTC_PWMCONFIG_COMPAREVALUE_Max (0xFFUL)   /*!< Max size of COMPAREVALUE field.                                      */
 
 
 /* GRTC_CLKOUT: Configuration of clock output */
@@ -20389,7 +20397,9 @@ typedef struct {
   __IOM uint32_t  BYPASS;                            /*!< (@ 0x00000000) Enable or disable bypass of LFCLK crystal oscillator
                                                                          with external clock source*/
   __IOM uint32_t  INTCAP;                            /*!< (@ 0x00000004) Programmable capacitance of XL1 and XL2               */
-} NRF_OSCILLATORS_XOSC32KI_Type;                     /*!< Size = 8 (0x008)                                                     */
+  __IM  uint32_t  RESERVED[3];
+  __IM  uint32_t  STATUS;                            /*!< (@ 0x00000014) Status information                                    */
+} NRF_OSCILLATORS_XOSC32KI_Type;                     /*!< Size = 24 (0x018)                                                    */
 
 /* OSCILLATORS_XOSC32KI_BYPASS: Enable or disable bypass of LFCLK crystal oscillator with external clock source */
   #define OSCILLATORS_XOSC32KI_BYPASS_ResetValue (0x00000000UL) /*!< Reset value of BYPASS register.                           */
@@ -20414,6 +20424,19 @@ typedef struct {
   #define OSCILLATORS_XOSC32KI_INTCAP_VAL_Msk (0x1FUL << OSCILLATORS_XOSC32KI_INTCAP_VAL_Pos) /*!< Bit mask of VAL field.      */
 
 
+/* OSCILLATORS_XOSC32KI_STATUS: Status information */
+  #define OSCILLATORS_XOSC32KI_STATUS_ResetValue (0x00000000UL) /*!< Reset value of STATUS register.                           */
+
+/* CLOCKRUNNING @Bit 2 : Clock status */
+  #define OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_Pos (2UL) /*!< Position of CLOCKRUNNING field.                              */
+  #define OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_Msk (0x1UL << OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_Pos) /*!< Bit mask of
+                                                                            CLOCKRUNNING field.*/
+  #define OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_Min (0x0UL) /*!< Min enumerator value of CLOCKRUNNING field.                */
+  #define OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_Max (0x1UL) /*!< Max enumerator value of CLOCKRUNNING field.                */
+  #define OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_NotRunning (0x0UL) /*!< Clock is not running.                               */
+  #define OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_Running (0x1UL) /*!< Clock is running.                                      */
+
+
 /* =================================================== Struct OSCILLATORS ==================================================== */
 /**
   * @brief Oscillator control
@@ -20425,7 +20448,7 @@ typedef struct {
     __IOM NRF_OSCILLATORS_PLL_Type PLL;              /*!< (@ 0x00000800) Oscillator control                                    */
     __IM uint32_t RESERVED2[62];
     __IOM NRF_OSCILLATORS_XOSC32KI_Type XOSC32KI;    /*!< (@ 0x00000900) 32.768 kHz oscillator control                         */
-  } NRF_OSCILLATORS_Type;                            /*!< Size = 2312 (0x908)                                                  */
+  } NRF_OSCILLATORS_Type;                            /*!< Size = 2328 (0x918)                                                  */
 
 #endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
 
@@ -21713,8 +21736,7 @@ typedef struct {
 typedef struct {
   __OM  uint32_t  START;                             /*!< (@ 0x00000000) Starts operation using easyDMA to load the values. See
                                                                          peripheral description for operation using easyDMA.*/
-  __OM  uint32_t  STOP;                              /*!< (@ 0x00000004) Stops operation using easyDMA. This does not trigger an
-                                                                         END event.*/
+  __IM  uint32_t  RESERVED;
 } NRF_PWM_TASKS_DMA_SEQ_Type;                        /*!< Size = 8 (0x008)                                                     */
   #define PWM_TASKS_DMA_SEQ_MaxCount (2UL)           /*!< Size of SEQ[2] array.                                                */
   #define PWM_TASKS_DMA_SEQ_MaxIndex (1UL)           /*!< Max index of SEQ[2] array.                                           */
@@ -21733,17 +21755,6 @@ typedef struct {
   #define PWM_TASKS_DMA_SEQ_START_START_Trigger (0x1UL) /*!< Trigger task                                                      */
 
 
-/* PWM_TASKS_DMA_SEQ_STOP: Stops operation using easyDMA. This does not trigger an END event. */
-  #define PWM_TASKS_DMA_SEQ_STOP_ResetValue (0x00000000UL) /*!< Reset value of STOP register.                                  */
-
-/* STOP @Bit 0 : Stops operation using easyDMA. This does not trigger an END event. */
-  #define PWM_TASKS_DMA_SEQ_STOP_STOP_Pos (0UL)      /*!< Position of STOP field.                                              */
-  #define PWM_TASKS_DMA_SEQ_STOP_STOP_Msk (0x1UL << PWM_TASKS_DMA_SEQ_STOP_STOP_Pos) /*!< Bit mask of STOP field.              */
-  #define PWM_TASKS_DMA_SEQ_STOP_STOP_Min (0x1UL)    /*!< Min enumerator value of STOP field.                                  */
-  #define PWM_TASKS_DMA_SEQ_STOP_STOP_Max (0x1UL)    /*!< Max enumerator value of STOP field.                                  */
-  #define PWM_TASKS_DMA_SEQ_STOP_STOP_Trigger (0x1UL) /*!< Trigger task                                                        */
-
-
 
 /* ================================================== Struct PWM_TASKS_DMA =================================================== */
 /**
@@ -21760,7 +21771,7 @@ typedef struct {
   */
 typedef struct {
   __IOM uint32_t  START;                             /*!< (@ 0x00000000) Subscribe configuration for task START                */
-  __IOM uint32_t  STOP;                              /*!< (@ 0x00000004) Subscribe configuration for task STOP                 */
+  __IM  uint32_t  RESERVED;
 } NRF_PWM_SUBSCRIBE_DMA_SEQ_Type;                    /*!< Size = 8 (0x008)                                                     */
   #define PWM_SUBSCRIBE_DMA_SEQ_MaxCount (2UL)       /*!< Size of SEQ[2] array.                                                */
   #define PWM_SUBSCRIBE_DMA_SEQ_MaxIndex (1UL)       /*!< Max index of SEQ[2] array.                                           */
@@ -21782,24 +21793,6 @@ typedef struct {
   #define PWM_SUBSCRIBE_DMA_SEQ_START_EN_Max (0x1UL) /*!< Max enumerator value of EN field.                                    */
   #define PWM_SUBSCRIBE_DMA_SEQ_START_EN_Disabled (0x0UL) /*!< Disable subscription                                            */
   #define PWM_SUBSCRIBE_DMA_SEQ_START_EN_Enabled (0x1UL) /*!< Enable subscription                                              */
-
-
-/* PWM_SUBSCRIBE_DMA_SEQ_STOP: Subscribe configuration for task STOP */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_ResetValue (0x00000000UL) /*!< Reset value of STOP register.                              */
-
-/* CHIDX @Bits 0..7 : DPPI channel that task STOP will subscribe to */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field.                                             */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_CHIDX_Msk (0xFFUL << PWM_SUBSCRIBE_DMA_SEQ_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field.  */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_CHIDX_Min (0x00UL) /*!< Min value of CHIDX field.                                         */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_CHIDX_Max (0xFFUL) /*!< Max size of CHIDX field.                                          */
-
-/* EN @Bit 31 : (unspecified) */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Pos (31UL)   /*!< Position of EN field.                                                */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Msk (0x1UL << PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Pos) /*!< Bit mask of EN field.            */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Min (0x0UL)  /*!< Min enumerator value of EN field.                                    */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Max (0x1UL)  /*!< Max enumerator value of EN field.                                    */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Disabled (0x0UL) /*!< Disable subscription                                             */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Enabled (0x1UL) /*!< Enable subscription                                               */
 
 
 
@@ -23415,7 +23408,8 @@ typedef struct {
     __IOM uint32_t PUBLISH_STOPPED;                  /*!< (@ 0x00000190) Publish configuration for event STOPPED               */
     __IM uint32_t RESERVED3[27];
     __IOM uint32_t SHORTS;                           /*!< (@ 0x00000200) Shortcuts between local events and tasks              */
-    __IM uint32_t RESERVED4[64];
+    __IM uint32_t RESERVED4[63];
+    __IOM uint32_t INTEN;                            /*!< (@ 0x00000300) Enable or disable interrupt                           */
     __IOM uint32_t INTENSET;                         /*!< (@ 0x00000304) Enable interrupt                                      */
     __IOM uint32_t INTENCLR;                         /*!< (@ 0x00000308) Disable interrupt                                     */
     __IM uint32_t RESERVED5[125];
@@ -23801,6 +23795,50 @@ typedef struct {
   #define QDEC_SHORTS_SAMPLERDY_READCLRACC_Max (0x1UL) /*!< Max enumerator value of SAMPLERDY_READCLRACC field.                */
   #define QDEC_SHORTS_SAMPLERDY_READCLRACC_Disabled (0x0UL) /*!< Disable shortcut                                              */
   #define QDEC_SHORTS_SAMPLERDY_READCLRACC_Enabled (0x1UL) /*!< Enable shortcut                                                */
+
+
+/* QDEC_INTEN: Enable or disable interrupt */
+  #define QDEC_INTEN_ResetValue (0x00000000UL)       /*!< Reset value of INTEN register.                                       */
+
+/* SAMPLERDY @Bit 0 : Enable or disable interrupt for event SAMPLERDY */
+  #define QDEC_INTEN_SAMPLERDY_Pos (0UL)             /*!< Position of SAMPLERDY field.                                         */
+  #define QDEC_INTEN_SAMPLERDY_Msk (0x1UL << QDEC_INTEN_SAMPLERDY_Pos) /*!< Bit mask of SAMPLERDY field.                       */
+  #define QDEC_INTEN_SAMPLERDY_Min (0x0UL)           /*!< Min enumerator value of SAMPLERDY field.                             */
+  #define QDEC_INTEN_SAMPLERDY_Max (0x1UL)           /*!< Max enumerator value of SAMPLERDY field.                             */
+  #define QDEC_INTEN_SAMPLERDY_Disabled (0x0UL)      /*!< Disable                                                              */
+  #define QDEC_INTEN_SAMPLERDY_Enabled (0x1UL)       /*!< Enable                                                               */
+
+/* REPORTRDY @Bit 1 : Enable or disable interrupt for event REPORTRDY */
+  #define QDEC_INTEN_REPORTRDY_Pos (1UL)             /*!< Position of REPORTRDY field.                                         */
+  #define QDEC_INTEN_REPORTRDY_Msk (0x1UL << QDEC_INTEN_REPORTRDY_Pos) /*!< Bit mask of REPORTRDY field.                       */
+  #define QDEC_INTEN_REPORTRDY_Min (0x0UL)           /*!< Min enumerator value of REPORTRDY field.                             */
+  #define QDEC_INTEN_REPORTRDY_Max (0x1UL)           /*!< Max enumerator value of REPORTRDY field.                             */
+  #define QDEC_INTEN_REPORTRDY_Disabled (0x0UL)      /*!< Disable                                                              */
+  #define QDEC_INTEN_REPORTRDY_Enabled (0x1UL)       /*!< Enable                                                               */
+
+/* ACCOF @Bit 2 : Enable or disable interrupt for event ACCOF */
+  #define QDEC_INTEN_ACCOF_Pos (2UL)                 /*!< Position of ACCOF field.                                             */
+  #define QDEC_INTEN_ACCOF_Msk (0x1UL << QDEC_INTEN_ACCOF_Pos) /*!< Bit mask of ACCOF field.                                   */
+  #define QDEC_INTEN_ACCOF_Min (0x0UL)               /*!< Min enumerator value of ACCOF field.                                 */
+  #define QDEC_INTEN_ACCOF_Max (0x1UL)               /*!< Max enumerator value of ACCOF field.                                 */
+  #define QDEC_INTEN_ACCOF_Disabled (0x0UL)          /*!< Disable                                                              */
+  #define QDEC_INTEN_ACCOF_Enabled (0x1UL)           /*!< Enable                                                               */
+
+/* DBLRDY @Bit 3 : Enable or disable interrupt for event DBLRDY */
+  #define QDEC_INTEN_DBLRDY_Pos (3UL)                /*!< Position of DBLRDY field.                                            */
+  #define QDEC_INTEN_DBLRDY_Msk (0x1UL << QDEC_INTEN_DBLRDY_Pos) /*!< Bit mask of DBLRDY field.                                */
+  #define QDEC_INTEN_DBLRDY_Min (0x0UL)              /*!< Min enumerator value of DBLRDY field.                                */
+  #define QDEC_INTEN_DBLRDY_Max (0x1UL)              /*!< Max enumerator value of DBLRDY field.                                */
+  #define QDEC_INTEN_DBLRDY_Disabled (0x0UL)         /*!< Disable                                                              */
+  #define QDEC_INTEN_DBLRDY_Enabled (0x1UL)          /*!< Enable                                                               */
+
+/* STOPPED @Bit 4 : Enable or disable interrupt for event STOPPED */
+  #define QDEC_INTEN_STOPPED_Pos (4UL)               /*!< Position of STOPPED field.                                           */
+  #define QDEC_INTEN_STOPPED_Msk (0x1UL << QDEC_INTEN_STOPPED_Pos) /*!< Bit mask of STOPPED field.                             */
+  #define QDEC_INTEN_STOPPED_Min (0x0UL)             /*!< Min enumerator value of STOPPED field.                               */
+  #define QDEC_INTEN_STOPPED_Max (0x1UL)             /*!< Max enumerator value of STOPPED field.                               */
+  #define QDEC_INTEN_STOPPED_Disabled (0x0UL)        /*!< Disable                                                              */
+  #define QDEC_INTEN_STOPPED_Enabled (0x1UL)         /*!< Enable                                                               */
 
 
 /* QDEC_INTENSET: Enable interrupt */
@@ -24704,9 +24742,7 @@ typedef struct {
     __IOM uint32_t BCC;                              /*!< (@ 0x00000E94) Bit counter compare                                   */
     __IM uint32_t RESERVED39[3];
     __IM uint32_t CTESTATUS;                         /*!< (@ 0x00000EA4) CTEInfo parsed from received packet                   */
-    __IM uint32_t RESERVED40[3];
-    __IOM uint32_t MHRMATCHCONF;                     /*!< (@ 0x00000EB4) Search pattern configuration                          */
-    __IOM uint32_t MHRMATCHMASK;                     /*!< (@ 0x00000EB8) Pattern mask                                          */
+    __IM uint32_t RESERVED40[5];
     __IOM uint32_t SFD;                              /*!< (@ 0x00000EBC) IEEE 802.15.4 start of frame delimiter                */
     __IOM uint32_t CTEINLINECONF;                    /*!< (@ 0x00000EC0) Configuration for CTE inline mode                     */
     __IM uint32_t RESERVED41[3];
@@ -27267,7 +27303,7 @@ typedef struct {
 /* RADIO_PHYENDTXDELAY: Configurable delay of PHYEND event for TX */
   #define RADIO_PHYENDTXDELAY_ResetValue (0x00000421UL) /*!< Reset value of PHYENDTXDELAY register.                            */
 
-/* RATE4M @Bits 0..2 : For modes with 4 Mbps on-air bit rate, unit is 2 bit periods (Nrf_4Mbit0_5 and Nrf_4Mbit0_25 modes) */
+/* RATE4M @Bits 0..2 : For modes with 4 Mbps on-air bit rate, unit is 2 bit periods (Nrf_4Mbit_0BT6 and Nrf_4Mbit_0BT4 modes) */
   #define RADIO_PHYENDTXDELAY_RATE4M_Pos (0UL)       /*!< Position of RATE4M field.                                            */
   #define RADIO_PHYENDTXDELAY_RATE4M_Msk (0x7UL << RADIO_PHYENDTXDELAY_RATE4M_Pos) /*!< Bit mask of RATE4M field.              */
 
@@ -27778,8 +27814,8 @@ typedef struct {
 /* BALEN @Bits 16..18 : Base address length in number of bytes */
   #define RADIO_PCNF1_BALEN_Pos (16UL)               /*!< Position of BALEN field.                                             */
   #define RADIO_PCNF1_BALEN_Msk (0x7UL << RADIO_PCNF1_BALEN_Pos) /*!< Bit mask of BALEN field.                                 */
-  #define RADIO_PCNF1_BALEN_Min (0x1UL)              /*!< Min value of BALEN field.                                            */
-  #define RADIO_PCNF1_BALEN_Max (0x1UL)              /*!< Max size of BALEN field.                                             */
+  #define RADIO_PCNF1_BALEN_Min (0x2UL)              /*!< Min value of BALEN field.                                            */
+  #define RADIO_PCNF1_BALEN_Max (0x4UL)              /*!< Max size of BALEN field.                                             */
 
 /* ENDIAN @Bit 24 : On-air endianness of packet, this applies to the S0, LENGTH, S1, and the PAYLOAD fields. */
   #define RADIO_PCNF1_ENDIAN_Pos (24UL)              /*!< Position of ENDIAN field.                                            */
@@ -28124,24 +28160,6 @@ typedef struct {
 /* CTETYPE @Bits 6..7 : CTEType parsed from packet */
   #define RADIO_CTESTATUS_CTETYPE_Pos (6UL)          /*!< Position of CTETYPE field.                                           */
   #define RADIO_CTESTATUS_CTETYPE_Msk (0x3UL << RADIO_CTESTATUS_CTETYPE_Pos) /*!< Bit mask of CTETYPE field.                   */
-
-
-/* RADIO_MHRMATCHCONF: Search pattern configuration */
-  #define RADIO_MHRMATCHCONF_ResetValue (0x00000000UL) /*!< Reset value of MHRMATCHCONF register.                              */
-
-/* MHRMATCHCONF @Bits 0..31 : Search pattern configuration */
-  #define RADIO_MHRMATCHCONF_MHRMATCHCONF_Pos (0UL)  /*!< Position of MHRMATCHCONF field.                                      */
-  #define RADIO_MHRMATCHCONF_MHRMATCHCONF_Msk (0xFFFFFFFFUL << RADIO_MHRMATCHCONF_MHRMATCHCONF_Pos) /*!< Bit mask of
-                                                                            MHRMATCHCONF field.*/
-
-
-/* RADIO_MHRMATCHMASK: Pattern mask */
-  #define RADIO_MHRMATCHMASK_ResetValue (0x00000000UL) /*!< Reset value of MHRMATCHMASK register.                              */
-
-/* MHRMATCHMASK @Bits 0..31 : Pattern mask */
-  #define RADIO_MHRMATCHMASK_MHRMATCHMASK_Pos (0UL)  /*!< Position of MHRMATCHMASK field.                                      */
-  #define RADIO_MHRMATCHMASK_MHRMATCHMASK_Msk (0xFFFFFFFFUL << RADIO_MHRMATCHMASK_MHRMATCHMASK_Pos) /*!< Bit mask of
-                                                                            MHRMATCHMASK field.*/
 
 
 /* RADIO_SFD: IEEE 802.15.4 start of frame delimiter */
@@ -28545,7 +28563,7 @@ typedef struct {
   */
 typedef struct {
   __IOM uint32_t  CONFIG;                            /*!< (@ 0x00000000) Power configuration                                   */
-  __IM  uint32_t  RESERVED;
+  __IOM uint32_t  STANDBYCONFIG;                     /*!< (@ 0x00000004) Standby mode configuration                            */
   __IOM uint32_t  LOWPOWERCONFIG;                    /*!< (@ 0x00000008) Low power mode configuration                          */
 } NRF_RRAMC_POWER_Type;                              /*!< Size = 12 (0x00C)                                                    */
 
@@ -28566,6 +28584,23 @@ typedef struct {
   #define RRAMC_POWER_CONFIG_POF_Max (0x1UL)         /*!< Max enumerator value of POF field.                                   */
   #define RRAMC_POWER_CONFIG_POF_Wait (0x0UL)        /*!< Wait until the current RRAM write finishes                           */
   #define RRAMC_POWER_CONFIG_POF_Abort (0x1UL)       /*!< Abort the current RRAM write                                         */
+
+
+/* RRAMC_POWER_STANDBYCONFIG: Standby mode configuration */
+  #define RRAMC_POWER_STANDBYCONFIG_ResetValue (0x00000000UL) /*!< Reset value of STANDBYCONFIG register.                      */
+
+/* MODE @Bits 0..1 : RRAM standby mode */
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_Pos (0UL)   /*!< Position of MODE field.                                              */
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_Msk (0x3UL << RRAMC_POWER_STANDBYCONFIG_MODE_Pos) /*!< Bit mask of MODE field.        */
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_Min (0x0UL) /*!< Min enumerator value of MODE field.                                  */
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_Max (0x3UL) /*!< Max enumerator value of MODE field.                                  */
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_Normal (0x0UL) /*!< The RRAM automatically goes into idle mode while the RRAM is not
+                                                             being accessed*/
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_NAP (0x1UL) /*!< The RRAM goes into NAP mode when the access timeout counter is
+                                                          expired*/
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_PowerDown (0x2UL) /*!< The RRAM goes into power down mode when the access timeout
+                                                                counter is expired*/
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_Standby (0x3UL) /*!< The RRAM remains active while the RRAM is not being accessed.    */
 
 
 /* RRAMC_POWER_LOWPOWERCONFIG: Low power mode configuration */
@@ -29096,7 +29131,7 @@ typedef struct {
   #define RRAMC_CONFIG_WEN_Disabled (0x0UL)          /*!< Write is disabled                                                    */
   #define RRAMC_CONFIG_WEN_Enabled (0x1UL)           /*!< Write is enabled                                                     */
 
-/* WRITEBUFSIZE @Bits 8..13 : write-buffer size in number of 128-bit words */
+/* WRITEBUFSIZE @Bits 8..13 : Write-buffer size in number of data units */
   #define RRAMC_CONFIG_WRITEBUFSIZE_Pos (8UL)        /*!< Position of WRITEBUFSIZE field.                                      */
   #define RRAMC_CONFIG_WRITEBUFSIZE_Msk (0x3FUL << RRAMC_CONFIG_WRITEBUFSIZE_Pos) /*!< Bit mask of WRITEBUFSIZE field.         */
   #define RRAMC_CONFIG_WRITEBUFSIZE_Min (0x00UL)     /*!< Min value of WRITEBUFSIZE field.                                     */
@@ -29344,7 +29379,7 @@ typedef struct {
   #define SAADC_CH_CONFIG_REFSEL_Min (0x0UL)         /*!< Min enumerator value of REFSEL field.                                */
   #define SAADC_CH_CONFIG_REFSEL_Max (0x1UL)         /*!< Max enumerator value of REFSEL field.                                */
   #define SAADC_CH_CONFIG_REFSEL_Internal (0x0UL)    /*!< Internal reference (0.9 V)                                           */
-  #define SAADC_CH_CONFIG_REFSEL_External (0x1UL)    /*!< External reference given at PADC_EXT_REF_1V2                         */
+  #define SAADC_CH_CONFIG_REFSEL_External (0x1UL)    /*!< External reference voltage                                           */
 
 /* MODE @Bit 15 : Enable differential mode */
   #define SAADC_CH_CONFIG_MODE_Pos (15UL)            /*!< Position of MODE field.                                              */
@@ -29399,7 +29434,7 @@ typedef struct {
 } NRF_SAADC_RESULT_Type;                             /*!< Size = 20 (0x014)                                                    */
 
 /* SAADC_RESULT_PTR: Data pointer */
-  #define SAADC_RESULT_PTR_ResetValue (0x00000000UL) /*!< Reset value of PTR register.                                         */
+  #define SAADC_RESULT_PTR_ResetValue (0x20000000UL) /*!< Reset value of PTR register.                                         */
 
 /* PTR @Bits 0..31 : Data pointer */
   #define SAADC_RESULT_PTR_PTR_Pos (0UL)             /*!< Position of PTR field.                                               */
@@ -30660,7 +30695,7 @@ typedef struct {
   * @brief RX [SPIM_EVENTS_DMA_RX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after EasyDMA has completed its operation.  */
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
@@ -30668,10 +30703,10 @@ typedef struct {
   __IOM uint32_t  MATCH[4];                          /*!< (@ 0x0000000C) Pattern match is detected on the DMA data bus.        */
 } NRF_SPIM_EVENTS_DMA_RX_Type;                       /*!< Size = 28 (0x01C)                                                    */
 
-/* SPIM_EVENTS_DMA_RX_END: Generated after all MAXCNT bytes have been transferred */
+/* SPIM_EVENTS_DMA_RX_END: Generated after EasyDMA has completed its operation. */
   #define SPIM_EVENTS_DMA_RX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                   */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Generated after EasyDMA has completed its operation. */
   #define SPIM_EVENTS_DMA_RX_END_END_Pos (0UL)       /*!< Position of END field.                                               */
   #define SPIM_EVENTS_DMA_RX_END_END_Msk (0x1UL << SPIM_EVENTS_DMA_RX_END_END_Pos) /*!< Bit mask of END field.                 */
   #define SPIM_EVENTS_DMA_RX_END_END_Min (0x0UL)     /*!< Min enumerator value of END field.                                   */
@@ -30730,17 +30765,17 @@ typedef struct {
   * @brief TX [SPIM_EVENTS_DMA_TX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after EasyDMA has completed its operation.  */
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
   __IOM uint32_t  BUSERROR;                          /*!< (@ 0x00000008) An error occured during the bus transfer.             */
 } NRF_SPIM_EVENTS_DMA_TX_Type;                       /*!< Size = 12 (0x00C)                                                    */
 
-/* SPIM_EVENTS_DMA_TX_END: Generated after all MAXCNT bytes have been transferred */
+/* SPIM_EVENTS_DMA_TX_END: Generated after EasyDMA has completed its operation. */
   #define SPIM_EVENTS_DMA_TX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                   */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Generated after EasyDMA has completed its operation. */
   #define SPIM_EVENTS_DMA_TX_END_END_Pos (0UL)       /*!< Position of END field.                                               */
   #define SPIM_EVENTS_DMA_TX_END_END_Msk (0x1UL << SPIM_EVENTS_DMA_TX_END_END_Pos) /*!< Bit mask of END field.                 */
   #define SPIM_EVENTS_DMA_TX_END_END_Min (0x0UL)     /*!< Min enumerator value of END field.                                   */
@@ -31172,7 +31207,7 @@ typedef struct {
   #define SPIM_DMA_RX_MATCH_CONFIG_ENABLE3_Disabled (0x0UL) /*!< Match filter disabled                                         */
   #define SPIM_DMA_RX_MATCH_CONFIG_ENABLE3_Enabled (0x1UL) /*!< Match filter enabled                                           */
 
-/* ONESHOT0 @Bit 16 : Configure match filter 0 as one-shot or sticky */
+/* ONESHOT0 @Bit 16 : Configure match filter 0 as one-shot or continous */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Pos (16UL) /*!< Position of ONESHOT0 field.                                        */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Msk (0x1UL << SPIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Pos) /*!< Bit mask of ONESHOT0
                                                                             field.*/
@@ -31181,7 +31216,7 @@ typedef struct {
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT1 @Bit 17 : Configure match filter 1 as one-shot or sticky */
+/* ONESHOT1 @Bit 17 : Configure match filter 1 as one-shot or continous */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Pos (17UL) /*!< Position of ONESHOT1 field.                                        */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Msk (0x1UL << SPIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Pos) /*!< Bit mask of ONESHOT1
                                                                             field.*/
@@ -31190,7 +31225,7 @@ typedef struct {
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT2 @Bit 18 : Configure match filter 2 as one-shot or sticky */
+/* ONESHOT2 @Bit 18 : Configure match filter 2 as one-shot or continous */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Pos (18UL) /*!< Position of ONESHOT2 field.                                        */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Msk (0x1UL << SPIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Pos) /*!< Bit mask of ONESHOT2
                                                                             field.*/
@@ -31199,7 +31234,7 @@ typedef struct {
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT3 @Bit 19 : Configure match filter 3 as one-shot or sticky */
+/* ONESHOT3 @Bit 19 : Configure match filter 3 as one-shot or continous */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT3_Pos (19UL) /*!< Position of ONESHOT3 field.                                        */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT3_Msk (0x1UL << SPIM_DMA_RX_MATCH_CONFIG_ONESHOT3_Pos) /*!< Bit mask of ONESHOT3
                                                                             field.*/
@@ -31215,10 +31250,9 @@ typedef struct {
   #define SPIM_DMA_RX_MATCH_CANDIDATE_MinIndex (0UL) /*!< Min index of CANDIDATE[4] array.                                     */
   #define SPIM_DMA_RX_MATCH_CANDIDATE_ResetValue (0x00000000UL) /*!< Reset value of CANDIDATE[4] register.                     */
 
-/* DATA @Bits 0..31 : Data to look for */
+/* DATA @Bits 0..7 : Data to look for */
   #define SPIM_DMA_RX_MATCH_CANDIDATE_DATA_Pos (0UL) /*!< Position of DATA field.                                              */
-  #define SPIM_DMA_RX_MATCH_CANDIDATE_DATA_Msk (0xFFFFFFFFUL << SPIM_DMA_RX_MATCH_CANDIDATE_DATA_Pos) /*!< Bit mask of DATA
-                                                                            field.*/
+  #define SPIM_DMA_RX_MATCH_CANDIDATE_DATA_Msk (0xFFUL << SPIM_DMA_RX_MATCH_CANDIDATE_DATA_Pos) /*!< Bit mask of DATA field.   */
 
 
 
@@ -31231,8 +31265,9 @@ typedef struct {
   __IOM uint32_t  PTR;                               /*!< (@ 0x00000004) RAM buffer start address                              */
   __IOM uint32_t  MAXCNT;                            /*!< (@ 0x00000008) Maximum number of bytes in channel buffer             */
   __IM  uint32_t  AMOUNT;                            /*!< (@ 0x0000000C) Number of bytes transferred in the last transaction,
-                                                                         updated after the END event. Also updated after each
-                                                                         MATCH event.*/
+                                                                         updated after the END event. For channels that supports
+                                                                         the compare match filter, this register is also updated
+                                                                         after each MATCH event.*/
   __IM  uint32_t  RESERVED1;
   __IOM uint32_t  LIST;                              /*!< (@ 0x00000014) EasyDMA list type                                     */
   __IM  uint32_t  RESERVED2;
@@ -31262,8 +31297,8 @@ typedef struct {
   #define SPIM_DMA_RX_MAXCNT_MAXCNT_Max (0xFFFFUL)   /*!< Max size of MAXCNT field.                                            */
 
 
-/* SPIM_DMA_RX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. Also updated after each
-                        MATCH event. */
+/* SPIM_DMA_RX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. For channels that
+                        supports the compare match filter, this register is also updated after each MATCH event. */
 
   #define SPIM_DMA_RX_AMOUNT_ResetValue (0x00000000UL) /*!< Reset value of AMOUNT register.                                    */
 
@@ -31318,8 +31353,9 @@ typedef struct {
   __IOM uint32_t  PTR;                               /*!< (@ 0x00000004) RAM buffer start address                              */
   __IOM uint32_t  MAXCNT;                            /*!< (@ 0x00000008) Maximum number of bytes in channel buffer             */
   __IM  uint32_t  AMOUNT;                            /*!< (@ 0x0000000C) Number of bytes transferred in the last transaction,
-                                                                         updated after the END event. Also updated after each
-                                                                         MATCH event.*/
+                                                                         updated after the END event. For channels that supports
+                                                                         the compare match filter, this register is also updated
+                                                                         after each MATCH event.*/
   __IM  uint32_t  RESERVED1;
   __IOM uint32_t  LIST;                              /*!< (@ 0x00000014) EasyDMA list type                                     */
   __IM  uint32_t  RESERVED2;
@@ -31347,8 +31383,8 @@ typedef struct {
   #define SPIM_DMA_TX_MAXCNT_MAXCNT_Max (0xFFFFUL)   /*!< Max size of MAXCNT field.                                            */
 
 
-/* SPIM_DMA_TX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. Also updated after each
-                        MATCH event. */
+/* SPIM_DMA_TX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. For channels that
+                        supports the compare match filter, this register is also updated after each MATCH event. */
 
   #define SPIM_DMA_TX_AMOUNT_ResetValue (0x00000000UL) /*!< Reset value of AMOUNT register.                                    */
 
@@ -34076,7 +34112,7 @@ typedef union {
     __IOM uint32_t SYSPWRUPREQ;                      /*!< (@ 0x00000400) System power-up request                               */
     __IOM uint32_t DBGPWRUPREQ;                      /*!< (@ 0x00000404) Debug power-up request                                */
     __IM uint32_t RESERVED1[62];
-    __IOM uint32_t ENABLE;                           /*!< (@ 0x00000500) Enable debug domain and aquire selected GPIOs         */
+    __IOM uint32_t ENABLE;                           /*!< (@ 0x00000500) Enable debug domain and acquire selected GPIOs        */
     __IM uint32_t RESERVED2[5];
     __IOM uint32_t TRACEPORTSPEED;                   /*!< (@ 0x00000518) Trace port speed                                      */
   } NRF_TAD_Type;                                    /*!< Size = 1308 (0x51C)                                                  */
@@ -34105,7 +34141,7 @@ typedef union {
   #define TAD_DBGPWRUPREQ_ACTIVE_Active (0x1UL)      /*!< Power-up request active                                              */
 
 
-/* TAD_ENABLE: Enable debug domain and aquire selected GPIOs */
+/* TAD_ENABLE: Enable debug domain and acquire selected GPIOs */
   #define TAD_ENABLE_ResetValue (0x00000000UL)       /*!< Reset value of ENABLE register.                                      */
 
 /* ENABLE @Bit 0 : (unspecified) */
@@ -34114,7 +34150,7 @@ typedef union {
   #define TAD_ENABLE_ENABLE_Min (0x0UL)              /*!< Min enumerator value of ENABLE field.                                */
   #define TAD_ENABLE_ENABLE_Max (0x1UL)              /*!< Max enumerator value of ENABLE field.                                */
   #define TAD_ENABLE_ENABLE_DISABLED (0x0UL)         /*!< Disable debug domain and release selected GPIOs                      */
-  #define TAD_ENABLE_ENABLE_ENABLED (0x1UL)          /*!< Enable debug domain and aquire selected GPIOs                        */
+  #define TAD_ENABLE_ENABLE_ENABLED (0x1UL)          /*!< Enable debug domain and acquire selected GPIOs                       */
 
 
 /* TAD_TRACEPORTSPEED: Trace port speed */
@@ -35598,7 +35634,8 @@ typedef struct {
     __IOM uint32_t INTEN;                            /*!< (@ 0x00000300) Enable or disable interrupt                           */
     __IOM uint32_t INTENSET;                         /*!< (@ 0x00000304) Enable interrupt                                      */
     __IOM uint32_t INTENCLR;                         /*!< (@ 0x00000308) Disable interrupt                                     */
-    __IM uint32_t RESERVED7[126];
+    __IM uint32_t INTPEND;                           /*!< (@ 0x0000030C) Pending interrupts                                    */
+    __IM uint32_t RESERVED7[125];
     __IOM uint32_t MODE;                             /*!< (@ 0x00000504) Timer mode selection                                  */
     __IOM uint32_t BITMODE;                          /*!< (@ 0x00000508) Configure the number of bits used by the TIMER        */
     __IM uint32_t RESERVED8;
@@ -36149,6 +36186,74 @@ typedef struct {
   #define TIMER_INTENCLR_COMPARE7_Clear (0x1UL)      /*!< Disable                                                              */
   #define TIMER_INTENCLR_COMPARE7_Disabled (0x0UL)   /*!< Read: Disabled                                                       */
   #define TIMER_INTENCLR_COMPARE7_Enabled (0x1UL)    /*!< Read: Enabled                                                        */
+
+
+/* TIMER_INTPEND: Pending interrupts */
+  #define TIMER_INTPEND_ResetValue (0x00000000UL)    /*!< Reset value of INTPEND register.                                     */
+
+/* COMPARE0 @Bit 16 : Read pending status of interrupt for event COMPARE[0] */
+  #define TIMER_INTPEND_COMPARE0_Pos (16UL)          /*!< Position of COMPARE0 field.                                          */
+  #define TIMER_INTPEND_COMPARE0_Msk (0x1UL << TIMER_INTPEND_COMPARE0_Pos) /*!< Bit mask of COMPARE0 field.                    */
+  #define TIMER_INTPEND_COMPARE0_Min (0x0UL)         /*!< Min enumerator value of COMPARE0 field.                              */
+  #define TIMER_INTPEND_COMPARE0_Max (0x1UL)         /*!< Max enumerator value of COMPARE0 field.                              */
+  #define TIMER_INTPEND_COMPARE0_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE0_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE1 @Bit 17 : Read pending status of interrupt for event COMPARE[1] */
+  #define TIMER_INTPEND_COMPARE1_Pos (17UL)          /*!< Position of COMPARE1 field.                                          */
+  #define TIMER_INTPEND_COMPARE1_Msk (0x1UL << TIMER_INTPEND_COMPARE1_Pos) /*!< Bit mask of COMPARE1 field.                    */
+  #define TIMER_INTPEND_COMPARE1_Min (0x0UL)         /*!< Min enumerator value of COMPARE1 field.                              */
+  #define TIMER_INTPEND_COMPARE1_Max (0x1UL)         /*!< Max enumerator value of COMPARE1 field.                              */
+  #define TIMER_INTPEND_COMPARE1_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE1_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE2 @Bit 18 : Read pending status of interrupt for event COMPARE[2] */
+  #define TIMER_INTPEND_COMPARE2_Pos (18UL)          /*!< Position of COMPARE2 field.                                          */
+  #define TIMER_INTPEND_COMPARE2_Msk (0x1UL << TIMER_INTPEND_COMPARE2_Pos) /*!< Bit mask of COMPARE2 field.                    */
+  #define TIMER_INTPEND_COMPARE2_Min (0x0UL)         /*!< Min enumerator value of COMPARE2 field.                              */
+  #define TIMER_INTPEND_COMPARE2_Max (0x1UL)         /*!< Max enumerator value of COMPARE2 field.                              */
+  #define TIMER_INTPEND_COMPARE2_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE2_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE3 @Bit 19 : Read pending status of interrupt for event COMPARE[3] */
+  #define TIMER_INTPEND_COMPARE3_Pos (19UL)          /*!< Position of COMPARE3 field.                                          */
+  #define TIMER_INTPEND_COMPARE3_Msk (0x1UL << TIMER_INTPEND_COMPARE3_Pos) /*!< Bit mask of COMPARE3 field.                    */
+  #define TIMER_INTPEND_COMPARE3_Min (0x0UL)         /*!< Min enumerator value of COMPARE3 field.                              */
+  #define TIMER_INTPEND_COMPARE3_Max (0x1UL)         /*!< Max enumerator value of COMPARE3 field.                              */
+  #define TIMER_INTPEND_COMPARE3_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE3_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE4 @Bit 20 : Read pending status of interrupt for event COMPARE[4] */
+  #define TIMER_INTPEND_COMPARE4_Pos (20UL)          /*!< Position of COMPARE4 field.                                          */
+  #define TIMER_INTPEND_COMPARE4_Msk (0x1UL << TIMER_INTPEND_COMPARE4_Pos) /*!< Bit mask of COMPARE4 field.                    */
+  #define TIMER_INTPEND_COMPARE4_Min (0x0UL)         /*!< Min enumerator value of COMPARE4 field.                              */
+  #define TIMER_INTPEND_COMPARE4_Max (0x1UL)         /*!< Max enumerator value of COMPARE4 field.                              */
+  #define TIMER_INTPEND_COMPARE4_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE4_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE5 @Bit 21 : Read pending status of interrupt for event COMPARE[5] */
+  #define TIMER_INTPEND_COMPARE5_Pos (21UL)          /*!< Position of COMPARE5 field.                                          */
+  #define TIMER_INTPEND_COMPARE5_Msk (0x1UL << TIMER_INTPEND_COMPARE5_Pos) /*!< Bit mask of COMPARE5 field.                    */
+  #define TIMER_INTPEND_COMPARE5_Min (0x0UL)         /*!< Min enumerator value of COMPARE5 field.                              */
+  #define TIMER_INTPEND_COMPARE5_Max (0x1UL)         /*!< Max enumerator value of COMPARE5 field.                              */
+  #define TIMER_INTPEND_COMPARE5_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE5_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE6 @Bit 22 : Read pending status of interrupt for event COMPARE[6] */
+  #define TIMER_INTPEND_COMPARE6_Pos (22UL)          /*!< Position of COMPARE6 field.                                          */
+  #define TIMER_INTPEND_COMPARE6_Msk (0x1UL << TIMER_INTPEND_COMPARE6_Pos) /*!< Bit mask of COMPARE6 field.                    */
+  #define TIMER_INTPEND_COMPARE6_Min (0x0UL)         /*!< Min enumerator value of COMPARE6 field.                              */
+  #define TIMER_INTPEND_COMPARE6_Max (0x1UL)         /*!< Max enumerator value of COMPARE6 field.                              */
+  #define TIMER_INTPEND_COMPARE6_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE6_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE7 @Bit 23 : Read pending status of interrupt for event COMPARE[7] */
+  #define TIMER_INTPEND_COMPARE7_Pos (23UL)          /*!< Position of COMPARE7 field.                                          */
+  #define TIMER_INTPEND_COMPARE7_Msk (0x1UL << TIMER_INTPEND_COMPARE7_Pos) /*!< Bit mask of COMPARE7 field.                    */
+  #define TIMER_INTPEND_COMPARE7_Min (0x0UL)         /*!< Min enumerator value of COMPARE7 field.                              */
+  #define TIMER_INTPEND_COMPARE7_Max (0x1UL)         /*!< Max enumerator value of COMPARE7 field.                              */
+  #define TIMER_INTPEND_COMPARE7_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE7_Pending (0x1UL)     /*!< Read: Pending                                                        */
 
 
 /* TIMER_MODE: Timer mode selection */
@@ -38189,7 +38294,7 @@ typedef struct {
   * @brief RX [TWIS_EVENTS_DMA_RX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after EasyDMA has completed its operation.  */
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
@@ -38197,10 +38302,10 @@ typedef struct {
   __IOM uint32_t  MATCH[4];                          /*!< (@ 0x0000000C) Pattern match is detected on the DMA data bus.        */
 } NRF_TWIS_EVENTS_DMA_RX_Type;                       /*!< Size = 28 (0x01C)                                                    */
 
-/* TWIS_EVENTS_DMA_RX_END: Generated after all MAXCNT bytes have been transferred */
+/* TWIS_EVENTS_DMA_RX_END: Generated after EasyDMA has completed its operation. */
   #define TWIS_EVENTS_DMA_RX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                   */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Generated after EasyDMA has completed its operation. */
   #define TWIS_EVENTS_DMA_RX_END_END_Pos (0UL)       /*!< Position of END field.                                               */
   #define TWIS_EVENTS_DMA_RX_END_END_Msk (0x1UL << TWIS_EVENTS_DMA_RX_END_END_Pos) /*!< Bit mask of END field.                 */
   #define TWIS_EVENTS_DMA_RX_END_END_Min (0x0UL)     /*!< Min enumerator value of END field.                                   */
@@ -38259,17 +38364,17 @@ typedef struct {
   * @brief TX [TWIS_EVENTS_DMA_TX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after EasyDMA has completed its operation.  */
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
   __IOM uint32_t  BUSERROR;                          /*!< (@ 0x00000008) An error occured during the bus transfer.             */
 } NRF_TWIS_EVENTS_DMA_TX_Type;                       /*!< Size = 12 (0x00C)                                                    */
 
-/* TWIS_EVENTS_DMA_TX_END: Generated after all MAXCNT bytes have been transferred */
+/* TWIS_EVENTS_DMA_TX_END: Generated after EasyDMA has completed its operation. */
   #define TWIS_EVENTS_DMA_TX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                   */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Generated after EasyDMA has completed its operation. */
   #define TWIS_EVENTS_DMA_TX_END_END_Pos (0UL)       /*!< Position of END field.                                               */
   #define TWIS_EVENTS_DMA_TX_END_END_Msk (0x1UL << TWIS_EVENTS_DMA_TX_END_END_Pos) /*!< Bit mask of END field.                 */
   #define TWIS_EVENTS_DMA_TX_END_END_Min (0x0UL)     /*!< Min enumerator value of END field.                                   */
@@ -38585,7 +38690,7 @@ typedef struct {
   #define TWIS_DMA_RX_MATCH_CONFIG_ENABLE3_Disabled (0x0UL) /*!< Match filter disabled                                         */
   #define TWIS_DMA_RX_MATCH_CONFIG_ENABLE3_Enabled (0x1UL) /*!< Match filter enabled                                           */
 
-/* ONESHOT0 @Bit 16 : Configure match filter 0 as one-shot or sticky */
+/* ONESHOT0 @Bit 16 : Configure match filter 0 as one-shot or continous */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT0_Pos (16UL) /*!< Position of ONESHOT0 field.                                        */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT0_Msk (0x1UL << TWIS_DMA_RX_MATCH_CONFIG_ONESHOT0_Pos) /*!< Bit mask of ONESHOT0
                                                                             field.*/
@@ -38594,7 +38699,7 @@ typedef struct {
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT0_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT0_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT1 @Bit 17 : Configure match filter 1 as one-shot or sticky */
+/* ONESHOT1 @Bit 17 : Configure match filter 1 as one-shot or continous */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT1_Pos (17UL) /*!< Position of ONESHOT1 field.                                        */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT1_Msk (0x1UL << TWIS_DMA_RX_MATCH_CONFIG_ONESHOT1_Pos) /*!< Bit mask of ONESHOT1
                                                                             field.*/
@@ -38603,7 +38708,7 @@ typedef struct {
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT1_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT1_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT2 @Bit 18 : Configure match filter 2 as one-shot or sticky */
+/* ONESHOT2 @Bit 18 : Configure match filter 2 as one-shot or continous */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT2_Pos (18UL) /*!< Position of ONESHOT2 field.                                        */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT2_Msk (0x1UL << TWIS_DMA_RX_MATCH_CONFIG_ONESHOT2_Pos) /*!< Bit mask of ONESHOT2
                                                                             field.*/
@@ -38612,7 +38717,7 @@ typedef struct {
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT2_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT2_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT3 @Bit 19 : Configure match filter 3 as one-shot or sticky */
+/* ONESHOT3 @Bit 19 : Configure match filter 3 as one-shot or continous */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT3_Pos (19UL) /*!< Position of ONESHOT3 field.                                        */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT3_Msk (0x1UL << TWIS_DMA_RX_MATCH_CONFIG_ONESHOT3_Pos) /*!< Bit mask of ONESHOT3
                                                                             field.*/
@@ -38628,10 +38733,9 @@ typedef struct {
   #define TWIS_DMA_RX_MATCH_CANDIDATE_MinIndex (0UL) /*!< Min index of CANDIDATE[4] array.                                     */
   #define TWIS_DMA_RX_MATCH_CANDIDATE_ResetValue (0x00000000UL) /*!< Reset value of CANDIDATE[4] register.                     */
 
-/* DATA @Bits 0..31 : Data to look for */
+/* DATA @Bits 0..7 : Data to look for */
   #define TWIS_DMA_RX_MATCH_CANDIDATE_DATA_Pos (0UL) /*!< Position of DATA field.                                              */
-  #define TWIS_DMA_RX_MATCH_CANDIDATE_DATA_Msk (0xFFFFFFFFUL << TWIS_DMA_RX_MATCH_CANDIDATE_DATA_Pos) /*!< Bit mask of DATA
-                                                                            field.*/
+  #define TWIS_DMA_RX_MATCH_CANDIDATE_DATA_Msk (0xFFUL << TWIS_DMA_RX_MATCH_CANDIDATE_DATA_Pos) /*!< Bit mask of DATA field.   */
 
 
 
@@ -38644,8 +38748,9 @@ typedef struct {
   __IOM uint32_t  PTR;                               /*!< (@ 0x00000004) RAM buffer start address                              */
   __IOM uint32_t  MAXCNT;                            /*!< (@ 0x00000008) Maximum number of bytes in channel buffer             */
   __IM  uint32_t  AMOUNT;                            /*!< (@ 0x0000000C) Number of bytes transferred in the last transaction,
-                                                                         updated after the END event. Also updated after each
-                                                                         MATCH event.*/
+                                                                         updated after the END event. For channels that supports
+                                                                         the compare match filter, this register is also updated
+                                                                         after each MATCH event.*/
   __IM  uint32_t  RESERVED1;
   __IOM uint32_t  LIST;                              /*!< (@ 0x00000014) EasyDMA list type                                     */
   __IM  uint32_t  RESERVED2;
@@ -38675,8 +38780,8 @@ typedef struct {
   #define TWIS_DMA_RX_MAXCNT_MAXCNT_Max (0xFFFFUL)   /*!< Max size of MAXCNT field.                                            */
 
 
-/* TWIS_DMA_RX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. Also updated after each
-                        MATCH event. */
+/* TWIS_DMA_RX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. For channels that
+                        supports the compare match filter, this register is also updated after each MATCH event. */
 
   #define TWIS_DMA_RX_AMOUNT_ResetValue (0x00000000UL) /*!< Reset value of AMOUNT register.                                    */
 
@@ -38731,8 +38836,9 @@ typedef struct {
   __IOM uint32_t  PTR;                               /*!< (@ 0x00000004) RAM buffer start address                              */
   __IOM uint32_t  MAXCNT;                            /*!< (@ 0x00000008) Maximum number of bytes in channel buffer             */
   __IM  uint32_t  AMOUNT;                            /*!< (@ 0x0000000C) Number of bytes transferred in the last transaction,
-                                                                         updated after the END event. Also updated after each
-                                                                         MATCH event.*/
+                                                                         updated after the END event. For channels that supports
+                                                                         the compare match filter, this register is also updated
+                                                                         after each MATCH event.*/
   __IM  uint32_t  RESERVED1;
   __IOM uint32_t  LIST;                              /*!< (@ 0x00000014) EasyDMA list type                                     */
   __IM  uint32_t  RESERVED2;
@@ -38760,8 +38866,8 @@ typedef struct {
   #define TWIS_DMA_TX_MAXCNT_MAXCNT_Max (0xFFFFUL)   /*!< Max size of MAXCNT field.                                            */
 
 
-/* TWIS_DMA_TX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. Also updated after each
-                        MATCH event. */
+/* TWIS_DMA_TX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. For channels that
+                        supports the compare match filter, this register is also updated after each MATCH event. */
 
   #define TWIS_DMA_TX_AMOUNT_ResetValue (0x00000000UL) /*!< Reset value of AMOUNT register.                                    */
 
@@ -40022,7 +40128,7 @@ typedef struct {
   * @brief RX [UARTE_EVENTS_DMA_RX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after EasyDMA has completed its operation.  */
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
@@ -40030,10 +40136,10 @@ typedef struct {
   __IOM uint32_t  MATCH[4];                          /*!< (@ 0x0000000C) Pattern match is detected on the DMA data bus.        */
 } NRF_UARTE_EVENTS_DMA_RX_Type;                      /*!< Size = 28 (0x01C)                                                    */
 
-/* UARTE_EVENTS_DMA_RX_END: Generated after all MAXCNT bytes have been transferred */
+/* UARTE_EVENTS_DMA_RX_END: Generated after EasyDMA has completed its operation. */
   #define UARTE_EVENTS_DMA_RX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                  */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Generated after EasyDMA has completed its operation. */
   #define UARTE_EVENTS_DMA_RX_END_END_Pos (0UL)      /*!< Position of END field.                                               */
   #define UARTE_EVENTS_DMA_RX_END_END_Msk (0x1UL << UARTE_EVENTS_DMA_RX_END_END_Pos) /*!< Bit mask of END field.               */
   #define UARTE_EVENTS_DMA_RX_END_END_Min (0x0UL)    /*!< Min enumerator value of END field.                                   */
@@ -40092,17 +40198,17 @@ typedef struct {
   * @brief TX [UARTE_EVENTS_DMA_TX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after EasyDMA has completed its operation.  */
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
   __IOM uint32_t  BUSERROR;                          /*!< (@ 0x00000008) An error occured during the bus transfer.             */
 } NRF_UARTE_EVENTS_DMA_TX_Type;                      /*!< Size = 12 (0x00C)                                                    */
 
-/* UARTE_EVENTS_DMA_TX_END: Generated after all MAXCNT bytes have been transferred */
+/* UARTE_EVENTS_DMA_TX_END: Generated after EasyDMA has completed its operation. */
   #define UARTE_EVENTS_DMA_TX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                  */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Generated after EasyDMA has completed its operation. */
   #define UARTE_EVENTS_DMA_TX_END_END_Pos (0UL)      /*!< Position of END field.                                               */
   #define UARTE_EVENTS_DMA_TX_END_END_Msk (0x1UL << UARTE_EVENTS_DMA_TX_END_END_Pos) /*!< Bit mask of END field.               */
   #define UARTE_EVENTS_DMA_TX_END_END_Min (0x0UL)    /*!< Min enumerator value of END field.                                   */
@@ -40530,8 +40636,9 @@ typedef struct {
   __IOM uint32_t  PTR;                               /*!< (@ 0x00000004) RAM buffer start address                              */
   __IOM uint32_t  MAXCNT;                            /*!< (@ 0x00000008) Maximum number of bytes in channel buffer             */
   __IM  uint32_t  AMOUNT;                            /*!< (@ 0x0000000C) Number of bytes transferred in the last transaction,
-                                                                         updated after the END event. Also updated after each
-                                                                         MATCH event.*/
+                                                                         updated after the END event. For channels that supports
+                                                                         the compare match filter, this register is also updated
+                                                                         after each MATCH event.*/
   __IM  uint32_t  RESERVED1;
   __IOM uint32_t  LIST;                              /*!< (@ 0x00000014) EasyDMA list type                                     */
   __IM  uint32_t  RESERVED2;
@@ -40561,8 +40668,8 @@ typedef struct {
   #define UARTE_DMA_RX_MAXCNT_MAXCNT_Max (0xFFFFUL)  /*!< Max size of MAXCNT field.                                            */
 
 
-/* UARTE_DMA_RX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. Also updated after
-                         each MATCH event. */
+/* UARTE_DMA_RX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. For channels that
+                         supports the compare match filter, this register is also updated after each MATCH event. */
 
   #define UARTE_DMA_RX_AMOUNT_ResetValue (0x00000000UL) /*!< Reset value of AMOUNT register.                                   */
 
@@ -40617,8 +40724,9 @@ typedef struct {
   __IOM uint32_t  PTR;                               /*!< (@ 0x00000004) RAM buffer start address                              */
   __IOM uint32_t  MAXCNT;                            /*!< (@ 0x00000008) Maximum number of bytes in channel buffer             */
   __IM  uint32_t  AMOUNT;                            /*!< (@ 0x0000000C) Number of bytes transferred in the last transaction,
-                                                                         updated after the END event. Also updated after each
-                                                                         MATCH event.*/
+                                                                         updated after the END event. For channels that supports
+                                                                         the compare match filter, this register is also updated
+                                                                         after each MATCH event.*/
   __IM  uint32_t  RESERVED1;
   __IOM uint32_t  LIST;                              /*!< (@ 0x00000014) EasyDMA list type                                     */
   __IM  uint32_t  RESERVED2;
@@ -40646,8 +40754,8 @@ typedef struct {
   #define UARTE_DMA_TX_MAXCNT_MAXCNT_Max (0xFFFFUL)  /*!< Max size of MAXCNT field.                                            */
 
 
-/* UARTE_DMA_TX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. Also updated after
-                         each MATCH event. */
+/* UARTE_DMA_TX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. For channels that
+                         supports the compare match filter, this register is also updated after each MATCH event. */
 
   #define UARTE_DMA_TX_AMOUNT_ResetValue (0x00000000UL) /*!< Reset value of AMOUNT register.                                   */
 
@@ -42343,7 +42451,7 @@ typedef struct {
   #define VPR_DEBUGIF_DMCONTROL_SETRESETHALTREQ_Min (0x0UL) /*!< Min enumerator value of SETRESETHALTREQ field.                */
   #define VPR_DEBUGIF_DMCONTROL_SETRESETHALTREQ_Max (0x1UL) /*!< Max enumerator value of SETRESETHALTREQ field.                */
   #define VPR_DEBUGIF_DMCONTROL_SETRESETHALTREQ_NoOperation (0x0UL) /*!< No operation when written 0.                          */
-  #define VPR_DEBUGIF_DMCONTROL_SETRESETHALTREQ_Clear (0x1UL) /*!< Sets the halt on reset request                              */
+  #define VPR_DEBUGIF_DMCONTROL_SETRESETHALTREQ_Set (0x1UL) /*!< Sets the halt on reset request                                */
 
 /* HARTSELHI @Bits 6..15 : The high 10 bits of hartsel. */
   #define VPR_DEBUGIF_DMCONTROL_HARTSELHI_Pos (6UL)  /*!< Position of HARTSELHI field.                                         */
@@ -42687,7 +42795,6 @@ typedef struct {
   #define VPR_DEBUGIF_ABSTRACTCMD_CMDTYPE_Min (0x00UL) /*!< Min enumerator value of CMDTYPE field.                             */
   #define VPR_DEBUGIF_ABSTRACTCMD_CMDTYPE_Max (0x02UL) /*!< Max enumerator value of CMDTYPE field.                             */
   #define VPR_DEBUGIF_ABSTRACTCMD_CMDTYPE_REGACCESS (0x00UL) /*!< Register Access Command                                      */
-  #define VPR_DEBUGIF_ABSTRACTCMD_CMDTYPE_QUICKACCESS (0x01UL) /*!< Quick Access Command                                       */
   #define VPR_DEBUGIF_ABSTRACTCMD_CMDTYPE_MEMACCESS (0x02UL) /*!< Memory Access Command                                        */
 
 
@@ -42777,40 +42884,25 @@ typedef struct {
 /* VPR_DEBUGIF_SBCS: System Bus Access Control and Status */
   #define VPR_DEBUGIF_SBCS_ResetValue (0x20000000UL) /*!< Reset value of SBCS register.                                        */
 
-/* SBACCESS8 @Bit 0 : (unspecified) */
+/* SBACCESS8 @Bit 0 : 8-bit system bus accesses are supported. */
   #define VPR_DEBUGIF_SBCS_SBACCESS8_Pos (0UL)       /*!< Position of SBACCESS8 field.                                         */
   #define VPR_DEBUGIF_SBCS_SBACCESS8_Msk (0x1UL << VPR_DEBUGIF_SBCS_SBACCESS8_Pos) /*!< Bit mask of SBACCESS8 field.           */
-  #define VPR_DEBUGIF_SBCS_SBACCESS8_Min (0x1UL)     /*!< Min enumerator value of SBACCESS8 field.                             */
-  #define VPR_DEBUGIF_SBCS_SBACCESS8_Max (0x1UL)     /*!< Max enumerator value of SBACCESS8 field.                             */
-  #define VPR_DEBUGIF_SBCS_SBACCESS8_sbaccess8 (0x1UL) /*!< 8-bit system bus accesses are supported.                           */
 
-/* SBACCESS16 @Bit 1 : (unspecified) */
+/* SBACCESS16 @Bit 1 : 16-bit system bus accesses are supported. */
   #define VPR_DEBUGIF_SBCS_SBACCESS16_Pos (1UL)      /*!< Position of SBACCESS16 field.                                        */
   #define VPR_DEBUGIF_SBCS_SBACCESS16_Msk (0x1UL << VPR_DEBUGIF_SBCS_SBACCESS16_Pos) /*!< Bit mask of SBACCESS16 field.        */
-  #define VPR_DEBUGIF_SBCS_SBACCESS16_Min (0x1UL)    /*!< Min enumerator value of SBACCESS16 field.                            */
-  #define VPR_DEBUGIF_SBCS_SBACCESS16_Max (0x1UL)    /*!< Max enumerator value of SBACCESS16 field.                            */
-  #define VPR_DEBUGIF_SBCS_SBACCESS16_sbaccess16 (0x1UL) /*!< 16-bit system bus accesses are supported.                        */
 
-/* SBACCESS32 @Bit 2 : (unspecified) */
+/* SBACCESS32 @Bit 2 : 32-bit system bus accesses are supported. */
   #define VPR_DEBUGIF_SBCS_SBACCESS32_Pos (2UL)      /*!< Position of SBACCESS32 field.                                        */
   #define VPR_DEBUGIF_SBCS_SBACCESS32_Msk (0x1UL << VPR_DEBUGIF_SBCS_SBACCESS32_Pos) /*!< Bit mask of SBACCESS32 field.        */
-  #define VPR_DEBUGIF_SBCS_SBACCESS32_Min (0x1UL)    /*!< Min enumerator value of SBACCESS32 field.                            */
-  #define VPR_DEBUGIF_SBCS_SBACCESS32_Max (0x1UL)    /*!< Max enumerator value of SBACCESS32 field.                            */
-  #define VPR_DEBUGIF_SBCS_SBACCESS32_sbaccess32 (0x1UL) /*!< 32-bit system bus accesses are supported.                        */
 
-/* SBACCESS64 @Bit 3 : (unspecified) */
+/* SBACCESS64 @Bit 3 : 64-bit system bus accesses are supported. */
   #define VPR_DEBUGIF_SBCS_SBACCESS64_Pos (3UL)      /*!< Position of SBACCESS64 field.                                        */
   #define VPR_DEBUGIF_SBCS_SBACCESS64_Msk (0x1UL << VPR_DEBUGIF_SBCS_SBACCESS64_Pos) /*!< Bit mask of SBACCESS64 field.        */
-  #define VPR_DEBUGIF_SBCS_SBACCESS64_Min (0x1UL)    /*!< Min enumerator value of SBACCESS64 field.                            */
-  #define VPR_DEBUGIF_SBCS_SBACCESS64_Max (0x1UL)    /*!< Max enumerator value of SBACCESS64 field.                            */
-  #define VPR_DEBUGIF_SBCS_SBACCESS64_sbaccess64 (0x1UL) /*!< 64-bit system bus accesses are supported.                        */
 
-/* SBACCESS128 @Bit 4 : (unspecified) */
+/* SBACCESS128 @Bit 4 : 128-bit system bus accesses are supported. */
   #define VPR_DEBUGIF_SBCS_SBACCESS128_Pos (4UL)     /*!< Position of SBACCESS128 field.                                       */
   #define VPR_DEBUGIF_SBCS_SBACCESS128_Msk (0x1UL << VPR_DEBUGIF_SBCS_SBACCESS128_Pos) /*!< Bit mask of SBACCESS128 field.     */
-  #define VPR_DEBUGIF_SBCS_SBACCESS128_Min (0x1UL)   /*!< Min enumerator value of SBACCESS128 field.                           */
-  #define VPR_DEBUGIF_SBCS_SBACCESS128_Max (0x1UL)   /*!< Max enumerator value of SBACCESS128 field.                           */
-  #define VPR_DEBUGIF_SBCS_SBACCESS128_sbaccess128 (0x1UL) /*!< 128-bit system bus accesses are supported.                     */
 
 /* SBASIZE @Bits 5..11 : Width of system bus addresses in bits. (0 indicates there is no bus access support.) */
   #define VPR_DEBUGIF_SBCS_SBASIZE_Pos (5UL)         /*!< Position of SBASIZE field.                                           */
@@ -42888,7 +42980,7 @@ typedef struct {
   #define VPR_DEBUGIF_SBCS_SBVERSION_version0 (0x0UL) /*!< The System Bus interface conforms to mainline drafts of thia RISC-V
                                                            External Debug Support spec older than 1 January, 2018.*/
   #define VPR_DEBUGIF_SBCS_SBVERSION_version1 (0x1UL) /*!< The System Bus interface conforms to RISC-V External Debug Support
-                                                           version 0.14.0-DRAFT. Other values are reserved for future versions.*/
+                                                           version 0.13.2. Other values are reserved for future versions.*/
 
 
 /* VPR_DEBUGIF_SBADDRESS0: System Bus Addres 31:0 */
@@ -43005,6 +43097,10 @@ typedef struct {
   #define VPR_SUBSCRIBE_TRIGGER_MinIndex (16UL)      /*!< Min index of SUBSCRIBE_TRIGGER[20] array.                            */
   #define VPR_SUBSCRIBE_TRIGGER_ResetValue (0x00000000UL) /*!< Reset value of SUBSCRIBE_TRIGGER[20] register.                  */
 
+/* CHIDX @Bits 0..7 : DPPI channel that task TASKS_TRIGGER[n] will subscribe to */
+  #define VPR_SUBSCRIBE_TRIGGER_CHIDX_Pos (0UL)      /*!< Position of CHIDX field.                                             */
+  #define VPR_SUBSCRIBE_TRIGGER_CHIDX_Msk (0xFFUL << VPR_SUBSCRIBE_TRIGGER_CHIDX_Pos) /*!< Bit mask of CHIDX field.            */
+
 /* EN @Bit 31 : Subscription enable bit */
   #define VPR_SUBSCRIBE_TRIGGER_EN_Pos (31UL)        /*!< Position of EN field.                                                */
   #define VPR_SUBSCRIBE_TRIGGER_EN_Msk (0x1UL << VPR_SUBSCRIBE_TRIGGER_EN_Pos) /*!< Bit mask of EN field.                      */
@@ -43035,6 +43131,10 @@ typedef struct {
   #define VPR_PUBLISH_TRIGGERED_MaxIndex (19UL)      /*!< Max index of PUBLISH_TRIGGERED[20] array.                            */
   #define VPR_PUBLISH_TRIGGERED_MinIndex (16UL)      /*!< Min index of PUBLISH_TRIGGERED[20] array.                            */
   #define VPR_PUBLISH_TRIGGERED_ResetValue (0x00000000UL) /*!< Reset value of PUBLISH_TRIGGERED[20] register.                  */
+
+/* CHIDX @Bits 0..7 : DPPI channel that event EVENTS_TRIGGERED[n] will publish to */
+  #define VPR_PUBLISH_TRIGGERED_CHIDX_Pos (0UL)      /*!< Position of CHIDX field.                                             */
+  #define VPR_PUBLISH_TRIGGERED_CHIDX_Msk (0xFFUL << VPR_PUBLISH_TRIGGERED_CHIDX_Pos) /*!< Bit mask of CHIDX field.            */
 
 /* EN @Bit 31 : Publication enable bit */
   #define VPR_PUBLISH_TRIGGERED_EN_Pos (31UL)        /*!< Position of EN field.                                                */
@@ -43344,7 +43444,7 @@ typedef struct {
   #define VPRCSR_MSTATUS (0x00000300ul)
   #define VPRCSR_MSTATUS_ResetValue (0x00001800UL)   /*!< Reset value of MSTATUS register.                                     */
 
-/* MIE @Bit 3 : global interrupt enable for machine privilege mode */
+/* MIE @Bit 3 : Global interrupt enable for machine privilege mode */
   #define VPRCSR_MSTATUS_MIE_Pos (3UL)               /*!< Position of MIE field.                                               */
   #define VPRCSR_MSTATUS_MIE_Msk (0x1UL << VPRCSR_MSTATUS_MIE_Pos) /*!< Bit mask of MIE field.                                 */
   #define VPRCSR_MSTATUS_MIE_Min (0x0UL)             /*!< Min enumerator value of MIE field.                                   */
@@ -43397,7 +43497,7 @@ typedef struct {
   #define VPRCSR_MISA_C_Disabled (0x0UL)             /*!< (unspecified)                                                        */
   #define VPRCSR_MISA_C_Enabled (0x1UL)              /*!< (unspecified)                                                        */
 
-/* E @Bit 4 : RV32E base ISA */
+/* E @Bit 4 : RV32E/RV64E base ISA */
   #define VPRCSR_MISA_E_Pos (4UL)                    /*!< Position of E field.                                                 */
   #define VPRCSR_MISA_E_Msk (0x1UL << VPRCSR_MISA_E_Pos) /*!< Bit mask of E field.                                             */
   #define VPRCSR_MISA_E_Min (0x0UL)                  /*!< Min enumerator value of E field.                                     */
@@ -43428,6 +43528,14 @@ typedef struct {
   #define VPRCSR_MISA_N_Max (0x1UL)                  /*!< Max enumerator value of N field.                                     */
   #define VPRCSR_MISA_N_Disabled (0x0UL)             /*!< (unspecified)                                                        */
   #define VPRCSR_MISA_N_Enabled (0x1UL)              /*!< (unspecified)                                                        */
+
+/* X @Bit 23 : Non-standard extensions present */
+  #define VPRCSR_MISA_X_Pos (23UL)                   /*!< Position of X field.                                                 */
+  #define VPRCSR_MISA_X_Msk (0x1UL << VPRCSR_MISA_X_Pos) /*!< Bit mask of X field.                                             */
+  #define VPRCSR_MISA_X_Min (0x0UL)                  /*!< Min enumerator value of X field.                                     */
+  #define VPRCSR_MISA_X_Max (0x1UL)                  /*!< Max enumerator value of X field.                                     */
+  #define VPRCSR_MISA_X_NotPresent (0x0UL)           /*!< (unspecified)                                                        */
+  #define VPRCSR_MISA_X_Present (0x1UL)              /*!< (unspecified)                                                        */
 
 /* MXL @Bits 30..31 : Machine XLEN */
   #define VPRCSR_MISA_MXL_Pos (30UL)                 /*!< Position of MXL field.                                               */
@@ -43601,6 +43709,11 @@ typedef struct {
   #define VPRCSR_MINTTHRESH_TH_Min (0x00UL)          /*!< Min enumerator value of TH field.                                    */
   #define VPRCSR_MINTTHRESH_TH_Max (0xFFUL)          /*!< Max enumerator value of TH field.                                    */
   #define VPRCSR_MINTTHRESH_TH_DISABLED (0x00UL)     /*!< Threshold disabled                                                   */
+  #define VPRCSR_MINTTHRESH_TH_THRESH1F (0x1FUL)     /*!< Threshold level 0x1F                                                 */
+  #define VPRCSR_MINTTHRESH_TH_THRESH3F (0x3FUL)     /*!< Threshold level 0x3F                                                 */
+  #define VPRCSR_MINTTHRESH_TH_THRESH7F (0x7FUL)     /*!< Threshold level 0x7F                                                 */
+  #define VPRCSR_MINTTHRESH_TH_THRESHBF (0xBFUL)     /*!< Threshold level 0xBF                                                 */
+  #define VPRCSR_MINTTHRESH_TH_THRESHFF (0xFFUL)     /*!< Threshold level 0xFF                                                 */
   #define VPRCSR_MINTTHRESH_TH_THRESHLEVEL0 (0x3FUL) /*!< Threshold level 0                                                    */
   #define VPRCSR_MINTTHRESH_TH_THRESHLEVEL1 (0x7FUL) /*!< Threshold level 1                                                    */
   #define VPRCSR_MINTTHRESH_TH_THRESHLEVEL2 (0xBFUL) /*!< Threshold level 2                                                    */
@@ -43635,7 +43748,7 @@ typedef struct {
   #define VPRCSR_TDATA1 (0x000007A1ul)
   #define VPRCSR_TDATA1_ResetValue (0x00000000UL)    /*!< Reset value of TDATA1 register.                                      */
 
-/* DATA @Bits 0..26 : Trigger Specific Data */
+/* DATA @Bits 0..26 : Trigger Specific Data, refer to the RISC-V Debug Specification for more details. */
   #define VPRCSR_TDATA1_DATA_Pos (0UL)               /*!< Position of DATA field.                                              */
   #define VPRCSR_TDATA1_DATA_Msk (0x7FFFFFFUL << VPRCSR_TDATA1_DATA_Pos) /*!< Bit mask of DATA field.                          */
 
@@ -43653,12 +43766,10 @@ typedef struct {
   #define VPRCSR_TDATA1_TYPE_Pos (28UL)              /*!< Position of TYPE field.                                              */
   #define VPRCSR_TDATA1_TYPE_Msk (0xFUL << VPRCSR_TDATA1_TYPE_Pos) /*!< Bit mask of TYPE field.                                */
   #define VPRCSR_TDATA1_TYPE_Min (0x0UL)             /*!< Min enumerator value of TYPE field.                                  */
-  #define VPRCSR_TDATA1_TYPE_Max (0xFUL)             /*!< Max enumerator value of TYPE field.                                  */
+  #define VPRCSR_TDATA1_TYPE_Max (0x2UL)             /*!< Max enumerator value of TYPE field.                                  */
   #define VPRCSR_TDATA1_TYPE_NOTRIGGER (0x0UL)       /*!< There is no trigger at this tselect                                  */
   #define VPRCSR_TDATA1_TYPE_MATCH (0x2UL)           /*!< The trigger is an address match trigger. The remaining bits in this
                                                           register act as described in mcontrol*/
-  #define VPRCSR_TDATA1_TYPE_REMAP (0xFUL)           /*!< This trigger is a remapping trigger. The remaining bits in this
-                                                          register behave as described in remapping functionality*/
 
 
 /**
@@ -43687,7 +43798,7 @@ typedef struct {
   * @brief TINFO [VPRCSR_TINFO] Trigger Info
   */
   #define VPRCSR_TINFO (0x000007A4ul)
-  #define VPRCSR_TINFO_ResetValue (0x00000000UL)     /*!< Reset value of TINFO register.                                       */
+  #define VPRCSR_TINFO_ResetValue (0x00000004UL)     /*!< Reset value of TINFO register.                                       */
 
 /* INFO @Bits 0..15 : Trigger Info value */
   #define VPRCSR_TINFO_INFO_Pos (0UL)                /*!< Position of INFO field.                                              */
@@ -43905,10 +44016,6 @@ typedef struct {
   #define VPRCSR_MARCHID_DBG_Pos (3UL)               /*!< Position of DBG field.                                               */
   #define VPRCSR_MARCHID_DBG_Msk (0x1UL << VPRCSR_MARCHID_DBG_Pos) /*!< Bit mask of DBG field.                                 */
 
-/* REMAP @Bit 4 : Indicates the REMAP parameter option */
-  #define VPRCSR_MARCHID_REMAP_Pos (4UL)             /*!< Position of REMAP field.                                             */
-  #define VPRCSR_MARCHID_REMAP_Msk (0x1UL << VPRCSR_MARCHID_REMAP_Pos) /*!< Bit mask of REMAP field.                           */
-
 /* BUSWIDTH @Bit 5 : Indicates the BUS_WIDTH parameter option */
   #define VPRCSR_MARCHID_BUSWIDTH_Pos (5UL)          /*!< Position of BUSWIDTH field.                                          */
   #define VPRCSR_MARCHID_BUSWIDTH_Msk (0x1UL << VPRCSR_MARCHID_BUSWIDTH_Pos) /*!< Bit mask of BUSWIDTH field.                  */
@@ -43925,10 +44032,6 @@ typedef struct {
   #define VPRCSR_MARCHID_CACHEEXTRATAGBUF_Pos (11UL) /*!< Position of CACHEEXTRATAGBUF field.                                  */
   #define VPRCSR_MARCHID_CACHEEXTRATAGBUF_Msk (0x7UL << VPRCSR_MARCHID_CACHEEXTRATAGBUF_Pos) /*!< Bit mask of CACHEEXTRATAGBUF
                                                                             field.*/
-
-/* RETAINED @Bit 16 : Indicates the RETAINED parameter option */
-  #define VPRCSR_MARCHID_RETAINED_Pos (16UL)         /*!< Position of RETAINED field.                                          */
-  #define VPRCSR_MARCHID_RETAINED_Msk (0x1UL << VPRCSR_MARCHID_RETAINED_Pos) /*!< Bit mask of RETAINED field.                  */
 
 /* IMPLEM @Bit 31 : Indicates a non-open implementation */
   #define VPRCSR_MARCHID_IMPLEM_Pos (31UL)           /*!< Position of IMPLEM field.                                            */
@@ -43984,15 +44087,6 @@ typedef struct {
   #define VPRCSR_NORDIC_VPRNORDICCTRL_ENABLERTPERIPH_Disabled (0x0UL) /*!< (unspecified)                                       */
   #define VPRCSR_NORDIC_VPRNORDICCTRL_ENABLERTPERIPH_Enabled (0x1UL) /*!< (unspecified)                                        */
 
-/* ENABLEREMAP @Bit 3 : Enable remap feature */
-  #define VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Pos (3UL) /*!< Position of ENABLEREMAP field.                                */
-  #define VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Msk (0x1UL << VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Pos) /*!< Bit mask of
-                                                                            ENABLEREMAP field.*/
-  #define VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Min (0x0UL) /*!< Min enumerator value of ENABLEREMAP field.                  */
-  #define VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Max (0x1UL) /*!< Max enumerator value of ENABLEREMAP field.                  */
-  #define VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Disabled (0x0UL) /*!< (unspecified)                                          */
-  #define VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Enabled (0x1UL) /*!< (unspecified)                                           */
-
 /* CNTIRQENABLE @Bit 6 : Enables the generation of IRQ number COUNTER_IRQ_NUM */
   #define VPRCSR_NORDIC_VPRNORDICCTRL_CNTIRQENABLE_Pos (6UL) /*!< Position of CNTIRQENABLE field.                              */
   #define VPRCSR_NORDIC_VPRNORDICCTRL_CNTIRQENABLE_Msk (0x1UL << VPRCSR_NORDIC_VPRNORDICCTRL_CNTIRQENABLE_Pos) /*!< Bit mask of
@@ -44037,9 +44131,9 @@ typedef struct {
                                                                          sleep state = RESET has the same effect as going to
                                                                          sleep with sleep state = WAIT*/
   #define VPRCSR_NORDIC_VPRNORDICSLEEPCTRL_SLEEPSTATE_SLEEP (0x5UL) /*!< Sleep is turning the clock off                        */
-  #define VPRCSR_NORDIC_VPRNORDICSLEEPCTRL_SLEEPSTATE_DEEPSLEEP (0x7UL) /*!< Sleep is turning the clock off and power is turned
-                                                                            off*/
-  #define VPRCSR_NORDIC_VPRNORDICSLEEPCTRL_SLEEPSTATE_HIBERNATE (0xFUL) /*!< sleep is turning the clock off and all the
+  #define VPRCSR_NORDIC_VPRNORDICSLEEPCTRL_SLEEPSTATE_DEEPSLEEP (0x7UL) /*!< Sleep is turning the clock off, equivalent to
+                                                                            SLEEP*/
+  #define VPRCSR_NORDIC_VPRNORDICSLEEPCTRL_SLEEPSTATE_HIBERNATE (0xFUL) /*!< Sleep is turning the clock off and all the
                                                                             registers are saved automatically, restart by a
                                                                             reset*/
 
@@ -44063,7 +44157,9 @@ typedef struct {
 
 
 /**
-  * @brief VPRNORDICFEATURESDISABLE [VPRCSR_NORDIC_VPRNORDICFEATURESDISABLE] (unspecified)
+  * @brief VPRNORDICFEATURESDISABLE [VPRCSR_NORDIC_VPRNORDICFEATURESDISABLE] Contains disable bits for certain features in the
+            core
+
   */
   #define VPRCSR_NORDIC_VPRNORDICFEATURESDISABLE (0x000007C2ul)
   #define VPRCSR_NORDIC_VPRNORDICFEATURESDISABLE_ResetValue (0x00000002UL) /*!< Reset value of VPRNORDICFEATURESDISABLE
@@ -44127,78 +44223,71 @@ typedef struct {
   #define VPRCSR_NORDIC_EXTPARAMS_BKPT_Pos (3UL)     /*!< Position of BKPT field.                                              */
   #define VPRCSR_NORDIC_EXTPARAMS_BKPT_Msk (0xFUL << VPRCSR_NORDIC_EXTPARAMS_BKPT_Pos) /*!< Bit mask of BKPT field.            */
 
-/* REMAP @Bit 7 : value of REMAP */
-  #define VPRCSR_NORDIC_EXTPARAMS_REMAP_Pos (7UL)    /*!< Position of REMAP field.                                             */
-  #define VPRCSR_NORDIC_EXTPARAMS_REMAP_Msk (0x1UL << VPRCSR_NORDIC_EXTPARAMS_REMAP_Pos) /*!< Bit mask of REMAP field.         */
+
+/**
+  * @brief AXCACHE [VPRCSR_NORDIC_AXCACHE] Memory type encoding
+  */
+  #define VPRCSR_NORDIC_AXCACHE (0x000007C5ul)
+  #define VPRCSR_NORDIC_AXCACHE_ResetValue (0x00000EEEUL) /*!< Reset value of AXCACHE register.                                */
+
+/* AWCACHE @Bits 0..3 : Memory type for data stores */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_Pos (0UL)    /*!< Position of AWCACHE field.                                           */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_Msk (0xFUL << VPRCSR_NORDIC_AXCACHE_AWCACHE_Pos) /*!< Bit mask of AWCACHE field.       */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_Min (0x0UL)  /*!< Min enumerator value of AWCACHE field.                               */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_Max (0xFUL)  /*!< Max enumerator value of AWCACHE field.                               */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_DEVNONBUFF (0x0UL) /*!< Device Non-Bufferable                                          */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_DEVBUFF (0x1UL) /*!< Device Bufferable                                                 */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_NNONCACHENONBUFF (0x2UL) /*!< Normal Non-cacheable Non-bufferable                      */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_NNONCACHEBUFF (0x3UL) /*!< Normal Non-cacheable Bufferable                             */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_WRITETHNALLOC (0x6UL) /*!< Write-through No-allocate                                   */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_WRITETHRALLOC (0x6UL) /*!< Write-through Read-allocate                                 */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_WRITETHWALLOC (0xEUL) /*!< Write-through Write-allocate                                */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_WRITETHRWALLOC (0xEUL) /*!< Write-through Read and Write-allocate                      */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_WRITEBACKNALLOC (0x7UL) /*!< Write-back No-allocate                                    */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_WRITEBACKRALLOC (0x7UL) /*!< Write-back Read-allocate                                  */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_WRITEBACKWALLOC (0xFUL) /*!< Write-back Write-allocate                                 */
+  #define VPRCSR_NORDIC_AXCACHE_AWCACHE_WRITEBACKRWALLOC (0xFUL) /*!< Write-back Read and Write-allocate                       */
+
+/* IARCACHE @Bits 4..7 : Memory type for instruction loads */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_Pos (4UL)   /*!< Position of IARCACHE field.                                          */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_Msk (0xFUL << VPRCSR_NORDIC_AXCACHE_IARCACHE_Pos) /*!< Bit mask of IARCACHE field.    */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_Min (0x0UL) /*!< Min enumerator value of IARCACHE field.                              */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_Max (0xFUL) /*!< Max enumerator value of IARCACHE field.                              */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_DEVNONBUFF (0x0UL) /*!< Device Non-Bufferable                                         */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_DEVBUFF (0x1UL) /*!< Device Bufferable                                                */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_NNONCACHENONBUFF (0x2UL) /*!< Normal Non-cacheable Non-bufferable                     */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_NNONCACHEBUFF (0x3UL) /*!< Normal Non-cacheable Bufferable                            */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_WRITETHNALLOC (0xAUL) /*!< Write-through No-allocate                                  */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_WRITETHRALLOC (0xEUL) /*!< Write-through Read-allocate                                */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_WRITETHWALLOC (0xAUL) /*!< Write-through Write-allocate                               */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_WRITETHRWALLOC (0xEUL) /*!< Write-through Read and Write-allocate                     */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_WRITEBACKNALLOC (0xBUL) /*!< Write-back No-allocate                                   */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_WRITEBACKRALLOC (0xFUL) /*!< Write-back Read-allocate                                 */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_WRITEBACKWALLOC (0xBUL) /*!< Write-back Write-allocate                                */
+  #define VPRCSR_NORDIC_AXCACHE_IARCACHE_WRITEBACKRWALLOC (0xFUL) /*!< Write-back Read and Write-allocate                      */
+
+/* DARCACHE @Bits 8..11 : Memory type for data loads */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_Pos (8UL)   /*!< Position of DARCACHE field.                                          */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_Msk (0xFUL << VPRCSR_NORDIC_AXCACHE_DARCACHE_Pos) /*!< Bit mask of DARCACHE field.    */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_Min (0x0UL) /*!< Min enumerator value of DARCACHE field.                              */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_Max (0xFUL) /*!< Max enumerator value of DARCACHE field.                              */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_DEVNONBUFF (0x0UL) /*!< Device Non-Bufferable                                         */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_DEVBUFF (0x1UL) /*!< Device Bufferable                                                */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_NNONCACHENONBUFF (0x2UL) /*!< Normal Non-cacheable Non-bufferable                     */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_NNONCACHEBUFF (0x3UL) /*!< Normal Non-cacheable Bufferable                            */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_WRITETHNALLOC (0xAUL) /*!< Write-through No-allocate                                  */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_WRITETHRALLOC (0xEUL) /*!< Write-through Read-allocate                                */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_WRITETHWALLOC (0xAUL) /*!< Write-through Write-allocate                               */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_WRITETHRWALLOC (0xEUL) /*!< Write-through Read and Write-allocate                     */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_WRITEBACKNALLOC (0xBUL) /*!< Write-back No-allocate                                   */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_WRITEBACKRALLOC (0xFUL) /*!< Write-back Read-allocate                                 */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_WRITEBACKWALLOC (0xBUL) /*!< Write-back Write-allocate                                */
+  #define VPRCSR_NORDIC_AXCACHE_DARCACHE_WRITEBACKRWALLOC (0xFUL) /*!< Write-back Read and Write-allocate                      */
 
 
 /**
   * @brief CACHE [VPRCSR_NORDIC_CACHE] (unspecified)
   */
-
-/**
-  * @brief AXCACHE [VPRCSR_NORDIC_CACHE_AXCACHE] Memory type encoding
-  */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE (0x000007C5ul)
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_ResetValue (0x00000EEEUL) /*!< Reset value of AXCACHE register.                          */
-
-/* AWCACHE @Bits 0..3 : Memory type for data stores */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_Pos (0UL) /*!< Position of AWCACHE field.                                        */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_Msk (0xFUL << VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_Pos) /*!< Bit mask of AWCACHE
-                                                                            field.*/
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_Min (0x0UL) /*!< Min enumerator value of AWCACHE field.                          */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_Max (0xFUL) /*!< Max enumerator value of AWCACHE field.                          */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_DEVNONBUFF (0x0UL) /*!< Device Non-Bufferable                                    */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_DEVBUFF (0x1UL) /*!< Device Bufferable                                           */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_NNONCACHENONBUFF (0x2UL) /*!< Normal Non-cacheable Non-bufferable                */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_NNONCACHEBUFF (0x3UL) /*!< Normal Non-cacheable Bufferable                       */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_WRITETHNALLOC (0x6UL) /*!< Write-through No-allocate                             */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_WRITETHRALLOC (0x6UL) /*!< Write-through Read-allocate                           */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_WRITETHWALLOC (0xEUL) /*!< Write-through Write-allocate                          */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_WRITETHRWALLOC (0xEUL) /*!< Write-through Read and Write-allocate                */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_WRITEBACKNALLOC (0x7UL) /*!< Write-back No-allocate                              */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_WRITEBACKRALLOC (0x7UL) /*!< Write-back Read-allocate                            */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_WRITEBACKWALLOC (0xFUL) /*!< Write-back Write-allocate                           */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_AWCACHE_WRITEBACKRWALLOC (0xFUL) /*!< Write-back Read and Write-allocate                 */
-
-/* IARCACHE @Bits 4..7 : Memory type for instruction loads */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_Pos (4UL) /*!< Position of IARCACHE field.                                      */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_Msk (0xFUL << VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_Pos) /*!< Bit mask of IARCACHE
-                                                                            field.*/
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_Min (0x0UL) /*!< Min enumerator value of IARCACHE field.                        */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_Max (0xFUL) /*!< Max enumerator value of IARCACHE field.                        */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_DEVNONBUFF (0x0UL) /*!< Device Non-Bufferable                                   */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_DEVBUFF (0x1UL) /*!< Device Bufferable                                          */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_NNONCACHENONBUFF (0x2UL) /*!< Normal Non-cacheable Non-bufferable               */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_NNONCACHEBUFF (0x3UL) /*!< Normal Non-cacheable Bufferable                      */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_WRITETHNALLOC (0xAUL) /*!< Write-through No-allocate                            */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_WRITETHRALLOC (0xEUL) /*!< Write-through Read-allocate                          */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_WRITETHWALLOC (0xAUL) /*!< Write-through Write-allocate                         */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_WRITETHRWALLOC (0xEUL) /*!< Write-through Read and Write-allocate               */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_WRITEBACKNALLOC (0xBUL) /*!< Write-back No-allocate                             */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_WRITEBACKRALLOC (0xFUL) /*!< Write-back Read-allocate                           */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_WRITEBACKWALLOC (0xBUL) /*!< Write-back Write-allocate                          */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_IARCACHE_WRITEBACKRWALLOC (0xFUL) /*!< Write-back Read and Write-allocate                */
-
-/* DARCACHE @Bits 8..11 : Memory type for data loads */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_Pos (8UL) /*!< Position of DARCACHE field.                                      */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_Msk (0xFUL << VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_Pos) /*!< Bit mask of DARCACHE
-                                                                            field.*/
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_Min (0x0UL) /*!< Min enumerator value of DARCACHE field.                        */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_Max (0xFUL) /*!< Max enumerator value of DARCACHE field.                        */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_DEVNONBUFF (0x0UL) /*!< Device Non-Bufferable                                   */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_DEVBUFF (0x1UL) /*!< Device Bufferable                                          */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_NNONCACHENONBUFF (0x2UL) /*!< Normal Non-cacheable Non-bufferable               */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_NNONCACHEBUFF (0x3UL) /*!< Normal Non-cacheable Bufferable                      */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_WRITETHNALLOC (0xAUL) /*!< Write-through No-allocate                            */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_WRITETHRALLOC (0xEUL) /*!< Write-through Read-allocate                          */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_WRITETHWALLOC (0xAUL) /*!< Write-through Write-allocate                         */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_WRITETHRWALLOC (0xEUL) /*!< Write-through Read and Write-allocate               */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_WRITEBACKNALLOC (0xBUL) /*!< Write-back No-allocate                             */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_WRITEBACKRALLOC (0xFUL) /*!< Write-back Read-allocate                           */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_WRITEBACKWALLOC (0xBUL) /*!< Write-back Write-allocate                          */
-  #define VPRCSR_NORDIC_CACHE_AXCACHE_DARCACHE_WRITEBACKRWALLOC (0xFUL) /*!< Write-back Read and Write-allocate                */
-
 
 /**
   * @brief CTRL [VPRCSR_NORDIC_CACHE_CTRL] Cache control
@@ -44305,7 +44394,7 @@ typedef struct {
   #define VPRCSR_NORDIC_RTPERIPHCTRL_INSEL_Min (0x0UL) /*!< Min enumerator value of INSEL field.                               */
   #define VPRCSR_NORDIC_RTPERIPHCTRL_INSEL_Max (0x1UL) /*!< Max enumerator value of INSEL field.                               */
   #define VPRCSR_NORDIC_RTPERIPHCTRL_INSEL_SamePin (0x0UL) /*!< Sample on same OUT pin                                         */
-  #define VPRCSR_NORDIC_RTPERIPHCTRL_INSEL_SeparatePin (0x1UL) /*!< Sample on separate pin                                     */
+  #define VPRCSR_NORDIC_RTPERIPHCTRL_INSEL_SeparatePin (0x1UL) /*!< Sample on separate pin (OUT+1)                             */
 
 
 /**
@@ -44390,7 +44479,7 @@ typedef struct {
 
 
 /**
-  * @brief CNT0 [VPRCSR_NORDIC_CNT0] 16 bit Counter 0
+  * @brief CNT0 [VPRCSR_NORDIC_CNT0] 16-bit Counter 0
   */
   #define VPRCSR_NORDIC_CNT0 (0x000007D5ul)
   #define VPRCSR_NORDIC_CNT0_ResetValue (0x00000000UL) /*!< Reset value of CNT0 register.                                      */
@@ -46465,9 +46554,69 @@ typedef struct {
   #define VPRCSR_NORDIC_DIROUT_OUT_Pos (0UL)         /*!< Position of OUT field.                                               */
   #define VPRCSR_NORDIC_DIROUT_OUT_Msk (0xFFFFUL << VPRCSR_NORDIC_DIROUT_OUT_Pos) /*!< Bit mask of OUT field.                  */
 
-/* DIR @Bits 16..31 : GPIO pin Direction */
-  #define VPRCSR_NORDIC_DIROUT_DIR_Pos (16UL)        /*!< Position of DIR field.                                               */
-  #define VPRCSR_NORDIC_DIROUT_DIR_Msk (0xFFFFUL << VPRCSR_NORDIC_DIROUT_DIR_Pos) /*!< Bit mask of DIR field.                  */
+/* DIR0 @Bit 16 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR0_Pos (16UL)       /*!< Position of DIR0 field.                                              */
+  #define VPRCSR_NORDIC_DIROUT_DIR0_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR0_Pos) /*!< Bit mask of DIR0 field.                  */
+
+/* DIR1 @Bit 17 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR1_Pos (17UL)       /*!< Position of DIR1 field.                                              */
+  #define VPRCSR_NORDIC_DIROUT_DIR1_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR1_Pos) /*!< Bit mask of DIR1 field.                  */
+
+/* DIR2 @Bit 18 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR2_Pos (18UL)       /*!< Position of DIR2 field.                                              */
+  #define VPRCSR_NORDIC_DIROUT_DIR2_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR2_Pos) /*!< Bit mask of DIR2 field.                  */
+
+/* DIR3 @Bit 19 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR3_Pos (19UL)       /*!< Position of DIR3 field.                                              */
+  #define VPRCSR_NORDIC_DIROUT_DIR3_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR3_Pos) /*!< Bit mask of DIR3 field.                  */
+
+/* DIR4 @Bit 20 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR4_Pos (20UL)       /*!< Position of DIR4 field.                                              */
+  #define VPRCSR_NORDIC_DIROUT_DIR4_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR4_Pos) /*!< Bit mask of DIR4 field.                  */
+
+/* DIR5 @Bit 21 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR5_Pos (21UL)       /*!< Position of DIR5 field.                                              */
+  #define VPRCSR_NORDIC_DIROUT_DIR5_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR5_Pos) /*!< Bit mask of DIR5 field.                  */
+
+/* DIR6 @Bit 22 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR6_Pos (22UL)       /*!< Position of DIR6 field.                                              */
+  #define VPRCSR_NORDIC_DIROUT_DIR6_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR6_Pos) /*!< Bit mask of DIR6 field.                  */
+
+/* DIR7 @Bit 23 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR7_Pos (23UL)       /*!< Position of DIR7 field.                                              */
+  #define VPRCSR_NORDIC_DIROUT_DIR7_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR7_Pos) /*!< Bit mask of DIR7 field.                  */
+
+/* DIR8 @Bit 24 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR8_Pos (24UL)       /*!< Position of DIR8 field.                                              */
+  #define VPRCSR_NORDIC_DIROUT_DIR8_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR8_Pos) /*!< Bit mask of DIR8 field.                  */
+
+/* DIR9 @Bit 25 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR9_Pos (25UL)       /*!< Position of DIR9 field.                                              */
+  #define VPRCSR_NORDIC_DIROUT_DIR9_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR9_Pos) /*!< Bit mask of DIR9 field.                  */
+
+/* DIR10 @Bit 26 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR10_Pos (26UL)      /*!< Position of DIR10 field.                                             */
+  #define VPRCSR_NORDIC_DIROUT_DIR10_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR10_Pos) /*!< Bit mask of DIR10 field.               */
+
+/* DIR11 @Bit 27 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR11_Pos (27UL)      /*!< Position of DIR11 field.                                             */
+  #define VPRCSR_NORDIC_DIROUT_DIR11_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR11_Pos) /*!< Bit mask of DIR11 field.               */
+
+/* DIR12 @Bit 28 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR12_Pos (28UL)      /*!< Position of DIR12 field.                                             */
+  #define VPRCSR_NORDIC_DIROUT_DIR12_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR12_Pos) /*!< Bit mask of DIR12 field.               */
+
+/* DIR13 @Bit 29 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR13_Pos (29UL)      /*!< Position of DIR13 field.                                             */
+  #define VPRCSR_NORDIC_DIROUT_DIR13_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR13_Pos) /*!< Bit mask of DIR13 field.               */
+
+/* DIR14 @Bit 30 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR14_Pos (30UL)      /*!< Position of DIR14 field.                                             */
+  #define VPRCSR_NORDIC_DIROUT_DIR14_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR14_Pos) /*!< Bit mask of DIR14 field.               */
+
+/* DIR15 @Bit 31 : GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUT_DIR15_Pos (31UL)      /*!< Position of DIR15 field.                                             */
+  #define VPRCSR_NORDIC_DIROUT_DIR15_Msk (0x1UL << VPRCSR_NORDIC_DIROUT_DIR15_Pos) /*!< Bit mask of DIR15 field.               */
 
 
 /**
@@ -46480,9 +46629,69 @@ typedef struct {
   #define VPRCSR_NORDIC_DIROUTB_OUTB_Pos (0UL)       /*!< Position of OUTB field.                                              */
   #define VPRCSR_NORDIC_DIROUTB_OUTB_Msk (0xFFFFUL << VPRCSR_NORDIC_DIROUTB_OUTB_Pos) /*!< Bit mask of OUTB field.             */
 
-/* DIRB @Bits 16..31 : Buffered GPIO pin Direction */
-  #define VPRCSR_NORDIC_DIROUTB_DIRB_Pos (16UL)      /*!< Position of DIRB field.                                              */
-  #define VPRCSR_NORDIC_DIROUTB_DIRB_Msk (0xFFFFUL << VPRCSR_NORDIC_DIROUTB_DIRB_Pos) /*!< Bit mask of DIRB field.             */
+/* DIRB0 @Bit 16 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB0_Pos (16UL)     /*!< Position of DIRB0 field.                                             */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB0_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB0_Pos) /*!< Bit mask of DIRB0 field.             */
+
+/* DIRB1 @Bit 17 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB1_Pos (17UL)     /*!< Position of DIRB1 field.                                             */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB1_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB1_Pos) /*!< Bit mask of DIRB1 field.             */
+
+/* DIRB2 @Bit 18 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB2_Pos (18UL)     /*!< Position of DIRB2 field.                                             */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB2_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB2_Pos) /*!< Bit mask of DIRB2 field.             */
+
+/* DIRB3 @Bit 19 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB3_Pos (19UL)     /*!< Position of DIRB3 field.                                             */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB3_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB3_Pos) /*!< Bit mask of DIRB3 field.             */
+
+/* DIRB4 @Bit 20 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB4_Pos (20UL)     /*!< Position of DIRB4 field.                                             */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB4_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB4_Pos) /*!< Bit mask of DIRB4 field.             */
+
+/* DIRB5 @Bit 21 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB5_Pos (21UL)     /*!< Position of DIRB5 field.                                             */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB5_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB5_Pos) /*!< Bit mask of DIRB5 field.             */
+
+/* DIRB6 @Bit 22 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB6_Pos (22UL)     /*!< Position of DIRB6 field.                                             */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB6_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB6_Pos) /*!< Bit mask of DIRB6 field.             */
+
+/* DIRB7 @Bit 23 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB7_Pos (23UL)     /*!< Position of DIRB7 field.                                             */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB7_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB7_Pos) /*!< Bit mask of DIRB7 field.             */
+
+/* DIRB8 @Bit 24 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB8_Pos (24UL)     /*!< Position of DIRB8 field.                                             */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB8_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB8_Pos) /*!< Bit mask of DIRB8 field.             */
+
+/* DIRB9 @Bit 25 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB9_Pos (25UL)     /*!< Position of DIRB9 field.                                             */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB9_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB9_Pos) /*!< Bit mask of DIRB9 field.             */
+
+/* DIRB10 @Bit 26 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB10_Pos (26UL)    /*!< Position of DIRB10 field.                                            */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB10_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB10_Pos) /*!< Bit mask of DIRB10 field.          */
+
+/* DIRB11 @Bit 27 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB11_Pos (27UL)    /*!< Position of DIRB11 field.                                            */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB11_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB11_Pos) /*!< Bit mask of DIRB11 field.          */
+
+/* DIRB12 @Bit 28 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB12_Pos (28UL)    /*!< Position of DIRB12 field.                                            */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB12_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB12_Pos) /*!< Bit mask of DIRB12 field.          */
+
+/* DIRB13 @Bit 29 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB13_Pos (29UL)    /*!< Position of DIRB13 field.                                            */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB13_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB13_Pos) /*!< Bit mask of DIRB13 field.          */
+
+/* DIRB14 @Bit 30 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB14_Pos (30UL)    /*!< Position of DIRB14 field.                                            */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB14_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB14_Pos) /*!< Bit mask of DIRB14 field.          */
+
+/* DIRB15 @Bit 31 : Buffered GPIO pin Direction */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB15_Pos (31UL)    /*!< Position of DIRB15 field.                                            */
+  #define VPRCSR_NORDIC_DIROUTB_DIRB15_Msk (0x1UL << VPRCSR_NORDIC_DIROUTB_DIRB15_Pos) /*!< Bit mask of DIRB15 field.          */
 
 
 /**
@@ -46536,7 +46745,7 @@ typedef struct {
     #define VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Msk (0x3FUL << VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Pos) /*!< Bit mask
                                                                             of VALUE field.*/
     #define VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Min (0x00UL) /*!< Min value of VALUE field.                               */
-    #define VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Max (0x20UL) /*!< Max size of VALUE field.                                */
+    #define VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Max (0x3FUL) /*!< Max size of VALUE field.                                */
 
 /* End field group SHIFTCNTB. */
 
@@ -47017,6 +47226,134 @@ typedef struct {
   #define VPRCSR_NORDIC_OUTBTGL_PIN15_Max (0x1UL)    /*!< Max enumerator value of PIN15 field.                                 */
   #define VPRCSR_NORDIC_OUTBTGL_PIN15_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
   #define VPRCSR_NORDIC_OUTBTGL_PIN15_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN16 @Bit 16 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN16_Pos (16UL)     /*!< Position of PIN16 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN16_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN16_Pos) /*!< Bit mask of PIN16 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN16_Min (0x0UL)    /*!< Min enumerator value of PIN16 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN16_Max (0x1UL)    /*!< Max enumerator value of PIN16 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN16_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN16_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN17 @Bit 17 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN17_Pos (17UL)     /*!< Position of PIN17 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN17_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN17_Pos) /*!< Bit mask of PIN17 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN17_Min (0x0UL)    /*!< Min enumerator value of PIN17 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN17_Max (0x1UL)    /*!< Max enumerator value of PIN17 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN17_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN17_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN18 @Bit 18 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN18_Pos (18UL)     /*!< Position of PIN18 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN18_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN18_Pos) /*!< Bit mask of PIN18 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN18_Min (0x0UL)    /*!< Min enumerator value of PIN18 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN18_Max (0x1UL)    /*!< Max enumerator value of PIN18 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN18_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN18_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN19 @Bit 19 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN19_Pos (19UL)     /*!< Position of PIN19 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN19_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN19_Pos) /*!< Bit mask of PIN19 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN19_Min (0x0UL)    /*!< Min enumerator value of PIN19 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN19_Max (0x1UL)    /*!< Max enumerator value of PIN19 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN19_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN19_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN20 @Bit 20 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN20_Pos (20UL)     /*!< Position of PIN20 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN20_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN20_Pos) /*!< Bit mask of PIN20 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN20_Min (0x0UL)    /*!< Min enumerator value of PIN20 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN20_Max (0x1UL)    /*!< Max enumerator value of PIN20 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN20_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN20_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN21 @Bit 21 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN21_Pos (21UL)     /*!< Position of PIN21 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN21_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN21_Pos) /*!< Bit mask of PIN21 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN21_Min (0x0UL)    /*!< Min enumerator value of PIN21 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN21_Max (0x1UL)    /*!< Max enumerator value of PIN21 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN21_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN21_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN22 @Bit 22 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN22_Pos (22UL)     /*!< Position of PIN22 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN22_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN22_Pos) /*!< Bit mask of PIN22 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN22_Min (0x0UL)    /*!< Min enumerator value of PIN22 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN22_Max (0x1UL)    /*!< Max enumerator value of PIN22 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN22_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN22_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN23 @Bit 23 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN23_Pos (23UL)     /*!< Position of PIN23 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN23_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN23_Pos) /*!< Bit mask of PIN23 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN23_Min (0x0UL)    /*!< Min enumerator value of PIN23 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN23_Max (0x1UL)    /*!< Max enumerator value of PIN23 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN23_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN23_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN24 @Bit 24 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN24_Pos (24UL)     /*!< Position of PIN24 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN24_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN24_Pos) /*!< Bit mask of PIN24 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN24_Min (0x0UL)    /*!< Min enumerator value of PIN24 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN24_Max (0x1UL)    /*!< Max enumerator value of PIN24 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN24_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN24_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN25 @Bit 25 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN25_Pos (25UL)     /*!< Position of PIN25 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN25_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN25_Pos) /*!< Bit mask of PIN25 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN25_Min (0x0UL)    /*!< Min enumerator value of PIN25 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN25_Max (0x1UL)    /*!< Max enumerator value of PIN25 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN25_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN25_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN26 @Bit 26 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN26_Pos (26UL)     /*!< Position of PIN26 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN26_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN26_Pos) /*!< Bit mask of PIN26 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN26_Min (0x0UL)    /*!< Min enumerator value of PIN26 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN26_Max (0x1UL)    /*!< Max enumerator value of PIN26 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN26_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN26_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN27 @Bit 27 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN27_Pos (27UL)     /*!< Position of PIN27 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN27_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN27_Pos) /*!< Bit mask of PIN27 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN27_Min (0x0UL)    /*!< Min enumerator value of PIN27 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN27_Max (0x1UL)    /*!< Max enumerator value of PIN27 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN27_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN27_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN28 @Bit 28 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN28_Pos (28UL)     /*!< Position of PIN28 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN28_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN28_Pos) /*!< Bit mask of PIN28 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN28_Min (0x0UL)    /*!< Min enumerator value of PIN28 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN28_Max (0x1UL)    /*!< Max enumerator value of PIN28 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN28_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN28_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN29 @Bit 29 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN29_Pos (29UL)     /*!< Position of PIN29 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN29_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN29_Pos) /*!< Bit mask of PIN29 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN29_Min (0x0UL)    /*!< Min enumerator value of PIN29 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN29_Max (0x1UL)    /*!< Max enumerator value of PIN29 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN29_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN29_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN30 @Bit 30 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN30_Pos (30UL)     /*!< Position of PIN30 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN30_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN30_Pos) /*!< Bit mask of PIN30 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN30_Min (0x0UL)    /*!< Min enumerator value of PIN30 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN30_Max (0x1UL)    /*!< Max enumerator value of PIN30 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN30_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN30_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
+
+/* PIN31 @Bit 31 : (unspecified) */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN31_Pos (31UL)     /*!< Position of PIN31 field.                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN31_Msk (0x1UL << VPRCSR_NORDIC_OUTBTGL_PIN31_Pos) /*!< Bit mask of PIN31 field.             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN31_Min (0x0UL)    /*!< Min enumerator value of PIN31 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN31_Max (0x1UL)    /*!< Max enumerator value of PIN31 field.                                 */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN31_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
+  #define VPRCSR_NORDIC_OUTBTGL_PIN31_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
 
 
 /**
@@ -47739,303 +48076,6 @@ typedef struct {
 
 
 /**
-  * @brief OUTBD [VPRCSR_NORDIC_OUTBD] Concatenation of Buffered GPIO Output and GPIO Output
-  */
-  #define VPRCSR_NORDIC_OUTBD (0x00000BE0ul)
-  #define VPRCSR_NORDIC_OUTBD_ResetValue (0x00000000UL) /*!< Reset value of OUTBD register.                                    */
-
-/* OUT @Bits 0..15 : GPIO Output */
-  #define VPRCSR_NORDIC_OUTBD_OUT_Pos (0UL)          /*!< Position of OUT field.                                               */
-  #define VPRCSR_NORDIC_OUTBD_OUT_Msk (0xFFFFUL << VPRCSR_NORDIC_OUTBD_OUT_Pos) /*!< Bit mask of OUT field.                    */
-
-/* OUTB @Bits 16..31 : Buffered GPIO Output */
-  #define VPRCSR_NORDIC_OUTBD_OUTB_Pos (16UL)        /*!< Position of OUTB field.                                              */
-  #define VPRCSR_NORDIC_OUTBD_OUTB_Msk (0xFFFFUL << VPRCSR_NORDIC_OUTBD_OUTB_Pos) /*!< Bit mask of OUTB field.                 */
-
-
-/**
-  * @brief OUTBDTGL [VPRCSR_NORDIC_OUTBDTGL] OUTBD Toggle
-  */
-  #define VPRCSR_NORDIC_OUTBDTGL (0x00000BE1ul)
-  #define VPRCSR_NORDIC_OUTBDTGL_ResetValue (0x00000000UL) /*!< Reset value of OUTBDTGL register.                              */
-
-/* OUT0 @Bit 0 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT0_Pos (0UL)      /*!< Position of OUT0 field.                                              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT0_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT0_Pos) /*!< Bit mask of OUT0 field.              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT0_Min (0x0UL)    /*!< Min enumerator value of OUT0 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT0_Max (0x1UL)    /*!< Max enumerator value of OUT0 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT0_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT0_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
-
-/* OUT1 @Bit 1 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT1_Pos (1UL)      /*!< Position of OUT1 field.                                              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT1_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT1_Pos) /*!< Bit mask of OUT1 field.              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT1_Min (0x0UL)    /*!< Min enumerator value of OUT1 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT1_Max (0x1UL)    /*!< Max enumerator value of OUT1 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT1_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT1_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
-
-/* OUT2 @Bit 2 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT2_Pos (2UL)      /*!< Position of OUT2 field.                                              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT2_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT2_Pos) /*!< Bit mask of OUT2 field.              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT2_Min (0x0UL)    /*!< Min enumerator value of OUT2 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT2_Max (0x1UL)    /*!< Max enumerator value of OUT2 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT2_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT2_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
-
-/* OUT3 @Bit 3 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT3_Pos (3UL)      /*!< Position of OUT3 field.                                              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT3_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT3_Pos) /*!< Bit mask of OUT3 field.              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT3_Min (0x0UL)    /*!< Min enumerator value of OUT3 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT3_Max (0x1UL)    /*!< Max enumerator value of OUT3 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT3_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT3_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
-
-/* OUT4 @Bit 4 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT4_Pos (4UL)      /*!< Position of OUT4 field.                                              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT4_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT4_Pos) /*!< Bit mask of OUT4 field.              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT4_Min (0x0UL)    /*!< Min enumerator value of OUT4 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT4_Max (0x1UL)    /*!< Max enumerator value of OUT4 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT4_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT4_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
-
-/* OUT5 @Bit 5 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT5_Pos (5UL)      /*!< Position of OUT5 field.                                              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT5_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT5_Pos) /*!< Bit mask of OUT5 field.              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT5_Min (0x0UL)    /*!< Min enumerator value of OUT5 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT5_Max (0x1UL)    /*!< Max enumerator value of OUT5 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT5_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT5_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
-
-/* OUT6 @Bit 6 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT6_Pos (6UL)      /*!< Position of OUT6 field.                                              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT6_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT6_Pos) /*!< Bit mask of OUT6 field.              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT6_Min (0x0UL)    /*!< Min enumerator value of OUT6 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT6_Max (0x1UL)    /*!< Max enumerator value of OUT6 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT6_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT6_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
-
-/* OUT7 @Bit 7 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT7_Pos (7UL)      /*!< Position of OUT7 field.                                              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT7_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT7_Pos) /*!< Bit mask of OUT7 field.              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT7_Min (0x0UL)    /*!< Min enumerator value of OUT7 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT7_Max (0x1UL)    /*!< Max enumerator value of OUT7 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT7_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT7_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
-
-/* OUT8 @Bit 8 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT8_Pos (8UL)      /*!< Position of OUT8 field.                                              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT8_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT8_Pos) /*!< Bit mask of OUT8 field.              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT8_Min (0x0UL)    /*!< Min enumerator value of OUT8 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT8_Max (0x1UL)    /*!< Max enumerator value of OUT8 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT8_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT8_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
-
-/* OUT9 @Bit 9 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT9_Pos (9UL)      /*!< Position of OUT9 field.                                              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT9_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT9_Pos) /*!< Bit mask of OUT9 field.              */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT9_Min (0x0UL)    /*!< Min enumerator value of OUT9 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT9_Max (0x1UL)    /*!< Max enumerator value of OUT9 field.                                  */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT9_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT9_TOGGLE (0x1UL) /*!< Pin is toggled                                                       */
-
-/* OUT10 @Bit 10 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT10_Pos (10UL)    /*!< Position of OUT10 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT10_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT10_Pos) /*!< Bit mask of OUT10 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT10_Min (0x0UL)   /*!< Min enumerator value of OUT10 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT10_Max (0x1UL)   /*!< Max enumerator value of OUT10 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT10_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT10_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUT11 @Bit 11 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT11_Pos (11UL)    /*!< Position of OUT11 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT11_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT11_Pos) /*!< Bit mask of OUT11 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT11_Min (0x0UL)   /*!< Min enumerator value of OUT11 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT11_Max (0x1UL)   /*!< Max enumerator value of OUT11 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT11_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT11_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUT12 @Bit 12 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT12_Pos (12UL)    /*!< Position of OUT12 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT12_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT12_Pos) /*!< Bit mask of OUT12 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT12_Min (0x0UL)   /*!< Min enumerator value of OUT12 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT12_Max (0x1UL)   /*!< Max enumerator value of OUT12 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT12_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT12_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUT13 @Bit 13 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT13_Pos (13UL)    /*!< Position of OUT13 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT13_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT13_Pos) /*!< Bit mask of OUT13 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT13_Min (0x0UL)   /*!< Min enumerator value of OUT13 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT13_Max (0x1UL)   /*!< Max enumerator value of OUT13 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT13_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT13_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUT14 @Bit 14 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT14_Pos (14UL)    /*!< Position of OUT14 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT14_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT14_Pos) /*!< Bit mask of OUT14 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT14_Min (0x0UL)   /*!< Min enumerator value of OUT14 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT14_Max (0x1UL)   /*!< Max enumerator value of OUT14 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT14_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT14_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUT15 @Bit 15 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT15_Pos (15UL)    /*!< Position of OUT15 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT15_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUT15_Pos) /*!< Bit mask of OUT15 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT15_Min (0x0UL)   /*!< Min enumerator value of OUT15 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT15_Max (0x1UL)   /*!< Max enumerator value of OUT15 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT15_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUT15_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUTB0 @Bit 16 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB0_Pos (16UL)    /*!< Position of OUTB0 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB0_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB0_Pos) /*!< Bit mask of OUTB0 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB0_Min (0x0UL)   /*!< Min enumerator value of OUTB0 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB0_Max (0x1UL)   /*!< Max enumerator value of OUTB0 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB0_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB0_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUTB1 @Bit 17 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB1_Pos (17UL)    /*!< Position of OUTB1 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB1_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB1_Pos) /*!< Bit mask of OUTB1 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB1_Min (0x0UL)   /*!< Min enumerator value of OUTB1 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB1_Max (0x1UL)   /*!< Max enumerator value of OUTB1 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB1_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB1_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUTB2 @Bit 18 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB2_Pos (18UL)    /*!< Position of OUTB2 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB2_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB2_Pos) /*!< Bit mask of OUTB2 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB2_Min (0x0UL)   /*!< Min enumerator value of OUTB2 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB2_Max (0x1UL)   /*!< Max enumerator value of OUTB2 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB2_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB2_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUTB3 @Bit 19 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB3_Pos (19UL)    /*!< Position of OUTB3 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB3_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB3_Pos) /*!< Bit mask of OUTB3 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB3_Min (0x0UL)   /*!< Min enumerator value of OUTB3 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB3_Max (0x1UL)   /*!< Max enumerator value of OUTB3 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB3_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB3_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUTB4 @Bit 20 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB4_Pos (20UL)    /*!< Position of OUTB4 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB4_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB4_Pos) /*!< Bit mask of OUTB4 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB4_Min (0x0UL)   /*!< Min enumerator value of OUTB4 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB4_Max (0x1UL)   /*!< Max enumerator value of OUTB4 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB4_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB4_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUTB5 @Bit 21 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB5_Pos (21UL)    /*!< Position of OUTB5 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB5_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB5_Pos) /*!< Bit mask of OUTB5 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB5_Min (0x0UL)   /*!< Min enumerator value of OUTB5 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB5_Max (0x1UL)   /*!< Max enumerator value of OUTB5 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB5_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB5_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUTB6 @Bit 22 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB6_Pos (22UL)    /*!< Position of OUTB6 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB6_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB6_Pos) /*!< Bit mask of OUTB6 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB6_Min (0x0UL)   /*!< Min enumerator value of OUTB6 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB6_Max (0x1UL)   /*!< Max enumerator value of OUTB6 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB6_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB6_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUTB7 @Bit 23 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB7_Pos (23UL)    /*!< Position of OUTB7 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB7_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB7_Pos) /*!< Bit mask of OUTB7 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB7_Min (0x0UL)   /*!< Min enumerator value of OUTB7 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB7_Max (0x1UL)   /*!< Max enumerator value of OUTB7 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB7_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB7_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUTB8 @Bit 24 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB8_Pos (24UL)    /*!< Position of OUTB8 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB8_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB8_Pos) /*!< Bit mask of OUTB8 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB8_Min (0x0UL)   /*!< Min enumerator value of OUTB8 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB8_Max (0x1UL)   /*!< Max enumerator value of OUTB8 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB8_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB8_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUTB9 @Bit 25 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB9_Pos (25UL)    /*!< Position of OUTB9 field.                                             */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB9_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB9_Pos) /*!< Bit mask of OUTB9 field.           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB9_Min (0x0UL)   /*!< Min enumerator value of OUTB9 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB9_Max (0x1UL)   /*!< Max enumerator value of OUTB9 field.                                 */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB9_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB9_TOGGLE (0x1UL) /*!< Pin is toggled                                                      */
-
-/* OUTB10 @Bit 26 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB10_Pos (26UL)   /*!< Position of OUTB10 field.                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB10_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB10_Pos) /*!< Bit mask of OUTB10 field.        */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB10_Min (0x0UL)  /*!< Min enumerator value of OUTB10 field.                                */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB10_Max (0x1UL)  /*!< Max enumerator value of OUTB10 field.                                */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB10_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB10_TOGGLE (0x1UL) /*!< Pin is toggled                                                     */
-
-/* OUTB11 @Bit 27 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB11_Pos (27UL)   /*!< Position of OUTB11 field.                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB11_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB11_Pos) /*!< Bit mask of OUTB11 field.        */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB11_Min (0x0UL)  /*!< Min enumerator value of OUTB11 field.                                */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB11_Max (0x1UL)  /*!< Max enumerator value of OUTB11 field.                                */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB11_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB11_TOGGLE (0x1UL) /*!< Pin is toggled                                                     */
-
-/* OUTB12 @Bit 28 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB12_Pos (28UL)   /*!< Position of OUTB12 field.                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB12_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB12_Pos) /*!< Bit mask of OUTB12 field.        */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB12_Min (0x0UL)  /*!< Min enumerator value of OUTB12 field.                                */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB12_Max (0x1UL)  /*!< Max enumerator value of OUTB12 field.                                */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB12_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB12_TOGGLE (0x1UL) /*!< Pin is toggled                                                     */
-
-/* OUTB13 @Bit 29 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB13_Pos (29UL)   /*!< Position of OUTB13 field.                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB13_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB13_Pos) /*!< Bit mask of OUTB13 field.        */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB13_Min (0x0UL)  /*!< Min enumerator value of OUTB13 field.                                */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB13_Max (0x1UL)  /*!< Max enumerator value of OUTB13 field.                                */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB13_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB13_TOGGLE (0x1UL) /*!< Pin is toggled                                                     */
-
-/* OUTB14 @Bit 30 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB14_Pos (30UL)   /*!< Position of OUTB14 field.                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB14_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB14_Pos) /*!< Bit mask of OUTB14 field.        */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB14_Min (0x0UL)  /*!< Min enumerator value of OUTB14 field.                                */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB14_Max (0x1UL)  /*!< Max enumerator value of OUTB14 field.                                */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB14_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB14_TOGGLE (0x1UL) /*!< Pin is toggled                                                     */
-
-/* OUTB15 @Bit 31 : (unspecified) */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB15_Pos (31UL)   /*!< Position of OUTB15 field.                                            */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB15_Msk (0x1UL << VPRCSR_NORDIC_OUTBDTGL_OUTB15_Pos) /*!< Bit mask of OUTB15 field.        */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB15_Min (0x0UL)  /*!< Min enumerator value of OUTB15 field.                                */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB15_Max (0x1UL)  /*!< Max enumerator value of OUTB15 field.                                */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB15_UNCHANGED (0x0UL) /*!< Pin remains unchanged                                           */
-  #define VPRCSR_NORDIC_OUTBDTGL_OUTB15_TOGGLE (0x1UL) /*!< Pin is toggled                                                     */
-
-
-/**
-  * @brief OUTBDS [VPRCSR_NORDIC_OUTBDS] OUTBD Dirty Status
-  */
-  #define VPRCSR_NORDIC_OUTBDS (0x00000BE2ul)
-  #define VPRCSR_NORDIC_OUTBDS_ResetValue (0x00000000UL) /*!< Reset value of OUTBDS register.                                  */
-
-/* OUTBD @Bits 0..31 : Write to OUTBD register (if not dirty) */
-  #define VPRCSR_NORDIC_OUTBDS_OUTBD_Pos (0UL)       /*!< Position of OUTBD field.                                             */
-  #define VPRCSR_NORDIC_OUTBDS_OUTBD_Msk (0xFFFFFFFFUL << VPRCSR_NORDIC_OUTBDS_OUTBD_Pos) /*!< Bit mask of OUTBD field.        */
-
-/* DIRTYBIT @Bit 0 : Read OUTB and OUT parallel write Dirty status */
-  #define VPRCSR_NORDIC_OUTBDS_DIRTYBIT_Pos (0UL)    /*!< Position of DIRTYBIT field.                                          */
-  #define VPRCSR_NORDIC_OUTBDS_DIRTYBIT_Msk (0x1UL << VPRCSR_NORDIC_OUTBDS_DIRTYBIT_Pos) /*!< Bit mask of DIRTYBIT field.      */
-  #define VPRCSR_NORDIC_OUTBDS_DIRTYBIT_Min (0x0UL)  /*!< Min enumerator value of DIRTYBIT field.                              */
-  #define VPRCSR_NORDIC_OUTBDS_DIRTYBIT_Max (0x1UL)  /*!< Max enumerator value of DIRTYBIT field.                              */
-  #define VPRCSR_NORDIC_OUTBDS_DIRTYBIT_CLEAN (0x0UL) /*!< Buffer is clean                                                     */
-  #define VPRCSR_NORDIC_OUTBDS_DIRTYBIT_DIRTY (0x1UL) /*!< Buffer is dirty                                                     */
-
-
-/**
   * @brief OUTMODE [VPRCSR_NORDIC_OUTMODE] Serial output mode
   */
   #define VPRCSR_NORDIC_OUTMODE (0x00000BE3ul)
@@ -48050,34 +48090,14 @@ typedef struct {
   #define VPRCSR_NORDIC_OUTMODE_MODE_OutBBuf (0x2UL) /*!< Only OUTB used for buffering                                         */
   #define VPRCSR_NORDIC_OUTMODE_MODE_OutBBufToggleClk (0x4UL) /*!< Only OUTB used for buffering, auto-toggle clock line        */
 
-/* SHIFTMODE @Bit 0 : Shift mode */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Pos (0UL)  /*!< Position of SHIFTMODE field.                                         */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Msk (0x1UL << VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Pos) /*!< Bit mask of SHIFTMODE field. */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Min (0x0UL) /*!< Min enumerator value of SHIFTMODE field.                            */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Max (0x1UL) /*!< Max enumerator value of SHIFTMODE field.                            */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Disabled (0x0UL) /*!< Shift mode is disabled                                         */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFTMODE_Enabled (0x1UL) /*!< Shift mode is enabled                                           */
-
-/* FRAMEWIDTH @Bits 16..20 : Output frame width MODE=0x1: BITS=2^FRAMEWIDTH. Legal FRAMEWIDTH values: 0, 1, 2, 3, 4 MODE=0x2:
-                             BITS=FRAMEWIDTH. Legal values: 1, 2, 3, 4, 5, 6, 7, 8, 16 (9-15 are not legal) MODE=0x4:
-                             BITS=FRAMEWIDTH. Legal values: 1, 2, 3, 4, 5, 6, 7, 8 */
+/* FRAMEWIDTH @Bits 16..20 : Output frame width MODE=0x2: BITS=FRAMEWIDTH. Legal values: 1, 2, 3, 4, 5, 6, 7, 8, 16 (9-15 are
+                             not legal) MODE=0x4: BITS=FRAMEWIDTH. Legal values: 1, 2, 3, 4, 5, 6, 7, 8 */
 
   #define VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Pos (16UL) /*!< Position of FRAMEWIDTH field.                                       */
   #define VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Msk (0x1FUL << VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Pos) /*!< Bit mask of FRAMEWIDTH
                                                                             field.*/
   #define VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Min (0x00UL) /*!< Min value of FRAMEWIDTH field.                                    */
   #define VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Max (0x10UL) /*!< Max size of FRAMEWIDTH field.                                     */
-
-/* SHIFSIZE @Bits 16..19 : Shift size. Only applies if Shift mode is enabled */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFSIZE_Pos (16UL)  /*!< Position of SHIFSIZE field.                                          */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFSIZE_Msk (0xFUL << VPRCSR_NORDIC_OUTMODE_SHIFSIZE_Pos) /*!< Bit mask of SHIFSIZE field.    */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFSIZE_Min (0x0UL) /*!< Min enumerator value of SHIFSIZE field.                              */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFSIZE_Max (0x4UL) /*!< Max enumerator value of SHIFSIZE field.                              */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFSIZE_SHIFT1 (0x0UL) /*!< Shift OUT by 1 bit                                                */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFSIZE_SHIFT2 (0x1UL) /*!< Shift OUT by 2 bits                                               */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFSIZE_SHIFT4 (0x2UL) /*!< Shift OUT by 4 bits                                               */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFSIZE_SHIFT8 (0x3UL) /*!< Shift OUT by 8 bits                                               */
-  #define VPRCSR_NORDIC_OUTMODE_SHIFSIZE_SHIFT16 (0x4UL) /*!< Shift OUT by 16 bits                                             */
 
 
 /**
@@ -48405,10 +48425,13 @@ typedef struct {
     __IM uint32_t RESERVED2[30];
     __IOM uint32_t PUBLISH_TIMEOUT;                  /*!< (@ 0x00000180) Publish configuration for event TIMEOUT               */
     __IOM uint32_t PUBLISH_STOPPED;                  /*!< (@ 0x00000184) Publish configuration for event STOPPED               */
-    __IM uint32_t RESERVED3[95];
+    __IM uint32_t RESERVED3[94];
+    __IOM uint32_t INTEN;                            /*!< (@ 0x00000300) Enable or disable interrupt                           */
     __IOM uint32_t INTENSET;                         /*!< (@ 0x00000304) Enable interrupt                                      */
     __IOM uint32_t INTENCLR;                         /*!< (@ 0x00000308) Disable interrupt                                     */
-    __IM uint32_t RESERVED4[6];
+    __IM uint32_t INTPEND;                           /*!< (@ 0x0000030C) Pending interrupts                                    */
+    __IM uint32_t RESERVED4[4];
+    __IOM uint32_t NMIEN;                            /*!< (@ 0x00000320) Enable or disable interrupt                           */
     __IOM uint32_t NMIENSET;                         /*!< (@ 0x00000324) Enable interrupt                                      */
     __IOM uint32_t NMIENCLR;                         /*!< (@ 0x00000328) Disable interrupt                                     */
     __IM uint32_t RESERVED5[53];
@@ -48544,6 +48567,26 @@ typedef struct {
   #define WDT_PUBLISH_STOPPED_EN_Enabled (0x1UL)     /*!< Enable publishing                                                    */
 
 
+/* WDT_INTEN: Enable or disable interrupt */
+  #define WDT_INTEN_ResetValue (0x00000000UL)        /*!< Reset value of INTEN register.                                       */
+
+/* TIMEOUT @Bit 0 : Enable or disable interrupt for event TIMEOUT */
+  #define WDT_INTEN_TIMEOUT_Pos (0UL)                /*!< Position of TIMEOUT field.                                           */
+  #define WDT_INTEN_TIMEOUT_Msk (0x1UL << WDT_INTEN_TIMEOUT_Pos) /*!< Bit mask of TIMEOUT field.                               */
+  #define WDT_INTEN_TIMEOUT_Min (0x0UL)              /*!< Min enumerator value of TIMEOUT field.                               */
+  #define WDT_INTEN_TIMEOUT_Max (0x1UL)              /*!< Max enumerator value of TIMEOUT field.                               */
+  #define WDT_INTEN_TIMEOUT_Disabled (0x0UL)         /*!< Disable                                                              */
+  #define WDT_INTEN_TIMEOUT_Enabled (0x1UL)          /*!< Enable                                                               */
+
+/* STOPPED @Bit 1 : Enable or disable interrupt for event STOPPED */
+  #define WDT_INTEN_STOPPED_Pos (1UL)                /*!< Position of STOPPED field.                                           */
+  #define WDT_INTEN_STOPPED_Msk (0x1UL << WDT_INTEN_STOPPED_Pos) /*!< Bit mask of STOPPED field.                               */
+  #define WDT_INTEN_STOPPED_Min (0x0UL)              /*!< Min enumerator value of STOPPED field.                               */
+  #define WDT_INTEN_STOPPED_Max (0x1UL)              /*!< Max enumerator value of STOPPED field.                               */
+  #define WDT_INTEN_STOPPED_Disabled (0x0UL)         /*!< Disable                                                              */
+  #define WDT_INTEN_STOPPED_Enabled (0x1UL)          /*!< Enable                                                               */
+
+
 /* WDT_INTENSET: Enable interrupt */
   #define WDT_INTENSET_ResetValue (0x00000000UL)     /*!< Reset value of INTENSET register.                                    */
 
@@ -48586,6 +48629,46 @@ typedef struct {
   #define WDT_INTENCLR_STOPPED_Clear (0x1UL)         /*!< Disable                                                              */
   #define WDT_INTENCLR_STOPPED_Disabled (0x0UL)      /*!< Read: Disabled                                                       */
   #define WDT_INTENCLR_STOPPED_Enabled (0x1UL)       /*!< Read: Enabled                                                        */
+
+
+/* WDT_INTPEND: Pending interrupts */
+  #define WDT_INTPEND_ResetValue (0x00000000UL)      /*!< Reset value of INTPEND register.                                     */
+
+/* TIMEOUT @Bit 0 : Read pending status of interrupt for event TIMEOUT */
+  #define WDT_INTPEND_TIMEOUT_Pos (0UL)              /*!< Position of TIMEOUT field.                                           */
+  #define WDT_INTPEND_TIMEOUT_Msk (0x1UL << WDT_INTPEND_TIMEOUT_Pos) /*!< Bit mask of TIMEOUT field.                           */
+  #define WDT_INTPEND_TIMEOUT_Min (0x0UL)            /*!< Min enumerator value of TIMEOUT field.                               */
+  #define WDT_INTPEND_TIMEOUT_Max (0x1UL)            /*!< Max enumerator value of TIMEOUT field.                               */
+  #define WDT_INTPEND_TIMEOUT_NotPending (0x0UL)     /*!< Read: Not pending                                                    */
+  #define WDT_INTPEND_TIMEOUT_Pending (0x1UL)        /*!< Read: Pending                                                        */
+
+/* STOPPED @Bit 1 : Read pending status of interrupt for event STOPPED */
+  #define WDT_INTPEND_STOPPED_Pos (1UL)              /*!< Position of STOPPED field.                                           */
+  #define WDT_INTPEND_STOPPED_Msk (0x1UL << WDT_INTPEND_STOPPED_Pos) /*!< Bit mask of STOPPED field.                           */
+  #define WDT_INTPEND_STOPPED_Min (0x0UL)            /*!< Min enumerator value of STOPPED field.                               */
+  #define WDT_INTPEND_STOPPED_Max (0x1UL)            /*!< Max enumerator value of STOPPED field.                               */
+  #define WDT_INTPEND_STOPPED_NotPending (0x0UL)     /*!< Read: Not pending                                                    */
+  #define WDT_INTPEND_STOPPED_Pending (0x1UL)        /*!< Read: Pending                                                        */
+
+
+/* WDT_NMIEN: Enable or disable interrupt */
+  #define WDT_NMIEN_ResetValue (0x00000000UL)        /*!< Reset value of NMIEN register.                                       */
+
+/* TIMEOUT @Bit 0 : Enable or disable interrupt for event TIMEOUT */
+  #define WDT_NMIEN_TIMEOUT_Pos (0UL)                /*!< Position of TIMEOUT field.                                           */
+  #define WDT_NMIEN_TIMEOUT_Msk (0x1UL << WDT_NMIEN_TIMEOUT_Pos) /*!< Bit mask of TIMEOUT field.                               */
+  #define WDT_NMIEN_TIMEOUT_Min (0x0UL)              /*!< Min enumerator value of TIMEOUT field.                               */
+  #define WDT_NMIEN_TIMEOUT_Max (0x1UL)              /*!< Max enumerator value of TIMEOUT field.                               */
+  #define WDT_NMIEN_TIMEOUT_Disabled (0x0UL)         /*!< Disable                                                              */
+  #define WDT_NMIEN_TIMEOUT_Enabled (0x1UL)          /*!< Enable                                                               */
+
+/* STOPPED @Bit 1 : Enable or disable interrupt for event STOPPED */
+  #define WDT_NMIEN_STOPPED_Pos (1UL)                /*!< Position of STOPPED field.                                           */
+  #define WDT_NMIEN_STOPPED_Msk (0x1UL << WDT_NMIEN_STOPPED_Pos) /*!< Bit mask of STOPPED field.                               */
+  #define WDT_NMIEN_STOPPED_Min (0x0UL)              /*!< Min enumerator value of STOPPED field.                               */
+  #define WDT_NMIEN_STOPPED_Max (0x1UL)              /*!< Max enumerator value of STOPPED field.                               */
+  #define WDT_NMIEN_STOPPED_Disabled (0x0UL)         /*!< Disable                                                              */
+  #define WDT_NMIEN_STOPPED_Enabled (0x1UL)          /*!< Enable                                                               */
 
 
 /* WDT_NMIENSET: Enable interrupt */

@@ -55,6 +55,13 @@ extern "C" {
 #define NRF_VPR_HAS_RAM_PRIO 0
 #endif
 
+#if defined(VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether remap functionality is present. */
+#define NRF_VPR_HAS_REMAP 1
+#else
+#define NRF_VPR_HAS_REMAP 0
+#endif
+
 /** @brief Nordic key for CSR writes. */
 #define NRF_VPR_CSR_NORDIC_KEY_MASK \
     (VPRCSR_NORDIC_VPRNORDICCTRL_NORDICKEY_Enabled << VPRCSR_NORDIC_VPRNORDICCTRL_NORDICKEY_Pos)
@@ -231,6 +238,7 @@ NRF_STATIC_INLINE void nrf_vpr_csr_rtperiph_enable_set(bool enable);
  */
 NRF_STATIC_INLINE bool nrf_vpr_csr_rtperiph_enable_check(void);
 
+#if NRF_VPR_HAS_REMAP
 /**
  * @brief Function for enabling or disabling the remap functionality.
  *
@@ -245,6 +253,8 @@ NRF_STATIC_INLINE void nrf_vpr_csr_remap_enable_set(bool enable);
  * @retval false Remap is disabled.
  */
 NRF_STATIC_INLINE bool nrf_vpr_csr_remap_enable_check(void);
+#endif
+
 /**
  * @brief Function for enabling or disabling the generation of IRQ at position CNT_IRQ_POSITION.
  *
@@ -478,6 +488,7 @@ NRF_STATIC_INLINE bool nrf_vpr_csr_rtperiph_enable_check(void)
            >> VPRCSR_NORDIC_VPRNORDICCTRL_ENABLERTPERIPH_Pos;
 }
 
+#if NRF_VPR_HAS_REMAP
 NRF_STATIC_INLINE void nrf_vpr_csr_remap_enable_set(bool enable)
 {
     uint32_t reg = nrf_csr_read(VPRCSR_NORDIC_VPRNORDICCTRL);
@@ -495,6 +506,7 @@ NRF_STATIC_INLINE bool nrf_vpr_csr_remap_enable_check(void)
     return (nrf_csr_read(VPRCSR_NORDIC_VPRNORDICCTRL) & VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Msk)
            >> VPRCSR_NORDIC_VPRNORDICCTRL_ENABLEREMAP_Pos;
 }
+#endif
 
 NRF_STATIC_INLINE void nrf_vpr_csr_cnt_irq_enable_set(bool enable)
 {

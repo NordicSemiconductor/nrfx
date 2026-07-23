@@ -34,10 +34,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_DEVICE_MEM_H_
 
 #ifndef __DEFAULT_STACK_SIZE
-    #define __DEFAULT_STACK_SIZE 4096
+    #define __DEFAULT_STACK_SIZE 2048
 #endif
 #ifndef __DEFAULT_HEAP_SIZE
-    #define __DEFAULT_HEAP_SIZE 4096
+    #define __DEFAULT_HEAP_SIZE 2048
 #endif
 
 /* Device memory Flash: */
@@ -46,7 +46,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* Device memory RAM: */
 #define NRF_MEMORY_RAM_BASE 0x2FC00000
-#define NRF_MEMORY_RAM_SIZE 0x00010000
+#define NRF_MEMORY_RAM_SIZE 0x00003C00
 
 /* Device memory PeripheralsAPBS: */
 #define NRF_MEMORY_PERIPHERALSAPBS_BASE 0x5F000000

@@ -35,9 +35,88 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef NRF54H20_INTERIM_H__
 #define NRF54H20_INTERIM_H__
 
-#include "../../common/haltium_interim.h"
-
 #if defined(NRF54H20_XXAA)
+
+    #define NRF_DOMAIN_COUNT    NRF_DOMAIN_GLOBAL + 1
+    #define NRF_PROCESSOR_COUNT NRF_PROCESSOR_FLPR + 1
+
+
+    #define ADDRESS_REGION_Pos        (29UL)
+    #define ADDRESS_REGION_Msk        (0x7UL << ADDRESS_REGION_Pos)
+    #define ADDRESS_SECURITY_Pos      (28UL)
+    #define ADDRESS_SECURITY_Msk      (0x1UL << ADDRESS_SECURITY_Pos)
+    #define ADDRESS_DOMAIN_Pos        (24UL)
+    #define ADDRESS_DOMAIN_Msk        (0xFUL << ADDRESS_DOMAIN_Pos)
+    #define ADDRESS_BUS_Pos           (16UL)
+    #define ADDRESS_BUS_Msk           (0xFFUL << ADDRESS_BUS_Pos)
+    #define ADDRESS_SLAVE_Pos         (12UL)
+    #define ADDRESS_SLAVE_Msk         (0xFUL << ADDRESS_SLAVE_Pos)
+    #define ADDRESS_PERIPHID_Pos      (12UL)
+    #define ADDRESS_PERIPHID_Msk      (0x7FFUL << ADDRESS_PERIPHID_Pos)
+
+    typedef enum
+    {
+        NRF_REGION_PROGRAM      = 0,
+        NRF_REGION_DATA         = 1,
+        NRF_REGION_PERIPHERALS  = 2,
+        NRF_REGION_EXTMEM       = 3,
+        NRF_REGION_EXTMEM_ENC   = 4,
+        NRF_REGION_STM          = 5,
+        NRF_REGION_CPU_INTERNAL = 7,
+    } nrf_region_t;
+
+    #define GPIOTE_INT_COUNT 7
+
+    #define GPIOTE_CH_NUM   8
+    #define GPIOTE130_CH_NUM (GPIOTE130_GPIOTE_NCHANNELS_MAX + 1UL)
+    #define GPIOTE130_AVAILABLE_GPIO_PORTS 0x207UL
+    #define GPIOTE_PORT_NUM GPIOTE_EVENTS_PORT_MaxCount
+    #define GPIOTE_FEATURE_SET_PRESENT
+    #define GPIOTE_FEATURE_CLR_PRESENT
+
+    #define VPR_CLIC_PRIO_COUNT 4
+    #define VPR_VEVIF_EVENT_MaxCount 32
+
+    #define GLOBAL_IRQN_START (96)
+    #define GLOBAL_IRQN_MAX   (480)
+
+    #define SPU000_PERIPH_COUNT 16
+    #define SPU010_PERIPH_COUNT 16
+    #define SPU020_PERIPH_COUNT 16
+    #define SPU030_PERIPH_COUNT 16
+
+    #define SAADC_CH_NUM 8
+    #define SAADC_EASYDMA_MAXCNT_SIZE 15
+
+    #define LPCOMP_REFSEL_RESOLUTION 16
+
+    #if !defined(DPPI_PRESENT)
+        #define DPPI_PRESENT
+    #endif
+    #define DPPI_GROUP_NUM 2
+    #if defined(NRF_RADIOCORE)
+        #define DPPI020_CH_NUM 16
+        #define DPPI020_GROUP_NUM 0
+        #define DPPI030_CH_NUM 9
+        #define DPPI030_GROUP_NUM 1
+    #endif
+
+    #define GLOBAL_IPCT_CH_NUM 8
+    #if defined(NRF_RADIOCORE)
+        #define LOCAL_IPCT_NUM 8
+    #elif defined(NRF_APPLICATION)
+        #define LOCAL_IPCT_NUM 4
+    #endif
+
+    #if defined(NRF_PPR) || defined(NRF_FLPR)
+        #define MVDMA_JOBLISTCOUNT 4
+    #else
+        #define MVDMA_JOBLISTCOUNT 1
+    #endif
+
+    #define MVDMA_AXI_BUS_WIDTH 8
+
+    #define MPC_MASTER_PORTS_MaxCount (32UL)
 
     #if defined(NRF_TRUSTZONE_NONSECURE)
         #if defined(NRF_APPLICATION)

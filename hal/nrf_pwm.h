@@ -919,7 +919,8 @@ NRF_STATIC_INLINE void nrf_pwm_decoder_set(NRF_PWM_Type *     p_reg,
                                            nrf_pwm_dec_load_t dec_load,
                                            nrf_pwm_dec_step_t dec_step)
 {
-    p_reg->DECODER = ((uint32_t)dec_load << PWM_DECODER_LOAD_Pos) |
+    p_reg->DECODER = (p_reg->DECODER & ~(PWM_DECODER_LOAD_Msk | PWM_DECODER_MODE_Msk)) |
+                     ((uint32_t)dec_load << PWM_DECODER_LOAD_Pos) |
                      ((uint32_t)dec_step << PWM_DECODER_MODE_Pos);
 }
 

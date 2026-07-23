@@ -185,6 +185,20 @@ static inline bool nrf54h_errata_239(void);
 static inline bool nrf54h_errata_241(void);
 static inline bool nrf54h_errata_242(void);
 static inline bool nrf54h_errata_243(void);
+static inline bool nrf54h_errata_244(void);
+static inline bool nrf54h_errata_245(void);
+static inline bool nrf54h_errata_253(void);
+static inline bool nrf54h_errata_254(void);
+static inline bool nrf54h_errata_256(void);
+static inline bool nrf54h_errata_271(void);
+static inline bool nrf54h_errata_272(void);
+static inline bool nrf54h_errata_273(void);
+static inline bool nrf54h_errata_274(void);
+static inline bool nrf54h_errata_275(void);
+static inline bool nrf54h_errata_277(void);
+static inline bool nrf54h_errata_278(void);
+static inline bool nrf54h_errata_279(void);
+static inline bool nrf54h_errata_280(void);
 
 /* ========= Errata 8 ========= */
 #if    defined (NRF54H20_XXAA) || defined (DEVELOP_IN_NRF54H20)
@@ -5318,6 +5332,270 @@ static inline bool nrf54h_errata_243(void)
                 }
             }
         #endif
+        return false;
+    #endif
+}
+
+/* ========= Errata 244 ========= */
+#if    defined (NRF54H20_XXAA) || defined (DEVELOP_IN_NRF54H20)
+    #define NRF54H_ERRATA_244_PRESENT 1
+#else
+    #define NRF54H_ERRATA_244_PRESENT 0
+#endif
+
+#ifndef NRF54H_ERRATA_244_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_244_ENABLE_WORKAROUND NRF54H_ERRATA_244_PRESENT
+#endif
+
+static inline bool nrf54h_errata_244(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        #if defined (NRF54H20_XXAA) || defined (DEVELOP_IN_NRF54H20)
+            uint32_t var1 = *(uint32_t *)0x0FFFE000ul;
+            uint32_t var2 = *(uint32_t *)0x0FFFE004ul;
+        #endif
+        #if defined (NRF54H20_XXAA) || defined (DEVELOP_IN_NRF54H20)
+            if (var1 == 0x16)
+            {
+                switch(var2)
+                {
+                    case 0x02ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        return false;
+    #endif
+}
+
+/* ========= Errata 245 ========= */
+#if    defined (NRF54H20_XXAA) || defined (DEVELOP_IN_NRF54H20)
+    #define NRF54H_ERRATA_245_PRESENT 1
+#else
+    #define NRF54H_ERRATA_245_PRESENT 0
+#endif
+
+#ifndef NRF54H_ERRATA_245_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_245_ENABLE_WORKAROUND NRF54H_ERRATA_245_PRESENT
+#endif
+
+static inline bool nrf54h_errata_245(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        #if defined (NRF54H20_XXAA) || defined (DEVELOP_IN_NRF54H20)
+            uint32_t var1 = *(uint32_t *)0x0FFFE000ul;
+            uint32_t var2 = *(uint32_t *)0x0FFFE004ul;
+        #endif
+        #if defined (NRF54H20_XXAA) || defined (DEVELOP_IN_NRF54H20)
+            if (var1 == 0x16)
+            {
+                switch(var2)
+                {
+                    case 0x02ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        return false;
+    #endif
+}
+
+/* ========= Errata 253 ========= */
+#define NRF54H_ERRATA_253_PRESENT 0
+
+#ifndef NRF54H_ERRATA_253_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_253_ENABLE_WORKAROUND NRF54H_ERRATA_253_PRESENT
+#endif
+
+static inline bool nrf54h_errata_253(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 254 ========= */
+#define NRF54H_ERRATA_254_PRESENT 0
+
+#ifndef NRF54H_ERRATA_254_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_254_ENABLE_WORKAROUND 0
+#endif
+
+static inline bool nrf54h_errata_254(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 256 ========= */
+#define NRF54H_ERRATA_256_PRESENT 0
+
+#ifndef NRF54H_ERRATA_256_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_256_ENABLE_WORKAROUND NRF54H_ERRATA_256_PRESENT
+#endif
+
+static inline bool nrf54h_errata_256(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 271 ========= */
+#define NRF54H_ERRATA_271_PRESENT 0
+
+#ifndef NRF54H_ERRATA_271_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_271_ENABLE_WORKAROUND NRF54H_ERRATA_271_PRESENT
+#endif
+
+static inline bool nrf54h_errata_271(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 272 ========= */
+#define NRF54H_ERRATA_272_PRESENT 0
+
+#ifndef NRF54H_ERRATA_272_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_272_ENABLE_WORKAROUND 0
+#endif
+
+static inline bool nrf54h_errata_272(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 273 ========= */
+#define NRF54H_ERRATA_273_PRESENT 0
+
+#ifndef NRF54H_ERRATA_273_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_273_ENABLE_WORKAROUND NRF54H_ERRATA_273_PRESENT
+#endif
+
+static inline bool nrf54h_errata_273(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 274 ========= */
+#define NRF54H_ERRATA_274_PRESENT 0
+
+#ifndef NRF54H_ERRATA_274_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_274_ENABLE_WORKAROUND NRF54H_ERRATA_274_PRESENT
+#endif
+
+static inline bool nrf54h_errata_274(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 275 ========= */
+#define NRF54H_ERRATA_275_PRESENT 0
+
+#ifndef NRF54H_ERRATA_275_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_275_ENABLE_WORKAROUND 0
+#endif
+
+static inline bool nrf54h_errata_275(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 277 ========= */
+#define NRF54H_ERRATA_277_PRESENT 0
+
+#ifndef NRF54H_ERRATA_277_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_277_ENABLE_WORKAROUND 0
+#endif
+
+static inline bool nrf54h_errata_277(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 278 ========= */
+#define NRF54H_ERRATA_278_PRESENT 0
+
+#ifndef NRF54H_ERRATA_278_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_278_ENABLE_WORKAROUND 0
+#endif
+
+static inline bool nrf54h_errata_278(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 279 ========= */
+#define NRF54H_ERRATA_279_PRESENT 0
+
+#ifndef NRF54H_ERRATA_279_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_279_ENABLE_WORKAROUND 0
+#endif
+
+static inline bool nrf54h_errata_279(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 280 ========= */
+#define NRF54H_ERRATA_280_PRESENT 0
+
+#ifndef NRF54H_ERRATA_280_ENABLE_WORKAROUND
+    #define NRF54H_ERRATA_280_ENABLE_WORKAROUND NRF54H_ERRATA_280_PRESENT
+#endif
+
+static inline bool nrf54h_errata_280(void)
+{
+    #ifndef NRF54H_SERIES
+        return false;
+    #else
         return false;
     #endif
 }

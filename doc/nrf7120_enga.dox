@@ -1,7 +1,7 @@
 /**
-@page nrf7120_enga_drivers nRF7120 Eng A drivers
+@page nrf7120_enga_drivers nRF7120/nRF7120E Eng A drivers
 
-This page lists nrfx driver components supported by the nRF7120 Eng A SoC.
+This page lists nrfx driver components supported by the nRF7120 Eng A and nRF7120E Eng A SoCs.
 For a complete overview, see @ref nrfx_drv_supp_matrix.
 
 @{

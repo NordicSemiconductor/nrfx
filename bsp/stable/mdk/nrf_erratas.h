@@ -67,6 +67,11 @@ NRF_MDK_VERSION_ASSERT_AT_LEAST(8,34,0);
 #endif
 
 
+#ifdef NRF71_SERIES
+    #include "nrf71/nrf71_erratas.h"
+#endif
+
+
 #ifdef NRF91_SERIES
     #include "nrf91/nrf91_erratas.h"
 #endif

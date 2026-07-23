@@ -51,7 +51,7 @@ This file was modified by Nordic Semiconductor to support RISC-V devices.
     .equ    Stack_Size, __STACK_SIZE
 #else
     .align 3
-    .equ    Stack_Size, 4096
+    .equ    Stack_Size, 2048
 #endif
     .globl __StackTop
     .globl __StackLimit
@@ -72,7 +72,7 @@ __StackTop:
 #elif defined(__HEAP_SIZE)
     .equ Heap_Size, __HEAP_SIZE
 #else
-    .equ Heap_Size, 4096
+    .equ Heap_Size, 2048
 #endif
     .globl __HeapBase
     .globl __HeapLimit

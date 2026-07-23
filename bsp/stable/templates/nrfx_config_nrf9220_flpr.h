@@ -109,6 +109,15 @@
 #endif
 
 /**
+ * @brief NRFX_GPPI_CONFIG_EXT_ALLOCATOR
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GPPI_CONFIG_EXT_ALLOCATOR
+#define NRFX_GPPI_CONFIG_EXT_ALLOCATOR 0
+#endif
+
+/**
  * @brief NRFX_GRTC_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.

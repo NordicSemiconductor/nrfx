@@ -337,7 +337,8 @@ void nrfx_nfct_autocolres_enable(void);
 void nrfx_nfct_autocolres_disable(void);
 
 #if NRF_ERRATA_STATIC_CHECK(52, 79) || NRF_ERRATA_STATIC_CHECK(52, 190) || \
-    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60)
+    NRF_ERRATA_STATIC_CHECK(53, 70) || NRF_ERRATA_STATIC_CHECK(54L, 60) || \
+    NRF_ERRATA_STATIC_CHECK(71, 60)
 /**
  * @brief Function for handling workarounds for nRF52 Anomaly 79, nRF52 Anomaly 190,
  *        nRF53 Anomaly 70 and nRF54L Anomaly 60.

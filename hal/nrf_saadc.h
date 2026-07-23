@@ -115,14 +115,24 @@ extern "C" {
 #define NRF_SAADC_HAS_CH_CONFIG_RES 0
 #endif
 
-#if defined(SAADC_CH_PSELP_CONNECT_Internal) || defined(__NRFX_DOXYGEN__)
+#if (defined(SAADC_CH_PSELP_CONNECT_Test) && defined(SAADC_CH_PSELP_Test_Pos)) || \
+     defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether SAADC positive test inputs for pin number configurations are present. */
+#define NRF_SAADC_HAS_CH_PSELP_TEST 1
+#else
+#define NRF_SAADC_HAS_CH_PSELP_TEST 0
+#endif
+
+#if (defined(SAADC_CH_PSELP_CONNECT_Internal) && defined(SAADC_CH_PSELP_INTERNAL_Pos)) || \
+     defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether SAADC positive internal inputs for pin number configurations are present. */
 #define NRF_SAADC_HAS_CH_PSELP_INTERNAL 1
 #else
 #define NRF_SAADC_HAS_CH_PSELP_INTERNAL 0
 #endif
 
-#if defined(SAADC_CH_PSELN_CONNECT_Internal) || defined(__NRFX_DOXYGEN__)
+#if (defined(SAADC_CH_PSELN_CONNECT_Internal) && defined(SAADC_CH_PSELN_INTERNAL_Pos)) || \
+     defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether SAADC negative internal inputs for pin number configurations are present. */
 #define NRF_SAADC_HAS_CH_PSELN_INTERNAL 1
 #else
@@ -162,6 +172,13 @@ extern "C" {
 #define NRF_SAADC_HAS_INPUT_VDD 1
 #else
 #define NRF_SAADC_HAS_INPUT_VDD 0
+#endif
+
+#if defined(SAADC_CH_PSELP_TEST_AVSS) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether AVSS can be selected as SAADC input. */
+#define NRF_SAADC_HAS_INPUT_AVSS 1
+#else
+#define NRF_SAADC_HAS_INPUT_AVSS 0
 #endif
 
 #if defined(SAADC_CH_CONFIG_GAIN_Msk) || defined(__NRFX_DOXYGEN__)
@@ -328,6 +345,11 @@ typedef enum
 #if NRF_SAADC_HAS_AIN_AS_PIN
 /** @brief Analog input type. */
 typedef uint32_t nrf_saadc_input_t;
+
+#if defined(SAADC_CH_PSELP_TEST_AVSS) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol specifying AVSS as input. */
+#define NRF_SAADC_INPUT_AVSS ((SAADC_CH_PSELP_TEST_AVSS + 1) << SAADC_CH_PSELP_TEST_Pos)
+#endif
 
 #if defined(SAADC_CH_PSELP_INTERNAL_Avdd) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol specifying internal 0.9 V analog supply rail as input. */
@@ -1359,6 +1381,15 @@ NRF_STATIC_INLINE void nrf_saadc_channel_pos_input_set(NRF_SAADC_Type *  p_reg,
     {
         pselp_reg = 0;
     }
+#if NRF_SAADC_HAS_CH_PSELP_TEST
+    else if (pselp >> SAADC_CH_PSELP_TEST_Pos)
+    {
+        /* Substract shifted '1' before setting register value,
+         * as it was artifically added before in the internal input definition */
+        pselp_reg  = (pselp - (1 << SAADC_CH_PSELP_TEST_Pos)) |
+                     (SAADC_CH_PSELP_CONNECT_Test << SAADC_CH_PSELP_CONNECT_Pos);
+    }
+#endif
 #if NRF_SAADC_HAS_CH_PSELP_INTERNAL
     else if (pselp >> SAADC_CH_PSELP_INTERNAL_Pos)
     {

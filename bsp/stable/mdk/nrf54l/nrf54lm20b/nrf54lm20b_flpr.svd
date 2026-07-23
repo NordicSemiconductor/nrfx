@@ -142,6 +142,11 @@ POSSIBILITY OF SUCH DAMAGE.
                     <value>0x054BC20A</value>
                   </enumeratedValue>
                   <enumeratedValue>
+                    <name>N54LM20B</name>
+                    <description>nRF54LM20B</description>
+                    <value>0x054BC20B</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
                     <name>Unspecified</name>
                     <description>Unspecified</description>
                     <value>0xFFFFFFFF</value>
@@ -152,7 +157,7 @@ POSSIBILITY OF SUCH DAMAGE.
           </register>
           <register>
             <name>VARIANT</name>
-            <description>Part Variant, Hardware version and Production configuration</description>
+            <description>Function variant code, Hardware version code, and Production configuration code encoded as ASCII.</description>
             <addressOffset>0x020</addressOffset>
             <access>read-only</access>
             <resetValue>0xFFFFFFFF</resetValue>
@@ -160,10 +165,15 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>VARIANT</name>
-                <description>Part Variant, Hardware version and Production configuration, encoded as ASCII</description>
+                <description>Function variant code, Hardware version code, and Production configuration code encoded as ASCII</description>
                 <lsb>0</lsb>
                 <msb>31</msb>
                 <enumeratedValues>
+                  <enumeratedValue>
+                    <name>AAB0</name>
+                    <description>Example encoding for AAB0 - Function variant code AA, Hardware version code B, Production configuration code 0</description>
+                    <value>0x41414230</value>
+                  </enumeratedValue>
                   <enumeratedValue>
                     <name>Unspecified</name>
                     <description>Unspecified</description>
@@ -1305,36 +1315,42 @@ POSSIBILITY OF SUCH DAMAGE.
                 <description>Fetcher DMA reached the end of a block (if enabled in the descriptor; scatter-gather only)</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>FETCHERSTOPPED</name>
                 <description>Fetcher DMA reached the end of a block with Stop=1, or end of direct transfer</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>FETCHERERROR</name>
                 <description>Bus error during fetcher DMA access</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>PUSHERBLOCKEND</name>
                 <description>Pusher DMA reached the end of a block (if enabled in the descriptor; scatter-gather only)</description>
                 <lsb>3</lsb>
                 <msb>3</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>PUSHERSTOPPED</name>
                 <description>Pusher DMA reached the end of a block with Stop=1, or end of direct transfer</description>
                 <lsb>4</lsb>
                 <msb>4</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>PUSHERERROR</name>
                 <description>Bus error during pusher DMA access</description>
                 <lsb>5</lsb>
                 <msb>5</msb>
+                <access>write-only</access>
               </field>
             </fields>
           </register>
@@ -1351,36 +1367,42 @@ POSSIBILITY OF SUCH DAMAGE.
                 <description>Fetcher DMA reached the end of a block (if enabled in the descriptor; scatter-gather only)</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>FETCHERSTOPPED</name>
                 <description>Fetcher DMA reached the end of a block with Stop=1, or end of direct transfer</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>FETCHERERROR</name>
                 <description>Bus error during fetcher DMA access</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>PUSHERBLOCKEND</name>
                 <description>Pusher DMA reached the end of a block (if enabled in the descriptor; scatter-gather only)</description>
                 <lsb>3</lsb>
                 <msb>3</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>PUSHERSTOPPED</name>
                 <description>Pusher DMA reached the end of a block with Stop=1, or end of direct transfer</description>
                 <lsb>4</lsb>
                 <msb>4</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>PUSHERERROR</name>
                 <description>Bus error during pusher DMA access</description>
                 <lsb>5</lsb>
                 <msb>5</msb>
+                <access>write-only</access>
               </field>
             </fields>
           </register>
@@ -1397,36 +1419,42 @@ POSSIBILITY OF SUCH DAMAGE.
                 <description>Fetcher DMA reached the end of a block (if enabled in the descriptor; scatter-gather only)</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
+                <access>read-only</access>
               </field>
               <field>
                 <name>FETCHERSTOPPED</name>
                 <description>Fetcher DMA reached the end of a block with Stop=1, or end of direct transfer</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
+                <access>read-only</access>
               </field>
               <field>
                 <name>FETCHERERROR</name>
                 <description>Bus error during fetcher DMA access</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
+                <access>read-only</access>
               </field>
               <field>
                 <name>PUSHERBLOCKEND</name>
                 <description>Pusher DMA reached the end of a block (if enabled in the descriptor; scatter-gather only)</description>
                 <lsb>3</lsb>
                 <msb>3</msb>
+                <access>read-only</access>
               </field>
               <field>
                 <name>PUSHERSTOPPED</name>
                 <description>Pusher DMA reached the end of a block with Stop=1, or end of direct transfer</description>
                 <lsb>4</lsb>
                 <msb>4</msb>
+                <access>read-only</access>
               </field>
               <field>
                 <name>PUSHERERROR</name>
                 <description>Bus error during pusher DMA access</description>
                 <lsb>5</lsb>
                 <msb>5</msb>
+                <access>read-only</access>
               </field>
             </fields>
           </register>
@@ -1443,36 +1471,42 @@ POSSIBILITY OF SUCH DAMAGE.
                 <description>Fetcher DMA reached the end of a block (if enabled in the descriptor; scatter-gather only)</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
+                <access>read-only</access>
               </field>
               <field>
                 <name>FETCHERSTOPPED</name>
                 <description>Fetcher DMA reached the end of a block with Stop=1, or end of direct transfer</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
+                <access>read-only</access>
               </field>
               <field>
                 <name>FETCHERERROR</name>
                 <description>Bus error during fetcher DMA access</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
+                <access>read-only</access>
               </field>
               <field>
                 <name>PUSHERBLOCKEND</name>
                 <description>Pusher DMA reached the end of a block (if enabled in the descriptor; scatter-gather only)</description>
                 <lsb>3</lsb>
                 <msb>3</msb>
+                <access>read-only</access>
               </field>
               <field>
                 <name>PUSHERSTOPPED</name>
                 <description>Pusher DMA reached the end of a block with Stop=1, or end of direct transfer</description>
                 <lsb>4</lsb>
                 <msb>4</msb>
+                <access>read-only</access>
               </field>
               <field>
                 <name>PUSHERERROR</name>
                 <description>Bus error during pusher DMA access</description>
                 <lsb>5</lsb>
                 <msb>5</msb>
+                <access>read-only</access>
               </field>
             </fields>
           </register>
@@ -1489,36 +1523,42 @@ POSSIBILITY OF SUCH DAMAGE.
                 <description>Fetcher DMA reached the end of a block (if enabled in the descriptor; scatter-gather only)</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>FETCHERSTOPPED</name>
                 <description>Fetcher DMA reached the end of a block with Stop=1, or end of direct transfer</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>FETCHERERROR</name>
                 <description>Bus error during fetcher DMA access</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>PUSHERBLOCKEND</name>
                 <description>Pusher DMA reached the end of a block (if enabled in the descriptor; scatter-gather only)</description>
                 <lsb>3</lsb>
                 <msb>3</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>PUSHERSTOPPED</name>
                 <description>Pusher DMA reached the end of a block with Stop=1, or end of direct transfer</description>
                 <lsb>4</lsb>
                 <msb>4</msb>
+                <access>write-only</access>
               </field>
               <field>
                 <name>PUSHERERROR</name>
                 <description>Bus error during pusher DMA access</description>
                 <lsb>5</lsb>
                 <msb>5</msb>
+                <access>write-only</access>
               </field>
             </fields>
           </register>
@@ -2440,7 +2480,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <description>Hardware configuration register.</description>
             <addressOffset>0x058</addressOffset>
             <access>read-write</access>
-            <resetValue>0x0002410F</resetValue>
+            <resetValue>0x0002411B</resetValue>
             <size>0x20</size>
             <fields>
               <field>
@@ -2567,13 +2607,13 @@ POSSIBILITY OF SUCH DAMAGE.
                 <name>DLYTWOCUTOFF</name>
                 <description>Correlation test cut-off value for delay of +/- 2 samples.</description>
                 <lsb>0</lsb>
-                <msb>15</msb>
+                <msb>6</msb>
               </field>
               <field>
                 <name>DLYTHREECUTOFF</name>
                 <description>Correlation test cut-off value for delay of +/- 3 samples.</description>
                 <lsb>16</lsb>
-                <msb>31</msb>
+                <msb>22</msb>
               </field>
             </fields>
           </register>
@@ -2913,7 +2953,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <description>Hardware configuration register.</description>
             <addressOffset>0x018</addressOffset>
             <access>read-write</access>
-            <resetValue>0x01F30200</resetValue>
+            <resetValue>0x01F31200</resetValue>
             <size>0x20</size>
             <fields>
               <field>
@@ -3998,23 +4038,43 @@ POSSIBILITY OF SUCH DAMAGE.
                 <msb>31</msb>
                 <enumeratedValues>
                   <enumeratedValue>
+                    <name>PRIO3F</name>
+                    <description>Priority level 0x3F</description>
+                    <value>0x3F</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>PRIO7F</name>
+                    <description>Priority level 0x7F</description>
+                    <value>0x7F</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>PRIOBF</name>
+                    <description>Priority level 0xBF</description>
+                    <value>0xBF</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>PRIOFF</name>
+                    <description>Priority level 0xFF</description>
+                    <value>0xFF</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
                     <name>PRIOLEVEL0</name>
-                    <description>Priority level 0</description>
+                    <description>Deprecated enumerator -  Priority level 0</description>
                     <value>0x3F</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>PRIOLEVEL1</name>
-                    <description>Priority level 1</description>
+                    <description>Deprecated enumerator -  Priority level 1</description>
                     <value>0x7F</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>PRIOLEVEL2</name>
-                    <description>Priority level 2</description>
+                    <description>Deprecated enumerator -  Priority level 2</description>
                     <value>0xBF</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>PRIOLEVEL3</name>
-                    <description>Priority level 3</description>
+                    <description>Deprecated enumerator -  Priority level 3</description>
                     <value>0xFF</value>
                   </enumeratedValue>
                 </enumeratedValues>
@@ -40365,6 +40425,13 @@ POSSIBILITY OF SUCH DAMAGE.
           <size>0x20</size>
           <fields>
             <field>
+              <name>CHIDX</name>
+              <description>DPPI channel that task TASKS_TRIGGER[n] will subscribe to</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+              <access>read-only</access>
+            </field>
+            <field>
               <name>EN</name>
               <description>Subscription enable bit</description>
               <lsb>31</lsb>
@@ -40424,6 +40491,13 @@ POSSIBILITY OF SUCH DAMAGE.
           <resetValue>0x00000000</resetValue>
           <size>0x20</size>
           <fields>
+            <field>
+              <name>CHIDX</name>
+              <description>DPPI channel that event EVENTS_TRIGGERED[n] will publish to</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+              <access>read-only</access>
+            </field>
             <field>
               <name>EN</name>
               <description>Publication enable bit</description>
@@ -41249,7 +41323,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <value>0x0</value>
                   </enumeratedValue>
                   <enumeratedValue>
-                    <name>Clear</name>
+                    <name>Set</name>
                     <description>Sets the halt on reset request</description>
                     <value>0x1</value>
                   </enumeratedValue>
@@ -41933,11 +42007,6 @@ POSSIBILITY OF SUCH DAMAGE.
                     <value>0x00</value>
                   </enumeratedValue>
                   <enumeratedValue>
-                    <name>QUICKACCESS</name>
-                    <description>Quick Access Command</description>
-                    <value>0x01</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
                     <name>MEMACCESS</name>
                     <description>Memory Access Command</description>
                     <value>0x02</value>
@@ -42023,7 +42092,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 <description>Data</description>
                 <lsb>0</lsb>
                 <msb>31</msb>
-                <access>read-only</access>
               </field>
             </fields>
           </register>
@@ -42107,68 +42175,38 @@ POSSIBILITY OF SUCH DAMAGE.
             <fields>
               <field>
                 <name>SBACCESS8</name>
+                <description>8-bit system bus accesses are supported.</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
                 <access>read-only</access>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>sbaccess8</name>
-                    <description>8-bit system bus accesses are supported.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
                 <name>SBACCESS16</name>
+                <description>16-bit system bus accesses are supported.</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
                 <access>read-only</access>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>sbaccess16</name>
-                    <description>16-bit system bus accesses are supported.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
                 <name>SBACCESS32</name>
+                <description>32-bit system bus accesses are supported.</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
                 <access>read-only</access>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>sbaccess32</name>
-                    <description>32-bit system bus accesses are supported.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
                 <name>SBACCESS64</name>
+                <description>64-bit system bus accesses are supported.</description>
                 <lsb>3</lsb>
                 <msb>3</msb>
                 <access>read-only</access>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>sbaccess64</name>
-                    <description>64-bit system bus accesses are supported.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
                 <name>SBACCESS128</name>
+                <description>128-bit system bus accesses are supported.</description>
                 <lsb>4</lsb>
                 <msb>4</msb>
                 <access>read-only</access>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>sbaccess128</name>
-                    <description>128-bit system bus accesses are supported.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
                 <name>SBASIZE</name>
@@ -42340,7 +42378,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>version1</name>
-                    <description>The System Bus interface conforms to RISC-V External Debug Support version 0.14.0-DRAFT.
+                    <description>The System Bus interface conforms to RISC-V External Debug Support version 0.13.2.
           Other values are reserved for future versions.</description>
                     <value>0x1</value>
                   </enumeratedValue>
@@ -42531,6 +42569,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>CPUSTATUS</name>
+              <description>Enumerates one of several possible states for the VPR:</description>
               <lsb>0</lsb>
               <msb>3</msb>
               <access>read-only</access>
@@ -42602,6 +42641,18 @@ POSSIBILITY OF SUCH DAMAGE.
               <lsb>5</lsb>
               <msb>5</msb>
               <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotStalled</name>
+                  <description>CPU not stalled on blocing CSR access.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Stalled</name>
+                  <description>CPU stalled on blocing CSR access.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -43123,7 +43174,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <addressOffset>0x000</addressOffset>
             <register>
               <name>END</name>
-              <description>Generated after all MAXCNT bytes have been transferred</description>
+              <description>Generated after EasyDMA has completed its operation.</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -43131,7 +43182,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>END</name>
-                  <description>Generated after all MAXCNT bytes have been transferred</description>
+                  <description>Generated after EasyDMA has completed its operation.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -43244,7 +43295,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <addressOffset>0x01C</addressOffset>
             <register>
               <name>END</name>
-              <description>Generated after all MAXCNT bytes have been transferred</description>
+              <description>Generated after EasyDMA has completed its operation.</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -43252,7 +43303,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>END</name>
-                  <description>Generated after all MAXCNT bytes have been transferred</description>
+                  <description>Generated after EasyDMA has completed its operation.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -45061,7 +45112,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>AMOUNT</name>
-              <description>Number of bytes transferred in the last transaction, updated after the END event. Also updated after each MATCH event.</description>
+              <description>Number of bytes transferred in the last transaction, updated after the END event. For channels that supports the compare match filter, this register is also updated after each MATCH event.</description>
               <addressOffset>0x00C</addressOffset>
               <access>read-only</access>
               <resetValue>0x00000000</resetValue>
@@ -45233,7 +45284,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </field>
                   <field>
                     <name>ONESHOT_0</name>
-                    <description>Configure match filter 0 as one-shot or sticky</description>
+                    <description>Configure match filter 0 as one-shot or continous</description>
                     <lsb>16</lsb>
                     <msb>16</msb>
                     <enumeratedValues>
@@ -45251,7 +45302,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </field>
                   <field>
                     <name>ONESHOT_1</name>
-                    <description>Configure match filter 1 as one-shot or sticky</description>
+                    <description>Configure match filter 1 as one-shot or continous</description>
                     <lsb>17</lsb>
                     <msb>17</msb>
                     <enumeratedValues>
@@ -45269,7 +45320,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </field>
                   <field>
                     <name>ONESHOT_2</name>
-                    <description>Configure match filter 2 as one-shot or sticky</description>
+                    <description>Configure match filter 2 as one-shot or continous</description>
                     <lsb>18</lsb>
                     <msb>18</msb>
                     <enumeratedValues>
@@ -45287,7 +45338,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </field>
                   <field>
                     <name>ONESHOT_3</name>
-                    <description>Configure match filter 3 as one-shot or sticky</description>
+                    <description>Configure match filter 3 as one-shot or continous</description>
                     <lsb>19</lsb>
                     <msb>19</msb>
                     <enumeratedValues>
@@ -45319,7 +45370,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <name>DATA</name>
                     <description>Data to look for</description>
                     <lsb>0</lsb>
-                    <msb>31</msb>
+                    <msb>7</msb>
                   </field>
                 </fields>
               </register>
@@ -45365,7 +45416,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>AMOUNT</name>
-              <description>Number of bytes transferred in the last transaction, updated after the END event. Also updated after each MATCH event.</description>
+              <description>Number of bytes transferred in the last transaction, updated after the END event. For channels that supports the compare match filter, this register is also updated after each MATCH event.</description>
               <addressOffset>0x00C</addressOffset>
               <access>read-only</access>
               <resetValue>0x00000000</resetValue>
@@ -48695,7 +48746,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <addressOffset>0x000</addressOffset>
             <register>
               <name>END</name>
-              <description>Generated after all MAXCNT bytes have been transferred</description>
+              <description>Generated after EasyDMA has completed its operation.</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -48703,7 +48754,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>END</name>
-                  <description>Generated after all MAXCNT bytes have been transferred</description>
+                  <description>Generated after EasyDMA has completed its operation.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -48816,7 +48867,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <addressOffset>0x01C</addressOffset>
             <register>
               <name>END</name>
-              <description>Generated after all MAXCNT bytes have been transferred</description>
+              <description>Generated after EasyDMA has completed its operation.</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -48824,7 +48875,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>END</name>
-                  <description>Generated after all MAXCNT bytes have been transferred</description>
+                  <description>Generated after EasyDMA has completed its operation.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -51668,7 +51719,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>AMOUNT</name>
-              <description>Number of bytes transferred in the last transaction, updated after the END event. Also updated after each MATCH event.</description>
+              <description>Number of bytes transferred in the last transaction, updated after the END event. For channels that supports the compare match filter, this register is also updated after each MATCH event.</description>
               <addressOffset>0x00C</addressOffset>
               <access>read-only</access>
               <resetValue>0x00000000</resetValue>
@@ -51972,7 +52023,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>AMOUNT</name>
-              <description>Number of bytes transferred in the last transaction, updated after the END event. Also updated after each MATCH event.</description>
+              <description>Number of bytes transferred in the last transaction, updated after the END event. For channels that supports the compare match filter, this register is also updated after each MATCH event.</description>
               <addressOffset>0x00C</addressOffset>
               <access>read-only</access>
               <resetValue>0x00000000</resetValue>
@@ -53060,7 +53111,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>WRITEBUFSIZE</name>
-              <description>write-buffer size in number of 128-bit words</description>
+              <description>Write-buffer size in number of data units</description>
               <lsb>8</lsb>
               <msb>13</msb>
               <enumeratedValues>
@@ -53142,6 +53193,39 @@ POSSIBILITY OF SUCH DAMAGE.
                     <name>Abort</name>
                     <description>Abort the current RRAM write</description>
                     <value>0x1</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>STANDBYCONFIG</name>
+            <description>Standby mode configuration</description>
+            <addressOffset>0x004</addressOffset>
+            <access>read-write</access>
+            <resetValue>0x00000000</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>MODE</name>
+                <description>RRAM standby mode</description>
+                <lsb>0</lsb>
+                <msb>1</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Normal</name>
+                    <description>The RRAM automatically goes into idle mode while the RRAM is not being accessed</description>
+                    <value>0x0</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>PowerDown</name>
+                    <description>The RRAM goes into power down mode when the access timeout counter is expired</description>
+                    <value>0x2</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Standby</name>
+                    <description>The RRAM remains active while the RRAM is not being accessed.</description>
+                    <value>0x3</value>
                   </enumeratedValue>
                 </enumeratedValues>
               </field>
@@ -53312,19 +53396,6 @@ POSSIBILITY OF SUCH DAMAGE.
                     <name>Secure</name>
                     <description>Only secure access to override region [n] is allowed</description>
                     <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-              <field>
-                <name>OWNER</name>
-                <description>Owner ID</description>
-                <lsb>4</lsb>
-                <msb>7</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>NotEnforced</name>
-                    <description>Owner ID protection is not enforced</description>
-                    <value>0x0</value>
                   </enumeratedValue>
                 </enumeratedValues>
               </field>
@@ -60152,7 +60223,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>ENABLE</name>
-          <description>Enable debug domain and aquire selected GPIOs</description>
+          <description>Enable debug domain and acquire selected GPIOs</description>
           <addressOffset>0x500</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -60170,7 +60241,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>ENABLED</name>
-                  <description>Enable debug domain and aquire selected GPIOs</description>
+                  <description>Enable debug domain and acquire selected GPIOs</description>
                   <value>0x1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -61513,6 +61584,168 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
+          <name>INTPEND</name>
+          <description>Pending interrupts</description>
+          <addressOffset>0x30C</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>COMPARE0</name>
+              <description>Read pending status of interrupt for event COMPARE[0]</description>
+              <lsb>16</lsb>
+              <msb>16</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE1</name>
+              <description>Read pending status of interrupt for event COMPARE[1]</description>
+              <lsb>17</lsb>
+              <msb>17</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE2</name>
+              <description>Read pending status of interrupt for event COMPARE[2]</description>
+              <lsb>18</lsb>
+              <msb>18</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE3</name>
+              <description>Read pending status of interrupt for event COMPARE[3]</description>
+              <lsb>19</lsb>
+              <msb>19</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE4</name>
+              <description>Read pending status of interrupt for event COMPARE[4]</description>
+              <lsb>20</lsb>
+              <msb>20</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE5</name>
+              <description>Read pending status of interrupt for event COMPARE[5]</description>
+              <lsb>21</lsb>
+              <msb>21</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE6</name>
+              <description>Read pending status of interrupt for event COMPARE[6]</description>
+              <lsb>22</lsb>
+              <msb>22</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>COMPARE7</name>
+              <description>Read pending status of interrupt for event COMPARE[7]</description>
+              <lsb>23</lsb>
+              <msb>23</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>MODE</name>
           <description>Timer mode selection</description>
           <addressOffset>0x504</addressOffset>
@@ -61662,7 +61895,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </peripheral>
     <peripheral>
       <name>GLOBAL_AXONS_NS</name>
-      <description>Neural network accelerator 0</description>
+      <description>Neural processing unit (NPU) 0</description>
       <baseAddress>0x40056000</baseAddress>
       <headerStructName>AXONS</headerStructName>
       <!--Security dma=SA-->
@@ -61735,7 +61968,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </peripheral>
     <peripheral derivedFrom="GLOBAL_AXONS_NS">
       <name>GLOBAL_AXONS_S</name>
-      <description>Neural network accelerator 1</description>
+      <description>Neural processing unit (NPU) 1</description>
       <baseAddress>0x50056000</baseAddress>
       <!--Security dma=SA-->
       <!--Security securemapping=US-->
@@ -63652,10 +63885,208 @@ POSSIBILITY OF SUCH DAMAGE.
           <size>0x20</size>
           <fields>
             <field>
-              <name>ENABLE</name>
-              <description>Enable the lock</description>
+              <name>ENABLE_0</name>
+              <description>Enable the lock for SEED[0]</description>
               <lsb>0</lsb>
               <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Lock disabled.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Lock enabled.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ENABLE_1</name>
+              <description>Enable the lock for SEED[1]</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Lock disabled.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Lock enabled.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ENABLE_2</name>
+              <description>Enable the lock for SEED[2]</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Lock disabled.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Lock enabled.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ENABLE_3</name>
+              <description>Enable the lock for SEED[3]</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Lock disabled.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Lock enabled.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ENABLE_4</name>
+              <description>Enable the lock for SEED[4]</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Lock disabled.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Lock enabled.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ENABLE_5</name>
+              <description>Enable the lock for SEED[5]</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Lock disabled.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Lock enabled.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ENABLE_6</name>
+              <description>Enable the lock for SEED[6]</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Lock disabled.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Lock enabled.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ENABLE_7</name>
+              <description>Enable the lock for SEED[7]</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Lock disabled.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Lock enabled.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ENABLE_8</name>
+              <description>Enable the lock for SEED[8]</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Lock disabled.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Lock enabled.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ENABLE_9</name>
+              <description>Enable the lock for SEED[9]</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Lock disabled.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Lock enabled.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ENABLE_10</name>
+              <description>Enable the lock for SEED[10]</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Lock disabled.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Lock enabled.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ENABLE_11</name>
+              <description>Enable the lock for SEED[11]</description>
+              <lsb>11</lsb>
+              <msb>11</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -64071,24 +64502,6 @@ POSSIBILITY OF SUCH DAMAGE.
                   </enumeratedValue>
                 </enumeratedValues>
               </field>
-              <field>
-                <name>DCDENB0</name>
-                <description>Enhanced Data Contact Detection Enable</description>
-                <lsb>3</lsb>
-                <msb>3</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Disabled</name>
-                    <description>IDP_SRC current is disabled</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Enabled</name>
-                    <description>IDP_SRC current is sourced onto DP0</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
             </fields>
           </register>
           <register>
@@ -64099,11 +64512,6 @@ POSSIBILITY OF SUCH DAMAGE.
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
             <fields>
-              <field>
-                <name>OTGSESSVLD0</name>
-                <lsb>0</lsb>
-                <msb>0</msb>
-              </field>
               <field>
                 <name>CHGDET</name>
                 <lsb>1</lsb>
@@ -77519,7 +77927,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <addressOffset>0x000</addressOffset>
             <register>
               <name>END</name>
-              <description>Generated after all MAXCNT bytes have been transferred</description>
+              <description>Generated after EasyDMA has completed its operation.</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -77527,7 +77935,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>END</name>
-                  <description>Generated after all MAXCNT bytes have been transferred</description>
+                  <description>Generated after EasyDMA has completed its operation.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -77640,7 +78048,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <addressOffset>0x01C</addressOffset>
             <register>
               <name>END</name>
-              <description>Generated after all MAXCNT bytes have been transferred</description>
+              <description>Generated after EasyDMA has completed its operation.</description>
               <addressOffset>0x000</addressOffset>
               <access>read-write</access>
               <resetValue>0x00000000</resetValue>
@@ -77648,7 +78056,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <fields>
                 <field>
                   <name>END</name>
-                  <description>Generated after all MAXCNT bytes have been transferred</description>
+                  <description>Generated after EasyDMA has completed its operation.</description>
                   <lsb>0</lsb>
                   <msb>0</msb>
                   <enumeratedValues>
@@ -79688,7 +80096,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>AMOUNT</name>
-              <description>Number of bytes transferred in the last transaction, updated after the END event. Also updated after each MATCH event.</description>
+              <description>Number of bytes transferred in the last transaction, updated after the END event. For channels that supports the compare match filter, this register is also updated after each MATCH event.</description>
               <addressOffset>0x00C</addressOffset>
               <access>read-only</access>
               <resetValue>0x00000000</resetValue>
@@ -79860,7 +80268,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </field>
                   <field>
                     <name>ONESHOT_0</name>
-                    <description>Configure match filter 0 as one-shot or sticky</description>
+                    <description>Configure match filter 0 as one-shot or continous</description>
                     <lsb>16</lsb>
                     <msb>16</msb>
                     <enumeratedValues>
@@ -79878,7 +80286,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </field>
                   <field>
                     <name>ONESHOT_1</name>
-                    <description>Configure match filter 1 as one-shot or sticky</description>
+                    <description>Configure match filter 1 as one-shot or continous</description>
                     <lsb>17</lsb>
                     <msb>17</msb>
                     <enumeratedValues>
@@ -79896,7 +80304,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </field>
                   <field>
                     <name>ONESHOT_2</name>
-                    <description>Configure match filter 2 as one-shot or sticky</description>
+                    <description>Configure match filter 2 as one-shot or continous</description>
                     <lsb>18</lsb>
                     <msb>18</msb>
                     <enumeratedValues>
@@ -79914,7 +80322,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </field>
                   <field>
                     <name>ONESHOT_3</name>
-                    <description>Configure match filter 3 as one-shot or sticky</description>
+                    <description>Configure match filter 3 as one-shot or continous</description>
                     <lsb>19</lsb>
                     <msb>19</msb>
                     <enumeratedValues>
@@ -79946,7 +80354,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <name>DATA</name>
                     <description>Data to look for</description>
                     <lsb>0</lsb>
-                    <msb>31</msb>
+                    <msb>7</msb>
                   </field>
                 </fields>
               </register>
@@ -79992,7 +80400,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </register>
             <register>
               <name>AMOUNT</name>
-              <description>Number of bytes transferred in the last transaction, updated after the END event. Also updated after each MATCH event.</description>
+              <description>Number of bytes transferred in the last transaction, updated after the END event. For channels that supports the compare match filter, this register is also updated after each MATCH event.</description>
               <addressOffset>0x00C</addressOffset>
               <access>read-only</access>
               <resetValue>0x00000000</resetValue>
@@ -83542,29 +83950,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 </field>
               </fields>
             </register>
-            <register>
-              <name>STOP</name>
-              <description>Description cluster: Stops operation using easyDMA. This does not trigger an END event.</description>
-              <addressOffset>0x004</addressOffset>
-              <access>write-only</access>
-              <resetValue>0x00000000</resetValue>
-              <size>0x20</size>
-              <fields>
-                <field>
-                  <name>STOP</name>
-                  <description>Stops operation using easyDMA. This does not trigger an END event.</description>
-                  <lsb>0</lsb>
-                  <msb>0</msb>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>Trigger</name>
-                      <description>Trigger task</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-              </fields>
-            </register>
           </cluster>
         </cluster>
         <register>
@@ -83658,39 +84043,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 <field>
                   <name>CHIDX</name>
                   <description>DPPI channel that task START will subscribe to</description>
-                  <lsb>0</lsb>
-                  <msb>7</msb>
-                </field>
-                <field>
-                  <name>EN</name>
-                  <lsb>31</lsb>
-                  <msb>31</msb>
-                  <enumeratedValues>
-                    <enumeratedValue>
-                      <name>Disabled</name>
-                      <description>Disable subscription</description>
-                      <value>0x0</value>
-                    </enumeratedValue>
-                    <enumeratedValue>
-                      <name>Enabled</name>
-                      <description>Enable subscription</description>
-                      <value>0x1</value>
-                    </enumeratedValue>
-                  </enumeratedValues>
-                </field>
-              </fields>
-            </register>
-            <register>
-              <name>STOP</name>
-              <description>Description cluster: Subscribe configuration for task STOP</description>
-              <addressOffset>0x004</addressOffset>
-              <access>read-write</access>
-              <resetValue>0x00000000</resetValue>
-              <size>0x20</size>
-              <fields>
-                <field>
-                  <name>CHIDX</name>
-                  <description>DPPI channel that task STOP will subscribe to</description>
                   <lsb>0</lsb>
                   <msb>7</msb>
                 </field>
@@ -89521,7 +89873,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>External</name>
-                    <description>External reference given at PADC_EXT_REF_1V2</description>
+                    <description>External reference voltage</description>
                     <value>0x1</value>
                   </enumeratedValue>
                 </enumeratedValues>
@@ -89755,7 +90107,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <description>Data pointer</description>
             <addressOffset>0x004</addressOffset>
             <access>read-write</access>
-            <resetValue>0x00000000</resetValue>
+            <resetValue>0x20000000</resetValue>
             <size>0x20</size>
             <fields>
               <field>
@@ -89836,17 +90188,17 @@ POSSIBILITY OF SUCH DAMAGE.
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>NS1</name>
-                  <description>Noiseshaping and decimating. Larger passband. Decimation ratio 8, 125 kS/s, with resulting bandwidth around 45 kHz. Takes precedence over the OVERSAMPLING register.</description>
+                  <description>Noiseshaping and decimating. Decimation ratio 8, maximum continuous output 125 kS/s, with resulting bandwidth at 40 kHz. Recommended resolution setting is 12 bits or higher. Takes precedence over the OVERSAMPLING register.</description>
                   <value>0x1</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>NS2</name>
-                  <description>Noiseshaping and decimating. Smaller passband. Decimation ratio 32, 31.25 kS/s, with resulting bandwidth around 7 kHz. Takes precedence over the OVERSAMPLING register.</description>
+                  <description>Noiseshaping and decimating. Decimation ratio 16, maximum continuous output 62.5 kS/s, with resulting bandwidth at 20 kHz. Recommended resolution setting is 14 bits. Takes precedence over the OVERSAMPLING register.</description>
                   <value>0x2</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>NS3</name>
-                  <description>Noise shaping with oversampling set by the OVERSAMPLE register</description>
+                  <description>Noise shaping with oversampling set by the OVERSAMPLE register. Recommended resolution setting is 14 bits.</description>
                   <value>0x3</value>
                 </enumeratedValue>
                 <enumeratedValue>
@@ -96455,6 +96807,106 @@ POSSIBILITY OF SUCH DAMAGE.
                 <enumeratedValue>
                   <name>Enabled</name>
                   <description>Enable shortcut</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTEN</name>
+          <description>Enable or disable interrupt</description>
+          <addressOffset>0x300</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>SAMPLERDY</name>
+              <description>Enable or disable interrupt for event SAMPLERDY</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>REPORTRDY</name>
+              <description>Enable or disable interrupt for event REPORTRDY</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ACCOF</name>
+              <description>Enable or disable interrupt for event ACCOF</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DBLRDY</name>
+              <description>Enable or disable interrupt for event DBLRDY</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>STOPPED</name>
+              <description>Enable or disable interrupt for event STOPPED</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
                   <value>0x1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -104832,6 +105284,62 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
+          <name>EVENTS_BUSERROR_RX</name>
+          <description>This event is generated if an error occurs during the bus transfer.</description>
+          <addressOffset>0x124</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>EVENTS_BUSERROR_RX</name>
+              <description>This event is generated if an error occurs during the bus transfer.</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotGenerated</name>
+                  <description>Event not generated</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Generated</name>
+                  <description>Event generated</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>EVENTS_BUSERROR_TX</name>
+          <description>This event is generated if an error occurs during the bus transfer.</description>
+          <addressOffset>0x128</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>EVENTS_BUSERROR_TX</name>
+              <description>This event is generated if an error occurs during the bus transfer.</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotGenerated</name>
+                  <description>Event not generated</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Generated</name>
+                  <description>Event generated</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>PUBLISH_RXPTRUPD</name>
           <description>Publish configuration for event RXPTRUPD</description>
           <addressOffset>0x184</addressOffset>
@@ -104997,6 +105505,72 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
+          <name>PUBLISH_BUSERROR_RX</name>
+          <description>Publish configuration for event BUSERROR_RX</description>
+          <addressOffset>0x1A4</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>CHIDX</name>
+              <description>DPPI channel that event BUSERROR_RX will publish to</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+            </field>
+            <field>
+              <name>EN</name>
+              <lsb>31</lsb>
+              <msb>31</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable publishing</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable publishing</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PUBLISH_BUSERROR_TX</name>
+          <description>Publish configuration for event BUSERROR_TX</description>
+          <addressOffset>0x1A8</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>CHIDX</name>
+              <description>DPPI channel that event BUSERROR_TX will publish to</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+            </field>
+            <field>
+              <name>EN</name>
+              <lsb>31</lsb>
+              <msb>31</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable publishing</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable publishing</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>INTEN</name>
           <description>Enable or disable interrupt</description>
           <addressOffset>0x300</addressOffset>
@@ -105081,6 +105655,42 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Enable or disable interrupt for event MAXCNT</description>
               <lsb>8</lsb>
               <msb>8</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>BUSERROR_RX</name>
+              <description>Enable or disable interrupt for event BUSERROR_RX</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>BUSERROR_TX</name>
+              <description>Enable or disable interrupt for event BUSERROR_TX</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disabled</name>
@@ -105221,6 +105831,62 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Write '1' to enable interrupt for event MAXCNT</description>
               <lsb>8</lsb>
               <msb>8</msb>
+              <modifiedWriteValues>oneToSet</modifiedWriteValues>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>BUSERROR_RX</name>
+              <description>Write '1' to enable interrupt for event BUSERROR_RX</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <modifiedWriteValues>oneToSet</modifiedWriteValues>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Set</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>BUSERROR_TX</name>
+              <description>Write '1' to enable interrupt for event BUSERROR_TX</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
               <modifiedWriteValues>oneToSet</modifiedWriteValues>
               <enumeratedValues>
                 <usage>read</usage>
@@ -105394,6 +106060,62 @@ POSSIBILITY OF SUCH DAMAGE.
                 </enumeratedValue>
               </enumeratedValues>
             </field>
+            <field>
+              <name>BUSERROR_RX</name>
+              <description>Write '1' to disable interrupt for event BUSERROR_RX</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <modifiedWriteValues>oneToClear</modifiedWriteValues>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>BUSERROR_TX</name>
+              <description>Write '1' to disable interrupt for event BUSERROR_TX</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <modifiedWriteValues>oneToClear</modifiedWriteValues>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Read: Disabled</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Read: Enabled</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Disable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
           </fields>
         </register>
         <register>
@@ -105485,6 +106207,44 @@ POSSIBILITY OF SUCH DAMAGE.
               <description>Read pending status of interrupt for event MAXCNT</description>
               <lsb>8</lsb>
               <msb>8</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>BUSERROR_RX</name>
+              <description>Read pending status of interrupt for event BUSERROR_RX</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>BUSERROR_TX</name>
+              <description>Read pending status of interrupt for event BUSERROR_TX</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
               <enumeratedValues>
                 <usage>read</usage>
                 <enumeratedValue>
@@ -106552,7 +107312,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <name>PORT</name>
                 <description>Port number</description>
                 <lsb>5</lsb>
-                <msb>8</msb>
+                <msb>6</msb>
               </field>
               <field>
                 <name>CONNECT</name>
@@ -106592,7 +107352,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <name>PORT</name>
                 <description>Port number</description>
                 <lsb>5</lsb>
-                <msb>8</msb>
+                <msb>6</msb>
               </field>
               <field>
                 <name>CONNECT</name>
@@ -106632,7 +107392,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <name>PORT</name>
                 <description>Port number</description>
                 <lsb>5</lsb>
-                <msb>8</msb>
+                <msb>6</msb>
               </field>
               <field>
                 <name>CONNECT</name>
@@ -106672,7 +107432,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <name>PORT</name>
                 <description>Port number</description>
                 <lsb>5</lsb>
-                <msb>8</msb>
+                <msb>6</msb>
               </field>
               <field>
                 <name>CONNECT</name>
@@ -106712,7 +107472,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <name>PORT</name>
                 <description>Port number</description>
                 <lsb>5</lsb>
-                <msb>8</msb>
+                <msb>6</msb>
               </field>
               <field>
                 <name>CONNECT</name>
@@ -107731,7 +108491,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <register>
             <name>CHEN</name>
             <description>Active shield detector channel enable register.</description>
-            <addressOffset>0x000</addressOffset>
+            <addressOffset>0x0</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
             <size>0x20</size>
@@ -112148,6 +112908,52 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
+          <name>INTEN</name>
+          <description>Enable or disable interrupt</description>
+          <addressOffset>0x300</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>TIMEOUT</name>
+              <description>Enable or disable interrupt for event TIMEOUT</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>STOPPED</name>
+              <description>Enable or disable interrupt for event STOPPED</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>INTENSET</name>
           <description>Enable interrupt</description>
           <addressOffset>0x304</addressOffset>
@@ -112273,6 +113079,100 @@ POSSIBILITY OF SUCH DAMAGE.
                 <enumeratedValue>
                   <name>Clear</name>
                   <description>Disable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTPEND</name>
+          <description>Pending interrupts</description>
+          <addressOffset>0x30C</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>TIMEOUT</name>
+              <description>Read pending status of interrupt for event TIMEOUT</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>STOPPED</name>
+              <description>Read pending status of interrupt for event STOPPED</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <usage>read</usage>
+                <enumeratedValue>
+                  <name>NotPending</name>
+                  <description>Read: Not pending</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Pending</name>
+                  <description>Read: Pending</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>NMIEN</name>
+          <description>Enable or disable interrupt</description>
+          <addressOffset>0x320</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>TIMEOUT</name>
+              <description>Enable or disable interrupt for event TIMEOUT</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>STOPPED</name>
+              <description>Enable or disable interrupt for event STOPPED</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable</description>
                   <value>0x1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -116296,6 +117196,34 @@ POSSIBILITY OF SUCH DAMAGE.
                 <description>Crystal load capacitor as seen by the crystal across its terminals, including pin capacitance but excluding PCB stray capacitance.</description>
                 <lsb>0</lsb>
                 <msb>4</msb>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>STATUS</name>
+            <description>Status information</description>
+            <addressOffset>0x014</addressOffset>
+            <access>read-only</access>
+            <resetValue>0x00000000</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>CLOCKRUNNING</name>
+                <description>Clock status</description>
+                <lsb>2</lsb>
+                <msb>2</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>NotRunning</name>
+                    <description>Clock is not running.</description>
+                    <value>0x0</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Running</name>
+                    <description>Clock is running.</description>
+                    <value>0x1</value>
+                  </enumeratedValue>
+                </enumeratedValues>
               </field>
             </fields>
           </register>

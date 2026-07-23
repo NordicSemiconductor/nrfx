@@ -83,10 +83,17 @@ extern "C" {
 #endif
 
 #if defined(VREGUSB_OVERRIDE_SETTLED0V8_VAL_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating presence of voltage settling feature. */
-#define NRF_VREGUSB_HAS_SETTLED 1
+/** @brief Symbol indicating presence of 0.8 V voltage settling feature. */
+#define NRF_VREGUSB_HAS_SETTLED_0V8 1
 #else
-#define NRF_VREGUSB_HAS_SETTLED 0
+#define NRF_VREGUSB_HAS_SETTLED_0V8 0
+#endif
+
+#if defined(VREGUSB_OVERRIDE_SETTLED3V3_VAL_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating presence of 3.3 V voltage settling feature. */
+#define NRF_VREGUSB_HAS_SETTLED_3V3 1
+#else
+#define NRF_VREGUSB_HAS_SETTLED_3V3 0
 #endif
 
 #if defined(VREGUSB_PWRUP_MANUAL_Msk) || defined(__NRFX_DOXYGEN__)
@@ -139,8 +146,10 @@ typedef enum
     NRF_VREGUSB_EVENT_VBUS_DETECTED_RAW = offsetof(NRF_VREGUSB_Type, EVENTS_VBUSDETECTEDRAW), /**< VBUS detected. */
 #endif
     NRF_VREGUSB_EVENT_VBUS_DETECTED     = offsetof(NRF_VREGUSB_Type, EVENTS_VBUSDETECTED),    /**< VBUS detected. */
-#if NRF_VREGUSB_HAS_SETTLED
+#if NRF_VREGUSB_HAS_SETTLED_0V8
     NRF_VREGUSB_EVENT_SETTLED_0V8       = offsetof(NRF_VREGUSB_Type, EVENTS_SETTLED0V8),      /**< 0v8 settled. */
+#endif
+#if NRF_VREGUSB_HAS_SETTLED_3V3
     NRF_VREGUSB_EVENT_SETTLED_3V3       = offsetof(NRF_VREGUSB_Type, EVENTS_SETTLED3V3),      /**< 3v3 settled. */
 #endif
     NRF_VREGUSB_EVENT_VBUS_REMOVED      = offsetof(NRF_VREGUSB_Type, EVENTS_VBUSREMOVED),     /**< VBUS removed. */
@@ -153,8 +162,10 @@ typedef enum
     NRF_VREGUSB_INT_VBUS_DETECTED_RAW_MASK = VREGUSB_INTEN_VBUSDETECTEDRAW_Msk, /**< Interrupt on VBUS detected. */
 #endif
     NRF_VREGUSB_INT_VBUS_DETECTED_MASK     = VREGUSB_INTEN_VBUSDETECTED_Msk,    /**< Interrupt on VBUS detected. */
-#if NRF_VREGUSB_HAS_SETTLED
+#if NRF_VREGUSB_HAS_SETTLED_0V8
     NRF_VREGUSB_INT_SETTLED_0V8_MASK       = VREGUSB_INTEN_SETTLED0V8_Msk,      /**< Interrupt on 0v8 settled. */
+#endif
+#if NRF_VREGUSB_HAS_SETTLED_3V3
     NRF_VREGUSB_INT_SETTLED_3V3_MASK       = VREGUSB_INTEN_SETTLED3V3_Msk,      /**< Interrupt on 3v3 settled. */
 #endif
     NRF_VREGUSB_INT_VBUS_REMOVED_MASK      = VREGUSB_INTEN_VBUSREMOVED_Msk,     /**< Interrupt on VBUS removed. */
@@ -169,9 +180,11 @@ typedef enum
     NRF_VREGUSB_STATUS_VBUS_DETRAW_MASK  = VREGUSB_STATUS_VBUSDETRAW_Msk, /**< VBUS detected, raw signal. */
 #endif
     NRF_VREGUSB_STATUS_VBUS_DET_MASK     = VREGUSB_STATUS_VBUSDET_Msk,    /**< VBUS detected. */
-#if NRF_VREGUSB_HAS_SETTLED
+#if NRF_VREGUSB_HAS_SETTLED_0V8
     NRF_VREGUSB_STATUS_READY_0V8_MASK    = VREGUSB_STATUS_READY0V8_Msk,   /**< Power 0v8 ready. */
     NRF_VREGUSB_STATUS_SETTLED_0V8_MASK  = VREGUSB_STATUS_SETTLED0V8_Msk, /**< Power 0v8 settled. */
+#endif
+#if NRF_VREGUSB_HAS_SETTLED_3V3
     NRF_VREGUSB_STATUS_READY_3V3_MASK    = VREGUSB_STATUS_READY3V3_Msk,   /**< Power 3v3 ready. */
     NRF_VREGUSB_STATUS_SETTLED_3V3_MASK  = VREGUSB_STATUS_SETTLED3V3_Msk, /**< Power 3v3 settled. */
 #endif
@@ -193,8 +206,12 @@ typedef enum
 typedef enum
 {
     NRF_VREGUSB_PWRUP_TARGET_USB_PM, /**< Power up USB PM. */
+#if NRF_VREGUSB_HAS_SETTLED_0V8
     NRF_VREGUSB_PWRUP_TARGET_0V8,    /**< Power up 0v8. */
+#endif
+#if NRF_VREGUSB_HAS_SETTLED_3V3
     NRF_VREGUSB_PWRUP_TARGET_3V3,    /**< Power up 3v3. */
+#endif
 } nrf_vregusb_pwrup_target_t;
 #endif // NRF_VREGUSB_HAS_PWRUP
 
@@ -205,8 +222,10 @@ typedef enum
     NRF_VREGUSB_ANALOG_SIGNAL_VBUS_DETRAW, /**< Override VBUSDETRAW signal. */
 #endif
     NRF_VREGUSB_ANALOG_SIGNAL_VBUS_DET,    /**< Override VBUSDET signal. */
-#if NRF_VREGUSB_HAS_SETTLED
+#if NRF_VREGUSB_HAS_SETTLED_0V8
     NRF_VREGUSB_ANALOG_SIGNAL_SETTLED_0V8, /**< Override SETTLED0V8 signal. */
+#endif
+#if NRF_VREGUSB_HAS_SETTLED_3V3
     NRF_VREGUSB_ANALOG_SIGNAL_SETTLED_3V3, /**< Override SETTLED3V3 signal. */
 #endif
 } nrf_vregusb_analog_signal_t;
@@ -369,7 +388,7 @@ NRF_STATIC_INLINE void nrf_vregusb_config_rdy_ldo_stim_set(NRF_VREGUSB_Type * p_
  */
 NRF_STATIC_INLINE uint8_t nrf_vregusb_config_rdy_ldo_stim_get(NRF_VREGUSB_Type const * p_reg);
 
-#if NRF_VREGUSB_HAS_SETTLED
+#if NRF_VREGUSB_HAS_SETTLED_0V8
 /**
  * @brief Function for setting time from LDOs ready to SETTLED0v8.
  *
@@ -386,7 +405,9 @@ NRF_STATIC_INLINE void nrf_vregusb_config_setl_0v8_tim_set(NRF_VREGUSB_Type * p_
  * @return Time value.
  */
 NRF_STATIC_INLINE uint16_t nrf_vregusb_config_setl_0v8_tim_get(NRF_VREGUSB_Type const * p_reg);
+#endif
 
+#if NRF_VREGUSB_HAS_SETTLED_3V3
 /**
  * @brief Function for setting time from SETTLE0v8 to SETTLED3v3.
  *
@@ -403,7 +424,7 @@ NRF_STATIC_INLINE void nrf_vregusb_config_setl_3v3_tim_set(NRF_VREGUSB_Type * p_
  * @return Time value.
  */
 NRF_STATIC_INLINE uint16_t nrf_vregusb_config_setl_3v3_tim_get(NRF_VREGUSB_Type const * p_reg);
-#endif // NRF_VREGUSB_HAS_SETTLED
+#endif
 #endif // NRF_VREGUSB_HAS_CONFIG
 
 #if NRF_VREGUSB_HAS_TRIM_VDD
@@ -613,7 +634,7 @@ NRF_STATIC_INLINE uint8_t nrf_vregusb_config_rdy_ldo_stim_get(NRF_VREGUSB_Type c
     return (uint8_t)p_reg->CONFIG.RDYLDOSTIM;
 }
 
-#if NRF_VREGUSB_HAS_SETTLED
+#if NRF_VREGUSB_HAS_SETTLED_0V8
 NRF_STATIC_INLINE void nrf_vregusb_config_setl_0v8_tim_set(NRF_VREGUSB_Type * p_reg, uint16_t val)
 {
     p_reg->CONFIG.SETL0V8TIM = (uint32_t)val;
@@ -623,7 +644,9 @@ NRF_STATIC_INLINE uint16_t nrf_vregusb_config_setl_0v8_tim_get(NRF_VREGUSB_Type 
 {
     return (uint16_t)p_reg->CONFIG.SETL0V8TIM;
 }
+#endif
 
+#if NRF_VREGUSB_HAS_SETTLED_3V3
 NRF_STATIC_INLINE void nrf_vregusb_config_setl_3v3_tim_set(NRF_VREGUSB_Type * p_reg, uint16_t val)
 {
     p_reg->CONFIG.SETL3V3TIM = (uint32_t)val;
@@ -633,7 +656,7 @@ NRF_STATIC_INLINE uint16_t nrf_vregusb_config_setl_3v3_tim_get(NRF_VREGUSB_Type 
 {
     return (uint16_t)p_reg->CONFIG.SETL3V3TIM;
 }
-#endif // NRF_VREGUSB_HAS_SETTLED
+#endif
 #endif // NRF_VREGUSB_HAS_CONFIG
 
 #if NRF_VREGUSB_HAS_TRIM_VDD
@@ -702,12 +725,16 @@ NRF_STATIC_INLINE void nrf_vregusb_pwrup_set(NRF_VREGUSB_Type *         p_reg,
         case NRF_VREGUSB_PWRUP_TARGET_USB_PM:
             p_reg->PWRUP = mode;
             break;
+#if NRF_VREGUSB_HAS_SETTLED_0V8
         case NRF_VREGUSB_PWRUP_TARGET_0V8:
             p_reg->PWRUP0V8 = mode;
             break;
+#endif
+#if NRF_VREGUSB_HAS_SETTLED_3V3
         case NRF_VREGUSB_PWRUP_TARGET_3V3:
             p_reg->PWRUP3V3 = mode;
             break;
+#endif
         default:
             NRFX_ASSERT(0);
             break;
@@ -739,7 +766,7 @@ NRF_STATIC_INLINE void nrf_vregusb_override_set(NRF_VREGUSB_Type *          p_re
                                          VREGUSB_OVERRIDE_VBUSDET_EN_Pos) |
                                         val << VREGUSB_OVERRIDE_VBUSDET_VAL_Pos;
               break;
-#if NRF_VREGUSB_HAS_SETTLED
+#if NRF_VREGUSB_HAS_SETTLED_0V8
         case NRF_VREGUSB_ANALOG_SIGNAL_SETTLED_0V8:
               p_reg->OVERRIDE.SETTLED0V8 = ((enable ?
                                              VREGUSB_OVERRIDE_SETTLED0V8_EN_Enabled :
@@ -747,6 +774,8 @@ NRF_STATIC_INLINE void nrf_vregusb_override_set(NRF_VREGUSB_Type *          p_re
                                             VREGUSB_OVERRIDE_SETTLED0V8_EN_Pos) |
                                            val << VREGUSB_OVERRIDE_SETTLED0V8_VAL_Pos;
               break;
+#endif
+#if NRF_VREGUSB_HAS_SETTLED_3V3
         case NRF_VREGUSB_ANALOG_SIGNAL_SETTLED_3V3:
               p_reg->OVERRIDE.SETTLED3V3 = ((enable ?
                                              VREGUSB_OVERRIDE_SETTLED3V3_EN_Enabled :

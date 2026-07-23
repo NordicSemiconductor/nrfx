@@ -50,59 +50,65 @@ extern "C" {
  */
 
 /** @brief PPIB node. */
+#if !NRFX_CHECK(NRFX_GPPI_CONFIG_EXT_ALLOCATOR)
 typedef struct {
     /** Pointer to channel mask. */
-	nrfx_atomic_t * p_channels;
+    nrfx_atomic_t * p_channels;
     /** Two PPIB register sets that form a bridge. */
-	NRF_PPIB_Type * p_reg[2];
+    NRF_PPIB_Type * p_reg[2];
 } nrfx_gppi_node_ppib_t;
+#else
+typedef uint32_t nrfx_gppi_node_ppib_t;
+#endif
 
 /** @brief DPPI node. */
 typedef struct {
+#if !NRFX_CHECK(NRFX_GPPI_CONFIG_EXT_ALLOCATOR)
     /** Pointer to channel mask. */
-	nrfx_atomic_t * p_channels;
+    nrfx_atomic_t * p_channels;
     /** Pointer to group mask. */
-	nrfx_atomic_t * p_group_channels;
+    nrfx_atomic_t * p_group_channels;
     /** DPPIC register set. */
-	NRF_DPPIC_Type * p_reg;
+#endif
+    NRF_DPPIC_Type * p_reg;
 } nrfx_gppi_node_dppi_t;
 
 /** @brief Generic node. */
 typedef struct {
     /** Pointer to channel mask. */
-	nrfx_atomic_t *p_channels;
+    nrfx_atomic_t *p_channels;
 } nrfx_gppi_node_generic_t;
 
 /** @brief Node types. */
 typedef enum {
-	NRFX_GPPI_NODE_DPPI,
-	NRFX_GPPI_NODE_PPIB,
+    NRFX_GPPI_NODE_DPPI,
+    NRFX_GPPI_NODE_PPIB,
 } nrfx_gppi_node_type_t;
 
 /** @brief Node structure. */
 typedef struct {
     /** Node type. */
-	nrfx_gppi_node_type_t type;
+    uint8_t type; /* Use uint8_t as riscv has 32 bit enum. */
     /** Domain ID. */
-	uint8_t domain_id;
-#if NRFX_CHECK(NRFX_GPPI_FIXED_CONNECTIONS)
+    uint8_t domain_id;
+#if !NRFX_CHECK(NRFX_GPPI_CONFIG_EXT_ALLOCATOR) && NRFX_CHECK(NRFX_GPPI_FIXED_CONNECTIONS)
     /** Channel offset. */
-	uint8_t ch_off[2];
+    uint8_t ch_off[2];
 #endif
     /** Node specific data. */
-	union {
-		nrfx_gppi_node_dppi_t dppi;
-		nrfx_gppi_node_ppib_t ppib;
-		nrfx_gppi_node_generic_t generic;
-	};
+    union {
+        nrfx_gppi_node_dppi_t dppi;
+        nrfx_gppi_node_ppib_t ppib;
+        nrfx_gppi_node_generic_t generic;
+    };
 } nrfx_gppi_node_t;
 
 /** @brief Route in a DPPI system. */
 typedef struct {
     /** Array of nodes that form a route. */
-	const nrfx_gppi_node_t * const * p_nodes;
+    const nrfx_gppi_node_t * const * p_nodes;
     /** Number of nodes in a route. */
-	uint8_t len;
+    uint8_t len;
 } nrfx_gppi_route_t;
 
 /** @brief Macro for defining a DPPI node.
@@ -110,41 +116,45 @@ typedef struct {
  * @param _id Node ID.
  * @param _domain_id Domain ID.
  */
-#define NRFX_GPPI_DPPI_NODE_DEFINE(_id, _domain_id)                         \
-[NRFX_GPPI_NODE_DPPIC##_id] = {                                             \
-		.type = NRFX_GPPI_NODE_DPPI,                                        \
-		.domain_id = _domain_id,                                            \
-		.dppi = {                                                           \
-			.p_channels = &channels[NRFX_GPPI_NODE_DPPIC##_id],             \
-			.p_group_channels = &group_channels[NRFX_GPPI_NODE_DPPIC##_id], \
-			.p_reg = NRF_DPPIC##_id                                         \
-		}                                                                   \
-	}
+#define NRFX_GPPI_DPPI_NODE_DEFINE(_id, _domain_id)                             \
+[NRFX_GPPI_NODE_DPPIC##_id] = {                                                 \
+        .type = NRFX_GPPI_NODE_DPPI,                                            \
+        .domain_id = _domain_id,                                                \
+        .dppi = {                                                               \
+            NRFX_COND_CODE_1(NRFX_GPPI_CONFIG_EXT_ALLOCATOR, (), (              \
+                .p_channels = &channels[NRFX_GPPI_NODE_DPPIC##_id],             \
+                .p_group_channels = &group_channels[NRFX_GPPI_NODE_DPPIC##_id], \
+            ))                                                                  \
+            .p_reg = NRF_DPPIC##_id                                             \
+        }                                                                       \
+    }
 
 /** @brief Macro for defining a PPIB node.
  *
  * @param _id1 PPIB ID of the first PPIB.
  * @param _id2 PPIB ID of the second PPIB.
  */
-#define NRFX_GPPI_PPIB_NODE_DEFINE(_id1, _id2)                              \
-[NRFX_GPPI_NODE_PPIB##_id1##_##_id2] = {                                    \
-		.type = NRFX_GPPI_NODE_PPIB,                                        \
-		.domain_id = NRFX_GPPI_NODE_PPIB##_id1##_##_id2,                    \
-		.ppib = {                                                           \
-			.p_channels = &channels[NRFX_GPPI_NODE_PPIB##_id1##_##_id2],    \
-			.p_reg = {NRF_PPIB##_id1, NRF_PPIB##_id2}                       \
-		}                                                                   \
-	}
+#define NRFX_GPPI_PPIB_NODE_DEFINE(_id1, _id2)                                  \
+[NRFX_GPPI_NODE_PPIB##_id1##_##_id2] = {                                        \
+        .type = NRFX_GPPI_NODE_PPIB,                                            \
+        .domain_id = NRFX_GPPI_NODE_PPIB##_id1##_##_id2,                        \
+        NRFX_COND_CODE_1(NRFX_GPPI_CONFIG_EXT_ALLOCATOR, (), (                  \
+            .ppib = {                                                           \
+                .p_channels = &channels[NRFX_GPPI_NODE_PPIB##_id1##_##_id2],    \
+                .p_reg = {NRF_PPIB##_id1, NRF_PPIB##_id2}                       \
+            }                                                                   \
+        ))                                                                      \
+    }
 
 /** @brief Macro for creating a route.
  *
  * @param _name Route name.
  * @param _nodes List of nodes in parenthesis.
  */
-#define NRFX_GPPI_ROUTE_DEFINE(_name, _nodes)                               \
-{                                                                           \
-	.p_nodes = (const nrfx_gppi_node_t * const[]){ NRFX_DEBRACKET _nodes},  \
-	.len = 1 + NRFX_NUM_VA_ARGS_LESS_1 _nodes,                              \
+#define NRFX_GPPI_ROUTE_DEFINE(_name, _nodes)                                   \
+{                                                                               \
+    .p_nodes = (const nrfx_gppi_node_t * const[]){ NRFX_DEBRACKET _nodes},      \
+    .len = 1 + NRFX_NUM_VA_ARGS_LESS_1 _nodes,                                  \
 }
 
 /** @} */

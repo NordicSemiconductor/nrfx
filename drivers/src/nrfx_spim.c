@@ -212,8 +212,9 @@ static void spim_abort(NRF_SPIM_Type * p_spim, nrfx_spim_control_block_t * p_cb)
             anomaly_135_disable();
         }
 #endif
-#if NRF_ERRATA_STATIC_CHECK(54L, 57) && defined(NRF_SPIM00)
-    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 57) && p_spim == NRF_SPIM00)
+#if (NRF_ERRATA_STATIC_CHECK(54L, 57) || NRF_ERRATA_STATIC_CHECK(71, 57)) && defined(NRF_SPIM00)
+    if ((NRF_ERRATA_DYNAMIC_CHECK(54L, 57) || NRF_ERRATA_DYNAMIC_CHECK(71, 57))
+        && p_spim == NRF_SPIM00)
     {
         *(volatile uint32_t *)(((uint8_t *)p_spim) + 0xC04) = 0x0;
     }
@@ -388,7 +389,6 @@ static uint32_t spim_prescaler_calculate(nrfx_spim_t const * p_instance, uint32_
     #error "Unable to determine frequency division support type."
 #endif
 
-
 static int spim_configuration_verify(nrfx_spim_t const *        p_instance,
                                      nrfx_spim_config_t const * p_config)
 {
@@ -441,15 +441,19 @@ static void spim_configure(nrfx_spim_t *              p_instance,
     uint32_t prescaler = spim_prescaler_calculate(p_instance, p_config->frequency);
 #endif
 
-#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69)
-    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 55) || NRF_ERRATA_DYNAMIC_CHECK(54L, 69))
+#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69) || \
+    NRF_ERRATA_STATIC_CHECK(71, 55)  || NRF_ERRATA_STATIC_CHECK(71, 69)
+    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 55) || NRF_ERRATA_DYNAMIC_CHECK(54L, 69) ||
+        NRF_ERRATA_DYNAMIC_CHECK(71, 55) || NRF_ERRATA_DYNAMIC_CHECK(71, 69))
     {
         p_cb->apply_nrf54l_errata_55_69 = 1;
     }
 #endif
 
-#if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115)
-    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 8) || NRF_ERRATA_DYNAMIC_CHECK(54H, 115))
+#if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115) || \
+    NRF_ERRATA_STATIC_CHECK(71, 8)
+    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 8) || NRF_ERRATA_DYNAMIC_CHECK(54H, 115) ||
+        NRF_ERRATA_DYNAMIC_CHECK(71, 8))
     {
         /* Workaround must be applied only if PRESCALER is larger than 2 and CPHA=0 */
         if ((prescaler > 2) &&
@@ -706,7 +710,6 @@ int nrfx_spim_xfer_dcx(nrfx_spim_t *                 p_instance,
 }
 #endif
 
-
 static void set_ss_pin_state(nrfx_spim_control_block_t * p_cb, bool active)
 {
     if (p_cb->ss_pin != NRF_SPIM_PIN_NOT_CONNECTED)
@@ -748,6 +751,18 @@ static void finish_transfer(NRF_SPIM_Type * p_spim, nrfx_spim_control_block_t * 
         spim_abort(p_spim, p_cb);
     }
 
+#if NRFY_SPIM_HAS_ARRAY_LIST
+    if (p_cb->tx_inc)
+    {
+        p_cb->evt.xfer_desc.p_tx_buffer += p_cb->evt.xfer_desc.tx_length;
+    }
+
+    if (p_cb->rx_inc)
+    {
+        p_cb->evt.xfer_desc.p_rx_buffer += p_cb->evt.xfer_desc.rx_length;
+    }
+#endif
+
     p_cb->evt.type = NRFX_SPIM_EVENT_DONE;
     p_cb->handler(&p_cb->evt, p_cb->p_context);
 }
@@ -781,6 +796,9 @@ static int spim_xfer(NRF_SPIM_Type *               p_spim,
 #endif
 
 #if NRFY_SPIM_HAS_ARRAY_LIST
+    p_cb->tx_inc = flags & NRFX_SPIM_FLAG_TX_POSTINC;
+    p_cb->rx_inc = flags & NRFX_SPIM_FLAG_RX_POSTINC;
+
     nrfy_spim_tx_list_set(p_spim, NRFX_SPIM_FLAG_TX_POSTINC & flags);
     nrfy_spim_rx_list_set(p_spim, NRFX_SPIM_FLAG_RX_POSTINC & flags);
 #endif
@@ -824,22 +842,26 @@ static int spim_xfer(NRF_SPIM_Type *               p_spim,
         anomaly_135_enable();
     }
 #endif
-#if NRF_ERRATA_STATIC_CHECK(54L, 57) && defined(NRF_SPIM00)
-    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 57) && p_spim == NRF_SPIM00)
+#if (NRF_ERRATA_STATIC_CHECK(54L, 57) || NRF_ERRATA_DYNAMIC_CHECK(71, 57)) && defined(NRF_SPIM00)
+    if ((NRF_ERRATA_DYNAMIC_CHECK(54L, 57) || NRF_ERRATA_DYNAMIC_CHECK(71, 57))
+        && p_spim == NRF_SPIM00)
     {
         *(volatile uint32_t *)(((uint8_t *)p_spim) + 0xC04) = 0x2;
     }
 #endif
+
     nrfy_spim_enable(p_spim);
 
-#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69)
+#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69) || \
+    NRF_ERRATA_STATIC_CHECK(71, 55) || NRF_ERRATA_STATIC_CHECK(71, 69)
     if (p_cb->apply_nrf54l_errata_55_69)
     {
         *(volatile uint32_t *)((uint8_t *)p_spim + 0xc80) = 0x82;
     }
 #endif
 
-#if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115)
+#if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115) || \
+    NRF_ERRATA_STATIC_CHECK(71, 8)
     if (p_cb->apply_errata_8_115)
     {
         *(volatile uint32_t *)((uint8_t *)p_spim + 0xc84) = 0x82;
@@ -858,14 +880,16 @@ static int spim_xfer(NRF_SPIM_Type *               p_spim,
 
     if (!p_cb->handler)
     {
-#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69)
+#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69) || \
+    NRF_ERRATA_STATIC_CHECK(71, 55) || NRF_ERRATA_STATIC_CHECK(71, 69)
         if (p_cb->apply_nrf54l_errata_55_69)
         {
             *(volatile uint32_t *)((uint8_t *)p_spim + 0xc80) = 0;
         }
 #endif
 
-#if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115)
+#if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115) || \
+    NRF_ERRATA_STATIC_CHECK(71, 8)
         if (p_cb->apply_errata_8_115)
         {
             *(volatile uint32_t *)((uint8_t *)p_spim + 0xc84) = 0;
@@ -971,14 +995,16 @@ void nrfx_spim_irq_handler(nrfx_spim_t * p_instance)
     NRF_SPIM_Type * p_spim = p_instance->p_reg;
     nrfx_spim_control_block_t * p_cb = &p_instance->cb;
 
-#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69)
+#if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69) || \
+    NRF_ERRATA_STATIC_CHECK(71, 55) || NRF_ERRATA_STATIC_CHECK(71, 69)
     if (p_cb->apply_nrf54l_errata_55_69 && nrfy_spim_event_check(p_spim, NRF_SPIM_EVENT_END))
     {
         *(volatile uint32_t *)((uint8_t *)p_spim + 0xc80) = 0;
     }
 #endif
 
-#if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115)
+#if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115) || \
+    NRF_ERRATA_STATIC_CHECK(71, 8)
     if (p_cb->apply_errata_8_115)
     {
         if (nrfy_spim_int_enable_check(p_spim, NRF_SPIM_INT_STARTED_MASK) &&

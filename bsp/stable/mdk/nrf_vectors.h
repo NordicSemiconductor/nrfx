@@ -153,11 +153,24 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_FLPR)
         #include "nrf71/nrf7120_enga/nrf7120_enga_flpr_vectors.h"
     #endif
+    #if defined(NRF_LMAC)
+        #include "nrf71/nrf7120_enga/nrf7120_enga_lmac_vectors.h"
+    #endif
     #if defined(NRF_UMAC)
         #include "nrf71/nrf7120_enga/nrf7120_enga_umac_vectors.h"
     #endif
+#elif defined(NRF7120E_ENGA_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf71/nrf7120e_enga/nrf7120e_enga_application_vectors.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf71/nrf7120e_enga/nrf7120e_enga_flpr_vectors.h"
+    #endif
     #if defined(NRF_LMAC)
-        #include "nrf71/nrf7120_enga/nrf7120_enga_lmac_vectors.h"
+        #include "nrf71/nrf7120e_enga/nrf7120e_enga_lmac_vectors.h"
+    #endif
+    #if defined(NRF_UMAC)
+        #include "nrf71/nrf7120e_enga/nrf7120e_enga_umac_vectors.h"
     #endif
 #elif defined(NRF9120_XXAA)
     #include "nrf91/nrf9120/nrf9120_vectors.h"
@@ -167,11 +180,11 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_APPLICATION)
         #include "nrf92/nrf9220/nrf9220_application_vectors.h"
     #endif
-    #if defined(NRF_PPR)
-        #include "nrf92/nrf9220/nrf9220_ppr_vectors.h"
-    #endif
     #if defined(NRF_FLPR)
         #include "nrf92/nrf9220/nrf9220_flpr_vectors.h"
+    #endif
+    #if defined(NRF_PPR)
+        #include "nrf92/nrf9220/nrf9220_ppr_vectors.h"
     #endif
 #elif defined(NRF9230_ENGB_XXAA)
     #if defined(NRF_APPLICATION)

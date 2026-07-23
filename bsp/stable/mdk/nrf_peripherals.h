@@ -109,6 +109,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #elif defined (NRF9220_XXAA)
     #include "nrf92/nrf9220/nrf9220_peripherals.h"
 
+#elif defined (NRF7120E_ENGA_XXAA)
+    #include "nrf71/nrf7120e_enga/nrf7120e_enga_peripherals.h"
+
 /* Ending device selection for peripheral includes. */
 #else
     #error "Device must be defined. See nrf_peripherals.h."

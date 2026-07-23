@@ -1,6 +1,26 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [4.5.0] - 2026-07-23
+
+### Added
+- Added support for nRF7120E Eng A SoC.
+- Added support for positive input ground connection in the SAADC driver.
+- Added support for external channel allocator in the GPPI helper layer.
+- Added support for DMAEND task in the UARTE HAL.
+- Added support for multiple configuation registers in the CRACEN RNG HAL.
+- Added support for multiple nRF71 Series anomalies.
+- Added support for nRF54L Series anomaly 101 in the SAADC driver.
+- Added support for nRF54H Series anomaly 233 in the SAADC driver.
+
+### Fixed
+- Fixed suboptimal configuration parameters set during initialization in the CRACEN driver.
+- Fixed the power-down sequence ensuring the peripheral is disabled after any operation in the SAADC driver.
+- Fixed nrf_pwm_decoder_set() function to prevent modification of unrelated bitfields.
+
+### Changed
+- Updated MDK to version 9.0.2-RC-1.
+
 ## [4.4.0] - 2026-06-25
 
 ### Added

@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define MDK_SOURCE_VERSION_MAJOR 0                   /*!< Major version of the datasheet.                                      */
 #define MDK_SOURCE_VERSION_MINOR 5                   /*!< Minor version of the datasheet.                                      */
-#define MDK_SOURCE_VERSION_MICRO 3                   /*!< Micro version of the datasheet.                                      */
+#define MDK_SOURCE_VERSION_MICRO 4                   /*!< Micro version of the datasheet.                                      */
 
 
 #ifdef __cplusplus

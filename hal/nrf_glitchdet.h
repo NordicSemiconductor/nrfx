@@ -47,6 +47,20 @@ extern "C" {
  * @brief   Hardware access layer for managing the Voltage Glitch Detectors (GLITCHDET) peripheral.
  */
 
+#if defined(GLITCHDET_CONFIG_ENABLE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the ENABLE field is present. */
+#define NRF_GLITCHDET_HAS_ENABLE 1
+#else
+#define NRF_GLITCHDET_HAS_ENABLE 0
+#endif
+
+#if defined(GLITCHDET_CONFIG_REQUESTEDSTATE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the REQUESTEDSTATE field is present. */
+#define NRF_GLITCHDET_HAS_REQUESTEDSTATE 1
+#else
+#define NRF_GLITCHDET_HAS_REQUESTEDSTATE 0
+#endif
+
 /** @brief Glitch detector mode. */
 typedef enum
 {
@@ -54,6 +68,7 @@ typedef enum
     NRF_GLITCHDET_MODE_CAP_DIV   = GLITCHDET_CONFIG_MODE_CapDiv,         ///< Cap divider mode.
 } nrf_glitchdet_mode_t;
 
+#if NRF_GLITCHDET_HAS_ENABLE || NRF_GLITCHDET_HAS_REQUESTEDSTATE
 /**
  * @brief Function for checking whether glitch detector is enabled.
  *
@@ -71,6 +86,7 @@ NRF_STATIC_INLINE bool nrf_glitchdet_enable_check(NRF_GLITCHDET_Type const * p_r
  * @param[in] enable True if glitch detector is to be enabled, false otherwise.
  */
 NRF_STATIC_INLINE void nrf_glitchdet_enable_set(NRF_GLITCHDET_Type * p_reg, bool enable);
+#endif // NRF_GLITCHDET_HAS_ENABLE || NRF_GLITCHDET_HAS_REQUESTEDSTATE
 
 /**
  * @brief Function for getting glitch detector mode.
@@ -92,18 +108,32 @@ NRF_STATIC_INLINE void nrf_glitchdet_mode_set(NRF_GLITCHDET_Type * p_reg,
 
 #ifndef NRF_DECLARE_ONLY
 
+#if NRF_GLITCHDET_HAS_ENABLE || NRF_GLITCHDET_HAS_REQUESTEDSTATE
 NRF_STATIC_INLINE bool nrf_glitchdet_enable_check(NRF_GLITCHDET_Type const * p_reg)
 {
+#if NRF_GLITCHDET_HAS_ENABLE
     return ((p_reg->CONFIG & GLITCHDET_CONFIG_ENABLE_Msk)
             >> GLITCHDET_CONFIG_ENABLE_Pos) == GLITCHDET_CONFIG_ENABLE_Enable;
+#elif NRF_GLITCHDET_HAS_REQUESTEDSTATE
+    return ((p_reg->CONFIG & GLITCHDET_CONFIG_REQUESTEDSTATE_Msk)
+            >> GLITCHDET_CONFIG_REQUESTEDSTATE_Pos) == GLITCHDET_CONFIG_REQUESTEDSTATE_Enabled;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_glitchdet_enable_set(NRF_GLITCHDET_Type * p_reg, bool enable)
 {
+#if NRF_GLITCHDET_HAS_ENABLE
     p_reg->CONFIG = (p_reg->CONFIG & ~GLITCHDET_CONFIG_ENABLE_Msk) |
                     ((enable ? GLITCHDET_CONFIG_ENABLE_Enable : GLITCHDET_CONFIG_ENABLE_Disable) <<
                      GLITCHDET_CONFIG_ENABLE_Pos);
+#elif NRF_GLITCHDET_HAS_REQUESTEDSTATE
+    p_reg->CONFIG = (p_reg->CONFIG & ~GLITCHDET_CONFIG_REQUESTEDSTATE_Msk) |
+                    ((enable ? GLITCHDET_CONFIG_REQUESTEDSTATE_Enabled   :
+                               GLITCHDET_CONFIG_REQUESTEDSTATE_Disabled) <<
+                               GLITCHDET_CONFIG_REQUESTEDSTATE_Pos);
+#endif
 }
+#endif // NRF_GLITCHDET_HAS_ENABLE || NRF_GLITCHDET_HAS_REQUESTEDSTATE
 
 NRF_STATIC_INLINE nrf_glitchdet_mode_t nrf_glitchdet_mode_get(NRF_GLITCHDET_Type const * p_reg)
 {

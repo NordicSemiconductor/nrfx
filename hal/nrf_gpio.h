@@ -302,8 +302,8 @@ typedef enum
 #if defined(GPIO_PIN_CNF_CTRLSEL_VPR) || defined(__NRFX_DOXYGEN__)
     NRF_GPIO_PIN_SEL_VPR        = GPIO_PIN_CNF_CTRLSEL_VPR,       ///< Pin controlled by VPR.
 #endif
-#if defined(GPIO_PIN_CNF_CTRLSEL_QSPI) || defined(__NRFX_DOXYGEN__)
-    NRF_GPIO_PIN_SEL_QSPI       = GPIO_PIN_CNF_CTRLSEL_QSPI,      ///< Pin controlled by QSPI peripheral.
+#if defined(GPIO_PIN_CNF_CTRLSEL_MSPI) || defined(__NRFX_DOXYGEN__)
+    NRF_GPIO_PIN_SEL_MSPI       = GPIO_PIN_CNF_CTRLSEL_MSPI,      ///< Pin controlled by MSPI peripheral.
 #endif
 #if defined(GPIO_PIN_CNF_CTRLSEL_GRTC) || defined(__NRFX_DOXYGEN__)
     NRF_GPIO_PIN_SEL_GRTC       = GPIO_PIN_CNF_CTRLSEL_GRTC,      ///< Pin controlled by GRTC peripheral.

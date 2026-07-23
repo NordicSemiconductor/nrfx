@@ -77,6 +77,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_STMDATA_S_BASE                0xA0000000UL
 #define NRF_TDDCONF_NS_BASE               0xBF001000UL
 #define NRF_TDDCONF_S_BASE                0xBF001000UL
+#define NRF_TSGEN_NS_BASE                 0xBF041000UL
 #define NRF_STM_NS_BASE                   0xBF042000UL
 #define NRF_TPIU_NS_BASE                  0xBF043000UL
 #define NRF_ETB_NS_BASE                   0xBF044000UL
@@ -226,6 +227,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_STMDATA_S                     ((NRF_STMDATA_Type*)                  NRF_STMDATA_S_BASE)
 #define NRF_TDDCONF_NS                    ((NRF_TDDCONF_Type*)                  NRF_TDDCONF_NS_BASE)
 #define NRF_TDDCONF_S                     ((NRF_TDDCONF_Type*)                  NRF_TDDCONF_S_BASE)
+#define NRF_TSGEN_NS                      ((NRF_TSGEN_Type*)                    NRF_TSGEN_NS_BASE)
 #define NRF_STM_NS                        ((NRF_STM_Type*)                      NRF_STM_NS_BASE)
 #define NRF_TPIU_NS                       ((NRF_TPIU_Type*)                     NRF_TPIU_NS_BASE)
 #define NRF_ETB_NS                        ((NRF_ETB_Type*)                      NRF_ETB_NS_BASE)
@@ -374,6 +376,7 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_FICR                                NRF_FICR_NS
   #define NRF_STMDATA                             NRF_STMDATA_NS
   #define NRF_TDDCONF                             NRF_TDDCONF_NS
+  #define NRF_TSGEN                               NRF_TSGEN_NS
   #define NRF_STM                                 NRF_STM_NS
   #define NRF_TPIU                                NRF_TPIU_NS
   #define NRF_ETB                                 NRF_ETB_NS
@@ -456,6 +459,7 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_FICR                                NRF_FICR_NS
   #define NRF_STMDATA                             NRF_STMDATA_S
   #define NRF_TDDCONF                             NRF_TDDCONF_S
+  #define NRF_TSGEN                               NRF_TSGEN_NS
   #define NRF_STM                                 NRF_STM_NS
   #define NRF_TPIU                                NRF_TPIU_NS
   #define NRF_ETB                                 NRF_ETB_NS

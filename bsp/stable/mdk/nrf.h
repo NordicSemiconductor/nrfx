@@ -36,9 +36,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_H
 
 /* MDK version */
-#define MDK_MAJOR_VERSION   8 
-#define MDK_MINOR_VERSION   75 
-#define MDK_MICRO_VERSION   3 
+#define MDK_MAJOR_VERSION   9 
+#define MDK_MINOR_VERSION   0 
+#define MDK_MICRO_VERSION   2 
 
 #ifdef __ZEPHYR__
 #include <mdk_config.h>
@@ -121,9 +121,6 @@ POSSIBILITY OF SUCH DAMAGE.
     #ifndef NRF54H_SERIES
         #define NRF54H_SERIES
     #endif
-    #ifndef HALTIUM_XXAA
-        #define HALTIUM_XXAA
-    #endif
 #endif
 
 /* Define NRF54L_SERIES for common use in nRF54L series devices */
@@ -131,18 +128,12 @@ POSSIBILITY OF SUCH DAMAGE.
     #ifndef NRF54L_SERIES
         #define NRF54L_SERIES
     #endif
-    #ifndef LUMOS_XXAA
-        #define LUMOS_XXAA
-    #endif
 #endif
 
 /* Define NRF71_SERIES for common use in nRF71 series devices. */
-#if defined (NRF7120_ENGA_XXAA)
+#if defined (NRF7120_ENGA_XXAA) || defined (NRF7120E_ENGA_XXAA)
     #ifndef NRF71_SERIES
         #define NRF71_SERIES
-    #endif
-    #ifndef LUMOS_XXAA
-        #define LUMOS_XXAA
     #endif
 #endif
 
@@ -157,9 +148,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #if defined(NRF9230_ENGB_XXAA) || defined (NRF9220_XXAA)
     #ifndef NRF92_SERIES
         #define NRF92_SERIES
-    #endif
-    #ifndef HALTIUM_XXAA
-        #define HALTIUM_XXAA
     #endif
 #endif
 
@@ -313,6 +301,11 @@ POSSIBILITY OF SUCH DAMAGE.
     #include "nrf92/nrf9220/nrf9220.h"
     #include "nrf92/nrf9220/nrf9220_interim.h"
     #include "nrf92/nrf9220/nrf9220_name_change.h"
+
+#elif defined (NRF7120E_ENGA_XXAA)
+    #include "nrf71/nrf7120e_enga/nrf7120e_enga.h"
+    #include "nrf71/nrf7120e_enga/nrf7120e_enga_interim.h"
+    #include "nrf71/nrf7120e_enga/nrf7120e_enga_name_change.h"
 
 /* Ending device selection for device includes. */
 #else

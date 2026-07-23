@@ -205,6 +205,15 @@
 #endif
 
 /**
+ * @brief NRFX_GPPI_CONFIG_DPPI_PPIB_EXT_FUNC
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GPPI_CONFIG_DPPI_PPIB_EXT_FUNC
+#define NRFX_GPPI_CONFIG_DPPI_PPIB_EXT_FUNC 1
+#endif
+
+/**
  * @brief NRFX_GRTC_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.

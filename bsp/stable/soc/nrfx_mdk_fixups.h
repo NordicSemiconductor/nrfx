@@ -1063,7 +1063,7 @@
 /* Start fixups section for NRF7120_ENGA_XXAA                                                     */
 /**************************************************************************************************/
 
-#if defined(NRF7120_ENGA_XXAA)
+#if defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
 
     #define ADDRESS_BUS_Pos (18UL)
     #define ADDRESS_BUS_Msk (0x3FUL << ADDRESS_BUS_Pos)
@@ -1072,7 +1072,7 @@
     #define TDM_MCKCONST_FACTOR 1048576
     #define TDM_CK_DIV_FACTOR   4096
     #define TDM_MIN_TRANSFER_SIZE 3
-    #define TDM_PSEL_MASK 0xFFFFFFFF
+    #define TDM_PSEL_MASK 0x800000FF
     #define TDM_TX0_CHANNEL_NEEDED
 
     #define KMU_TASKS_REVOKE_POLICY_Rotating 0x01UL
@@ -1139,7 +1139,7 @@
 /* Start fixups section for NRF9220_XXAA                                                          */
 /**************************************************************************************************/
 #if defined(NRF9220_XXAA)
-    #include "mdk/common/haltium_interim.h"
+    #include "mdk/nrf92/nrf9220/nrf9220_interim.h"
 
     #define DPPIC120_CH_NUM (DPPIC120_CH_NUM_MAX + 1UL)
     #define DPPIC130_CH_NUM (DPPIC130_CH_NUM_MAX + 1UL)

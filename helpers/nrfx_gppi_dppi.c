@@ -174,6 +174,7 @@ void nrfx_gppi_init(nrfx_gppi_t * p_instance)
     p_gppi = p_instance;
 }
 
+#if !NRFX_CHECK(NRFX_GPPI_CONFIG_EXT_ALLOCATOR)
 static void flag_free(nrfx_atomic_t *p_mask, uint8_t flag)
 {
     int err;
@@ -182,9 +183,16 @@ static void flag_free(nrfx_atomic_t *p_mask, uint8_t flag)
     (void)err;
     NRFX_ASSERT(err == 0);
 }
+#endif
 
 #if defined(NRFX_GPPI_MULTI_DOMAIN)
 
+uint32_t nrfx_gppi_group_domain_id_get(nrfx_gppi_group_handle_t handle)
+{
+    return GHANDLE_GET_DOMAIN(handle);
+}
+
+#if !NRFX_CHECK(NRFX_GPPI_CONFIG_EXT_ALLOCATOR)
 static uint32_t alloc_bit_locked(nrfx_atomic_t *mask)
 {
     uint32_t rv = 31 - NRFX_CLZ(*mask);
@@ -192,11 +200,6 @@ static uint32_t alloc_bit_locked(nrfx_atomic_t *mask)
     *mask &= ~NRFX_BIT(rv);
 
     return rv;
-}
-
-uint32_t nrfx_gppi_group_domain_id_get(nrfx_gppi_group_handle_t handle)
-{
-    return GHANDLE_GET_DOMAIN(handle);
 }
 
 static int alloc_channels(uint8_t * p_channels, const nrfx_gppi_route_t * p_route,
@@ -445,12 +448,15 @@ int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_han
 #endif
 }
 
+#endif // !NRFX_GPPI_CONFIG_EXT_ALLOCATOR
+
 int nrfx_gppi_domain_conn_alloc(uint32_t producer, uint32_t consumer,
                                 nrfx_gppi_handle_t * p_handle)
 {
     return nrfx_gppi_ext_conn_alloc(producer, consumer, p_handle, NULL);
 }
 
+#if !NRFX_CHECK(NRFX_GPPI_CONFIG_EXT_ALLOCATOR)
 void nrfx_gppi_domain_conn_free(nrfx_gppi_handle_t handle)
 {
     uint32_t route_id = HANDLE_GET_ROUTE_ID(handle);
@@ -493,6 +499,7 @@ void nrfx_gppi_domain_conn_free(nrfx_gppi_handle_t handle)
     NRFX_ASSERT(rv == 0);
 #endif
 }
+#endif // !NRFX_GPPI_CONFIG_EXT_ALLOCATOR
 #else
 int nrfx_gppi_domain_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_handle_t *p_handle)
 {
@@ -579,16 +586,6 @@ static NRF_DPPIC_Type *dppi_reg_get(uint32_t domain_id)
 #else
     (void)domain_id;
     return NRF_DPPIC;
-#endif
-}
-
-static nrfx_atomic_t *get_group_chan_mask(uint32_t domain_id)
-{
-#if defined(NRFX_GPPI_MULTI_DOMAIN)
-    return p_gppi->routes[domain_id].p_nodes[0]->dppi.p_group_channels;
-#else
-    (void)domain_id;
-    return &p_gppi->group_mask;
 #endif
 }
 
@@ -721,6 +718,18 @@ int nrfx_gppi_ep_attach(uint32_t ep, nrfx_gppi_handle_t handle)
     return nrfx_gppi_ep_to_ch_attach(ep, (uint8_t)ch);
 }
 
+#if !NRFX_CHECK(NRFX_GPPI_CONFIG_EXT_ALLOCATOR)
+
+static nrfx_atomic_t *get_group_chan_mask(uint32_t domain_id)
+{
+#if defined(NRFX_GPPI_MULTI_DOMAIN)
+    return p_gppi->routes[domain_id].p_nodes[0]->dppi.p_group_channels;
+#else
+    (void)domain_id;
+    return &p_gppi->group_mask;
+#endif
+}
+
 int nrfx_gppi_group_alloc(uint32_t domain_id, nrfx_gppi_group_handle_t *handle)
 {
     nrfx_atomic_t *group_mask = get_group_chan_mask(domain_id);
@@ -747,6 +756,7 @@ void nrfx_gppi_group_free(nrfx_gppi_group_handle_t handle)
     nrf_dppi_group_clear(p_reg, (nrf_dppi_channel_group_t)ch);
     flag_free(group_mask, ch);
 }
+#endif // !NRFX_GPPI_CONFIG_EXT_ALLOCATOR
 
 void nrfx_gppi_group_ch_add(nrfx_gppi_group_handle_t handle, uint32_t ch)
 {

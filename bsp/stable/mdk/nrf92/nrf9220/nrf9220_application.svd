@@ -1848,7 +1848,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>PIXO</name>
-                    <description>LFXO PIXO mode.</description>
+                    <description>LFXO PIXO mode. NOT SUPPORTED</description>
                     <value>0x1</value>
                   </enumeratedValue>
                   <enumeratedValue>
@@ -3456,6 +3456,313 @@ POSSIBILITY OF SUCH DAMAGE.
       <alternatePeripheral>GLOBAL_TDDCONF_NS</alternatePeripheral>
       <!--Security dma=NA-->
       <!--Security securemapping=US-->
+    </peripheral>
+    <peripheral>
+      <name>GLOBAL_TSGEN_NS</name>
+      <description>Timestamp generator</description>
+      <baseAddress>0xBF041000</baseAddress>
+      <headerStructName>TSGEN</headerStructName>
+      <!--Security dma=NA-->
+      <!--Security securemapping=NS-->
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x1000</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <groupName>TSGEN</groupName>
+      <size>0x20</size>
+      <registers>
+        <register>
+          <name>CNTCR</name>
+          <description>Counter Control Register</description>
+          <addressOffset>0x0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>EN</name>
+              <description>Counter enable</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Unspecified</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Unspecified</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>HDBG</name>
+              <description>Halt on Debug</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Do not halt on debug, HLTDBG signal into the counter has no effect.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Halt on debug, when HLTDBG is driven HIGH, the count value is held static.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CNTSR</name>
+          <description>Counter Status Register</description>
+          <addressOffset>0x4</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>DBGH</name>
+              <description>Debug halted</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CNTCVL</name>
+          <description>Current Counter Value Lower register</description>
+          <addressOffset>0x8</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>CNTCVL_L_32</name>
+              <description>Current value of Counter, lower 32 bits</description>
+              <lsb>0</lsb>
+              <msb>31</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CNTCVU</name>
+          <description>Current Counter Value Upper register</description>
+          <addressOffset>0xC</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>CNTCVU_U_32</name>
+              <description>Current value of Counter, upper 32 bits</description>
+              <lsb>0</lsb>
+              <msb>31</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CNTFID0</name>
+          <description>Base Frequency ID</description>
+          <addressOffset>0x20</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>FREQ</name>
+              <description>Frequency in number of ticks per second (up to 4 GHz)</description>
+              <lsb>0</lsb>
+              <msb>31</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PIDR4</name>
+          <description>Peripheral ID4 Register</description>
+          <addressOffset>0xFD0</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000004</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>DES_2</name>
+              <description>JEDEC continuation code indicating the designer of the component, together with the identity code.</description>
+              <lsb>0</lsb>
+              <msb>3</msb>
+            </field>
+            <field>
+              <name>SIZE</name>
+              <description>This is a 4-bit value that indicates the total contiguous size of the memory window used by this component in powers of 2 from the standard 4KB. If a component only requires the standard 4KB, this must read as 0x0, 4KB only. For 8KB set to 0x1, for 16KB set to 0x2, for 32KB set to 0x3, and so on.</description>
+              <lsb>4</lsb>
+              <msb>7</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PIDR0</name>
+          <description>Peripheral ID0 Register</description>
+          <addressOffset>0xFE0</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000001</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>PART_0</name>
+              <description>Bits [7:0] of the component part number. This is selected by the designer of the component.</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PIDR1</name>
+          <description>Peripheral ID1 Register</description>
+          <addressOffset>0xFE4</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x000000B1</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>PART_1</name>
+              <description>Bits [11:8] of the component part number. This is selected by the designer of the component.</description>
+              <lsb>0</lsb>
+              <msb>3</msb>
+            </field>
+            <field>
+              <name>DES_0</name>
+              <description>Bits [3:0] of the JEDEC identity code indicating the designer of the component, together with the continuation code.</description>
+              <lsb>4</lsb>
+              <msb>7</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PIDR2</name>
+          <description>Peripheral ID2 Register</description>
+          <addressOffset>0xFE8</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x0000001B</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>DES_1</name>
+              <description>Bits [6:4] of the JEDEC identity code indicating the designer of the component, together with the continuation code.</description>
+              <lsb>0</lsb>
+              <msb>2</msb>
+            </field>
+            <field>
+              <name>JEDEC</name>
+              <description>Always set. Indicates that a JEDEC assigned value is used.</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+            </field>
+            <field>
+              <name>REVISION</name>
+              <description>The Revision field is an incremental value starting at 0x0 for the first design of this component. This only increases by 1 for both major and minor revisions and is used as a look-up to establish the exact major and minor revision.</description>
+              <lsb>4</lsb>
+              <msb>7</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PIDR3</name>
+          <description>Peripheral ID3 Register</description>
+          <addressOffset>0xFEC</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>CMOD</name>
+              <description>Where the component is reusable IP, this value indicates if the customer has modified the behavior of the component. In most cases this field is zero.</description>
+              <lsb>0</lsb>
+              <msb>3</msb>
+            </field>
+            <field>
+              <name>REVAND</name>
+              <description>This field indicates minor errata fixes specific to this design, for example metal fixes after implementation. In most cases this field is zero. It is recommended that component designers ensure this field can be changed by a metal fix if required, for example by driving it from registers that reset to zero.</description>
+              <lsb>4</lsb>
+              <msb>7</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CIDR0</name>
+          <description>Component ID0 Register</description>
+          <addressOffset>0xFF0</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x0000000D</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>PRMBL_0</name>
+              <description>Contains bits[7:0] of the component identification code.</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CIDR1</name>
+          <description>Component ID1 Register</description>
+          <addressOffset>0xFF4</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x000000F0</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>PRMBL_1</name>
+              <description>Contains bits[11:8] of the component identification code.</description>
+              <lsb>0</lsb>
+              <msb>3</msb>
+            </field>
+            <field>
+              <name>CLASS</name>
+              <description>Class of the component, for example, ROM table or CoreSight component.</description>
+              <lsb>4</lsb>
+              <msb>7</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CIDR2</name>
+          <description>Component ID2 Register</description>
+          <addressOffset>0xFF8</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000005</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>PRMBL_2</name>
+              <description>Contains bits[23:16] of the component identification code.</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CIDR3</name>
+          <description>Component ID3 Register</description>
+          <addressOffset>0xFFC</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x000000B1</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>PRMBL_3</name>
+              <description>Contains bits[31:24] of the component identification code.</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+            </field>
+          </fields>
+        </register>
+      </registers>
     </peripheral>
     <peripheral>
       <name>GLOBAL_STM_NS</name>
@@ -79190,6 +79497,13 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <size>0x20</size>
           <fields>
             <field>
+              <name>CHIDX</name>
+              <description>DPPI channel that task TASKS_TRIGGER[n] will subscribe to</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+              <access>read-only</access>
+            </field>
+            <field>
               <name>EN</name>
               <description>Subscription enable bit</description>
               <lsb>31</lsb>
@@ -79249,6 +79563,13 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <resetValue>0x00000000</resetValue>
           <size>0x20</size>
           <fields>
+            <field>
+              <name>CHIDX</name>
+              <description>DPPI channel that event EVENTS_TRIGGERED[n] will publish to</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+              <access>read-only</access>
+            </field>
             <field>
               <name>EN</name>
               <description>Publication enable bit</description>
@@ -82399,7 +82720,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                     <value>0x0</value>
                   </enumeratedValue>
                   <enumeratedValue>
-                    <name>Clear</name>
+                    <name>Set</name>
                     <description>Sets the halt on reset request</description>
                     <value>0x1</value>
                   </enumeratedValue>
@@ -83083,11 +83404,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                     <value>0x00</value>
                   </enumeratedValue>
                   <enumeratedValue>
-                    <name>QUICKACCESS</name>
-                    <description>Quick Access Command</description>
-                    <value>0x01</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
                     <name>MEMACCESS</name>
                     <description>Memory Access Command</description>
                     <value>0x02</value>
@@ -83173,7 +83489,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 <description>Data</description>
                 <lsb>0</lsb>
                 <msb>31</msb>
-                <access>read-only</access>
               </field>
             </fields>
           </register>
@@ -83257,68 +83572,38 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             <fields>
               <field>
                 <name>SBACCESS8</name>
+                <description>8-bit system bus accesses are supported.</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
                 <access>read-only</access>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>sbaccess8</name>
-                    <description>8-bit system bus accesses are supported.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
                 <name>SBACCESS16</name>
+                <description>16-bit system bus accesses are supported.</description>
                 <lsb>1</lsb>
                 <msb>1</msb>
                 <access>read-only</access>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>sbaccess16</name>
-                    <description>16-bit system bus accesses are supported.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
                 <name>SBACCESS32</name>
+                <description>32-bit system bus accesses are supported.</description>
                 <lsb>2</lsb>
                 <msb>2</msb>
                 <access>read-only</access>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>sbaccess32</name>
-                    <description>32-bit system bus accesses are supported.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
                 <name>SBACCESS64</name>
+                <description>64-bit system bus accesses are supported.</description>
                 <lsb>3</lsb>
                 <msb>3</msb>
                 <access>read-only</access>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>sbaccess64</name>
-                    <description>64-bit system bus accesses are supported.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
                 <name>SBACCESS128</name>
+                <description>128-bit system bus accesses are supported.</description>
                 <lsb>4</lsb>
                 <msb>4</msb>
                 <access>read-only</access>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>sbaccess128</name>
-                    <description>128-bit system bus accesses are supported.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
               </field>
               <field>
                 <name>SBASIZE</name>
@@ -83490,7 +83775,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>version1</name>
-                    <description>The System Bus interface conforms to RISC-V External Debug Support version 0.14.0-DRAFT.
+                    <description>The System Bus interface conforms to RISC-V External Debug Support version 0.13.2.
           Other values are reserved for future versions.</description>
                     <value>0x1</value>
                   </enumeratedValue>
@@ -83681,6 +83966,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <fields>
             <field>
               <name>CPUSTATUS</name>
+              <description>Enumerates one of several possible states for the VPR:</description>
               <lsb>0</lsb>
               <msb>3</msb>
               <access>read-only</access>
@@ -83752,6 +84038,18 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <lsb>5</lsb>
               <msb>5</msb>
               <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotStalled</name>
+                  <description>CPU not stalled on blocing CSR access.</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Stalled</name>
+                  <description>CPU stalled on blocing CSR access.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -83768,6 +84066,122 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
               <description>Initial value of the PC at CPU start.</description>
               <lsb>0</lsb>
               <msb>31</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SOFTRESET</name>
+          <description>Trigger a soft reset of the VPR.</description>
+          <addressOffset>0x810</addressOffset>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>RESET</name>
+              <description>Write a 1 to initiate a soft reset</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>RESETREAS</name>
+          <description>Reset reason.</description>
+          <addressOffset>0x814</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000001</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>RESETPIN</name>
+              <description>Reset from pin-reset detected</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotDetected</name>
+                  <description>Not detected</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Detected</name>
+                  <description>Detected</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SOFTRESET</name>
+              <description>Reset from SOFTRESET register write detected</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotDetected</name>
+                  <description>Not detected</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Detected</name>
+                  <description>Detected</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>LOCKUP</name>
+              <description>Reset from local CPU lockup detected</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotDetected</name>
+                  <description>Not detected</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Detected</name>
+                  <description>Detected</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>NDMRESET</name>
+              <description>Reset from debugger detected</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotDetected</name>
+                  <description>Not detected</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Detected</name>
+                  <description>Detected</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>EXTRESET</name>
+              <description>Reset from external sync reset request detected</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotDetected</name>
+                  <description>Not detected</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Detected</name>
+                  <description>Detected</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
             </field>
           </fields>
         </register>
@@ -111394,7 +111808,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
         </register>
         <register>
           <name>EVENTS_STARTED</name>
-          <description>The ADC has started</description>
+          <description>The ADC DMA has started</description>
           <addressOffset>0x100</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -111402,7 +111816,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <fields>
             <field>
               <name>EVENTS_STARTED</name>
-              <description>The ADC has started</description>
+              <description>The ADC DMA has started</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -111534,7 +111948,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
         </register>
         <register>
           <name>EVENTS_STOPPED</name>
-          <description>The ADC has stopped</description>
+          <description>The ADC DMA has stopped</description>
           <addressOffset>0x114</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -111542,7 +111956,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <fields>
             <field>
               <name>EVENTS_STOPPED</name>
-              <description>The ADC has stopped</description>
+              <description>The ADC DMA has stopped</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -111570,7 +111984,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <addressOffset>0x118</addressOffset>
           <register>
             <name>LIMITH</name>
-            <description>Description cluster: Last results is equal or above CH[n].LIMIT.HIGH</description>
+            <description>Description cluster: Last results is above CH[n].LIMIT.HIGH</description>
             <addressOffset>0x000</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
@@ -111578,7 +111992,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             <fields>
               <field>
                 <name>LIMITH</name>
-                <description>Last results is equal or above CH[n].LIMIT.HIGH</description>
+                <description>Last results is above CH[n].LIMIT.HIGH</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
                 <enumeratedValues>
@@ -111598,7 +112012,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           </register>
           <register>
             <name>LIMITL</name>
-            <description>Description cluster: Last results is equal or below CH[n].LIMIT.LOW</description>
+            <description>Description cluster: Last results is below CH[n].LIMIT.LOW</description>
             <addressOffset>0x004</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
@@ -111606,7 +112020,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             <fields>
               <field>
                 <name>LIMITL</name>
-                <description>Last results is equal or below CH[n].LIMIT.LOW</description>
+                <description>Last results is below CH[n].LIMIT.LOW</description>
                 <lsb>0</lsb>
                 <msb>0</msb>
                 <enumeratedValues>
@@ -111898,6 +112312,52 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             </fields>
           </register>
         </cluster>
+        <register>
+          <name>SHORTS</name>
+          <description>Shortcuts between local events and tasks</description>
+          <addressOffset>0x200</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>DONE_SAMPLE</name>
+              <description>Shortcut between event DONE and task SAMPLE</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable shortcut</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable shortcut</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>END_START</name>
+              <description>Shortcut between event END and task START</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Disable shortcut</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Enable shortcut</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
         <register>
           <name>INTEN</name>
           <description>Enable or disable interrupt</description>
@@ -113577,7 +114037,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Busy</name>
-                  <description>ADC is busy. Single conversion in progress.</description>
+                  <description>ADC is busy. Conversion is in progress.</description>
                   <value>0x1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -113721,6 +114181,11 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                     <description>Select analog input</description>
                     <value>0x1</value>
                   </enumeratedValue>
+                  <enumeratedValue>
+                    <name>Internal</name>
+                    <description>Selects internal inputs.</description>
+                    <value>0x2</value>
+                  </enumeratedValue>
                 </enumeratedValues>
               </field>
             </fields>
@@ -113767,24 +114232,6 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                 </enumeratedValues>
               </field>
               <field>
-                <name>BURST</name>
-                <description>Enable burst mode</description>
-                <lsb>11</lsb>
-                <msb>11</msb>
-                <enumeratedValues>
-                  <enumeratedValue>
-                    <name>Disabled</name>
-                    <description>Burst mode is disabled (normal operation)</description>
-                    <value>0x0</value>
-                  </enumeratedValue>
-                  <enumeratedValue>
-                    <name>Enabled</name>
-                    <description>Burst mode is enabled. SAADC takes 2^OVERSAMPLE number of samples as fast as it can, and sends the average to Data RAM.</description>
-                    <value>0x1</value>
-                  </enumeratedValue>
-                </enumeratedValues>
-              </field>
-              <field>
                 <name>REFSEL</name>
                 <description>Reference control</description>
                 <lsb>12</lsb>
@@ -113797,7 +114244,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>External</name>
-                    <description>External reference given at PADC_EXT_REF_1V2</description>
+                    <description>External reference voltage</description>
                     <value>0x1</value>
                   </enumeratedValue>
                 </enumeratedValues>
@@ -113858,6 +114305,34 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           </register>
         </cluster>
         <register>
+          <name>BURST</name>
+          <description>Enable burst mode</description>
+          <addressOffset>0x5E8</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>BURST</name>
+              <description>Enable burst mode</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disabled</name>
+                  <description>Burst mode is disabled (normal operation)</description>
+                  <value>0x0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enabled</name>
+                  <description>Burst mode is enabled. SAADC triggers new samples until RESULTDONE event for every enabled channel</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>RESOLUTION</name>
           <description>Resolution configuration</description>
           <addressOffset>0x5F0</addressOffset>
@@ -113897,7 +114372,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
         </register>
         <register>
           <name>OVERSAMPLE</name>
-          <description>Oversampling configuration. OVERSAMPLE should not be combined with SCAN. The RESOLUTION is applied before averaging, thus for high OVERSAMPLE a higher RESOLUTION should be used.</description>
+          <description>Oversampling configuration. OVERSAMPLE should not be combined with SCAN unless burst is enabled. The RESOLUTION is applied before averaging, thus for high OVERSAMPLE a higher RESOLUTION should be used.</description>
           <addressOffset>0x5F4</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -113960,7 +114435,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
         </register>
         <register>
           <name>SAMPLERATE</name>
-          <description>Controls normal or continuous sample rate</description>
+          <description>Configures the sampling rate for either task-triggered or continuous operation using a local timer</description>
           <addressOffset>0x5F8</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -114016,7 +114491,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           </register>
           <register>
             <name>MAXCNT</name>
-            <description>Maximum number of buffer bytes to transfer</description>
+            <description>Maximum number of buffer bytes to transfer. Note that one sample is two bytes.</description>
             <addressOffset>0x008</addressOffset>
             <access>read-write</access>
             <resetValue>0x00000000</resetValue>
@@ -114024,7 +114499,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
             <fields>
               <field>
                 <name>MAXCNT</name>
-                <description>Maximum number of buffer bytes to transfer</description>
+                <description>Maximum number of buffer bytes to transfer. Note that one sample is two bytes.</description>
                 <lsb>0</lsb>
                 <msb>14</msb>
               </field>
@@ -114065,7 +114540,7 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
         </cluster>
         <register>
           <name>NOISESHAPE</name>
-          <description>Enable noise shaping</description>
+          <description>SAADC provides two operational noise shaping modes (one that prioritizes higher bandwith, while the other prioritizes higher accuracy) that allow trade-offs between ADC resolution, power consumption, and signal bandwidth.</description>
           <addressOffset>0x654</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
@@ -114073,23 +114548,33 @@ unexpectedly or might not fire. Reads of the TRCRSCTLRn might return UNKNOWN.</d
           <fields>
             <field>
               <name>NOISESHAPE</name>
-              <description>Enable noise shaping</description>
+              <description>Noise shaping configuration</description>
               <lsb>0</lsb>
               <msb>1</msb>
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Disable</name>
-                  <description>Disable noiseshaping. Oversampling based on accumulate and average.</description>
+                  <description>Disable noiseshaping. Configurable oversampling.</description>
                   <value>0x0</value>
                 </enumeratedValue>
                 <enumeratedValue>
+                  <name>NS1</name>
+                  <description>Noiseshaping and decimating. Decimation ratio 8, maximum continuous output 250 kS/s, with resulting bandwidth at 80 kHz. Recommended resolution setting is 12 bits or higher. Takes precedence over the OVERSAMPLING register.</description>
+                  <value>0x1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>NS2</name>
+                  <description>Noiseshaping and decimating. Decimation ratio 16, maximum continuous output 125 kS/s, with resulting bandwidth at 40 kHz. Recommended resolution setting is 14 bits. Takes precedence over the OVERSAMPLING register.</description>
+                  <value>0x2</value>
+                </enumeratedValue>
+                <enumeratedValue>
                   <name>Audio</name>
-                  <description>Noiseshaping and decimating. Larger passband. Provides a 100kS/s cut off frequency, 8x the oversampling ratio. See design description for more information</description>
+                  <description>Deprecated enumerator -  Use enumerator NS1 for future compatibility.</description>
                   <value>0x1</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Accuracy</name>
-                  <description>Noiseshaping and decimating. Smaller passband. Recommended resolution setting is 14 bits. Provides a 10kS/s cut off frequency, 32x the oversampling ratio. See design description for more information</description>
+                  <description>Deprecated enumerator -  Use enumerator NS2 for future compatibility.</description>
                   <value>0x2</value>
                 </enumeratedValue>
               </enumeratedValues>

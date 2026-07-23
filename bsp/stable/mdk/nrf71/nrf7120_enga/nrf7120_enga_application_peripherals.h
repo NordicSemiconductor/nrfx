@@ -293,7 +293,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CCM00_AMOUNTREG 0                            /*!< (unspecified)                                                        */
 #define CCM00_ONTHEFLYDECRYPTION 0                   /*!< Does not support on-the-fly decryption.                              */
 #define CCM00_DMAERROR 1                             /*!< (unspecified)                                                        */
-#define CCM00_BYPASSMODE 0                           /*!< No bypass mode available in the MODE register.                       */
+#define CCM00_BYPASSMODE 0                           /*!< (unspecified)                                                        */
 
 /*AES ECB Mode Encryption*/
 #define ECB_PRESENT 1
@@ -350,6 +350,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define VPR00_VEVIF_EVENTS_MASK 0x00100000           /*!< Mask of supported VEVIF events: 0x00100000                           */
 #define VPR00_DEBUGGER_OFFSET 1024                   /*!< Debugger interface register offset: 0x5004C400                       */
 #define VPR00_RTP_VPR_1_5 1                          /*!< New RTP features                                                     */
+#define VPR00_VPR_BITIS_1_6 0                        /*!< (unspecified)                                                        */
 
 /*Serial Peripheral Interface Master with EasyDMA*/
 #define SPIM_PRESENT 1
@@ -380,6 +381,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM00_RXDELAY_FIELD_WIDTH_MIN 0             /*!< (unspecified)                                                        */
 #define SPIM00_RXDELAY_FIELD_WIDTH_MAX 2             /*!< (unspecified)                                                        */
 #define SPIM00_RXDELAY_FIELD_WIDTH_SIZE 3            /*!< (unspecified)                                                        */
+#define SPIM00_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 
 #define SPIM01_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 #define SPIM01_MAX_DATARATE 64                       /*!< (unspecified)                                                        */
@@ -406,6 +408,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM01_RXDELAY_FIELD_WIDTH_MIN 0             /*!< (unspecified)                                                        */
 #define SPIM01_RXDELAY_FIELD_WIDTH_MAX 2             /*!< (unspecified)                                                        */
 #define SPIM01_RXDELAY_FIELD_WIDTH_SIZE 3            /*!< (unspecified)                                                        */
+#define SPIM01_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 
 #define SPIM20_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 #define SPIM20_MAX_DATARATE 8                        /*!< (unspecified)                                                        */
@@ -432,6 +435,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM20_RXDELAY_FIELD_WIDTH_MIN 0             /*!< (unspecified)                                                        */
 #define SPIM20_RXDELAY_FIELD_WIDTH_MAX 2             /*!< (unspecified)                                                        */
 #define SPIM20_RXDELAY_FIELD_WIDTH_SIZE 3            /*!< (unspecified)                                                        */
+#define SPIM20_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 
 #define SPIM21_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 #define SPIM21_MAX_DATARATE 8                        /*!< (unspecified)                                                        */
@@ -458,6 +462,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM21_RXDELAY_FIELD_WIDTH_MIN 0             /*!< (unspecified)                                                        */
 #define SPIM21_RXDELAY_FIELD_WIDTH_MAX 2             /*!< (unspecified)                                                        */
 #define SPIM21_RXDELAY_FIELD_WIDTH_SIZE 3            /*!< (unspecified)                                                        */
+#define SPIM21_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 
 #define SPIM22_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 #define SPIM22_MAX_DATARATE 8                        /*!< (unspecified)                                                        */
@@ -484,6 +489,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM22_RXDELAY_FIELD_WIDTH_MIN 0             /*!< (unspecified)                                                        */
 #define SPIM22_RXDELAY_FIELD_WIDTH_MAX 2             /*!< (unspecified)                                                        */
 #define SPIM22_RXDELAY_FIELD_WIDTH_SIZE 3            /*!< (unspecified)                                                        */
+#define SPIM22_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 
 #define SPIM23_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 #define SPIM23_MAX_DATARATE 8                        /*!< (unspecified)                                                        */
@@ -510,6 +516,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM23_RXDELAY_FIELD_WIDTH_MIN 0             /*!< (unspecified)                                                        */
 #define SPIM23_RXDELAY_FIELD_WIDTH_MAX 2             /*!< (unspecified)                                                        */
 #define SPIM23_RXDELAY_FIELD_WIDTH_SIZE 3            /*!< (unspecified)                                                        */
+#define SPIM23_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 
 #define SPIM24_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 #define SPIM24_MAX_DATARATE 8                        /*!< (unspecified)                                                        */
@@ -536,6 +543,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM24_RXDELAY_FIELD_WIDTH_MIN 0             /*!< (unspecified)                                                        */
 #define SPIM24_RXDELAY_FIELD_WIDTH_MAX 2             /*!< (unspecified)                                                        */
 #define SPIM24_RXDELAY_FIELD_WIDTH_SIZE 3            /*!< (unspecified)                                                        */
+#define SPIM24_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 
 #define SPIM30_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 #define SPIM30_MAX_DATARATE 8                        /*!< (unspecified)                                                        */
@@ -562,6 +570,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SPIM30_RXDELAY_FIELD_WIDTH_MIN 0             /*!< (unspecified)                                                        */
 #define SPIM30_RXDELAY_FIELD_WIDTH_MAX 2             /*!< (unspecified)                                                        */
 #define SPIM30_RXDELAY_FIELD_WIDTH_SIZE 3            /*!< (unspecified)                                                        */
+#define SPIM30_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 
 /*SPI Slave*/
 #define SPIS_PRESENT 1
@@ -723,6 +732,16 @@ POSSIBILITY OF SUCH DAMAGE.
 #define MRAMC_NVRPAGELWSIZEVALUE_MIN 0               /*!< (unspecified)                                                        */
 #define MRAMC_NVRPAGELWSIZEVALUE_MAX 15              /*!< (unspecified)                                                        */
 #define MRAMC_NVRPAGELWSIZEVALUE_SIZE 16             /*!< (unspecified)                                                        */
+#define MRAMC_DEPRECATEERASEALL 1                    /*!< MRAMC ERASEALL register is deprecated; use CTRLAP ERASEALL instead   */
+
+/*GPIO high-speed pad control*/
+#define GPIOHSPADCTRL_PRESENT 1
+#define GPIOHSPADCTRL_COUNT 1
+
+#define GPIOHSPADCTRL_NUM_ELASTIC_BUFFERS_MIN 0      /*!< Number of elastic buffers                                            */
+#define GPIOHSPADCTRL_NUM_ELASTIC_BUFFERS_MAX 1      /*!< Number of elastic buffers                                            */
+#define GPIOHSPADCTRL_NUM_ELASTIC_BUFFERS_SIZE 2     /*!< Number of elastic buffers                                            */
+#define GPIOHSPADCTRL_PHASEPOLARITY 1                /*!< Supports full phase and polarity selection on both input and output. */
 
 /*GPIO Port*/
 #define GPIO_PRESENT 1
@@ -748,6 +767,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P2_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P2_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P2_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P2_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
 #define P1_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP2 0                            /*!< (unspecified)                                                        */
@@ -769,6 +789,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P1_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P1_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P1_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P1_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
 #define P3_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P3_CTRLSEL_MAP2 0                            /*!< (unspecified)                                                        */
@@ -790,6 +811,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P3_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P3_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P3_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P3_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
 #define P4_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P4_CTRLSEL_MAP2 0                            /*!< (unspecified)                                                        */
@@ -811,6 +833,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P4_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P4_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P4_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P4_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
 #define P0_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP2 0                            /*!< (unspecified)                                                        */
@@ -832,6 +855,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P0_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P0_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P0_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P0_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
 /*Control access port*/
 #define CTRLAPPERI_PRESENT 1
@@ -845,6 +869,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TAD_TAD_HAS_TASKS 0                          /*!< (unspecified)                                                        */
 #define TAD_PDREQCLR 1                               /*!< (unspecified)                                                        */
 #define TAD_TAD_HAS_DBGWAKEUPREQ 1                   /*!< (unspecified)                                                        */
+#define TAD_TAD_HAS_TWO_TPIUS 0                      /*!< (unspecified)                                                        */
+#define TAD_HAS_ENABLE_REG 1                         /*!< (unspecified)                                                        */
+#define TAD_HAS_TRACEPORTSPEED_REG 1                 /*!< (unspecified)                                                        */
 
 /*Timer/Counter*/
 #define TIMER_PRESENT 1
@@ -997,6 +1024,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define MSPI00_PERIPHERAL 0                          /*!< MSPI does not have peripheral funtionality                           */
 #define MSPI00_XIP 1                                 /*!< MSPI has XiP functionality. Tasks, events and registers exclusive to
                                                           this configuration are either labelled or use the 'XIP' prefix.*/
+#define MSPI00_PUBLIC_PINOECONTROL 1                 /*!< PINOECONTROL register is included in public documentation.           */
 
 #define MSPI01_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 #define MSPI01_FIFO_DEPTH 16                         /*!< Depth of the transmit and receive FIFOs is 16                        */
@@ -1007,6 +1035,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                                           exclusive to this configuration are either labelled or use the
                                                           'PERIPHERAL' prefix.*/
 #define MSPI01_XIP 0                                 /*!< MSPI does not have XiP funtionality                                  */
+#define MSPI01_PUBLIC_PINOECONTROL 1                 /*!< PINOECONTROL register is included in public documentation.           */
 
 /*2.4 GHz radio*/
 #define RADIO_PRESENT 1
@@ -1014,11 +1043,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define RADIO_IRQ_COUNT 2
 #define RADIO_WHITENINGPOLY 1                        /*!< (unspecified)                                                        */
-#define RADIO_IEEE802154 1                           /*!< IEEE 802.15.4 support                                                */
-#define RADIO_LONGRANGE 1                            /*!< Long range (LE Coded PHY) support                                    */
-#define RADIO_DIRECTIONFINDING 1                     /*!< Direction finding support (DFE)                                      */
-#define RADIO_CHANNELSOUNDING 0                      /*!< No channel sounding support (CSTONES)                                */
-#define RADIO_ADPLLCOMPANION_INCLUDE_DMA 0           /*!< No internal instantiation of DmaChannelPeripheral                    */
+#define RADIO_IEEE802154 1                           /*!< (unspecified)                                                        */
+#define RADIO_LONGRANGE 1                            /*!< (unspecified)                                                        */
+#define RADIO_DIRECTIONFINDING 1                     /*!< (unspecified)                                                        */
+#define RADIO_CHANNELSOUNDING 1                      /*!< (unspecified)                                                        */
+#define RADIO_ADPLLCOMPANION_INCLUDE_DMA 0           /*!< (unspecified)                                                        */
 
 /*IPCT APB registers*/
 #define IPCT_PRESENT 1
@@ -1030,36 +1059,42 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_PRESENT 1
 #define TWIM_COUNT 6
 
+#define TWIM20_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 #define TWIM20_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM20_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM20_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
 #define TWIM20_CORE_FREQUENCY 16                     /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM20_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 
+#define TWIM21_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 #define TWIM21_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM21_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM21_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
 #define TWIM21_CORE_FREQUENCY 16                     /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM21_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 
+#define TWIM22_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 #define TWIM22_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM22_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM22_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
 #define TWIM22_CORE_FREQUENCY 16                     /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM22_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 
+#define TWIM23_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 #define TWIM23_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM23_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM23_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
 #define TWIM23_CORE_FREQUENCY 16                     /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM23_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 
+#define TWIM24_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 #define TWIM24_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM24_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM24_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
 #define TWIM24_CORE_FREQUENCY 16                     /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM24_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                   */
 
+#define TWIM30_HAS_INTPEND 0                         /*!< (unspecified)                                                        */
 #define TWIM30_EASYDMA_MAXCNT_MIN 0                  /*!< (unspecified)                                                        */
 #define TWIM30_EASYDMA_MAXCNT_MAX 15                 /*!< (unspecified)                                                        */
 #define TWIM30_EASYDMA_MAXCNT_SIZE 16                /*!< (unspecified)                                                        */
@@ -1177,23 +1212,29 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_TCONV_VALUE_RANGE_MIN 1                /*!< (unspecified)                                                        */
 #define SAADC_TCONV_VALUE_RANGE_MAX 7                /*!< (unspecified)                                                        */
 #define SAADC_TCONV_VALUE_RANGE_SIZE 8               /*!< (unspecified)                                                        */
+#define SAADC_HAS_EVENTSCANDONE 0                    /*!< (unspecified)                                                        */
+#define SAADC_AVSS_PUBLIC 1                          /*!< AVSS (analog ground) option in PSELN.TEST field is public            */
 #define SAADC_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< CURRENTAMOUNT register not included.                             */
 
 /*NFC-A compatible radio NFC-A compatible radio*/
 #define NFCT_PRESENT 1
 #define NFCT_COUNT 1
 
+#define NFCT_HAS_INTPEND 0                           /*!< (unspecified)                                                        */
 #define NFCT_NFCTFIELDDETCFG_RESET 1                 /*!< Reset value of register NFCTFIELDDETCFG: 1                           */
 
 /*Temperature Sensor*/
 #define TEMP_PRESENT 1
 #define TEMP_COUNT 1
 
+#define TEMP_HAS_INTPEND 0                           /*!< (unspecified)                                                        */
+
 /*GPIO Tasks and Events*/
 #define GPIOTE_PRESENT 1
 #define GPIOTE_COUNT 2
 
 #define GPIOTE20_IRQ_COUNT 2
+#define GPIOTE20_HAS_INTPEND 1                       /*!< (unspecified)                                                        */
 #define GPIOTE20_GPIOTE_NCHANNELS_MIN 0              /*!< Number of GPIOTE channels: 0..7                                      */
 #define GPIOTE20_GPIOTE_NCHANNELS_MAX 7              /*!< Number of GPIOTE channels: 0..7                                      */
 #define GPIOTE20_GPIOTE_NCHANNELS_SIZE 8             /*!< Number of GPIOTE channels: 0..7                                      */
@@ -1206,6 +1247,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIOTE20_HAS_PORT_EVENT 1                    /*!< (unspecified)                                                        */
 
 #define GPIOTE30_IRQ_COUNT 2
+#define GPIOTE30_HAS_INTPEND 1                       /*!< (unspecified)                                                        */
 #define GPIOTE30_GPIOTE_NCHANNELS_MIN 0              /*!< Number of GPIOTE channels: 0..3                                      */
 #define GPIOTE30_GPIOTE_NCHANNELS_MAX 3              /*!< Number of GPIOTE channels: 0..3                                      */
 #define GPIOTE30_GPIOTE_NCHANNELS_SIZE 4             /*!< Number of GPIOTE channels: 0..3                                      */
@@ -1268,7 +1310,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define TAMPC_GPIOSWD 0                              /*!< (unspecified)                                                        */
 #define TAMPC_APSPIDEN 0                             /*!< (unspecified)                                                        */
-#define TAMPC_PROTECT_INTRESETEN_CTRL_VALUE_RESET 0  /*!< Reset value of field VALUE in register PROTECT.INTRESETEN.CTRL: 0    */
+#define TAMPC_DFTENABLE_CTRL_LOCK_RESET 1            /*!< PROTECT.DFT.ENABLE.CTRL LOCK field resets enabled (register reset
+                                                          0x12).*/
 #define TAMPC_TAMPERSWITCH 1                         /*!< (unspecified)                                                        */
 #define TAMPC_SM4DISABLECM 0                         /*!< (unspecified)                                                        */
 #define TAMPC_PROTECTRESETBEHAVIOR 1                 /*!< (unspecified)                                                        */
@@ -1307,9 +1350,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define WDT30_ALLOW_STOP 1                           /*!< (unspecified)                                                        */
 #define WDT30_HAS_INTEN 0                            /*!< (unspecified)                                                        */
+#define WDT30_HAS_INTPEND 0                          /*!< (unspecified)                                                        */
 
 #define WDT31_ALLOW_STOP 1                           /*!< (unspecified)                                                        */
 #define WDT31_HAS_INTEN 0                            /*!< (unspecified)                                                        */
+#define WDT31_HAS_INTPEND 0                          /*!< (unspecified)                                                        */
 
 /*Clock management*/
 #define CLOCK_PRESENT 1

@@ -104,6 +104,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_UARTE00_S_BASE                0x5004D000UL
 #define NRF_MRAMC_S_BASE                  0x5004E000UL
 #define NRF_P2_NS_BASE                    0x40050400UL
+#define NRF_GPIOHSPADCTRL_S_BASE          0x50050400UL
 #define NRF_P2_S_BASE                     0x50050400UL
 #define NRF_CTRLAP_NS_BASE                0x40052000UL
 #define NRF_CTRLAP_S_BASE                 0x50052000UL
@@ -336,6 +337,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define NRF_UARTE00_S                     ((NRF_UARTE_Type*)                    NRF_UARTE00_S_BASE)
 #define NRF_MRAMC_S                       ((NRF_MRAMC_Type*)                    NRF_MRAMC_S_BASE)
 #define NRF_P2_NS                         ((NRF_GPIO_Type*)                     NRF_P2_NS_BASE)
+#define NRF_GPIOHSPADCTRL_S               ((NRF_GPIOHSPADCTRL_Type*)            NRF_GPIOHSPADCTRL_S_BASE)
 #define NRF_P2_S                          ((NRF_GPIO_Type*)                     NRF_P2_S_BASE)
 #define NRF_CTRLAP_NS                     ((NRF_CTRLAPPERI_Type*)               NRF_CTRLAP_NS_BASE)
 #define NRF_CTRLAP_S                      ((NRF_CTRLAPPERI_Type*)               NRF_CTRLAP_S_BASE)
@@ -665,6 +667,7 @@ POSSIBILITY OF SUCH DAMAGE.
   #define NRF_SPIS00                              NRF_SPIS00_S
   #define NRF_UARTE00                             NRF_UARTE00_S
   #define NRF_MRAMC                               NRF_MRAMC_S
+  #define NRF_GPIOHSPADCTRL                       NRF_GPIOHSPADCTRL_S
   #define NRF_P2                                  NRF_P2_S
   #define NRF_CTRLAP                              NRF_CTRLAP_S
   #define NRF_TAD                                 NRF_TAD_S

@@ -412,9 +412,8 @@ int nrfx_saadc_init(uint8_t interrupt_priority)
 
 void nrfx_saadc_uninit(void)
 {
-    nrfx_saadc_abort();
-
     nrfy_saadc_int_uninit(NRF_SAADC);
+    nrfy_saadc_stop(NRF_SAADC, true);
     nrfy_saadc_event_clear(NRF_SAADC, NRF_SAADC_EVENT_DONE);
     nrfy_saadc_disable(NRF_SAADC);
     saadc_channels_disable(m_cb.channels_configured | m_cb.channels_activated);
@@ -428,9 +427,9 @@ bool nrfx_saadc_init_check(void)
 
 uint16_t nrfx_saadc_interval_to_cc(uint16_t interval_us)
 {
-	NRFX_ASSERT((interval_us <= NRFX_SAADC_INTERNAL_TIMER_INTERVAL_MAX_US) && (interval_us > 0));
+    NRFX_ASSERT((interval_us <= NRFX_SAADC_INTERNAL_TIMER_INTERVAL_MAX_US) && (interval_us > 0));
 
-	return (uint16_t)((interval_us * 16) - 1);
+    return (uint16_t)((interval_us * 16) - 1);
 }
 
 int nrfx_saadc_channels_config(nrfx_saadc_channel_t const * p_channels,
@@ -706,6 +705,7 @@ int nrfx_saadc_mode_trigger(void)
             {
                 nrfy_saadc_buffer_set(NRF_SAADC, &m_cb.buffer_primary, true, true);
                 nrfy_saadc_sample_start(NRF_SAADC, &m_cb.buffer_primary);
+                nrfy_saadc_stop(NRF_SAADC, true);
                 nrfy_saadc_disable(NRF_SAADC);
             }
             break;
@@ -768,6 +768,7 @@ int nrfx_saadc_mode_trigger(void)
                 m_cb.buffer_primary            = m_cb.buffer_secondary;
                 m_cb.buffer_secondary.p_buffer = NULL;
             }
+            nrfy_saadc_stop(NRF_SAADC, true);
             nrfy_saadc_disable(NRF_SAADC);
             break;
         }
@@ -870,9 +871,25 @@ int nrfx_saadc_offset_calibrate(nrfx_saadc_event_handler_t calib_event_handler)
     return 0;
 }
 
+static void saadc_disable(void)
+{
+    /* Ensure STOP sequence completes before disabling,
+     * otherwise ENABLE=0 does not fully power down the core module. */
+    nrfy_saadc_task_trigger(NRF_SAADC, NRF_SAADC_TASK_STOP);
+    nrfy_saadc_event_clear(NRF_SAADC, NRF_SAADC_EVENT_STOPPED);
+    /* Prevent interrupt handler invocation caused by STOPPED event that was just cleared. */
+    NRFY_IRQ_PENDING_CLEAR(nrfx_get_irq_number(NRF_SAADC));
+    nrfy_saadc_disable(NRF_SAADC);
+    if (NRF_ERRATA_DYNAMIC_CHECK(54H, 233) || NRF_ERRATA_DYNAMIC_CHECK(54L, 101) ||
+        NRF_ERRATA_DYNAMIC_CHECK(71, 101))
+    {
+        nrfy_saadc_disable(NRF_SAADC);
+    }
+}
+
 static void saadc_pre_calibration_state_restore(void)
 {
-    nrfy_saadc_disable(NRF_SAADC);
+    saadc_disable();
     uint32_t int_mask = nrfy_saadc_int_enable_check(NRF_SAADC, ~0UL) &
                         (uint32_t)(~(NRF_SAADC_INT_STARTED | NRF_SAADC_INT_STOPPED |
                                      NRF_SAADC_INT_END | NRF_SAADC_INT_CALIBRATEDONE));
@@ -949,18 +966,6 @@ static void saadc_event_started_handle(void)
         default:
             break;
     }
-}
-
-static void saadc_disable(void)
-{
-    /* Ensure STOP sequence completes before disabling,
-     * otherwise ENABLE=0 does not fully power down the core module. */
-    nrfy_saadc_task_trigger(NRF_SAADC, NRF_SAADC_TASK_STOP);
-    nrfy_saadc_event_clear(NRF_SAADC, NRF_SAADC_EVENT_STOPPED);
-    /* Prevent interrupt handler invocation caused by STOPPED event that was just cleared. */
-    NRFY_IRQ_PENDING_CLEAR(nrfx_get_irq_number(NRF_SAADC));
-    nrfy_saadc_disable(NRF_SAADC);
-    nrfy_saadc_disable(NRF_SAADC);
 }
 
 static void saadc_event_end_handle(void)

@@ -46,33 +46,31 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define VPRCSR_HARTNUM 11                            /*!< HARTNUM: 11                                                          */
 #define VPRCSR_MCLICBASERESET 0xF0000000             /*!< MCLICBASE: 0xF0000000                                                */
-#define VPRCSR_MULDIV 1                              /*!< MULDIV: 1                                                            */
+#define VPRCSR_MULDIV 1                              /*!< (unspecified)                                                        */
 #define VPRCSR_HIBERNATE 1                           /*!< HIBERNATE: 1                                                         */
 #define VPRCSR_DBG 1                                 /*!< DBG: 1                                                               */
-#define VPRCSR_REMAP 0                               /*!< Code patching (REMAP): 0                                             */
-#define VPRCSR_BUSWIDTH 32                           /*!< BUSWIDTH: 32                                                         */
-#define VPRCSR_BKPT 1                                /*!< BKPT: 1                                                              */
-#define VPRCSR_RETAINED 1                            /*!< VPR can be retained.                                                 */
+#define VPRCSR_REMAP 0                               /*!< (unspecified)                                                        */
+#define VPRCSR_BUSWIDTH 32                           /*!< (unspecified)                                                        */
+#define VPRCSR_BKPT 1                                /*!< Number of HW breakpoints: 1                                          */
+#define VPRCSR_RETAINED 1                            /*!< VPR can be retained                                                  */
 #define VPRCSR_VIOPINS 0x0000000F                    /*!< CSR VIOPINS value: 0x0000000F                                        */
 #define VPRCSR_VEVIF_NTASKS_MIN 0                    /*!< VEVIF tasks: 0..15                                                   */
 #define VPRCSR_VEVIF_NTASKS_MAX 15                   /*!< VEVIF tasks: 0..15                                                   */
 #define VPRCSR_VEVIF_NTASKS_SIZE 16                  /*!< VEVIF tasks: 0..15                                                   */
 #define VPRCSR_VEVIF_TASKS_MASK 0x0000FFF0           /*!< Mask of supported VEVIF tasks: 0x0000FFF0                            */
-#define VPRCSR_VEVIF_NDPPI_MIN 8                     /*!< VEVIF DPPI channels: 8..11                                           */
-#define VPRCSR_VEVIF_NDPPI_MAX 11                    /*!< VEVIF DPPI channels: 8..11                                           */
-#define VPRCSR_VEVIF_NDPPI_SIZE 12                   /*!< VEVIF DPPI channels: 8..11                                           */
+#define VPRCSR_VEVIF_NDPPI_MIN 8                     /*!< VEVIF DPPI indices: 8..11                                            */
+#define VPRCSR_VEVIF_NDPPI_MAX 11                    /*!< VEVIF DPPI indices: 8..11                                            */
+#define VPRCSR_VEVIF_NDPPI_SIZE 12                   /*!< VEVIF DPPI indices: 8..11                                            */
 #define VPRCSR_VEVIF_NEVENTS_MIN 12                  /*!< VEVIF events: 12..15                                                 */
 #define VPRCSR_VEVIF_NEVENTS_MAX 15                  /*!< VEVIF events: 12..15                                                 */
 #define VPRCSR_VEVIF_NEVENTS_SIZE 16                 /*!< VEVIF events: 12..15                                                 */
-#define VPRCSR_BEXT 0                                /*!< Bit-Manipulation extension: 0                                        */
-#define VPRCSR_CACHE_EN 0                            /*!< CACHE not available.                                                 */
-#define VPRCSR_CACHEEXTRATAGBUF 0                    /*!< CACHEEXTRATAGBUF: 0                                                  */
+#define VPRCSR_BEXT 0                                /*!< (unspecified)                                                        */
+#define VPRCSR_CACHE_EN 0                            /*!< (unspecified)                                                        */
 #define VPRCSR_OUTMODE_VPR1_2 1                      /*!< OUTMODE for shifting functionality available                         */
 #define VPRCSR_VPR_BUS_PRIO 0                        /*!< (unspecified)                                                        */
-#define VPRCSR_NMIMPID_VPR1_3_3 0                    /*!< INSTNUM field is not available withing CSR MIMPID                    */
-#define VPRCSR_PERIPHERALBLOCKINGACCESS 0            /*!< VPR does not support peripheral blocking access.                     */
-#define VPRCSR_BRANCHPREDECODING 0                   /*!< VPR does not support branch predecoding.                             */
+#define VPRCSR_PERIPHERALBLOCKINGACCESS 0            /*!< VPR does not support peripheral blocking access                      */
 #define VPRCSR_RTP_VPR_1_5 1                         /*!< New RTP features                                                     */
+#define VPRCSR_VPR_CLIC_3_LVL_BITS 0                 /*!< CLIC supports 2 level bits                                           */
 
 /*VPR CLIC registers*/
 #define CLIC_PRESENT 1
@@ -87,7 +85,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define VPRCLIC_CLIC_NTASKS_SIZE 16                  /*!< VEVIF tasks: 0..15                                                   */
 #define VPRCLIC_CLIC_TASKS_MASK 0x0000FFF0           /*!< Mask of supported VEVIF tasks: 0x0000FFF0                            */
 #define VPRCLIC_COUNTER_IRQ_NUM 16                   /*!< VPR counter (CNT0) interrupt handler number (COUNTER_IRQ_NUM): 16    */
-#define VPRCLIC_CLIC_VPR_1_2 1                       /*!< CLIC configuration for VPR 1.2 enabled                               */
+#define VPRCLIC_VPR_CLIC_3_LVL_BITS 0                /*!< CLIC supports 2 level bits                                           */
 
 /*VTIM CSR registers*/
 #define VTIM_PRESENT 1
@@ -111,6 +109,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define TDDCONF_FEATEN_TDDCONF_CLK_320MHZ 0          /*!< (unspecified)                                                        */
 #define TDDCONF_FEATEN_TDDCONF_CLK_400MHZ 1          /*!< (unspecified)                                                        */
+
+/*Timestamp generator*/
+#define TSGEN_PRESENT 1
+#define TSGEN_COUNT 1
 
 /*System Trace Macrocell*/
 #define STM_PRESENT 1
@@ -244,9 +246,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define VPR121_VEVIF_NTASKS_MAX 31                   /*!< VEVIF tasks: 0..31                                                   */
 #define VPR121_VEVIF_NTASKS_SIZE 32                  /*!< VEVIF tasks: 0..31                                                   */
 #define VPR121_VEVIF_TASKS_MASK 0xFFFF0000           /*!< Mask of supported VEVIF tasks: 0xFFFF0000                            */
-#define VPR121_VEVIF_NDPPI_MIN 24                    /*!< VEVIF DPPI channels: 24..27                                          */
-#define VPR121_VEVIF_NDPPI_MAX 27                    /*!< VEVIF DPPI channels: 24..27                                          */
-#define VPR121_VEVIF_NDPPI_SIZE 28                   /*!< VEVIF DPPI channels: 24..27                                          */
+#define VPR121_VEVIF_NDPPI_MIN 24                    /*!< VEVIF DPPI indices: 24..27                                           */
+#define VPR121_VEVIF_NDPPI_MAX 27                    /*!< VEVIF DPPI indices: 24..27                                           */
+#define VPR121_VEVIF_NDPPI_SIZE 28                   /*!< VEVIF DPPI indices: 24..27                                           */
 #define VPR121_VEVIF_DPPI_MASK 0x0F000000            /*!< Mask of supported VEVIF DPPI channels: 0x0F000000                    */
 #define VPR121_VEVIF_NEVENTS_MIN 28                  /*!< VEVIF events: 28..31                                                 */
 #define VPR121_VEVIF_NEVENTS_MAX 31                  /*!< VEVIF events: 28..31                                                 */
@@ -254,6 +256,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define VPR121_VEVIF_EVENTS_MASK 0xF0000000          /*!< Mask of supported VEVIF events: 0xF0000000                           */
 #define VPR121_DEBUGGER_OFFSET 1024                  /*!< Debugger interface register offset: 0x5F8D4400                       */
 #define VPR121_RTP_VPR_1_5 1                         /*!< New RTP features                                                     */
+#define VPR121_VPR_BITIS_1_6 1                       /*!< New VPR 1.6 (Bitis) features                                         */
 
 #define VPR130_RISCV_EXTN_E 1                        /*!< Supports RV32E (Base Integer Instruction Set embedded)               */
 #define VPR130_RISCV_EXTN_M 1                        /*!< Supports M extension (Integer Multiplication and Division)           */
@@ -287,9 +290,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define VPR130_VEVIF_NTASKS_MAX 15                   /*!< VEVIF tasks: 0..15                                                   */
 #define VPR130_VEVIF_NTASKS_SIZE 16                  /*!< VEVIF tasks: 0..15                                                   */
 #define VPR130_VEVIF_TASKS_MASK 0x0000FFF0           /*!< Mask of supported VEVIF tasks: 0x0000FFF0                            */
-#define VPR130_VEVIF_NDPPI_MIN 8                     /*!< VEVIF DPPI channels: 8..11                                           */
-#define VPR130_VEVIF_NDPPI_MAX 11                    /*!< VEVIF DPPI channels: 8..11                                           */
-#define VPR130_VEVIF_NDPPI_SIZE 12                   /*!< VEVIF DPPI channels: 8..11                                           */
+#define VPR130_VEVIF_NDPPI_MIN 8                     /*!< VEVIF DPPI indices: 8..11                                            */
+#define VPR130_VEVIF_NDPPI_MAX 11                    /*!< VEVIF DPPI indices: 8..11                                            */
+#define VPR130_VEVIF_NDPPI_SIZE 12                   /*!< VEVIF DPPI indices: 8..11                                            */
 #define VPR130_VEVIF_DPPI_MASK 0x00000F00            /*!< Mask of supported VEVIF DPPI channels: 0x00000F00                    */
 #define VPR130_VEVIF_NEVENTS_MIN 12                  /*!< VEVIF events: 12..15                                                 */
 #define VPR130_VEVIF_NEVENTS_MAX 15                  /*!< VEVIF events: 12..15                                                 */
@@ -297,6 +300,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define VPR130_VEVIF_EVENTS_MASK 0x0000F000          /*!< Mask of supported VEVIF events: 0x0000F000                           */
 #define VPR130_DEBUGGER_OFFSET 1024                  /*!< Debugger interface register offset: 0x5F908400                       */
 #define VPR130_RTP_VPR_1_5 1                         /*!< New RTP features                                                     */
+#define VPR130_VPR_BITIS_1_6 1                       /*!< New VPR 1.6 (Bitis) features                                         */
 
 /*Distributed programmable peripheral interconnect controller*/
 #define DPPIC_PRESENT 1
@@ -794,6 +798,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_PRESENT 1
 #define SAADC_COUNT 1
 
+#define SAADC_CHOPPING 0                             /*!< (unspecified)                                                        */
+#define SAADC_BURSTREG 1                             /*!< (unspecified)                                                        */
 #define SAADC_PSEL_V2 1                              /*!< (unspecified)                                                        */
 #define SAADC_TASKS_CALIBRATEGAIN 1                  /*!< (unspecified)                                                        */
 #define SAADC_SAMPLERATE_CC_VALUERANGE_MIN 4         /*!< (unspecified)                                                        */
@@ -805,6 +811,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_TCONV_VALUE_RANGE_MIN 0                /*!< (unspecified)                                                        */
 #define SAADC_TCONV_VALUE_RANGE_MAX 7                /*!< (unspecified)                                                        */
 #define SAADC_TCONV_VALUE_RANGE_SIZE 8               /*!< (unspecified)                                                        */
+#define SAADC_HAS_EVENTSCANDONE 0                    /*!< (unspecified)                                                        */
 #define SAADC_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< CURRENTAMOUNT register not included.                             */
 
 /*Temperature Sensor*/
@@ -849,24 +856,28 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWIM_PRESENT 1
 #define TWIM_COUNT 4
 
+#define TWIM130_HAS_INTPEND 0                        /*!< (unspecified)                                                        */
 #define TWIM130_EASYDMA_MAXCNT_MIN 0                 /*!< (unspecified)                                                        */
 #define TWIM130_EASYDMA_MAXCNT_MAX 14                /*!< (unspecified)                                                        */
 #define TWIM130_EASYDMA_MAXCNT_SIZE 15               /*!< (unspecified)                                                        */
 #define TWIM130_CORE_FREQUENCY 16                    /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM130_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                  */
 
+#define TWIM131_HAS_INTPEND 0                        /*!< (unspecified)                                                        */
 #define TWIM131_EASYDMA_MAXCNT_MIN 0                 /*!< (unspecified)                                                        */
 #define TWIM131_EASYDMA_MAXCNT_MAX 14                /*!< (unspecified)                                                        */
 #define TWIM131_EASYDMA_MAXCNT_SIZE 15               /*!< (unspecified)                                                        */
 #define TWIM131_CORE_FREQUENCY 16                    /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM131_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                  */
 
+#define TWIM132_HAS_INTPEND 0                        /*!< (unspecified)                                                        */
 #define TWIM132_EASYDMA_MAXCNT_MIN 0                 /*!< (unspecified)                                                        */
 #define TWIM132_EASYDMA_MAXCNT_MAX 14                /*!< (unspecified)                                                        */
 #define TWIM132_EASYDMA_MAXCNT_SIZE 15               /*!< (unspecified)                                                        */
 #define TWIM132_CORE_FREQUENCY 16                    /*!< Peripheral clock frequency is 16 MHz.                                */
 #define TWIM132_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 1 /*!< (unspecified)                                                  */
 
+#define TWIM133_HAS_INTPEND 0                        /*!< (unspecified)                                                        */
 #define TWIM133_EASYDMA_MAXCNT_MIN 0                 /*!< (unspecified)                                                        */
 #define TWIM133_EASYDMA_MAXCNT_MAX 14                /*!< (unspecified)                                                        */
 #define TWIM133_EASYDMA_MAXCNT_SIZE 15               /*!< (unspecified)                                                        */
