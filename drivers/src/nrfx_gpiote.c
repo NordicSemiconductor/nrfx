@@ -1502,6 +1502,9 @@ static void port_event_handle(NRF_GPIOTE_Type *             p_gpiote,
     uint8_t rel_pin;
     nrfx_gpiote_pin_t pin;
     nrfx_gpiote_trigger_t trigger;
+    uint32_t iteration_count = 0;
+    /* Large enough margin for edge cases */
+    const uint32_t MAX_ITERATIONS = GPIO_COUNT * 32 * 3;
 
     for (uint32_t port_idx = 0; port_idx < GPIO_COUNT; port_idx++)
     {
@@ -1513,6 +1516,8 @@ static void port_event_handle(NRF_GPIOTE_Type *             p_gpiote,
     }
 
     do {
+        iteration_count++;
+        NRFX_ASSERT(iteration_count <= MAX_ITERATIONS);
         for (uint32_t i = 0; i < GPIO_COUNT; i++)
         {
             while (pins_to_check[i])
