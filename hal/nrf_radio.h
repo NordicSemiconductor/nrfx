@@ -96,6 +96,13 @@ extern "C" {
 #define NRF_RADIO_HAS_EVDMA 0
 #endif
 
+#if defined(RADIO_MHRMATCHCONF_MHRMATCHCONF_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether MHRMATCH registers are present. **/
+#define NRF_RADIO_HAS_MHRMATCH 1
+#else
+#define NRF_RADIO_HAS_MHRMATCH 0
+#endif
+
 /** @brief RADIO tasks. */
 typedef enum
 {
@@ -1567,8 +1574,7 @@ NRF_STATIC_INLINE uint8_t nrf_radio_dacnf_ena_get(NRF_RADIO_Type const * p_reg);
  */
 NRF_STATIC_INLINE uint8_t nrf_radio_dacnf_txadd_get(NRF_RADIO_Type const * p_reg);
 
-#if defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(RADIO_INTENSET00_MHRMATCH_Msk) || \
-    defined(__NRFX_DOXYGEN__)
+#if NRF_RADIO_HAS_MHRMATCH
 /**
  * @brief Function for setting MAC Header Match Unit search pattern configuration.
  *
@@ -1605,8 +1611,7 @@ NRF_STATIC_INLINE void nrf_radio_mhmu_pattern_mask_set(NRF_RADIO_Type * p_reg,
  * @return Pattern mask.
  */
 NRF_STATIC_INLINE uint32_t nrf_radio_mhmu_pattern_mask_get(NRF_RADIO_Type const * p_reg);
-#endif // defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(RADIO_INTENSET00_MHRMATCH_Msk) ||
-       // defined(__NRFX_DOXYGEN__)
+#endif // NRF_RADIO_HAS_MHRMATCH
 
 #if defined(RADIO_MODECNF0_RU_Msk) || defined(__NRFX_DOXYGEN__)
 /**
@@ -2524,7 +2529,7 @@ NRF_STATIC_INLINE uint8_t nrf_radio_dacnf_txadd_get(NRF_RADIO_Type const * p_reg
                                       RADIO_DACNF_TXADD7_Msk)) >> RADIO_DACNF_TXADD0_Pos);
 }
 
-#if defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(RADIO_INTENSET00_MHRMATCH_Msk)
+#if NRF_RADIO_HAS_MHRMATCH
 void nrf_radio_mhmu_search_pattern_set(NRF_RADIO_Type * p_reg,
                                        uint32_t         radio_mhmu_search_pattern)
 {
@@ -2554,7 +2559,7 @@ NRF_STATIC_INLINE uint32_t nrf_radio_mhmu_pattern_mask_get(NRF_RADIO_Type const 
     return p_reg->MHRMATCHMASK;
 #endif
 }
-#endif // defined(RADIO_INTENSET_MHRMATCH_Msk) || defined(RADIO_INTENSET00_MHRMATCH_Msk)
+#endif // NRF_RADIO_HAS_MHRMATCH
 
 #if defined(RADIO_MODECNF0_RU_Msk)
 NRF_STATIC_INLINE void nrf_radio_modecnf0_set(NRF_RADIO_Type * p_reg,

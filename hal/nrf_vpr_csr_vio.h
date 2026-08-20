@@ -55,6 +55,13 @@ extern "C" {
 #define NRF_VPR_HAS_OUTUB_OUT 0
 #endif
 
+#if defined(VPRCSR_NORDIC_OUTBD_OUT_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether OUTBD registers are present. */
+#define NRF_VPR_HAS_OUTBD 1
+#else
+#define NRF_VPR_HAS_OUTBD 0
+#endif
+
 /** @brief Maximum number of frames to be shifted from buffered input before new data is required. */
 #define NRF_VPR_CSR_VIO_SHIFT_CNT_IN_MAX VPRCSR_NORDIC_SHIFTCNTIN_VALUE_Max
 
@@ -415,6 +422,7 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_toggle_set(uint16_t mask);
  */
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_toggle_buffered_set(uint16_t mask);
 
+#if NRF_VPR_HAS_OUTBD
 /**
  * @brief Function for setting the combined output and buffered output values.
  *
@@ -460,6 +468,7 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_combined_toggle_set(uint32_t mask);
  * @retval fasle Buffer is clean.
  */
 NRF_STATIC_INLINE bool nrf_vpr_csr_vio_out_combined_dirty_check(void);
+#endif // NRF_VPR_HAS_OUTBD
 
 /**
  * @brief Function for getting the configuration of output mode.
@@ -914,6 +923,7 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_toggle_buffered_set(uint16_t mask)
     nrf_csr_write(VPRCSR_NORDIC_OUTBTGL, mask);
 }
 
+#if NRF_VPR_HAS_OUTBD
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_out_combined_set(uint32_t value)
 {
     nrf_csr_write(VPRCSR_NORDIC_OUTBD, value);
@@ -939,6 +949,7 @@ NRF_STATIC_INLINE bool nrf_vpr_csr_vio_out_combined_dirty_check(void)
     return ((nrf_csr_read(VPRCSR_NORDIC_OUTBDS) & VPRCSR_NORDIC_OUTBDS_DIRTYBIT_Msk)
             >> VPRCSR_NORDIC_OUTBDS_DIRTYBIT_Pos) == VPRCSR_NORDIC_OUTBDS_DIRTYBIT_DIRTY;
 }
+#endif // NRF_VPR_HAS_OUTBD
 
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_get(nrf_vpr_csr_vio_mode_out_t * p_mode)
 {

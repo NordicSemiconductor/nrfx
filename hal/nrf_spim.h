@@ -830,14 +830,33 @@ NRF_STATIC_INLINE uint32_t nrf_spim_miso_pin_get(NRF_SPIM_Type const * p_reg);
  * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
  * @param[in] pin      CSN pin number.
  * @param[in] polarity CSN pin polarity.
- * @param[in] duration Minimum duration between the edge of CSN and the edge of SCK
- *                     and minimum duration of CSN must stay unselected between transactions.
- *                     The value is specified in number of 64 MHz clock cycles (15.625 ns).
+ * @param[in] duration Minimum duration between the edge of CSN and the edge of SCK.
+ *                     Also, minimum duration of CSN to remain unasserted between transactions.
+ *                     The value is specified in number of SPIM core clock cycles.
  */
 NRF_STATIC_INLINE void nrf_spim_csn_configure(NRF_SPIM_Type *    p_reg,
                                               uint32_t           pin,
                                               nrf_spim_csn_pol_t polarity,
                                               uint32_t           duration);
+
+/**
+ * @brief Function for setting the SPIM hardware CSN pin duration.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] duration Minimum duration between the edge of CSN and the edge of SCK
+ *                     Also, minimum duration of CSN to remain unasserted between transactions.
+ *                     The value is specified in number of SPIM core clock cycles.
+ */
+NRF_STATIC_INLINE void nrf_spim_csn_duration_set(NRF_SPIM_Type * p_reg, uint32_t duration);
+
+/**
+ * @brief Function for getting the SPIM hardware CSN pin duration.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return CSN pin duration in number of SPIM core clock cycles.
+ */
+NRF_STATIC_INLINE uint32_t nrf_spim_csn_duration_get(NRF_SPIM_Type const * p_reg);
 
 /**
  * @brief Function for getting the CSN pin selection.
@@ -1431,6 +1450,16 @@ NRF_STATIC_INLINE void nrf_spim_csn_configure(NRF_SPIM_Type *    p_reg,
 #endif
     p_reg->CSNPOL = polarity;
     p_reg->IFTIMING.CSNDUR = duration;
+}
+
+NRF_STATIC_INLINE void nrf_spim_csn_duration_set(NRF_SPIM_Type * p_reg, uint32_t duration)
+{
+    p_reg->IFTIMING.CSNDUR = duration;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_spim_csn_duration_get(NRF_SPIM_Type const * p_reg)
+{
+    return p_reg->IFTIMING.CSNDUR;
 }
 
 NRF_STATIC_INLINE uint32_t nrf_spim_csn_pin_get(NRF_SPIM_Type const * p_reg)

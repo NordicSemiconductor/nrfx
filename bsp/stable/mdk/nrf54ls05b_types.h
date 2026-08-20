@@ -2286,11 +2286,20 @@ typedef struct {
   #define CRACENCORE_RNGCONTROL_CONTROL_NB128BITBLOCKS_Pos (16UL) /*!< Position of NB128BITBLOCKS field.                       */
   #define CRACENCORE_RNGCONTROL_CONTROL_NB128BITBLOCKS_Msk (0xFUL << CRACENCORE_RNGCONTROL_CONTROL_NB128BITBLOCKS_Pos) /*!< Bit
                                                                             mask of NB128BITBLOCKS field.*/
+  #define CRACENCORE_RNGCONTROL_CONTROL_NB128BITBLOCKS_Min (0x1UL) /*!< Min value of NB128BITBLOCKS field.                     */
+  #define CRACENCORE_RNGCONTROL_CONTROL_NB128BITBLOCKS_Max (0xFUL) /*!< Max size of NB128BITBLOCKS field.                      */
+  #define CRACENCORE_RNGCONTROL_CONTROL_NB128BITBLOCKS_Recommended (0x4UL) /*!< Current recommended value. May change in future
+                                                                            documentation releases without a hardware change.*/
 
 /* FIFOWRITESTARTUP @Bit 20 : Enable write of the samples in the FIFO during start-up. */
   #define CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Pos (20UL) /*!< Position of FIFOWRITESTARTUP field.                   */
   #define CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Msk (0x1UL << CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Pos) /*!<
                                                                             Bit mask of FIFOWRITESTARTUP field.*/
+  #define CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Min (0x0UL) /*!< Min value of FIFOWRITESTARTUP field.                 */
+  #define CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Max (0x1UL) /*!< Max size of FIFOWRITESTARTUP field.                  */
+  #define CRACENCORE_RNGCONTROL_CONTROL_FIFOWRITESTARTUP_Recommended (0x1UL) /*!< Current recommended value. May change in
+                                                                            future documentation releases without a hardware
+                                                                            change.*/
 
 /* DISREPETTESTS @Bit 21 : All repetition tests (each share) are disabled via this single bit. */
   #define CRACENCORE_RNGCONTROL_CONTROL_DISREPETTESTS_Pos (21UL) /*!< Position of DISREPETTESTS field.                         */
@@ -2380,6 +2389,11 @@ typedef struct {
   #define CRACENCORE_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Pos (0UL) /*!< Position of REPEATTHRESHOLD field.              */
   #define CRACENCORE_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Msk (0x3FUL << CRACENCORE_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Pos)
                                                                             /*!< Bit mask of REPEATTHRESHOLD field.*/
+  #define CRACENCORE_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Min (0x00UL) /*!< Min value of REPEATTHRESHOLD field.          */
+  #define CRACENCORE_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Max (0x3FUL) /*!< Max size of REPEATTHRESHOLD field.           */
+  #define CRACENCORE_RNGCONTROL_REPEATTHRESHOLD_REPEATTHRESHOLD_Recommended (0x15UL) /*!< Current recommended value. May change
+                                                                            in future documentation releases without a hardware
+                                                                            change.*/
 
 
 /* CRACENCORE_RNGCONTROL_PROPTESTCUTOFF: Proportion test cut-off register. */
@@ -2389,6 +2403,11 @@ typedef struct {
   #define CRACENCORE_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Pos (0UL) /*!< Position of PROPTESTCUTOFF field.                 */
   #define CRACENCORE_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Msk (0x1FFUL << CRACENCORE_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Pos)
                                                                             /*!< Bit mask of PROPTESTCUTOFF field.*/
+  #define CRACENCORE_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Min (0x000UL) /*!< Min value of PROPTESTCUTOFF field.            */
+  #define CRACENCORE_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Max (0x1FFUL) /*!< Max size of PROPTESTCUTOFF field.             */
+  #define CRACENCORE_RNGCONTROL_PROPTESTCUTOFF_PROPTESTCUTOFF_Recommended (0x137UL) /*!< Current recommended value. May change
+                                                                            in future documentation releases without a hardware
+                                                                            change.*/
 
 
 /* CRACENCORE_RNGCONTROL_LFSRSEED: LFSR seed register. */
@@ -2473,6 +2492,11 @@ typedef struct {
   #define CRACENCORE_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Pos (0UL) /*!< Position of WARMUPPERIOD field.                       */
   #define CRACENCORE_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Msk (0xFFFUL << CRACENCORE_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Pos)
                                                                             /*!< Bit mask of WARMUPPERIOD field.*/
+  #define CRACENCORE_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Min (0x000UL) /*!< Min value of WARMUPPERIOD field.                  */
+  #define CRACENCORE_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Max (0xFFFUL) /*!< Max size of WARMUPPERIOD field.                   */
+  #define CRACENCORE_RNGCONTROL_WARMUPPERIOD_WARMUPPERIOD_Recommended (0x200UL) /*!< Current recommended value. May change in
+                                                                            future documentation releases without a hardware
+                                                                            change.*/
 
 
 /* CRACENCORE_RNGCONTROL_DISABLEOSC: DisableOsc register. */
@@ -2482,6 +2506,11 @@ typedef struct {
   #define CRACENCORE_RNGCONTROL_DISABLEOSC_DISABLEOSC_Pos (0UL) /*!< Position of DISABLEOSC field.                             */
   #define CRACENCORE_RNGCONTROL_DISABLEOSC_DISABLEOSC_Msk (0xFFFFFFFFUL << CRACENCORE_RNGCONTROL_DISABLEOSC_DISABLEOSC_Pos) /*!<
                                                                             Bit mask of DISABLEOSC field.*/
+  #define CRACENCORE_RNGCONTROL_DISABLEOSC_DISABLEOSC_Min (0x00000000UL) /*!< Min value of DISABLEOSC field.                   */
+  #define CRACENCORE_RNGCONTROL_DISABLEOSC_DISABLEOSC_Max (0xFFFFFFFFUL) /*!< Max size of DISABLEOSC field.                    */
+  #define CRACENCORE_RNGCONTROL_DISABLEOSC_DISABLEOSC_Recommended (0x00000000UL) /*!< Current recommended value. May change in
+                                                                            future documentation releases without a hardware
+                                                                            change.*/
 
 
 /* CRACENCORE_RNGCONTROL_SAMPLINGPERIOD: Number of clock cycles between sampling moments. */
@@ -2491,10 +2520,15 @@ typedef struct {
   #define CRACENCORE_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Pos (0UL) /*!< Position of SAMPLINGPERIOD field.                 */
   #define CRACENCORE_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Msk (0xFFFUL << CRACENCORE_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Pos)
                                                                             /*!< Bit mask of SAMPLINGPERIOD field.*/
+  #define CRACENCORE_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Min (0x000UL) /*!< Min value of SAMPLINGPERIOD field.            */
+  #define CRACENCORE_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Max (0xFFFUL) /*!< Max size of SAMPLINGPERIOD field.             */
+  #define CRACENCORE_RNGCONTROL_SAMPLINGPERIOD_SAMPLINGPERIOD_Recommended (0x200UL) /*!< Current recommended value. May change
+                                                                            in future documentation releases without a hardware
+                                                                            change.*/
 
 
 /* CRACENCORE_RNGCONTROL_HWCONFIG: Hardware configuration register. */
-  #define CRACENCORE_RNGCONTROL_HWCONFIG_ResetValue (0x0002410FUL) /*!< Reset value of HWCONFIG register.                      */
+  #define CRACENCORE_RNGCONTROL_HWCONFIG_ResetValue (0x0002411BUL) /*!< Reset value of HWCONFIG register.                      */
 
 /* NBOFINV @Bits 0..7 : Generic g_NbOfInverters value. */
   #define CRACENCORE_RNGCONTROL_HWCONFIG_NBOFINV_Pos (0UL) /*!< Position of NBOFINV field.                                     */
@@ -2526,6 +2560,11 @@ typedef struct {
   #define CRACENCORE_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Pos (0UL) /*!< Position of COOLDOWNPERIOD field.                 */
   #define CRACENCORE_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Msk (0xFFFUL << CRACENCORE_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Pos)
                                                                             /*!< Bit mask of COOLDOWNPERIOD field.*/
+  #define CRACENCORE_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Min (0x000UL) /*!< Min value of COOLDOWNPERIOD field.            */
+  #define CRACENCORE_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Max (0xFFFUL) /*!< Max size of COOLDOWNPERIOD field.             */
+  #define CRACENCORE_RNGCONTROL_COOLDOWNPERIOD_COOLDOWNPERIOD_Recommended (0x000UL) /*!< Current recommended value. May change
+                                                                            in future documentation releases without a hardware
+                                                                            change.*/
 
 
 /* CRACENCORE_RNGCONTROL_AUTOCORRTESTCUTOFF0: AutoCorrTestCutoff register 0 */
@@ -2573,14 +2612,14 @@ typedef struct {
 /* CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1: CorrTestCutoff register 1 */
   #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_ResetValue (0x007F007FUL) /*!< Reset value of CORRTESTCUTOFF1 register.        */
 
-/* DLYTWOCUTOFF @Bits 0..15 : Correlation test cut-off value for delay of +/- 2 samples. */
+/* DLYTWOCUTOFF @Bits 0..6 : Correlation test cut-off value for delay of +/- 2 samples. */
   #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTWOCUTOFF_Pos (0UL) /*!< Position of DLYTWOCUTOFF field.                    */
-  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTWOCUTOFF_Msk (0xFFFFUL << CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTWOCUTOFF_Pos)
+  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTWOCUTOFF_Msk (0x7FUL << CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTWOCUTOFF_Pos)
                                                                             /*!< Bit mask of DLYTWOCUTOFF field.*/
 
-/* DLYTHREECUTOFF @Bits 16..31 : Correlation test cut-off value for delay of +/- 3 samples. */
+/* DLYTHREECUTOFF @Bits 16..22 : Correlation test cut-off value for delay of +/- 3 samples. */
   #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTHREECUTOFF_Pos (16UL) /*!< Position of DLYTHREECUTOFF field.               */
-  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTHREECUTOFF_Msk (0xFFFFUL << CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTHREECUTOFF_Pos)
+  #define CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTHREECUTOFF_Msk (0x7FUL << CRACENCORE_RNGCONTROL_CORRTESTCUTOFF1_DLYTHREECUTOFF_Pos)
                                                                             /*!< Bit mask of DLYTHREECUTOFF field.*/
 
 
@@ -4682,8 +4721,8 @@ typedef struct {
   __IM  uint32_t  DEVICEID[2];                       /*!< (@ 0x00000004) Device identifier                                     */
   __IM  uint32_t  UUID[4];                           /*!< (@ 0x0000000C) 128-bit Universally Unique IDentifier (UUID).         */
   __IM  uint32_t  PART;                              /*!< (@ 0x0000001C) Part code                                             */
-  __IM  uint32_t  VARIANT;                           /*!< (@ 0x00000020) Part Variant, Hardware version and Production
-                                                                         configuration*/
+  __IM  uint32_t  VARIANT;                           /*!< (@ 0x00000020) Function variant code, Hardware version code, and
+                                                                         Production configuration code encoded as ASCII.*/
   __IM  uint32_t  PACKAGE;                           /*!< (@ 0x00000024) Package option                                        */
   __IM  uint32_t  RAM;                               /*!< (@ 0x00000028) RAM size (KB)                                         */
   __IM  uint32_t  RRAM;                              /*!< (@ 0x0000002C) RRAM size (KB)                                        */
@@ -4725,21 +4764,23 @@ typedef struct {
 /* PART @Bits 0..31 : Part code */
   #define FICR_INFO_PART_PART_Pos (0UL)              /*!< Position of PART field.                                              */
   #define FICR_INFO_PART_PART_Msk (0xFFFFFFFFUL << FICR_INFO_PART_PART_Pos) /*!< Bit mask of PART field.                       */
-  #define FICR_INFO_PART_PART_Min (0x054BE10AUL)     /*!< Min enumerator value of PART field.                                  */
+  #define FICR_INFO_PART_PART_Min (0x054BE05AUL)     /*!< Min enumerator value of PART field.                                  */
   #define FICR_INFO_PART_PART_Max (0xFFFFFFFFUL)     /*!< Max enumerator value of PART field.                                  */
-  #define FICR_INFO_PART_PART_N54LS05A (0x054BE10AUL) /*!< nRF54LV10A                                                          */
-  #define FICR_INFO_PART_PART_N54LS05B (0x054BE10BUL) /*!< nRF54LV10B                                                          */
+  #define FICR_INFO_PART_PART_N54LS05A (0x054BE05AUL) /*!< nRF54LS05A                                                          */
+  #define FICR_INFO_PART_PART_N54LS05B (0x054BE05BUL) /*!< nRF54LS05B                                                          */
   #define FICR_INFO_PART_PART_Unspecified (0xFFFFFFFFUL) /*!< Unspecified                                                      */
 
 
-/* FICR_INFO_VARIANT: Part Variant, Hardware version and Production configuration */
+/* FICR_INFO_VARIANT: Function variant code, Hardware version code, and Production configuration code encoded as ASCII. */
   #define FICR_INFO_VARIANT_ResetValue (0xFFFFFFFFUL) /*!< Reset value of VARIANT register.                                    */
 
-/* VARIANT @Bits 0..31 : Part Variant, Hardware version and Production configuration, encoded as ASCII */
+/* VARIANT @Bits 0..31 : Function variant code, Hardware version code, and Production configuration code encoded as ASCII */
   #define FICR_INFO_VARIANT_VARIANT_Pos (0UL)        /*!< Position of VARIANT field.                                           */
   #define FICR_INFO_VARIANT_VARIANT_Msk (0xFFFFFFFFUL << FICR_INFO_VARIANT_VARIANT_Pos) /*!< Bit mask of VARIANT field.        */
-  #define FICR_INFO_VARIANT_VARIANT_Min (0xFFFFFFFFUL) /*!< Min enumerator value of VARIANT field.                             */
+  #define FICR_INFO_VARIANT_VARIANT_Min (0x41414230UL) /*!< Min enumerator value of VARIANT field.                             */
   #define FICR_INFO_VARIANT_VARIANT_Max (0xFFFFFFFFUL) /*!< Max enumerator value of VARIANT field.                             */
+  #define FICR_INFO_VARIANT_VARIANT_AAB0 (0x41414230UL) /*!< Example encoding for AAB0 - Function variant code AA, Hardware
+                                                             version code B, Production configuration code 0*/
   #define FICR_INFO_VARIANT_VARIANT_Unspecified (0xFFFFFFFFUL) /*!< Unspecified                                                */
 
 
@@ -4760,8 +4801,10 @@ typedef struct {
 /* RAM @Bits 0..31 : RAM size (KB) */
   #define FICR_INFO_RAM_RAM_Pos (0UL)                /*!< Position of RAM field.                                               */
   #define FICR_INFO_RAM_RAM_Msk (0xFFFFFFFFUL << FICR_INFO_RAM_RAM_Pos) /*!< Bit mask of RAM field.                            */
-  #define FICR_INFO_RAM_RAM_Min (0xFFFFFFFFUL)       /*!< Min enumerator value of RAM field.                                   */
+  #define FICR_INFO_RAM_RAM_Min (0x00000040UL)       /*!< Min enumerator value of RAM field.                                   */
   #define FICR_INFO_RAM_RAM_Max (0xFFFFFFFFUL)       /*!< Max enumerator value of RAM field.                                   */
+  #define FICR_INFO_RAM_RAM_K96 (0x00000060UL)       /*!< 96 kByte RAM                                                         */
+  #define FICR_INFO_RAM_RAM_K64 (0x00000040UL)       /*!< 64 kByte RAM                                                         */
   #define FICR_INFO_RAM_RAM_Unspecified (0xFFFFFFFFUL) /*!< Unspecified                                                        */
 
 
@@ -10724,6 +10767,8 @@ typedef struct {
 /* COMPAREVALUE @Bits 0..7 : The PWM compare value */
   #define GRTC_PWMCONFIG_COMPAREVALUE_Pos (0UL)      /*!< Position of COMPAREVALUE field.                                      */
   #define GRTC_PWMCONFIG_COMPAREVALUE_Msk (0xFFUL << GRTC_PWMCONFIG_COMPAREVALUE_Pos) /*!< Bit mask of COMPAREVALUE field.     */
+  #define GRTC_PWMCONFIG_COMPAREVALUE_Min (0x01UL)   /*!< Min value of COMPAREVALUE field.                                     */
+  #define GRTC_PWMCONFIG_COMPAREVALUE_Max (0xFFUL)   /*!< Max size of COMPAREVALUE field.                                      */
 
 
 /* GRTC_CLKOUT: Configuration of clock output */
@@ -11400,7 +11445,9 @@ typedef struct {
   __IOM uint32_t  BYPASS;                            /*!< (@ 0x00000000) Enable or disable bypass of LFCLK crystal oscillator
                                                                          with external clock source*/
   __IOM uint32_t  INTCAP;                            /*!< (@ 0x00000004) Programmable capacitance of XL1 and XL2               */
-} NRF_OSCILLATORS_XOSC32KI_Type;                     /*!< Size = 8 (0x008)                                                     */
+  __IM  uint32_t  RESERVED[3];
+  __IM  uint32_t  STATUS;                            /*!< (@ 0x00000014) Status information                                    */
+} NRF_OSCILLATORS_XOSC32KI_Type;                     /*!< Size = 24 (0x018)                                                    */
 
 /* OSCILLATORS_XOSC32KI_BYPASS: Enable or disable bypass of LFCLK crystal oscillator with external clock source */
   #define OSCILLATORS_XOSC32KI_BYPASS_ResetValue (0x00000000UL) /*!< Reset value of BYPASS register.                           */
@@ -11425,6 +11472,19 @@ typedef struct {
   #define OSCILLATORS_XOSC32KI_INTCAP_VAL_Msk (0x1FUL << OSCILLATORS_XOSC32KI_INTCAP_VAL_Pos) /*!< Bit mask of VAL field.      */
 
 
+/* OSCILLATORS_XOSC32KI_STATUS: Status information */
+  #define OSCILLATORS_XOSC32KI_STATUS_ResetValue (0x00000000UL) /*!< Reset value of STATUS register.                           */
+
+/* CLOCKRUNNING @Bit 2 : Clock status */
+  #define OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_Pos (2UL) /*!< Position of CLOCKRUNNING field.                              */
+  #define OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_Msk (0x1UL << OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_Pos) /*!< Bit mask of
+                                                                            CLOCKRUNNING field.*/
+  #define OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_Min (0x0UL) /*!< Min enumerator value of CLOCKRUNNING field.                */
+  #define OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_Max (0x1UL) /*!< Max enumerator value of CLOCKRUNNING field.                */
+  #define OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_NotRunning (0x0UL) /*!< Clock is not running.                               */
+  #define OSCILLATORS_XOSC32KI_STATUS_CLOCKRUNNING_Running (0x1UL) /*!< Clock is running.                                      */
+
+
 /* =================================================== Struct OSCILLATORS ==================================================== */
 /**
   * @brief Oscillator control
@@ -11436,7 +11496,7 @@ typedef struct {
     __IOM NRF_OSCILLATORS_PLL_Type PLL;              /*!< (@ 0x00000800) Oscillator control                                    */
     __IM uint32_t RESERVED2[62];
     __IOM NRF_OSCILLATORS_XOSC32KI_Type XOSC32KI;    /*!< (@ 0x00000900) 32.768 kHz oscillator control                         */
-  } NRF_OSCILLATORS_Type;                            /*!< Size = 2312 (0x908)                                                  */
+  } NRF_OSCILLATORS_Type;                            /*!< Size = 2328 (0x918)                                                  */
 
 #endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
 
@@ -12119,8 +12179,7 @@ typedef struct {
 typedef struct {
   __OM  uint32_t  START;                             /*!< (@ 0x00000000) Starts operation using easyDMA to load the values. See
                                                                          peripheral description for operation using easyDMA.*/
-  __OM  uint32_t  STOP;                              /*!< (@ 0x00000004) Stops operation using easyDMA. This does not trigger an
-                                                                         END event.*/
+  __IM  uint32_t  RESERVED;
 } NRF_PWM_TASKS_DMA_SEQ_Type;                        /*!< Size = 8 (0x008)                                                     */
   #define PWM_TASKS_DMA_SEQ_MaxCount (2UL)           /*!< Size of SEQ[2] array.                                                */
   #define PWM_TASKS_DMA_SEQ_MaxIndex (1UL)           /*!< Max index of SEQ[2] array.                                           */
@@ -12139,17 +12198,6 @@ typedef struct {
   #define PWM_TASKS_DMA_SEQ_START_START_Trigger (0x1UL) /*!< Trigger task                                                      */
 
 
-/* PWM_TASKS_DMA_SEQ_STOP: Stops operation using easyDMA. This does not trigger an END event. */
-  #define PWM_TASKS_DMA_SEQ_STOP_ResetValue (0x00000000UL) /*!< Reset value of STOP register.                                  */
-
-/* STOP @Bit 0 : Stops operation using easyDMA. This does not trigger an END event. */
-  #define PWM_TASKS_DMA_SEQ_STOP_STOP_Pos (0UL)      /*!< Position of STOP field.                                              */
-  #define PWM_TASKS_DMA_SEQ_STOP_STOP_Msk (0x1UL << PWM_TASKS_DMA_SEQ_STOP_STOP_Pos) /*!< Bit mask of STOP field.              */
-  #define PWM_TASKS_DMA_SEQ_STOP_STOP_Min (0x1UL)    /*!< Min enumerator value of STOP field.                                  */
-  #define PWM_TASKS_DMA_SEQ_STOP_STOP_Max (0x1UL)    /*!< Max enumerator value of STOP field.                                  */
-  #define PWM_TASKS_DMA_SEQ_STOP_STOP_Trigger (0x1UL) /*!< Trigger task                                                        */
-
-
 
 /* ================================================== Struct PWM_TASKS_DMA =================================================== */
 /**
@@ -12166,7 +12214,7 @@ typedef struct {
   */
 typedef struct {
   __IOM uint32_t  START;                             /*!< (@ 0x00000000) Subscribe configuration for task START                */
-  __IOM uint32_t  STOP;                              /*!< (@ 0x00000004) Subscribe configuration for task STOP                 */
+  __IM  uint32_t  RESERVED;
 } NRF_PWM_SUBSCRIBE_DMA_SEQ_Type;                    /*!< Size = 8 (0x008)                                                     */
   #define PWM_SUBSCRIBE_DMA_SEQ_MaxCount (2UL)       /*!< Size of SEQ[2] array.                                                */
   #define PWM_SUBSCRIBE_DMA_SEQ_MaxIndex (1UL)       /*!< Max index of SEQ[2] array.                                           */
@@ -12188,24 +12236,6 @@ typedef struct {
   #define PWM_SUBSCRIBE_DMA_SEQ_START_EN_Max (0x1UL) /*!< Max enumerator value of EN field.                                    */
   #define PWM_SUBSCRIBE_DMA_SEQ_START_EN_Disabled (0x0UL) /*!< Disable subscription                                            */
   #define PWM_SUBSCRIBE_DMA_SEQ_START_EN_Enabled (0x1UL) /*!< Enable subscription                                              */
-
-
-/* PWM_SUBSCRIBE_DMA_SEQ_STOP: Subscribe configuration for task STOP */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_ResetValue (0x00000000UL) /*!< Reset value of STOP register.                              */
-
-/* CHIDX @Bits 0..7 : DPPI channel that task STOP will subscribe to */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_CHIDX_Pos (0UL) /*!< Position of CHIDX field.                                             */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_CHIDX_Msk (0xFFUL << PWM_SUBSCRIBE_DMA_SEQ_STOP_CHIDX_Pos) /*!< Bit mask of CHIDX field.  */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_CHIDX_Min (0x00UL) /*!< Min value of CHIDX field.                                         */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_CHIDX_Max (0xFFUL) /*!< Max size of CHIDX field.                                          */
-
-/* EN @Bit 31 : (unspecified) */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Pos (31UL)   /*!< Position of EN field.                                                */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Msk (0x1UL << PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Pos) /*!< Bit mask of EN field.            */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Min (0x0UL)  /*!< Min enumerator value of EN field.                                    */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Max (0x1UL)  /*!< Max enumerator value of EN field.                                    */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Disabled (0x0UL) /*!< Disable subscription                                             */
-  #define PWM_SUBSCRIBE_DMA_SEQ_STOP_EN_Enabled (0x1UL) /*!< Enable subscription                                               */
 
 
 
@@ -13821,7 +13851,8 @@ typedef struct {
     __IOM uint32_t PUBLISH_STOPPED;                  /*!< (@ 0x00000190) Publish configuration for event STOPPED               */
     __IM uint32_t RESERVED3[27];
     __IOM uint32_t SHORTS;                           /*!< (@ 0x00000200) Shortcuts between local events and tasks              */
-    __IM uint32_t RESERVED4[64];
+    __IM uint32_t RESERVED4[63];
+    __IOM uint32_t INTEN;                            /*!< (@ 0x00000300) Enable or disable interrupt                           */
     __IOM uint32_t INTENSET;                         /*!< (@ 0x00000304) Enable interrupt                                      */
     __IOM uint32_t INTENCLR;                         /*!< (@ 0x00000308) Disable interrupt                                     */
     __IM uint32_t RESERVED5[125];
@@ -14207,6 +14238,50 @@ typedef struct {
   #define QDEC_SHORTS_SAMPLERDY_READCLRACC_Max (0x1UL) /*!< Max enumerator value of SAMPLERDY_READCLRACC field.                */
   #define QDEC_SHORTS_SAMPLERDY_READCLRACC_Disabled (0x0UL) /*!< Disable shortcut                                              */
   #define QDEC_SHORTS_SAMPLERDY_READCLRACC_Enabled (0x1UL) /*!< Enable shortcut                                                */
+
+
+/* QDEC_INTEN: Enable or disable interrupt */
+  #define QDEC_INTEN_ResetValue (0x00000000UL)       /*!< Reset value of INTEN register.                                       */
+
+/* SAMPLERDY @Bit 0 : Enable or disable interrupt for event SAMPLERDY */
+  #define QDEC_INTEN_SAMPLERDY_Pos (0UL)             /*!< Position of SAMPLERDY field.                                         */
+  #define QDEC_INTEN_SAMPLERDY_Msk (0x1UL << QDEC_INTEN_SAMPLERDY_Pos) /*!< Bit mask of SAMPLERDY field.                       */
+  #define QDEC_INTEN_SAMPLERDY_Min (0x0UL)           /*!< Min enumerator value of SAMPLERDY field.                             */
+  #define QDEC_INTEN_SAMPLERDY_Max (0x1UL)           /*!< Max enumerator value of SAMPLERDY field.                             */
+  #define QDEC_INTEN_SAMPLERDY_Disabled (0x0UL)      /*!< Disable                                                              */
+  #define QDEC_INTEN_SAMPLERDY_Enabled (0x1UL)       /*!< Enable                                                               */
+
+/* REPORTRDY @Bit 1 : Enable or disable interrupt for event REPORTRDY */
+  #define QDEC_INTEN_REPORTRDY_Pos (1UL)             /*!< Position of REPORTRDY field.                                         */
+  #define QDEC_INTEN_REPORTRDY_Msk (0x1UL << QDEC_INTEN_REPORTRDY_Pos) /*!< Bit mask of REPORTRDY field.                       */
+  #define QDEC_INTEN_REPORTRDY_Min (0x0UL)           /*!< Min enumerator value of REPORTRDY field.                             */
+  #define QDEC_INTEN_REPORTRDY_Max (0x1UL)           /*!< Max enumerator value of REPORTRDY field.                             */
+  #define QDEC_INTEN_REPORTRDY_Disabled (0x0UL)      /*!< Disable                                                              */
+  #define QDEC_INTEN_REPORTRDY_Enabled (0x1UL)       /*!< Enable                                                               */
+
+/* ACCOF @Bit 2 : Enable or disable interrupt for event ACCOF */
+  #define QDEC_INTEN_ACCOF_Pos (2UL)                 /*!< Position of ACCOF field.                                             */
+  #define QDEC_INTEN_ACCOF_Msk (0x1UL << QDEC_INTEN_ACCOF_Pos) /*!< Bit mask of ACCOF field.                                   */
+  #define QDEC_INTEN_ACCOF_Min (0x0UL)               /*!< Min enumerator value of ACCOF field.                                 */
+  #define QDEC_INTEN_ACCOF_Max (0x1UL)               /*!< Max enumerator value of ACCOF field.                                 */
+  #define QDEC_INTEN_ACCOF_Disabled (0x0UL)          /*!< Disable                                                              */
+  #define QDEC_INTEN_ACCOF_Enabled (0x1UL)           /*!< Enable                                                               */
+
+/* DBLRDY @Bit 3 : Enable or disable interrupt for event DBLRDY */
+  #define QDEC_INTEN_DBLRDY_Pos (3UL)                /*!< Position of DBLRDY field.                                            */
+  #define QDEC_INTEN_DBLRDY_Msk (0x1UL << QDEC_INTEN_DBLRDY_Pos) /*!< Bit mask of DBLRDY field.                                */
+  #define QDEC_INTEN_DBLRDY_Min (0x0UL)              /*!< Min enumerator value of DBLRDY field.                                */
+  #define QDEC_INTEN_DBLRDY_Max (0x1UL)              /*!< Max enumerator value of DBLRDY field.                                */
+  #define QDEC_INTEN_DBLRDY_Disabled (0x0UL)         /*!< Disable                                                              */
+  #define QDEC_INTEN_DBLRDY_Enabled (0x1UL)          /*!< Enable                                                               */
+
+/* STOPPED @Bit 4 : Enable or disable interrupt for event STOPPED */
+  #define QDEC_INTEN_STOPPED_Pos (4UL)               /*!< Position of STOPPED field.                                           */
+  #define QDEC_INTEN_STOPPED_Msk (0x1UL << QDEC_INTEN_STOPPED_Pos) /*!< Bit mask of STOPPED field.                             */
+  #define QDEC_INTEN_STOPPED_Min (0x0UL)             /*!< Min enumerator value of STOPPED field.                               */
+  #define QDEC_INTEN_STOPPED_Max (0x1UL)             /*!< Max enumerator value of STOPPED field.                               */
+  #define QDEC_INTEN_STOPPED_Disabled (0x0UL)        /*!< Disable                                                              */
+  #define QDEC_INTEN_STOPPED_Enabled (0x1UL)         /*!< Enable                                                               */
 
 
 /* QDEC_INTENSET: Enable interrupt */
@@ -14631,10 +14706,7 @@ typedef struct {
     __IOM uint32_t DAP[8];                           /*!< (@ 0x00000E70) Device address prefix n                               */
     __IOM uint32_t DACNF;                            /*!< (@ 0x00000E90) Device address match configuration                    */
     __IOM uint32_t BCC;                              /*!< (@ 0x00000E94) Bit counter compare                                   */
-    __IM uint32_t RESERVED33[7];
-    __IOM uint32_t MHRMATCHCONF;                     /*!< (@ 0x00000EB4) Search pattern configuration                          */
-    __IOM uint32_t MHRMATCHMASK;                     /*!< (@ 0x00000EB8) Pattern mask                                          */
-    __IM uint32_t RESERVED34[5];
+    __IM uint32_t RESERVED33[14];
     __IOM uint32_t PACKETPTR;                        /*!< (@ 0x00000ED0) Packet pointer                                        */
   } NRF_RADIO_Type;                                  /*!< Size = 3796 (0xED4)                                                  */
 
@@ -16167,7 +16239,7 @@ typedef struct {
 /* RADIO_PHYENDTXDELAY: Configurable delay of PHYEND event for TX */
   #define RADIO_PHYENDTXDELAY_ResetValue (0x00000421UL) /*!< Reset value of PHYENDTXDELAY register.                            */
 
-/* RATE4M @Bits 0..2 : For modes with 4 Mbps on-air bit rate, unit is 2 bit periods (Nrf_4Mbit0_5 and Nrf_4Mbit0_25 modes) */
+/* RATE4M @Bits 0..2 : For modes with 4 Mbps on-air bit rate, unit is 2 bit periods (Nrf_4Mbit_0BT6 and Nrf_4Mbit_0BT4 modes) */
   #define RADIO_PHYENDTXDELAY_RATE4M_Pos (0UL)       /*!< Position of RATE4M field.                                            */
   #define RADIO_PHYENDTXDELAY_RATE4M_Msk (0x7UL << RADIO_PHYENDTXDELAY_RATE4M_Pos) /*!< Bit mask of RATE4M field.              */
 
@@ -16458,8 +16530,8 @@ typedef struct {
 /* BALEN @Bits 16..18 : Base address length in number of bytes */
   #define RADIO_PCNF1_BALEN_Pos (16UL)               /*!< Position of BALEN field.                                             */
   #define RADIO_PCNF1_BALEN_Msk (0x7UL << RADIO_PCNF1_BALEN_Pos) /*!< Bit mask of BALEN field.                                 */
-  #define RADIO_PCNF1_BALEN_Min (0x1UL)              /*!< Min value of BALEN field.                                            */
-  #define RADIO_PCNF1_BALEN_Max (0x1UL)              /*!< Max size of BALEN field.                                             */
+  #define RADIO_PCNF1_BALEN_Min (0x2UL)              /*!< Min value of BALEN field.                                            */
+  #define RADIO_PCNF1_BALEN_Max (0x4UL)              /*!< Max size of BALEN field.                                             */
 
 /* ENDIAN @Bit 24 : On-air endianness of packet, this applies to the S0, LENGTH, S1, and the PAYLOAD fields. */
   #define RADIO_PCNF1_ENDIAN_Pos (24UL)              /*!< Position of ENDIAN field.                                            */
@@ -16638,8 +16710,6 @@ typedef struct {
   #define RADIO_CRCCNF_SKIPADDR_Max (0x4UL)          /*!< Max enumerator value of SKIPADDR field.                              */
   #define RADIO_CRCCNF_SKIPADDR_Include (0x0UL)      /*!< CRC calculation includes address field                               */
   #define RADIO_CRCCNF_SKIPADDR_Skip (0x1UL)         /*!< CRC calculation starting at first byte after address field.          */
-  #define RADIO_CRCCNF_SKIPADDR_Ieee802154 (0x2UL)   /*!< CRC calculation starting at first byte after length field (as per
-                                                          802.15.4 standard).*/
   #define RADIO_CRCCNF_SKIPADDR_SkipS0 (0x3UL)       /*!< CRC calculation starting at first byte after S0 field.               */
   #define RADIO_CRCCNF_SKIPADDR_SkipS1 (0x4UL)       /*!< CRC calculation starting at first byte after S1 field.               */
 
@@ -16788,24 +16858,6 @@ typedef struct {
 /* BCC @Bits 0..31 : Bit counter compare */
   #define RADIO_BCC_BCC_Pos (0UL)                    /*!< Position of BCC field.                                               */
   #define RADIO_BCC_BCC_Msk (0xFFFFFFFFUL << RADIO_BCC_BCC_Pos) /*!< Bit mask of BCC field.                                    */
-
-
-/* RADIO_MHRMATCHCONF: Search pattern configuration */
-  #define RADIO_MHRMATCHCONF_ResetValue (0x00000000UL) /*!< Reset value of MHRMATCHCONF register.                              */
-
-/* MHRMATCHCONF @Bits 0..31 : Search pattern configuration */
-  #define RADIO_MHRMATCHCONF_MHRMATCHCONF_Pos (0UL)  /*!< Position of MHRMATCHCONF field.                                      */
-  #define RADIO_MHRMATCHCONF_MHRMATCHCONF_Msk (0xFFFFFFFFUL << RADIO_MHRMATCHCONF_MHRMATCHCONF_Pos) /*!< Bit mask of
-                                                                            MHRMATCHCONF field.*/
-
-
-/* RADIO_MHRMATCHMASK: Pattern mask */
-  #define RADIO_MHRMATCHMASK_ResetValue (0x00000000UL) /*!< Reset value of MHRMATCHMASK register.                              */
-
-/* MHRMATCHMASK @Bits 0..31 : Pattern mask */
-  #define RADIO_MHRMATCHMASK_MHRMATCHMASK_Pos (0UL)  /*!< Position of MHRMATCHMASK field.                                      */
-  #define RADIO_MHRMATCHMASK_MHRMATCHMASK_Msk (0xFFFFFFFFUL << RADIO_MHRMATCHMASK_MHRMATCHMASK_Pos) /*!< Bit mask of
-                                                                            MHRMATCHMASK field.*/
 
 
 /* RADIO_PACKETPTR: Packet pointer */
@@ -17101,7 +17153,7 @@ typedef struct {
   */
 typedef struct {
   __IOM uint32_t  CONFIG;                            /*!< (@ 0x00000000) Power configuration                                   */
-  __IM  uint32_t  RESERVED;
+  __IOM uint32_t  STANDBYCONFIG;                     /*!< (@ 0x00000004) Standby mode configuration                            */
   __IOM uint32_t  LOWPOWERCONFIG;                    /*!< (@ 0x00000008) Low power mode configuration                          */
 } NRF_RRAMC_POWER_Type;                              /*!< Size = 12 (0x00C)                                                    */
 
@@ -17122,6 +17174,23 @@ typedef struct {
   #define RRAMC_POWER_CONFIG_POF_Max (0x1UL)         /*!< Max enumerator value of POF field.                                   */
   #define RRAMC_POWER_CONFIG_POF_Wait (0x0UL)        /*!< Wait until the current RRAM write finishes                           */
   #define RRAMC_POWER_CONFIG_POF_Abort (0x1UL)       /*!< Abort the current RRAM write                                         */
+
+
+/* RRAMC_POWER_STANDBYCONFIG: Standby mode configuration */
+  #define RRAMC_POWER_STANDBYCONFIG_ResetValue (0x00000000UL) /*!< Reset value of STANDBYCONFIG register.                      */
+
+/* MODE @Bits 0..1 : RRAM standby mode */
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_Pos (0UL)   /*!< Position of MODE field.                                              */
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_Msk (0x3UL << RRAMC_POWER_STANDBYCONFIG_MODE_Pos) /*!< Bit mask of MODE field.        */
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_Min (0x0UL) /*!< Min enumerator value of MODE field.                                  */
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_Max (0x3UL) /*!< Max enumerator value of MODE field.                                  */
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_Normal (0x0UL) /*!< The RRAM automatically goes into idle mode while the RRAM is not
+                                                             being accessed*/
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_NAP (0x1UL) /*!< The RRAM goes into NAP mode when the access timeout counter is
+                                                          expired*/
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_PowerDown (0x2UL) /*!< The RRAM goes into power down mode when the access timeout
+                                                                counter is expired*/
+  #define RRAMC_POWER_STANDBYCONFIG_MODE_Standby (0x3UL) /*!< The RRAM remains active while the RRAM is not being accessed.    */
 
 
 /* RRAMC_POWER_LOWPOWERCONFIG: Low power mode configuration */
@@ -17636,7 +17705,7 @@ typedef struct {
   #define RRAMC_CONFIG_WEN_Disabled (0x0UL)          /*!< Write is disabled                                                    */
   #define RRAMC_CONFIG_WEN_Enabled (0x1UL)           /*!< Write is enabled                                                     */
 
-/* WRITEBUFSIZE @Bits 8..13 : write-buffer size in number of 128-bit words */
+/* WRITEBUFSIZE @Bits 8..13 : Write-buffer size in number of data units */
   #define RRAMC_CONFIG_WRITEBUFSIZE_Pos (8UL)        /*!< Position of WRITEBUFSIZE field.                                      */
   #define RRAMC_CONFIG_WRITEBUFSIZE_Msk (0x3FUL << RRAMC_CONFIG_WRITEBUFSIZE_Pos) /*!< Bit mask of WRITEBUFSIZE field.         */
   #define RRAMC_CONFIG_WRITEBUFSIZE_Min (0x00UL)     /*!< Min value of WRITEBUFSIZE field.                                     */
@@ -17787,7 +17856,7 @@ typedef struct {
   #define SAADC_CH_PSELP_INTERNAL_Min (0x2UL)        /*!< Min enumerator value of INTERNAL field.                              */
   #define SAADC_CH_PSELP_INTERNAL_Max (0x4UL)        /*!< Max enumerator value of INTERNAL field.                              */
   #define SAADC_CH_PSELP_INTERNAL_Vdd (0x2UL)        /*!< Connected to VDD, and divided by 8/30 (0.267)                        */
-  #define SAADC_CH_PSELP_INTERNAL_Vss (0x4UL)        /*!< (unspecified)                                                        */
+  #define SAADC_CH_PSELP_INTERNAL_Vss (0x4UL)        /*!< Connected to VSS                                                     */
 
 /* CONNECT @Bits 30..31 : Connection */
   #define SAADC_CH_PSELP_CONNECT_Pos (30UL)          /*!< Position of CONNECT field.                                           */
@@ -17816,7 +17885,7 @@ typedef struct {
   #define SAADC_CH_PSELN_INTERNAL_Min (0x2UL)        /*!< Min enumerator value of INTERNAL field.                              */
   #define SAADC_CH_PSELN_INTERNAL_Max (0x4UL)        /*!< Max enumerator value of INTERNAL field.                              */
   #define SAADC_CH_PSELN_INTERNAL_Vdd (0x2UL)        /*!< Connected to VDD, and divided by 8/30 (0.267)                        */
-  #define SAADC_CH_PSELN_INTERNAL_Vss (0x4UL)        /*!< (unspecified)                                                        */
+  #define SAADC_CH_PSELN_INTERNAL_Vss (0x4UL)        /*!< Connected to VSS                                                     */
 
 /* CONNECT @Bits 30..31 : Connection */
   #define SAADC_CH_PSELN_CONNECT_Pos (30UL)          /*!< Position of CONNECT field.                                           */
@@ -18920,7 +18989,7 @@ typedef struct {
   * @brief RX [SPIM_EVENTS_DMA_RX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after EasyDMA has completed its operation.  */
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
@@ -18928,10 +18997,10 @@ typedef struct {
   __IOM uint32_t  MATCH[4];                          /*!< (@ 0x0000000C) Pattern match is detected on the DMA data bus.        */
 } NRF_SPIM_EVENTS_DMA_RX_Type;                       /*!< Size = 28 (0x01C)                                                    */
 
-/* SPIM_EVENTS_DMA_RX_END: Generated after all MAXCNT bytes have been transferred */
+/* SPIM_EVENTS_DMA_RX_END: Generated after EasyDMA has completed its operation. */
   #define SPIM_EVENTS_DMA_RX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                   */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Generated after EasyDMA has completed its operation. */
   #define SPIM_EVENTS_DMA_RX_END_END_Pos (0UL)       /*!< Position of END field.                                               */
   #define SPIM_EVENTS_DMA_RX_END_END_Msk (0x1UL << SPIM_EVENTS_DMA_RX_END_END_Pos) /*!< Bit mask of END field.                 */
   #define SPIM_EVENTS_DMA_RX_END_END_Min (0x0UL)     /*!< Min enumerator value of END field.                                   */
@@ -18990,17 +19059,17 @@ typedef struct {
   * @brief TX [SPIM_EVENTS_DMA_TX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after EasyDMA has completed its operation.  */
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
   __IOM uint32_t  BUSERROR;                          /*!< (@ 0x00000008) An error occured during the bus transfer.             */
 } NRF_SPIM_EVENTS_DMA_TX_Type;                       /*!< Size = 12 (0x00C)                                                    */
 
-/* SPIM_EVENTS_DMA_TX_END: Generated after all MAXCNT bytes have been transferred */
+/* SPIM_EVENTS_DMA_TX_END: Generated after EasyDMA has completed its operation. */
   #define SPIM_EVENTS_DMA_TX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                   */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Generated after EasyDMA has completed its operation. */
   #define SPIM_EVENTS_DMA_TX_END_END_Pos (0UL)       /*!< Position of END field.                                               */
   #define SPIM_EVENTS_DMA_TX_END_END_Msk (0x1UL << SPIM_EVENTS_DMA_TX_END_END_Pos) /*!< Bit mask of END field.                 */
   #define SPIM_EVENTS_DMA_TX_END_END_Min (0x0UL)     /*!< Min enumerator value of END field.                                   */
@@ -19432,7 +19501,7 @@ typedef struct {
   #define SPIM_DMA_RX_MATCH_CONFIG_ENABLE3_Disabled (0x0UL) /*!< Match filter disabled                                         */
   #define SPIM_DMA_RX_MATCH_CONFIG_ENABLE3_Enabled (0x1UL) /*!< Match filter enabled                                           */
 
-/* ONESHOT0 @Bit 16 : Configure match filter 0 as one-shot or sticky */
+/* ONESHOT0 @Bit 16 : Configure match filter 0 as one-shot or continous */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Pos (16UL) /*!< Position of ONESHOT0 field.                                        */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Msk (0x1UL << SPIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Pos) /*!< Bit mask of ONESHOT0
                                                                             field.*/
@@ -19441,7 +19510,7 @@ typedef struct {
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT0_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT1 @Bit 17 : Configure match filter 1 as one-shot or sticky */
+/* ONESHOT1 @Bit 17 : Configure match filter 1 as one-shot or continous */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Pos (17UL) /*!< Position of ONESHOT1 field.                                        */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Msk (0x1UL << SPIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Pos) /*!< Bit mask of ONESHOT1
                                                                             field.*/
@@ -19450,7 +19519,7 @@ typedef struct {
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT1_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT2 @Bit 18 : Configure match filter 2 as one-shot or sticky */
+/* ONESHOT2 @Bit 18 : Configure match filter 2 as one-shot or continous */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Pos (18UL) /*!< Position of ONESHOT2 field.                                        */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Msk (0x1UL << SPIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Pos) /*!< Bit mask of ONESHOT2
                                                                             field.*/
@@ -19459,7 +19528,7 @@ typedef struct {
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT2_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT3 @Bit 19 : Configure match filter 3 as one-shot or sticky */
+/* ONESHOT3 @Bit 19 : Configure match filter 3 as one-shot or continous */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT3_Pos (19UL) /*!< Position of ONESHOT3 field.                                        */
   #define SPIM_DMA_RX_MATCH_CONFIG_ONESHOT3_Msk (0x1UL << SPIM_DMA_RX_MATCH_CONFIG_ONESHOT3_Pos) /*!< Bit mask of ONESHOT3
                                                                             field.*/
@@ -19475,10 +19544,9 @@ typedef struct {
   #define SPIM_DMA_RX_MATCH_CANDIDATE_MinIndex (0UL) /*!< Min index of CANDIDATE[4] array.                                     */
   #define SPIM_DMA_RX_MATCH_CANDIDATE_ResetValue (0x00000000UL) /*!< Reset value of CANDIDATE[4] register.                     */
 
-/* DATA @Bits 0..31 : Data to look for */
+/* DATA @Bits 0..7 : Data to look for */
   #define SPIM_DMA_RX_MATCH_CANDIDATE_DATA_Pos (0UL) /*!< Position of DATA field.                                              */
-  #define SPIM_DMA_RX_MATCH_CANDIDATE_DATA_Msk (0xFFFFFFFFUL << SPIM_DMA_RX_MATCH_CANDIDATE_DATA_Pos) /*!< Bit mask of DATA
-                                                                            field.*/
+  #define SPIM_DMA_RX_MATCH_CANDIDATE_DATA_Msk (0xFFUL << SPIM_DMA_RX_MATCH_CANDIDATE_DATA_Pos) /*!< Bit mask of DATA field.   */
 
 
 
@@ -19491,8 +19559,9 @@ typedef struct {
   __IOM uint32_t  PTR;                               /*!< (@ 0x00000004) RAM buffer start address                              */
   __IOM uint32_t  MAXCNT;                            /*!< (@ 0x00000008) Maximum number of bytes in channel buffer             */
   __IM  uint32_t  AMOUNT;                            /*!< (@ 0x0000000C) Number of bytes transferred in the last transaction,
-                                                                         updated after the END event. Also updated after each
-                                                                         MATCH event.*/
+                                                                         updated after the END event. For channels that supports
+                                                                         the compare match filter, this register is also updated
+                                                                         after each MATCH event.*/
   __IM  uint32_t  RESERVED1;
   __IOM uint32_t  LIST;                              /*!< (@ 0x00000014) EasyDMA list type                                     */
   __IM  uint32_t  RESERVED2;
@@ -19522,8 +19591,8 @@ typedef struct {
   #define SPIM_DMA_RX_MAXCNT_MAXCNT_Max (0xFFFFUL)   /*!< Max size of MAXCNT field.                                            */
 
 
-/* SPIM_DMA_RX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. Also updated after each
-                        MATCH event. */
+/* SPIM_DMA_RX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. For channels that
+                        supports the compare match filter, this register is also updated after each MATCH event. */
 
   #define SPIM_DMA_RX_AMOUNT_ResetValue (0x00000000UL) /*!< Reset value of AMOUNT register.                                    */
 
@@ -19578,8 +19647,9 @@ typedef struct {
   __IOM uint32_t  PTR;                               /*!< (@ 0x00000004) RAM buffer start address                              */
   __IOM uint32_t  MAXCNT;                            /*!< (@ 0x00000008) Maximum number of bytes in channel buffer             */
   __IM  uint32_t  AMOUNT;                            /*!< (@ 0x0000000C) Number of bytes transferred in the last transaction,
-                                                                         updated after the END event. Also updated after each
-                                                                         MATCH event.*/
+                                                                         updated after the END event. For channels that supports
+                                                                         the compare match filter, this register is also updated
+                                                                         after each MATCH event.*/
   __IM  uint32_t  RESERVED1;
   __IOM uint32_t  LIST;                              /*!< (@ 0x00000014) EasyDMA list type                                     */
   __IM  uint32_t  RESERVED2;
@@ -19607,8 +19677,8 @@ typedef struct {
   #define SPIM_DMA_TX_MAXCNT_MAXCNT_Max (0xFFFFUL)   /*!< Max size of MAXCNT field.                                            */
 
 
-/* SPIM_DMA_TX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. Also updated after each
-                        MATCH event. */
+/* SPIM_DMA_TX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. For channels that
+                        supports the compare match filter, this register is also updated after each MATCH event. */
 
   #define SPIM_DMA_TX_AMOUNT_ResetValue (0x00000000UL) /*!< Reset value of AMOUNT register.                                    */
 
@@ -21818,11 +21888,7 @@ typedef struct {
     __IM uint32_t RESERVED[256];
     __IOM uint32_t SYSPWRUPREQ;                      /*!< (@ 0x00000400) System power-up request                               */
     __IOM uint32_t DBGPWRUPREQ;                      /*!< (@ 0x00000404) Debug power-up request                                */
-    __IM uint32_t RESERVED1[62];
-    __IOM uint32_t ENABLE;                           /*!< (@ 0x00000500) Enable debug domain and aquire selected GPIOs         */
-    __IM uint32_t RESERVED2[5];
-    __IOM uint32_t TRACEPORTSPEED;                   /*!< (@ 0x00000518) Trace port speed                                      */
-  } NRF_TAD_Type;                                    /*!< Size = 1308 (0x51C)                                                  */
+  } NRF_TAD_Type;                                    /*!< Size = 1032 (0x408)                                                  */
 
 /* TAD_SYSPWRUPREQ: System power-up request */
   #define TAD_SYSPWRUPREQ_ResetValue (0x00000000UL)  /*!< Reset value of SYSPWRUPREQ register.                                 */
@@ -21846,35 +21912,6 @@ typedef struct {
   #define TAD_DBGPWRUPREQ_ACTIVE_Max (0x1UL)         /*!< Max enumerator value of ACTIVE field.                                */
   #define TAD_DBGPWRUPREQ_ACTIVE_NotActive (0x0UL)   /*!< Power-up request not active                                          */
   #define TAD_DBGPWRUPREQ_ACTIVE_Active (0x1UL)      /*!< Power-up request active                                              */
-
-
-/* TAD_ENABLE: Enable debug domain and aquire selected GPIOs */
-  #define TAD_ENABLE_ResetValue (0x00000000UL)       /*!< Reset value of ENABLE register.                                      */
-
-/* ENABLE @Bit 0 : (unspecified) */
-  #define TAD_ENABLE_ENABLE_Pos (0UL)                /*!< Position of ENABLE field.                                            */
-  #define TAD_ENABLE_ENABLE_Msk (0x1UL << TAD_ENABLE_ENABLE_Pos) /*!< Bit mask of ENABLE field.                                */
-  #define TAD_ENABLE_ENABLE_Min (0x0UL)              /*!< Min enumerator value of ENABLE field.                                */
-  #define TAD_ENABLE_ENABLE_Max (0x1UL)              /*!< Max enumerator value of ENABLE field.                                */
-  #define TAD_ENABLE_ENABLE_DISABLED (0x0UL)         /*!< Disable debug domain and release selected GPIOs                      */
-  #define TAD_ENABLE_ENABLE_ENABLED (0x1UL)          /*!< Enable debug domain and aquire selected GPIOs                        */
-
-
-/* TAD_TRACEPORTSPEED: Trace port speed */
-  #define TAD_TRACEPORTSPEED_ResetValue (0x00000000UL) /*!< Reset value of TRACEPORTSPEED register.                            */
-
-/* TRACEPORTSPEED @Bits 0..1 : Trace port speed is divided from CPU clock. The TRACECLK pin output will be divided again by two
-                               from the trace port clock. */
-
-  #define TAD_TRACEPORTSPEED_TRACEPORTSPEED_Pos (0UL) /*!< Position of TRACEPORTSPEED field.                                   */
-  #define TAD_TRACEPORTSPEED_TRACEPORTSPEED_Msk (0x3UL << TAD_TRACEPORTSPEED_TRACEPORTSPEED_Pos) /*!< Bit mask of TRACEPORTSPEED
-                                                                            field.*/
-  #define TAD_TRACEPORTSPEED_TRACEPORTSPEED_Min (0x0UL) /*!< Min enumerator value of TRACEPORTSPEED field.                     */
-  #define TAD_TRACEPORTSPEED_TRACEPORTSPEED_Max (0x3UL) /*!< Max enumerator value of TRACEPORTSPEED field.                     */
-  #define TAD_TRACEPORTSPEED_TRACEPORTSPEED_DIV1 (0x0UL) /*!< Trace port speed equals CPU clock                                */
-  #define TAD_TRACEPORTSPEED_TRACEPORTSPEED_DIV2 (0x1UL) /*!< Trace port speed equals CPU clock divided by 2                   */
-  #define TAD_TRACEPORTSPEED_TRACEPORTSPEED_DIV4 (0x2UL) /*!< Trace port speed equals CPU clock divided by 4                   */
-  #define TAD_TRACEPORTSPEED_TRACEPORTSPEED_DIV32 (0x3UL) /*!< Trace port speed equals CPU clock divided by 32                 */
 
 
 #endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
@@ -23005,7 +23042,8 @@ typedef struct {
     __IOM uint32_t INTEN;                            /*!< (@ 0x00000300) Enable or disable interrupt                           */
     __IOM uint32_t INTENSET;                         /*!< (@ 0x00000304) Enable interrupt                                      */
     __IOM uint32_t INTENCLR;                         /*!< (@ 0x00000308) Disable interrupt                                     */
-    __IM uint32_t RESERVED7[126];
+    __IM uint32_t INTPEND;                           /*!< (@ 0x0000030C) Pending interrupts                                    */
+    __IM uint32_t RESERVED7[125];
     __IOM uint32_t MODE;                             /*!< (@ 0x00000504) Timer mode selection                                  */
     __IOM uint32_t BITMODE;                          /*!< (@ 0x00000508) Configure the number of bits used by the TIMER        */
     __IM uint32_t RESERVED8;
@@ -23556,6 +23594,74 @@ typedef struct {
   #define TIMER_INTENCLR_COMPARE7_Clear (0x1UL)      /*!< Disable                                                              */
   #define TIMER_INTENCLR_COMPARE7_Disabled (0x0UL)   /*!< Read: Disabled                                                       */
   #define TIMER_INTENCLR_COMPARE7_Enabled (0x1UL)    /*!< Read: Enabled                                                        */
+
+
+/* TIMER_INTPEND: Pending interrupts */
+  #define TIMER_INTPEND_ResetValue (0x00000000UL)    /*!< Reset value of INTPEND register.                                     */
+
+/* COMPARE0 @Bit 16 : Read pending status of interrupt for event COMPARE[0] */
+  #define TIMER_INTPEND_COMPARE0_Pos (16UL)          /*!< Position of COMPARE0 field.                                          */
+  #define TIMER_INTPEND_COMPARE0_Msk (0x1UL << TIMER_INTPEND_COMPARE0_Pos) /*!< Bit mask of COMPARE0 field.                    */
+  #define TIMER_INTPEND_COMPARE0_Min (0x0UL)         /*!< Min enumerator value of COMPARE0 field.                              */
+  #define TIMER_INTPEND_COMPARE0_Max (0x1UL)         /*!< Max enumerator value of COMPARE0 field.                              */
+  #define TIMER_INTPEND_COMPARE0_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE0_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE1 @Bit 17 : Read pending status of interrupt for event COMPARE[1] */
+  #define TIMER_INTPEND_COMPARE1_Pos (17UL)          /*!< Position of COMPARE1 field.                                          */
+  #define TIMER_INTPEND_COMPARE1_Msk (0x1UL << TIMER_INTPEND_COMPARE1_Pos) /*!< Bit mask of COMPARE1 field.                    */
+  #define TIMER_INTPEND_COMPARE1_Min (0x0UL)         /*!< Min enumerator value of COMPARE1 field.                              */
+  #define TIMER_INTPEND_COMPARE1_Max (0x1UL)         /*!< Max enumerator value of COMPARE1 field.                              */
+  #define TIMER_INTPEND_COMPARE1_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE1_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE2 @Bit 18 : Read pending status of interrupt for event COMPARE[2] */
+  #define TIMER_INTPEND_COMPARE2_Pos (18UL)          /*!< Position of COMPARE2 field.                                          */
+  #define TIMER_INTPEND_COMPARE2_Msk (0x1UL << TIMER_INTPEND_COMPARE2_Pos) /*!< Bit mask of COMPARE2 field.                    */
+  #define TIMER_INTPEND_COMPARE2_Min (0x0UL)         /*!< Min enumerator value of COMPARE2 field.                              */
+  #define TIMER_INTPEND_COMPARE2_Max (0x1UL)         /*!< Max enumerator value of COMPARE2 field.                              */
+  #define TIMER_INTPEND_COMPARE2_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE2_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE3 @Bit 19 : Read pending status of interrupt for event COMPARE[3] */
+  #define TIMER_INTPEND_COMPARE3_Pos (19UL)          /*!< Position of COMPARE3 field.                                          */
+  #define TIMER_INTPEND_COMPARE3_Msk (0x1UL << TIMER_INTPEND_COMPARE3_Pos) /*!< Bit mask of COMPARE3 field.                    */
+  #define TIMER_INTPEND_COMPARE3_Min (0x0UL)         /*!< Min enumerator value of COMPARE3 field.                              */
+  #define TIMER_INTPEND_COMPARE3_Max (0x1UL)         /*!< Max enumerator value of COMPARE3 field.                              */
+  #define TIMER_INTPEND_COMPARE3_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE3_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE4 @Bit 20 : Read pending status of interrupt for event COMPARE[4] */
+  #define TIMER_INTPEND_COMPARE4_Pos (20UL)          /*!< Position of COMPARE4 field.                                          */
+  #define TIMER_INTPEND_COMPARE4_Msk (0x1UL << TIMER_INTPEND_COMPARE4_Pos) /*!< Bit mask of COMPARE4 field.                    */
+  #define TIMER_INTPEND_COMPARE4_Min (0x0UL)         /*!< Min enumerator value of COMPARE4 field.                              */
+  #define TIMER_INTPEND_COMPARE4_Max (0x1UL)         /*!< Max enumerator value of COMPARE4 field.                              */
+  #define TIMER_INTPEND_COMPARE4_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE4_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE5 @Bit 21 : Read pending status of interrupt for event COMPARE[5] */
+  #define TIMER_INTPEND_COMPARE5_Pos (21UL)          /*!< Position of COMPARE5 field.                                          */
+  #define TIMER_INTPEND_COMPARE5_Msk (0x1UL << TIMER_INTPEND_COMPARE5_Pos) /*!< Bit mask of COMPARE5 field.                    */
+  #define TIMER_INTPEND_COMPARE5_Min (0x0UL)         /*!< Min enumerator value of COMPARE5 field.                              */
+  #define TIMER_INTPEND_COMPARE5_Max (0x1UL)         /*!< Max enumerator value of COMPARE5 field.                              */
+  #define TIMER_INTPEND_COMPARE5_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE5_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE6 @Bit 22 : Read pending status of interrupt for event COMPARE[6] */
+  #define TIMER_INTPEND_COMPARE6_Pos (22UL)          /*!< Position of COMPARE6 field.                                          */
+  #define TIMER_INTPEND_COMPARE6_Msk (0x1UL << TIMER_INTPEND_COMPARE6_Pos) /*!< Bit mask of COMPARE6 field.                    */
+  #define TIMER_INTPEND_COMPARE6_Min (0x0UL)         /*!< Min enumerator value of COMPARE6 field.                              */
+  #define TIMER_INTPEND_COMPARE6_Max (0x1UL)         /*!< Max enumerator value of COMPARE6 field.                              */
+  #define TIMER_INTPEND_COMPARE6_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE6_Pending (0x1UL)     /*!< Read: Pending                                                        */
+
+/* COMPARE7 @Bit 23 : Read pending status of interrupt for event COMPARE[7] */
+  #define TIMER_INTPEND_COMPARE7_Pos (23UL)          /*!< Position of COMPARE7 field.                                          */
+  #define TIMER_INTPEND_COMPARE7_Msk (0x1UL << TIMER_INTPEND_COMPARE7_Pos) /*!< Bit mask of COMPARE7 field.                    */
+  #define TIMER_INTPEND_COMPARE7_Min (0x0UL)         /*!< Min enumerator value of COMPARE7 field.                              */
+  #define TIMER_INTPEND_COMPARE7_Max (0x1UL)         /*!< Max enumerator value of COMPARE7 field.                              */
+  #define TIMER_INTPEND_COMPARE7_NotPending (0x0UL)  /*!< Read: Not pending                                                    */
+  #define TIMER_INTPEND_COMPARE7_Pending (0x1UL)     /*!< Read: Pending                                                        */
 
 
 /* TIMER_MODE: Timer mode selection */
@@ -25581,7 +25687,7 @@ typedef struct {
   * @brief RX [TWIS_EVENTS_DMA_RX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after EasyDMA has completed its operation.  */
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
@@ -25589,10 +25695,10 @@ typedef struct {
   __IOM uint32_t  MATCH[4];                          /*!< (@ 0x0000000C) Pattern match is detected on the DMA data bus.        */
 } NRF_TWIS_EVENTS_DMA_RX_Type;                       /*!< Size = 28 (0x01C)                                                    */
 
-/* TWIS_EVENTS_DMA_RX_END: Generated after all MAXCNT bytes have been transferred */
+/* TWIS_EVENTS_DMA_RX_END: Generated after EasyDMA has completed its operation. */
   #define TWIS_EVENTS_DMA_RX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                   */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Generated after EasyDMA has completed its operation. */
   #define TWIS_EVENTS_DMA_RX_END_END_Pos (0UL)       /*!< Position of END field.                                               */
   #define TWIS_EVENTS_DMA_RX_END_END_Msk (0x1UL << TWIS_EVENTS_DMA_RX_END_END_Pos) /*!< Bit mask of END field.                 */
   #define TWIS_EVENTS_DMA_RX_END_END_Min (0x0UL)     /*!< Min enumerator value of END field.                                   */
@@ -25651,17 +25757,17 @@ typedef struct {
   * @brief TX [TWIS_EVENTS_DMA_TX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after EasyDMA has completed its operation.  */
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
   __IOM uint32_t  BUSERROR;                          /*!< (@ 0x00000008) An error occured during the bus transfer.             */
 } NRF_TWIS_EVENTS_DMA_TX_Type;                       /*!< Size = 12 (0x00C)                                                    */
 
-/* TWIS_EVENTS_DMA_TX_END: Generated after all MAXCNT bytes have been transferred */
+/* TWIS_EVENTS_DMA_TX_END: Generated after EasyDMA has completed its operation. */
   #define TWIS_EVENTS_DMA_TX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                   */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Generated after EasyDMA has completed its operation. */
   #define TWIS_EVENTS_DMA_TX_END_END_Pos (0UL)       /*!< Position of END field.                                               */
   #define TWIS_EVENTS_DMA_TX_END_END_Msk (0x1UL << TWIS_EVENTS_DMA_TX_END_END_Pos) /*!< Bit mask of END field.                 */
   #define TWIS_EVENTS_DMA_TX_END_END_Min (0x0UL)     /*!< Min enumerator value of END field.                                   */
@@ -25977,7 +26083,7 @@ typedef struct {
   #define TWIS_DMA_RX_MATCH_CONFIG_ENABLE3_Disabled (0x0UL) /*!< Match filter disabled                                         */
   #define TWIS_DMA_RX_MATCH_CONFIG_ENABLE3_Enabled (0x1UL) /*!< Match filter enabled                                           */
 
-/* ONESHOT0 @Bit 16 : Configure match filter 0 as one-shot or sticky */
+/* ONESHOT0 @Bit 16 : Configure match filter 0 as one-shot or continous */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT0_Pos (16UL) /*!< Position of ONESHOT0 field.                                        */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT0_Msk (0x1UL << TWIS_DMA_RX_MATCH_CONFIG_ONESHOT0_Pos) /*!< Bit mask of ONESHOT0
                                                                             field.*/
@@ -25986,7 +26092,7 @@ typedef struct {
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT0_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT0_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT1 @Bit 17 : Configure match filter 1 as one-shot or sticky */
+/* ONESHOT1 @Bit 17 : Configure match filter 1 as one-shot or continous */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT1_Pos (17UL) /*!< Position of ONESHOT1 field.                                        */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT1_Msk (0x1UL << TWIS_DMA_RX_MATCH_CONFIG_ONESHOT1_Pos) /*!< Bit mask of ONESHOT1
                                                                             field.*/
@@ -25995,7 +26101,7 @@ typedef struct {
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT1_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT1_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT2 @Bit 18 : Configure match filter 2 as one-shot or sticky */
+/* ONESHOT2 @Bit 18 : Configure match filter 2 as one-shot or continous */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT2_Pos (18UL) /*!< Position of ONESHOT2 field.                                        */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT2_Msk (0x1UL << TWIS_DMA_RX_MATCH_CONFIG_ONESHOT2_Pos) /*!< Bit mask of ONESHOT2
                                                                             field.*/
@@ -26004,7 +26110,7 @@ typedef struct {
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT2_Continuous (0x0UL) /*!< Match filter stays enabled until disabled by task          */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT2_Oneshot (0x1UL) /*!< Match filter stays enabled until next data word is received   */
 
-/* ONESHOT3 @Bit 19 : Configure match filter 3 as one-shot or sticky */
+/* ONESHOT3 @Bit 19 : Configure match filter 3 as one-shot or continous */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT3_Pos (19UL) /*!< Position of ONESHOT3 field.                                        */
   #define TWIS_DMA_RX_MATCH_CONFIG_ONESHOT3_Msk (0x1UL << TWIS_DMA_RX_MATCH_CONFIG_ONESHOT3_Pos) /*!< Bit mask of ONESHOT3
                                                                             field.*/
@@ -26020,10 +26126,9 @@ typedef struct {
   #define TWIS_DMA_RX_MATCH_CANDIDATE_MinIndex (0UL) /*!< Min index of CANDIDATE[4] array.                                     */
   #define TWIS_DMA_RX_MATCH_CANDIDATE_ResetValue (0x00000000UL) /*!< Reset value of CANDIDATE[4] register.                     */
 
-/* DATA @Bits 0..31 : Data to look for */
+/* DATA @Bits 0..7 : Data to look for */
   #define TWIS_DMA_RX_MATCH_CANDIDATE_DATA_Pos (0UL) /*!< Position of DATA field.                                              */
-  #define TWIS_DMA_RX_MATCH_CANDIDATE_DATA_Msk (0xFFFFFFFFUL << TWIS_DMA_RX_MATCH_CANDIDATE_DATA_Pos) /*!< Bit mask of DATA
-                                                                            field.*/
+  #define TWIS_DMA_RX_MATCH_CANDIDATE_DATA_Msk (0xFFUL << TWIS_DMA_RX_MATCH_CANDIDATE_DATA_Pos) /*!< Bit mask of DATA field.   */
 
 
 
@@ -26036,8 +26141,9 @@ typedef struct {
   __IOM uint32_t  PTR;                               /*!< (@ 0x00000004) RAM buffer start address                              */
   __IOM uint32_t  MAXCNT;                            /*!< (@ 0x00000008) Maximum number of bytes in channel buffer             */
   __IM  uint32_t  AMOUNT;                            /*!< (@ 0x0000000C) Number of bytes transferred in the last transaction,
-                                                                         updated after the END event. Also updated after each
-                                                                         MATCH event.*/
+                                                                         updated after the END event. For channels that supports
+                                                                         the compare match filter, this register is also updated
+                                                                         after each MATCH event.*/
   __IM  uint32_t  RESERVED1;
   __IOM uint32_t  LIST;                              /*!< (@ 0x00000014) EasyDMA list type                                     */
   __IM  uint32_t  RESERVED2;
@@ -26067,8 +26173,8 @@ typedef struct {
   #define TWIS_DMA_RX_MAXCNT_MAXCNT_Max (0xFFFFUL)   /*!< Max size of MAXCNT field.                                            */
 
 
-/* TWIS_DMA_RX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. Also updated after each
-                        MATCH event. */
+/* TWIS_DMA_RX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. For channels that
+                        supports the compare match filter, this register is also updated after each MATCH event. */
 
   #define TWIS_DMA_RX_AMOUNT_ResetValue (0x00000000UL) /*!< Reset value of AMOUNT register.                                    */
 
@@ -26123,8 +26229,9 @@ typedef struct {
   __IOM uint32_t  PTR;                               /*!< (@ 0x00000004) RAM buffer start address                              */
   __IOM uint32_t  MAXCNT;                            /*!< (@ 0x00000008) Maximum number of bytes in channel buffer             */
   __IM  uint32_t  AMOUNT;                            /*!< (@ 0x0000000C) Number of bytes transferred in the last transaction,
-                                                                         updated after the END event. Also updated after each
-                                                                         MATCH event.*/
+                                                                         updated after the END event. For channels that supports
+                                                                         the compare match filter, this register is also updated
+                                                                         after each MATCH event.*/
   __IM  uint32_t  RESERVED1;
   __IOM uint32_t  LIST;                              /*!< (@ 0x00000014) EasyDMA list type                                     */
   __IM  uint32_t  RESERVED2;
@@ -26152,8 +26259,8 @@ typedef struct {
   #define TWIS_DMA_TX_MAXCNT_MAXCNT_Max (0xFFFFUL)   /*!< Max size of MAXCNT field.                                            */
 
 
-/* TWIS_DMA_TX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. Also updated after each
-                        MATCH event. */
+/* TWIS_DMA_TX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. For channels that
+                        supports the compare match filter, this register is also updated after each MATCH event. */
 
   #define TWIS_DMA_TX_AMOUNT_ResetValue (0x00000000UL) /*!< Reset value of AMOUNT register.                                    */
 
@@ -27414,7 +27521,7 @@ typedef struct {
   * @brief RX [UARTE_EVENTS_DMA_RX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after EasyDMA has completed its operation.  */
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
@@ -27422,10 +27529,10 @@ typedef struct {
   __IOM uint32_t  MATCH[4];                          /*!< (@ 0x0000000C) Pattern match is detected on the DMA data bus.        */
 } NRF_UARTE_EVENTS_DMA_RX_Type;                      /*!< Size = 28 (0x01C)                                                    */
 
-/* UARTE_EVENTS_DMA_RX_END: Generated after all MAXCNT bytes have been transferred */
+/* UARTE_EVENTS_DMA_RX_END: Generated after EasyDMA has completed its operation. */
   #define UARTE_EVENTS_DMA_RX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                  */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Generated after EasyDMA has completed its operation. */
   #define UARTE_EVENTS_DMA_RX_END_END_Pos (0UL)      /*!< Position of END field.                                               */
   #define UARTE_EVENTS_DMA_RX_END_END_Msk (0x1UL << UARTE_EVENTS_DMA_RX_END_END_Pos) /*!< Bit mask of END field.               */
   #define UARTE_EVENTS_DMA_RX_END_END_Min (0x0UL)    /*!< Min enumerator value of END field.                                   */
@@ -27484,17 +27591,17 @@ typedef struct {
   * @brief TX [UARTE_EVENTS_DMA_TX] Peripheral events.
   */
 typedef struct {
-  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after all MAXCNT bytes have been transferred*/
+  __IOM uint32_t  END;                               /*!< (@ 0x00000000) Generated after EasyDMA has completed its operation.  */
   __IOM uint32_t  READY;                             /*!< (@ 0x00000004) Generated when EasyDMA has buffered the .PTR and
                                                                          .MAXCNT registers for the channel, allowing them to be
                                                                          written to prepare for the next sequence.*/
   __IOM uint32_t  BUSERROR;                          /*!< (@ 0x00000008) An error occured during the bus transfer.             */
 } NRF_UARTE_EVENTS_DMA_TX_Type;                      /*!< Size = 12 (0x00C)                                                    */
 
-/* UARTE_EVENTS_DMA_TX_END: Generated after all MAXCNT bytes have been transferred */
+/* UARTE_EVENTS_DMA_TX_END: Generated after EasyDMA has completed its operation. */
   #define UARTE_EVENTS_DMA_TX_END_ResetValue (0x00000000UL) /*!< Reset value of END register.                                  */
 
-/* END @Bit 0 : Generated after all MAXCNT bytes have been transferred */
+/* END @Bit 0 : Generated after EasyDMA has completed its operation. */
   #define UARTE_EVENTS_DMA_TX_END_END_Pos (0UL)      /*!< Position of END field.                                               */
   #define UARTE_EVENTS_DMA_TX_END_END_Msk (0x1UL << UARTE_EVENTS_DMA_TX_END_END_Pos) /*!< Bit mask of END field.               */
   #define UARTE_EVENTS_DMA_TX_END_END_Min (0x0UL)    /*!< Min enumerator value of END field.                                   */
@@ -27922,8 +28029,9 @@ typedef struct {
   __IOM uint32_t  PTR;                               /*!< (@ 0x00000004) RAM buffer start address                              */
   __IOM uint32_t  MAXCNT;                            /*!< (@ 0x00000008) Maximum number of bytes in channel buffer             */
   __IM  uint32_t  AMOUNT;                            /*!< (@ 0x0000000C) Number of bytes transferred in the last transaction,
-                                                                         updated after the END event. Also updated after each
-                                                                         MATCH event.*/
+                                                                         updated after the END event. For channels that supports
+                                                                         the compare match filter, this register is also updated
+                                                                         after each MATCH event.*/
   __IM  uint32_t  RESERVED1;
   __IOM uint32_t  LIST;                              /*!< (@ 0x00000014) EasyDMA list type                                     */
   __IM  uint32_t  RESERVED2;
@@ -27953,8 +28061,8 @@ typedef struct {
   #define UARTE_DMA_RX_MAXCNT_MAXCNT_Max (0xFFFFUL)  /*!< Max size of MAXCNT field.                                            */
 
 
-/* UARTE_DMA_RX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. Also updated after
-                         each MATCH event. */
+/* UARTE_DMA_RX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. For channels that
+                         supports the compare match filter, this register is also updated after each MATCH event. */
 
   #define UARTE_DMA_RX_AMOUNT_ResetValue (0x00000000UL) /*!< Reset value of AMOUNT register.                                   */
 
@@ -28009,8 +28117,9 @@ typedef struct {
   __IOM uint32_t  PTR;                               /*!< (@ 0x00000004) RAM buffer start address                              */
   __IOM uint32_t  MAXCNT;                            /*!< (@ 0x00000008) Maximum number of bytes in channel buffer             */
   __IM  uint32_t  AMOUNT;                            /*!< (@ 0x0000000C) Number of bytes transferred in the last transaction,
-                                                                         updated after the END event. Also updated after each
-                                                                         MATCH event.*/
+                                                                         updated after the END event. For channels that supports
+                                                                         the compare match filter, this register is also updated
+                                                                         after each MATCH event.*/
   __IM  uint32_t  RESERVED1;
   __IOM uint32_t  LIST;                              /*!< (@ 0x00000014) EasyDMA list type                                     */
   __IM  uint32_t  RESERVED2;
@@ -28038,8 +28147,8 @@ typedef struct {
   #define UARTE_DMA_TX_MAXCNT_MAXCNT_Max (0xFFFFUL)  /*!< Max size of MAXCNT field.                                            */
 
 
-/* UARTE_DMA_TX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. Also updated after
-                         each MATCH event. */
+/* UARTE_DMA_TX_AMOUNT: Number of bytes transferred in the last transaction, updated after the END event. For channels that
+                         supports the compare match filter, this register is also updated after each MATCH event. */
 
   #define UARTE_DMA_TX_AMOUNT_ResetValue (0x00000000UL) /*!< Reset value of AMOUNT register.                                   */
 
@@ -29614,10 +29723,13 @@ typedef struct {
     __IM uint32_t RESERVED2[30];
     __IOM uint32_t PUBLISH_TIMEOUT;                  /*!< (@ 0x00000180) Publish configuration for event TIMEOUT               */
     __IOM uint32_t PUBLISH_STOPPED;                  /*!< (@ 0x00000184) Publish configuration for event STOPPED               */
-    __IM uint32_t RESERVED3[95];
+    __IM uint32_t RESERVED3[94];
+    __IOM uint32_t INTEN;                            /*!< (@ 0x00000300) Enable or disable interrupt                           */
     __IOM uint32_t INTENSET;                         /*!< (@ 0x00000304) Enable interrupt                                      */
     __IOM uint32_t INTENCLR;                         /*!< (@ 0x00000308) Disable interrupt                                     */
-    __IM uint32_t RESERVED4[6];
+    __IM uint32_t INTPEND;                           /*!< (@ 0x0000030C) Pending interrupts                                    */
+    __IM uint32_t RESERVED4[4];
+    __IOM uint32_t NMIEN;                            /*!< (@ 0x00000320) Enable or disable interrupt                           */
     __IOM uint32_t NMIENSET;                         /*!< (@ 0x00000324) Enable interrupt                                      */
     __IOM uint32_t NMIENCLR;                         /*!< (@ 0x00000328) Disable interrupt                                     */
     __IM uint32_t RESERVED5[53];
@@ -29753,6 +29865,26 @@ typedef struct {
   #define WDT_PUBLISH_STOPPED_EN_Enabled (0x1UL)     /*!< Enable publishing                                                    */
 
 
+/* WDT_INTEN: Enable or disable interrupt */
+  #define WDT_INTEN_ResetValue (0x00000000UL)        /*!< Reset value of INTEN register.                                       */
+
+/* TIMEOUT @Bit 0 : Enable or disable interrupt for event TIMEOUT */
+  #define WDT_INTEN_TIMEOUT_Pos (0UL)                /*!< Position of TIMEOUT field.                                           */
+  #define WDT_INTEN_TIMEOUT_Msk (0x1UL << WDT_INTEN_TIMEOUT_Pos) /*!< Bit mask of TIMEOUT field.                               */
+  #define WDT_INTEN_TIMEOUT_Min (0x0UL)              /*!< Min enumerator value of TIMEOUT field.                               */
+  #define WDT_INTEN_TIMEOUT_Max (0x1UL)              /*!< Max enumerator value of TIMEOUT field.                               */
+  #define WDT_INTEN_TIMEOUT_Disabled (0x0UL)         /*!< Disable                                                              */
+  #define WDT_INTEN_TIMEOUT_Enabled (0x1UL)          /*!< Enable                                                               */
+
+/* STOPPED @Bit 1 : Enable or disable interrupt for event STOPPED */
+  #define WDT_INTEN_STOPPED_Pos (1UL)                /*!< Position of STOPPED field.                                           */
+  #define WDT_INTEN_STOPPED_Msk (0x1UL << WDT_INTEN_STOPPED_Pos) /*!< Bit mask of STOPPED field.                               */
+  #define WDT_INTEN_STOPPED_Min (0x0UL)              /*!< Min enumerator value of STOPPED field.                               */
+  #define WDT_INTEN_STOPPED_Max (0x1UL)              /*!< Max enumerator value of STOPPED field.                               */
+  #define WDT_INTEN_STOPPED_Disabled (0x0UL)         /*!< Disable                                                              */
+  #define WDT_INTEN_STOPPED_Enabled (0x1UL)          /*!< Enable                                                               */
+
+
 /* WDT_INTENSET: Enable interrupt */
   #define WDT_INTENSET_ResetValue (0x00000000UL)     /*!< Reset value of INTENSET register.                                    */
 
@@ -29795,6 +29927,46 @@ typedef struct {
   #define WDT_INTENCLR_STOPPED_Clear (0x1UL)         /*!< Disable                                                              */
   #define WDT_INTENCLR_STOPPED_Disabled (0x0UL)      /*!< Read: Disabled                                                       */
   #define WDT_INTENCLR_STOPPED_Enabled (0x1UL)       /*!< Read: Enabled                                                        */
+
+
+/* WDT_INTPEND: Pending interrupts */
+  #define WDT_INTPEND_ResetValue (0x00000000UL)      /*!< Reset value of INTPEND register.                                     */
+
+/* TIMEOUT @Bit 0 : Read pending status of interrupt for event TIMEOUT */
+  #define WDT_INTPEND_TIMEOUT_Pos (0UL)              /*!< Position of TIMEOUT field.                                           */
+  #define WDT_INTPEND_TIMEOUT_Msk (0x1UL << WDT_INTPEND_TIMEOUT_Pos) /*!< Bit mask of TIMEOUT field.                           */
+  #define WDT_INTPEND_TIMEOUT_Min (0x0UL)            /*!< Min enumerator value of TIMEOUT field.                               */
+  #define WDT_INTPEND_TIMEOUT_Max (0x1UL)            /*!< Max enumerator value of TIMEOUT field.                               */
+  #define WDT_INTPEND_TIMEOUT_NotPending (0x0UL)     /*!< Read: Not pending                                                    */
+  #define WDT_INTPEND_TIMEOUT_Pending (0x1UL)        /*!< Read: Pending                                                        */
+
+/* STOPPED @Bit 1 : Read pending status of interrupt for event STOPPED */
+  #define WDT_INTPEND_STOPPED_Pos (1UL)              /*!< Position of STOPPED field.                                           */
+  #define WDT_INTPEND_STOPPED_Msk (0x1UL << WDT_INTPEND_STOPPED_Pos) /*!< Bit mask of STOPPED field.                           */
+  #define WDT_INTPEND_STOPPED_Min (0x0UL)            /*!< Min enumerator value of STOPPED field.                               */
+  #define WDT_INTPEND_STOPPED_Max (0x1UL)            /*!< Max enumerator value of STOPPED field.                               */
+  #define WDT_INTPEND_STOPPED_NotPending (0x0UL)     /*!< Read: Not pending                                                    */
+  #define WDT_INTPEND_STOPPED_Pending (0x1UL)        /*!< Read: Pending                                                        */
+
+
+/* WDT_NMIEN: Enable or disable interrupt */
+  #define WDT_NMIEN_ResetValue (0x00000000UL)        /*!< Reset value of NMIEN register.                                       */
+
+/* TIMEOUT @Bit 0 : Enable or disable interrupt for event TIMEOUT */
+  #define WDT_NMIEN_TIMEOUT_Pos (0UL)                /*!< Position of TIMEOUT field.                                           */
+  #define WDT_NMIEN_TIMEOUT_Msk (0x1UL << WDT_NMIEN_TIMEOUT_Pos) /*!< Bit mask of TIMEOUT field.                               */
+  #define WDT_NMIEN_TIMEOUT_Min (0x0UL)              /*!< Min enumerator value of TIMEOUT field.                               */
+  #define WDT_NMIEN_TIMEOUT_Max (0x1UL)              /*!< Max enumerator value of TIMEOUT field.                               */
+  #define WDT_NMIEN_TIMEOUT_Disabled (0x0UL)         /*!< Disable                                                              */
+  #define WDT_NMIEN_TIMEOUT_Enabled (0x1UL)          /*!< Enable                                                               */
+
+/* STOPPED @Bit 1 : Enable or disable interrupt for event STOPPED */
+  #define WDT_NMIEN_STOPPED_Pos (1UL)                /*!< Position of STOPPED field.                                           */
+  #define WDT_NMIEN_STOPPED_Msk (0x1UL << WDT_NMIEN_STOPPED_Pos) /*!< Bit mask of STOPPED field.                               */
+  #define WDT_NMIEN_STOPPED_Min (0x0UL)              /*!< Min enumerator value of STOPPED field.                               */
+  #define WDT_NMIEN_STOPPED_Max (0x1UL)              /*!< Max enumerator value of STOPPED field.                               */
+  #define WDT_NMIEN_STOPPED_Disabled (0x0UL)         /*!< Disable                                                              */
+  #define WDT_NMIEN_STOPPED_Enabled (0x1UL)          /*!< Enable                                                               */
 
 
 /* WDT_NMIENSET: Enable interrupt */

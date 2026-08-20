@@ -1,6 +1,19 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [4.3.1] - 2026-08-20
+
+### Added
+- Added support for multiple configuation registers in the CRACEN RNG HAL.
+
+### Changed
+- Updated MDK to version 8.76.0.
+
+### Fixed
+- Fixed suboptimal configuration parameters set during initialization in the CRACEN driver.
+- Fixed missing application of nRF54H Series anomaly 115 and nRF54L Series anomaly 8 workarounds in case of skipped GPIO configuration in the SPIM driver.
+- Fixed incorrect conditions for presence of CRACEN detection features in the TAMPC HAL.
+
 ## [4.3.0] - 2026-05-07
 
 ### Added

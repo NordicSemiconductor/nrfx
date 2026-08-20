@@ -623,6 +623,22 @@ NRFY_STATIC_INLINE void nrfy_spim_csn_configure(NRF_SPIM_Type *    p_reg,
     nrf_barrier_w();
 }
 
+/** @refhal{nrf_spim_csn_duration_set} */
+NRFY_STATIC_INLINE void nrfy_spim_csn_duration_set(NRF_SPIM_Type * p_reg, uint32_t duration)
+{
+    nrf_spim_csn_duration_set(p_reg, duration);
+    nrf_barrier_w();
+}
+
+/** @refhal{nrf_spim_csn_duration_get} */
+NRF_STATIC_INLINE uint32_t nrfy_spim_csn_duration_get(NRF_SPIM_Type const * p_reg)
+{
+    nrf_barrier_rw();
+    uint32_t csndur = nrf_spim_csn_duration_get(p_reg);
+    nrf_barrier_r();
+    return csndur;
+}
+
 /** @refhal{nrf_spim_csn_pin_get} */
 NRFY_STATIC_INLINE uint32_t nrfy_spim_csn_pin_get(NRF_SPIM_Type const * p_reg)
 {

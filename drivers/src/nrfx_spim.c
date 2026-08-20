@@ -448,24 +448,6 @@ static void spim_configure(nrfx_spim_t *              p_instance,
     }
 #endif
 
-#if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115)
-    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 8) || NRF_ERRATA_DYNAMIC_CHECK(54H, 115))
-    {
-        /* Workaround must be applied only if PRESCALER is larger than 2 and CPHA=0 */
-        if ((prescaler > 2) &&
-            ((p_config->mode == NRF_SPIM_MODE_0) || (p_config->mode == NRF_SPIM_MODE_2)))
-        {
-            uint8_t min_dur = (uint8_t)((prescaler / 2) + 1);
-            csn_duration = NRFX_MAX(csn_duration, min_dur);
-            p_cb->apply_errata_8_115 = 1;
-        }
-        else
-        {
-            p_cb->apply_errata_8_115 = 0;
-        }
-    }
-#endif
-
     p_cb->skip_gpio_cfg = p_config->skip_gpio_cfg;
     configure_pins(p_instance, p_config);
 
@@ -524,6 +506,25 @@ static void spim_configure(nrfx_spim_t *              p_instance,
     };
 
     nrfy_spim_periph_configure(p_instance->p_reg, &nrfy_config);
+
+#if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115)
+    if (NRF_ERRATA_DYNAMIC_CHECK(54L, 8) || NRF_ERRATA_DYNAMIC_CHECK(54H, 115))
+    {
+        /* Workaround must be applied only if PRESCALER is larger than 2 and CPHA=0 */
+        if ((prescaler > 2) &&
+            ((p_config->mode == NRF_SPIM_MODE_0) || (p_config->mode == NRF_SPIM_MODE_2)))
+        {
+            uint8_t min_dur = (uint8_t)((prescaler / 2) + 1);
+            nrfy_spim_csn_duration_set(p_instance->p_reg, NRFX_MAX(csn_duration, min_dur));
+            p_cb->apply_errata_8_115 = 1;
+        }
+        else
+        {
+            p_cb->apply_errata_8_115 = 0;
+        }
+    }
+#endif
+
     if (p_cb->handler)
     {
         nrfy_spim_int_init(p_instance->p_reg, 0, p_config->irq_priority, false);

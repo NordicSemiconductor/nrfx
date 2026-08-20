@@ -49,6 +49,12 @@ POSSIBILITY OF SUCH DAMAGE.
 /* ========================================= Enumerator INACTIVE AltName Definitions ========================================= */
 #define USBHSCORE_GINTSTS_SOF_INTACTIVE             USBHSCORE_GINTSTS_SOF_INACTIVE
 
+/* =========================================== Instance RRAMC AltName Definitions ============================================ */
+
+/* =================================== RRAMC Feature NRRAMDATAUNITSIZE AltName Definitions =================================== */
+
+#define RRAMC_NRRAMWORDSIZE                       RRAMC_NRRAMDATAUNITSIZE 
+
 
 #ifdef __cplusplus
 }

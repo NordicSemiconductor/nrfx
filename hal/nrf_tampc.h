@@ -140,7 +140,7 @@ extern "C" {
 #define NRF_TAMPC_HAS_EXTERNAL_TAMPERSWITCH_DETECTOR 0
 #endif
 
-#if defined(NRF_TAMPC_DETECTOR_CRACEN) || defined(__NRFX_DOXYGEN__)
+#if defined(TAMPC_STATUS_CRACENTAMP_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether TAMPC has CRACEN detection features. */
 #define NRF_TAMPC_HAS_CRACEN 1
 #else
