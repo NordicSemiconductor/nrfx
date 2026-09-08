@@ -691,7 +691,16 @@ int nrfx_saadc_mode_trigger(void)
     {
         case NRF_SAADC_STATE_SIMPLE_MODE:
         {
+            nrfy_saadc_int_disable(
+                NRF_SAADC, NRF_SAADC_INT_STARTED | NRF_SAADC_INT_END | NRF_SAADC_INT_STOPPED);
             nrfy_saadc_enable(NRF_SAADC);
+            nrfy_saadc_stop(NRF_SAADC, true);
+            nrfy_saadc_event_clear(NRF_SAADC, NRF_SAADC_EVENT_STARTED);
+            nrfy_saadc_event_clear(NRF_SAADC, NRF_SAADC_EVENT_STOPPED);
+            nrfy_saadc_event_clear(NRF_SAADC, NRF_SAADC_EVENT_END);
+            nrfy_saadc_int_enable(
+                NRF_SAADC, NRF_SAADC_INT_STARTED | NRF_SAADC_INT_END | NRF_SAADC_INT_STOPPED);
+
             // When in simple blocking or non-blocking mode, buffer size is equal to activated channel count.
             // Single SAMPLE task is enough to obtain one sample on each activated channel.
             // This will result in buffer being filled with samples and therefore END event will appear.
