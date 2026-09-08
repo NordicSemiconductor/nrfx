@@ -47,7 +47,7 @@ extern "C" {
  * @defgroup nrfx_clock_hfclkaudio HFCLKAUDIO driver
  * @{
  * @ingroup nrf_clock
- * @brief   HFCLKAUDIO peripheral driver.
+ * @brief   HFCLKAUDIO clock driver.
  */
 
 /** @brief HFCLKAUDIO started event. */
@@ -58,9 +58,9 @@ extern "C" {
 typedef void (*nrfx_clock_hfclkaudio_event_handler_t)(void);
 
 /**
- * @brief Function for initializing internal structures in the nrfx_clock module.
+ * @brief Function for initializing internal structures in the HFCLKAUDIO driver.
  *
- * After initialization, the module is in power off state (clocks are not started).
+ * After initialization, the HFCLKAUDIO driver is in power off state (clock is not started).
  *
  * @param[in] event_handler Event handler provided by the user.
  *                          If not provided, driver works in blocking mode.
@@ -70,28 +70,28 @@ typedef void (*nrfx_clock_hfclkaudio_event_handler_t)(void);
  */
 int nrfx_clock_hfclkaudio_init(nrfx_clock_hfclkaudio_event_handler_t  event_handler);
 
-/** @brief Function for uninitializing the hfclkaudio module. */
+/** @brief Function for uninitializing the HFCLKAUDIO driver. */
 void nrfx_clock_hfclkaudio_uninit(void);
 
 /**
- * @brief Function for checking if the hfclkaudio driver is initialized.
+ * @brief Function for checking if the HFCLKAUDIO driver is initialized.
  *
  * @retval true  Driver is already initialized.
  * @retval false Driver is not initialized.
  */
 bool nrfx_clock_hfclkaudio_init_check(void);
 
-/** @brief Function for starting the hfclkaudio clock. */
+/** @brief Function for starting the HFCLKAUDIO clock. */
 void nrfx_clock_hfclkaudio_start(void);
 
-/** @brief Function for stopping the hfclkaudio clock. */
+/** @brief Function for stopping the HFCLKAUDIO clock. */
 void nrfx_clock_hfclkaudio_stop(void);
 
 /**
- * @brief Function for checking the specified hfclkaudio clock.
+ * @brief Function for checking the specified HFCLKAUDIO clock.
  *
- * @retval true  The clock domain is running.
- * @retval false The clock domain is not running.
+ * @retval true  The HFCLKAUDIO clock is running.
+ * @retval false The HFCLKAUDIO clock is not running.
  */
 NRFX_STATIC_INLINE bool nrfx_clock_hfclkaudio_running_check(void);
 

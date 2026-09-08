@@ -244,6 +244,22 @@ POSSIBILITY OF SUCH DAMAGE.
             </fields>
           </register>
         </cluster>
+        <register>
+          <name>VTFDATA</name>
+          <description>Pointer to memory location containing VTF data from the VTF monitoring system</description>
+          <addressOffset>0x100</addressOffset>
+          <access>read-write</access>
+          <resetValue>0xFFFFFFFF</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ADDRESS</name>
+              <description>Address of the VTF monitoring data in RAM</description>
+              <lsb>0</lsb>
+              <msb>31</msb>
+            </field>
+          </fields>
+        </register>
       </registers>
     </peripheral>
     <peripheral>
@@ -270,7 +286,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>CONFIGID</name>
             <description>Configuration identifier</description>
             <addressOffset>0x000</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -288,7 +304,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>DEVICEID[%s]</name>
             <description>Description collection: Device identifier</description>
             <addressOffset>0x004</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -306,7 +322,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>UUID[%s]</name>
             <description>Description collection: 128-bit Universally Unique IDentifier (UUID).</description>
             <addressOffset>0x00C</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -322,7 +338,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>PART</name>
             <description>Part code</description>
             <addressOffset>0x01C</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -355,7 +371,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>VARIANT</name>
             <description>Function variant code, Hardware version code, and Production configuration code encoded as ASCII.</description>
             <addressOffset>0x020</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -383,7 +399,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>PACKAGE</name>
             <description>Package option</description>
             <addressOffset>0x024</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -406,7 +422,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>RAM</name>
             <description>RAM size (KB)</description>
             <addressOffset>0x028</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -434,7 +450,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>MRAM</name>
             <description>MRAM size (KB)</description>
             <addressOffset>0x030</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -465,7 +481,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <name>ER[%s]</name>
           <description>Description collection: Common encryption root key, word n</description>
           <addressOffset>0x380</addressOffset>
-          <access>read-only</access>
+          <access>read-writeonce</access>
           <resetValue>0xFFFFFFFF</resetValue>
           <size>0x20</size>
           <fields>
@@ -483,7 +499,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <name>IR[%s]</name>
           <description>Description collection: Common identity root key, word n</description>
           <addressOffset>0x390</addressOffset>
-          <access>read-only</access>
+          <access>read-writeonce</access>
           <resetValue>0xFFFFFFFF</resetValue>
           <size>0x20</size>
           <fields>
@@ -499,7 +515,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <name>DEVICEADDRTYPE</name>
           <description>Device address type</description>
           <addressOffset>0x3A0</addressOffset>
-          <access>read-only</access>
+          <access>read-writeonce</access>
           <resetValue>0xFFFFFFFF</resetValue>
           <size>0x20</size>
           <fields>
@@ -529,7 +545,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <name>DEVICEADDR[%s]</name>
           <description>Description collection: Device address n</description>
           <addressOffset>0x3A4</addressOffset>
-          <access>read-only</access>
+          <access>read-writeonce</access>
           <resetValue>0xFFFFFFFF</resetValue>
           <size>0x20</size>
           <fields>
@@ -553,7 +569,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>ADDR</name>
             <description>Description cluster: Address of the register which will be written</description>
             <addressOffset>0x000</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -569,7 +585,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>DATA</name>
             <description>Description cluster: Data to be written into the register</description>
             <addressOffset>0x004</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -592,7 +608,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>TAGHEADER0</name>
             <description>Default header for NFC Tag. Software can read these values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and NFCID1_LAST.</description>
             <addressOffset>0x000</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFF5F</resetValue>
             <size>0x20</size>
             <fields>
@@ -626,7 +642,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>TAGHEADER1</name>
             <description>Default header for NFC Tag. Software can read these values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and NFCID1_LAST.</description>
             <addressOffset>0x004</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -660,7 +676,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>TAGHEADER2</name>
             <description>Default header for NFC Tag. Software can read these values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and NFCID1_LAST.</description>
             <addressOffset>0x008</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -694,7 +710,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>TAGHEADER3</name>
             <description>Default header for NFC Tag. Software can read these values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and NFCID1_LAST.</description>
             <addressOffset>0x00C</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -737,7 +753,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>LOW</name>
             <description>Description cluster: Lower 24 bits of MAC address n</description>
             <addressOffset>0x000</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -753,7 +769,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>HIGH</name>
             <description>Description cluster: Upper 24 bits of MAC address n</description>
             <addressOffset>0x004</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -776,7 +792,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>OFFSET</name>
             <description>Measured XTAL frequency error at room temperature</description>
             <addressOffset>0x000</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -792,7 +808,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>LOWTEMPTHRESHOLD</name>
             <description>Low temperature threshold for frequency skew compensation</description>
             <addressOffset>0x004</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -808,7 +824,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>LOWTEMPADJUST</name>
             <description>Frequency adjustment applied below the low temperature threshold</description>
             <addressOffset>0x008</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -140573,7 +140589,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>OFF</name>
-              <description>Reset due to wakeup from System OFF mode when wakeup is triggered by DETECT signal from GPIO</description>
+              <description>Reset due to wake-up from System OFF mode when wake-up is triggered by DETECT signal from GPIO</description>
               <lsb>8</lsb>
               <msb>8</msb>
               <enumeratedValues>
@@ -140591,7 +140607,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>LPCOMP</name>
-              <description>Reset due to wakeup from System OFF mode when wakeup is triggered by ANADETECT signal from LPCOMP</description>
+              <description>Reset due to wake-up from System OFF mode when wake-up is triggered by ANADETECT signal from LPCOMP</description>
               <lsb>9</lsb>
               <msb>9</msb>
               <enumeratedValues>
@@ -140627,7 +140643,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>GRTC</name>
-              <description>Reset due to wakeup from GRTC</description>
+              <description>Reset due to wake-up from GRTC</description>
               <lsb>11</lsb>
               <msb>11</msb>
               <enumeratedValues>
@@ -140645,7 +140661,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>NFC</name>
-              <description>Reset after wakeup from System OFF mode due to NFC field being detected</description>
+              <description>Reset after wake-up from System OFF mode due to NFC field being detected</description>
               <lsb>12</lsb>
               <msb>12</msb>
               <enumeratedValues>
@@ -140681,7 +140697,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>VBUS</name>
-              <description>Reset after wakeup from System OFF mode due to VBUS rising into valid range</description>
+              <description>Reset after wake-up from System OFF mode due to VBUS rising into valid range</description>
               <lsb>14</lsb>
               <msb>14</msb>
               <enumeratedValues>

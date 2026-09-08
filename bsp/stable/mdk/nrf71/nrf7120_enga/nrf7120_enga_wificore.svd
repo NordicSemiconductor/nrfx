@@ -240,6 +240,22 @@ POSSIBILITY OF SUCH DAMAGE.
             </fields>
           </register>
         </cluster>
+        <register>
+          <name>VTFDATA</name>
+          <description>Pointer to memory location containing VTF data from the VTF monitoring system</description>
+          <addressOffset>0x100</addressOffset>
+          <access>read-write</access>
+          <resetValue>0xFFFFFFFF</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ADDRESS</name>
+              <description>Address of the VTF monitoring data in RAM</description>
+              <lsb>0</lsb>
+              <msb>31</msb>
+            </field>
+          </fields>
+        </register>
       </registers>
     </peripheral>
     <peripheral>
@@ -266,7 +282,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>CONFIGID</name>
             <description>Configuration identifier</description>
             <addressOffset>0x000</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -284,7 +300,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>DEVICEID[%s]</name>
             <description>Description collection: Device identifier</description>
             <addressOffset>0x004</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -302,7 +318,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>UUID[%s]</name>
             <description>Description collection: 128-bit Universally Unique IDentifier (UUID).</description>
             <addressOffset>0x00C</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -318,7 +334,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>PART</name>
             <description>Part code</description>
             <addressOffset>0x01C</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -351,7 +367,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>VARIANT</name>
             <description>Function variant code, Hardware version code, and Production configuration code encoded as ASCII.</description>
             <addressOffset>0x020</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -379,7 +395,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>PACKAGE</name>
             <description>Package option</description>
             <addressOffset>0x024</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -402,7 +418,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>RAM</name>
             <description>RAM size (KB)</description>
             <addressOffset>0x028</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -430,7 +446,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>MRAM</name>
             <description>MRAM size (KB)</description>
             <addressOffset>0x030</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -461,7 +477,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <name>ER[%s]</name>
           <description>Description collection: Common encryption root key, word n</description>
           <addressOffset>0x380</addressOffset>
-          <access>read-only</access>
+          <access>read-writeonce</access>
           <resetValue>0xFFFFFFFF</resetValue>
           <size>0x20</size>
           <fields>
@@ -479,7 +495,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <name>IR[%s]</name>
           <description>Description collection: Common identity root key, word n</description>
           <addressOffset>0x390</addressOffset>
-          <access>read-only</access>
+          <access>read-writeonce</access>
           <resetValue>0xFFFFFFFF</resetValue>
           <size>0x20</size>
           <fields>
@@ -495,7 +511,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <name>DEVICEADDRTYPE</name>
           <description>Device address type</description>
           <addressOffset>0x3A0</addressOffset>
-          <access>read-only</access>
+          <access>read-writeonce</access>
           <resetValue>0xFFFFFFFF</resetValue>
           <size>0x20</size>
           <fields>
@@ -525,7 +541,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <name>DEVICEADDR[%s]</name>
           <description>Description collection: Device address n</description>
           <addressOffset>0x3A4</addressOffset>
-          <access>read-only</access>
+          <access>read-writeonce</access>
           <resetValue>0xFFFFFFFF</resetValue>
           <size>0x20</size>
           <fields>
@@ -549,7 +565,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>ADDR</name>
             <description>Description cluster: Address of the register which will be written</description>
             <addressOffset>0x000</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -565,7 +581,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>DATA</name>
             <description>Description cluster: Data to be written into the register</description>
             <addressOffset>0x004</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -588,7 +604,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>TAGHEADER0</name>
             <description>Default header for NFC Tag. Software can read these values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and NFCID1_LAST.</description>
             <addressOffset>0x000</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFF5F</resetValue>
             <size>0x20</size>
             <fields>
@@ -622,7 +638,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>TAGHEADER1</name>
             <description>Default header for NFC Tag. Software can read these values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and NFCID1_LAST.</description>
             <addressOffset>0x004</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -656,7 +672,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>TAGHEADER2</name>
             <description>Default header for NFC Tag. Software can read these values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and NFCID1_LAST.</description>
             <addressOffset>0x008</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -690,7 +706,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <name>TAGHEADER3</name>
             <description>Default header for NFC Tag. Software can read these values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and NFCID1_LAST.</description>
             <addressOffset>0x00C</addressOffset>
-            <access>read-only</access>
+            <access>read-writeonce</access>
             <resetValue>0xFFFFFFFF</resetValue>
             <size>0x20</size>
             <fields>
@@ -716,6 +732,102 @@ POSSIBILITY OF SUCH DAMAGE.
                 <name>UD15</name>
                 <description>Unique identifier byte 15</description>
                 <lsb>24</lsb>
+                <msb>31</msb>
+              </field>
+            </fields>
+          </register>
+        </cluster>
+        <cluster>
+          <dim>2</dim>
+          <dimIncrement>0x008</dimIncrement>
+          <name>MACADDR[%s]</name>
+          <description>48-bit MAC address n</description>
+          <headerStructName>FICR_MACADDR</headerStructName>
+          <access>read-write</access>
+          <addressOffset>0xC00</addressOffset>
+          <register>
+            <name>LOW</name>
+            <description>Description cluster: Lower 24 bits of MAC address n</description>
+            <addressOffset>0x000</addressOffset>
+            <access>read-writeonce</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>ADDR</name>
+                <description>MAC address bits [23:0]</description>
+                <lsb>0</lsb>
+                <msb>23</msb>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>HIGH</name>
+            <description>Description cluster: Upper 24 bits of MAC address n</description>
+            <addressOffset>0x004</addressOffset>
+            <access>read-writeonce</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>ADDR</name>
+                <description>MAC address bits [47:24]</description>
+                <lsb>0</lsb>
+                <msb>23</msb>
+              </field>
+            </fields>
+          </register>
+        </cluster>
+        <cluster>
+          <name>XTALCOMP</name>
+          <description>Crystal oscillator (XTAL) temperature compensation data</description>
+          <headerStructName>FICR_XTALCOMP</headerStructName>
+          <access>read-write</access>
+          <addressOffset>0xC20</addressOffset>
+          <register>
+            <name>OFFSET</name>
+            <description>Measured XTAL frequency error at room temperature</description>
+            <addressOffset>0x000</addressOffset>
+            <access>read-writeonce</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>OFFSET</name>
+                <description>Frequency error in ppm</description>
+                <lsb>0</lsb>
+                <msb>31</msb>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>LOWTEMPTHRESHOLD</name>
+            <description>Low temperature threshold for frequency skew compensation</description>
+            <addressOffset>0x004</addressOffset>
+            <access>read-writeonce</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>THRESHOLD</name>
+                <description>Low temperature threshold</description>
+                <lsb>0</lsb>
+                <msb>31</msb>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>LOWTEMPADJUST</name>
+            <description>Frequency adjustment applied below the low temperature threshold</description>
+            <addressOffset>0x008</addressOffset>
+            <access>read-writeonce</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>ADJUST</name>
+                <description>Frequency adjustment in ppm</description>
+                <lsb>0</lsb>
                 <msb>31</msb>
               </field>
             </fields>
@@ -1225,6 +1337,102 @@ POSSIBILITY OF SUCH DAMAGE.
                     <value>0x2</value>
                   </enumeratedValue>
                 </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+        </cluster>
+        <cluster>
+          <dim>2</dim>
+          <dimIncrement>0x008</dimIncrement>
+          <name>MACADDR[%s]</name>
+          <description>48-bit MAC address n</description>
+          <headerStructName>UICR_MACADDR</headerStructName>
+          <access>read-writeonce</access>
+          <addressOffset>0x420</addressOffset>
+          <register>
+            <name>LOW</name>
+            <description>Description cluster: Lower 24 bits of MAC address n</description>
+            <addressOffset>0x000</addressOffset>
+            <access>read-writeonce</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>ADDR</name>
+                <description>MAC address bits [23:0]</description>
+                <lsb>0</lsb>
+                <msb>23</msb>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>HIGH</name>
+            <description>Description cluster: Upper 24 bits of MAC address n</description>
+            <addressOffset>0x004</addressOffset>
+            <access>read-writeonce</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>ADDR</name>
+                <description>MAC address bits [47:24]</description>
+                <lsb>0</lsb>
+                <msb>23</msb>
+              </field>
+            </fields>
+          </register>
+        </cluster>
+        <cluster>
+          <name>XTALCOMP</name>
+          <description>Crystal oscillator (XTAL) temperature compensation data</description>
+          <headerStructName>UICR_XTALCOMP</headerStructName>
+          <access>read-writeonce</access>
+          <addressOffset>0x440</addressOffset>
+          <register>
+            <name>OFFSET</name>
+            <description>Measured XTAL frequency error at room temperature</description>
+            <addressOffset>0x000</addressOffset>
+            <access>read-writeonce</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>OFFSET</name>
+                <description>Frequency error in ppm</description>
+                <lsb>0</lsb>
+                <msb>31</msb>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>LOWTEMPTHRESHOLD</name>
+            <description>Low temperature threshold for frequency skew compensation</description>
+            <addressOffset>0x004</addressOffset>
+            <access>read-writeonce</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>THRESHOLD</name>
+                <description>Low temperature threshold</description>
+                <lsb>0</lsb>
+                <msb>31</msb>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>LOWTEMPADJUST</name>
+            <description>Frequency adjustment applied below the low temperature threshold</description>
+            <addressOffset>0x008</addressOffset>
+            <access>read-writeonce</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>ADJUST</name>
+                <description>Frequency adjustment in ppm</description>
+                <lsb>0</lsb>
+                <msb>31</msb>
               </field>
             </fields>
           </register>
@@ -10744,12 +10952,12 @@ POSSIBILITY OF SUCH DAMAGE.
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>ReadError</name>
-                    <description>Error related to memory when reading joblist, or error related to memory/register when reading data.</description>
+                    <description>Error related to memory when reading job list, or error related to memory/register when reading data.</description>
                     <value>0x1</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>ReadDecodeError</name>
-                    <description>Error related to the joblist address when reading joblist, or error related to address when reading memory/register.</description>
+                    <description>Error related to the job list address when reading job list, or error related to address when reading memory/register.</description>
                     <value>0x2</value>
                   </enumeratedValue>
                 </enumeratedValues>
@@ -10774,7 +10982,7 @@ POSSIBILITY OF SUCH DAMAGE.
           </register>
           <register>
             <name>JOBCOUNT</name>
-            <description>Number of completed jobs in the current Source descriptor list. This resets to 0 when a new joblist is started.</description>
+            <description>Number of completed jobs in the current Source descriptor list. This resets to 0 when a new job list is started.</description>
             <addressOffset>0x00C</addressOffset>
             <access>read-only</access>
             <resetValue>0x00000000</resetValue>
@@ -10832,12 +11040,12 @@ POSSIBILITY OF SUCH DAMAGE.
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>ReadError</name>
-                    <description>Error related to memory when reading joblist.</description>
+                    <description>Error related to memory when reading job list.</description>
                     <value>0x1</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>ReadDecodeError</name>
-                    <description>Error related to the joblist address when reading joblist.</description>
+                    <description>Error related to the job list address when reading job list.</description>
                     <value>0x2</value>
                   </enumeratedValue>
                   <enumeratedValue>
@@ -10872,7 +11080,7 @@ POSSIBILITY OF SUCH DAMAGE.
           </register>
           <register>
             <name>JOBCOUNT</name>
-            <description>Number of completed jobs in the current Sink descriptor list. This resets to 0 when a new joblist is started.</description>
+            <description>Number of completed jobs in the current Sink descriptor list. This resets to 0 when a new job list is started.</description>
             <addressOffset>0x00C</addressOffset>
             <access>read-only</access>
             <resetValue>0x00000000</resetValue>
@@ -68519,6 +68727,52 @@ POSSIBILITY OF SUCH DAMAGE.
                     <value>0x1</value>
                   </enumeratedValue>
                 </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+        </cluster>
+        <cluster>
+          <name>ERASEPROTECT</name>
+          <description>Unspecified</description>
+          <headerStructName>CTRLAPPERI_ERASEPROTECT</headerStructName>
+          <access>read-write</access>
+          <addressOffset>0x500</addressOffset>
+          <register>
+            <name>LOCK</name>
+            <description>This register locks the ERASEPROTECT.DISABLE register from being written until next reset.</description>
+            <addressOffset>0x000</addressOffset>
+            <access>read-writeonce</access>
+            <resetValue>0x00000000</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>LOCK</name>
+                <description>Writing any value will lock the ERASEPROTECT.DISABLE register from being written until next reset.</description>
+                <lsb>0</lsb>
+                <msb>0</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Locked</name>
+                    <description>Register ERASEPROTECT.DISABLE is read-only.</description>
+                    <value>0x1</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+          <register>
+            <name>DISABLE</name>
+            <description>This register disables the ERASEPROTECT register and performs an  ERASEALL operation.</description>
+            <addressOffset>0x004</addressOffset>
+            <access>writeonce</access>
+            <resetValue>0x00000000</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>KEY</name>
+                <description>The ERASEALL sequence is initiated if the value of the KEY fields are non-zero and the KEY fields match on both the CPU and debugger sides.</description>
+                <lsb>0</lsb>
+                <msb>31</msb>
               </field>
             </fields>
           </register>
@@ -145788,7 +146042,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>OFF</name>
-              <description>Reset due to wakeup from System OFF mode when wakeup is triggered by DETECT signal from GPIO</description>
+              <description>Reset due to wake-up from System OFF mode when wake-up is triggered by DETECT signal from GPIO</description>
               <lsb>8</lsb>
               <msb>8</msb>
               <enumeratedValues>
@@ -145806,7 +146060,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>LPCOMP</name>
-              <description>Reset due to wakeup from System OFF mode when wakeup is triggered by ANADETECT signal from LPCOMP</description>
+              <description>Reset due to wake-up from System OFF mode when wake-up is triggered by ANADETECT signal from LPCOMP</description>
               <lsb>9</lsb>
               <msb>9</msb>
               <enumeratedValues>
@@ -145842,7 +146096,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>GRTC</name>
-              <description>Reset due to wakeup from GRTC</description>
+              <description>Reset due to wake-up from GRTC</description>
               <lsb>11</lsb>
               <msb>11</msb>
               <enumeratedValues>
@@ -145860,7 +146114,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>NFC</name>
-              <description>Reset after wakeup from System OFF mode due to NFC field being detected</description>
+              <description>Reset after wake-up from System OFF mode due to NFC field being detected</description>
               <lsb>12</lsb>
               <msb>12</msb>
               <enumeratedValues>
@@ -145896,7 +146150,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
             <field>
               <name>VBUS</name>
-              <description>Reset after wakeup from System OFF mode due to VBUS rising into valid range</description>
+              <description>Reset after wake-up from System OFF mode due to VBUS rising into valid range</description>
               <lsb>14</lsb>
               <msb>14</msb>
               <enumeratedValues>
@@ -145971,7 +146225,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <description>Configuration for glitch detector</description>
           <addressOffset>0x5A0</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000001</resetValue>
+          <resetValue>0x00000000</resetValue>
           <size>0x20</size>
           <fields>
             <field>

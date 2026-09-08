@@ -72,9 +72,9 @@ typedef enum
 typedef void (*nrfx_clock_xo_event_handler_t)(nrfx_clock_xo_event_type_t event);
 
 /**
- * @brief Function for initializing internal structures in the nrfx_clock_xo module.
+ * @brief Function for initializing the XO driver.
  *
- * After initialization, the module is in power off state (clocks are not started).
+ * After initialization, the driver is in power off state (clock is not started).
  *
  * @param[in] event_handler Event handler provided by the user.
  *                          If not provided, driver works in blocking mode.
@@ -84,11 +84,11 @@ typedef void (*nrfx_clock_xo_event_handler_t)(nrfx_clock_xo_event_type_t event);
  */
 int nrfx_clock_xo_init(nrfx_clock_xo_event_handler_t  event_handler);
 
-/** @brief Function for uninitializing the clock module. */
+/** @brief Function for uninitializing the XO driver. */
 void nrfx_clock_xo_uninit(void);
 
 /**
- * @brief Function for checking if the clock driver is initialized.
+ * @brief Function for checking if the XO driver is initialized.
  *
  * @retval true  Driver is already initialized.
  * @retval false Driver is not initialized.

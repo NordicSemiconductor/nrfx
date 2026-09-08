@@ -102,6 +102,14 @@
     #include "soc/irqs/nrfx_irqs_nrf7120e_enga_application.h"
 #elif defined(NRF7120E_ENGA_XXAA) && defined(NRF_FLPR)
     #include "soc/irqs/nrfx_irqs_nrf7120e_enga_flpr.h"
+#elif defined(NRF7120_XXAA) && defined(NRF_APPLICATION)
+    #include "soc/irqs/nrfx_irqs_nrf7120_application.h"
+#elif defined(NRF7120_XXAA) && defined(NRF_FLPR)
+    #include "soc/irqs/nrfx_irqs_nrf7120_flpr.h"
+#elif defined(NRF7120E_XXAA) && defined(NRF_APPLICATION)
+    #include "soc/irqs/nrfx_irqs_nrf7120e_application.h"
+#elif defined(NRF7120E_XXAA) && defined(NRF_FLPR)
+    #include "soc/irqs/nrfx_irqs_nrf7120e_flpr.h"
 #elif defined(NRF91_SERIES) || defined(NRF9120_XXAA) || defined(NRF9160_XXAA)
     #include "soc/irqs/nrfx_irqs_nrf91.h"
 #elif defined(NRF9220_XXAA) && defined(NRF_APPLICATION)

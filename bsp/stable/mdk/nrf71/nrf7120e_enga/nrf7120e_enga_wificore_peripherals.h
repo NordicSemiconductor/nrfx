@@ -187,6 +187,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define MVDMA_COMPLETED_EVENT 1                      /*!< EVENTS_COMPLETED is available.                                       */
 #define MVDMA_DPPI_DISCONNECTED 0                    /*!< (unspecified)                                                        */
 #define MVDMA_INSTANCE_IN_WRAPPER 0                  /*!< (unspecified)                                                        */
+#define MVDMA_MVDMA_JOBLISTCNT_MIN 0                 /*!< Number of MVDMA job lists : 0..7                                     */
+#define MVDMA_MVDMA_JOBLISTCNT_MAX 7                 /*!< Number of MVDMA job lists : 0..7                                     */
+#define MVDMA_MVDMA_JOBLISTCNT_SIZE 8                /*!< Number of MVDMA job lists : 0..7                                     */
 
 /*LRCCONF*/
 #define LRCCONF_PRESENT 1

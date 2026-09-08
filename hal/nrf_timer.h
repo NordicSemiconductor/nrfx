@@ -174,17 +174,23 @@ extern "C" {
 
 #if !defined(NRF_TIMER_IS_320MHZ_TIMER)
 /** @brief Macro for checking whether the base frequency for the specified timer is 320 MHz. */
-#define NRF_TIMER_IS_320MHZ_TIMER(p_reg) \
-    (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER120), (p_reg == NRF_TIMER120), (false)) || \
-     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER121), (p_reg == NRF_TIMER121), (false)))
+#define NRF_TIMER_IS_320MHZ_TIMER(p_reg)                                                          \
+    (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER120),                                            \
+                      (((p_reg == NRF_TIMER120) && (INSTANCE_12X_FREQUENCY == 320))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER121),                                            \
+                      (((p_reg == NRF_TIMER121) && (INSTANCE_12X_FREQUENCY == 320))), (false)))
 #endif
 
 #if !defined(NRF_TIMER_IS_256MHZ_TIMER)
 /** @brief Macro for checking whether the base frequency for the specified timer is 256 MHz. */
-#define NRF_TIMER_IS_256MHZ_TIMER(p_reg)                                                     \
-    (NRFX_COND_CODE_1(NRFX_IS_ENABLED(NRF_CPU_FREQ_IS_256MHZ),                               \
-        (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER00), (p_reg == NRF_TIMER00), (false))), \
-        (false)))
+#define NRF_TIMER_IS_256MHZ_TIMER(p_reg)                                                          \
+    (NRFX_COND_CODE_1(NRFX_IS_ENABLED(NRF_CPU_FREQ_IS_256MHZ),                                    \
+        (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER00), (p_reg == NRF_TIMER00), (false))),      \
+        (false)) ||                                                                               \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER120),                                            \
+                      (((p_reg == NRF_TIMER120) && (INSTANCE_12X_FREQUENCY == 256))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(TIMER121),                                            \
+                      (((p_reg == NRF_TIMER121) && (INSTANCE_12X_FREQUENCY == 256))), (false)))
 #endif
 
 #if !defined(NRF_TIMER_IS_128MHZ_TIMER)

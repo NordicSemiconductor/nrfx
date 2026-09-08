@@ -274,11 +274,13 @@ unlock:
 
 static inline uint32_t get_ppi_ch(bool pub, uint8_t * p_channels, size_t i, bool rev)
 {
-    if (NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS)) {
+    if (NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS))
+    {
         return p_channels[0];
     }
 
-    if (pub) {
+    if (pub)
+    {
         return rev ? p_channels[i - 1] : p_channels[i + 1];
     }
     return rev ? p_channels[i + 1] : p_channels[i - 1];
@@ -297,16 +299,6 @@ static inline uint32_t get_ppib_ch(bool pub, uint32_t channel,
 #endif
 }
 
-static int nrf_ppib_write(volatile uint32_t * p_addr, uint32_t val)
-{
-#if NRFX_CHECK(NRFX_GPPI_CONFIG_DPPI_PPIB_EXT_FUNC)
-	return nrfx_gppi_ext_ppib_write(p_addr, val);
-#else
-    *p_addr = val;
-    return 0;
-#endif
-}
-
 #define EP_ENABLE(ch) ((ch) | NRF_SUBSCRIBE_PUBLISH_ENABLE)
 
 static int ppib_configure(const nrfx_gppi_node_t * p_node, uint32_t ppib_ch,
@@ -316,17 +308,46 @@ static int ppib_configure(const nrfx_gppi_node_t * p_node, uint32_t ppib_ch,
     NRF_PPIB_Type * p_sub_reg = p_node->ppib.p_reg[rev ? 1 : 0];
     uint32_t sub_ppib_ch = get_ppib_ch(false, ppib_ch, p_node, rev);
     uint32_t pub_ppib_ch = get_ppib_ch(true, ppib_ch, p_node, rev);
-    int rv;
 
-    rv = nrf_ppib_write(&p_sub_reg->SUBSCRIBE_SEND[sub_ppib_ch], sub_val);
-    if (rv != 0) {
+#if NRFX_CHECK(NRFX_GPPI_CONFIG_DPPI_PPIB_EXT_FUNC)
+    int rv = nrfx_gppi_ext_ppib_write(&p_sub_reg->SUBSCRIBE_SEND[sub_ppib_ch], sub_val);
+    if (rv != 0)
+    {
         return rv;
     }
 
-    rv = nrf_ppib_write(&p_pub_reg->PUBLISH_RECEIVE[pub_ppib_ch], pub_val);
-    if (rv != 0) {
+    rv = nrfx_gppi_ext_ppib_write(&p_pub_reg->PUBLISH_RECEIVE[pub_ppib_ch], pub_val);
+    if (rv != 0)
+    {
         return rv;
     }
+#else
+    uint32_t sub_index = sub_val & ~NRF_SUBSCRIBE_PUBLISH_ENABLE;
+    uint32_t pub_index = pub_val & ~NRF_SUBSCRIBE_PUBLISH_ENABLE;
+
+    nrf_ppib_task_t send_task = (nrf_ppib_task_t)(NRF_PPIB_TASK_SEND_0 +
+                                                  sub_ppib_ch * sizeof(uint32_t));
+    nrf_ppib_event_t receive_event = (nrf_ppib_event_t)(NRF_PPIB_EVENT_RECEIVE_0 +
+                                                        pub_ppib_ch * sizeof(uint32_t));
+
+    if ((sub_val & NRF_SUBSCRIBE_PUBLISH_ENABLE) != 0)
+    {
+        nrf_ppib_subscribe_set(p_sub_reg, send_task, sub_index & UINT8_MAX);
+    }
+    else
+    {
+        nrf_ppib_subscribe_clear(p_sub_reg, send_task);
+    }
+
+    if ((pub_val & NRF_SUBSCRIBE_PUBLISH_ENABLE) != 0)
+    {
+        nrf_ppib_publish_set(p_pub_reg, receive_event, pub_index & UINT8_MAX);
+    }
+    else
+    {
+        nrf_ppib_publish_clear(p_pub_reg, receive_event);
+    }
+#endif
 
     NRFX_LOG_INFO("Setup connection subscribe PPIB(%p) ch %d to DPPI ch:%d, "
             "publish PPIB(%p) ch:%d to DPPI ch:%d",
@@ -376,17 +397,21 @@ int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_han
     uint8_t route_idx;
     bool rev_conn;
 
-    if (producer > consumer) {
+    if (producer > consumer)
+    {
         rev_conn = true;
         p_route = p_gppi->route_map[consumer][producer - consumer];
-    } else {
+    }
+    else
+    {
         rev_conn = false;
         p_route = p_gppi->route_map[producer][consumer - producer];
     }
 
     /* Return is allocation failed. */
     rv = alloc_channels(channels, p_route, p_resource);
-    if (rv < 0) {
+    if (rv < 0)
+    {
         return rv;
     }
 
@@ -396,10 +421,12 @@ int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_han
         producer, consumer, route_idx, p_route->len, rev_conn ? "reversed" : "");
 
     h = HANDLE_INIT(route_idx, rev_conn, (uint32_t)NRFX_DIV_ROUND_UP(p_route->len, 2), channels[0]);
-    for (size_t i = 0; i < p_route->len; i++) {
+    for (size_t i = 0; i < p_route->len; i++)
+    {
         const nrfx_gppi_node_t * p_node = p_route->p_nodes[i];
 
-        if (p_node->type == NRFX_GPPI_NODE_PPIB) {
+        if (p_node->type == NRFX_GPPI_NODE_PPIB)
+        {
             uint32_t ch = channels[NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS) ? 0 : i];
             uint32_t sub_ch;
             uint32_t pub_ch;
@@ -418,14 +445,18 @@ int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_han
             sub_ch = get_ppi_ch(false, channels, i, rev);
             pub_ch = get_ppi_ch(true, channels, i, rev);
             rv = ppib_configure(p_node, ch, EP_ENABLE(sub_ch), EP_ENABLE(pub_ch), rev);
-            if (rv != 0) {
+            if (rv != 0)
+            {
                 return rv;
             }
-        } else if (NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS)) {
+        }
+        else if (NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS))
+        {
             h |= HANDLE_INST(i / 2, p_node->domain_id);
         }
 
-        if (!NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS)) {
+        if (!NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS))
+        {
             if ((p_resource == NULL) || (p_node->domain_id != p_resource->domain_id))
             {
                 h |= HANDLE_CHAN(i, channels[i]);
@@ -465,11 +496,13 @@ void nrfx_gppi_domain_conn_free(nrfx_gppi_handle_t handle)
     int rv;
 
     NRFX_LOG_INFO("Freeing connection handle:%08x (route %d)", handle, route_id);
-    for (size_t i = 0; i < p_route->len; i++) {
+    for (size_t i = 0; i < p_route->len; i++)
+    {
         uint32_t chan = HANDLE_GET_CHAN(handle, i);
         const nrfx_gppi_node_t *p_node = p_route->p_nodes[i];
 
-        if (p_node->type == NRFX_GPPI_NODE_PPIB) {
+        if (p_node->type == NRFX_GPPI_NODE_PPIB)
+        {
             bool rev;
 
             if (NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS))
@@ -509,7 +542,8 @@ int nrfx_gppi_domain_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_
     int chan;
 
     chan = nrfx_flag32_alloc(&p_gppi->ch_mask);
-    if (chan < 0) {
+    if (chan < 0)
+    {
         return chan;
     }
 
@@ -711,7 +745,8 @@ int nrfx_gppi_ep_attach(uint32_t ep, nrfx_gppi_handle_t handle)
 {
     int ch = nrfx_gppi_domain_channel_get(handle, nrfx_gppi_domain_id_get(ep));
 
-    if (ch < 0) {
+    if (ch < 0)
+    {
         return ch;
     }
 
@@ -736,7 +771,8 @@ int nrfx_gppi_group_alloc(uint32_t domain_id, nrfx_gppi_group_handle_t *handle)
     int gch;
 
     gch = nrfx_flag32_alloc(group_mask);
-    if (gch < 0) {
+    if (gch < 0)
+    {
         return gch;
     }
 

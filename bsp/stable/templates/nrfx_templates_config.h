@@ -50,9 +50,9 @@
     #include <nrfx_config_nrf52833.h>
 #elif defined(NRF52840_XXAA)
     #include <nrfx_config_nrf52840.h>
-#elif defined(NRF5340_XXAA_APPLICATION)
+#elif defined(NRF5340_XXAA_APPLICATION) || (defined(NRF5340_XXAA) && defined(NRF_APPLICATION))
     #include <nrfx_config_nrf5340_application.h>
-#elif defined(NRF5340_XXAA_NETWORK)
+#elif defined(NRF5340_XXAA_NETWORK) || (defined(NRF5340_XXAA) && defined(NRF_NETWORK))
     #include <nrfx_config_nrf5340_network.h>
 #elif defined(NRF54H20_XXAA) && defined(NRF_APPLICATION)
     #include <nrfx_config_nrf54h20_application.h>
@@ -102,6 +102,14 @@
     #include <nrfx_config_nrf7120e_enga_application.h>
 #elif defined(NRF7120E_ENGA_XXAA) && defined(NRF_FLPR)
     #include <nrfx_config_nrf7120e_enga_flpr.h>
+#elif defined(NRF7120_XXAA) && defined(NRF_APPLICATION)
+    #include <nrfx_config_nrf7120_application.h>
+#elif defined(NRF7120_XXAA) && defined(NRF_FLPR)
+    #include <nrfx_config_nrf7120_flpr.h>
+#elif defined(NRF7120E_XXAA) && defined(NRF_APPLICATION)
+    #include <nrfx_config_nrf7120e_application.h>
+#elif defined(NRF7120E_XXAA) && defined(NRF_FLPR)
+    #include <nrfx_config_nrf7120e_flpr.h>
 #elif defined(NRF9120_XXAA) || defined(NRF9160_XXAA)
     #include <nrfx_config_nrf91.h>
 #elif defined(NRF9220_XXAA) && defined(NRF_APPLICATION)
@@ -119,7 +127,7 @@
 #elif defined(NRF9230_ENGB_XXAA) && defined(NRF_FLPR)
     #include <nrfx_config_nrf9230_engb_flpr.h>
 #else
-    #include <nrfx_config_ext.h>
+    #include "nrfx_config_ext.h"
 #endif
 
 // Uncomment this line to use the standard MDK way of binding IRQ handlers

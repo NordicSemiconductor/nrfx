@@ -442,18 +442,20 @@ static void spim_configure(nrfx_spim_t *              p_instance,
 #endif
 
 #if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69) || \
-    NRF_ERRATA_STATIC_CHECK(71, 55)  || NRF_ERRATA_STATIC_CHECK(71, 69)
+    NRF_ERRATA_STATIC_CHECK(71, 55)  || NRF_ERRATA_STATIC_CHECK(71, 69) || \
+    NRF_ERRATA_STATIC_CHECK(92, 280)
     if (NRF_ERRATA_DYNAMIC_CHECK(54L, 55) || NRF_ERRATA_DYNAMIC_CHECK(54L, 69) ||
-        NRF_ERRATA_DYNAMIC_CHECK(71, 55) || NRF_ERRATA_DYNAMIC_CHECK(71, 69))
+        NRF_ERRATA_DYNAMIC_CHECK(71, 55) || NRF_ERRATA_DYNAMIC_CHECK(71, 69) ||
+        NRF_ERRATA_DYNAMIC_CHECK(92, 280))
     {
-        p_cb->apply_nrf54l_errata_55_69 = 1;
+        p_cb->apply_end_event_errata = 1;
     }
 #endif
 
 #if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115) || \
-    NRF_ERRATA_STATIC_CHECK(71, 8)
+    NRF_ERRATA_STATIC_CHECK(71, 8) || NRF_ERRATA_STATIC_CHECK(92, 115)
     if (NRF_ERRATA_DYNAMIC_CHECK(54L, 8) || NRF_ERRATA_DYNAMIC_CHECK(54H, 115) ||
-        NRF_ERRATA_DYNAMIC_CHECK(71, 8))
+        NRF_ERRATA_DYNAMIC_CHECK(71, 8) || NRF_ERRATA_DYNAMIC_CHECK(92, 115))
     {
         /* Workaround must be applied only if PRESCALER is larger than 2 and CPHA=0 */
         if ((prescaler > 2) &&
@@ -853,15 +855,16 @@ static int spim_xfer(NRF_SPIM_Type *               p_spim,
     nrfy_spim_enable(p_spim);
 
 #if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69) || \
-    NRF_ERRATA_STATIC_CHECK(71, 55) || NRF_ERRATA_STATIC_CHECK(71, 69)
-    if (p_cb->apply_nrf54l_errata_55_69)
+    NRF_ERRATA_STATIC_CHECK(71, 55) || NRF_ERRATA_STATIC_CHECK(71, 69) || \
+    NRF_ERRATA_STATIC_CHECK(92, 280)
+    if (p_cb->apply_end_event_errata)
     {
         *(volatile uint32_t *)((uint8_t *)p_spim + 0xc80) = 0x82;
     }
 #endif
 
 #if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115) || \
-    NRF_ERRATA_STATIC_CHECK(71, 8)
+    NRF_ERRATA_STATIC_CHECK(71, 8) || NRF_ERRATA_STATIC_CHECK(92, 115)
     if (p_cb->apply_errata_8_115)
     {
         *(volatile uint32_t *)((uint8_t *)p_spim + 0xc84) = 0x82;
@@ -881,15 +884,16 @@ static int spim_xfer(NRF_SPIM_Type *               p_spim,
     if (!p_cb->handler)
     {
 #if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69) || \
-    NRF_ERRATA_STATIC_CHECK(71, 55) || NRF_ERRATA_STATIC_CHECK(71, 69)
-        if (p_cb->apply_nrf54l_errata_55_69)
+    NRF_ERRATA_STATIC_CHECK(71, 55) || NRF_ERRATA_STATIC_CHECK(71, 69) || \
+    NRF_ERRATA_STATIC_CHECK(92, 280)
+        if (p_cb->apply_end_event_errata)
         {
             *(volatile uint32_t *)((uint8_t *)p_spim + 0xc80) = 0;
         }
 #endif
 
 #if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115) || \
-    NRF_ERRATA_STATIC_CHECK(71, 8)
+    NRF_ERRATA_STATIC_CHECK(71, 8) || NRF_ERRATA_STATIC_CHECK(92, 115)
         if (p_cb->apply_errata_8_115)
         {
             *(volatile uint32_t *)((uint8_t *)p_spim + 0xc84) = 0;
@@ -996,15 +1000,16 @@ void nrfx_spim_irq_handler(nrfx_spim_t * p_instance)
     nrfx_spim_control_block_t * p_cb = &p_instance->cb;
 
 #if NRF_ERRATA_STATIC_CHECK(54L, 55) || NRF_ERRATA_STATIC_CHECK(54L, 69) || \
-    NRF_ERRATA_STATIC_CHECK(71, 55) || NRF_ERRATA_STATIC_CHECK(71, 69)
-    if (p_cb->apply_nrf54l_errata_55_69 && nrfy_spim_event_check(p_spim, NRF_SPIM_EVENT_END))
+    NRF_ERRATA_STATIC_CHECK(71, 55) || NRF_ERRATA_STATIC_CHECK(71, 69) || \
+    NRF_ERRATA_STATIC_CHECK(92, 280)
+    if (p_cb->apply_end_event_errata && nrfy_spim_event_check(p_spim, NRF_SPIM_EVENT_END))
     {
         *(volatile uint32_t *)((uint8_t *)p_spim + 0xc80) = 0;
     }
 #endif
 
 #if NRF_ERRATA_STATIC_CHECK(54L, 8) || NRF_ERRATA_STATIC_CHECK(54H, 115) || \
-    NRF_ERRATA_STATIC_CHECK(71, 8)
+    NRF_ERRATA_STATIC_CHECK(71, 8) || NRF_ERRATA_STATIC_CHECK(92, 115)
     if (p_cb->apply_errata_8_115)
     {
         if (nrfy_spim_int_enable_check(p_spim, NRF_SPIM_INT_STARTED_MASK) &&

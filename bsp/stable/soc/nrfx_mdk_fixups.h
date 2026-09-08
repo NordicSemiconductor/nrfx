@@ -469,6 +469,13 @@
 
     #define NRF_BICR_Type NRF_BICR_Type_fixed
 
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn VPRCLIC_0_IRQn
+        #define VPRCLIC_IRQN_MIN   0
+        #define VPRCLIC_IRQN_MAX   31
+    #endif
+
+    #define INSTANCE_12X_FREQUENCY 320
 #endif
 
 /**************************************************************************************************/
@@ -539,6 +546,12 @@
     #if !defined(NRF_TRUSTZONE_NONSECURE)
         #define GPIO_DETECTMODE_ACCESSIBLE 1
     #endif
+
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn VPRCLIC_0_IRQn
+        #define VPRCLIC_IRQN_MIN   0
+        #define VPRCLIC_IRQN_MAX   31
+    #endif
 #endif
 
 /**************************************************************************************************/
@@ -607,6 +620,12 @@
 
     #if !defined(NRF_TRUSTZONE_NONSECURE)
         #define GPIO_DETECTMODE_ACCESSIBLE 1
+    #endif
+
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn VPRCLIC_0_IRQn
+        #define VPRCLIC_IRQN_MIN   0
+        #define VPRCLIC_IRQN_MAX   31
     #endif
 #endif
 
@@ -677,6 +696,12 @@
     #if !defined(NRF_TRUSTZONE_NONSECURE)
         #define GPIO_DETECTMODE_ACCESSIBLE 1
     #endif
+
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn VPRCLIC_0_IRQn
+        #define VPRCLIC_IRQN_MIN   0
+        #define VPRCLIC_IRQN_MAX   31
+    #endif
 #endif
 
 /**************************************************************************************************/
@@ -743,6 +768,12 @@
 
     #if !defined(NRF_TRUSTZONE_NONSECURE)
         #define GPIO_DETECTMODE_ACCESSIBLE 1
+    #endif
+
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn VPRCLIC_0_IRQn
+        #define VPRCLIC_IRQN_MIN   0
+        #define VPRCLIC_IRQN_MAX   31
     #endif
 #endif
 
@@ -818,6 +849,12 @@
     #if !defined(NRF_TRUSTZONE_NONSECURE)
         #define GPIO_DETECTMODE_ACCESSIBLE 1
     #endif
+
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn VPRCLIC_0_IRQn
+        #define VPRCLIC_IRQN_MIN   0
+        #define VPRCLIC_IRQN_MAX   31
+    #endif
 #endif
 
 /**************************************************************************************************/
@@ -892,6 +929,12 @@
     #if !defined(NRF_TRUSTZONE_NONSECURE)
         #define GPIO_DETECTMODE_ACCESSIBLE 1
     #endif
+
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn VPRCLIC_0_IRQn
+        #define VPRCLIC_IRQN_MIN   0
+        #define VPRCLIC_IRQN_MAX   31
+    #endif
 #endif
 
 /**************************************************************************************************/
@@ -939,6 +982,12 @@
     #define DELAY_RISCV_SLOWDOWN 15
 
     #define GPIO_DETECTMODE_ACCESSIBLE 1
+
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn VPRCLIC_0_IRQn
+        #define VPRCLIC_IRQN_MIN   0
+        #define VPRCLIC_IRQN_MAX   31
+    #endif
 #endif
 
 /**************************************************************************************************/
@@ -986,6 +1035,12 @@
     #define DELAY_RISCV_SLOWDOWN 15
 
     #define GPIO_DETECTMODE_ACCESSIBLE 1
+
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn VPRCLIC_0_IRQn
+        #define VPRCLIC_IRQN_MIN   0
+        #define VPRCLIC_IRQN_MAX   31
+    #endif
 #endif
 
 /**************************************************************************************************/
@@ -1053,6 +1108,12 @@
     #if !defined(NRF_TRUSTZONE_NONSECURE)
         #define GPIO_DETECTMODE_ACCESSIBLE 1
     #endif
+
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn VPRCLIC_0_IRQn
+        #define VPRCLIC_IRQN_MIN   0
+        #define VPRCLIC_IRQN_MAX   31
+    #endif
 #endif
 
 /**************************************************************************************************/
@@ -1063,7 +1124,8 @@
 /* Start fixups section for NRF7120_ENGA_XXAA                                                     */
 /**************************************************************************************************/
 
-#if defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
+#if defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
 
     #define ADDRESS_BUS_Pos (18UL)
     #define ADDRESS_BUS_Msk (0x3FUL << ADDRESS_BUS_Pos)
@@ -1128,6 +1190,12 @@
 
     #if !defined(NRF_TRUSTZONE_NONSECURE)
         #define GPIO_DETECTMODE_ACCESSIBLE 1
+    #endif
+
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn (VPRCLIC_16_IRQn - 16)
+        #define VPRCLIC_IRQN_MIN   16
+        #define VPRCLIC_IRQN_MAX   22
     #endif
 #endif
 
@@ -1381,6 +1449,14 @@
     #ifdef UICR_SECONDARY_ADDRESS_ADDRESS_Msk
         #undef UICR_SECONDARY_ADDRESS_ADDRESS_Msk
     #endif
+
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn VPRCLIC_0_IRQn
+        #define VPRCLIC_IRQN_MIN   0
+        #define VPRCLIC_IRQN_MAX   31
+    #endif
+
+    #define INSTANCE_12X_FREQUENCY 256
 #endif
 /**************************************************************************************************/
 /* End fixups section for NRF9220_XXAA                                                            */
@@ -1647,6 +1723,14 @@
     #define DPPI_TYPE_IPCT
 
     #define DOMAIN_FLPR
+
+    #if defined(__VPR_REV)
+        #define VPRCLIC_START_IRQn VPRCLIC_0_IRQn
+        #define VPRCLIC_IRQN_MIN   0
+        #define VPRCLIC_IRQN_MAX   31
+    #endif
+
+    #define INSTANCE_12X_FREQUENCY 320
 #endif /* defined(NRF9230_ENGB_XXAA) */
 
 /**************************************************************************************************/

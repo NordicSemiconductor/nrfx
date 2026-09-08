@@ -1,6 +1,24 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [4.6.0] - 2026-09-08
+
+### Added
+- Added support for nRF7120 and nRF7120E SoCs.
+- Added driver for the LFRC peripheral.
+- Added the vpr_vio_pins helper layer for mapping between GPIO pins and VPR VIO bit indices.
+
+### Changed
+- Updated MDK to version 9.1.0.
+- Deprecated support for nRF7120 Eng A and nRF7120E Eng A SoCs.
+
+### Fixed
+- Fixed incorrect 256MHz base frequency assignment for driver peripheral instances in SPIM, TIMER and UARTE HALs.
+- Fixed incorrect conditions for presence of CRACEN detection features in the TAMPC HAL.
+
+### Removed
+- Removed the legacy GPPI helper layer.
+
 ## [4.5.0] - 2026-07-23
 
 ### Added

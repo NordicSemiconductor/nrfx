@@ -46,7 +46,7 @@ extern "C" {
  * @defgroup nrfx_clock_hfclk HFCLK driver
  * @{
  * @ingroup nrf_clock
- * @brief   HFCLK CLOCK peripheral driver.
+ * @brief   HFCLK clock driver.
  */
 
 /** @brief HFCLK clock event. */
@@ -56,9 +56,9 @@ extern "C" {
 typedef void (*nrfx_clock_hfclk_event_handler_t)(void);
 
 /**
- * @brief Function for initializing internal structures in the HFCLK clock.
+ * @brief Function for initializing the HFCLK driver.
  *
- * After initialization, the HFCLK is in power off state (clock is not started).
+ * After initialization, the HFCLK driver is in power off state (clock is not started).
  *
  * @param[in] event_handler Event handler provided by the user.
  *                          If not provided, driver works in blocking mode.
@@ -76,7 +76,7 @@ int nrfx_clock_hfclk_init(nrfx_clock_hfclk_event_handler_t event_handler);
  */
 bool nrfx_clock_hfclk_init_check(void);
 
-/** @brief Function for uninitializing the HFCLK clock. */
+/** @brief Function for uninitializing the HFCLK driver. */
 void nrfx_clock_hfclk_uninit(void);
 
 /** @brief Function for starting the HFCLK clock. */
@@ -102,12 +102,12 @@ NRFX_STATIC_INLINE nrf_clock_hfclk_div_t nrfx_clock_hfclk_divider_get(void);
 #endif
 
 /**
- * @brief Function for checking the HFCLK state.
+ * @brief Function for checking the HFCLK clock state.
  *
  * @param[out] p_clk_src Pointer to a clock source that is running.
  *
- * @retval true  The HFCLK is running.
- * @retval false The HFCLK is not running.
+ * @retval true  The HFCLK clock is running.
+ * @retval false The HFCLK clock is not running.
  */
 NRFX_STATIC_INLINE bool nrfx_clock_hfclk_running_check(nrf_clock_hfclk_t * p_clk_src);
 

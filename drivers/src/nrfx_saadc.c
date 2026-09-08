@@ -397,7 +397,7 @@ int nrfx_saadc_init(uint8_t interrupt_priority)
     }
 #endif
 
-    if (NRF_ERRATA_DYNAMIC_CHECK(54H, 236))
+    if (NRF_ERRATA_DYNAMIC_CHECK(54H, 236) || NRF_ERRATA_DYNAMIC_CHECK(92, 236))
     {
         *((volatile uint32_t *)((uint8_t *)NRF_SAADC + 0x63C)) = 0x10000000UL;
     }
@@ -881,7 +881,7 @@ static void saadc_disable(void)
     NRFY_IRQ_PENDING_CLEAR(nrfx_get_irq_number(NRF_SAADC));
     nrfy_saadc_disable(NRF_SAADC);
     if (NRF_ERRATA_DYNAMIC_CHECK(54H, 233) || NRF_ERRATA_DYNAMIC_CHECK(54L, 101) ||
-        NRF_ERRATA_DYNAMIC_CHECK(71, 101))
+        NRF_ERRATA_DYNAMIC_CHECK(71, 101) || NRF_ERRATA_DYNAMIC_CHECK(92, 233))
     {
         nrfy_saadc_disable(NRF_SAADC);
     }

@@ -4700,7 +4700,8 @@ typedef struct {
     __IOM uint32_t INTEN;                            /*!< (@ 0x00000300) Enable or disable interrupt                           */
     __IOM uint32_t INTENSET;                         /*!< (@ 0x00000304) Enable interrupt                                      */
     __IOM uint32_t INTENCLR;                         /*!< (@ 0x00000308) Disable interrupt                                     */
-    __IM uint32_t RESERVED2[125];
+    __IM uint32_t INTPEND;                           /*!< (@ 0x0000030C) Pending interrupts                                    */
+    __IM uint32_t RESERVED2[124];
     __IOM uint32_t LOCK;                             /*!< (@ 0x00000500) Register to lock the certain parts of the CPU from
                                                                          being modified.*/
     __IM uint32_t CPUID;                             /*!< (@ 0x00000504) The identifier for the CPU in this subsystem.         */
@@ -4950,6 +4951,58 @@ typedef struct {
   #define CPUC_INTENCLR_FPUIDC_Clear (0x1UL)         /*!< Disable                                                              */
   #define CPUC_INTENCLR_FPUIDC_Disabled (0x0UL)      /*!< Read: Disabled                                                       */
   #define CPUC_INTENCLR_FPUIDC_Enabled (0x1UL)       /*!< Read: Enabled                                                        */
+
+
+/* CPUC_INTPEND: Pending interrupts */
+  #define CPUC_INTPEND_ResetValue (0x00000000UL)     /*!< Reset value of INTPEND register.                                     */
+
+/* FPUIOC @Bit 0 : Read pending status of interrupt for event FPUIOC */
+  #define CPUC_INTPEND_FPUIOC_Pos (0UL)              /*!< Position of FPUIOC field.                                            */
+  #define CPUC_INTPEND_FPUIOC_Msk (0x1UL << CPUC_INTPEND_FPUIOC_Pos) /*!< Bit mask of FPUIOC field.                            */
+  #define CPUC_INTPEND_FPUIOC_Min (0x0UL)            /*!< Min enumerator value of FPUIOC field.                                */
+  #define CPUC_INTPEND_FPUIOC_Max (0x1UL)            /*!< Max enumerator value of FPUIOC field.                                */
+  #define CPUC_INTPEND_FPUIOC_NotPending (0x0UL)     /*!< Read: Not pending                                                    */
+  #define CPUC_INTPEND_FPUIOC_Pending (0x1UL)        /*!< Read: Pending                                                        */
+
+/* FPUDZC @Bit 1 : Read pending status of interrupt for event FPUDZC */
+  #define CPUC_INTPEND_FPUDZC_Pos (1UL)              /*!< Position of FPUDZC field.                                            */
+  #define CPUC_INTPEND_FPUDZC_Msk (0x1UL << CPUC_INTPEND_FPUDZC_Pos) /*!< Bit mask of FPUDZC field.                            */
+  #define CPUC_INTPEND_FPUDZC_Min (0x0UL)            /*!< Min enumerator value of FPUDZC field.                                */
+  #define CPUC_INTPEND_FPUDZC_Max (0x1UL)            /*!< Max enumerator value of FPUDZC field.                                */
+  #define CPUC_INTPEND_FPUDZC_NotPending (0x0UL)     /*!< Read: Not pending                                                    */
+  #define CPUC_INTPEND_FPUDZC_Pending (0x1UL)        /*!< Read: Pending                                                        */
+
+/* FPUOFC @Bit 2 : Read pending status of interrupt for event FPUOFC */
+  #define CPUC_INTPEND_FPUOFC_Pos (2UL)              /*!< Position of FPUOFC field.                                            */
+  #define CPUC_INTPEND_FPUOFC_Msk (0x1UL << CPUC_INTPEND_FPUOFC_Pos) /*!< Bit mask of FPUOFC field.                            */
+  #define CPUC_INTPEND_FPUOFC_Min (0x0UL)            /*!< Min enumerator value of FPUOFC field.                                */
+  #define CPUC_INTPEND_FPUOFC_Max (0x1UL)            /*!< Max enumerator value of FPUOFC field.                                */
+  #define CPUC_INTPEND_FPUOFC_NotPending (0x0UL)     /*!< Read: Not pending                                                    */
+  #define CPUC_INTPEND_FPUOFC_Pending (0x1UL)        /*!< Read: Pending                                                        */
+
+/* FPUUFC @Bit 3 : Read pending status of interrupt for event FPUUFC */
+  #define CPUC_INTPEND_FPUUFC_Pos (3UL)              /*!< Position of FPUUFC field.                                            */
+  #define CPUC_INTPEND_FPUUFC_Msk (0x1UL << CPUC_INTPEND_FPUUFC_Pos) /*!< Bit mask of FPUUFC field.                            */
+  #define CPUC_INTPEND_FPUUFC_Min (0x0UL)            /*!< Min enumerator value of FPUUFC field.                                */
+  #define CPUC_INTPEND_FPUUFC_Max (0x1UL)            /*!< Max enumerator value of FPUUFC field.                                */
+  #define CPUC_INTPEND_FPUUFC_NotPending (0x0UL)     /*!< Read: Not pending                                                    */
+  #define CPUC_INTPEND_FPUUFC_Pending (0x1UL)        /*!< Read: Pending                                                        */
+
+/* FPUIXC @Bit 4 : Read pending status of interrupt for event FPUIXC */
+  #define CPUC_INTPEND_FPUIXC_Pos (4UL)              /*!< Position of FPUIXC field.                                            */
+  #define CPUC_INTPEND_FPUIXC_Msk (0x1UL << CPUC_INTPEND_FPUIXC_Pos) /*!< Bit mask of FPUIXC field.                            */
+  #define CPUC_INTPEND_FPUIXC_Min (0x0UL)            /*!< Min enumerator value of FPUIXC field.                                */
+  #define CPUC_INTPEND_FPUIXC_Max (0x1UL)            /*!< Max enumerator value of FPUIXC field.                                */
+  #define CPUC_INTPEND_FPUIXC_NotPending (0x0UL)     /*!< Read: Not pending                                                    */
+  #define CPUC_INTPEND_FPUIXC_Pending (0x1UL)        /*!< Read: Pending                                                        */
+
+/* FPUIDC @Bit 5 : Read pending status of interrupt for event FPUIDC */
+  #define CPUC_INTPEND_FPUIDC_Pos (5UL)              /*!< Position of FPUIDC field.                                            */
+  #define CPUC_INTPEND_FPUIDC_Msk (0x1UL << CPUC_INTPEND_FPUIDC_Pos) /*!< Bit mask of FPUIDC field.                            */
+  #define CPUC_INTPEND_FPUIDC_Min (0x0UL)            /*!< Min enumerator value of FPUIDC field.                                */
+  #define CPUC_INTPEND_FPUIDC_Max (0x1UL)            /*!< Max enumerator value of FPUIDC field.                                */
+  #define CPUC_INTPEND_FPUIDC_NotPending (0x0UL)     /*!< Read: Not pending                                                    */
+  #define CPUC_INTPEND_FPUIDC_Pending (0x1UL)        /*!< Read: Pending                                                        */
 
 
 /* CPUC_LOCK: Register to lock the certain parts of the CPU from being modified. */
@@ -11631,16 +11684,16 @@ typedef struct {
   * @brief INFO [FICR_INFO] Device info
   */
 typedef struct {
-  __IM  uint32_t  CONFIGID;                          /*!< (@ 0x00000000) Configuration identifier                              */
-  __IM  uint32_t  DEVICEID[2];                       /*!< (@ 0x00000004) Device identifier                                     */
-  __IM  uint32_t  UUID[4];                           /*!< (@ 0x0000000C) 128-bit Universally Unique IDentifier (UUID).         */
-  __IM  uint32_t  PART;                              /*!< (@ 0x0000001C) Part code                                             */
-  __IM  uint32_t  VARIANT;                           /*!< (@ 0x00000020) Function variant code, Hardware version code, and
+  __IOM uint32_t  CONFIGID;                          /*!< (@ 0x00000000) Configuration identifier                              */
+  __IOM uint32_t  DEVICEID[2];                       /*!< (@ 0x00000004) Device identifier                                     */
+  __IOM uint32_t  UUID[4];                           /*!< (@ 0x0000000C) 128-bit Universally Unique IDentifier (UUID).         */
+  __IOM uint32_t  PART;                              /*!< (@ 0x0000001C) Part code                                             */
+  __IOM uint32_t  VARIANT;                           /*!< (@ 0x00000020) Function variant code, Hardware version code, and
                                                                          Production configuration code encoded as ASCII.*/
-  __IM  uint32_t  PACKAGE;                           /*!< (@ 0x00000024) Package option                                        */
-  __IM  uint32_t  RAM;                               /*!< (@ 0x00000028) RAM size (KB)                                         */
+  __IOM uint32_t  PACKAGE;                           /*!< (@ 0x00000024) Package option                                        */
+  __IOM uint32_t  RAM;                               /*!< (@ 0x00000028) RAM size (KB)                                         */
   __IM  uint32_t  RESERVED;
-  __IM  uint32_t  MRAM;                              /*!< (@ 0x00000030) MRAM size (KB)                                        */
+  __IOM uint32_t  MRAM;                              /*!< (@ 0x00000030) MRAM size (KB)                                        */
 } NRF_FICR_INFO_Type;                                /*!< Size = 52 (0x034)                                                    */
 
 /* FICR_INFO_CONFIGID: Configuration identifier */
@@ -11740,8 +11793,8 @@ typedef struct {
   * @brief TRIMCNF [FICR_TRIMCNF] (unspecified)
   */
 typedef struct {
-  __IM  uint32_t  ADDR;                              /*!< (@ 0x00000000) Address of the register which will be written         */
-  __IM  uint32_t  DATA;                              /*!< (@ 0x00000004) Data to be written into the register                  */
+  __IOM uint32_t  ADDR;                              /*!< (@ 0x00000000) Address of the register which will be written         */
+  __IOM uint32_t  DATA;                              /*!< (@ 0x00000004) Data to be written into the register                  */
 } NRF_FICR_TRIMCNF_Type;                             /*!< Size = 8 (0x008)                                                     */
   #define FICR_TRIMCNF_MaxCount (128UL)              /*!< Size of TRIMCNF[128] array.                                          */
   #define FICR_TRIMCNF_MaxIndex (127UL)              /*!< Max index of TRIMCNF[128] array.                                     */
@@ -11769,16 +11822,16 @@ typedef struct {
   * @brief NFC [FICR_NFC] (unspecified)
   */
 typedef struct {
-  __IM  uint32_t  TAGHEADER0;                        /*!< (@ 0x00000000) Default header for NFC Tag. Software can read these
+  __IOM uint32_t  TAGHEADER0;                        /*!< (@ 0x00000000) Default header for NFC Tag. Software can read these
                                                                          values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and
                                                                          NFCID1_LAST.*/
-  __IM  uint32_t  TAGHEADER1;                        /*!< (@ 0x00000004) Default header for NFC Tag. Software can read these
+  __IOM uint32_t  TAGHEADER1;                        /*!< (@ 0x00000004) Default header for NFC Tag. Software can read these
                                                                          values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and
                                                                          NFCID1_LAST.*/
-  __IM  uint32_t  TAGHEADER2;                        /*!< (@ 0x00000008) Default header for NFC Tag. Software can read these
+  __IOM uint32_t  TAGHEADER2;                        /*!< (@ 0x00000008) Default header for NFC Tag. Software can read these
                                                                          values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and
                                                                          NFCID1_LAST.*/
-  __IM  uint32_t  TAGHEADER3;                        /*!< (@ 0x0000000C) Default header for NFC Tag. Software can read these
+  __IOM uint32_t  TAGHEADER3;                        /*!< (@ 0x0000000C) Default header for NFC Tag. Software can read these
                                                                          values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and
                                                                          NFCID1_LAST.*/
 } NRF_FICR_NFC_Type;                                 /*!< Size = 16 (0x010)                                                    */
@@ -11877,8 +11930,8 @@ typedef struct {
   * @brief MACADDR [FICR_MACADDR] 48-bit MAC address n
   */
 typedef struct {
-  __IM  uint32_t  LOW;                               /*!< (@ 0x00000000) Lower 24 bits of MAC address n                        */
-  __IM  uint32_t  HIGH;                              /*!< (@ 0x00000004) Upper 24 bits of MAC address n                        */
+  __IOM uint32_t  LOW;                               /*!< (@ 0x00000000) Lower 24 bits of MAC address n                        */
+  __IOM uint32_t  HIGH;                              /*!< (@ 0x00000004) Upper 24 bits of MAC address n                        */
 } NRF_FICR_MACADDR_Type;                             /*!< Size = 8 (0x008)                                                     */
   #define FICR_MACADDR_MaxCount (2UL)                /*!< Size of MACADDR[2] array.                                            */
   #define FICR_MACADDR_MaxIndex (1UL)                /*!< Max index of MACADDR[2] array.                                       */
@@ -11906,10 +11959,10 @@ typedef struct {
   * @brief XTALCOMP [FICR_XTALCOMP] Crystal oscillator (XTAL) temperature compensation data
   */
 typedef struct {
-  __IM  uint32_t  OFFSET;                            /*!< (@ 0x00000000) Measured XTAL frequency error at room temperature     */
-  __IM  uint32_t  LOWTEMPTHRESHOLD;                  /*!< (@ 0x00000004) Low temperature threshold for frequency skew
+  __IOM uint32_t  OFFSET;                            /*!< (@ 0x00000000) Measured XTAL frequency error at room temperature     */
+  __IOM uint32_t  LOWTEMPTHRESHOLD;                  /*!< (@ 0x00000004) Low temperature threshold for frequency skew
                                                                          compensation*/
-  __IM  uint32_t  LOWTEMPADJUST;                     /*!< (@ 0x00000008) Frequency adjustment applied below the low temperature
+  __IOM uint32_t  LOWTEMPADJUST;                     /*!< (@ 0x00000008) Frequency adjustment applied below the low temperature
                                                                          threshold*/
   __IM  uint32_t  RESERVED[5];
 } NRF_FICR_XTALCOMP_Type;                            /*!< Size = 32 (0x020)                                                    */
@@ -11948,10 +12001,10 @@ typedef struct {
     __IM uint32_t RESERVED[192];
     __IOM NRF_FICR_INFO_Type INFO;                   /*!< (@ 0x00000300) Device info                                           */
     __IM uint32_t RESERVED1[19];
-    __IM uint32_t ER[4];                             /*!< (@ 0x00000380) Common encryption root key, word n                    */
-    __IM uint32_t IR[4];                             /*!< (@ 0x00000390) Common identity root key, word n                      */
-    __IM uint32_t DEVICEADDRTYPE;                    /*!< (@ 0x000003A0) Device address type                                   */
-    __IM uint32_t DEVICEADDR[2];                     /*!< (@ 0x000003A4) Device address n                                      */
+    __IOM uint32_t ER[4];                            /*!< (@ 0x00000380) Common encryption root key, word n                    */
+    __IOM uint32_t IR[4];                            /*!< (@ 0x00000390) Common identity root key, word n                      */
+    __IOM uint32_t DEVICEADDRTYPE;                   /*!< (@ 0x000003A0) Device address type                                   */
+    __IOM uint32_t DEVICEADDR[2];                    /*!< (@ 0x000003A4) Device address n                                      */
     __IM uint32_t RESERVED2[21];
     __IOM NRF_FICR_TRIMCNF_Type TRIMCNF[128];        /*!< (@ 0x00000400) (unspecified)                                         */
     __IM uint32_t RESERVED3[64];
@@ -31633,8 +31686,8 @@ typedef struct {
                                                                          a bus error occurs, these registers will contain the
                                                                          address that cause the error.*/
   __IM  uint32_t  JOBCOUNT;                          /*!< (@ 0x0000000C) Number of completed jobs in the current Source
-                                                                         descriptor list. This resets to 0 when a new joblist is
-                                                                         started.*/
+                                                                         descriptor list. This resets to 0 when a new job list
+                                                                         is started.*/
 } NRF_MVDMA_SOURCE_Type;                             /*!< Size = 16 (0x010)                                                    */
 
 /* MVDMA_SOURCE_LISTPTR: Start address of Source job list or list of job list pointers, depending on value of CONFIG.MODE. */
@@ -31654,10 +31707,11 @@ typedef struct {
   #define MVDMA_SOURCE_BUSERROR_BUSERROR_Min (0x0UL) /*!< Min enumerator value of BUSERROR field.                              */
   #define MVDMA_SOURCE_BUSERROR_BUSERROR_Max (0x2UL) /*!< Max enumerator value of BUSERROR field.                              */
   #define MVDMA_SOURCE_BUSERROR_BUSERROR_NoError (0x0UL) /*!< There are no errors.                                             */
-  #define MVDMA_SOURCE_BUSERROR_BUSERROR_ReadError (0x1UL) /*!< Error related to memory when reading joblist, or error related
+  #define MVDMA_SOURCE_BUSERROR_BUSERROR_ReadError (0x1UL) /*!< Error related to memory when reading job list, or error related
                                                                 to memory/register when reading data.*/
-  #define MVDMA_SOURCE_BUSERROR_BUSERROR_ReadDecodeError (0x2UL) /*!< Error related to the joblist address when reading joblist,
-                                                                      or error related to address when reading memory/register.*/
+  #define MVDMA_SOURCE_BUSERROR_BUSERROR_ReadDecodeError (0x2UL) /*!< Error related to the job list address when reading job
+                                                                      list, or error related to address when reading
+                                                                      memory/register.*/
 
 
 /* MVDMA_SOURCE_ADDRESS: Latest address being accessed on the Source channel.If a bus error occurs, these registers will contain
@@ -31670,8 +31724,8 @@ typedef struct {
   #define MVDMA_SOURCE_ADDRESS_ADDRESS_Msk (0xFFFFFFFFUL << MVDMA_SOURCE_ADDRESS_ADDRESS_Pos) /*!< Bit mask of ADDRESS field.  */
 
 
-/* MVDMA_SOURCE_JOBCOUNT: Number of completed jobs in the current Source descriptor list. This resets to 0 when a new joblist is
-                           started. */
+/* MVDMA_SOURCE_JOBCOUNT: Number of completed jobs in the current Source descriptor list. This resets to 0 when a new job list
+                           is started. */
 
   #define MVDMA_SOURCE_JOBCOUNT_ResetValue (0x00000000UL) /*!< Reset value of JOBCOUNT register.                               */
 
@@ -31693,7 +31747,7 @@ typedef struct {
                                                                          bus error occurs, these registers will contain the
                                                                          address that cause the error.*/
   __IM  uint32_t  JOBCOUNT;                          /*!< (@ 0x0000000C) Number of completed jobs in the current Sink descriptor
-                                                                         list. This resets to 0 when a new joblist is started.*/
+                                                                         list. This resets to 0 when a new job list is started.*/
 } NRF_MVDMA_SINK_Type;                               /*!< Size = 16 (0x010)                                                    */
 
 /* MVDMA_SINK_LISTPTR: Start address of Sink job list or list of job list pointers, depending on value of CONFIG.MODE. */
@@ -31713,8 +31767,9 @@ typedef struct {
   #define MVDMA_SINK_BUSERROR_BUSERROR_Min (0x0UL)   /*!< Min enumerator value of BUSERROR field.                              */
   #define MVDMA_SINK_BUSERROR_BUSERROR_Max (0x4UL)   /*!< Max enumerator value of BUSERROR field.                              */
   #define MVDMA_SINK_BUSERROR_BUSERROR_NoError (0x0UL) /*!< There are no errors.                                               */
-  #define MVDMA_SINK_BUSERROR_BUSERROR_ReadError (0x1UL) /*!< Error related to memory when reading joblist.                    */
-  #define MVDMA_SINK_BUSERROR_BUSERROR_ReadDecodeError (0x2UL) /*!< Error related to the joblist address when reading joblist. */
+  #define MVDMA_SINK_BUSERROR_BUSERROR_ReadError (0x1UL) /*!< Error related to memory when reading job list.                   */
+  #define MVDMA_SINK_BUSERROR_BUSERROR_ReadDecodeError (0x2UL) /*!< Error related to the job list address when reading job
+                                                                    list.*/
   #define MVDMA_SINK_BUSERROR_BUSERROR_WriteError (0x3UL) /*!< Error related to memory/register when writing data.             */
   #define MVDMA_SINK_BUSERROR_BUSERROR_WriteDecodeError (0x4UL) /*!< Error related to the memory/register address when writing
                                                                      data.*/
@@ -31730,7 +31785,7 @@ typedef struct {
   #define MVDMA_SINK_ADDRESS_ADDRESS_Msk (0xFFFFFFFFUL << MVDMA_SINK_ADDRESS_ADDRESS_Pos) /*!< Bit mask of ADDRESS field.      */
 
 
-/* MVDMA_SINK_JOBCOUNT: Number of completed jobs in the current Sink descriptor list. This resets to 0 when a new joblist is
+/* MVDMA_SINK_JOBCOUNT: Number of completed jobs in the current Sink descriptor list. This resets to 0 when a new job list is
                          started. */
 
   #define MVDMA_SINK_JOBCOUNT_ResetValue (0x00000000UL) /*!< Reset value of JOBCOUNT register.                                 */
@@ -42655,7 +42710,7 @@ typedef struct {
   #define RESET_RESETREAS_LOCKUP_NotDetected (0x0UL) /*!< Not detected                                                         */
   #define RESET_RESETREAS_LOCKUP_Detected (0x1UL)    /*!< Detected                                                             */
 
-/* OFF @Bit 8 : Reset due to wakeup from System OFF mode when wakeup is triggered by DETECT signal from GPIO */
+/* OFF @Bit 8 : Reset due to wake-up from System OFF mode when wake-up is triggered by DETECT signal from GPIO */
   #define RESET_RESETREAS_OFF_Pos (8UL)              /*!< Position of OFF field.                                               */
   #define RESET_RESETREAS_OFF_Msk (0x1UL << RESET_RESETREAS_OFF_Pos) /*!< Bit mask of OFF field.                               */
   #define RESET_RESETREAS_OFF_Min (0x0UL)            /*!< Min enumerator value of OFF field.                                   */
@@ -42663,7 +42718,7 @@ typedef struct {
   #define RESET_RESETREAS_OFF_NotDetected (0x0UL)    /*!< Not detected                                                         */
   #define RESET_RESETREAS_OFF_Detected (0x1UL)       /*!< Detected                                                             */
 
-/* LPCOMP @Bit 9 : Reset due to wakeup from System OFF mode when wakeup is triggered by ANADETECT signal from LPCOMP */
+/* LPCOMP @Bit 9 : Reset due to wake-up from System OFF mode when wake-up is triggered by ANADETECT signal from LPCOMP */
   #define RESET_RESETREAS_LPCOMP_Pos (9UL)           /*!< Position of LPCOMP field.                                            */
   #define RESET_RESETREAS_LPCOMP_Msk (0x1UL << RESET_RESETREAS_LPCOMP_Pos) /*!< Bit mask of LPCOMP field.                      */
   #define RESET_RESETREAS_LPCOMP_Min (0x0UL)         /*!< Min enumerator value of LPCOMP field.                                */
@@ -42679,7 +42734,7 @@ typedef struct {
   #define RESET_RESETREAS_DIF_NotDetected (0x0UL)    /*!< Not detected                                                         */
   #define RESET_RESETREAS_DIF_Detected (0x1UL)       /*!< Detected                                                             */
 
-/* GRTC @Bit 11 : Reset due to wakeup from GRTC */
+/* GRTC @Bit 11 : Reset due to wake-up from GRTC */
   #define RESET_RESETREAS_GRTC_Pos (11UL)            /*!< Position of GRTC field.                                              */
   #define RESET_RESETREAS_GRTC_Msk (0x1UL << RESET_RESETREAS_GRTC_Pos) /*!< Bit mask of GRTC field.                            */
   #define RESET_RESETREAS_GRTC_Min (0x0UL)           /*!< Min enumerator value of GRTC field.                                  */
@@ -42687,7 +42742,7 @@ typedef struct {
   #define RESET_RESETREAS_GRTC_NotDetected (0x0UL)   /*!< Not detected                                                         */
   #define RESET_RESETREAS_GRTC_Detected (0x1UL)      /*!< Detected                                                             */
 
-/* NFC @Bit 12 : Reset after wakeup from System OFF mode due to NFC field being detected */
+/* NFC @Bit 12 : Reset after wake-up from System OFF mode due to NFC field being detected */
   #define RESET_RESETREAS_NFC_Pos (12UL)             /*!< Position of NFC field.                                               */
   #define RESET_RESETREAS_NFC_Msk (0x1UL << RESET_RESETREAS_NFC_Pos) /*!< Bit mask of NFC field.                               */
   #define RESET_RESETREAS_NFC_Min (0x0UL)            /*!< Min enumerator value of NFC field.                                   */
@@ -42703,7 +42758,7 @@ typedef struct {
   #define RESET_RESETREAS_SECTAMPER_NotDetected (0x0UL) /*!< Not detected                                                      */
   #define RESET_RESETREAS_SECTAMPER_Detected (0x1UL) /*!< Detected                                                             */
 
-/* VBUS @Bit 14 : Reset after wakeup from System OFF mode due to VBUS rising into valid range */
+/* VBUS @Bit 14 : Reset after wake-up from System OFF mode due to VBUS rising into valid range */
   #define RESET_RESETREAS_VBUS_Pos (14UL)            /*!< Position of VBUS field.                                              */
   #define RESET_RESETREAS_VBUS_Msk (0x1UL << RESET_RESETREAS_VBUS_Pos) /*!< Bit mask of VBUS field.                            */
   #define RESET_RESETREAS_VBUS_Min (0x0UL)           /*!< Min enumerator value of VBUS field.                                  */
@@ -80168,7 +80223,18 @@ typedef struct {
     __IOM NRF_WICR_FIRMWARE_Type FIRMWARE;           /*!< (@ 0x00000000) (unspecified)                                         */
     __IM uint32_t RESERVED[28];
     __IOM NRF_WICR_IPCCONFIG_Type IPCCONFIG;         /*!< (@ 0x00000080) (unspecified)                                         */
-  } NRF_WICR_Type;                                   /*!< Size = 152 (0x098)                                                   */
+    __IM uint32_t RESERVED1[26];
+    __IOM uint32_t VTFDATA;                          /*!< (@ 0x00000100) Pointer to memory location containing VTF data from the
+                                                                         VTF monitoring system*/
+  } NRF_WICR_Type;                                   /*!< Size = 260 (0x104)                                                   */
+
+/* WICR_VTFDATA: Pointer to memory location containing VTF data from the VTF monitoring system */
+  #define WICR_VTFDATA_ResetValue (0xFFFFFFFFUL)     /*!< Reset value of VTFDATA register.                                     */
+
+/* ADDRESS @Bits 0..31 : Address of the VTF monitoring data in RAM */
+  #define WICR_VTFDATA_ADDRESS_Pos (0UL)             /*!< Position of ADDRESS field.                                           */
+  #define WICR_VTFDATA_ADDRESS_Msk (0xFFFFFFFFUL << WICR_VTFDATA_ADDRESS_Pos) /*!< Bit mask of ADDRESS field.                  */
+
 
 #endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
 

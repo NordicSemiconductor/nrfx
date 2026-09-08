@@ -52,6 +52,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define CPUC_PRESENT 1
 #define CPUC_COUNT 1
 
+#define CPUC_HAS_INTPEND 0                           /*!< (unspecified)                                                        */
+#define CPUC_FPUAVAILABLE 1                          /*!< FPU events available                                                 */
+
 /*Cache*/
 #define CACHE_PRESENT 1
 #define CACHE_COUNT 1

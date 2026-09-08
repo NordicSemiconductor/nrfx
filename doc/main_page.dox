@@ -94,7 +94,7 @@ website:
 
 @section nrfx_samples nrfx samples
 
-You can refer to the <a href="https://docs.nordicsemi.com/bundle/nrfx_samples_3.8.0/page/index.html">latest release of nrfx samples</a> for the usage examples of nrfx drivers within Zephyr RTOS.
+You can refer to the <a href="https://nrfconnectdocs.nordicsemi.com/ncs/latest/nrfx/html/nrfx_examples_desc.html">latest release of nrfx samples</a> for the usage examples of nrfx drivers within Zephyr RTOS.
 
 @section HALY
 

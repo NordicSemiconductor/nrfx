@@ -46,7 +46,8 @@ extern "C" {
 #define ANALOG_REF_INTERNAL_VAL 1350
 #elif defined(NRF9220_XXAA) || defined(NRF9230_ENGB_XXAA) ||  \
     defined(NRF54H20_XXAA) || defined(NRF7120_ENGA_XXAA) || \
-    defined(NRF7120E_ENGA_XXAA) || defined(NRF54LS05B_XXAA) || \
+    defined(NRF7120E_ENGA_XXAA) || defined(NRF7120_XXAA) || \
+    defined(NRF7120E_XXAA)|| defined(NRF54LS05B_XXAA) || \
     defined(NRF54LS05A_XXAA)
 #define ANALOG_REF_INTERNAL_VAL 1024
 #elif defined(NRF54L_SERIES)
@@ -103,7 +104,8 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1),  \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1)
-#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     #define COMP_EXTERNAL_AIN_PSELS                     \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 0),              \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 0),              \
@@ -113,7 +115,6 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 0),              \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 0),              \
         NRF_PIN_PORT_TO_PIN_NUMBER(8U, 0),              \
-        (nrf_comp_input_t)NRFX_COMP_INPUT_NOT_PRESENT,  \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 4),              \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4)
 #else /* legacy platforms */
@@ -180,7 +181,8 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1),
-#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     #define COMP_EXTERNAL_REF_PSELS                      \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 0),               \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 0),               \
@@ -190,7 +192,6 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 0),               \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 0),               \
         NRF_PIN_PORT_TO_PIN_NUMBER(8U, 0),               \
-        (nrf_comp_ext_ref_t)NRFX_COMP_INPUT_NOT_PRESENT, \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 4),               \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4)
 #else /* legacy platforms */
@@ -257,7 +258,8 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1),
-#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     #define LPCOMP_EXTERNAL_AIN_PSELS                      \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 0),                 \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 0),                 \
@@ -268,8 +270,9 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 0),                 \
         NRF_PIN_PORT_TO_PIN_NUMBER(8U, 0),                 \
         (nrf_lpcomp_input_t)NRFX_LPCOMP_INPUT_NOT_PRESENT, \
-        NRF_PIN_PORT_TO_PIN_NUMBER(0U, 4),                 \
-        NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4)
+        (nrf_lpcomp_input_t)NRFX_LPCOMP_INPUT_NOT_PRESENT, \
+        NRF_PIN_PORT_TO_PIN_NUMBER(2U, 4),                 \
+        NRF_PIN_PORT_TO_PIN_NUMBER(3U, 4)
 #else /* legacy platforms */
     #define LPCOMP_EXTERNAL_AIN_PSELS \
         NRF_LPCOMP_INPUT_0,           \
@@ -330,19 +333,21 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1),
-#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
-    #define LPCOMP_EXTERNAL_REF_PSELS                    \
-        NRF_PIN_PORT_TO_PIN_NUMBER(0U, 0),               \
-        NRF_PIN_PORT_TO_PIN_NUMBER(1U, 0),               \
-        NRF_PIN_PORT_TO_PIN_NUMBER(2U, 0),               \
-        NRF_PIN_PORT_TO_PIN_NUMBER(3U, 0),               \
-        NRF_PIN_PORT_TO_PIN_NUMBER(4U, 0),               \
-        NRF_PIN_PORT_TO_PIN_NUMBER(6U, 0),               \
-        NRF_PIN_PORT_TO_PIN_NUMBER(7U, 0),               \
-        NRF_PIN_PORT_TO_PIN_NUMBER(8U, 0),               \
-    (nrf_lpcomp_ext_ref_t)NRFX_LPCOMP_INPUT_NOT_PRESENT, \
-    NRF_PIN_PORT_TO_PIN_NUMBER(0U, 4),                   \
-    NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
+    #define LPCOMP_EXTERNAL_REF_PSELS                        \
+        NRF_PIN_PORT_TO_PIN_NUMBER(0U, 0),                   \
+        NRF_PIN_PORT_TO_PIN_NUMBER(1U, 0),                   \
+        NRF_PIN_PORT_TO_PIN_NUMBER(2U, 0),                   \
+        NRF_PIN_PORT_TO_PIN_NUMBER(3U, 0),                   \
+        NRF_PIN_PORT_TO_PIN_NUMBER(4U, 0),                   \
+        NRF_PIN_PORT_TO_PIN_NUMBER(6U, 0),                   \
+        NRF_PIN_PORT_TO_PIN_NUMBER(7U, 0),                   \
+        NRF_PIN_PORT_TO_PIN_NUMBER(8U, 0),                   \
+        (nrf_lpcomp_ext_ref_t)NRFX_LPCOMP_INPUT_NOT_PRESENT, \
+        (nrf_lpcomp_ext_ref_t)NRFX_LPCOMP_INPUT_NOT_PRESENT, \
+        NRF_PIN_PORT_TO_PIN_NUMBER(2U, 4),                   \
+        NRF_PIN_PORT_TO_PIN_NUMBER(3U, 4)
 #else /* legacy platforms */
     #define LPCOMP_EXTERNAL_REF_PSELS \
         NRF_LPCOMP_EXT_REF_REF0,      \
@@ -403,7 +408,8 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1),
-#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     #define SAADC_EXTERNAL_AIN_PSELS       \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 0), \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 0), \
@@ -413,7 +419,6 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(6U, 0), \
         NRF_PIN_PORT_TO_PIN_NUMBER(7U, 0), \
         NRF_PIN_PORT_TO_PIN_NUMBER(8U, 0), \
-        NRFX_SAADC_INPUT_NOT_PRESENT,      \
         NRF_PIN_PORT_TO_PIN_NUMBER(0U, 4), \
         NRF_PIN_PORT_TO_PIN_NUMBER(1U, 4), \
         NRF_PIN_PORT_TO_PIN_NUMBER(2U, 4), \
@@ -446,12 +451,10 @@ extern "C" {
 #endif
 
 #ifndef SAADC_TEST_AIN_PSELS
-#if defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
-    #define SAADC_TEST_AIN_PSELS      \
-        NRFX_SAADC_INPUT_NOT_PRESENT, \
-        NRFX_SAADC_INPUT_NOT_PRESENT, \
-        NRF_SAADC_INPUT_AVSS,         \
-        NRFX_SAADC_INPUT_NOT_PRESENT
+#if defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
+    #define SAADC_TEST_AIN_PSELS \
+        NRF_SAADC_INPUT_AVSS
 #endif
 #endif
 
@@ -503,7 +506,8 @@ extern "C" {
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
         NRFX_SAADC_INPUT_NOT_PRESENT,                                    \
         NRF_SAADC_INPUT_VSS,
-#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     #define SAADC_INTERNAL_AIN_PSELS  \
         NRFX_SAADC_INPUT_NOT_PRESENT, \
         NRFX_SAADC_INPUT_NOT_PRESENT, \
@@ -531,7 +535,8 @@ extern "C" {
 #endif
 
 /* SAADC internal timer scan mode support definition. */
-#if defined(NRF54L_SERIES) || defined(NRF7120_ENGA_XXAA) || defined(NRF9220_XXAA)
+#if defined(NRF54L_SERIES) || defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF9220_XXAA) || defined(NRF7120E_XXAA)
 #define SAADC_HAS_INTERNAL_TIMER_SCAN 1
 #endif
 
@@ -581,7 +586,8 @@ extern "C" {
         7, \
         8, \
         9,
-#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     /* Number of the port accessible for VIO. */
     #define FLPR_VIO_PORT 2
     /* GPIO pin number used for the VIO clock output. */
@@ -602,6 +608,157 @@ extern "C" {
         3,  \
         4,  \
         5,
+#endif
+
+#if defined(NRF54L05_XXAA) || defined(NRF54L10_XXAA) || defined(NRF54L15_XXAA) || \
+    defined(NRF54LM20A_XXAA) || defined(NRF54LM20B_XXAA) || defined(NRF54LC10A_XXAA) || \
+    defined(NRF54LV10A_XXAA) || defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
+#define VPR_IDX_FLPR 00
+#elif defined(NRF54H20_XXAA) || defined(NRF9220_XXAA)
+#define VPR_IDX_FLPR 121
+#define VPR_IDX_PPR  130
+#endif
+
+/* VPR VIO pin mapping definitions.
+ *
+ * The mapping between GPIO pins and VIO register bit indices is declared per VPR instance,
+ * as one define per routed pin:
+ *
+ *     #define VPR<inst>_VIO_P<port>_PIN<pin> (<vio_index>)
+ *
+ * Only pins that are actually routed to the VIO are declared. This makes the presence of a
+ * mapping testable with NRFX_ARG_HAS_PARENTHESIS(), which is why the value is parenthesized.
+ */
+#if defined(NRF54L05_XXAA) || defined(NRF54L10_XXAA) || defined(NRF54L15_XXAA) || \
+    defined(NRF54LM20A_XXAA) || defined(NRF54LM20B_XXAA)
+
+/* FLPR */
+#define VPR00_VIO_P2_PIN0  (4)
+#define VPR00_VIO_P2_PIN1  (0)
+#define VPR00_VIO_P2_PIN2  (1)
+#define VPR00_VIO_P2_PIN3  (3)
+#define VPR00_VIO_P2_PIN4  (2)
+#define VPR00_VIO_P2_PIN5  (5)
+#define VPR00_VIO_P2_PIN6  (6)
+#define VPR00_VIO_P2_PIN7  (7)
+#define VPR00_VIO_P2_PIN8  (8)
+#define VPR00_VIO_P2_PIN9  (9)
+#define VPR00_VIO_P2_PIN10 (10)
+
+#elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
+
+/* FLPR */
+#define VPR00_VIO_P1_PIN15 (4)
+#define VPR00_VIO_P1_PIN16 (0)
+#define VPR00_VIO_P1_PIN17 (1)
+#define VPR00_VIO_P1_PIN18 (3)
+#define VPR00_VIO_P1_PIN19 (2)
+#define VPR00_VIO_P1_PIN20 (5)
+#define VPR00_VIO_P1_PIN21 (6)
+#define VPR00_VIO_P1_PIN22 (7)
+#define VPR00_VIO_P1_PIN23 (8)
+#define VPR00_VIO_P1_PIN24 (9)
+
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
+
+/* FLPR */
+#define VPR00_VIO_P2_PIN0  (6)
+#define VPR00_VIO_P2_PIN1  (7)
+#define VPR00_VIO_P2_PIN2  (8)
+#define VPR00_VIO_P2_PIN3  (9)
+#define VPR00_VIO_P2_PIN4  (10)
+#define VPR00_VIO_P2_PIN5  (11)
+#define VPR00_VIO_P2_PIN6  (0)
+#define VPR00_VIO_P2_PIN7  (1)
+#define VPR00_VIO_P2_PIN8  (2)
+#define VPR00_VIO_P2_PIN9  (3)
+#define VPR00_VIO_P2_PIN10 (4)
+#define VPR00_VIO_P2_PIN11 (5)
+
+#elif defined(NRF54H20_XXAA)
+
+/* FLPR */
+#define VPR121_VIO_P1_PIN8  (0)
+#define VPR121_VIO_P1_PIN9  (1)
+#define VPR121_VIO_P1_PIN10 (2)
+#define VPR121_VIO_P1_PIN11 (3)
+
+#define VPR121_VIO_P2_PIN0  (4)
+#define VPR121_VIO_P2_PIN1  (5)
+#define VPR121_VIO_P2_PIN2  (6)
+#define VPR121_VIO_P2_PIN3  (7)
+#define VPR121_VIO_P2_PIN4  (8)
+#define VPR121_VIO_P2_PIN5  (9)
+#define VPR121_VIO_P2_PIN6  (10)
+#define VPR121_VIO_P2_PIN7  (11)
+#define VPR121_VIO_P2_PIN8  (12)
+#define VPR121_VIO_P2_PIN9  (13)
+#define VPR121_VIO_P2_PIN10 (14)
+#define VPR121_VIO_P2_PIN11 (15)
+
+/* P6.1 and P6.2 are not routed to the VIO. */
+#define VPR121_VIO_P6_PIN0  (0)
+#define VPR121_VIO_P6_PIN3  (1)
+#define VPR121_VIO_P6_PIN4  (2)
+#define VPR121_VIO_P6_PIN5  (3)
+#define VPR121_VIO_P6_PIN6  (4)
+#define VPR121_VIO_P6_PIN7  (5)
+#define VPR121_VIO_P6_PIN8  (6)
+#define VPR121_VIO_P6_PIN9  (7)
+#define VPR121_VIO_P6_PIN10 (8)
+#define VPR121_VIO_P6_PIN11 (9)
+#define VPR121_VIO_P6_PIN12 (10)
+#define VPR121_VIO_P6_PIN13 (11)
+
+#define VPR121_VIO_P7_PIN0  (0)
+#define VPR121_VIO_P7_PIN1  (1)
+#define VPR121_VIO_P7_PIN2  (2)
+#define VPR121_VIO_P7_PIN3  (3)
+#define VPR121_VIO_P7_PIN4  (4)
+#define VPR121_VIO_P7_PIN5  (5)
+#define VPR121_VIO_P7_PIN6  (6)
+#define VPR121_VIO_P7_PIN7  (7)
+
+#define VPR121_VIO_P9_PIN0  (0)
+#define VPR121_VIO_P9_PIN1  (1)
+#define VPR121_VIO_P9_PIN2  (2)
+#define VPR121_VIO_P9_PIN3  (3)
+#define VPR121_VIO_P9_PIN4  (4)
+#define VPR121_VIO_P9_PIN5  (5)
+
+#elif defined(NRF9220_XXAA)
+
+/* FLPR */
+#define VPR121_VIO_P2_PIN0  (4)
+#define VPR121_VIO_P2_PIN1  (5)
+#define VPR121_VIO_P2_PIN2  (6)
+#define VPR121_VIO_P2_PIN3  (7)
+/* P2.04 is not routed to the VIO. */
+#define VPR121_VIO_P2_PIN5  (8)
+#define VPR121_VIO_P2_PIN6  (9)
+#define VPR121_VIO_P2_PIN7  (10)
+#define VPR121_VIO_P2_PIN8  (11)
+#define VPR121_VIO_P2_PIN9  (12)
+#define VPR121_VIO_P2_PIN10 (13)
+#define VPR121_VIO_P2_PIN11 (14)
+
+#define VPR121_VIO_P5_PIN0  (1)
+#define VPR121_VIO_P5_PIN1  (0)
+#define VPR121_VIO_P5_PIN2  (2)
+#define VPR121_VIO_P5_PIN3  (3)
+#define VPR121_VIO_P5_PIN4  (4)
+#define VPR121_VIO_P5_PIN5  (5)
+
+/* PPR */
+#define VPR130_VIO_P0_PIN0  (0)
+#define VPR130_VIO_P0_PIN1  (1)
+#define VPR130_VIO_P1_PIN6  (0)
+#define VPR130_VIO_P1_PIN7  (1)
+#define VPR130_VIO_P1_PIN10 (2)
+#define VPR130_VIO_P1_PIN11 (3)
+
 #endif
 
 /* Ram sections definitions. */
@@ -717,7 +874,8 @@ extern "C" {
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 6
 #define RAM_UNIFORM_SECTIONS_TOTAL     6
-#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+      defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 32
@@ -850,7 +1008,8 @@ extern "C" {
     #define NRFX_PRS_BOX_2_ADDR     NRF_UARTE30
     // COMP, LPCOMP
     #define NRFX_PRS_BOX_3_ADDR     NRF_COMP
-#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA)
+#elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+      defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     // SPIM00, UARTE00
     #define NRFX_PRS_BOX_0_ADDR     NRF_UARTE00
     // SPIM01
@@ -916,7 +1075,8 @@ extern "C" {
          >> FICR_XOSC32MTRIM_OFFSET_Pos) << 4)) >> 10)
 #endif
 
-#if defined(NRF54L_SERIES) || defined(NRF7120_ENGA_XXAA)
+#if defined(NRF54L_SERIES) || defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     #define UARTE_NEEDS_BAUDRATE_FACTOR 1
 #endif
 

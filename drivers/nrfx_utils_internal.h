@@ -217,6 +217,10 @@ void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void * p_
 #define __NRFX_GET_ARG1(arg1, ...) arg1
 #define _NRFX_GET_ARG1(...) __NRFX_GET_ARG1(__VA_ARGS__)
 
+/* Macro for dropping the first argument from the set of input arguments. */
+#define __NRFX_DROP_ARG1(arg1, ...) __VA_ARGS__
+#define _NRFX_DROP_ARG1(...) __NRFX_DROP_ARG1(__VA_ARGS__)
+
 /* Macro for triggering argument evaluation. */
 #define _NRFX_EVAL(...) __VA_ARGS__
 
@@ -1761,5 +1765,46 @@ void NRFX_CONCAT(nrfx_, periph_name_small, _, prefix, i, _irq_handler)(void * p_
 #define NRF_SERIES_LOWERCASE_91         91
 #define NRF_SERIES_LOWERCASE_92         92
 #define NRF_SERIES_LOWERCASE(series)    NRFX_CONCAT_2(NRF_SERIES_LOWERCASE_, series)
+
+/* Numbers to compare are stuck together to form a symbol of the form _NRFX_IS_EQ_<a>_<b>.
+ * If the symbol is defined _NRFX_IS_EQ_IS_PROBE returns 1 and otherwise 0. */
+#define _NRFX_IS_EQ(a, b)  _NRFX_IS_EQ_IS_PROBE(_NRFX_IS_EQ_##a##_##b)
+
+#define _NRFX_IS_EQ_PROBE() ignored, 1
+#define _NRFX_IS_EQ_IS_PROBE(...) _NRFX_GET_ARG2(__VA_ARGS__, 0)
+
+/* Registered equal pairs. */
+#define _NRFX_IS_EQ_0_0   _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_1_1   _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_2_2   _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_3_3   _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_4_4   _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_5_5   _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_6_6   _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_7_7   _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_8_8   _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_9_9   _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_10_10 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_11_11 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_12_12 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_13_13 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_14_14 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_15_15 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_16_16 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_17_17 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_18_18 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_19_19 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_20_20 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_21_21 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_22_22 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_23_23 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_24_24 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_25_25 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_26_26 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_27_27 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_28_28 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_29_29 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_30_30 _NRFX_IS_EQ_PROBE()
+#define _NRFX_IS_EQ_31_31 _NRFX_IS_EQ_PROBE()
 
 #endif /* NRFX_UTILS_INTERNAL_H__ */

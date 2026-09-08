@@ -89,6 +89,13 @@ extern "C" {
 #define NRF_LFRC_HAS_CALIBRATION 0
 #endif
 
+#if defined(LFRC_MIRROR_ResetValue) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the MIRROR register is present. */
+#define NRF_LFRC_HAS_MIRROR 1
+#else
+#define NRF_LFRC_HAS_MIRROR 0
+#endif
+
 #if defined(LFRC_PWRUPCTRL_ResetValue) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether the PWRUPCTRL register is present. */
 #define NRF_LFRC_HAS_PWRUPCTRL 1
@@ -434,6 +441,28 @@ NRF_STATIC_INLINE uint32_t nrf_lfrc_cal_result_get(NRF_LFRC_Type const * p_reg, 
 NRF_STATIC_INLINE uint16_t nrf_lfrc_cal_num_of_cycles_get(NRF_LFRC_Type const * p_reg);
 #endif
 
+#if NRF_LFRC_HAS_MIRROR
+/**
+ * @brief Function for setting the lock for mirrored registers.
+ *
+ * @note The lock is enabled after reset.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] enable True if the lock is to be enabled, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_lfrc_mirror_lock_set(NRF_LFRC_Type * p_reg, bool enable);
+
+/**
+ * @brief Function for checking if the lock for mirrored registers is enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval true  The lock is enabled.
+ * @retval false The lock is disabled.
+ */
+NRF_STATIC_INLINE bool nrf_lfrc_mirror_lock_check(NRF_LFRC_Type const * p_reg);
+#endif
+
 #if NRF_LFRC_HAS_PWRUPCTRL
 /**
  * @brief Function for power control set.
@@ -583,6 +612,19 @@ NRF_STATIC_INLINE uint32_t nrf_lfrc_cal_result_get(NRF_LFRC_Type const * p_reg, 
 NRF_STATIC_INLINE uint16_t nrf_lfrc_cal_num_of_cycles_get(NRF_LFRC_Type const * p_reg)
 {
     return (uint16_t)p_reg->CAL.NHI;
+}
+#endif
+
+#if NRF_LFRC_HAS_MIRROR
+NRF_STATIC_INLINE void nrf_lfrc_mirror_lock_set(NRF_LFRC_Type * p_reg, bool enable)
+{
+    p_reg->MIRROR = ((enable ? LFRC_MIRROR_LOCK_Enabled : LFRC_MIRROR_LOCK_Disabled)
+                     << LFRC_MIRROR_LOCK_Pos) & LFRC_MIRROR_LOCK_Msk;
+}
+
+NRF_STATIC_INLINE bool nrf_lfrc_mirror_lock_check(NRF_LFRC_Type const * p_reg)
+{
+    return (bool)(p_reg->MIRROR & LFRC_MIRROR_LOCK_Msk);
 }
 #endif
 

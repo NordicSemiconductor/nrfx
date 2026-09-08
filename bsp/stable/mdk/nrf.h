@@ -37,8 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* MDK version */
 #define MDK_MAJOR_VERSION   9 
-#define MDK_MINOR_VERSION   0 
-#define MDK_MICRO_VERSION   2 
+#define MDK_MINOR_VERSION   1 
+#define MDK_MICRO_VERSION   0 
 
 #ifdef __ZEPHYR__
 #include <mdk_config.h>
@@ -131,7 +131,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 /* Define NRF71_SERIES for common use in nRF71 series devices. */
-#if defined (NRF7120_ENGA_XXAA) || defined (NRF7120E_ENGA_XXAA)
+#if defined (NRF7120_ENGA_XXAA) || defined (NRF7120E_ENGA_XXAA) || defined (NRF7120_XXAA) || defined (NRF7120E_XXAA)
     #ifndef NRF71_SERIES
         #define NRF71_SERIES
     #endif
@@ -306,6 +306,16 @@ POSSIBILITY OF SUCH DAMAGE.
     #include "nrf71/nrf7120e_enga/nrf7120e_enga.h"
     #include "nrf71/nrf7120e_enga/nrf7120e_enga_interim.h"
     #include "nrf71/nrf7120e_enga/nrf7120e_enga_name_change.h"
+
+#elif defined (NRF7120_XXAA)
+    #include "nrf71/nrf7120/nrf7120.h"
+    #include "nrf71/nrf7120/nrf7120_interim.h"
+    #include "nrf71/nrf7120/nrf7120_name_change.h"
+
+#elif defined (NRF7120E_XXAA)
+    #include "nrf71/nrf7120e/nrf7120e.h"
+    #include "nrf71/nrf7120e/nrf7120e_interim.h"
+    #include "nrf71/nrf7120e/nrf7120e_name_change.h"
 
 /* Ending device selection for device includes. */
 #else

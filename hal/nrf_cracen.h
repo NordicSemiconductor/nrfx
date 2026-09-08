@@ -63,6 +63,7 @@ extern "C" {
 
 #if defined(CRACEN_SEEDRAMLOCK_ENABLE_Enabled) || defined(CRACEN_SEEDLOCK_ENABLE_Enabled) || \
     defined(CRACEN_PROTECTEDRAMLOCK_ENABLE_Enabled) || defined(CRACEN_KEYLOCK_ENABLE_Enabled) || \
+    defined(CRACEN_SEEDLOCK_ENABLE0_Enabled) || \
     defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether CRACEN has locking feature. */
 #define NRF_CRACEN_HAS_LOCK 1
@@ -80,6 +81,11 @@ extern "C" {
 #if NRF_CRACEN_HAS_SEED
 /** @brief Number of seed words for private key generation. */
 #define NRF_CRACEN_SEED_COUNT CRACEN_SEED_MaxCount
+#endif
+
+#if defined(CRACEN_SEEDLOCK_ENABLE0_Enabled)
+/** @brief Mask covering all per-word SEEDLOCK.ENABLEn fields (one bit per SEED[n] word). */
+#define NRF_CRACEN_SEEDLOCK_ALL_MASK NRFX_BIT_MASK(CRACEN_SEED_MaxCount)
 #endif
 
 /** @brief CRACEN events. */
@@ -295,6 +301,8 @@ NRF_STATIC_INLINE void nrf_cracen_seedram_lock_enable_set(NRF_CRACEN_Type * p_re
 #elif defined(CRACEN_SEEDLOCK_ENABLE_Enabled)
     p_reg->SEEDLOCK = (enable ? CRACEN_SEEDLOCK_ENABLE_Enabled
                        : CRACEN_SEEDLOCK_ENABLE_Disabled) << CRACEN_SEEDLOCK_ENABLE_Pos;
+#elif defined(CRACEN_SEEDLOCK_ENABLE0_Enabled)
+    p_reg->SEEDLOCK = enable ? NRF_CRACEN_SEEDLOCK_ALL_MASK : 0UL;
 #elif defined(CRACEN_PROTECTEDRAMLOCK_ENABLE_Enabled)
     p_reg->PROTECTEDRAMLOCK = (enable ? CRACEN_PROTECTEDRAMLOCK_ENABLE_Enabled
                                : CRACEN_PROTECTEDRAMLOCK_ENABLE_Disabled) << CRACEN_PROTECTEDRAMLOCK_ENABLE_Pos;
@@ -312,6 +320,8 @@ NRF_STATIC_INLINE bool nrf_cracen_seedram_lock_check(NRF_CRACEN_Type const * p_r
 #elif defined(CRACEN_SEEDLOCK_ENABLE_Enabled)
     return p_reg->SEEDLOCK == (CRACEN_SEEDLOCK_ENABLE_Enabled
                                << CRACEN_SEEDLOCK_ENABLE_Pos);
+#elif defined(CRACEN_SEEDLOCK_ENABLE0_Enabled)
+    return p_reg->SEEDLOCK == NRF_CRACEN_SEEDLOCK_ALL_MASK;
 #elif defined(CRACEN_PROTECTEDRAMLOCK_ENABLE_Enabled)
     return p_reg->PROTECTEDRAMLOCK == (CRACEN_PROTECTEDRAMLOCK_ENABLE_Enabled
                                   << CRACEN_PROTECTEDRAMLOCK_ENABLE_Pos);

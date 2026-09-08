@@ -12,26 +12,26 @@ This page lists MDK symbols to be used and nrfx driver components supported by p
 The following table presents MDK symbol used for a specific device.
 @warning The MDK symbol used to build nrfx for a specific device may not necessarily correspond to the device name.
 
-| Device                          | MDK symbol                                                                    |
-|---------------------------------|-------------------------------------------------------------------------------|
-| nRF52805                        | NRF52805_XXAA                                                                 |
-| nRF52810                        | NRF52810_XXAA                                                                 |
-| nRF52811                        | NRF52811_XXAA                                                                 |
-| nRF52820                        | NRF52820_XXAA                                                                 |
-| nRF52832                        | NRF52832_XXAA<br>NRF52832_XXAB                                                |
-| nRF52833                        | NRF52833_XXAA                                                                 |
-| nRF52840                        | NRF52840_XXAA                                                                 |
-| nRF54H20                        | NRF54H20_XXAA<br>NRF_APPLICATION<br>NRF_RADIOCORE<br>NRF_PPR<br>NRF_FLPR      |
-| nRF54L05                        | NRF54L05_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                  |
-| nRF54L10                        | NRF54L10_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                  |
-| nRF54L15                        | NRF54L15_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                  |
-| nRF54LC10A                      | NRF54LC10A_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                |
-| nRF54LM20A<br>nRF54LM20B        | NRF54LM20A_XXAA<br>NRF54LM20B_XXAA<br>NRF_APPLICATION<br>NRF_FLPR             |
-| nRF54LS05A<br>nRF54LS05B        | NRF54LS05A_XXAA<br>NRF54LS05B_XXAA<br>NRF_APPLICATION                         |
-| nRF54LV10A                      | NRF54LV10A_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                |
-| nRF7120 Eng A<br>nRF7120E Eng A | NRF7120_ENGA_XXAA<br>NRF7120E_ENGA_XXAA<br>NRF_APPLICATION<br>NRF_FLPR        |
-| nRF9131<br>nRF9161              | NRF9120_XXAA                                                                  |
-| nRF9160                         | NRF9160_XXAA                                                                  |
+| Device                   | MDK symbol                                                                    |
+|--------------------------|-------------------------------------------------------------------------------|
+| nRF52805                 | NRF52805_XXAA                                                                 |
+| nRF52810                 | NRF52810_XXAA                                                                 |
+| nRF52811                 | NRF52811_XXAA                                                                 |
+| nRF52820                 | NRF52820_XXAA                                                                 |
+| nRF52832                 | NRF52832_XXAA<br>NRF52832_XXAB                                                |
+| nRF52833                 | NRF52833_XXAA                                                                 |
+| nRF52840                 | NRF52840_XXAA                                                                 |
+| nRF54H20                 | NRF54H20_XXAA<br>NRF_APPLICATION<br>NRF_RADIOCORE<br>NRF_PPR<br>NRF_FLPR      |
+| nRF54L05                 | NRF54L05_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                  |
+| nRF54L10                 | NRF54L10_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                  |
+| nRF54L15                 | NRF54L15_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                  |
+| nRF54LC10A               | NRF54LC10A_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                |
+| nRF54LM20A<br>nRF54LM20B | NRF54LM20A_XXAA<br>NRF54LM20B_XXAA<br>NRF_APPLICATION<br>NRF_FLPR             |
+| nRF54LS05A<br>nRF54LS05B | NRF54LS05A_XXAA<br>NRF54LS05B_XXAA<br>NRF_APPLICATION                         |
+| nRF54LV10A               | NRF54LV10A_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                                |
+| nRF7120<br>              | NRF7120_XXAA<br>NRF7120E_XXAA<br>NRF_APPLICATION<br>NRF_FLPR                  |
+| nRF9131<br>nRF9161       | NRF9120_XXAA                                                                  |
+| nRF9160                  | NRF9160_XXAA                                                                  |
 
 @anchor nrfx_drv_supp_matrix_table
 @par Driver support matrix
@@ -60,7 +60,7 @@ The following pages list the drivers supported by respective SoCs and SiPs:
 - @subpage nrf54lm20_a_b_drivers
 - @subpage nrf54ls05_a_b_drivers
 - @subpage nrf54lv10a_drivers
-- @subpage nrf7120_enga_drivers
+- @subpage nrf7120_drivers
 - @subpage nrf91_series_drivers
 
 */

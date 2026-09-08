@@ -62,6 +62,16 @@ extern "C" {
 #define NRF_VPR_HAS_OUTBD 0
 #endif
 
+#if defined(VPRCSR_NORDIC_OUTMODE_SEL_Msk) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Symbol indicating whether the starting VIO index for buffered mode can be configured
+ *        in the OUTMODE register.
+ */
+#define NRF_VPR_HAS_OUTMODE_SEL 1
+#else
+#define NRF_VPR_HAS_OUTMODE_SEL 0
+#endif
+
 /** @brief Maximum number of frames to be shifted from buffered input before new data is required. */
 #define NRF_VPR_CSR_VIO_SHIFT_CNT_IN_MAX VPRCSR_NORDIC_SHIFTCNTIN_VALUE_Max
 
@@ -83,7 +93,10 @@ typedef enum
 typedef struct
 {
     nrf_vpr_csr_vio_shift_t mode;        ///< Shift mode.
-    uint16_t                frame_width; ///< Frame width in bits.
+    uint8_t                 frame_width; ///< Frame width in bits.
+#if NRF_VPR_HAS_OUTMODE_SEL
+    uint8_t                 sel;         ///< Start index of the VIO.
+#endif
 } nrf_vpr_csr_vio_mode_out_t;
 
 /** @brief Input modes. */
@@ -100,6 +113,9 @@ typedef struct
     uint8_t                   shift_count; ///< Number of frames to be shifted to OUTB or from INB before new data is required.
     nrf_vpr_csr_vio_shift_t   out_mode;    ///< Buffered output mode.
     uint8_t                   frame_width; ///< Output frame width in bits.
+#if NRF_VPR_HAS_OUTMODE_SEL
+    uint8_t                   sel;         ///< Start index of the VIO.
+#endif
     nrf_vpr_csr_vio_mode_in_t in_mode;     ///< Buffered input mode.
 } nrf_vpr_csr_vio_shift_ctrl_t;
 
@@ -959,11 +975,19 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_get(nrf_vpr_csr_vio_mode_out_t *
                                              >> VPRCSR_NORDIC_OUTMODE_MODE_Pos);
     p_mode->frame_width = (reg & VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Msk)
                           >> VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Pos;
+#if NRF_VPR_HAS_OUTMODE_SEL
+    p_mode->sel = (reg & VPRCSR_NORDIC_OUTMODE_SEL_Msk)
+                  >> VPRCSR_NORDIC_OUTMODE_SEL_Pos;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_set(nrf_vpr_csr_vio_mode_out_t const * p_mode)
 {
     uint32_t reg = ((uint32_t)p_mode->mode << VPRCSR_NORDIC_OUTMODE_MODE_Pos) |
+#if NRF_VPR_HAS_OUTMODE_SEL
+                   (((uint32_t)p_mode->sel << VPRCSR_NORDIC_OUTMODE_SEL_Pos)
+                    & VPRCSR_NORDIC_OUTMODE_SEL_Msk) |
+#endif
                    (((uint32_t)p_mode->frame_width << VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Pos)
                     & VPRCSR_NORDIC_OUTMODE_FRAMEWIDTH_Msk);
 
@@ -978,16 +1002,24 @@ NRF_STATIC_INLINE void nrf_vpr_csr_vio_mode_out_buffered_get(nrf_vpr_csr_vio_mod
                                              >> VPRCSR_NORDIC_OUTMODEB_MODE_Pos);
     p_mode->frame_width = (reg & VPRCSR_NORDIC_OUTMODEB_FRAMEWIDTH_Msk)
                           >> VPRCSR_NORDIC_OUTMODEB_FRAMEWIDTH_Pos;
+#if NRF_VPR_HAS_OUTMODE_SEL
+    p_mode->sel = (reg & VPRCSR_NORDIC_OUTMODEB_SEL_Msk)
+                  >> VPRCSR_NORDIC_OUTMODEB_SEL_Pos;
+#endif
 }
 
 NRF_STATIC_INLINE
 void nrf_vpr_csr_vio_mode_out_buffered_set(nrf_vpr_csr_vio_mode_out_t const * p_mode)
 {
     uint32_t reg = ((uint32_t)p_mode->mode << VPRCSR_NORDIC_OUTMODEB_MODE_Pos) |
+#if NRF_VPR_HAS_OUTMODE_SEL
+                   (((uint32_t)p_mode->sel << VPRCSR_NORDIC_OUTMODEB_SEL_Pos)
+                    & VPRCSR_NORDIC_OUTMODEB_SEL_Msk) |
+#endif
                    (((uint32_t)p_mode->frame_width << VPRCSR_NORDIC_OUTMODEB_FRAMEWIDTH_Pos)
                     & VPRCSR_NORDIC_OUTMODEB_FRAMEWIDTH_Msk);
 
-    nrf_csr_write(VPRCSR_NORDIC_OUTMODE, reg);
+    nrf_csr_write(VPRCSR_NORDIC_OUTMODEB, reg);
 }
 
 NRF_STATIC_INLINE
@@ -996,11 +1028,15 @@ void nrf_vpr_csr_vio_shift_ctrl_buffered_set(nrf_vpr_csr_vio_shift_ctrl_t const 
     uint32_t reg = ((p_shift_ctrl->shift_count << VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Pos)
                     & VPRCSR_NORDIC_SHIFTCTRLB_SHIFTCNTB_VALUE_Msk) |
                    ((p_shift_ctrl->out_mode << VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_MODE_Pos)
-		    & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_MODE_Msk) |
+                    & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_MODE_Msk) |
                    ((p_shift_ctrl->frame_width << VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_FRAMEWIDTH_Pos)
-		    & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_FRAMEWIDTH_Msk) |
+                    & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_FRAMEWIDTH_Msk) |
+#if NRF_VPR_HAS_OUTMODE_SEL
+                   (((uint32_t)p_shift_ctrl->sel << VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_SEL_Pos)
+                    & VPRCSR_NORDIC_OUTMODEB_SEL_Msk) |
+#endif
                    ((p_shift_ctrl->in_mode << VPRCSR_NORDIC_SHIFTCTRLB_INMODEB_MODE_Pos)
-		    & VPRCSR_NORDIC_SHIFTCTRLB_INMODEB_MODE_Msk);
+                    & VPRCSR_NORDIC_SHIFTCTRLB_INMODEB_MODE_Msk);
 
     nrf_csr_write(VPRCSR_NORDIC_SHIFTCTRLB, reg);
 }
@@ -1018,6 +1054,10 @@ void nrf_vpr_csr_vio_shift_ctrl_buffered_get(nrf_vpr_csr_vio_shift_ctrl_t * p_sh
                                 >> VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_FRAMEWIDTH_Pos;
     p_shift_ctrl->in_mode     = (reg & VPRCSR_NORDIC_SHIFTCTRLB_INMODEB_MODE_Msk)
                                 >> VPRCSR_NORDIC_SHIFTCTRLB_INMODEB_MODE_Pos;
+#if NRF_VPR_HAS_OUTMODE_SEL
+    p_shift_ctrl->sel = (reg & VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_SEL_Msk)
+                        >> VPRCSR_NORDIC_SHIFTCTRLB_OUTMODEB_SEL_Pos;
+#endif
 }
 
 NRF_STATIC_INLINE void nrf_vpr_csr_vio_config_get(nrf_vpr_csr_vio_config_t * p_config)

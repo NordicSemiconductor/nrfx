@@ -47,19 +47,19 @@ extern "C" {
  * @defgroup nrfx_clock_xo24m XO24M driver
  * @{
  * @ingroup nrf_clock
- * @brief   XO24M peripheral driver.
+ * @brief   XO24M clock driver.
  */
 
-/** @brief XO24M event. */
+/** @brief XO24M clock event. */
 #define NRFX_CLOCK_XO24M_EVT_HFCLK24M_STARTED NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_HFCLK24M_STARTED_MASK) ///< HFCLK24M has been started.
 
-/** @brief XO24M event handler. */
+/** @brief XO24M clock event handler. */
 typedef void (*nrfx_clock_xo24m_event_handler_t)(void);
 
 /**
- * @brief Function for initializing internal structures in the nrfx_clock_xo24m module.
+ * @brief Function for initializing the XO24M driver.
  *
- * After initialization, the module is in power off state (clocks are not started).
+ * After initialization, the driver is in power off state (clock is not started).
  *
  * @param[in] event_handler Event handler provided by the user.
  *                          If not provided, driver works in blocking mode.
@@ -69,34 +69,34 @@ typedef void (*nrfx_clock_xo24m_event_handler_t)(void);
  */
 int nrfx_clock_xo24m_init(nrfx_clock_xo24m_event_handler_t  event_handler);
 
-/** @brief Function for uninitializing the xo24m module. */
+/** @brief Function for uninitializing the XO24M driver. */
 void nrfx_clock_xo24m_uninit(void);
 
 /**
- * @brief Function for checking if the xo24m driver is initialized.
+ * @brief Function for checking if the XO24M driver is initialized.
  *
  * @retval true  Driver is already initialized.
  * @retval false Driver is not initialized.
  */
 bool nrfx_clock_xo24m_init_check(void);
 
-/** @brief Function for starting the xo24m clock. */
+/** @brief Function for starting the XO24M clock. */
 void nrfx_clock_xo24m_start(void);
 
-/** @brief Function for stopping the xo24m clock. */
+/** @brief Function for stopping the XO24M clock. */
 void nrfx_clock_xo24m_stop(void);
 
 /**
- * @brief Function for checking the specified clock domain state.
+ * @brief Function for checking the XO24M clock state..
  *
  * XTAL source is assumed for domains with multiple sources.
  *
- * @retval true  The xo24m is running.
- * @retval false The xo24m is not running.
+ * @retval true  The XO24M clock is running.
+ * @retval false The XO24M clock is not running.
  */
 NRFX_STATIC_INLINE bool nrfx_clock_xo24m_running_check(void);
 
-/** @brief Function for handling xo24m interrupts. */
+/** @brief XO24M interrupt handler. */
 void nrfx_clock_xo24m_irq_handler(void);
 
 #ifndef NRFX_DECLARE_ONLY

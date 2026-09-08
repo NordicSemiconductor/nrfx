@@ -83,6 +83,7 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 
 void SystemCoreClockUpdate(void)
 {
+#if !defined(NRF_TRUSTZONE_NONSECURE)
     switch(NRF_OSCILLATORS->PLL.CURRENTFREQ)
     {
         case OSCILLATORS_PLL_CURRENTFREQ_CURRENTFREQ_CK64M:
@@ -92,6 +93,7 @@ void SystemCoreClockUpdate(void)
             SystemCoreClock = 128000000ul;
             break;
     }
+#endif
 }
 
 void SystemInit(void)

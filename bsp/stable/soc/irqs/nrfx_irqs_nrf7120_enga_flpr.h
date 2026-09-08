@@ -281,6 +281,9 @@ extern "C" {
 // CLOCK_POWER_IRQHandler
 #define nrfx_power_clock_irq_handler    CLOCK_POWER_IRQHandler
 
+// LFRC_IRQHandler
+#define nrfx_clock_lfrc_irq_handler     LFRC_IRQHandler
+
 // USBREG_IRQHandler
 #define nrfx_usbreg_irq_handler         USBREG_IRQHandler
 #ifdef __cplusplus

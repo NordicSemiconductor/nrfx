@@ -963,6 +963,29 @@ do {                                                         \
      _bitmask == NRFX_BIT(29) ? 29 : \
      _bitmask == NRFX_BIT(30) ? 30 : 31)
 
+/**
+ * @brief Macro for comparing two numbers at C preprocessor time.
+ *
+ * @note Macro works only for symbols expanding to integer literals from 0 to 31.
+ *
+ * @param[in] a Integer literal (0..31).
+ * @param[in] b Integer literal (0..31).
+ *
+ * @retval 1 If @p a and @p b are equal.
+ * @retval 0 If @p a and @p b are not equal.
+ */
+#define NRFX_IS_EQ(a, b) _NRFX_IS_EQ(a, b)
+
+/**
+ * @brief Macro for logically negating the value of an expression at C preprocessor time.
+ *
+ * @param[in] x Macro expression.
+ *
+ * @retval 1 If @p x is 0.
+ * @retval 0 If @p x is not 0.
+ */
+#define NRFX_NOT(x) NRFX_COND_CODE_0(x, (1), (0))
+
 /** @} */
 
 #endif /* NRFX_UTILS_H__ */

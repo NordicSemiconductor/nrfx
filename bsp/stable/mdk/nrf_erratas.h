@@ -57,13 +57,13 @@ NRF_MDK_VERSION_ASSERT_AT_LEAST(8,34,0);
 #endif
 
 
-#ifdef NRF54L_SERIES
-    #include "nrf54l/nrf54l_erratas.h"
+#ifdef NRF54H_SERIES
+    #include "nrf54h/nrf54h_erratas.h"
 #endif
 
 
-#ifdef NRF54H_SERIES
-    #include "nrf54h/nrf54h_erratas.h"
+#ifdef NRF54L_SERIES
+    #include "nrf54l/nrf54l_erratas.h"
 #endif
 
 
@@ -74,6 +74,11 @@ NRF_MDK_VERSION_ASSERT_AT_LEAST(8,34,0);
 
 #ifdef NRF91_SERIES
     #include "nrf91/nrf91_erratas.h"
+#endif
+
+
+#ifdef NRF92_SERIES
+    #include "nrf92/nrf92_erratas.h"
 #endif
 
 

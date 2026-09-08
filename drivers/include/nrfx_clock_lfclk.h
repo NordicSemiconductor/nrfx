@@ -37,10 +37,6 @@
 #include <nrfx.h>
 #include <hal/nrf_clock.h>
 
-#if defined(LFRC_PRESENT)
-#include <hal/nrf_lfrc.h>
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -52,9 +48,6 @@ extern "C" {
  * @brief   LFCLK clock driver.
  */
 
- /** @brief Symbol specifying driver event offset for LFRC hardware events. */
-#define NRFX_CLOCK_LFCLK_LFRC_EVT_OFFSET 32
-
 /** @brief Clock events. */
 typedef enum
 {
@@ -64,23 +57,20 @@ typedef enum
 #endif
 #if NRF_CLOCK_HAS_CALIBRATION
     NRFX_CLOCK_LFCLK_EVT_CAL_DONE      = NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_DONE_MASK),       ///< Calibration has been done.
-#elif NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)
-    NRFX_CLOCK_LFCLK_EVT_CAL_DONE      = (NRFX_BITMASK_TO_BITPOS(NRF_LFRC_INT_CALDONE_MASK) + \
-                                         NRFX_CLOCK_LFCLK_LFRC_EVT_OFFSET),                     ///< Calibration has been done.
 #endif
 } nrfx_clock_lfclk_evt_type_t;
 
 /**
- * @brief Lfclk event handler.
+ * @brief LFCLK event handler.
  *
  * @param[in] event Event.
  */
 typedef void (*nrfx_clock_lfclk_event_handler_t)(nrfx_clock_lfclk_evt_type_t event);
 
 /**
- * @brief Function for initializing internal structures in the nrfx_clock_lfclk module.
+ * @brief Function for initializing internal structures in the LFCLK driver.
  *
- * After initialization, the module is in power off state (clocks are not started).
+ * After initialization, the LFCLK driver is in power off state (clock is not started).
  *
  * @param[in] event_handler Event handler provided by the user.
  *                          If not provided, driver works in blocking mode.
@@ -94,7 +84,7 @@ int nrfx_clock_lfclk_init(nrfx_clock_lfclk_event_handler_t  event_handler);
 void nrfx_clock_lfclk_uninit(void);
 
 /**
- * @brief Function for checking if the lfclk driver is initialized.
+ * @brief Function for checking if the LFCLK driver is initialized.
  *
  * @retval true  Driver is already initialized.
  * @retval false Driver is not initialized.
@@ -102,34 +92,32 @@ void nrfx_clock_lfclk_uninit(void);
 bool nrfx_clock_lfclk_init_check(void);
 
 /**
- * @brief Function for starting the LFCLK.
+ * @brief Function for starting the LFCLK clock.
  */
 void nrfx_clock_lfclk_start(void);
 
 /**
- * @brief Function for stopping the LFCLK.
+ * @brief Function for stopping the LFCLK clock.
  */
 void nrfx_clock_lfclk_stop(void);
 
 /**
- * @brief Function for checking the LFCLK state.
- *
- * XTAL source is assumed for domains with multiple sources.
+ * @brief Function for checking the LFCLK clock state.
  *
  * @param[out] p_clk_src Pointer to a clock source that is running. Set to NULL if not needed.
  *
- * @retval true  The clock domain is running.
- * @retval false The clock domain is not running.
+ * @retval true  The LFCLK clock is running.
+ * @retval false The LFCLK clock is not running.
  */
 NRFX_STATIC_INLINE bool nrfx_clock_lfclk_running_check(nrf_clock_lfclk_t * p_clk_src);
 
-#if ((NRFX_CHECK(NRF_CLOCK_HAS_CALIBRATION) || NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)) && \
-     NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)) || defined(__NRFX_DOXYGEN__)
+#if (NRFX_CHECK(NRF_CLOCK_HAS_CALIBRATION) && \
+    NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for starting the calibration of internal LFCLK.
  *
- * This function starts the calibration process. The process cannot be aborted. LFCLK and (HFCLK or XO)
- * must be running before this function is called.
+ * This function starts the calibration process. The process cannot be aborted.
+ * LFCLK and and high-frequency clock must be running before this function is called.
  *
  * @retval 0            The procedure is successful.
  * @retval -EINPROGRESS The low-frequency or high-frequency clock is off.
@@ -140,7 +128,7 @@ int nrfx_clock_lfclk_calibration_start(void);
 /**
  * @brief Function for checking if calibration is in progress.
  *
- * This function indicates that the system is in calibration phase.
+ * This function indicates that the clock is in calibration phase.
  *
  * @retval 0      The procedure is successful.
  * @retval -EBUSY Clock is in the calibration phase.
@@ -159,8 +147,11 @@ void nrfx_clock_lfclk_calibration_timer_start(uint8_t interval);
 /** @brief Function for stopping the calibration timer. */
 void nrfx_clock_lfclk_calibration_timer_stop(void);
 #endif
-#endif /* ((NRFX_CHECK(NRF_CLOCK_HAS_CALIBRATION) || NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)) && \
-     NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)) || defined(__NRFX_DOXYGEN__) */
+#endif /* (NRFX_CHECK(NRF_CLOCK_HAS_CALIBRATION) && \
+    NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)) || defined(__NRFX_DOXYGEN__) */
+
+/** @brief LFCLK interrupt handler. */
+void nrfx_clock_lfclk_irq_handler(void);
 
 #ifndef NRFX_DECLARE_ONLY
 
@@ -172,8 +163,6 @@ NRFX_STATIC_INLINE bool nrfx_clock_lfclk_running_check(nrf_clock_lfclk_t * p_clk
 #endif // NRFX_DECLARE_ONLY
 
 /** @} */
-
-void nrfx_clock_lfclk_irq_handler(void);
 
 #ifdef __cplusplus
 }

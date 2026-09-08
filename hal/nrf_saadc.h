@@ -115,7 +115,7 @@ extern "C" {
 #define NRF_SAADC_HAS_CH_CONFIG_RES 0
 #endif
 
-#if (defined(SAADC_CH_PSELP_CONNECT_Test) && defined(SAADC_CH_PSELP_Test_Pos)) || \
+#if (defined(SAADC_CH_PSELP_CONNECT_Test) && defined(SAADC_CH_PSELP_TEST_Pos)) || \
      defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether SAADC positive test inputs for pin number configurations are present. */
 #define NRF_SAADC_HAS_CH_PSELP_TEST 1

@@ -61,6 +61,13 @@ extern "C" {
 #define NRF_LFXO_HAS_EVENT_STARTED 0
 #endif
 
+#if defined(LFXO_MIRROR_ResetValue) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether the MIRROR register is present. */
+#define NRF_LFXO_HAS_MIRROR 1
+#else
+#define NRF_LFXO_HAS_MIRROR 0
+#endif
+
 /** @brief LFXO events. */
 typedef enum
 {
@@ -220,6 +227,28 @@ NRF_STATIC_INLINE bool nrf_lfxo_statusana_ready_check(NRF_LFXO_Type const * p_re
 NRF_STATIC_INLINE bool nrf_lfxo_statusana_settled_check(NRF_LFXO_Type const * p_reg);
 #endif
 
+#if NRF_LFXO_HAS_MIRROR
+/**
+ * @brief Function for setting the lock for mirrored registers.
+ *
+ * @note The lock is enabled after reset.
+ *
+ * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
+ * @param[in] enable True if the lock is to be enabled, false otherwise.
+ */
+NRF_STATIC_INLINE void nrf_lfxo_mirror_lock_set(NRF_LFXO_Type * p_reg, bool enable);
+
+/**
+ * @brief Function for checking if the lock for mirrored registers is enabled.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval true  The lock is enabled.
+ * @retval false The lock is disabled.
+ */
+NRF_STATIC_INLINE bool nrf_lfxo_mirror_lock_check(NRF_LFXO_Type const * p_reg);
+#endif
+
 /**
  * @brief Function for getting internal capacitive load value.
  *
@@ -333,6 +362,19 @@ NRF_STATIC_INLINE bool nrf_lfxo_statusana_ready_check(NRF_LFXO_Type const * p_re
 NRF_STATIC_INLINE bool nrf_lfxo_statusana_settled_check(NRF_LFXO_Type const * p_reg)
 {
     return p_reg->STATUSANA & LFXO_STATUSANA_SETTLED_Msk;
+}
+#endif
+
+#if NRF_LFXO_HAS_MIRROR
+NRF_STATIC_INLINE void nrf_lfxo_mirror_lock_set(NRF_LFXO_Type * p_reg, bool enable)
+{
+    p_reg->MIRROR = ((enable ? LFXO_MIRROR_LOCK_Enabled : LFXO_MIRROR_LOCK_Disabled)
+                     << LFXO_MIRROR_LOCK_Pos) & LFXO_MIRROR_LOCK_Msk;
+}
+
+NRF_STATIC_INLINE bool nrf_lfxo_mirror_lock_check(NRF_LFXO_Type const * p_reg)
+{
+    return (bool)(p_reg->MIRROR & LFXO_MIRROR_LOCK_Msk);
 }
 #endif
 

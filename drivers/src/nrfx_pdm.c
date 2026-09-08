@@ -406,9 +406,9 @@ static bool prescaler_diff_check(uint32_t *                best_freq,
     if (diff < *best_diff)
     {
         *best_diff = diff;
-		*best_rate = actual_rate;
-		*best_freq = actual_freq;
-		return true;
+        *best_rate = actual_rate;
+        *best_freq = actual_freq;
+        return true;
     }
 
     return false;
@@ -423,91 +423,91 @@ static bool pdm_prescalers_check(uint32_t *                best_freq,
 {
     bool better_found = false;
 #if NRF_PDM_HAS_PRESCALER
-	uint32_t req_freq = output_config->sampling_rate * ratio;
-	uint32_t prescaler = output_config->base_clock_freq / req_freq;
-	uint32_t actual_freq = output_config->base_clock_freq / prescaler;
+    uint32_t req_freq = output_config->sampling_rate * ratio;
+    uint32_t prescaler = output_config->base_clock_freq / req_freq;
+    uint32_t actual_freq = output_config->base_clock_freq / prescaler;
 
-	if (prescaler_diff_check(best_freq, best_rate, best_diff,
+    if (prescaler_diff_check(best_freq, best_rate, best_diff,
                              ratio, actual_freq, output_config))
     {
-		prescalers->prescaler = prescaler;
+        prescalers->prescaler = prescaler;
 
-		better_found = true;
-	}
+        better_found = true;
+    }
 
-	if (*best_diff == 0)
+    if (*best_diff == 0)
     {
-		return true;
-	}
+        return true;
+    }
 
-	prescaler += 1;
-	actual_freq  = output_config->base_clock_freq / prescaler;
+    prescaler += 1;
+    actual_freq  = output_config->base_clock_freq / prescaler;
 
-	if (prescaler_diff_check(best_freq, best_rate, best_diff,
+    if (prescaler_diff_check(best_freq, best_rate, best_diff,
                              ratio, actual_freq, output_config))
     {
-		prescalers->prescaler = prescaler;
+        prescalers->prescaler = prescaler;
 
-		better_found = true;
-	}
+        better_found = true;
+    }
 #elif NRF_PDM_HAS_PDMCLKCTRL
 #if defined(PDM_PDMCLKCTRL_FACTOR)
-	uint32_t req_freq = output_config->sampling_rate * ratio;
+    uint32_t req_freq = output_config->sampling_rate * ratio;
 
-	uint32_t clk_factor = (uint32_t)((req_freq * PDM_FREQ_FACTOR) /
-						 (output_config->base_clock_freq + req_freq / 2));
-	uint32_t actual_freq = output_config->base_clock_freq / (PDM_FREQ_FACTOR / clk_factor);
+    uint32_t clk_factor = (uint32_t)((req_freq * PDM_FREQ_FACTOR) /
+                                     (output_config->base_clock_freq + req_freq / 2));
+    uint32_t actual_freq = output_config->base_clock_freq / (PDM_FREQ_FACTOR / clk_factor);
 
-	if (prescaler_diff_check(best_freq, best_rate, best_diff,
+    if (prescaler_diff_check(best_freq, best_rate, best_diff,
                              ratio, actual_freq, output_config))
     {
-		prescalers->clock_freq = (nrf_pdm_freq_t)(clk_factor * PDM_PDMCLKCTRL_FACTOR);
+        prescalers->clock_freq = (nrf_pdm_freq_t)(clk_factor * PDM_PDMCLKCTRL_FACTOR);
 
-		better_found = true;
-	}
+        better_found = true;
+    }
 #else
-	static const struct
+    static const struct
     {
-		uint32_t       freq_val;
-		nrf_pdm_freq_t freq_enum;
-	} freqs[] =
+        uint32_t       freq_val;
+        nrf_pdm_freq_t freq_enum;
+    } freqs[] =
     {
-		{ 1000000, NRF_PDM_FREQ_1000K },
-		{ 1032000, NRF_PDM_FREQ_1032K },
-		{ 1067000, NRF_PDM_FREQ_1067K },
+        { 1000000, NRF_PDM_FREQ_1000K },
+        { 1032000, NRF_PDM_FREQ_1032K },
+        { 1067000, NRF_PDM_FREQ_1067K },
 #if NRF_PDM_HAS_FREQ_1231K
-		{ 1231000, NRF_PDM_FREQ_1231K },
+        { 1231000, NRF_PDM_FREQ_1231K },
 #endif
 #if NRF_PDM_HAS_FREQ_1280K
-		{ 1280000, NRF_PDM_FREQ_1280K },
+        { 1280000, NRF_PDM_FREQ_1280K },
 #endif
 #if NRF_PDM_HAS_FREQ_1333K
-		{ 1333000, NRF_PDM_FREQ_1333K }
+        { 1333000, NRF_PDM_FREQ_1333K }
 #endif
-	};
+    };
 
-	for (uint32_t f = 0; f < NRFX_ARRAY_SIZE(freqs); f++)
+    for (uint32_t f = 0; f < NRFX_ARRAY_SIZE(freqs); f++)
     {
-		uint32_t actual_freq = freqs[f].freq_val;
+        uint32_t actual_freq = freqs[f].freq_val;
 
-		if (prescaler_diff_check(best_freq, best_rate, best_diff,
+        if (prescaler_diff_check(best_freq, best_rate, best_diff,
                                  ratio, actual_freq, output_config))
         {
-			prescalers->clock_freq = freqs[f].freq_enum;
+            prescalers->clock_freq = freqs[f].freq_enum;
 
-			if (*best_diff == 0)
+            if (*best_diff == 0)
             {
-				return true;
-			}
+                return true;
+            }
 
-			better_found = true;
-		}
+            better_found = true;
+        }
 
-		if ((actual_freq / ratio) > output_config->sampling_rate)
+        if ((actual_freq / ratio) > output_config->sampling_rate)
         {
-			break;
-		}
-	}
+            break;
+        }
+    }
 #endif
 #endif // NRF_PDM_HAS_PRESCALER
     return better_found;
@@ -519,68 +519,68 @@ int nrfx_pdm_prescalers_calc(nrfx_pdm_output_t const * output_config,
     NRFX_ASSERT(output_config && prescalers);
 
     uint32_t best_diff = UINT32_MAX;
-	uint32_t best_rate = 0;
-	uint32_t best_freq = 0;
+    uint32_t best_rate = 0;
+    uint32_t best_freq = 0;
     uint8_t ratio;
 
 #if NRF_PDM_HAS_RATIO_CONFIG
-	static const struct
+    static const struct
     {
-		uint8_t         ratio_val;
-		nrf_pdm_ratio_t ratio_enum;
-	} ratios[] =
+        uint8_t         ratio_val;
+        nrf_pdm_ratio_t ratio_enum;
+    } ratios[] =
     {
 #if NRF_PDM_HAS_RATIO32
-		{ 32, NRF_PDM_RATIO_32X },
+        { 32, NRF_PDM_RATIO_32X },
 #endif
 #if NRF_PDM_HAS_RATIO48
-		{ 48, NRF_PDM_RATIO_48X },
+        { 48, NRF_PDM_RATIO_48X },
 #endif
 #if NRF_PDM_HAS_RATIO50
-		{ 50, NRF_PDM_RATIO_50X },
+        { 50, NRF_PDM_RATIO_50X },
 #endif
-		{ 64, NRF_PDM_RATIO_64X },
-		{ 80, NRF_PDM_RATIO_80X },
+        { 64, NRF_PDM_RATIO_64X },
+        { 80, NRF_PDM_RATIO_80X },
 #if NRF_PDM_HAS_RATIO96
-		{ 96, NRF_PDM_RATIO_96X },
+        { 96, NRF_PDM_RATIO_96X },
 #endif
 #if NRF_PDM_HAS_RATIO100
-		{ 100, NRF_PDM_RATIO_100X },
+        { 100, NRF_PDM_RATIO_100X },
 #endif
 #if NRF_PDM_HAS_RATIO128
-		{ 128, NRF_PDM_RATIO_128X },
+        { 128, NRF_PDM_RATIO_128X },
 #endif
 #if NRF_PDM_HAS_RATIO150
-		{ 150, NRF_PDM_RATIO_150X },
+        { 150, NRF_PDM_RATIO_150X },
 #endif
 #if NRF_PDM_HAS_RATIO192
-		{ 192, NRF_PDM_RATIO_192X }
+        { 192, NRF_PDM_RATIO_192X }
 #endif
-	};
+    };
 
-	for (uint32_t r = 0; r < NRFX_ARRAY_SIZE(ratios) && best_diff != 0; r++)
+    for (uint32_t r = 0; r < NRFX_ARRAY_SIZE(ratios) && best_diff != 0; r++)
     {
-		ratio = ratios[r].ratio_val;
+        ratio = ratios[r].ratio_val;
 
-		if (pdm_prescalers_check(&best_freq, &best_rate, &best_diff,
-                                ratio, output_config, prescalers))
+        if (pdm_prescalers_check(&best_freq, &best_rate, &best_diff,
+                                 ratio, output_config, prescalers))
         {
-			prescalers->ratio = ratios[r].ratio_enum;
-		}
-	}
+            prescalers->ratio = ratios[r].ratio_enum;
+        }
+    }
 #else
     // Ratio value hardcoded in hardware.
-	ratio = PDM_RATIO_VALUE;
+    ratio = PDM_RATIO_VALUE;
 
     pdm_prescalers_check(&best_freq, &best_rate, &best_diff,
                          ratio, output_config, prescalers);
 #endif
 
-	if (best_diff == UINT32_MAX) {
-		return -EINVAL;
-	}
+    if (best_diff == UINT32_MAX) {
+        return -EINVAL;
+    }
 
-	return 0;
+    return 0;
 }
 
 void nrfx_pdm_irq_handler(nrfx_pdm_t * p_instance)

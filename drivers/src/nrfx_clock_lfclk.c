@@ -60,13 +60,9 @@
 #else
     #define LF_SRC_RC CLOCK_LFCLK_SRC_SRC_LFRC
 #endif
-#if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
-    #if (NRF_CLOCK_HAS_CALIBRATION == 0 && NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION) == 0)
-        #error "Calibration is not available in the SoC that is used."
-    #endif
-    #if (NRFX_CLOCK_CONFIG_LF_SRC != LF_SRC_RC)
-        #error "Calibration can be performed only for the RC Oscillator."
-    #endif
+
+#if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED) && (NRFX_CLOCK_CONFIG_LF_SRC != LF_SRC_RC)
+    #error "Calibration can be performed only for the RC Oscillator."
 #endif
 
 #if defined(CLOCK_LFCLKSRC_SRC_Xtal)
@@ -291,16 +287,12 @@ void nrfx_clock_lfclk_stop(void)
     clock_stop();
 }
 
-#if ((NRF_CLOCK_HAS_CALIBRATION || NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)) && \
-     NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED))
+#if (NRF_CLOCK_HAS_CALIBRATION && NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED))
 int nrfx_clock_lfclk_calibration_start(void)
 {
     int err_code = 0;
 
     nrf_clock_hfclk_t clk_src;
-#if NRFX_CHECK(NRF_LFRC_HAS_CKLFRCSTARTED_EVENT)
-    nrf_clock_lfclk_t lfclk_clk_src;
-#endif
 
 #if NRF_CLOCK_HAS_HFCLK
     if (!nrfx_clock_hfclk_running_check(&clk_src))
@@ -314,27 +306,10 @@ int nrfx_clock_lfclk_calibration_start(void)
     {
         err_code = -EINPROGRESS;
     }
-#if NRFX_CHECK(NRF_LFRC_HAS_CKLFRCSTARTED_EVENT)
-    else if (!nrfx_clock_lfclk_running_check(&lfclk_clk_src))
-    {
-        err_code = -EINPROGRESS;
-    }
-
-    // Check if LFRC is running before starting calibration.
-    bool lfclk_started;
-    NRFX_WAIT_FOR((nrfx_clock_lfclk_running_check(&lfclk_clk_src) && \
-                   lfclk_clk_src == NRF_CLOCK_LFCLK_RC), 1000, 1, lfclk_started);
-
-    if (!lfclk_started)
-    {
-        err_code = -EINPROGRESS;
-    }
-#else
     else if (!nrfx_clock_lfclk_running_check(NULL))
     {
         err_code = -EINPROGRESS;
     }
-#endif
 
     if (err_code != 0)
     {
@@ -346,11 +321,7 @@ int nrfx_clock_lfclk_calibration_start(void)
 
     if (m_clock_cb.cal_state == CAL_STATE_IDLE)
     {
-#if NRFX_CHECK(NRF_CLOCK_HAS_CALIBRATION)
         nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_DONE);
-#else
-        nrf_lfrc_event_clear(NRF_LFRC, NRF_LFRC_EVENT_CALDONE);
-#endif
 
         m_clock_cb.cal_state = CAL_STATE_CAL;
 
@@ -359,7 +330,6 @@ int nrfx_clock_lfclk_calibration_start(void)
             *(volatile uint32_t *)0x40000C34 = 0x00000002;
         }
 
-#if NRFX_CHECK(NRF_CLOCK_HAS_CALIBRATION)
         nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_CAL);
         if (m_clock_cb.event_handler)
         {
@@ -371,19 +341,6 @@ int nrfx_clock_lfclk_calibration_start(void)
             {}
             nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_DONE);
         }
-#else
-        nrf_lfrc_task_trigger(NRF_LFRC, NRF_LFRC_TASK_CAL);
-        if (m_clock_cb.event_handler)
-        {
-            nrf_lfrc_int_enable(NRF_LFRC, NRF_LFRC_INT_CALDONE_MASK);
-        }
-        else
-        {
-            while (!nrf_lfrc_event_check(NRF_LFRC, NRF_LFRC_EVENT_CALDONE))
-            {}
-            nrf_lfrc_event_clear(NRF_LFRC, NRF_LFRC_EVENT_CALDONE);
-        }
-#endif
     }
     else
     {
@@ -432,21 +389,10 @@ void nrfx_clock_lfclk_calibration_timer_stop(void)
     nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_CTSTOP);
 }
 #endif // NRF_CLOCK_HAS_CALIBRATION_TIMER && NRFX_CHECK(NRFX_CLOCK_CONFIG_CT_ENABLED)
-#endif /* ((NRF_CLOCK_HAS_CALIBRATION || NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)) &&
-            NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)) */
+#endif /* (NRF_CLOCK_HAS_CALIBRATION && NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)) */
 
 void nrfx_clock_lfclk_irq_handler(void)
 {
-#if NRFX_CHECK(NRFX_CLOCK_CONFIG_USE_LFRC_CALIBRATION) && \
-    NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
-    if (nrf_lfrc_event_check(NRF_LFRC, NRF_LFRC_EVENT_CALDONE))
-    {
-        nrf_lfrc_event_clear(NRF_LFRC, NRF_LFRC_EVENT_CALDONE);
-        nrf_lfrc_int_disable(NRF_LFRC, NRF_LFRC_INT_CALDONE_MASK);
-        m_clock_cb.cal_state = CAL_STATE_IDLE;
-        m_clock_cb.event_handler(NRFX_CLOCK_LFCLK_EVT_CAL_DONE);
-    }
-#endif
 #if NRF_CLOCK_HAS_INTPEND
     uint32_t intpend = nrf_clock_int_pending_get(NRF_CLOCK) & INTERRUPT_MASK;
 #else

@@ -37,8 +37,8 @@
 #include <nrfx.h>
 #include <hal/nrf_clock.h>
 #include <nrfx_power_clock.h>
-#if defined(LFRC_PRESENT)
-#include <hal/nrf_lfrc.h>
+#if NRFX_CHECK(LFRC_PRESENT)
+#include <nrfx_clock_lfrc.h>
 #endif
 #if NRF_CLOCK_HAS_HFCLK
 #include <nrfx_clock_hfclk.h>
@@ -87,7 +87,9 @@ typedef enum
 #if NRF_CLOCK_HAS_CALIBRATION_TIMER
     NRFX_CLOCK_EVT_CTTO               = NRFX_CLOCK_LFCLK_EVT_CTTO,                    ///< Calibration timeout.
 #endif
-#if NRF_CLOCK_HAS_CALIBRATION || NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)
+#if NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)
+    NRFX_CLOCK_EVT_CAL_DONE           = NRFX_CLOCK_LFRC_EVT_CAL_DONE,                 ///< Calibration has been done.
+#elif NRF_CLOCK_HAS_CALIBRATION
     NRFX_CLOCK_EVT_CAL_DONE           = NRFX_CLOCK_LFCLK_EVT_CAL_DONE,                ///< Calibration has been done.
 #endif
 #if NRF_CLOCK_HAS_HFCLKAUDIO

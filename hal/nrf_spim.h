@@ -267,18 +267,24 @@ extern "C" {
 
 #if !defined(NRF_SPIM_IS_320MHZ_SPIM)
 /** @brief Macro for checking whether the base frequency for the specified SPIM instance is 320 MHz. */
-#define NRF_SPIM_IS_320MHZ_SPIM(p_reg) \
-    (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM120), (p_reg == NRF_SPIM120), (false)) || \
-     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM121), (p_reg == NRF_SPIM121), (false)))
+#define NRF_SPIM_IS_320MHZ_SPIM(p_reg)                                                           \
+    (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM120),                                            \
+                      (((p_reg == NRF_SPIM120) && (INSTANCE_12X_FREQUENCY == 320))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM121),                                            \
+                      (((p_reg == NRF_SPIM121) && (INSTANCE_12X_FREQUENCY == 320))), (false)))
 #endif
 
 #if !defined(NRF_SPIM_IS_256MHZ_SPIM)
 /** @brief Macro for checking whether the base frequency for the specified SPIM instance is 256 MHz. */
-#define NRF_SPIM_IS_256MHZ_SPIM(p_reg)                                                      \
-    (NRFX_COND_CODE_1(NRFX_IS_ENABLED(NRF_CPU_FREQ_IS_256MHZ),                              \
-        (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM00), (p_reg == NRF_SPIM00), (false)) || \
-         NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM01), (p_reg == NRF_SPIM01), (false))),  \
-        (false)))
+#define NRF_SPIM_IS_256MHZ_SPIM(p_reg)                                                           \
+    (NRFX_COND_CODE_1(NRFX_IS_ENABLED(NRF_CPU_FREQ_IS_256MHZ),                                   \
+        (NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM00), (p_reg == NRF_SPIM00), (false)) ||      \
+         NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM01), (p_reg == NRF_SPIM01), (false))),       \
+        (false)) ||                                                                              \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM120),                                            \
+                      (((p_reg == NRF_SPIM120) && (INSTANCE_12X_FREQUENCY == 256))), (false)) || \
+     NRFX_COND_CODE_1(NRFX_INSTANCE_PRESENT(SPIM121),                                            \
+                      (((p_reg == NRF_SPIM121) && (INSTANCE_12X_FREQUENCY == 256))), (false)))
 #endif
 
 #if !defined(NRF_SPIM_IS_192MHZ_SPIM)

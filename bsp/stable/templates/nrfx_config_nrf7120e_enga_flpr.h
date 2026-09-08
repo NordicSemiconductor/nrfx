@@ -122,15 +122,6 @@
 #endif
 
 /**
- * @brief NRFX_CLOCK_CONFIG_USE_LFRC_CALIBRATION
- *
- * Boolean. Accepted values: 0 and 1.
- */
-#ifndef NRFX_CLOCK_CONFIG_USE_LFRC_CALIBRATION
-#define NRFX_CLOCK_CONFIG_USE_LFRC_CALIBRATION 0
-#endif
-
-/**
  * @brief NRFX_COMP_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
@@ -317,6 +308,15 @@
  */
 #ifndef NRFX_GPIOTE_CONFIG_LOG_LEVEL
 #define NRFX_GPIOTE_CONFIG_LOG_LEVEL 3
+#endif
+
+/**
+ * @brief NRFX_GPPI_CONFIG_EXT_ALLOCATOR
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_GPPI_CONFIG_EXT_ALLOCATOR
+#define NRFX_GPPI_CONFIG_EXT_ALLOCATOR 0
 #endif
 
 /**

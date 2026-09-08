@@ -7018,6 +7018,40 @@ typedef struct {
   #define CTRLAPPERI_MAILBOX_TXSTATUS_TXSTATUS_DataPending (0x1UL) /*!< Data is pending in register TXDATA.                    */
 
 
+
+/* ============================================= Struct CTRLAPPERI_ERASEPROTECT ============================================== */
+/**
+  * @brief ERASEPROTECT [CTRLAPPERI_ERASEPROTECT] (unspecified)
+  */
+typedef struct {
+  __IOM uint32_t  LOCK;                              /*!< (@ 0x00000000) This register locks the ERASEPROTECT.DISABLE register
+                                                                         from being written until next reset.*/
+  __OM  uint32_t  DISABLE;                           /*!< (@ 0x00000004) This register disables the ERASEPROTECT register and
+                                                                         performs an ERASEALL operation.*/
+} NRF_CTRLAPPERI_ERASEPROTECT_Type;                  /*!< Size = 8 (0x008)                                                     */
+
+/* CTRLAPPERI_ERASEPROTECT_LOCK: This register locks the ERASEPROTECT.DISABLE register from being written until next reset. */
+  #define CTRLAPPERI_ERASEPROTECT_LOCK_ResetValue (0x00000000UL) /*!< Reset value of LOCK register.                            */
+
+/* LOCK @Bit 0 : Writing any value will lock the ERASEPROTECT.DISABLE register from being written until next reset. */
+  #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Pos (0UL) /*!< Position of LOCK field.                                             */
+  #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Msk (0x1UL << CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Pos) /*!< Bit mask of LOCK field.  */
+  #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Min (0x1UL) /*!< Min enumerator value of LOCK field.                               */
+  #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Max (0x1UL) /*!< Max enumerator value of LOCK field.                               */
+  #define CTRLAPPERI_ERASEPROTECT_LOCK_LOCK_Locked (0x1UL) /*!< Register ERASEPROTECT.DISABLE is read-only.                    */
+
+
+/* CTRLAPPERI_ERASEPROTECT_DISABLE: This register disables the ERASEPROTECT register and performs an ERASEALL operation. */
+  #define CTRLAPPERI_ERASEPROTECT_DISABLE_ResetValue (0x00000000UL) /*!< Reset value of DISABLE register.                      */
+
+/* KEY @Bits 0..31 : The ERASEALL sequence is initiated if the value of the KEY fields are non-zero and the KEY fields match on
+                     both the CPU and debugger sides. */
+
+  #define CTRLAPPERI_ERASEPROTECT_DISABLE_KEY_Pos (0UL) /*!< Position of KEY field.                                            */
+  #define CTRLAPPERI_ERASEPROTECT_DISABLE_KEY_Msk (0xFFFFFFFFUL << CTRLAPPERI_ERASEPROTECT_DISABLE_KEY_Pos) /*!< Bit mask of KEY
+                                                                            field.*/
+
+
 /* ==================================================== Struct CTRLAPPERI ==================================================== */
 /**
   * @brief Control access port
@@ -7033,7 +7067,9 @@ typedef struct {
     __IM uint32_t INTPEND;                           /*!< (@ 0x0000030C) Pending interrupts                                    */
     __IM uint32_t RESERVED2[60];
     __IOM NRF_CTRLAPPERI_MAILBOX_Type MAILBOX;       /*!< (@ 0x00000400) (unspecified)                                         */
-    __IM uint32_t RESERVED3[38];
+    __IM uint32_t RESERVED3[30];
+    __IOM NRF_CTRLAPPERI_ERASEPROTECT_Type ERASEPROTECT; /*!< (@ 0x00000500) (unspecified)                                     */
+    __IM uint32_t RESERVED4[6];
     __OM uint32_t RESET;                             /*!< (@ 0x00000520) System reset request.                                 */
   } NRF_CTRLAPPERI_Type;                             /*!< Size = 1316 (0x524)                                                  */
 
@@ -11554,16 +11590,16 @@ typedef struct {
   * @brief INFO [FICR_INFO] Device info
   */
 typedef struct {
-  __IM  uint32_t  CONFIGID;                          /*!< (@ 0x00000000) Configuration identifier                              */
-  __IM  uint32_t  DEVICEID[2];                       /*!< (@ 0x00000004) Device identifier                                     */
-  __IM  uint32_t  UUID[4];                           /*!< (@ 0x0000000C) 128-bit Universally Unique IDentifier (UUID).         */
-  __IM  uint32_t  PART;                              /*!< (@ 0x0000001C) Part code                                             */
-  __IM  uint32_t  VARIANT;                           /*!< (@ 0x00000020) Function variant code, Hardware version code, and
+  __IOM uint32_t  CONFIGID;                          /*!< (@ 0x00000000) Configuration identifier                              */
+  __IOM uint32_t  DEVICEID[2];                       /*!< (@ 0x00000004) Device identifier                                     */
+  __IOM uint32_t  UUID[4];                           /*!< (@ 0x0000000C) 128-bit Universally Unique IDentifier (UUID).         */
+  __IOM uint32_t  PART;                              /*!< (@ 0x0000001C) Part code                                             */
+  __IOM uint32_t  VARIANT;                           /*!< (@ 0x00000020) Function variant code, Hardware version code, and
                                                                          Production configuration code encoded as ASCII.*/
-  __IM  uint32_t  PACKAGE;                           /*!< (@ 0x00000024) Package option                                        */
-  __IM  uint32_t  RAM;                               /*!< (@ 0x00000028) RAM size (KB)                                         */
+  __IOM uint32_t  PACKAGE;                           /*!< (@ 0x00000024) Package option                                        */
+  __IOM uint32_t  RAM;                               /*!< (@ 0x00000028) RAM size (KB)                                         */
   __IM  uint32_t  RESERVED;
-  __IM  uint32_t  MRAM;                              /*!< (@ 0x00000030) MRAM size (KB)                                        */
+  __IOM uint32_t  MRAM;                              /*!< (@ 0x00000030) MRAM size (KB)                                        */
 } NRF_FICR_INFO_Type;                                /*!< Size = 52 (0x034)                                                    */
 
 /* FICR_INFO_CONFIGID: Configuration identifier */
@@ -11663,8 +11699,8 @@ typedef struct {
   * @brief TRIMCNF [FICR_TRIMCNF] (unspecified)
   */
 typedef struct {
-  __IM  uint32_t  ADDR;                              /*!< (@ 0x00000000) Address of the register which will be written         */
-  __IM  uint32_t  DATA;                              /*!< (@ 0x00000004) Data to be written into the register                  */
+  __IOM uint32_t  ADDR;                              /*!< (@ 0x00000000) Address of the register which will be written         */
+  __IOM uint32_t  DATA;                              /*!< (@ 0x00000004) Data to be written into the register                  */
 } NRF_FICR_TRIMCNF_Type;                             /*!< Size = 8 (0x008)                                                     */
   #define FICR_TRIMCNF_MaxCount (128UL)              /*!< Size of TRIMCNF[128] array.                                          */
   #define FICR_TRIMCNF_MaxIndex (127UL)              /*!< Max index of TRIMCNF[128] array.                                     */
@@ -11692,16 +11728,16 @@ typedef struct {
   * @brief NFC [FICR_NFC] (unspecified)
   */
 typedef struct {
-  __IM  uint32_t  TAGHEADER0;                        /*!< (@ 0x00000000) Default header for NFC Tag. Software can read these
+  __IOM uint32_t  TAGHEADER0;                        /*!< (@ 0x00000000) Default header for NFC Tag. Software can read these
                                                                          values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and
                                                                          NFCID1_LAST.*/
-  __IM  uint32_t  TAGHEADER1;                        /*!< (@ 0x00000004) Default header for NFC Tag. Software can read these
+  __IOM uint32_t  TAGHEADER1;                        /*!< (@ 0x00000004) Default header for NFC Tag. Software can read these
                                                                          values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and
                                                                          NFCID1_LAST.*/
-  __IM  uint32_t  TAGHEADER2;                        /*!< (@ 0x00000008) Default header for NFC Tag. Software can read these
+  __IOM uint32_t  TAGHEADER2;                        /*!< (@ 0x00000008) Default header for NFC Tag. Software can read these
                                                                          values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and
                                                                          NFCID1_LAST.*/
-  __IM  uint32_t  TAGHEADER3;                        /*!< (@ 0x0000000C) Default header for NFC Tag. Software can read these
+  __IOM uint32_t  TAGHEADER3;                        /*!< (@ 0x0000000C) Default header for NFC Tag. Software can read these
                                                                          values to populate NFCID1_3RD_LAST, NFCID1_2ND_LAST and
                                                                          NFCID1_LAST.*/
 } NRF_FICR_NFC_Type;                                 /*!< Size = 16 (0x010)                                                    */
@@ -11794,6 +11830,75 @@ typedef struct {
   #define FICR_NFC_TAGHEADER3_UD15_Msk (0xFFUL << FICR_NFC_TAGHEADER3_UD15_Pos) /*!< Bit mask of UD15 field.                   */
 
 
+
+/* =================================================== Struct FICR_MACADDR =================================================== */
+/**
+  * @brief MACADDR [FICR_MACADDR] 48-bit MAC address n
+  */
+typedef struct {
+  __IOM uint32_t  LOW;                               /*!< (@ 0x00000000) Lower 24 bits of MAC address n                        */
+  __IOM uint32_t  HIGH;                              /*!< (@ 0x00000004) Upper 24 bits of MAC address n                        */
+} NRF_FICR_MACADDR_Type;                             /*!< Size = 8 (0x008)                                                     */
+  #define FICR_MACADDR_MaxCount (2UL)                /*!< Size of MACADDR[2] array.                                            */
+  #define FICR_MACADDR_MaxIndex (1UL)                /*!< Max index of MACADDR[2] array.                                       */
+  #define FICR_MACADDR_MinIndex (0UL)                /*!< Min index of MACADDR[2] array.                                       */
+
+/* FICR_MACADDR_LOW: Lower 24 bits of MAC address n */
+  #define FICR_MACADDR_LOW_ResetValue (0xFFFFFFFFUL) /*!< Reset value of LOW register.                                         */
+
+/* ADDR @Bits 0..23 : MAC address bits [23:0] */
+  #define FICR_MACADDR_LOW_ADDR_Pos (0UL)            /*!< Position of ADDR field.                                              */
+  #define FICR_MACADDR_LOW_ADDR_Msk (0xFFFFFFUL << FICR_MACADDR_LOW_ADDR_Pos) /*!< Bit mask of ADDR field.                     */
+
+
+/* FICR_MACADDR_HIGH: Upper 24 bits of MAC address n */
+  #define FICR_MACADDR_HIGH_ResetValue (0xFFFFFFFFUL) /*!< Reset value of HIGH register.                                       */
+
+/* ADDR @Bits 0..23 : MAC address bits [47:24] */
+  #define FICR_MACADDR_HIGH_ADDR_Pos (0UL)           /*!< Position of ADDR field.                                              */
+  #define FICR_MACADDR_HIGH_ADDR_Msk (0xFFFFFFUL << FICR_MACADDR_HIGH_ADDR_Pos) /*!< Bit mask of ADDR field.                   */
+
+
+
+/* ================================================== Struct FICR_XTALCOMP =================================================== */
+/**
+  * @brief XTALCOMP [FICR_XTALCOMP] Crystal oscillator (XTAL) temperature compensation data
+  */
+typedef struct {
+  __IOM uint32_t  OFFSET;                            /*!< (@ 0x00000000) Measured XTAL frequency error at room temperature     */
+  __IOM uint32_t  LOWTEMPTHRESHOLD;                  /*!< (@ 0x00000004) Low temperature threshold for frequency skew
+                                                                         compensation*/
+  __IOM uint32_t  LOWTEMPADJUST;                     /*!< (@ 0x00000008) Frequency adjustment applied below the low temperature
+                                                                         threshold*/
+  __IM  uint32_t  RESERVED[5];
+} NRF_FICR_XTALCOMP_Type;                            /*!< Size = 32 (0x020)                                                    */
+
+/* FICR_XTALCOMP_OFFSET: Measured XTAL frequency error at room temperature */
+  #define FICR_XTALCOMP_OFFSET_ResetValue (0xFFFFFFFFUL) /*!< Reset value of OFFSET register.                                  */
+
+/* OFFSET @Bits 0..31 : Frequency error in ppm */
+  #define FICR_XTALCOMP_OFFSET_OFFSET_Pos (0UL)      /*!< Position of OFFSET field.                                            */
+  #define FICR_XTALCOMP_OFFSET_OFFSET_Msk (0xFFFFFFFFUL << FICR_XTALCOMP_OFFSET_OFFSET_Pos) /*!< Bit mask of OFFSET field.     */
+
+
+/* FICR_XTALCOMP_LOWTEMPTHRESHOLD: Low temperature threshold for frequency skew compensation */
+  #define FICR_XTALCOMP_LOWTEMPTHRESHOLD_ResetValue (0xFFFFFFFFUL) /*!< Reset value of LOWTEMPTHRESHOLD register.              */
+
+/* THRESHOLD @Bits 0..31 : Low temperature threshold */
+  #define FICR_XTALCOMP_LOWTEMPTHRESHOLD_THRESHOLD_Pos (0UL) /*!< Position of THRESHOLD field.                                 */
+  #define FICR_XTALCOMP_LOWTEMPTHRESHOLD_THRESHOLD_Msk (0xFFFFFFFFUL << FICR_XTALCOMP_LOWTEMPTHRESHOLD_THRESHOLD_Pos) /*!< Bit
+                                                                            mask of THRESHOLD field.*/
+
+
+/* FICR_XTALCOMP_LOWTEMPADJUST: Frequency adjustment applied below the low temperature threshold */
+  #define FICR_XTALCOMP_LOWTEMPADJUST_ResetValue (0xFFFFFFFFUL) /*!< Reset value of LOWTEMPADJUST register.                    */
+
+/* ADJUST @Bits 0..31 : Frequency adjustment in ppm */
+  #define FICR_XTALCOMP_LOWTEMPADJUST_ADJUST_Pos (0UL) /*!< Position of ADJUST field.                                          */
+  #define FICR_XTALCOMP_LOWTEMPADJUST_ADJUST_Msk (0xFFFFFFFFUL << FICR_XTALCOMP_LOWTEMPADJUST_ADJUST_Pos) /*!< Bit mask of
+                                                                            ADJUST field.*/
+
+
 /* ======================================================= Struct FICR ======================================================= */
 /**
   * @brief Factory Information Configuration Registers
@@ -11802,15 +11907,20 @@ typedef struct {
     __IM uint32_t RESERVED[192];
     __IOM NRF_FICR_INFO_Type INFO;                   /*!< (@ 0x00000300) Device info                                           */
     __IM uint32_t RESERVED1[19];
-    __IM uint32_t ER[4];                             /*!< (@ 0x00000380) Common encryption root key, word n                    */
-    __IM uint32_t IR[4];                             /*!< (@ 0x00000390) Common identity root key, word n                      */
-    __IM uint32_t DEVICEADDRTYPE;                    /*!< (@ 0x000003A0) Device address type                                   */
-    __IM uint32_t DEVICEADDR[2];                     /*!< (@ 0x000003A4) Device address n                                      */
+    __IOM uint32_t ER[4];                            /*!< (@ 0x00000380) Common encryption root key, word n                    */
+    __IOM uint32_t IR[4];                            /*!< (@ 0x00000390) Common identity root key, word n                      */
+    __IOM uint32_t DEVICEADDRTYPE;                   /*!< (@ 0x000003A0) Device address type                                   */
+    __IOM uint32_t DEVICEADDR[2];                    /*!< (@ 0x000003A4) Device address n                                      */
     __IM uint32_t RESERVED2[21];
     __IOM NRF_FICR_TRIMCNF_Type TRIMCNF[128];        /*!< (@ 0x00000400) (unspecified)                                         */
     __IM uint32_t RESERVED3[64];
     __IOM NRF_FICR_NFC_Type NFC;                     /*!< (@ 0x00000900) (unspecified)                                         */
-  } NRF_FICR_Type;                                   /*!< Size = 2320 (0x910)                                                  */
+    __IM uint32_t RESERVED4[188];
+    __IOM NRF_FICR_MACADDR_Type MACADDR[2];          /*!< (@ 0x00000C00) 48-bit MAC address n                                  */
+    __IM uint32_t RESERVED5[4];
+    __IOM NRF_FICR_XTALCOMP_Type XTALCOMP;           /*!< (@ 0x00000C20) Crystal oscillator (XTAL) temperature compensation
+                                                                         data*/
+  } NRF_FICR_Type;                                   /*!< Size = 3136 (0xC40)                                                  */
 
 /* FICR_ER: Common encryption root key, word n */
   #define FICR_ER_MaxCount (4UL)                     /*!< Max size of ER[4] array.                                             */
@@ -11875,7 +11985,7 @@ typedef struct {
   } NRF_GLITCHDET_Type;                              /*!< Size = 1444 (0x5A4)                                                  */
 
 /* GLITCHDET_CONFIG: Configuration for glitch detector */
-  #define GLITCHDET_CONFIG_ResetValue (0x00000001UL) /*!< Reset value of CONFIG register.                                      */
+  #define GLITCHDET_CONFIG_ResetValue (0x00000000UL) /*!< Reset value of CONFIG register.                                      */
 
 /* REQUESTEDSTATE @Bits 0..1 : Requested state of the glitch detector. */
   #define GLITCHDET_CONFIG_REQUESTEDSTATE_Pos (0UL)  /*!< Position of REQUESTEDSTATE field.                                    */
@@ -31482,8 +31592,8 @@ typedef struct {
                                                                          a bus error occurs, these registers will contain the
                                                                          address that cause the error.*/
   __IM  uint32_t  JOBCOUNT;                          /*!< (@ 0x0000000C) Number of completed jobs in the current Source
-                                                                         descriptor list. This resets to 0 when a new joblist is
-                                                                         started.*/
+                                                                         descriptor list. This resets to 0 when a new job list
+                                                                         is started.*/
 } NRF_MVDMA_SOURCE_Type;                             /*!< Size = 16 (0x010)                                                    */
 
 /* MVDMA_SOURCE_LISTPTR: Start address of Source job list or list of job list pointers, depending on value of CONFIG.MODE. */
@@ -31503,10 +31613,11 @@ typedef struct {
   #define MVDMA_SOURCE_BUSERROR_BUSERROR_Min (0x0UL) /*!< Min enumerator value of BUSERROR field.                              */
   #define MVDMA_SOURCE_BUSERROR_BUSERROR_Max (0x2UL) /*!< Max enumerator value of BUSERROR field.                              */
   #define MVDMA_SOURCE_BUSERROR_BUSERROR_NoError (0x0UL) /*!< There are no errors.                                             */
-  #define MVDMA_SOURCE_BUSERROR_BUSERROR_ReadError (0x1UL) /*!< Error related to memory when reading joblist, or error related
+  #define MVDMA_SOURCE_BUSERROR_BUSERROR_ReadError (0x1UL) /*!< Error related to memory when reading job list, or error related
                                                                 to memory/register when reading data.*/
-  #define MVDMA_SOURCE_BUSERROR_BUSERROR_ReadDecodeError (0x2UL) /*!< Error related to the joblist address when reading joblist,
-                                                                      or error related to address when reading memory/register.*/
+  #define MVDMA_SOURCE_BUSERROR_BUSERROR_ReadDecodeError (0x2UL) /*!< Error related to the job list address when reading job
+                                                                      list, or error related to address when reading
+                                                                      memory/register.*/
 
 
 /* MVDMA_SOURCE_ADDRESS: Latest address being accessed on the Source channel.If a bus error occurs, these registers will contain
@@ -31519,8 +31630,8 @@ typedef struct {
   #define MVDMA_SOURCE_ADDRESS_ADDRESS_Msk (0xFFFFFFFFUL << MVDMA_SOURCE_ADDRESS_ADDRESS_Pos) /*!< Bit mask of ADDRESS field.  */
 
 
-/* MVDMA_SOURCE_JOBCOUNT: Number of completed jobs in the current Source descriptor list. This resets to 0 when a new joblist is
-                           started. */
+/* MVDMA_SOURCE_JOBCOUNT: Number of completed jobs in the current Source descriptor list. This resets to 0 when a new job list
+                           is started. */
 
   #define MVDMA_SOURCE_JOBCOUNT_ResetValue (0x00000000UL) /*!< Reset value of JOBCOUNT register.                               */
 
@@ -31542,7 +31653,7 @@ typedef struct {
                                                                          bus error occurs, these registers will contain the
                                                                          address that cause the error.*/
   __IM  uint32_t  JOBCOUNT;                          /*!< (@ 0x0000000C) Number of completed jobs in the current Sink descriptor
-                                                                         list. This resets to 0 when a new joblist is started.*/
+                                                                         list. This resets to 0 when a new job list is started.*/
 } NRF_MVDMA_SINK_Type;                               /*!< Size = 16 (0x010)                                                    */
 
 /* MVDMA_SINK_LISTPTR: Start address of Sink job list or list of job list pointers, depending on value of CONFIG.MODE. */
@@ -31562,8 +31673,9 @@ typedef struct {
   #define MVDMA_SINK_BUSERROR_BUSERROR_Min (0x0UL)   /*!< Min enumerator value of BUSERROR field.                              */
   #define MVDMA_SINK_BUSERROR_BUSERROR_Max (0x4UL)   /*!< Max enumerator value of BUSERROR field.                              */
   #define MVDMA_SINK_BUSERROR_BUSERROR_NoError (0x0UL) /*!< There are no errors.                                               */
-  #define MVDMA_SINK_BUSERROR_BUSERROR_ReadError (0x1UL) /*!< Error related to memory when reading joblist.                    */
-  #define MVDMA_SINK_BUSERROR_BUSERROR_ReadDecodeError (0x2UL) /*!< Error related to the joblist address when reading joblist. */
+  #define MVDMA_SINK_BUSERROR_BUSERROR_ReadError (0x1UL) /*!< Error related to memory when reading job list.                   */
+  #define MVDMA_SINK_BUSERROR_BUSERROR_ReadDecodeError (0x2UL) /*!< Error related to the job list address when reading job
+                                                                    list.*/
   #define MVDMA_SINK_BUSERROR_BUSERROR_WriteError (0x3UL) /*!< Error related to memory/register when writing data.             */
   #define MVDMA_SINK_BUSERROR_BUSERROR_WriteDecodeError (0x4UL) /*!< Error related to the memory/register address when writing
                                                                      data.*/
@@ -31579,7 +31691,7 @@ typedef struct {
   #define MVDMA_SINK_ADDRESS_ADDRESS_Msk (0xFFFFFFFFUL << MVDMA_SINK_ADDRESS_ADDRESS_Pos) /*!< Bit mask of ADDRESS field.      */
 
 
-/* MVDMA_SINK_JOBCOUNT: Number of completed jobs in the current Sink descriptor list. This resets to 0 when a new joblist is
+/* MVDMA_SINK_JOBCOUNT: Number of completed jobs in the current Sink descriptor list. This resets to 0 when a new job list is
                          started. */
 
   #define MVDMA_SINK_JOBCOUNT_ResetValue (0x00000000UL) /*!< Reset value of JOBCOUNT register.                                 */
@@ -42504,7 +42616,7 @@ typedef struct {
   #define RESET_RESETREAS_LOCKUP_NotDetected (0x0UL) /*!< Not detected                                                         */
   #define RESET_RESETREAS_LOCKUP_Detected (0x1UL)    /*!< Detected                                                             */
 
-/* OFF @Bit 8 : Reset due to wakeup from System OFF mode when wakeup is triggered by DETECT signal from GPIO */
+/* OFF @Bit 8 : Reset due to wake-up from System OFF mode when wake-up is triggered by DETECT signal from GPIO */
   #define RESET_RESETREAS_OFF_Pos (8UL)              /*!< Position of OFF field.                                               */
   #define RESET_RESETREAS_OFF_Msk (0x1UL << RESET_RESETREAS_OFF_Pos) /*!< Bit mask of OFF field.                               */
   #define RESET_RESETREAS_OFF_Min (0x0UL)            /*!< Min enumerator value of OFF field.                                   */
@@ -42512,7 +42624,7 @@ typedef struct {
   #define RESET_RESETREAS_OFF_NotDetected (0x0UL)    /*!< Not detected                                                         */
   #define RESET_RESETREAS_OFF_Detected (0x1UL)       /*!< Detected                                                             */
 
-/* LPCOMP @Bit 9 : Reset due to wakeup from System OFF mode when wakeup is triggered by ANADETECT signal from LPCOMP */
+/* LPCOMP @Bit 9 : Reset due to wake-up from System OFF mode when wake-up is triggered by ANADETECT signal from LPCOMP */
   #define RESET_RESETREAS_LPCOMP_Pos (9UL)           /*!< Position of LPCOMP field.                                            */
   #define RESET_RESETREAS_LPCOMP_Msk (0x1UL << RESET_RESETREAS_LPCOMP_Pos) /*!< Bit mask of LPCOMP field.                      */
   #define RESET_RESETREAS_LPCOMP_Min (0x0UL)         /*!< Min enumerator value of LPCOMP field.                                */
@@ -42528,7 +42640,7 @@ typedef struct {
   #define RESET_RESETREAS_DIF_NotDetected (0x0UL)    /*!< Not detected                                                         */
   #define RESET_RESETREAS_DIF_Detected (0x1UL)       /*!< Detected                                                             */
 
-/* GRTC @Bit 11 : Reset due to wakeup from GRTC */
+/* GRTC @Bit 11 : Reset due to wake-up from GRTC */
   #define RESET_RESETREAS_GRTC_Pos (11UL)            /*!< Position of GRTC field.                                              */
   #define RESET_RESETREAS_GRTC_Msk (0x1UL << RESET_RESETREAS_GRTC_Pos) /*!< Bit mask of GRTC field.                            */
   #define RESET_RESETREAS_GRTC_Min (0x0UL)           /*!< Min enumerator value of GRTC field.                                  */
@@ -42536,7 +42648,7 @@ typedef struct {
   #define RESET_RESETREAS_GRTC_NotDetected (0x0UL)   /*!< Not detected                                                         */
   #define RESET_RESETREAS_GRTC_Detected (0x1UL)      /*!< Detected                                                             */
 
-/* NFC @Bit 12 : Reset after wakeup from System OFF mode due to NFC field being detected */
+/* NFC @Bit 12 : Reset after wake-up from System OFF mode due to NFC field being detected */
   #define RESET_RESETREAS_NFC_Pos (12UL)             /*!< Position of NFC field.                                               */
   #define RESET_RESETREAS_NFC_Msk (0x1UL << RESET_RESETREAS_NFC_Pos) /*!< Bit mask of NFC field.                               */
   #define RESET_RESETREAS_NFC_Min (0x0UL)            /*!< Min enumerator value of NFC field.                                   */
@@ -42552,7 +42664,7 @@ typedef struct {
   #define RESET_RESETREAS_SECTAMPER_NotDetected (0x0UL) /*!< Not detected                                                      */
   #define RESET_RESETREAS_SECTAMPER_Detected (0x1UL) /*!< Detected                                                             */
 
-/* VBUS @Bit 14 : Reset after wakeup from System OFF mode due to VBUS rising into valid range */
+/* VBUS @Bit 14 : Reset after wake-up from System OFF mode due to VBUS rising into valid range */
   #define RESET_RESETREAS_VBUS_Pos (14UL)            /*!< Position of VBUS field.                                              */
   #define RESET_RESETREAS_VBUS_Msk (0x1UL << RESET_RESETREAS_VBUS_Pos) /*!< Bit mask of VBUS field.                            */
   #define RESET_RESETREAS_VBUS_Min (0x0UL)           /*!< Min enumerator value of VBUS field.                                  */
@@ -57362,6 +57474,75 @@ typedef struct {
                                                              (including sleep modes).*/
 
 
+
+/* =================================================== Struct UICR_MACADDR =================================================== */
+/**
+  * @brief MACADDR [UICR_MACADDR] 48-bit MAC address n
+  */
+typedef struct {
+  __IOM uint32_t  LOW;                               /*!< (@ 0x00000000) Lower 24 bits of MAC address n                        */
+  __IOM uint32_t  HIGH;                              /*!< (@ 0x00000004) Upper 24 bits of MAC address n                        */
+} NRF_UICR_MACADDR_Type;                             /*!< Size = 8 (0x008)                                                     */
+  #define UICR_MACADDR_MaxCount (2UL)                /*!< Size of MACADDR[2] array.                                            */
+  #define UICR_MACADDR_MaxIndex (1UL)                /*!< Max index of MACADDR[2] array.                                       */
+  #define UICR_MACADDR_MinIndex (0UL)                /*!< Min index of MACADDR[2] array.                                       */
+
+/* UICR_MACADDR_LOW: Lower 24 bits of MAC address n */
+  #define UICR_MACADDR_LOW_ResetValue (0xFFFFFFFFUL) /*!< Reset value of LOW register.                                         */
+
+/* ADDR @Bits 0..23 : MAC address bits [23:0] */
+  #define UICR_MACADDR_LOW_ADDR_Pos (0UL)            /*!< Position of ADDR field.                                              */
+  #define UICR_MACADDR_LOW_ADDR_Msk (0xFFFFFFUL << UICR_MACADDR_LOW_ADDR_Pos) /*!< Bit mask of ADDR field.                     */
+
+
+/* UICR_MACADDR_HIGH: Upper 24 bits of MAC address n */
+  #define UICR_MACADDR_HIGH_ResetValue (0xFFFFFFFFUL) /*!< Reset value of HIGH register.                                       */
+
+/* ADDR @Bits 0..23 : MAC address bits [47:24] */
+  #define UICR_MACADDR_HIGH_ADDR_Pos (0UL)           /*!< Position of ADDR field.                                              */
+  #define UICR_MACADDR_HIGH_ADDR_Msk (0xFFFFFFUL << UICR_MACADDR_HIGH_ADDR_Pos) /*!< Bit mask of ADDR field.                   */
+
+
+
+/* ================================================== Struct UICR_XTALCOMP =================================================== */
+/**
+  * @brief XTALCOMP [UICR_XTALCOMP] Crystal oscillator (XTAL) temperature compensation data
+  */
+typedef struct {
+  __IOM uint32_t  OFFSET;                            /*!< (@ 0x00000000) Measured XTAL frequency error at room temperature     */
+  __IOM uint32_t  LOWTEMPTHRESHOLD;                  /*!< (@ 0x00000004) Low temperature threshold for frequency skew
+                                                                         compensation*/
+  __IOM uint32_t  LOWTEMPADJUST;                     /*!< (@ 0x00000008) Frequency adjustment applied below the low temperature
+                                                                         threshold*/
+  __IM  uint32_t  RESERVED[5];
+} NRF_UICR_XTALCOMP_Type;                            /*!< Size = 32 (0x020)                                                    */
+
+/* UICR_XTALCOMP_OFFSET: Measured XTAL frequency error at room temperature */
+  #define UICR_XTALCOMP_OFFSET_ResetValue (0xFFFFFFFFUL) /*!< Reset value of OFFSET register.                                  */
+
+/* OFFSET @Bits 0..31 : Frequency error in ppm */
+  #define UICR_XTALCOMP_OFFSET_OFFSET_Pos (0UL)      /*!< Position of OFFSET field.                                            */
+  #define UICR_XTALCOMP_OFFSET_OFFSET_Msk (0xFFFFFFFFUL << UICR_XTALCOMP_OFFSET_OFFSET_Pos) /*!< Bit mask of OFFSET field.     */
+
+
+/* UICR_XTALCOMP_LOWTEMPTHRESHOLD: Low temperature threshold for frequency skew compensation */
+  #define UICR_XTALCOMP_LOWTEMPTHRESHOLD_ResetValue (0xFFFFFFFFUL) /*!< Reset value of LOWTEMPTHRESHOLD register.              */
+
+/* THRESHOLD @Bits 0..31 : Low temperature threshold */
+  #define UICR_XTALCOMP_LOWTEMPTHRESHOLD_THRESHOLD_Pos (0UL) /*!< Position of THRESHOLD field.                                 */
+  #define UICR_XTALCOMP_LOWTEMPTHRESHOLD_THRESHOLD_Msk (0xFFFFFFFFUL << UICR_XTALCOMP_LOWTEMPTHRESHOLD_THRESHOLD_Pos) /*!< Bit
+                                                                            mask of THRESHOLD field.*/
+
+
+/* UICR_XTALCOMP_LOWTEMPADJUST: Frequency adjustment applied below the low temperature threshold */
+  #define UICR_XTALCOMP_LOWTEMPADJUST_ResetValue (0xFFFFFFFFUL) /*!< Reset value of LOWTEMPADJUST register.                    */
+
+/* ADJUST @Bits 0..31 : Frequency adjustment in ppm */
+  #define UICR_XTALCOMP_LOWTEMPADJUST_ADJUST_Pos (0UL) /*!< Position of ADJUST field.                                          */
+  #define UICR_XTALCOMP_LOWTEMPADJUST_ADJUST_Msk (0xFFFFFFFFUL << UICR_XTALCOMP_LOWTEMPADJUST_ADJUST_Pos) /*!< Bit mask of
+                                                                            ADJUST field.*/
+
+
 /* ======================================================= Struct UICR ======================================================= */
 /**
   * @brief User Information Configuration Registers
@@ -57376,7 +57557,12 @@ typedef struct {
     __IOM NRF_UICR_USER_Type USER;                   /*!< (@ 0x00000200) (unspecified)                                         */
     __IM uint32_t RESERVED1[40];
     __IOM NRF_UICR_SUPPLY_Type SUPPLY;               /*!< (@ 0x00000400) (unspecified)                                         */
-    __IM uint32_t RESERVED2[63];
+    __IM uint32_t RESERVED2[7];
+    __IOM NRF_UICR_MACADDR_Type MACADDR[2];          /*!< (@ 0x00000420) 48-bit MAC address n                                  */
+    __IM uint32_t RESERVED3[4];
+    __IOM NRF_UICR_XTALCOMP_Type XTALCOMP;           /*!< (@ 0x00000440) Crystal oscillator (XTAL) temperature compensation
+                                                                         data*/
+    __IM uint32_t RESERVED4[40];
     __IOM uint32_t OTP[320];                         /*!< (@ 0x00000500) One time programmable memory                          */
   } NRF_UICR_Type;                                   /*!< Size = 2560 (0xA00)                                                  */
 
@@ -79943,7 +80129,18 @@ typedef struct {
     __IOM NRF_WICR_FIRMWARE_Type FIRMWARE;           /*!< (@ 0x00000000) (unspecified)                                         */
     __IM uint32_t RESERVED[28];
     __IOM NRF_WICR_IPCCONFIG_Type IPCCONFIG;         /*!< (@ 0x00000080) (unspecified)                                         */
-  } NRF_WICR_Type;                                   /*!< Size = 152 (0x098)                                                   */
+    __IM uint32_t RESERVED1[26];
+    __IOM uint32_t VTFDATA;                          /*!< (@ 0x00000100) Pointer to memory location containing VTF data from the
+                                                                         VTF monitoring system*/
+  } NRF_WICR_Type;                                   /*!< Size = 260 (0x104)                                                   */
+
+/* WICR_VTFDATA: Pointer to memory location containing VTF data from the VTF monitoring system */
+  #define WICR_VTFDATA_ResetValue (0xFFFFFFFFUL)     /*!< Reset value of VTFDATA register.                                     */
+
+/* ADDRESS @Bits 0..31 : Address of the VTF monitoring data in RAM */
+  #define WICR_VTFDATA_ADDRESS_Pos (0UL)             /*!< Position of ADDRESS field.                                           */
+  #define WICR_VTFDATA_ADDRESS_Msk (0xFFFFFFFFUL << WICR_VTFDATA_ADDRESS_Pos) /*!< Bit mask of ADDRESS field.                  */
+
 
 #endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
 

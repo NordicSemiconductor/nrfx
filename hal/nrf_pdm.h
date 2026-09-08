@@ -214,6 +214,13 @@ extern "C" {
 #define NRF_PDM_PRESCALER_MAX PDM_PRESCALER_DIVISOR_Max
 #endif
 
+#if NRF_PDM_HAS_CUSTOM_RATIO
+/** @brief Minimum value of PDM custom ratio. */
+#define NRF_PDM_CUSTOM_RATIO_MIN (2 * (PDM_FILTER_CTRL_DECRATIO_Min + 1))
+/** @brief Maximum value of PDM custom ratio. */
+#define NRF_PDM_CUSTOM_RATIO_MAX (2 * (PDM_FILTER_CTRL_DECRATIO_Max + 1))
+#endif
+
 /** @brief PDM gain type. Describes gain value in 0.5 dB steps. */
 typedef uint8_t nrf_pdm_gain_t;
 

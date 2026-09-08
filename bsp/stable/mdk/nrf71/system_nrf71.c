@@ -45,6 +45,8 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #define TRACE_PIN_CONFIG            ((GPIO_PIN_CNF_DRIVE0_E0 << GPIO_PIN_CNF_DRIVE0_Pos) \
                                     | (GPIO_PIN_CNF_DRIVE1_E1 << GPIO_PIN_CNF_DRIVE1_Pos))
 
+/* Boot count limit to avoid MRAM recovery */
+#define BOOTCOUNTCLAMP              (2)
 
 #if defined ( __CC_ARM ) || defined ( __GNUC__ )
     uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_DEFAULT;
@@ -220,9 +222,67 @@ void SystemInit(void)
             }
         #endif
 
-        #if !defined(NRF_TRUSTZONE_NONSECURE) && !defined(NRF_DONT_RESET_BOOTCOUNT)
-            // Invert the BOOTCOUNT mask to force the BOOTCOUNT field to 0
-            NRF_REGULATORS->MRAMRECOVERY &= (~REGULATORS_MRAMRECOVERY_BOOTCOUNT_Msk);
+        #if defined (NRF_ENABLE_NRF7120_APPROTECT_BOOT_WORKAROUND)
+            #if !defined(NRF_TRUSTZONE_NONSECURE)
+                #if defined (NRF7120_ENGA_XXAA) || defined (NRF7120E_ENGA_XXAA) || defined (NRF7120_XXAA) || defined (NRF7120E_XXAA)
+                    // Set RESETBEHAVIOR such that a soft-reset clears the locked APPROTECT registers.
+                    NRF_TAMPC->PROTECT.RESETBEHAVIOR.CTRL =
+                            ((TAMPC_PROTECT_RESETBEHAVIOR_CTRL_WRITEPROTECTION_Clear << TAMPC_PROTECT_RESETBEHAVIOR_CTRL_WRITEPROTECTION_Pos) |
+                            (TAMPC_PROTECT_RESETBEHAVIOR_CTRL_KEY_KEY << TAMPC_PROTECT_RESETBEHAVIOR_CTRL_KEY_Pos));
+                    NRF_TAMPC->PROTECT.RESETBEHAVIOR.CTRL =
+                            ((TAMPC_PROTECT_RESETBEHAVIOR_CTRL_VALUE_High << TAMPC_PROTECT_RESETBEHAVIOR_CTRL_VALUE_Pos) |
+                            (TAMPC_PROTECT_RESETBEHAVIOR_CTRL_KEY_KEY << TAMPC_PROTECT_RESETBEHAVIOR_CTRL_KEY_Pos));
+
+                    // Barriers to ensure register write lands before reset takes effect.
+                    __DSB();
+                    __ISB();
+
+                    #ifdef NRF_BOOTLOOP_DETECTION_ENABLED
+                        /* When boot loop detection is enabled ROM increments BOOTCOUNT on each boot attempt hence the first attempt contains the value 1 */
+                        if (((NRF_REGULATORS->MRAMRECOVERY & REGULATORS_MRAMRECOVERY_BOOTCOUNT_Msk) >> REGULATORS_MRAMRECOVERY_BOOTCOUNT_Pos) == 1)
+                        {
+                            NRF_CTRLAP->RESET = CTRLAPPERI_RESET_RESET_SoftReset << CTRLAPPERI_RESET_RESET_Pos;
+
+                            while(1)
+                                ;   // Reset will terminate execution here.
+                        }
+                    #else
+                        /* When boot loop detection is NOT enabled BOOTCOUNT is zero on the first boot, is incremented here and survives reset */
+                        if (((NRF_REGULATORS->MRAMRECOVERY & REGULATORS_MRAMRECOVERY_BOOTCOUNT_Msk) >> REGULATORS_MRAMRECOVERY_BOOTCOUNT_Pos) == 0)
+                        {
+                            NRF_REGULATORS->MRAMRECOVERY = (
+                                    (REGULATORS_MRAMRECOVERY_KEY_Key << REGULATORS_MRAMRECOVERY_KEY_Pos) |
+                                    (0x1 << REGULATORS_MRAMRECOVERY_BOOTCOUNT_Pos) |
+                                    (NRF_REGULATORS->MRAMRECOVERY & (REGULATORS_MRAMRECOVERY_TAKESNAPSHOT_Msk | REGULATORS_MRAMRECOVERY_RECOVERMRAM_Msk))
+                                );
+
+                            // Barriers to ensure register write lands before reset takes effect.
+                            __DSB();
+                            __ISB();
+                            NRF_CTRLAP->RESET = CTRLAPPERI_RESET_RESET_SoftReset << CTRLAPPERI_RESET_RESET_Pos;
+
+                            while(1)
+                                ;   // Reset will terminate execution here.
+                        }
+                    #endif
+                #endif
+            #endif
+        #else
+            #if !defined(NRF_TRUSTZONE_NONSECURE)
+                #if defined (NRF7120_ENGA_XXAA) || defined (NRF7120E_ENGA_XXAA) || defined (NRF7120_XXAA) || defined (NRF7120E_XXAA)
+                    #if !defined(NRF_DONT_RESET_BOOTCOUNT)
+                        // Clamp BOOTCOUNT at 2 to avoid triggering MRAM recovery due to boot loop detection
+                        if (((NRF_REGULATORS->MRAMRECOVERY & REGULATORS_MRAMRECOVERY_BOOTCOUNT_Msk) >> REGULATORS_MRAMRECOVERY_BOOTCOUNT_Pos) > BOOTCOUNTCLAMP)
+                        {
+                            NRF_REGULATORS->MRAMRECOVERY = (
+                                (REGULATORS_MRAMRECOVERY_KEY_Key << REGULATORS_MRAMRECOVERY_KEY_Pos) |
+                                (BOOTCOUNTCLAMP << REGULATORS_MRAMRECOVERY_BOOTCOUNT_Pos) |
+                                (NRF_REGULATORS->MRAMRECOVERY & (REGULATORS_MRAMRECOVERY_TAKESNAPSHOT_Msk | REGULATORS_MRAMRECOVERY_RECOVERMRAM_Msk))
+                            );
+                        }
+                    #endif
+                #endif
+            #endif
         #endif
     #endif
 }

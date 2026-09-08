@@ -74,6 +74,25 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_NETWORK)
         #include "nrf53/nrf5340/nrf5340_xxaa_network_memory.h"
     #endif
+#elif defined(NRF54H20_XXAA)
+    #if defined(NRF_SECURE)
+        #include "nrf54h/nrf54h20/nrf54h20_xxaa_secure_memory.h"
+    #endif
+    #if defined(NRF_APPLICATION)
+        #include "nrf54h/nrf54h20/nrf54h20_xxaa_application_memory.h"
+    #endif
+    #if defined(NRF_RADIOCORE)
+        #include "nrf54h/nrf54h20/nrf54h20_xxaa_radiocore_memory.h"
+    #endif
+    #if defined(NRF_SYSCTRL)
+        #include "nrf54h/nrf54h20/nrf54h20_xxaa_sysctrl_memory.h"
+    #endif
+    #if defined(NRF_PPR)
+        #include "nrf54h/nrf54h20/nrf54h20_xxaa_ppr_memory.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf54h/nrf54h20/nrf54h20_xxaa_flpr_memory.h"
+    #endif
 #elif defined(NRF54L05_XXAA)
     #if defined(NRF_APPLICATION)
         #include "nrf54l/nrf54l05/nrf54l05_xxaa_application_memory.h"
@@ -127,24 +146,18 @@ POSSIBILITY OF SUCH DAMAGE.
     #if defined(NRF_FLPR)
         #include "nrf54l/nrf54lv10a/nrf54lv10a_xxaa_flpr_memory.h"
     #endif
-#elif defined(NRF54H20_XXAA)
-    #if defined(NRF_SECURE)
-        #include "nrf54h/nrf54h20/nrf54h20_xxaa_secure_memory.h"
-    #endif
+#elif defined(NRF7120_XXAA)
     #if defined(NRF_APPLICATION)
-        #include "nrf54h/nrf54h20/nrf54h20_xxaa_application_memory.h"
-    #endif
-    #if defined(NRF_RADIOCORE)
-        #include "nrf54h/nrf54h20/nrf54h20_xxaa_radiocore_memory.h"
-    #endif
-    #if defined(NRF_SYSCTRL)
-        #include "nrf54h/nrf54h20/nrf54h20_xxaa_sysctrl_memory.h"
-    #endif
-    #if defined(NRF_PPR)
-        #include "nrf54h/nrf54h20/nrf54h20_xxaa_ppr_memory.h"
+        #include "nrf71/nrf7120/nrf7120_xxaa_application_memory.h"
     #endif
     #if defined(NRF_FLPR)
-        #include "nrf54h/nrf54h20/nrf54h20_xxaa_flpr_memory.h"
+        #include "nrf71/nrf7120/nrf7120_xxaa_flpr_memory.h"
+    #endif
+    #if defined(NRF_LMAC)
+        #include "nrf71/nrf7120/nrf7120_xxaa_lmac_memory.h"
+    #endif
+    #if defined(NRF_UMAC)
+        #include "nrf71/nrf7120/nrf7120_xxaa_umac_memory.h"
     #endif
 #elif defined(NRF7120_ENGA_XXAA)
     #if defined(NRF_APPLICATION)
@@ -158,6 +171,19 @@ POSSIBILITY OF SUCH DAMAGE.
     #endif
     #if defined(NRF_UMAC)
         #include "nrf71/nrf7120_enga/nrf7120_enga_xxaa_umac_memory.h"
+    #endif
+#elif defined(NRF7120E_XXAA)
+    #if defined(NRF_APPLICATION)
+        #include "nrf71/nrf7120e/nrf7120e_xxaa_application_memory.h"
+    #endif
+    #if defined(NRF_FLPR)
+        #include "nrf71/nrf7120e/nrf7120e_xxaa_flpr_memory.h"
+    #endif
+    #if defined(NRF_LMAC)
+        #include "nrf71/nrf7120e/nrf7120e_xxaa_lmac_memory.h"
+    #endif
+    #if defined(NRF_UMAC)
+        #include "nrf71/nrf7120e/nrf7120e_xxaa_umac_memory.h"
     #endif
 #elif defined(NRF7120E_ENGA_XXAA)
     #if defined(NRF_APPLICATION)

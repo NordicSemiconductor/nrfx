@@ -37,6 +37,12 @@
 #define NRFX_LOG_MODULE CLOCK
 #include <nrfx_log.h>
 
+#if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
+    #if (!NRF_CLOCK_HAS_CALIBRATION && !NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION))
+        #error "Calibration is not available in the SoC that is used."
+    #endif
+#endif
+
 #if NRFX_CHECK(NRFX_POWER_ENABLED)
 extern bool nrfx_power_irq_enabled;
 #endif
@@ -78,6 +84,13 @@ static void lfclk_event_handler(nrfx_clock_lfclk_evt_type_t event)
     m_clock_cb.event_handler((nrfx_clock_evt_type_t)event);
 }
 #endif // NRF_CLOCK_HAS_LFCLK
+
+#if NRFX_CHECK(LFRC_PRESENT)
+static void lfrc_event_handler(nrfx_clock_lfrc_evt_type_t event)
+{
+    m_clock_cb.event_handler((nrfx_clock_evt_type_t)event);
+}
+#endif // NRFX_CHECK(LFRC_PRESENT)
 
 #if NRF_CLOCK_HAS_HFCLK192M
 static void hfclk192m_event_handler(void)
@@ -147,6 +160,16 @@ int nrfx_clock_init(nrfx_clock_event_handler_t event_handler)
         return err_code;
     }
 #endif // NRF_CLOCK_HAS_LFCLK
+
+#if NRFX_CHECK(LFRC_PRESENT)
+    err_code = nrfx_clock_lfrc_init(m_clock_cb.event_handler ? &lfrc_event_handler : NULL);
+    if (err_code != 0)
+    {
+        NRFX_LOG_INFO("Function: %s, error code: %s.", __func__,
+                      NRFX_LOG_ERROR_STRING_GET(err_code));
+        return err_code;
+    }
+#endif // NRFX_CHECK(LFRC_PRESENT)
 
 #if NRF_CLOCK_HAS_HFCLK24M
     err_code = nrfx_clock_xo24m_init(m_clock_cb.event_handler ? &xo24m_event_handler : NULL);
@@ -231,6 +254,9 @@ void nrfx_clock_uninit(void)
 
 #if NRF_CLOCK_HAS_LFCLK
     nrfx_clock_lfclk_uninit();
+#endif
+#if NRFX_CHECK(LFRC_PRESENT)
+    nrfx_clock_lfrc_uninit();
 #endif
 #if NRF_CLOCK_HAS_HFCLK192M
     nrfx_clock_hfclk192m_uninit();
@@ -336,12 +362,20 @@ void nrfx_clock_stop(nrf_clock_domain_t domain)
      NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED))
 int nrfx_clock_calibration_start(void)
 {
+#if NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)
+    return nrfx_clock_lfrc_calibration_start();
+#elif NRF_CLOCK_HAS_CALIBRATION
     return nrfx_clock_lfclk_calibration_start();
+#endif
 }
 
 int nrfx_clock_is_calibrating(void)
 {
+#if NRFX_CHECK(NRF_LFRC_HAS_CALIBRATION)
+    return nrfx_clock_lfrc_calibrating_check();
+#elif NRF_CLOCK_HAS_CALIBRATION
     return nrfx_clock_lfclk_calibrating_check();
+#endif
 }
 
 #if NRF_CLOCK_HAS_CALIBRATION_TIMER && NRFX_CHECK(NRFX_CLOCK_CONFIG_CT_ENABLED)
@@ -392,6 +426,10 @@ void nrfx_clock_irq_handler(void)
 
 #if NRF_CLOCK_HAS_LFCLK
     nrfx_clock_lfclk_irq_handler();
+#endif
+
+#if NRFX_CHECK(LFRC_PRESENT)
+    nrfx_clock_lfrc_irq_handler();
 #endif
 
 #if NRF_CLOCK_HAS_HFCLK192M
