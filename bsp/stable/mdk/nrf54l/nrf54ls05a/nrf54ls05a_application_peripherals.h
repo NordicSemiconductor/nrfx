@@ -178,7 +178,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define RRAMC_COUNT 1
 
 #define RRAMC_NAPMODE 1                              /*!< (unspecified)                                                        */
-#define RRAMC_NRRAMDATAUNITSIZE 128                  /*!< RRAM data unit size : 128 bits per data unit                         */
+#define RRAMC_NRRAMDATAUNITSIZE 64                   /*!< RRAM data unit size : 64 bits per data unit                          */
 #define RRAMC_NWRITEBUFSIZE 8                        /*!< Maximum write buffer size : 8                                        */
 #define RRAMC_LOWPOWERCONFIGOPTION2 0                /*!< (unspecified)                                                        */
 #define RRAMC_REGION0ADDR_WRITABLE 0                 /*!< (unspecified)                                                        */
@@ -878,4 +878,3 @@ typedef enum {
 }
 #endif
 #endif /* NRF54LS05A_APPLICATION_PERIPHERALS_H */
-

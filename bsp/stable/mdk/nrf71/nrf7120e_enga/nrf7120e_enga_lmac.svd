@@ -260,6 +260,39 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
           </fields>
         </register>
+        <register>
+          <name>RFPARAMSDATAADDR</name>
+          <description>Base address of RF parameter data</description>
+          <addressOffset>0x104</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <dataType>uint32_t *</dataType>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>ADDRESS</name>
+              <description>Base address of RF parameter data</description>
+              <lsb>0</lsb>
+              <msb>31</msb>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>RFPARAMSDATASIZE</name>
+          <description>Size of RF parameter data in bytes</description>
+          <addressOffset>0x108</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <size>0x20</size>
+          <fields>
+            <field>
+              <name>SIZE</name>
+              <description>Size in bytes</description>
+              <lsb>0</lsb>
+              <msb>31</msb>
+            </field>
+          </fields>
+        </register>
       </registers>
     </peripheral>
     <peripheral>
@@ -469,6 +502,35 @@ POSSIBILITY OF SUCH DAMAGE.
                     <name>Unspecified</name>
                     <description>Unspecified</description>
                     <value>0xFFFFFFFF</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+        </cluster>
+        <cluster>
+          <name>SOCINFO</name>
+          <description>Unspecified</description>
+          <headerStructName>FICR_SOCINFO</headerStructName>
+          <access>read-write</access>
+          <addressOffset>0x340</addressOffset>
+          <register>
+            <name>HWREVISION</name>
+            <description>Hardware Revision of the device. Will be updated in production test.</description>
+            <addressOffset>0x004</addressOffset>
+            <access>read-writeonce</access>
+            <resetValue>0xFFFFFFFF</resetValue>
+            <size>0x20</size>
+            <fields>
+              <field>
+                <name>HWREVISION</name>
+                <lsb>0</lsb>
+                <msb>31</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>SOC1</name>
+                    <description>Unspecified</description>
+                    <value>0x00000000</value>
                   </enumeratedValue>
                 </enumeratedValues>
               </field>
@@ -58454,51 +58516,6 @@ POSSIBILITY OF SUCH DAMAGE.
           </fields>
         </register>
         <register>
-          <name>OVERRIDE</name>
-          <description>Override control</description>
-          <addressOffset>0x34</addressOffset>
-          <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
-          <size>0x20</size>
-          <fields>
-            <field>
-              <name>FORCEON</name>
-              <description>Force on</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-            </field>
-            <field>
-              <name>ATB0</name>
-              <description>ATB0 settings</description>
-              <lsb>1</lsb>
-              <msb>3</msb>
-              <enumeratedValues>
-                <enumeratedValue>
-                  <name>BiasTrim</name>
-                  <description>Unspecified</description>
-                  <value>0x7</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>BiasSupply</name>
-                  <description>Unspecified</description>
-                  <value>0x6</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>BiasPTAT</name>
-                  <description>Unspecified</description>
-                  <value>0x5</value>
-                </enumeratedValue>
-              </enumeratedValues>
-            </field>
-            <field>
-              <name>DUALDRIVE</name>
-              <description>Drive pad from both high-speed pad and regular pad (when highspeed is enabled)</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-            </field>
-          </fields>
-        </register>
-        <register>
           <dim>0x2</dim>
           <dimIncrement>0x4</dimIncrement>
           <name>CTRL[%s]</name>
@@ -64562,6 +64579,52 @@ POSSIBILITY OF SUCH DAMAGE.
             </field>
           </fields>
         </register>
+        <cluster>
+          <name>PORTCNF</name>
+          <description>Unspecified</description>
+          <headerStructName>GPIO_PORTCNF</headerStructName>
+          <access>read-write</access>
+          <addressOffset>0x030</addressOffset>
+          <register>
+            <name>PWRCTRL</name>
+            <description>Power control of the pins in this port</description>
+            <addressOffset>0x00</addressOffset>
+            <access>read-write</access>
+            <resetValue>0x00000300</resetValue>
+            <size>0x20</size>
+            <!--Security securemapping=S-->
+            <fields>
+              <field>
+                <name>PWRCTRL</name>
+                <description>Power control</description>
+                <lsb>8</lsb>
+                <msb>9</msb>
+                <enumeratedValues>
+                  <enumeratedValue>
+                    <name>Off</name>
+                    <description>Power off</description>
+                    <value>0x0</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>FloatingGND0V</name>
+                    <description>Static floating GND of the pin, connected to 0V</description>
+                    <value>0x1</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>FloatingGND1V8</name>
+                    <description>Static floating GND of the pin, connected to 1.8V</description>
+                    <value>0x2</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
+                    <name>FloatingGNDBuf</name>
+                    <description>Buffered floating GND of the pin, generating VDDIO - 1.8V</description>
+                    <value>0x3</value>
+                  </enumeratedValue>
+                </enumeratedValues>
+              </field>
+            </fields>
+          </register>
+        </cluster>
         <register>
           <dim>0x20</dim>
           <dimIncrement>0x4</dimIncrement>
@@ -138355,7 +138418,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>TASKS_AUXPLLSTART</name>
-          <description>Start AUXPLL audio / USB clock source</description>
+          <description>Start AUXPLL audio clock source</description>
           <addressOffset>0x40</addressOffset>
           <access>write-only</access>
           <resetValue>0x00000000</resetValue>
@@ -138363,7 +138426,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>TASKS_AUXPLLSTART</name>
-              <description>Start AUXPLL audio / USB clock source</description>
+              <description>Start AUXPLL audio clock source</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>
@@ -138378,7 +138441,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </register>
         <register>
           <name>TASKS_AUXPLLSTOP</name>
-          <description>Stop AUXPLL audio / USB clock source</description>
+          <description>Stop AUXPLL audio clock source</description>
           <addressOffset>0x44</addressOffset>
           <access>write-only</access>
           <resetValue>0x00000000</resetValue>
@@ -138386,7 +138449,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <fields>
             <field>
               <name>TASKS_AUXPLLSTOP</name>
-              <description>Stop AUXPLL audio / USB clock source</description>
+              <description>Stop AUXPLL audio clock source</description>
               <lsb>0</lsb>
               <msb>0</msb>
               <enumeratedValues>

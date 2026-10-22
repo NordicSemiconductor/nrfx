@@ -85,7 +85,7 @@ void nrfx_clock_hfclk_start(void);
 /** @brief Function for stopping the HFCLK clock. */
 void nrfx_clock_hfclk_stop(void);
 
-#if NRF_CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT
+#if NRF_CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for setting the HFCLK divider.
  *

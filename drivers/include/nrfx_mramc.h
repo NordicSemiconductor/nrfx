@@ -147,7 +147,28 @@ bool nrfx_mramc_fits_memory_check(uint32_t addr, bool uicr_allowed, uint32_t byt
 void nrfx_mramc_all_erase(void);
 
 /**
+ * @brief Function for checking whether a 32-bit word is writable at the specified address.
+ *
+ * Regular MRAM and UICR words can be overwritten, so the function returns true for them.
+ * OTP words in UICR can be written only once after each Erase All, so for an address located
+ * in the OTP area the function returns true only if the word is still erased.
+ *
+ * Use this function together with @ref nrfx_mramc_word_write() to write OTP words.
+ * The address of an OTP word can be obtained with @ref nrf_uicr_otp_address_get().
+ *
+ * @param[in] address Address to be checked. Must be word-aligned.
+ *
+ * @retval true  Word can be written at the specified address.
+ * @retval false Word cannot be written at the specified address.
+ *               Erase UICR or change the address.
+ */
+bool nrfx_mramc_word_writable_check(uint32_t address);
+
+/**
  * @brief Function for writing a 32-bit word to MRAM.
+ *
+ * If the address is located in the OTP area of UICR, write access to the corresponding
+ * NVR page is enabled for the duration of the operation.
  *
  * @note Depending on the source of the code being executed,
  *       the CPU may be halted during the operation.
@@ -162,6 +183,9 @@ void nrfx_mramc_word_write(uint32_t address, uint32_t value);
  * @brief Function for writing consecutive 32-bit words to MRAM.
  *
  * Function uses direct write mode to write to MRAM directly.
+ *
+ * If the range overlaps the OTP area of UICR, write access to the corresponding
+ * NVR page is enabled for the duration of the operation.
  *
  * @note Depending on the source of the code being executed,
  *       the CPU may be halted during the operation.
@@ -284,13 +308,12 @@ NRFX_STATIC_INLINE uint32_t nrfx_mramc_word_read(uint32_t address);
  */
 NRFX_STATIC_INLINE bool nrfx_mramc_ready_check(void);
 
-#if NRF_UICR_HAS_OTP
+#if NRF_UICR_HAS_OTP || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for reading a word from the OTP in UICR.
  *
- * OTP is a region of the UICR present in some chips. This function must be used
- * to read word data from this region since unaligned accesses are not
- * available on the OTP RRAM area.
+ * @deprecated Use @ref nrfx_mramc_word_read with the address obtained
+ *             from @ref nrf_uicr_otp_address_get instead.
  *
  * @param[in] index Address (index) in OTP table from which a word is to be read.
  *
@@ -302,8 +325,11 @@ NRFX_STATIC_INLINE uint32_t nrfx_mramc_otp_word_read(uint32_t index);
  * @brief Function for writing a 32-bit word at index position to OTP region in UICR.
  *
  * The OTP can only be written once after each Erase All is performed.
- * This function checks if the value currently residing at the specified index can
- * be transformed to the desired value. If yes, then performs the write operation.
+ * This function checks if the word at the specified index is still erased.
+ * If yes, then performs the write operation.
+ *
+ * @deprecated Use @ref nrfx_mramc_word_writable_check and @ref nrfx_mramc_word_write
+ *             with the address obtained from @ref nrf_uicr_otp_address_get instead.
  *
  * @param[in] index Address (index) in OTP table to which a word it to be written.
  * @param[in] value Value to be written.

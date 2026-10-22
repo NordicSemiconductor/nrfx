@@ -158,6 +158,7 @@ extern "C" {
 // GPIOTE1_IRQn
 
 // KMU_IRQn
+#define nrfx_kmu_irq_handler        KMU_IRQHandler
 
 // CRYPTOCELL_IRQn
 

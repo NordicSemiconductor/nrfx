@@ -155,6 +155,15 @@ typedef enum
 NRF_STATIC_INLINE void nrf_wdt_behaviour_set(NRF_WDT_Type * p_reg, uint32_t mask);
 
 /**
+ * @brief Function for retrieving the watchdog behaviour configuration.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Watchdog behaviour configuration.
+ */
+NRF_STATIC_INLINE uint32_t nrf_wdt_behaviour_get(NRF_WDT_Type const * p_reg);
+
+/**
  * @brief Function for starting the WDT task.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
@@ -432,6 +441,11 @@ NRF_STATIC_INLINE void nrf_wdt_task_stop_enable_set(NRF_WDT_Type * p_reg, bool e
 NRF_STATIC_INLINE void nrf_wdt_behaviour_set(NRF_WDT_Type * p_reg, uint32_t mask)
 {
     p_reg->CONFIG = mask;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_wdt_behaviour_get(NRF_WDT_Type const * p_reg)
+{
+    return p_reg->CONFIG;
 }
 
 NRF_STATIC_INLINE void nrf_wdt_task_trigger(NRF_WDT_Type * p_reg, nrf_wdt_task_t task)

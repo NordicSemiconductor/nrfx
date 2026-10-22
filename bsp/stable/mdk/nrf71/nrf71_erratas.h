@@ -123,19 +123,34 @@ static inline bool nrf71_errata_103(void);
 static inline bool nrf71_errata_104(void);
 static inline bool nrf71_errata_105(void);
 static inline bool nrf71_errata_106(void);
+static inline bool nrf71_errata_108(void);
 static inline bool nrf71_errata_109(void);
 static inline bool nrf71_errata_111(void);
 static inline bool nrf71_errata_112(void);
+static inline bool nrf71_errata_113(void);
 static inline bool nrf71_errata_114(void);
 static inline bool nrf71_errata_115(void);
 static inline bool nrf71_errata_116(void);
+static inline bool nrf71_errata_117(void);
+static inline bool nrf71_errata_118(void);
+static inline bool nrf71_errata_119(void);
 static inline bool nrf71_errata_120(void);
 static inline bool nrf71_errata_121(void);
+static inline bool nrf71_errata_122(void);
+static inline bool nrf71_errata_123(void);
+static inline bool nrf71_errata_124(void);
 static inline bool nrf71_errata_126(void);
 static inline bool nrf71_errata_129(void);
 static inline bool nrf71_errata_132(void);
 static inline bool nrf71_errata_139(void);
 static inline bool nrf71_errata_140(void);
+static inline bool nrf71_errata_143(void);
+static inline bool nrf71_errata_144(void);
+static inline bool nrf71_errata_150(void);
+static inline bool nrf71_errata_157(void);
+static inline bool nrf71_errata_158(void);
+static inline bool nrf71_errata_159(void);
+static inline bool nrf71_errata_160(void);
 
 /* ========= Errata 1 ========= */
 #define NRF71_ERRATA_1_PRESENT 0
@@ -964,7 +979,14 @@ static inline bool nrf71_errata_47(void)
 }
 
 /* ========= Errata 48 ========= */
-#define NRF71_ERRATA_48_PRESENT 0
+#if    defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120) \
+    || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA) \
+    || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E) \
+    || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+    #define NRF71_ERRATA_48_PRESENT 1
+#else
+    #define NRF71_ERRATA_48_PRESENT 0
+#endif
 
 #ifndef NRF71_ERRATA_48_ENABLE_WORKAROUND
     #define NRF71_ERRATA_48_ENABLE_WORKAROUND NRF71_ERRATA_48_PRESENT
@@ -975,6 +997,61 @@ static inline bool nrf71_errata_48(void)
     #ifndef NRF71_SERIES
         return false;
     #else
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)\
+         || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)\
+         || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)\
+         || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            uint32_t var1 = *(uint32_t *)0x00FFC340ul;
+            uint32_t var2 = *(uint32_t *)0x00FFC344ul;
+        #endif
+        #if defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
         return false;
     #endif
 }
@@ -1820,7 +1897,14 @@ static inline bool nrf71_errata_100(void)
 }
 
 /* ========= Errata 101 ========= */
-#define NRF71_ERRATA_101_PRESENT 0
+#if    defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120) \
+    || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA) \
+    || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E) \
+    || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+    #define NRF71_ERRATA_101_PRESENT 1
+#else
+    #define NRF71_ERRATA_101_PRESENT 0
+#endif
 
 #ifndef NRF71_ERRATA_101_ENABLE_WORKAROUND
     #define NRF71_ERRATA_101_ENABLE_WORKAROUND NRF71_ERRATA_101_PRESENT
@@ -1831,6 +1915,61 @@ static inline bool nrf71_errata_101(void)
     #ifndef NRF71_SERIES
         return false;
     #else
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)\
+         || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)\
+         || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)\
+         || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            uint32_t var1 = *(uint32_t *)0x00FFC340ul;
+            uint32_t var2 = *(uint32_t *)0x00FFC344ul;
+        #endif
+        #if defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
         return false;
     #endif
 }
@@ -1915,6 +2054,22 @@ static inline bool nrf71_errata_106(void)
     #endif
 }
 
+/* ========= Errata 108 ========= */
+#define NRF71_ERRATA_108_PRESENT 0
+
+#ifndef NRF71_ERRATA_108_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_108_ENABLE_WORKAROUND NRF71_ERRATA_108_PRESENT
+#endif
+
+static inline bool nrf71_errata_108(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
 /* ========= Errata 109 ========= */
 #define NRF71_ERRATA_109_PRESENT 0
 
@@ -1959,6 +2114,84 @@ static inline bool nrf71_errata_112(void)
     #ifndef NRF71_SERIES
         return false;
     #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 113 ========= */
+#if    defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120) \
+    || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA) \
+    || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E) \
+    || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+    #define NRF71_ERRATA_113_PRESENT 1
+#else
+    #define NRF71_ERRATA_113_PRESENT 0
+#endif
+
+#ifndef NRF71_ERRATA_113_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_113_ENABLE_WORKAROUND NRF71_ERRATA_113_PRESENT
+#endif
+
+static inline bool nrf71_errata_113(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)\
+         || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)\
+         || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)\
+         || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            uint32_t var1 = *(uint32_t *)0x00FFC340ul;
+            uint32_t var2 = *(uint32_t *)0x00FFC344ul;
+        #endif
+        #if defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
         return false;
     #endif
 }
@@ -2011,6 +2244,54 @@ static inline bool nrf71_errata_116(void)
     #endif
 }
 
+/* ========= Errata 117 ========= */
+#define NRF71_ERRATA_117_PRESENT 0
+
+#ifndef NRF71_ERRATA_117_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_117_ENABLE_WORKAROUND NRF71_ERRATA_117_PRESENT
+#endif
+
+static inline bool nrf71_errata_117(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 118 ========= */
+#define NRF71_ERRATA_118_PRESENT 0
+
+#ifndef NRF71_ERRATA_118_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_118_ENABLE_WORKAROUND NRF71_ERRATA_118_PRESENT
+#endif
+
+static inline bool nrf71_errata_118(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 119 ========= */
+#define NRF71_ERRATA_119_PRESENT 0
+
+#ifndef NRF71_ERRATA_119_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_119_ENABLE_WORKAROUND NRF71_ERRATA_119_PRESENT
+#endif
+
+static inline bool nrf71_errata_119(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
 /* ========= Errata 120 ========= */
 #define NRF71_ERRATA_120_PRESENT 0
 
@@ -2035,6 +2316,54 @@ static inline bool nrf71_errata_120(void)
 #endif
 
 static inline bool nrf71_errata_121(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 122 ========= */
+#define NRF71_ERRATA_122_PRESENT 0
+
+#ifndef NRF71_ERRATA_122_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_122_ENABLE_WORKAROUND NRF71_ERRATA_122_PRESENT
+#endif
+
+static inline bool nrf71_errata_122(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 123 ========= */
+#define NRF71_ERRATA_123_PRESENT 0
+
+#ifndef NRF71_ERRATA_123_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_123_ENABLE_WORKAROUND NRF71_ERRATA_123_PRESENT
+#endif
+
+static inline bool nrf71_errata_123(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 124 ========= */
+#define NRF71_ERRATA_124_PRESENT 0
+
+#ifndef NRF71_ERRATA_124_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_124_ENABLE_WORKAROUND NRF71_ERRATA_124_PRESENT
+#endif
+
+static inline bool nrf71_errata_124(void)
 {
     #ifndef NRF71_SERIES
         return false;
@@ -2115,6 +2444,366 @@ static inline bool nrf71_errata_139(void)
 #endif
 
 static inline bool nrf71_errata_140(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 143 ========= */
+#if    defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120) \
+    || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA) \
+    || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E) \
+    || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+    #define NRF71_ERRATA_143_PRESENT 1
+#else
+    #define NRF71_ERRATA_143_PRESENT 0
+#endif
+
+#ifndef NRF71_ERRATA_143_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_143_ENABLE_WORKAROUND NRF71_ERRATA_143_PRESENT
+#endif
+
+static inline bool nrf71_errata_143(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)\
+         || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)\
+         || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)\
+         || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            uint32_t var1 = *(uint32_t *)0x00FFC340ul;
+            uint32_t var2 = *(uint32_t *)0x00FFC344ul;
+        #endif
+        #if defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        return false;
+    #endif
+}
+
+/* ========= Errata 144 ========= */
+#define NRF71_ERRATA_144_PRESENT 0
+
+#ifndef NRF71_ERRATA_144_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_144_ENABLE_WORKAROUND NRF71_ERRATA_144_PRESENT
+#endif
+
+static inline bool nrf71_errata_144(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 150 ========= */
+#define NRF71_ERRATA_150_PRESENT 0
+
+#ifndef NRF71_ERRATA_150_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_150_ENABLE_WORKAROUND NRF71_ERRATA_150_PRESENT
+#endif
+
+static inline bool nrf71_errata_150(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        return false;
+    #endif
+}
+
+/* ========= Errata 157 ========= */
+#if    defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120) \
+    || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA) \
+    || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E) \
+    || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+    #define NRF71_ERRATA_157_PRESENT 1
+#else
+    #define NRF71_ERRATA_157_PRESENT 0
+#endif
+
+#ifndef NRF71_ERRATA_157_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_157_ENABLE_WORKAROUND NRF71_ERRATA_157_PRESENT
+#endif
+
+static inline bool nrf71_errata_157(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)\
+         || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)\
+         || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)\
+         || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            uint32_t var1 = *(uint32_t *)0x00FFC340ul;
+            uint32_t var2 = *(uint32_t *)0x00FFC344ul;
+        #endif
+        #if defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        return false;
+    #endif
+}
+
+/* ========= Errata 158 ========= */
+#if    defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120) \
+    || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA) \
+    || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E) \
+    || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+    #define NRF71_ERRATA_158_PRESENT 1
+#else
+    #define NRF71_ERRATA_158_PRESENT 0
+#endif
+
+#ifndef NRF71_ERRATA_158_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_158_ENABLE_WORKAROUND NRF71_ERRATA_158_PRESENT
+#endif
+
+static inline bool nrf71_errata_158(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)\
+         || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)\
+         || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)\
+         || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            uint32_t var1 = *(uint32_t *)0x00FFC340ul;
+            uint32_t var2 = *(uint32_t *)0x00FFC344ul;
+        #endif
+        #if defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        return false;
+    #endif
+}
+
+/* ========= Errata 159 ========= */
+#if    defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120) \
+    || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA) \
+    || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E) \
+    || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+    #define NRF71_ERRATA_159_PRESENT 1
+#else
+    #define NRF71_ERRATA_159_PRESENT 0
+#endif
+
+#ifndef NRF71_ERRATA_159_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_159_ENABLE_WORKAROUND NRF71_ERRATA_159_PRESENT
+#endif
+
+static inline bool nrf71_errata_159(void)
+{
+    #ifndef NRF71_SERIES
+        return false;
+    #else
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)\
+         || defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)\
+         || defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)\
+         || defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            uint32_t var1 = *(uint32_t *)0x00FFC340ul;
+            uint32_t var2 = *(uint32_t *)0x00FFC344ul;
+        #endif
+        #if defined (NRF7120E_XXAA) || defined (DEVELOP_IN_NRF7120E)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120E_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120E_ENGA)
+            if (var1 == 0x2C)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_XXAA) || defined (DEVELOP_IN_NRF7120)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        #if defined (NRF7120_ENGA_XXAA) || defined (DEVELOP_IN_NRF7120_ENGA)
+            if (var1 == 0x42)
+            {
+                switch(var2)
+                {
+                    case 0x00ul:
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        #endif
+        return false;
+    #endif
+}
+
+/* ========= Errata 160 ========= */
+#define NRF71_ERRATA_160_PRESENT 0
+
+#ifndef NRF71_ERRATA_160_ENABLE_WORKAROUND
+    #define NRF71_ERRATA_160_ENABLE_WORKAROUND 0
+#endif
+
+static inline bool nrf71_errata_160(void)
 {
     #ifndef NRF71_SERIES
         return false;

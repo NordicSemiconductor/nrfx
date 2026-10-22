@@ -76,7 +76,7 @@ typedef struct
     nrf_comp_th_t        threshold;          ///< Structure holding THDOWN and THUP values needed by the COMP_TH register.
     nrf_comp_sp_mode_t   speed_mode;         ///< Speed and power mode.
     nrf_comp_hyst_t      hyst;               ///< Comparator hysteresis.
-#if NRF_COMP_HAS_ISOURCE
+#if NRF_COMP_HAS_ISOURCE || defined(__NRFX_DOXYGEN__)
     nrf_comp_isource_t   isource;            ///< Current source selected on analog input.
 #endif
     nrfx_analog_input_t  input;              ///< Input to be monitored.

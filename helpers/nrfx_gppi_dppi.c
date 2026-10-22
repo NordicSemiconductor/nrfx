@@ -386,6 +386,62 @@ void nrfx_gppi_group_channel_free(uint32_t node_id, uint8_t channel)
     flag_free(p_node->dppi.p_group_channels, (uint8_t)channel);
 }
 
+static inline bool ppib_rev_get(const nrfx_gppi_route_t * p_route, size_t i, bool rev_conn)
+{
+    if (NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS))
+    {
+        return (p_route->p_nodes[i - 1]->domain_id < p_route->p_nodes[i + 1]->domain_id) ?
+                rev_conn : !rev_conn;
+    }
+    return rev_conn;
+}
+
+/* Frees a connection described by a handle. Channels are freed in all nodes of the route,
+ * PPIB configuration is cleared only in the first ppib_limit nodes, which allows cleaning up
+ * after a partially configured route.
+ */
+static void gppi_domain_conn_free(nrfx_gppi_handle_t handle, size_t ppib_limit)
+{
+    uint32_t route_id = HANDLE_GET_ROUTE_ID(handle);
+    const nrfx_gppi_route_t * p_route = &p_gppi->routes[route_id];
+    bool rev_conn = HANDLE_IS_REVERSED(handle);
+    size_t ppib_nodes = NRFX_MIN(ppib_limit, p_route->len);
+    int rv;
+
+    NRFX_LOG_INFO("Freeing connection handle:%08x (route %d)", handle, route_id);
+    for (size_t i = 0; i < ppib_nodes; i++)
+    {
+        uint32_t chan = HANDLE_GET_CHAN(handle, i);
+        const nrfx_gppi_node_t *p_node = p_route->p_nodes[i];
+
+        if (p_node->type == NRFX_GPPI_NODE_PPIB)
+        {
+            bool rev = ppib_rev_get(p_route, i, rev_conn);
+
+            rv = ppib_configure(p_node, chan, 0, 0, rev);
+            (void)rv;
+            NRFX_ASSERT(rv == 0);
+        }
+    }
+
+    for (size_t i = 0; i < p_route->len; i++)
+    {
+        uint32_t chan = HANDLE_GET_CHAN(handle, i);
+        const nrfx_gppi_node_t *p_node = p_route->p_nodes[i];
+        if (chan != DPPI_CH_RESERVED)
+        {
+            flag_free(p_node->generic.p_channels, (uint8_t)chan);
+        }
+    }
+
+#if NRFX_CHECK(NRFX_GPPI_CONFIG_DPPI_PPIB_EXT_FUNC)
+    /* Flush external PPIB write operations. */
+    rv = nrfx_gppi_ext_ppib_write(NULL, 0);
+    (void)rv;
+    NRFX_ASSERT(rv == 0);
+#endif
+}
+
 int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_handle_t * p_handle,
                              nrfx_gppi_resource_t * p_resource)
 {
@@ -408,7 +464,7 @@ int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_han
         p_route = p_gppi->route_map[producer][consumer - producer];
     }
 
-    /* Return is allocation failed. */
+    /* Return if allocation failed. */
     rv = alloc_channels(channels, p_route, p_resource);
     if (rv < 0)
     {
@@ -421,36 +477,13 @@ int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_han
         producer, consumer, route_idx, p_route->len, rev_conn ? "reversed" : "");
 
     h = HANDLE_INIT(route_idx, rev_conn, (uint32_t)NRFX_DIV_ROUND_UP(p_route->len, 2), channels[0]);
+
+    /* Build the complete handle first so that any failure below can be cleaned up with it. */
     for (size_t i = 0; i < p_route->len; i++)
     {
         const nrfx_gppi_node_t * p_node = p_route->p_nodes[i];
 
-        if (p_node->type == NRFX_GPPI_NODE_PPIB)
-        {
-            uint32_t ch = channels[NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS) ? 0 : i];
-            uint32_t sub_ch;
-            uint32_t pub_ch;
-            bool rev;
-
-            if (NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS))
-            {
-                rev = (p_route->p_nodes[i - 1]->domain_id < p_route->p_nodes[i + 1]->domain_id) ?
-                        rev_conn : !rev_conn;
-            }
-            else
-            {
-                rev = rev_conn;
-            }
-
-            sub_ch = get_ppi_ch(false, channels, i, rev);
-            pub_ch = get_ppi_ch(true, channels, i, rev);
-            rv = ppib_configure(p_node, ch, EP_ENABLE(sub_ch), EP_ENABLE(pub_ch), rev);
-            if (rv != 0)
-            {
-                return rv;
-            }
-        }
-        else if (NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS))
+        if ((p_node->type != NRFX_GPPI_NODE_PPIB) && NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS))
         {
             h |= HANDLE_INST(i / 2, p_node->domain_id);
         }
@@ -461,22 +494,52 @@ int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t consumer, nrfx_gppi_han
             {
                 h |= HANDLE_CHAN(i, channels[i]);
             }
-            else if (p_node->domain_id == p_resource->domain_id)
+            else
             {
                 h |= HANDLE_CHAN(i, DPPI_CH_RESERVED);
             }
         }
     }
 
-    *p_handle = h;
-    NRFX_LOG_INFO("Alloc done, handle:%08x route:%d", h, route_idx);
+    for (size_t i = 0; i < p_route->len; i++)
+    {
+        const nrfx_gppi_node_t * p_node = p_route->p_nodes[i];
+
+        if (p_node->type == NRFX_GPPI_NODE_PPIB)
+        {
+            uint32_t ch = channels[NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS) ? 0 : i];
+            bool rev = ppib_rev_get(p_route, i, rev_conn);
+            uint32_t sub_ch = get_ppi_ch(false, channels, i, rev);
+            uint32_t pub_ch = get_ppi_ch(true, channels, i, rev);
+
+            rv = ppib_configure(p_node, ch, EP_ENABLE(sub_ch), EP_ENABLE(pub_ch), rev);
+            if (rv != 0)
+            {
+                NRFX_LOG_ERROR("PPIB configuration failed, performing cleanup.");
+                /* Clear PPIB nodes up to and including the failed one and release
+                 * channels in all nodes.
+                 */
+                gppi_domain_conn_free(h, i + 1);
+                return rv;
+            }
+        }
+    }
 
 #if NRFX_CHECK(NRFX_GPPI_CONFIG_DPPI_PPIB_EXT_FUNC)
     /* Flush external PPIB write operations. */
-    return nrfx_gppi_ext_ppib_write(NULL, 0);
-#else
-    return 0;
+    rv = nrfx_gppi_ext_ppib_write(NULL, 0);
+    if (rv != 0)
+    {
+        NRFX_LOG_ERROR("PPIB write failed, performing cleanup.");
+        gppi_domain_conn_free(h, SIZE_MAX);
+        return rv;
+    }
 #endif
+
+    *p_handle = h;
+    NRFX_LOG_INFO("Alloc done, handle:%08x route:%d", h, route_idx);
+
+    return 0;
 }
 
 #endif // !NRFX_GPPI_CONFIG_EXT_ALLOCATOR
@@ -490,47 +553,7 @@ int nrfx_gppi_domain_conn_alloc(uint32_t producer, uint32_t consumer,
 #if !NRFX_CHECK(NRFX_GPPI_CONFIG_EXT_ALLOCATOR)
 void nrfx_gppi_domain_conn_free(nrfx_gppi_handle_t handle)
 {
-    uint32_t route_id = HANDLE_GET_ROUTE_ID(handle);
-    const nrfx_gppi_route_t * p_route = &p_gppi->routes[route_id];
-    bool rev_conn = HANDLE_IS_REVERSED(handle);
-    int rv;
-
-    NRFX_LOG_INFO("Freeing connection handle:%08x (route %d)", handle, route_id);
-    for (size_t i = 0; i < p_route->len; i++)
-    {
-        uint32_t chan = HANDLE_GET_CHAN(handle, i);
-        const nrfx_gppi_node_t *p_node = p_route->p_nodes[i];
-
-        if (p_node->type == NRFX_GPPI_NODE_PPIB)
-        {
-            bool rev;
-
-            if (NRFX_IS_ENABLED(NRFX_GPPI_FIXED_CONNECTIONS))
-            {
-                rev = (p_route->p_nodes[i - 1]->domain_id < p_route->p_nodes[i + 1]->domain_id) ?
-                        rev_conn : !rev_conn;
-            }
-            else
-            {
-                rev = rev_conn;
-            }
-
-            rv = ppib_configure(p_node, chan, 0, 0, rev);
-            (void)rv;
-            NRFX_ASSERT(rv == 0);
-        }
-        if (chan != DPPI_CH_RESERVED)
-        {
-            flag_free(p_node->generic.p_channels, (uint8_t)chan);
-        }
-    }
-
-#if NRFX_CHECK(NRFX_GPPI_CONFIG_DPPI_PPIB_EXT_FUNC)
-    /* Flush external PPIB write operations. */
-    rv = nrfx_gppi_ext_ppib_write(NULL, 0);
-    (void)rv;
-    NRFX_ASSERT(rv == 0);
-#endif
+    gppi_domain_conn_free(handle, SIZE_MAX);
 }
 #endif // !NRFX_GPPI_CONFIG_EXT_ALLOCATOR
 #else

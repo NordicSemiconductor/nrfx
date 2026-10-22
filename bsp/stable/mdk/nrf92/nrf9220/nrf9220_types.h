@@ -10842,13 +10842,17 @@ typedef struct {
 typedef struct {
   __IOM uint32_t  POWER0;                            /*!< (@ 0x00000000) Power configuration for P0 to P7 IO ports. Note: P0 is
                                                                          not included in the fields of this register because it
-                                                                         is always internally supplied.*/
-  __IOM uint32_t  POWER1;                            /*!< (@ 0x00000004) Power configuration for P8 to P15 IO ports.           */
+                                                                         is always internally supplied. The nominal maximum and
+                                                                         limited output current levels of the device internal
+                                                                         GPIO power switch are specified in the Electrical
+                                                                         specification.*/
+  __IM  uint32_t  RESERVED;
   __IOM uint32_t  DRIVECTRL0;                        /*!< (@ 0x00000008) Drive control configuration for P0 to P7 IO ports.    */
 } NRF_BICR_IOPORT_Type;                              /*!< Size = 12 (0x00C)                                                    */
 
 /* BICR_IOPORT_POWER0: Power configuration for P0 to P7 IO ports. Note: P0 is not included in the fields of this register
-                        because it is always internally supplied. */
+                        because it is always internally supplied. The nominal maximum and limited output current levels of the
+                        device internal GPIO power switch are specified in the Electrical specification. */
 
   #define BICR_IOPORT_POWER0_ResetValue (0xFFFFFFFFUL) /*!< Reset value of POWER0 register.                                    */
 
@@ -10860,8 +10864,16 @@ typedef struct {
   #define BICR_IOPORT_POWER0_P1_Unconfigured (0xFUL) /*!< Port supply is unconfigured.                                         */
   #define BICR_IOPORT_POWER0_P1_Disconnected (0x0UL) /*!< Port supply rail is not connected. Port cannot be used.              */
   #define BICR_IOPORT_POWER0_P1_External (0x1UL)     /*!< Port supply is provided externally.                                  */
-  #define BICR_IOPORT_POWER0_P1_External1V8 (0x2UL)  /*!< Port supply is provided externally at 1.8 V. Use this option if the
-                                                          port is supplied through SWEXT.*/
+  #define BICR_IOPORT_POWER0_P1_SwExtHigh (0x2UL)    /*!< Port supply is provided by the device internal GPIO power switch
+                                                          (1V8_OUT), configured for nominal maximum output current. The output
+                                                          current is shared between all ports supplied by the switch. Supply is
+                                                          powered down in System OFF. In System ON IDLE, the idle floor current
+                                                          increases significantly. System ON ALL IDLE entry is prevented.*/
+  #define BICR_IOPORT_POWER0_P1_SwExtLow (0x3UL)     /*!< Port supply is provided by the device internal GPIO power switch
+                                                          (1V8_OUT), configured for limited output current. The output current
+                                                          is shared between all ports supplied by the switch. Supply is powered
+                                                          down in System OFF. The idle floor current in System ON IDLE and
+                                                          System ON ALL IDLE is not affected.*/
 
 /* P2 @Bits 8..11 : P2 power configuration. */
   #define BICR_IOPORT_POWER0_P2_Pos (8UL)            /*!< Position of P2 field.                                                */
@@ -10871,8 +10883,16 @@ typedef struct {
   #define BICR_IOPORT_POWER0_P2_Unconfigured (0xFUL) /*!< Port supply is unconfigured.                                         */
   #define BICR_IOPORT_POWER0_P2_Disconnected (0x0UL) /*!< Port supply rail is not connected. Port cannot be used.              */
   #define BICR_IOPORT_POWER0_P2_External (0x1UL)     /*!< Port supply is provided externally.                                  */
-  #define BICR_IOPORT_POWER0_P2_External1V8 (0x2UL)  /*!< Port supply is provided externally at 1.8 V. Use this option if the
-                                                          port is supplied through SWEXT.*/
+  #define BICR_IOPORT_POWER0_P2_SwExtHigh (0x2UL)    /*!< Port supply is provided by the device internal GPIO power switch
+                                                          (1V8_OUT), configured for nominal maximum output current. The output
+                                                          current is shared between all ports supplied by the switch. Supply is
+                                                          powered down in System OFF. In System ON IDLE, the idle floor current
+                                                          increases significantly. System ON ALL IDLE entry is prevented.*/
+  #define BICR_IOPORT_POWER0_P2_SwExtLow (0x3UL)     /*!< Port supply is provided by the device internal GPIO power switch
+                                                          (1V8_OUT), configured for limited output current. The output current
+                                                          is shared between all ports supplied by the switch. Supply is powered
+                                                          down in System OFF. The idle floor current in System ON IDLE and
+                                                          System ON ALL IDLE is not affected.*/
 
 /* P5 @Bits 20..23 : P5 power configuration. */
   #define BICR_IOPORT_POWER0_P5_Pos (20UL)           /*!< Position of P5 field.                                                */
@@ -10882,34 +10902,16 @@ typedef struct {
   #define BICR_IOPORT_POWER0_P5_Unconfigured (0xFUL) /*!< Port supply is unconfigured.                                         */
   #define BICR_IOPORT_POWER0_P5_Disconnected (0x0UL) /*!< Port supply rail is not connected. Port cannot be used.              */
   #define BICR_IOPORT_POWER0_P5_External (0x1UL)     /*!< Port supply is provided externally.                                  */
-  #define BICR_IOPORT_POWER0_P5_External1V8 (0x2UL)  /*!< Port supply is provided externally at 1.8 V. Use this option if the
-                                                          port is supplied through SWEXT.*/
-
-
-/* BICR_IOPORT_POWER1: Power configuration for P8 to P15 IO ports. */
-  #define BICR_IOPORT_POWER1_ResetValue (0xFFFFFFFFUL) /*!< Reset value of POWER1 register.                                    */
-
-/* P10 @Bits 8..11 : P10 power configuration. */
-  #define BICR_IOPORT_POWER1_P10_Pos (8UL)           /*!< Position of P10 field.                                               */
-  #define BICR_IOPORT_POWER1_P10_Msk (0xFUL << BICR_IOPORT_POWER1_P10_Pos) /*!< Bit mask of P10 field.                         */
-  #define BICR_IOPORT_POWER1_P10_Min (0x0UL)         /*!< Min enumerator value of P10 field.                                   */
-  #define BICR_IOPORT_POWER1_P10_Max (0xFUL)         /*!< Max enumerator value of P10 field.                                   */
-  #define BICR_IOPORT_POWER1_P10_Unconfigured (0xFUL) /*!< Port supply is unconfigured.                                        */
-  #define BICR_IOPORT_POWER1_P10_Disconnected (0x0UL) /*!< Port supply rail is not connected. Port cannot be used.             */
-  #define BICR_IOPORT_POWER1_P10_External (0x1UL)    /*!< Port supply is provided externally.                                  */
-  #define BICR_IOPORT_POWER1_P10_External1V8 (0x2UL) /*!< Port supply is provided externally at 1.8 V. Use this option if the
-                                                          port is supplied through SWEXT.*/
-
-/* P12 @Bits 16..19 : P12 power configuration. */
-  #define BICR_IOPORT_POWER1_P12_Pos (16UL)          /*!< Position of P12 field.                                               */
-  #define BICR_IOPORT_POWER1_P12_Msk (0xFUL << BICR_IOPORT_POWER1_P12_Pos) /*!< Bit mask of P12 field.                         */
-  #define BICR_IOPORT_POWER1_P12_Min (0x0UL)         /*!< Min enumerator value of P12 field.                                   */
-  #define BICR_IOPORT_POWER1_P12_Max (0xFUL)         /*!< Max enumerator value of P12 field.                                   */
-  #define BICR_IOPORT_POWER1_P12_Unconfigured (0xFUL) /*!< Port supply is unconfigured.                                        */
-  #define BICR_IOPORT_POWER1_P12_Disconnected (0x0UL) /*!< Port supply rail is not connected. Port cannot be used.             */
-  #define BICR_IOPORT_POWER1_P12_External (0x1UL)    /*!< Port supply is provided externally.                                  */
-  #define BICR_IOPORT_POWER1_P12_External1V8 (0x2UL) /*!< Port supply is provided externally at 1.8 V. Use this option if the
-                                                          port is supplied through SWEXT.*/
+  #define BICR_IOPORT_POWER0_P5_SwExtHigh (0x2UL)    /*!< Port supply is provided by the device internal GPIO power switch
+                                                          (1V8_OUT), configured for nominal maximum output current. The output
+                                                          current is shared between all ports supplied by the switch. Supply is
+                                                          powered down in System OFF. In System ON IDLE, the idle floor current
+                                                          increases significantly. System ON ALL IDLE entry is prevented.*/
+  #define BICR_IOPORT_POWER0_P5_SwExtLow (0x3UL)     /*!< Port supply is provided by the device internal GPIO power switch
+                                                          (1V8_OUT), configured for limited output current. The output current
+                                                          is shared between all ports supplied by the switch. Supply is powered
+                                                          down in System OFF. The idle floor current in System ON IDLE and
+                                                          System ON ALL IDLE is not affected.*/
 
 
 /* BICR_IOPORT_DRIVECTRL0: Drive control configuration for P0 to P7 IO ports. */
@@ -32897,6 +32899,8 @@ typedef struct {
 /* COMPAREVALUE @Bits 0..7 : The PWM compare value */
   #define GRTC_PWMCONFIG_COMPAREVALUE_Pos (0UL)      /*!< Position of COMPAREVALUE field.                                      */
   #define GRTC_PWMCONFIG_COMPAREVALUE_Msk (0xFFUL << GRTC_PWMCONFIG_COMPAREVALUE_Pos) /*!< Bit mask of COMPAREVALUE field.     */
+  #define GRTC_PWMCONFIG_COMPAREVALUE_Min (0x01UL)   /*!< Min value of COMPAREVALUE field.                                     */
+  #define GRTC_PWMCONFIG_COMPAREVALUE_Max (0xFFUL)   /*!< Max size of COMPAREVALUE field.                                      */
 
 
 /* GRTC_CLKOUT: Configuration of clock output */
@@ -49330,7 +49334,7 @@ typedef struct {
   #define PDM_FILTER_CTRL_DATASAMPLEDELAY_DelayOnRight (0x2UL) /*!< 1 clock cycle delay on right channel                       */
   #define PDM_FILTER_CTRL_DATASAMPLEDELAY_DelayOnBoth (0x3UL) /*!< 1 clock cycle delay on both channels                        */
 
-/* CICFILTERMSBCUSTOM @Bits 21..24 : Defines MSB for CIC fliter when RATIO is set to 'custom' */
+/* CICFILTERMSBCUSTOM @Bits 21..24 : Defines MSB for CIC fliter when RATIO is set to 'Custom' */
   #define PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Pos (21UL) /*!< Position of CICFILTERMSBCUSTOM field.                             */
   #define PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Msk (0xFUL << PDM_FILTER_CTRL_CICFILTERMSBCUSTOM_Pos) /*!< Bit mask of
                                                                             CICFILTERMSBCUSTOM field.*/
@@ -49424,7 +49428,8 @@ typedef struct {
   #define PDM_FILTER_SOFTCYCLES_DISABLE_s128 (0x4UL) /*!< 128 filter source clock cycles                                       */
   #define PDM_FILTER_SOFTCYCLES_DISABLE_s256 (0x5UL) /*!< 256 filter source clock cycles                                       */
   #define PDM_FILTER_SOFTCYCLES_DISABLE_s512 (0x6UL) /*!< 512 filter source clock cycles                                       */
-  #define PDM_FILTER_SOFTCYCLES_DISABLE_custom (0x7UL) /*!< The number of cycles can be set using FILTER.CTRL[17:14] bits      */
+  #define PDM_FILTER_SOFTCYCLES_DISABLE_Custom (0x7UL) /*!< The number of cycles can be set using FILTER.CTRL[17:14] bits      */
+  #define PDM_FILTER_SOFTCYCLES_DISABLE_custom (0x7UL) /*!< See the Custom enumerator                                          */
 
 
 /* PDM_FILTER_SAMPLEDELAY: Input Data Sampling with Number of ckFilterL (double frequency of PDM_CLK) Clock Cycle Delay.
@@ -49438,8 +49443,8 @@ typedef struct {
   #define PDM_FILTER_SAMPLEDELAY_DELAY_Msk (0x1UL << PDM_FILTER_SAMPLEDELAY_DELAY_Pos) /*!< Bit mask of DELAY field.           */
   #define PDM_FILTER_SAMPLEDELAY_DELAY_Min (0x0UL)   /*!< Min enumerator value of DELAY field.                                 */
   #define PDM_FILTER_SAMPLEDELAY_DELAY_Max (0x1UL)   /*!< Max enumerator value of DELAY field.                                 */
-  #define PDM_FILTER_SAMPLEDELAY_DELAY_no_delay (0x0UL) /*!< No delay                                                          */
-  #define PDM_FILTER_SAMPLEDELAY_DELAY_x1 (0x1UL)    /*!< 1 cycle                                                              */
+  #define PDM_FILTER_SAMPLEDELAY_DELAY_NoDelay (0x0UL) /*!< No delay                                                           */
+  #define PDM_FILTER_SAMPLEDELAY_DELAY_Delay1Ck (0x1UL) /*!< 1 Cycle                                                           */
 
 
 
@@ -50004,7 +50009,7 @@ typedef struct {
   #define PDM_RATIO_RATIO_Ratio64 (0x2UL)            /*!< Ratio of 64                                                          */
   #define PDM_RATIO_RATIO_Ratio80 (0x3UL)            /*!< Ratio of 80                                                          */
   #define PDM_RATIO_RATIO_Ratio96 (0x4UL)            /*!< Ratio of 96                                                          */
-  #define PDM_RATIO_RATIO_Ratio150 (0x5UL)           /*!< Ratio of 100                                                         */
+  #define PDM_RATIO_RATIO_Ratio150 (0x5UL)           /*!< Ratio of 150                                                         */
   #define PDM_RATIO_RATIO_Ratio192 (0x6UL)           /*!< Ratio of 192                                                         */
   #define PDM_RATIO_RATIO_Custom (0x7UL)             /*!< Custom. The decimation rate can be changed using the
                                                           FILTER.CTRL[31:25] bits*/
@@ -50018,7 +50023,7 @@ typedef struct {
   #define PDM_CLKSELECT_SRC_Msk (0x1UL << PDM_CLKSELECT_SRC_Pos) /*!< Bit mask of SRC field.                                   */
   #define PDM_CLKSELECT_SRC_Min (0x0UL)              /*!< Min enumerator value of SRC field.                                   */
   #define PDM_CLKSELECT_SRC_Max (0x1UL)              /*!< Max enumerator value of SRC field.                                   */
-  #define PDM_CLKSELECT_SRC_PCLK32M (0x0UL)          /*!< 32 MHz peripheral clock                                              */
+  #define PDM_CLKSELECT_SRC_PCLK16M (0x0UL)          /*!< 16 MHz peripheral clock                                              */
   #define PDM_CLKSELECT_SRC_ACLK (0x1UL)             /*!< Audio PLL clock                                                      */
 
 
@@ -53418,13 +53423,32 @@ typedef struct {
   #define SAADC_CH_PSELP_PORT_Pos (8UL)              /*!< Position of PORT field.                                              */
   #define SAADC_CH_PSELP_PORT_Msk (0xFUL << SAADC_CH_PSELP_PORT_Pos) /*!< Bit mask of PORT field.                              */
 
+/* INTERNAL @Bits 12..13 : Internal input selection for analog positive input when CH[n].PSELP.CONNECT = Internal */
+  #define SAADC_CH_PSELP_INTERNAL_Pos (12UL)         /*!< Position of INTERNAL field.                                          */
+  #define SAADC_CH_PSELP_INTERNAL_Msk (0x3UL << SAADC_CH_PSELP_INTERNAL_Pos) /*!< Bit mask of INTERNAL field.                  */
+  #define SAADC_CH_PSELP_INTERNAL_Min (0x0UL)        /*!< Min enumerator value of INTERNAL field.                              */
+  #define SAADC_CH_PSELP_INTERNAL_Max (0x3UL)        /*!< Max enumerator value of INTERNAL field.                              */
+  #define SAADC_CH_PSELP_INTERNAL_Internal0 (0x0UL)  /*!< Reserved for future use                                              */
+  #define SAADC_CH_PSELP_INTERNAL_Internal1 (0x1UL)  /*!< Reserved for future use                                              */
+  #define SAADC_CH_PSELP_INTERNAL_Internal2 (0x2UL)  /*!< Reserved for future use                                              */
+  #define SAADC_CH_PSELP_INTERNAL_Internal3 (0x3UL)  /*!< Reserved for future use                                              */
+
+/* TEST @Bits 16..17 : Test input selection for Analog positive input when CH[n].PSELP.CONNECT = Test */
+  #define SAADC_CH_PSELP_TEST_Pos (16UL)             /*!< Position of TEST field.                                              */
+  #define SAADC_CH_PSELP_TEST_Msk (0x3UL << SAADC_CH_PSELP_TEST_Pos) /*!< Bit mask of TEST field.                              */
+  #define SAADC_CH_PSELP_TEST_Min (0x2UL)            /*!< Min enumerator value of TEST field.                                  */
+  #define SAADC_CH_PSELP_TEST_Max (0x2UL)            /*!< Max enumerator value of TEST field.                                  */
+  #define SAADC_CH_PSELP_TEST_AVSS (0x2UL)           /*!< Connected to analog ground (AVSS)                                    */
+
 /* CONNECT @Bits 30..31 : Connection */
   #define SAADC_CH_PSELP_CONNECT_Pos (30UL)          /*!< Position of CONNECT field.                                           */
   #define SAADC_CH_PSELP_CONNECT_Msk (0x3UL << SAADC_CH_PSELP_CONNECT_Pos) /*!< Bit mask of CONNECT field.                     */
   #define SAADC_CH_PSELP_CONNECT_Min (0x0UL)         /*!< Min enumerator value of CONNECT field.                               */
-  #define SAADC_CH_PSELP_CONNECT_Max (0x1UL)         /*!< Max enumerator value of CONNECT field.                               */
+  #define SAADC_CH_PSELP_CONNECT_Max (0x3UL)         /*!< Max enumerator value of CONNECT field.                               */
   #define SAADC_CH_PSELP_CONNECT_NC (0x0UL)          /*!< Not connected                                                        */
   #define SAADC_CH_PSELP_CONNECT_AnalogInput (0x1UL) /*!< Select analog input                                                  */
+  #define SAADC_CH_PSELP_CONNECT_Internal (0x2UL)    /*!< Selects internal inputs.                                             */
+  #define SAADC_CH_PSELP_CONNECT_Test (0x3UL)        /*!< Selects test inputs.                                                 */
 
 
 /* SAADC_CH_PSELN: Input negative pin selection for CH[n] */
@@ -53437,6 +53461,16 @@ typedef struct {
 /* PORT @Bits 8..11 : GPIO Port selection */
   #define SAADC_CH_PSELN_PORT_Pos (8UL)              /*!< Position of PORT field.                                              */
   #define SAADC_CH_PSELN_PORT_Msk (0xFUL << SAADC_CH_PSELN_PORT_Pos) /*!< Bit mask of PORT field.                              */
+
+/* INTERNAL @Bits 12..13 : Internal input selection for analog negative input when CH[n].PSELN.CONNECT = Internal */
+  #define SAADC_CH_PSELN_INTERNAL_Pos (12UL)         /*!< Position of INTERNAL field.                                          */
+  #define SAADC_CH_PSELN_INTERNAL_Msk (0x3UL << SAADC_CH_PSELN_INTERNAL_Pos) /*!< Bit mask of INTERNAL field.                  */
+  #define SAADC_CH_PSELN_INTERNAL_Min (0x0UL)        /*!< Min enumerator value of INTERNAL field.                              */
+  #define SAADC_CH_PSELN_INTERNAL_Max (0x3UL)        /*!< Max enumerator value of INTERNAL field.                              */
+  #define SAADC_CH_PSELN_INTERNAL_Internal0 (0x0UL)  /*!< Reserved for future use                                              */
+  #define SAADC_CH_PSELN_INTERNAL_Internal1 (0x1UL)  /*!< Reserved for future use                                              */
+  #define SAADC_CH_PSELN_INTERNAL_Internal2 (0x2UL)  /*!< Connected to VDD                                                     */
+  #define SAADC_CH_PSELN_INTERNAL_Internal3 (0x3UL)  /*!< Reserved for future use                                              */
 
 /* CONNECT @Bits 30..31 : Connection */
   #define SAADC_CH_PSELN_CONNECT_Pos (30UL)          /*!< Position of CONNECT field.                                           */
@@ -58644,44 +58678,96 @@ typedef union {
   * @brief System Trace Macrocell
   */
   typedef struct {                                   /*!< STM Structure                                                        */
-    __IM uint32_t RESERVED[772];
+    __IM uint32_t RESERVED[769];
+    __OM uint32_t DMASTARTR;                         /*!< (@ 0x00000C04) Starts a DMA transfer. A write of b1 when the DMA
+                                                                         peripheral request interface is idle starts a DMA
+                                                                         transfer. A write of b0 has no effect. A write of b1
+                                                                         when the DMA peripheral request interface is active has
+                                                                         no effect.*/
+    __OM uint32_t DMASTOPR;                          /*!< (@ 0x00000C08) Stops a DMA transfer. A write of b1 stops an active DMA
+                                                                         transfer. A write of b0 has no effect. A write of b1
+                                                                         when the DMA peripheral request interface is idle has
+                                                                         no effect.*/
+    __IM uint32_t DMASTATR;                          /*!< (@ 0x00000C0C) Indicates whether a DMA transfer is in progress.      */
     __IOM uint32_t DMACTLR;                          /*!< (@ 0x00000C10) Controls the DMA transfer request mechanism.          */
-    __IM uint32_t RESERVED1[120];
+    __IM uint32_t RESERVED1[58];
+    __IM uint32_t DMAIDR;                            /*!< (@ 0x00000CFC) Indicates the features of the DMA controls in the STM.*/
+    __IOM uint32_t HEER;                             /*!< (@ 0x00000D00) Enables hardware events to generate trace.            */
+    __IM uint32_t RESERVED2[7];
+    __IOM uint32_t HETER;                            /*!< (@ 0x00000D20) Enables trigger generation on hardware events.        */
+    __IM uint32_t RESERVED3[16];
+    __IOM uint32_t HEMCR;                            /*!< (@ 0x00000D64) Controls the primary functions of the hardware event
+                                                                         tracing.*/
+    __IM uint32_t RESERVED4[35];
     __IM uint32_t HEMASTR;                           /*!< (@ 0x00000DF4) Indicates the STPv2 master number of hardware event
                                                                          trace. This number is the master number presented in
                                                                          STPv2.*/
     __IM uint32_t HEFEAT1R;                          /*!< (@ 0x00000DF8) Indicates the features of the STM.                    */
     __IM uint32_t HEIDR;                             /*!< (@ 0x00000DFC) Indicates the features of hardware event tracing in the
                                                                          STM.*/
-    __IM uint32_t RESERVED2[32];
+    __IOM uint32_t SPER;                             /*!< (@ 0x00000E00) Enables the stimulus port registers to generate trace.
+                                                                         This register defines one bit per stimulus port. This
+                                                                         register is used in conjunction with the SPSCR.*/
+    __IM uint32_t RESERVED5[7];
+    __IOM uint32_t SPTER;                            /*!< (@ 0x00000E20) Enables trigger generation on writes to enabled
+                                                                         stimulus port registers.*/
+    __IM uint32_t RESERVED6[15];
+    __IOM uint32_t SPSCR;                            /*!< (@ 0x00000E60) Enables a debugger to program which stimulus ports the
+                                                                         SPER and SPTER apply to.*/
+    __IOM uint32_t SPMSCR;                           /*!< (@ 0x00000E64) Enables a debugger to program which masters the SPSCR
+                                                                         applies to.*/
+    __IOM uint32_t SPOVERRIDER;                      /*!< (@ 0x00000E68) Enables a debugger to override various features of the
+                                                                         STM. This register is used in conjunction with
+                                                                         SPMOVERRIDER.*/
+    __IOM uint32_t SPMOVERRIDER;                     /*!< (@ 0x00000E6C) Enables a debugger to select which masters the
+                                                                         SPOVERRIDER applies to.*/
+    __IOM uint32_t SPTRIGCSR;                        /*!< (@ 0x00000E70) Controls the STM triggers caused by the SPTER.        */
+    __IM uint32_t RESERVED7[3];
     __IOM uint32_t TCSR;                             /*!< (@ 0x00000E80) Controls the STM settings.                            */
-    __IM uint32_t RESERVED3[4];
+    __OM uint32_t TSSTIMR;                           /*!< (@ 0x00000E84) Forces the next packet caused by a stimulus port write
+                                                                         to have a timestamp output.*/
+    __IM uint32_t RESERVED8;
+    __IOM uint32_t TSFREQR;                          /*!< (@ 0x00000E8C) Indicates the frequency of the timestamp counter. The
+                                                                         unit of measurement is increments per second.*/
+    __IOM uint32_t SYNCR;                            /*!< (@ 0x00000E90) Controls the interval between synchronization packets,
+                                                                         in terms of the number of bytes of trace generated.
+                                                                         This register only provides a hint of the desired
+                                                                         synchronization frequency, because implementations are
+                                                                         permitted to be inaccurate. Writing a value of
+                                                                         0x00000000 disables the synchronization counter.*/
     __IOM uint32_t AUXCR;                            /*!< (@ 0x00000E94) Used for implementation defined STM controls.         */
-    __IM uint32_t RESERVED4[2];
-    __IOM uint32_t SPFEAT1R;                         /*!< (@ 0x00000EA0) Indicates the features of the STM.                    */
-    __IOM uint32_t SPFEAT2R;                         /*!< (@ 0x00000EA4) Indicates the features of the STM.                    */
-    __IOM uint32_t SPFEAT3R;                         /*!< (@ 0x00000EA8) Indicates the features of the STM.                    */
-    __IM uint32_t RESERVED5[15];
+    __IM uint32_t RESERVED9[2];
+    __IM uint32_t SPFEAT1R;                          /*!< (@ 0x00000EA0) Indicates the features of the STM.                    */
+    __IM uint32_t SPFEAT2R;                          /*!< (@ 0x00000EA4) Indicates the features of the STM.                    */
+    __IM uint32_t SPFEAT3R;                          /*!< (@ 0x00000EA8) Indicates the features of the STM.                    */
+    __IM uint32_t RESERVED10[15];
     __OM uint32_t ITTRIGGER;                         /*!< (@ 0x00000EE8) Integration Test for Cross-Trigger Outputs Register.  */
     __OM uint32_t ITATBDATA0;                        /*!< (@ 0x00000EEC) Controls the value of the ATDATAM output in integration
                                                                          mode.*/
-    __OM uint32_t ITATBCTR2;                         /*!< (@ 0x00000EF0) Controls the value of the ATDATAM output in integration
-                                                                         mode.*/
+    __IM uint32_t ITATBCTR2;                         /*!< (@ 0x00000EF0) Returns the value of the ATREADYM and AFVALIDM inputs
+                                                                         in integration mode.*/
     __OM uint32_t ITATBID;                           /*!< (@ 0x00000EF4) Controls the value of the ATIDM output in integration
                                                                          mode.*/
     __OM uint32_t ITATBCTR0;                         /*!< (@ 0x00000EF8) Controls the value of the ATVALIDM, AFREADYM, and
                                                                          ATBYTESM outputs in integration mode.*/
-    __IM uint32_t RESERVED6;
+    __IM uint32_t RESERVED11;
     __IOM uint32_t ITCTRL;                           /*!< (@ 0x00000F00) Used to enable topology detection. This register
                                                                          enables the component to switch from a functional mode,
                                                                          the default behavior, to integration mode where the
                                                                          inputs and outputs of the component can be directly
                                                                          controlled for integration testing and topology
                                                                          solving.*/
-    __IM uint32_t RESERVED7[43];
-    __IOM uint32_t LAR;                              /*!< (@ 0x00000FB0) This is used to enable write access to device
+    __IM uint32_t RESERVED12[39];
+    __IOM uint32_t CLAIMSET;                         /*!< (@ 0x00000FA0) On writes this register sets bits of the claim tag. On
+                                                                         reads it indicates the number of claim tag bits
+                                                                         implemented.*/
+    __IOM uint32_t CLAIMCLR;                         /*!< (@ 0x00000FA4) On writes this register clears bits of the claim tag.
+                                                                         On reads it indicates the current status of the claim
+                                                                         tag.*/
+    __IM uint32_t RESERVED13[2];
+    __OM uint32_t LAR;                               /*!< (@ 0x00000FB0) This is used to enable write access to device
                                                                          registers.*/
-    __IOM uint32_t LSR;                              /*!< (@ 0x00000FB4) This indicates the status of the lock control
+    __IM uint32_t LSR;                               /*!< (@ 0x00000FB4) This indicates the status of the lock control
                                                                          mechanism. This lock prevents accidental writes by code
                                                                          under debug. Accesses to the extended stimulus port
                                                                          registers are not affected by the lock mechanism. This
@@ -58691,22 +58777,82 @@ typedef union {
                                                                          accesses to any control register, except the Lock
                                                                          Access Register. For most components this covers all
                                                                          registers except for the Lock Access Register.*/
-    __IOM uint32_t AUTHSTATUS;                       /*!< (@ 0x00000FB8) Indicates the current level of tracing permitted by the
+    __IM uint32_t AUTHSTATUS;                        /*!< (@ 0x00000FB8) Indicates the current level of tracing permitted by the
                                                                          system*/
-    __IM uint32_t RESERVED8[3];
+    __IM uint32_t RESERVED14[3];
     __IM uint32_t DEVID;                             /*!< (@ 0x00000FC8) Indicates the capabilities of the STM.                */
-    __IM uint32_t DEVTYPE;                           /*!< (@ 0x00000FCC) Controls the single-shot comparator.                  */
-    __IOM uint32_t PIDR4;                            /*!< (@ 0x00000FD0) Coresight peripheral identification registers.        */
-    __IM uint32_t RESERVED9[3];
-    __IOM uint32_t PIDR0;                            /*!< (@ 0x00000FE0) Coresight peripheral identification registers.        */
-    __IOM uint32_t PIDR1;                            /*!< (@ 0x00000FE4) Coresight peripheral identification registers.        */
-    __IOM uint32_t PIDR2;                            /*!< (@ 0x00000FE8) Coresight peripheral identification registers.        */
-    __IOM uint32_t PIDR3;                            /*!< (@ 0x00000FEC) Coresight peripheral identification registers.        */
-    __IOM uint32_t CIDR0;                            /*!< (@ 0x00000FF0) Coresight component identification registers.         */
-    __IOM uint32_t CIDR1;                            /*!< (@ 0x00000FF4) Coresight component identification registers.         */
-    __IOM uint32_t CIDR2;                            /*!< (@ 0x00000FF8) Coresight component identification registers.         */
-    __IOM uint32_t CIDR3;                            /*!< (@ 0x00000FFC) Coresight component identification registers.         */
+    __IM uint32_t DEVTYPE;                           /*!< (@ 0x00000FCC) Provides a debugger with information about the
+                                                                         component when the Part Number field is not recognized.
+                                                                         The debugger can then report this information.*/
+    __IM uint32_t PIDR4;                             /*!< (@ 0x00000FD0) Coresight peripheral identification register. Contains
+                                                                         part of the designer identity and the memory footprint
+                                                                         indicator.*/
+    __IM uint32_t RESERVED15[3];
+    __IM uint32_t PIDR0;                             /*!< (@ 0x00000FE0) Coresight peripheral identification register. Contains
+                                                                         part of the designer specific part number.*/
+    __IM uint32_t PIDR1;                             /*!< (@ 0x00000FE4) Coresight peripheral identification register. Contains
+                                                                         part of the designer specific part number and part of
+                                                                         the designer identity.*/
+    __IM uint32_t PIDR2;                             /*!< (@ 0x00000FE8) Coresight peripheral identification register. Contains
+                                                                         part of the designer identity and the product
+                                                                         revision.*/
+    __IM uint32_t PIDR3;                             /*!< (@ 0x00000FEC) Coresight peripheral identification register. Contains
+                                                                         the RevAnd and Customer Modified fields.*/
+    __IM uint32_t CIDR0;                             /*!< (@ 0x00000FF0) Coresight component identification register, that
+                                                                         indicates that the identification registers are
+                                                                         present.*/
+    __IM uint32_t CIDR1;                             /*!< (@ 0x00000FF4) Coresight component identification register, that
+                                                                         indicates that the identification registers are
+                                                                         present. This register also indicates the component
+                                                                         class.*/
+    __IM uint32_t CIDR2;                             /*!< (@ 0x00000FF8) Coresight component identification register, that
+                                                                         indicates that the identification registers are
+                                                                         present.*/
+    __IM uint32_t CIDR3;                             /*!< (@ 0x00000FFC) Coresight component identification register, that
+                                                                         indicates that the identification registers are
+                                                                         present.*/
   } NRF_STM_Type;                                    /*!< Size = 4096 (0x1000)                                                 */
+
+/* STM_DMASTARTR: Starts a DMA transfer. A write of b1 when the DMA peripheral request interface is idle starts a DMA transfer.
+                   A write of b0 has no effect. A write of b1 when the DMA peripheral request interface is active has no effect.
+                   */
+
+  #define STM_DMASTARTR_ResetValue (0x00000000UL)    /*!< Reset value of DMASTARTR register.                                   */
+
+/* START @Bit 0 : Start a DMA transfer. */
+  #define STM_DMASTARTR_START_Pos (0UL)              /*!< Position of START field.                                             */
+  #define STM_DMASTARTR_START_Msk (0x1UL << STM_DMASTARTR_START_Pos) /*!< Bit mask of START field.                             */
+  #define STM_DMASTARTR_START_Min (0x0UL)            /*!< Min enumerator value of START field.                                 */
+  #define STM_DMASTARTR_START_Max (0x1UL)            /*!< Max enumerator value of START field.                                 */
+  #define STM_DMASTARTR_START_NoEffect (0x0UL)       /*!< No effect.                                                           */
+  #define STM_DMASTARTR_START_Start (0x1UL)          /*!< Start a DMA transfer.                                                */
+
+
+/* STM_DMASTOPR: Stops a DMA transfer. A write of b1 stops an active DMA transfer. A write of b0 has no effect. A write of b1
+                  when the DMA peripheral request interface is idle has no effect. */
+
+  #define STM_DMASTOPR_ResetValue (0x00000000UL)     /*!< Reset value of DMASTOPR register.                                    */
+
+/* STOP @Bit 0 : Stop a DMA transfer. */
+  #define STM_DMASTOPR_STOP_Pos (0UL)                /*!< Position of STOP field.                                              */
+  #define STM_DMASTOPR_STOP_Msk (0x1UL << STM_DMASTOPR_STOP_Pos) /*!< Bit mask of STOP field.                                  */
+  #define STM_DMASTOPR_STOP_Min (0x0UL)              /*!< Min enumerator value of STOP field.                                  */
+  #define STM_DMASTOPR_STOP_Max (0x1UL)              /*!< Max enumerator value of STOP field.                                  */
+  #define STM_DMASTOPR_STOP_NoEffect (0x0UL)         /*!< No effect.                                                           */
+  #define STM_DMASTOPR_STOP_Stop (0x1UL)             /*!< Stop a DMA transfer.                                                 */
+
+
+/* STM_DMASTATR: Indicates whether a DMA transfer is in progress. */
+  #define STM_DMASTATR_ResetValue (0x00000000UL)     /*!< Reset value of DMASTATR register.                                    */
+
+/* STATUS @Bit 0 : Status of the DMA peripheral request interface. */
+  #define STM_DMASTATR_STATUS_Pos (0UL)              /*!< Position of STATUS field.                                            */
+  #define STM_DMASTATR_STATUS_Msk (0x1UL << STM_DMASTATR_STATUS_Pos) /*!< Bit mask of STATUS field.                            */
+  #define STM_DMASTATR_STATUS_Min (0x0UL)            /*!< Min enumerator value of STATUS field.                                */
+  #define STM_DMASTATR_STATUS_Max (0x1UL)            /*!< Max enumerator value of STATUS field.                                */
+  #define STM_DMASTATR_STATUS_Idle (0x0UL)           /*!< Interface is idle.                                                   */
+  #define STM_DMASTATR_STATUS_Active (0x1UL)         /*!< Interface is active.                                                 */
+
 
 /* STM_DMACTLR: Controls the DMA transfer request mechanism. */
   #define STM_DMACTLR_ResetValue (0x00000000UL)      /*!< Reset value of DMACTLR register.                                     */
@@ -58722,20 +58868,128 @@ typedef union {
   #define STM_DMACTLR_SENS_LT100 (0x3UL)             /*!< Buffer is <100 percent full.                                         */
 
 
+/* STM_DMAIDR: Indicates the features of the DMA controls in the STM. */
+  #define STM_DMAIDR_ResetValue (0x00000002UL)       /*!< Reset value of DMAIDR register.                                      */
+
+/* CLASS @Bits 0..3 : The CLASS field identifies the programmers model */
+  #define STM_DMAIDR_CLASS_Pos (0UL)                 /*!< Position of CLASS field.                                             */
+  #define STM_DMAIDR_CLASS_Msk (0xFUL << STM_DMAIDR_CLASS_Pos) /*!< Bit mask of CLASS field.                                   */
+  #define STM_DMAIDR_CLASS_Min (0x2UL)               /*!< Min enumerator value of CLASS field.                                 */
+  #define STM_DMAIDR_CLASS_Max (0x2UL)               /*!< Max enumerator value of CLASS field.                                 */
+  #define STM_DMAIDR_CLASS_DMAControl (0x2UL)        /*!< DMA control programmers model                                        */
+
+/* CLASSREV @Bits 4..7 : The CLASSREV field identifies the revision of the programmers model */
+  #define STM_DMAIDR_CLASSREV_Pos (4UL)              /*!< Position of CLASSREV field.                                          */
+  #define STM_DMAIDR_CLASSREV_Msk (0xFUL << STM_DMAIDR_CLASSREV_Pos) /*!< Bit mask of CLASSREV field.                          */
+
+/* VENDSPEC @Bits 8..11 : The VENDSPEC field identifies any vendor specific modifications or mappings */
+  #define STM_DMAIDR_VENDSPEC_Pos (8UL)              /*!< Position of VENDSPEC field.                                          */
+  #define STM_DMAIDR_VENDSPEC_Msk (0xFUL << STM_DMAIDR_VENDSPEC_Pos) /*!< Bit mask of VENDSPEC field.                          */
+
+
+/* STM_HEER: Enables hardware events to generate trace. */
+  #define STM_HEER_ResetValue (0x00000000UL)         /*!< Reset value of HEER register.                                        */
+
+/* HEE @Bits 0..31 : Hardware event enable, with one bit per hardware event. A bit value of b0 disables and b1 enables the
+                     corresponding hardware event. Bit 0 applies to the lowest-numbered event. The reset value of each bit is
+                     UNKNOWN. */
+
+  #define STM_HEER_HEE_Pos (0UL)                     /*!< Position of HEE field.                                               */
+  #define STM_HEER_HEE_Msk (0xFFFFFFFFUL << STM_HEER_HEE_Pos) /*!< Bit mask of HEE field.                                      */
+
+
+/* STM_HETER: Enables trigger generation on hardware events. */
+  #define STM_HETER_ResetValue (0x00000000UL)        /*!< Reset value of HETER register.                                       */
+
+/* HETE @Bits 0..31 : Bit mask to enable trigger generation from the hardware events, with one bit per hardware event. A bit
+                      value of b0 disables and b1 enables trigger generation. The reset value of each bit is UNKNOWN. */
+
+  #define STM_HETER_HETE_Pos (0UL)                   /*!< Position of HETE field.                                              */
+  #define STM_HETER_HETE_Msk (0xFFFFFFFFUL << STM_HETER_HETE_Pos) /*!< Bit mask of HETE field.                                 */
+
+
+/* STM_HEMCR: Controls the primary functions of the hardware event tracing. */
+  #define STM_HEMCR_ResetValue (0x00000000UL)        /*!< Reset value of HEMCR register.                                       */
+
+/* EN @Bit 0 : Enable hardware event tracing. To enable hardware event tracing, TCSR.EN must also be b1. */
+  #define STM_HEMCR_EN_Pos (0UL)                     /*!< Position of EN field.                                                */
+  #define STM_HEMCR_EN_Msk (0x1UL << STM_HEMCR_EN_Pos) /*!< Bit mask of EN field.                                              */
+  #define STM_HEMCR_EN_Min (0x0UL)                   /*!< Min enumerator value of EN field.                                    */
+  #define STM_HEMCR_EN_Max (0x1UL)                   /*!< Max enumerator value of EN field.                                    */
+  #define STM_HEMCR_EN_Disabled (0x0UL)              /*!< Hardware event tracing is disabled.                                  */
+  #define STM_HEMCR_EN_Enabled (0x1UL)               /*!< Hardware event tracing is enabled.                                   */
+
+/* COMPEN @Bit 1 : Enable leading zero suppression of hardware event data values in the trace stream. */
+  #define STM_HEMCR_COMPEN_Pos (1UL)                 /*!< Position of COMPEN field.                                            */
+  #define STM_HEMCR_COMPEN_Msk (0x1UL << STM_HEMCR_COMPEN_Pos) /*!< Bit mask of COMPEN field.                                  */
+  #define STM_HEMCR_COMPEN_Min (0x0UL)               /*!< Min enumerator value of COMPEN field.                                */
+  #define STM_HEMCR_COMPEN_Max (0x1UL)               /*!< Max enumerator value of COMPEN field.                                */
+  #define STM_HEMCR_COMPEN_Disabled (0x0UL)          /*!< Leading zero suppression is disabled.                                */
+  #define STM_HEMCR_COMPEN_Enabled (0x1UL)           /*!< Leading zero suppression is enabled.                                 */
+
+/* ERRDETECT @Bit 2 : Enable error detection on the hardware event tracing. If an event cannot be traced, this bit enables
+                      indication of the lost information. */
+
+  #define STM_HEMCR_ERRDETECT_Pos (2UL)              /*!< Position of ERRDETECT field.                                         */
+  #define STM_HEMCR_ERRDETECT_Msk (0x1UL << STM_HEMCR_ERRDETECT_Pos) /*!< Bit mask of ERRDETECT field.                         */
+  #define STM_HEMCR_ERRDETECT_Min (0x0UL)            /*!< Min enumerator value of ERRDETECT field.                             */
+  #define STM_HEMCR_ERRDETECT_Max (0x1UL)            /*!< Max enumerator value of ERRDETECT field.                             */
+  #define STM_HEMCR_ERRDETECT_Disabled (0x0UL)       /*!< Error detection is disabled.                                         */
+  #define STM_HEMCR_ERRDETECT_Enabled (0x1UL)        /*!< Error detection is enabled.                                          */
+
+/* TRIGCTL @Bit 4 : Trigger control. */
+  #define STM_HEMCR_TRIGCTL_Pos (4UL)                /*!< Position of TRIGCTL field.                                           */
+  #define STM_HEMCR_TRIGCTL_Msk (0x1UL << STM_HEMCR_TRIGCTL_Pos) /*!< Bit mask of TRIGCTL field.                               */
+  #define STM_HEMCR_TRIGCTL_Min (0x0UL)              /*!< Min enumerator value of TRIGCTL field.                               */
+  #define STM_HEMCR_TRIGCTL_Max (0x1UL)              /*!< Max enumerator value of TRIGCTL field.                               */
+  #define STM_HEMCR_TRIGCTL_MultiShot (0x0UL)        /*!< Triggers are multi-shot.                                             */
+  #define STM_HEMCR_TRIGCTL_SingleShot (0x1UL)       /*!< Triggers are single-shot.                                            */
+
+/* TRIGSTATUS @Bit 5 : When TRIGCTL indicates single-shot mode, this indicates whether the single trigger has occurred. In
+                       multi-shot mode this bit is always UNKNOWN. */
+
+  #define STM_HEMCR_TRIGSTATUS_Pos (5UL)             /*!< Position of TRIGSTATUS field.                                        */
+  #define STM_HEMCR_TRIGSTATUS_Msk (0x1UL << STM_HEMCR_TRIGSTATUS_Pos) /*!< Bit mask of TRIGSTATUS field.                      */
+  #define STM_HEMCR_TRIGSTATUS_Min (0x0UL)           /*!< Min enumerator value of TRIGSTATUS field.                            */
+  #define STM_HEMCR_TRIGSTATUS_Max (0x1UL)           /*!< Max enumerator value of TRIGSTATUS field.                            */
+  #define STM_HEMCR_TRIGSTATUS_NotOccurred (0x0UL)   /*!< Trigger has not occurred.                                            */
+  #define STM_HEMCR_TRIGSTATUS_Occurred (0x1UL)      /*!< Trigger has occurred.                                                */
+
+/* TRIGCLEAR @Bit 6 : When TRIGCTL indicates single-shot mode, this bit is used to clear TRIGSTATUS. Writing a b1 to this bit
+                      when in multi-shot mode is Unpredictable. */
+
+  #define STM_HEMCR_TRIGCLEAR_Pos (6UL)              /*!< Position of TRIGCLEAR field.                                         */
+  #define STM_HEMCR_TRIGCLEAR_Msk (0x1UL << STM_HEMCR_TRIGCLEAR_Pos) /*!< Bit mask of TRIGCLEAR field.                         */
+  #define STM_HEMCR_TRIGCLEAR_Min (0x0UL)            /*!< Min enumerator value of TRIGCLEAR field.                             */
+  #define STM_HEMCR_TRIGCLEAR_Max (0x1UL)            /*!< Max enumerator value of TRIGCLEAR field.                             */
+  #define STM_HEMCR_TRIGCLEAR_NoEffect (0x0UL)       /*!< No effect.                                                           */
+  #define STM_HEMCR_TRIGCLEAR_Clear (0x1UL)          /*!< Clears TRIGSTATUS if TRIGSTATUS is b1.                               */
+
+/* ATBTRIGEN @Bit 7 : ATB trigger enable on events being monitored using the HETER. When set, this bit enables the STM to use
+                      the ATID value of 0x7D. */
+
+  #define STM_HEMCR_ATBTRIGEN_Pos (7UL)              /*!< Position of ATBTRIGEN field.                                         */
+  #define STM_HEMCR_ATBTRIGEN_Msk (0x1UL << STM_HEMCR_ATBTRIGEN_Pos) /*!< Bit mask of ATBTRIGEN field.                         */
+  #define STM_HEMCR_ATBTRIGEN_Min (0x0UL)            /*!< Min enumerator value of ATBTRIGEN field.                             */
+  #define STM_HEMCR_ATBTRIGEN_Max (0x1UL)            /*!< Max enumerator value of ATBTRIGEN field.                             */
+  #define STM_HEMCR_ATBTRIGEN_Disabled (0x0UL)       /*!< ATB trigger generation is disabled.                                  */
+  #define STM_HEMCR_ATBTRIGEN_Enabled (0x1UL)        /*!< ATB trigger generation is enabled.                                   */
+
+
 /* STM_HEMASTR: Indicates the STPv2 master number of hardware event trace. This number is the master number presented in STPv2.
                  */
 
-  #define STM_HEMASTR_ResetValue (0x00000000UL)      /*!< Reset value of HEMASTR register.                                     */
+  #define STM_HEMASTR_ResetValue (0x00000080UL)      /*!< Reset value of HEMASTR register.                                     */
 
-/* MASTER @Bits 0..16 : The STPv2 master number that hardware event traces should be associated with. */
+/* MASTER @Bits 0..15 : The STPv2 master number that hardware event traces should be associated with. */
   #define STM_HEMASTR_MASTER_Pos (0UL)               /*!< Position of MASTER field.                                            */
-  #define STM_HEMASTR_MASTER_Msk (0x1FFFFUL << STM_HEMASTR_MASTER_Pos) /*!< Bit mask of MASTER field.                          */
-  #define STM_HEMASTR_MASTER_Min (0x00000UL)         /*!< Min value of MASTER field.                                           */
-  #define STM_HEMASTR_MASTER_Max (0x0FFFFUL)         /*!< Max size of MASTER field.                                            */
+  #define STM_HEMASTR_MASTER_Msk (0xFFFFUL << STM_HEMASTR_MASTER_Pos) /*!< Bit mask of MASTER field.                           */
+  #define STM_HEMASTR_MASTER_Min (0x0000UL)          /*!< Min value of MASTER field.                                           */
+  #define STM_HEMASTR_MASTER_Max (0xFFFFUL)          /*!< Max size of MASTER field.                                            */
 
 
 /* STM_HEFEAT1R: Indicates the features of the STM. */
-  #define STM_HEFEAT1R_ResetValue (0x00000000UL)     /*!< Reset value of HEFEAT1R register.                                    */
+  #define STM_HEFEAT1R_ResetValue (0x00100035UL)     /*!< Reset value of HEFEAT1R register.                                    */
 
 /* HETER @Bit 0 : STMHETER support */
   #define STM_HEFEAT1R_HETER_Pos (0UL)               /*!< Position of HETER field.                                             */
@@ -58758,8 +59012,20 @@ typedef union {
   #define STM_HEFEAT1R_HEMASTR_Msk (0x1UL << STM_HEFEAT1R_HEMASTR_Pos) /*!< Bit mask of HEMASTR field.                         */
   #define STM_HEFEAT1R_HEMASTR_Min (0x0UL)           /*!< Min enumerator value of HEMASTR field.                               */
   #define STM_HEFEAT1R_HEMASTR_Max (0x1UL)           /*!< Max enumerator value of HEMASTR field.                               */
-  #define STM_HEFEAT1R_HEMASTR_NotImplemented (0x0UL) /*!< The feature is not implemented.                                     */
-  #define STM_HEFEAT1R_HEMASTR_Implemented (0x1UL)   /*!< The feature is implemented.                                          */
+  #define STM_HEFEAT1R_HEMASTR_ReadOnly (0x0UL)      /*!< STMHEMASTR is read-only.                                             */
+  #define STM_HEFEAT1R_HEMASTR_ReadWrite (0x1UL)     /*!< STMHEMASTR is read-write.                                            */
+
+/* HECOMP @Bits 4..5 : Data compression on hardware event tracing support */
+  #define STM_HEFEAT1R_HECOMP_Pos (4UL)              /*!< Position of HECOMP field.                                            */
+  #define STM_HEFEAT1R_HECOMP_Msk (0x3UL << STM_HEFEAT1R_HECOMP_Pos) /*!< Bit mask of HECOMP field.                            */
+  #define STM_HEFEAT1R_HECOMP_Min (0x0UL)            /*!< Min enumerator value of HECOMP field.                                */
+  #define STM_HEFEAT1R_HECOMP_Max (0x3UL)            /*!< Max enumerator value of HECOMP field.                                */
+  #define STM_HEFEAT1R_HECOMP_NotDefinedHere (0x0UL) /*!< Data compression support is not defined here. Use the part number of
+                                                          the device to determine if data compression is supported.*/
+  #define STM_HEFEAT1R_HECOMP_NotSupported (0x1UL)   /*!< No data compression supported.                                       */
+  #define STM_HEFEAT1R_HECOMP_AlwaysEnabled (0x2UL)  /*!< Data compression always enabled.                                     */
+  #define STM_HEFEAT1R_HECOMP_Programmable (0x3UL)   /*!< Data compression support is programmable. STMHEMCR.COMPEN is
+                                                          implemented.*/
 
 /* NUMHE @Bits 15..23 : The number of hardware events supported by the STM */
   #define STM_HEFEAT1R_NUMHE_Pos (15UL)              /*!< Position of NUMHE field.                                             */
@@ -58769,7 +59035,7 @@ typedef union {
 
 
 /* STM_HEIDR: Indicates the features of hardware event tracing in the STM. */
-  #define STM_HEIDR_ResetValue (0x00000000UL)        /*!< Reset value of HEIDR register.                                       */
+  #define STM_HEIDR_ResetValue (0x00000001UL)        /*!< Reset value of HEIDR register.                                       */
 
 /* CLASS @Bits 0..3 : The CLASS field identifies the programmers model */
   #define STM_HEIDR_CLASS_Pos (0UL)                  /*!< Position of CLASS field.                                             */
@@ -58787,8 +59053,183 @@ typedef union {
   #define STM_HEIDR_VENDSPEC_Msk (0xFUL << STM_HEIDR_VENDSPEC_Pos) /*!< Bit mask of VENDSPEC field.                            */
 
 
+/* STM_SPER: Enables the stimulus port registers to generate trace. This register defines one bit per stimulus port. This
+              register is used in conjunction with the SPSCR. */
+
+  #define STM_SPER_ResetValue (0x00000000UL)         /*!< Reset value of SPER register.                                        */
+
+/* SPE @Bits 0..31 : Stimulus port enable, with one bit per stimulus port. A bit value of b0 disables and b1 enables the
+                     corresponding stimulus port. The reset value of each bit is b0. */
+
+  #define STM_SPER_SPE_Pos (0UL)                     /*!< Position of SPE field.                                               */
+  #define STM_SPER_SPE_Msk (0xFFFFFFFFUL << STM_SPER_SPE_Pos) /*!< Bit mask of SPE field.                                      */
+
+
+/* STM_SPTER: Enables trigger generation on writes to enabled stimulus port registers. */
+  #define STM_SPTER_ResetValue (0x00000000UL)        /*!< Reset value of SPTER register.                                       */
+
+/* SPTE @Bits 0..31 : Bit mask to enable trigger generation from the stimulus port registers, with one bit per stimulus port
+                      register. A bit value of b0 disables and b1 enables trigger generation. The reset value of each bit is b0.
+                      */
+
+  #define STM_SPTER_SPTE_Pos (0UL)                   /*!< Position of SPTE field.                                              */
+  #define STM_SPTER_SPTE_Msk (0xFFFFFFFFUL << STM_SPTER_SPTE_Pos) /*!< Bit mask of SPTE field.                                 */
+
+
+/* STM_SPSCR: Enables a debugger to program which stimulus ports the SPER and SPTER apply to. */
+  #define STM_SPSCR_ResetValue (0x00000000UL)        /*!< Reset value of SPSCR register.                                       */
+
+/* PORTCTL @Bits 0..1 : This defines how the port selection is applied. The reset value is b00. */
+  #define STM_SPSCR_PORTCTL_Pos (0UL)                /*!< Position of PORTCTL field.                                           */
+  #define STM_SPSCR_PORTCTL_Msk (0x3UL << STM_SPSCR_PORTCTL_Pos) /*!< Bit mask of PORTCTL field.                               */
+  #define STM_SPSCR_PORTCTL_Min (0x0UL)              /*!< Min enumerator value of PORTCTL field.                               */
+  #define STM_SPSCR_PORTCTL_Max (0x3UL)              /*!< Max enumerator value of PORTCTL field.                               */
+  #define STM_SPSCR_PORTCTL_NotUsed (0x0UL)          /*!< Port selection not used. SPER and SPTER apply equally to every group
+                                                          of 32 stimulus ports and PORTSEL is ignored.*/
+  #define STM_SPSCR_PORTCTL_TriggerEnableOnly (0x1UL) /*!< Port selection applies only to the SPTER.                           */
+  #define STM_SPSCR_PORTCTL_EnableAndTriggerEnable (0x3UL) /*!< Port selection applies to both the SPER and SPTER.             */
+
+/* PORTSEL @Bits 20..31 : Port Selection. This field defines which group of 32 stimulus ports the SPTER and SPER apply to. The
+                          bottom N bits which are 0 define a mask, a 1 in bit N+1 demarks the mask from the port selection, and
+                          the remaining bits select the groups. The effective size of this field is defined by the number of
+                          implemented stimulus ports. The reset value is UNKNOWN. */
+
+  #define STM_SPSCR_PORTSEL_Pos (20UL)               /*!< Position of PORTSEL field.                                           */
+  #define STM_SPSCR_PORTSEL_Msk (0xFFFUL << STM_SPSCR_PORTSEL_Pos) /*!< Bit mask of PORTSEL field.                             */
+
+
+/* STM_SPMSCR: Enables a debugger to program which masters the SPSCR applies to. */
+  #define STM_SPMSCR_ResetValue (0x00000000UL)       /*!< Reset value of SPMSCR register.                                      */
+
+/* MASTCTL @Bit 0 : This bit defines how the master is applied. The reset value is b0. */
+  #define STM_SPMSCR_MASTCTL_Pos (0UL)               /*!< Position of MASTCTL field.                                           */
+  #define STM_SPMSCR_MASTCTL_Msk (0x1UL << STM_SPMSCR_MASTCTL_Pos) /*!< Bit mask of MASTCTL field.                             */
+  #define STM_SPMSCR_MASTCTL_Min (0x0UL)             /*!< Min enumerator value of MASTCTL field.                               */
+  #define STM_SPMSCR_MASTCTL_Max (0x1UL)             /*!< Max enumerator value of MASTCTL field.                               */
+  #define STM_SPMSCR_MASTCTL_NotUsed (0x0UL)         /*!< Master selection not used. The port selection used by the SPSCR
+                                                          applies equally to all masters and MASTSEL is ignored.*/
+  #define STM_SPMSCR_MASTCTL_Used (0x1UL)            /*!< Master selection applies to the SPSCR.                               */
+
+/* MASTSEL @Bits 15..31 : Master Selection. This field defines which master the SPSCR applies to. The bottom N bits which are 0
+                          define a mask, a 1 in bit N+1 demarks the mask from the master selection, and the remaining bits
+                          select the master. The effective size of this field is defined by the number of implemented masters.
+                          The reset value is UNKNOWN. */
+
+  #define STM_SPMSCR_MASTSEL_Pos (15UL)              /*!< Position of MASTSEL field.                                           */
+  #define STM_SPMSCR_MASTSEL_Msk (0x1FFFFUL << STM_SPMSCR_MASTSEL_Pos) /*!< Bit mask of MASTSEL field.                         */
+
+
+/* STM_SPOVERRIDER: Enables a debugger to override various features of the STM. This register is used in conjunction with
+                     SPMOVERRIDER. */
+
+  #define STM_SPOVERRIDER_ResetValue (0x00000000UL)  /*!< Reset value of SPOVERRIDER register.                                 */
+
+/* OVERCTL @Bits 0..1 : This defines how the port selection is applied. The reset value is b00. */
+  #define STM_SPOVERRIDER_OVERCTL_Pos (0UL)          /*!< Position of OVERCTL field.                                           */
+  #define STM_SPOVERRIDER_OVERCTL_Msk (0x3UL << STM_SPOVERRIDER_OVERCTL_Pos) /*!< Bit mask of OVERCTL field.                   */
+  #define STM_SPOVERRIDER_OVERCTL_Min (0x0UL)        /*!< Min enumerator value of OVERCTL field.                               */
+  #define STM_SPOVERRIDER_OVERCTL_Max (0x2UL)        /*!< Max enumerator value of OVERCTL field.                               */
+  #define STM_SPOVERRIDER_OVERCTL_Disabled (0x0UL)   /*!< Override controls disabled.                                          */
+  #define STM_SPOVERRIDER_OVERCTL_Guaranteed (0x1UL) /*!< Ports selected by PORTSEL always behave as guaranteed transactions.  */
+  #define STM_SPOVERRIDER_OVERCTL_InvariantTiming (0x2UL) /*!< Ports selected by PORTSEL always behave as invariant timing
+                                                               transactions.*/
+
+/* OVERTS @Bit 2 : Timestamping override. This override requests all stimulus port writes that cause trace to be traced with a
+                   timestamp where possible. As with normal operation, this does not ensure all packets are generated with
+                   timestamps. This field is independent of OVERCTL, PORTSEL and SPMOVERRIDER. The reset value is b0. */
+
+  #define STM_SPOVERRIDER_OVERTS_Pos (2UL)           /*!< Position of OVERTS field.                                            */
+  #define STM_SPOVERRIDER_OVERTS_Msk (0x1UL << STM_SPOVERRIDER_OVERTS_Pos) /*!< Bit mask of OVERTS field.                      */
+  #define STM_SPOVERRIDER_OVERTS_Min (0x0UL)         /*!< Min enumerator value of OVERTS field.                                */
+  #define STM_SPOVERRIDER_OVERTS_Max (0x1UL)         /*!< Max enumerator value of OVERTS field.                                */
+  #define STM_SPOVERRIDER_OVERTS_Disabled (0x0UL)    /*!< Override not enabled.                                                */
+  #define STM_SPOVERRIDER_OVERTS_Enabled (0x1UL)     /*!< Override enabled.                                                    */
+
+/* PORTSEL @Bits 15..31 : Port selection. This field defines which stimulus ports the override controls apply to. The bottom N
+                          bits which are 0 define a mask, a 1 in bit N+1 delimits the mask from the port selection, and the
+                          remaining bits select the ports. The effective size of this field is defined by the number of
+                          implemented stimulus ports. The reset value is UNKNOWN. */
+
+  #define STM_SPOVERRIDER_PORTSEL_Pos (15UL)         /*!< Position of PORTSEL field.                                           */
+  #define STM_SPOVERRIDER_PORTSEL_Msk (0x1FFFFUL << STM_SPOVERRIDER_PORTSEL_Pos) /*!< Bit mask of PORTSEL field.               */
+
+
+/* STM_SPMOVERRIDER: Enables a debugger to select which masters the SPOVERRIDER applies to. */
+  #define STM_SPMOVERRIDER_ResetValue (0x00000000UL) /*!< Reset value of SPMOVERRIDER register.                                */
+
+/* MASTCTL @Bit 0 : This bit defines how the master selection is applied. The reset value is b0. */
+  #define STM_SPMOVERRIDER_MASTCTL_Pos (0UL)         /*!< Position of MASTCTL field.                                           */
+  #define STM_SPMOVERRIDER_MASTCTL_Msk (0x1UL << STM_SPMOVERRIDER_MASTCTL_Pos) /*!< Bit mask of MASTCTL field.                 */
+  #define STM_SPMOVERRIDER_MASTCTL_Min (0x0UL)       /*!< Min enumerator value of MASTCTL field.                               */
+  #define STM_SPMOVERRIDER_MASTCTL_Max (0x1UL)       /*!< Max enumerator value of MASTCTL field.                               */
+  #define STM_SPMOVERRIDER_MASTCTL_NotUsed (0x0UL)   /*!< Master selection not enabled. SPOVERRIDER applies equally to all
+                                                          masters and MASTSEL is ignored.*/
+  #define STM_SPMOVERRIDER_MASTCTL_Used (0x1UL)      /*!< Master selection enabled. SPOVERRIDER applies to the masters selected
+                                                          by MASTSEL.*/
+
+/* MASTSEL @Bits 15..31 : Master selection. This field defines which master the override controls apply to. The effective size
+                          of this field is defined by the number of implemented masters. The reset value is UNKNOWN. */
+
+  #define STM_SPMOVERRIDER_MASTSEL_Pos (15UL)        /*!< Position of MASTSEL field.                                           */
+  #define STM_SPMOVERRIDER_MASTSEL_Msk (0x1FFFFUL << STM_SPMOVERRIDER_MASTSEL_Pos) /*!< Bit mask of MASTSEL field.             */
+
+
+/* STM_SPTRIGCSR: Controls the STM triggers caused by the SPTER. */
+  #define STM_SPTRIGCSR_ResetValue (0x00000000UL)    /*!< Reset value of SPTRIGCSR register.                                   */
+
+/* TRIGCTL @Bit 0 : Trigger control. The reset value is b0. */
+  #define STM_SPTRIGCSR_TRIGCTL_Pos (0UL)            /*!< Position of TRIGCTL field.                                           */
+  #define STM_SPTRIGCSR_TRIGCTL_Msk (0x1UL << STM_SPTRIGCSR_TRIGCTL_Pos) /*!< Bit mask of TRIGCTL field.                       */
+  #define STM_SPTRIGCSR_TRIGCTL_Min (0x0UL)          /*!< Min enumerator value of TRIGCTL field.                               */
+  #define STM_SPTRIGCSR_TRIGCTL_Max (0x1UL)          /*!< Max enumerator value of TRIGCTL field.                               */
+  #define STM_SPTRIGCSR_TRIGCTL_MultiShot (0x0UL)    /*!< Triggers are multi-shot.                                             */
+  #define STM_SPTRIGCSR_TRIGCTL_SingleShot (0x1UL)   /*!< Triggers are single-shot.                                            */
+
+/* TRIGSTATUS @Bit 1 : When TRIGCTL indicates single-shot mode, this bit indicates whether the single trigger has occurred. In
+                       multi-shot mode this bit is always UNK/SBZP. */
+
+  #define STM_SPTRIGCSR_TRIGSTATUS_Pos (1UL)         /*!< Position of TRIGSTATUS field.                                        */
+  #define STM_SPTRIGCSR_TRIGSTATUS_Msk (0x1UL << STM_SPTRIGCSR_TRIGSTATUS_Pos) /*!< Bit mask of TRIGSTATUS field.              */
+  #define STM_SPTRIGCSR_TRIGSTATUS_Min (0x0UL)       /*!< Min enumerator value of TRIGSTATUS field.                            */
+  #define STM_SPTRIGCSR_TRIGSTATUS_Max (0x1UL)       /*!< Max enumerator value of TRIGSTATUS field.                            */
+  #define STM_SPTRIGCSR_TRIGSTATUS_NotOccurred (0x0UL) /*!< Trigger has not occurred.                                          */
+  #define STM_SPTRIGCSR_TRIGSTATUS_Occurred (0x1UL)  /*!< Trigger has occurred.                                                */
+
+/* TRIGCLEAR @Bit 2 : When TRIGCTL indicates single-shot mode, this bit is used to clear TRIGSTATUS. Writing a b1 to this bit
+                      when in multi-shot mode is Unpredictable. */
+
+  #define STM_SPTRIGCSR_TRIGCLEAR_Pos (2UL)          /*!< Position of TRIGCLEAR field.                                         */
+  #define STM_SPTRIGCSR_TRIGCLEAR_Msk (0x1UL << STM_SPTRIGCSR_TRIGCLEAR_Pos) /*!< Bit mask of TRIGCLEAR field.                 */
+  #define STM_SPTRIGCSR_TRIGCLEAR_Min (0x0UL)        /*!< Min enumerator value of TRIGCLEAR field.                             */
+  #define STM_SPTRIGCSR_TRIGCLEAR_Max (0x1UL)        /*!< Max enumerator value of TRIGCLEAR field.                             */
+  #define STM_SPTRIGCSR_TRIGCLEAR_NoEffect (0x0UL)   /*!< No effect.                                                           */
+  #define STM_SPTRIGCSR_TRIGCLEAR_Clear (0x1UL)      /*!< Clears TRIGSTATUS if TRIGSTATUS is b1.                               */
+
+/* ATBTRIGEN_TE @Bit 3 : ATB trigger enable on writes to stimulus ports being monitored using the SPTER. When set, this bit
+                         enables the STM to use the ATID value of 0x7D when software writes to an enabled stimulus port. The
+                         reset value is b0. */
+
+  #define STM_SPTRIGCSR_ATBTRIGEN_TE_Pos (3UL)       /*!< Position of ATBTRIGEN_TE field.                                      */
+  #define STM_SPTRIGCSR_ATBTRIGEN_TE_Msk (0x1UL << STM_SPTRIGCSR_ATBTRIGEN_TE_Pos) /*!< Bit mask of ATBTRIGEN_TE field.        */
+  #define STM_SPTRIGCSR_ATBTRIGEN_TE_Min (0x0UL)     /*!< Min enumerator value of ATBTRIGEN_TE field.                          */
+  #define STM_SPTRIGCSR_ATBTRIGEN_TE_Max (0x1UL)     /*!< Max enumerator value of ATBTRIGEN_TE field.                          */
+  #define STM_SPTRIGCSR_ATBTRIGEN_TE_Disabled (0x0UL) /*!< ATB trigger generation is disabled.                                 */
+  #define STM_SPTRIGCSR_ATBTRIGEN_TE_Enabled (0x1UL) /*!< ATB trigger generation is enabled.                                   */
+
+/* ATBTRIGEN_DIR @Bit 4 : ATB trigger enable on direct writes to TRIG locations in an extended stimulus port. When set, this bit
+                          enables the STM to use the ATID value of 0x7D when software writes to the TRIG locations. The reset
+                          value is b0. */
+
+  #define STM_SPTRIGCSR_ATBTRIGEN_DIR_Pos (4UL)      /*!< Position of ATBTRIGEN_DIR field.                                     */
+  #define STM_SPTRIGCSR_ATBTRIGEN_DIR_Msk (0x1UL << STM_SPTRIGCSR_ATBTRIGEN_DIR_Pos) /*!< Bit mask of ATBTRIGEN_DIR field.     */
+  #define STM_SPTRIGCSR_ATBTRIGEN_DIR_Min (0x0UL)    /*!< Min enumerator value of ATBTRIGEN_DIR field.                         */
+  #define STM_SPTRIGCSR_ATBTRIGEN_DIR_Max (0x1UL)    /*!< Max enumerator value of ATBTRIGEN_DIR field.                         */
+  #define STM_SPTRIGCSR_ATBTRIGEN_DIR_Disabled (0x0UL) /*!< ATB trigger generation is disabled.                                */
+  #define STM_SPTRIGCSR_ATBTRIGEN_DIR_Enabled (0x1UL) /*!< ATB trigger generation is enabled.                                  */
+
+
 /* STM_TCSR: Controls the STM settings. */
-  #define STM_TCSR_ResetValue (0x00000000UL)         /*!< Reset value of TCSR register.                                        */
+  #define STM_TCSR_ResetValue (0x00000004UL)         /*!< Reset value of TCSR register.                                        */
 
 /* EN @Bit 0 : Global STM enable */
   #define STM_TCSR_EN_Pos (0UL)                      /*!< Position of EN field.                                                */
@@ -58829,7 +59270,7 @@ typedef union {
 /* TRACEID @Bits 16..22 : ATB Trace ID. Setting this value to all zeroes might result in Unpredictable tracing. */
   #define STM_TCSR_TRACEID_Pos (16UL)                /*!< Position of TRACEID field.                                           */
   #define STM_TCSR_TRACEID_Msk (0x7FUL << STM_TCSR_TRACEID_Pos) /*!< Bit mask of TRACEID field.                                */
-  #define STM_TCSR_TRACEID_Min (0x7FUL)              /*!< Min value of TRACEID field.                                          */
+  #define STM_TCSR_TRACEID_Min (0x00UL)              /*!< Min value of TRACEID field.                                          */
   #define STM_TCSR_TRACEID_Max (0x7FUL)              /*!< Max size of TRACEID field.                                           */
 
 /* BUSY @Bit 23 : STM is busy, for example the STM trace FIFO is not empty. */
@@ -58839,6 +59280,52 @@ typedef union {
   #define STM_TCSR_BUSY_Max (0x1UL)                  /*!< Max enumerator value of BUSY field.                                  */
   #define STM_TCSR_BUSY_Ready (0x0UL)                /*!< STM is not busy.                                                     */
   #define STM_TCSR_BUSY_Busy (0x1UL)                 /*!< STM is busy.                                                         */
+
+
+/* STM_TSSTIMR: Forces the next packet caused by a stimulus port write to have a timestamp output. */
+  #define STM_TSSTIMR_ResetValue (0x00000000UL)      /*!< Reset value of TSSTIMR register.                                     */
+
+/* FORCETS @Bit 0 : Force timestamp stimulus. */
+  #define STM_TSSTIMR_FORCETS_Pos (0UL)              /*!< Position of FORCETS field.                                           */
+  #define STM_TSSTIMR_FORCETS_Msk (0x1UL << STM_TSSTIMR_FORCETS_Pos) /*!< Bit mask of FORCETS field.                           */
+  #define STM_TSSTIMR_FORCETS_Min (0x0UL)            /*!< Min enumerator value of FORCETS field.                               */
+  #define STM_TSSTIMR_FORCETS_Max (0x1UL)            /*!< Max enumerator value of FORCETS field.                               */
+  #define STM_TSSTIMR_FORCETS_Ignored (0x0UL)        /*!< Writes with this bit b0 are ignored.                                 */
+  #define STM_TSSTIMR_FORCETS_Force (0x1UL)          /*!< Requests the next stimulus port write which causes trace to be
+                                                          upgraded to have a timestamp.*/
+
+
+/* STM_TSFREQR: Indicates the frequency of the timestamp counter. The unit of measurement is increments per second. */
+  #define STM_TSFREQR_ResetValue (0x00000000UL)      /*!< Reset value of TSFREQR register.                                     */
+
+/* FREQ @Bits 0..31 : The timestamp frequency in Hz. A value of zero indicates the timestamp frequency is not known. The reset
+                      value is implementation defined. */
+
+  #define STM_TSFREQR_FREQ_Pos (0UL)                 /*!< Position of FREQ field.                                              */
+  #define STM_TSFREQR_FREQ_Msk (0xFFFFFFFFUL << STM_TSFREQR_FREQ_Pos) /*!< Bit mask of FREQ field.                             */
+
+
+/* STM_SYNCR: Controls the interval between synchronization packets, in terms of the number of bytes of trace generated. This
+               register only provides a hint of the desired synchronization frequency, because implementations are permitted to
+               be inaccurate. Writing a value of 0x00000000 disables the synchronization counter. */
+
+  #define STM_SYNCR_ResetValue (0x00000000UL)        /*!< Reset value of SYNCR register.                                       */
+
+/* COUNT @Bits 0..11 : Counter value for the number of bytes between synchronization packets. Reads return the value of this
+                       register. The reset value is implementation defined. */
+
+  #define STM_SYNCR_COUNT_Pos (0UL)                  /*!< Position of COUNT field.                                             */
+  #define STM_SYNCR_COUNT_Msk (0xFFFUL << STM_SYNCR_COUNT_Pos) /*!< Bit mask of COUNT field.                                   */
+
+/* MODE @Bit 12 : Mode control. The reset value is b0. */
+  #define STM_SYNCR_MODE_Pos (12UL)                  /*!< Position of MODE field.                                              */
+  #define STM_SYNCR_MODE_Msk (0x1UL << STM_SYNCR_MODE_Pos) /*!< Bit mask of MODE field.                                        */
+  #define STM_SYNCR_MODE_Min (0x0UL)                 /*!< Min enumerator value of MODE field.                                  */
+  #define STM_SYNCR_MODE_Max (0x1UL)                 /*!< Max enumerator value of MODE field.                                  */
+  #define STM_SYNCR_MODE_Linear (0x0UL)              /*!< COUNT[11:0] defines a value N. Synchronization period is N bytes.    */
+  #define STM_SYNCR_MODE_PowerOfTwo (0x1UL)          /*!< COUNT[11:7] defines a value N. Synchronization period is 2N bytes. N
+                                                          must be in the range 12 to 27 inclusive and other values are
+                                                          Unpredictable.*/
 
 
 /* STM_AUXCR: Used for implementation defined STM controls. */
@@ -58866,9 +59353,9 @@ typedef union {
   #define STM_AUXCR_PRIORINVDIS_Msk (0x1UL << STM_AUXCR_PRIORINVDIS_Pos) /*!< Bit mask of PRIORINVDIS field.                   */
   #define STM_AUXCR_PRIORINVDIS_Min (0x0UL)          /*!< Min enumerator value of PRIORINVDIS field.                           */
   #define STM_AUXCR_PRIORINVDIS_Max (0x1UL)          /*!< Max enumerator value of PRIORINVDIS field.                           */
-  #define STM_AUXCR_PRIORINVDIS_Enabled (0x0UL)      /*!< Priority inversion, when AXI flush is finished, HW gets priority until
-                                                          HW flush is done.*/
-  #define STM_AUXCR_PRIORINVDIS_Disabled (0x1UL)     /*!< Priority inversion disabled, AXI always has priority over HW.        */
+  #define STM_AUXCR_PRIORINVDIS_PriorityInversion (0x0UL) /*!< Priority inversion, when AXI flush is finished, HW gets priority
+                                                               until HW flush is done.*/
+  #define STM_AUXCR_PRIORINVDIS_AxiAlwaysFirst (0x1UL) /*!< Priority inversion disabled, AXI always has priority over HW.      */
 
 /* CLKON @Bit 3 : Provides override control for architectural clock gate enable. */
   #define STM_AUXCR_CLKON_Pos (3UL)                  /*!< Position of CLKON field.                                             */
@@ -58888,7 +59375,7 @@ typedef union {
 
 
 /* STM_SPFEAT1R: Indicates the features of the STM. */
-  #define STM_SPFEAT1R_ResetValue (0x00000000UL)     /*!< Reset value of SPFEAT1R register.                                    */
+  #define STM_SPFEAT1R_ResetValue (0x006587D1UL)     /*!< Reset value of SPFEAT1R register.                                    */
 
 /* PROT @Bits 0..3 : Indicates the implemented STM protocol. */
   #define STM_SPFEAT1R_PROT_Pos (0UL)                /*!< Position of PROT field.                                              */
@@ -58920,21 +59407,36 @@ typedef union {
   #define STM_SPFEAT1R_FORCETS_NotImplemented (0x0UL) /*!< STMTSSTIMR bit 0 is read-only.                                      */
   #define STM_SPFEAT1R_FORCETS_Implemented (0x1UL)   /*!< STMTSSTIMR bit 0 is read-write.                                      */
 
+/* SYNC @Bits 8..9 : STMSYNCR support. */
+  #define STM_SPFEAT1R_SYNC_Pos (8UL)                /*!< Position of SYNC field.                                              */
+  #define STM_SPFEAT1R_SYNC_Msk (0x3UL << STM_SPFEAT1R_SYNC_Pos) /*!< Bit mask of SYNC field.                                  */
+  #define STM_SPFEAT1R_SYNC_Min (0x3UL)              /*!< Min enumerator value of SYNC field.                                  */
+  #define STM_SPFEAT1R_SYNC_Max (0x3UL)              /*!< Max enumerator value of SYNC field.                                  */
+  #define STM_SPFEAT1R_SYNC_ImplementedWithMode (0x3UL) /*!< STMSYNCR implemented with MODE control.                           */
+
 /* TRACEBUS @Bits 10..13 : Trace bus support. */
   #define STM_SPFEAT1R_TRACEBUS_Pos (10UL)           /*!< Position of TRACEBUS field.                                          */
   #define STM_SPFEAT1R_TRACEBUS_Msk (0xFUL << STM_SPFEAT1R_TRACEBUS_Pos) /*!< Bit mask of TRACEBUS field.                      */
+  #define STM_SPFEAT1R_TRACEBUS_Min (0x1UL)          /*!< Min enumerator value of TRACEBUS field.                              */
+  #define STM_SPFEAT1R_TRACEBUS_Max (0x1UL)          /*!< Max enumerator value of TRACEBUS field.                              */
+  #define STM_SPFEAT1R_TRACEBUS_AtbPlusTrigger (0x1UL) /*!< CoreSight ATB plus ATB trigger support implemented. STMTCSR.TRACEID
+                                                            and STMSPTRIGCSR.ATBTRIGEN implemented.*/
 
 /* TRIGCTL @Bits 14..15 : Trigger control support. */
   #define STM_SPFEAT1R_TRIGCTL_Pos (14UL)            /*!< Position of TRIGCTL field.                                           */
   #define STM_SPFEAT1R_TRIGCTL_Msk (0x3UL << STM_SPFEAT1R_TRIGCTL_Pos) /*!< Bit mask of TRIGCTL field.                         */
+  #define STM_SPFEAT1R_TRIGCTL_Min (0x2UL)           /*!< Min enumerator value of TRIGCTL field.                               */
+  #define STM_SPFEAT1R_TRIGCTL_Max (0x2UL)           /*!< Max enumerator value of TRIGCTL field.                               */
+  #define STM_SPFEAT1R_TRIGCTL_MultiShotAndSingleShot (0x2UL) /*!< Multi-shot and single-shot triggers supported. STMSPTRIGCSR
+                                                                   implemented.*/
 
 /* TSPRESCALE @Bits 16..17 : Timestamp prescale support */
   #define STM_SPFEAT1R_TSPRESCALE_Pos (16UL)         /*!< Position of TSPRESCALE field.                                        */
   #define STM_SPFEAT1R_TSPRESCALE_Msk (0x3UL << STM_SPFEAT1R_TSPRESCALE_Pos) /*!< Bit mask of TSPRESCALE field.                */
-  #define STM_SPFEAT1R_TSPRESCALE_Min (0x0UL)        /*!< Min enumerator value of TSPRESCALE field.                            */
-  #define STM_SPFEAT1R_TSPRESCALE_Max (0x1UL)        /*!< Max enumerator value of TSPRESCALE field.                            */
-  #define STM_SPFEAT1R_TSPRESCALE_NotImplemented (0x0UL) /*!< Timestamp prescale is not implemented.                           */
-  #define STM_SPFEAT1R_TSPRESCALE_Implemented (0x1UL) /*!< Timestamp prescale is implemented.                                  */
+  #define STM_SPFEAT1R_TSPRESCALE_Min (0x1UL)        /*!< Min enumerator value of TSPRESCALE field.                            */
+  #define STM_SPFEAT1R_TSPRESCALE_Max (0x2UL)        /*!< Max enumerator value of TSPRESCALE field.                            */
+  #define STM_SPFEAT1R_TSPRESCALE_NotImplemented (0x1UL) /*!< Timestamp prescale is not implemented.                           */
+  #define STM_SPFEAT1R_TSPRESCALE_Implemented (0x2UL) /*!< Timestamp prescale is implemented.                                  */
 
 /* HWTEN @Bits 18..19 : STMTCSR.HWTEN support */
   #define STM_SPFEAT1R_HWTEN_Pos (18UL)              /*!< Position of HWTEN field.                                             */
@@ -58959,7 +59461,7 @@ typedef union {
 
 
 /* STM_SPFEAT2R: Indicates the features of the STM. */
-  #define STM_SPFEAT2R_ResetValue (0x00000000UL)     /*!< Reset value of SPFEAT2R register.                                    */
+  #define STM_SPFEAT2R_ResetValue (0x000104F2UL)     /*!< Reset value of SPFEAT2R register.                                    */
 
 /* SPTER @Bits 0..1 : STMSPTER support. */
   #define STM_SPFEAT2R_SPTER_Pos (0UL)               /*!< Position of SPTER field.                                             */
@@ -58984,7 +59486,7 @@ typedef union {
   #define STM_SPFEAT2R_SPCOMP_Programmable (0x3UL)   /*!< Data compression support is programmable. STMTCSR.COMPEN is
                                                           implemented.*/
 
-/* SPOVERRIDE @Bit 6 : Timestamp force configuration. */
+/* SPOVERRIDE @Bit 6 : STMSPOVERRIDER and STMSPMOVERRIDER support. */
   #define STM_SPFEAT2R_SPOVERRIDE_Pos (6UL)          /*!< Position of SPOVERRIDE field.                                        */
   #define STM_SPFEAT2R_SPOVERRIDE_Msk (0x1UL << STM_SPFEAT2R_SPOVERRIDE_Pos) /*!< Bit mask of SPOVERRIDE field.                */
   #define STM_SPFEAT2R_SPOVERRIDE_Min (0x0UL)        /*!< Min enumerator value of SPOVERRIDE field.                            */
@@ -59014,8 +59516,8 @@ typedef union {
   #define STM_SPFEAT2R_DSIZE_Max (0x0UL)             /*!< Max enumerator value of DSIZE field.                                 */
   #define STM_SPFEAT2R_DSIZE_Bits32 (0x0UL)          /*!< 32-bit data.                                                         */
 
-/* SPTYPE @Bits 18..19 : Stimulus port type support */
-  #define STM_SPFEAT2R_SPTYPE_Pos (18UL)             /*!< Position of SPTYPE field.                                            */
+/* SPTYPE @Bits 16..17 : Stimulus port type support */
+  #define STM_SPFEAT2R_SPTYPE_Pos (16UL)             /*!< Position of SPTYPE field.                                            */
   #define STM_SPFEAT2R_SPTYPE_Msk (0x3UL << STM_SPFEAT2R_SPTYPE_Pos) /*!< Bit mask of SPTYPE field.                            */
   #define STM_SPFEAT2R_SPTYPE_Min (0x1UL)            /*!< Min enumerator value of SPTYPE field.                                */
   #define STM_SPFEAT2R_SPTYPE_Max (0x1UL)            /*!< Max enumerator value of SPTYPE field.                                */
@@ -59023,14 +59525,14 @@ typedef union {
 
 
 /* STM_SPFEAT3R: Indicates the features of the STM. */
-  #define STM_SPFEAT3R_ResetValue (0x00000000UL)     /*!< Reset value of SPFEAT3R register.                                    */
+  #define STM_SPFEAT3R_ResetValue (0x0000007FUL)     /*!< Reset value of SPFEAT3R register.                                    */
 
 /* NUMMAST @Bits 0..6 : The number of stimulus ports masters implemented, minus 1. */
   #define STM_SPFEAT3R_NUMMAST_Pos (0UL)             /*!< Position of NUMMAST field.                                           */
   #define STM_SPFEAT3R_NUMMAST_Msk (0x7FUL << STM_SPFEAT3R_NUMMAST_Pos) /*!< Bit mask of NUMMAST field.                        */
-  #define STM_SPFEAT3R_NUMMAST_Min (0x3FUL)          /*!< Min enumerator value of NUMMAST field.                               */
-  #define STM_SPFEAT3R_NUMMAST_Max (0x3FUL)          /*!< Max enumerator value of NUMMAST field.                               */
-  #define STM_SPFEAT3R_NUMMAST_Masters128 (0x3FUL)   /*!< Example: 128 masters implemented.                                    */
+  #define STM_SPFEAT3R_NUMMAST_Min (0x7FUL)          /*!< Min enumerator value of NUMMAST field.                               */
+  #define STM_SPFEAT3R_NUMMAST_Max (0x7FUL)          /*!< Max enumerator value of NUMMAST field.                               */
+  #define STM_SPFEAT3R_NUMMAST_Masters128 (0x7FUL)   /*!< 128 masters are implemented.                                         */
 
 
 /* STM_ITTRIGGER: Integration Test for Cross-Trigger Outputs Register. */
@@ -59113,7 +59615,7 @@ typedef union {
   #define STM_ITATBDATA0_ATDATAM31_W_High (0x1UL)    /*!< Drive logic 1 on output.                                             */
 
 
-/* STM_ITATBCTR2: Controls the value of the ATDATAM output in integration mode. */
+/* STM_ITATBCTR2: Returns the value of the ATREADYM and AFVALIDM inputs in integration mode. */
   #define STM_ITATBCTR2_ResetValue (0x00000000UL)    /*!< Reset value of ITATBCTR2 register.                                   */
 
 /* ATREADYM_R @Bit 0 : Reads the value of the ATREADYM input. */
@@ -59141,56 +59643,56 @@ typedef union {
   #define STM_ITATBID_ATIDM_W0_Msk (0x1UL << STM_ITATBID_ATIDM_W0_Pos) /*!< Bit mask of ATIDM_W0 field.                        */
   #define STM_ITATBID_ATIDM_W0_Min (0x0UL)           /*!< Min enumerator value of ATIDM_W0 field.                              */
   #define STM_ITATBID_ATIDM_W0_Max (0x1UL)           /*!< Max enumerator value of ATIDM_W0 field.                              */
-  #define STM_ITATBID_ATIDM_W0_Low (0x0UL)           /*!< Pin is at logic 0.                                                   */
-  #define STM_ITATBID_ATIDM_W0_High (0x1UL)          /*!< Pin is at logic 1.                                                   */
+  #define STM_ITATBID_ATIDM_W0_Low (0x0UL)           /*!< Drive logic 0 on output.                                             */
+  #define STM_ITATBID_ATIDM_W0_High (0x1UL)          /*!< Drive logic 1 on output.                                             */
 
 /* ATIDM_W1 @Bit 1 : Sets the value of pin 1 of the ATIDM output. */
   #define STM_ITATBID_ATIDM_W1_Pos (1UL)             /*!< Position of ATIDM_W1 field.                                          */
   #define STM_ITATBID_ATIDM_W1_Msk (0x1UL << STM_ITATBID_ATIDM_W1_Pos) /*!< Bit mask of ATIDM_W1 field.                        */
   #define STM_ITATBID_ATIDM_W1_Min (0x0UL)           /*!< Min enumerator value of ATIDM_W1 field.                              */
   #define STM_ITATBID_ATIDM_W1_Max (0x1UL)           /*!< Max enumerator value of ATIDM_W1 field.                              */
-  #define STM_ITATBID_ATIDM_W1_Low (0x0UL)           /*!< Pin is at logic 0.                                                   */
-  #define STM_ITATBID_ATIDM_W1_High (0x1UL)          /*!< Pin is at logic 1.                                                   */
+  #define STM_ITATBID_ATIDM_W1_Low (0x0UL)           /*!< Drive logic 0 on output.                                             */
+  #define STM_ITATBID_ATIDM_W1_High (0x1UL)          /*!< Drive logic 1 on output.                                             */
 
 /* ATIDM_W2 @Bit 2 : Sets the value of pin 2 of the ATIDM output. */
   #define STM_ITATBID_ATIDM_W2_Pos (2UL)             /*!< Position of ATIDM_W2 field.                                          */
   #define STM_ITATBID_ATIDM_W2_Msk (0x1UL << STM_ITATBID_ATIDM_W2_Pos) /*!< Bit mask of ATIDM_W2 field.                        */
   #define STM_ITATBID_ATIDM_W2_Min (0x0UL)           /*!< Min enumerator value of ATIDM_W2 field.                              */
   #define STM_ITATBID_ATIDM_W2_Max (0x1UL)           /*!< Max enumerator value of ATIDM_W2 field.                              */
-  #define STM_ITATBID_ATIDM_W2_Low (0x0UL)           /*!< Pin is at logic 0.                                                   */
-  #define STM_ITATBID_ATIDM_W2_High (0x1UL)          /*!< Pin is at logic 1.                                                   */
+  #define STM_ITATBID_ATIDM_W2_Low (0x0UL)           /*!< Drive logic 0 on output.                                             */
+  #define STM_ITATBID_ATIDM_W2_High (0x1UL)          /*!< Drive logic 1 on output.                                             */
 
 /* ATIDM_W3 @Bit 3 : Sets the value of pin 3 of the ATIDM output. */
   #define STM_ITATBID_ATIDM_W3_Pos (3UL)             /*!< Position of ATIDM_W3 field.                                          */
   #define STM_ITATBID_ATIDM_W3_Msk (0x1UL << STM_ITATBID_ATIDM_W3_Pos) /*!< Bit mask of ATIDM_W3 field.                        */
   #define STM_ITATBID_ATIDM_W3_Min (0x0UL)           /*!< Min enumerator value of ATIDM_W3 field.                              */
   #define STM_ITATBID_ATIDM_W3_Max (0x1UL)           /*!< Max enumerator value of ATIDM_W3 field.                              */
-  #define STM_ITATBID_ATIDM_W3_Low (0x0UL)           /*!< Pin is at logic 0.                                                   */
-  #define STM_ITATBID_ATIDM_W3_High (0x1UL)          /*!< Pin is at logic 1.                                                   */
+  #define STM_ITATBID_ATIDM_W3_Low (0x0UL)           /*!< Drive logic 0 on output.                                             */
+  #define STM_ITATBID_ATIDM_W3_High (0x1UL)          /*!< Drive logic 1 on output.                                             */
 
 /* ATIDM_W4 @Bit 4 : Sets the value of pin 4 of the ATIDM output. */
   #define STM_ITATBID_ATIDM_W4_Pos (4UL)             /*!< Position of ATIDM_W4 field.                                          */
   #define STM_ITATBID_ATIDM_W4_Msk (0x1UL << STM_ITATBID_ATIDM_W4_Pos) /*!< Bit mask of ATIDM_W4 field.                        */
   #define STM_ITATBID_ATIDM_W4_Min (0x0UL)           /*!< Min enumerator value of ATIDM_W4 field.                              */
   #define STM_ITATBID_ATIDM_W4_Max (0x1UL)           /*!< Max enumerator value of ATIDM_W4 field.                              */
-  #define STM_ITATBID_ATIDM_W4_Low (0x0UL)           /*!< Pin is at logic 0.                                                   */
-  #define STM_ITATBID_ATIDM_W4_High (0x1UL)          /*!< Pin is at logic 1.                                                   */
+  #define STM_ITATBID_ATIDM_W4_Low (0x0UL)           /*!< Drive logic 0 on output.                                             */
+  #define STM_ITATBID_ATIDM_W4_High (0x1UL)          /*!< Drive logic 1 on output.                                             */
 
 /* ATIDM_W5 @Bit 5 : Sets the value of pin 5 of the ATIDM output. */
   #define STM_ITATBID_ATIDM_W5_Pos (5UL)             /*!< Position of ATIDM_W5 field.                                          */
   #define STM_ITATBID_ATIDM_W5_Msk (0x1UL << STM_ITATBID_ATIDM_W5_Pos) /*!< Bit mask of ATIDM_W5 field.                        */
   #define STM_ITATBID_ATIDM_W5_Min (0x0UL)           /*!< Min enumerator value of ATIDM_W5 field.                              */
   #define STM_ITATBID_ATIDM_W5_Max (0x1UL)           /*!< Max enumerator value of ATIDM_W5 field.                              */
-  #define STM_ITATBID_ATIDM_W5_Low (0x0UL)           /*!< Pin is at logic 0.                                                   */
-  #define STM_ITATBID_ATIDM_W5_High (0x1UL)          /*!< Pin is at logic 1.                                                   */
+  #define STM_ITATBID_ATIDM_W5_Low (0x0UL)           /*!< Drive logic 0 on output.                                             */
+  #define STM_ITATBID_ATIDM_W5_High (0x1UL)          /*!< Drive logic 1 on output.                                             */
 
 /* ATIDM_W6 @Bit 6 : Sets the value of pin 6 of the ATIDM output. */
   #define STM_ITATBID_ATIDM_W6_Pos (6UL)             /*!< Position of ATIDM_W6 field.                                          */
   #define STM_ITATBID_ATIDM_W6_Msk (0x1UL << STM_ITATBID_ATIDM_W6_Pos) /*!< Bit mask of ATIDM_W6 field.                        */
   #define STM_ITATBID_ATIDM_W6_Min (0x0UL)           /*!< Min enumerator value of ATIDM_W6 field.                              */
   #define STM_ITATBID_ATIDM_W6_Max (0x1UL)           /*!< Max enumerator value of ATIDM_W6 field.                              */
-  #define STM_ITATBID_ATIDM_W6_Low (0x0UL)           /*!< Pin is at logic 0.                                                   */
-  #define STM_ITATBID_ATIDM_W6_High (0x1UL)          /*!< Pin is at logic 1.                                                   */
+  #define STM_ITATBID_ATIDM_W6_Low (0x0UL)           /*!< Drive logic 0 on output.                                             */
+  #define STM_ITATBID_ATIDM_W6_High (0x1UL)          /*!< Drive logic 1 on output.                                             */
 
 
 /* STM_ITATBCTR0: Controls the value of the ATVALIDM, AFREADYM, and ATBYTESM outputs in integration mode. */
@@ -59201,32 +59703,32 @@ typedef union {
   #define STM_ITATBCTR0_ATVALIDM_W_Msk (0x1UL << STM_ITATBCTR0_ATVALIDM_W_Pos) /*!< Bit mask of ATVALIDM_W field.              */
   #define STM_ITATBCTR0_ATVALIDM_W_Min (0x0UL)       /*!< Min enumerator value of ATVALIDM_W field.                            */
   #define STM_ITATBCTR0_ATVALIDM_W_Max (0x1UL)       /*!< Max enumerator value of ATVALIDM_W field.                            */
-  #define STM_ITATBCTR0_ATVALIDM_W_Low (0x0UL)       /*!< Pin is at logic 0.                                                   */
-  #define STM_ITATBCTR0_ATVALIDM_W_High (0x1UL)      /*!< Pin is at logic 1.                                                   */
+  #define STM_ITATBCTR0_ATVALIDM_W_Low (0x0UL)       /*!< Drive logic 0 on output.                                             */
+  #define STM_ITATBCTR0_ATVALIDM_W_High (0x1UL)      /*!< Drive logic 1 on output.                                             */
 
-/* AFREADYM_W @Bit 1 : Sets the value of the AFREADYM_W output. */
+/* AFREADYM_W @Bit 1 : Sets the value of the AFREADYM output. */
   #define STM_ITATBCTR0_AFREADYM_W_Pos (1UL)         /*!< Position of AFREADYM_W field.                                        */
   #define STM_ITATBCTR0_AFREADYM_W_Msk (0x1UL << STM_ITATBCTR0_AFREADYM_W_Pos) /*!< Bit mask of AFREADYM_W field.              */
   #define STM_ITATBCTR0_AFREADYM_W_Min (0x0UL)       /*!< Min enumerator value of AFREADYM_W field.                            */
   #define STM_ITATBCTR0_AFREADYM_W_Max (0x1UL)       /*!< Max enumerator value of AFREADYM_W field.                            */
-  #define STM_ITATBCTR0_AFREADYM_W_Low (0x0UL)       /*!< Pin is at logic 0.                                                   */
-  #define STM_ITATBCTR0_AFREADYM_W_High (0x1UL)      /*!< Pin is at logic 1.                                                   */
+  #define STM_ITATBCTR0_AFREADYM_W_Low (0x0UL)       /*!< Drive logic 0 on output.                                             */
+  #define STM_ITATBCTR0_AFREADYM_W_High (0x1UL)      /*!< Drive logic 1 on output.                                             */
 
 /* ATBYTESM_W0 @Bit 8 : Sets the value of pin 0 of the ATBYTESM output. */
   #define STM_ITATBCTR0_ATBYTESM_W0_Pos (8UL)        /*!< Position of ATBYTESM_W0 field.                                       */
   #define STM_ITATBCTR0_ATBYTESM_W0_Msk (0x1UL << STM_ITATBCTR0_ATBYTESM_W0_Pos) /*!< Bit mask of ATBYTESM_W0 field.           */
   #define STM_ITATBCTR0_ATBYTESM_W0_Min (0x0UL)      /*!< Min enumerator value of ATBYTESM_W0 field.                           */
   #define STM_ITATBCTR0_ATBYTESM_W0_Max (0x1UL)      /*!< Max enumerator value of ATBYTESM_W0 field.                           */
-  #define STM_ITATBCTR0_ATBYTESM_W0_Low (0x0UL)      /*!< Pin is at logic 0.                                                   */
-  #define STM_ITATBCTR0_ATBYTESM_W0_High (0x1UL)     /*!< Pin is at logic 1.                                                   */
+  #define STM_ITATBCTR0_ATBYTESM_W0_Low (0x0UL)      /*!< Drive logic 0 on output.                                             */
+  #define STM_ITATBCTR0_ATBYTESM_W0_High (0x1UL)     /*!< Drive logic 1 on output.                                             */
 
 /* ATBYTESM_W1 @Bit 9 : Sets the value of pin 1 of the ATBYTESM output. */
   #define STM_ITATBCTR0_ATBYTESM_W1_Pos (9UL)        /*!< Position of ATBYTESM_W1 field.                                       */
   #define STM_ITATBCTR0_ATBYTESM_W1_Msk (0x1UL << STM_ITATBCTR0_ATBYTESM_W1_Pos) /*!< Bit mask of ATBYTESM_W1 field.           */
   #define STM_ITATBCTR0_ATBYTESM_W1_Min (0x0UL)      /*!< Min enumerator value of ATBYTESM_W1 field.                           */
   #define STM_ITATBCTR0_ATBYTESM_W1_Max (0x1UL)      /*!< Max enumerator value of ATBYTESM_W1 field.                           */
-  #define STM_ITATBCTR0_ATBYTESM_W1_Low (0x0UL)      /*!< Pin is at logic 0.                                                   */
-  #define STM_ITATBCTR0_ATBYTESM_W1_High (0x1UL)     /*!< Pin is at logic 1.                                                   */
+  #define STM_ITATBCTR0_ATBYTESM_W1_Low (0x0UL)      /*!< Drive logic 0 on output.                                             */
+  #define STM_ITATBCTR0_ATBYTESM_W1_High (0x1UL)     /*!< Drive logic 1 on output.                                             */
 
 
 /* STM_ITCTRL: Used to enable topology detection. This register enables the component to switch from a functional mode, the
@@ -59244,6 +59746,31 @@ typedef union {
   #define STM_ITCTRL_INTEGRATIONMODE_Max (0x1UL)     /*!< Max enumerator value of INTEGRATIONMODE field.                       */
   #define STM_ITCTRL_INTEGRATIONMODE_Disabled (0x0UL) /*!< Integration mode is disabled.                                       */
   #define STM_ITCTRL_INTEGRATIONMODE_Enabled (0x1UL) /*!< Integration mode is Enabled.                                         */
+
+
+/* STM_CLAIMSET: On writes this register sets bits of the claim tag. On reads it indicates the number of claim tag bits
+                  implemented. */
+
+  #define STM_CLAIMSET_ResetValue (0x0000000FUL)     /*!< Reset value of CLAIMSET register.                                    */
+
+/* CLAIMSET @Bits 0..3 : On reads, each bit reads as b1 if the claim tag bit is implemented. Four claim tag bits are
+                         implemented, so this register reads as 0xF. On writes, a b1 in a bit position causes the corresponding
+                         claim tag bit to be set. */
+
+  #define STM_CLAIMSET_CLAIMSET_Pos (0UL)            /*!< Position of CLAIMSET field.                                          */
+  #define STM_CLAIMSET_CLAIMSET_Msk (0xFUL << STM_CLAIMSET_CLAIMSET_Pos) /*!< Bit mask of CLAIMSET field.                      */
+
+
+/* STM_CLAIMCLR: On writes this register clears bits of the claim tag. On reads it indicates the current status of the claim
+                  tag. */
+
+  #define STM_CLAIMCLR_ResetValue (0x00000000UL)     /*!< Reset value of CLAIMCLR register.                                    */
+
+/* CLAIMCLR @Bits 0..3 : On reads, each bit reads as one if the claim tag bit is set. On writes, a b1 in a bit position causes
+                         the corresponding claim tag bit to be cleared. On a reset the claim tags are reset to b0. */
+
+  #define STM_CLAIMCLR_CLAIMCLR_Pos (0UL)            /*!< Position of CLAIMCLR field.                                          */
+  #define STM_CLAIMCLR_CLAIMCLR_Msk (0xFUL << STM_CLAIMCLR_CLAIMCLR_Pos) /*!< Bit mask of CLAIMCLR field.                      */
 
 
 /* STM_LAR: This is used to enable write access to device registers. */
@@ -59265,7 +59792,7 @@ typedef union {
              locked, must block write accesses to any control register, except the Lock Access Register. For most components
              this covers all registers except for the Lock Access Register. */
 
-  #define STM_LSR_ResetValue (0x00000000UL)          /*!< Reset value of LSR register.                                         */
+  #define STM_LSR_ResetValue (0x00000003UL)          /*!< Reset value of LSR register.                                         */
 
 /* PRESENT @Bit 0 : Indicates that a lock control mechanism exists for this device. */
   #define STM_LSR_PRESENT_Pos (0UL)                  /*!< Position of PRESENT field.                                           */
@@ -59295,43 +59822,43 @@ typedef union {
 
 
 /* STM_AUTHSTATUS: Indicates the current level of tracing permitted by the system */
-  #define STM_AUTHSTATUS_ResetValue (0x00000000UL)   /*!< Reset value of AUTHSTATUS register.                                  */
+  #define STM_AUTHSTATUS_ResetValue (0x000000AAUL)   /*!< Reset value of AUTHSTATUS register.                                  */
 
-/* NSID @Bits 0..1 : Non-secure Invasive Debug */
+/* NSID @Bits 0..1 : Indicates the security level for non-secure invasive debug. */
   #define STM_AUTHSTATUS_NSID_Pos (0UL)              /*!< Position of NSID field.                                              */
   #define STM_AUTHSTATUS_NSID_Msk (0x3UL << STM_AUTHSTATUS_NSID_Pos) /*!< Bit mask of NSID field.                              */
-  #define STM_AUTHSTATUS_NSID_Min (0x0UL)            /*!< Min enumerator value of NSID field.                                  */
-  #define STM_AUTHSTATUS_NSID_Max (0x1UL)            /*!< Max enumerator value of NSID field.                                  */
-  #define STM_AUTHSTATUS_NSID_NotImplemented (0x0UL) /*!< The feature is not implemented.                                      */
-  #define STM_AUTHSTATUS_NSID_Implemented (0x1UL)    /*!< The feature is implemented.                                          */
+  #define STM_AUTHSTATUS_NSID_Min (0x2UL)            /*!< Min enumerator value of NSID field.                                  */
+  #define STM_AUTHSTATUS_NSID_Max (0x3UL)            /*!< Max enumerator value of NSID field.                                  */
+  #define STM_AUTHSTATUS_NSID_Disabled (0x2UL)       /*!< Functionality disabled.                                              */
+  #define STM_AUTHSTATUS_NSID_Enabled (0x3UL)        /*!< Functionality enabled.                                               */
 
-/* NSNID @Bits 2..3 : Non-secure Non-Invasive Debug */
+/* NSNID @Bits 2..3 : Indicates the security level for non-secure non-invasive debug. */
   #define STM_AUTHSTATUS_NSNID_Pos (2UL)             /*!< Position of NSNID field.                                             */
   #define STM_AUTHSTATUS_NSNID_Msk (0x3UL << STM_AUTHSTATUS_NSNID_Pos) /*!< Bit mask of NSNID field.                           */
-  #define STM_AUTHSTATUS_NSNID_Min (0x0UL)           /*!< Min enumerator value of NSNID field.                                 */
-  #define STM_AUTHSTATUS_NSNID_Max (0x1UL)           /*!< Max enumerator value of NSNID field.                                 */
-  #define STM_AUTHSTATUS_NSNID_NotImplemented (0x0UL) /*!< The feature is not implemented.                                     */
-  #define STM_AUTHSTATUS_NSNID_Implemented (0x1UL)   /*!< The feature is implemented.                                          */
+  #define STM_AUTHSTATUS_NSNID_Min (0x2UL)           /*!< Min enumerator value of NSNID field.                                 */
+  #define STM_AUTHSTATUS_NSNID_Max (0x3UL)           /*!< Max enumerator value of NSNID field.                                 */
+  #define STM_AUTHSTATUS_NSNID_Disabled (0x2UL)      /*!< Functionality disabled.                                              */
+  #define STM_AUTHSTATUS_NSNID_Enabled (0x3UL)       /*!< Functionality enabled.                                               */
 
-/* SID @Bits 4..5 : Secure Invasive Debug */
+/* SID @Bits 4..5 : Indicates the security level for secure invasive debug. */
   #define STM_AUTHSTATUS_SID_Pos (4UL)               /*!< Position of SID field.                                               */
   #define STM_AUTHSTATUS_SID_Msk (0x3UL << STM_AUTHSTATUS_SID_Pos) /*!< Bit mask of SID field.                                 */
-  #define STM_AUTHSTATUS_SID_Min (0x0UL)             /*!< Min enumerator value of SID field.                                   */
-  #define STM_AUTHSTATUS_SID_Max (0x1UL)             /*!< Max enumerator value of SID field.                                   */
-  #define STM_AUTHSTATUS_SID_NotImplemented (0x0UL)  /*!< The feature is not implemented.                                      */
-  #define STM_AUTHSTATUS_SID_Implemented (0x1UL)     /*!< The feature is implemented.                                          */
+  #define STM_AUTHSTATUS_SID_Min (0x2UL)             /*!< Min enumerator value of SID field.                                   */
+  #define STM_AUTHSTATUS_SID_Max (0x3UL)             /*!< Max enumerator value of SID field.                                   */
+  #define STM_AUTHSTATUS_SID_Disabled (0x2UL)        /*!< Functionality disabled.                                              */
+  #define STM_AUTHSTATUS_SID_Enabled (0x3UL)         /*!< Functionality enabled.                                               */
 
-/* SNID @Bits 6..7 : Secure Non-Invasive Debug */
+/* SNID @Bits 6..7 : Indicates the security level for secure non-invasive debug. */
   #define STM_AUTHSTATUS_SNID_Pos (6UL)              /*!< Position of SNID field.                                              */
   #define STM_AUTHSTATUS_SNID_Msk (0x3UL << STM_AUTHSTATUS_SNID_Pos) /*!< Bit mask of SNID field.                              */
-  #define STM_AUTHSTATUS_SNID_Min (0x0UL)            /*!< Min enumerator value of SNID field.                                  */
-  #define STM_AUTHSTATUS_SNID_Max (0x1UL)            /*!< Max enumerator value of SNID field.                                  */
-  #define STM_AUTHSTATUS_SNID_NotImplemented (0x0UL) /*!< The feature is not implemented.                                      */
-  #define STM_AUTHSTATUS_SNID_Implemented (0x1UL)    /*!< The feature is implemented.                                          */
+  #define STM_AUTHSTATUS_SNID_Min (0x2UL)            /*!< Min enumerator value of SNID field.                                  */
+  #define STM_AUTHSTATUS_SNID_Max (0x3UL)            /*!< Max enumerator value of SNID field.                                  */
+  #define STM_AUTHSTATUS_SNID_Disabled (0x2UL)       /*!< Functionality disabled.                                              */
+  #define STM_AUTHSTATUS_SNID_Enabled (0x3UL)        /*!< Functionality enabled.                                               */
 
 
 /* STM_DEVID: Indicates the capabilities of the STM. */
-  #define STM_DEVID_ResetValue (0x00000000UL)        /*!< Reset value of DEVID register.                                       */
+  #define STM_DEVID_ResetValue (0x00010000UL)        /*!< Reset value of DEVID register.                                       */
 
 /* NUMSP @Bits 0..16 : This value indicates the number of stimulus ports implemented. */
   #define STM_DEVID_NUMSP_Pos (0UL)                  /*!< Position of NUMSP field.                                             */
@@ -59339,8 +59866,10 @@ typedef union {
   #define STM_DEVID_NUMSP_Max (0x10000UL)            /*!< Maximum 65,536 stimulus ports can be implemented.                    */
 
 
-/* STM_DEVTYPE: Controls the single-shot comparator. */
-  #define STM_DEVTYPE_ResetValue (0x00000000UL)      /*!< Reset value of DEVTYPE register.                                     */
+/* STM_DEVTYPE: Provides a debugger with information about the component when the Part Number field is not recognized. The
+                 debugger can then report this information. */
+
+  #define STM_DEVTYPE_ResetValue (0x00000063UL)      /*!< Reset value of DEVTYPE register.                                     */
 
 /* MAJOR @Bits 0..3 : The main type of the component */
   #define STM_DEVTYPE_MAJOR_Pos (0UL)                /*!< Position of MAJOR field.                                             */
@@ -59357,37 +59886,203 @@ typedef union {
   #define STM_DEVTYPE_SUB_StimulusTrace (0x6UL)      /*!< Peripheral is a stimulus trace source.                               */
 
 
+/* STM_PIDR4: Coresight peripheral identification register. Contains part of the designer identity and the memory footprint
+               indicator. */
+
+  #define STM_PIDR4_ResetValue (0x00000004UL)        /*!< Reset value of PIDR4 register.                                       */
+
+/* JEP106_cont @Bits 0..3 : JEDEC continuation code indicating the designer of the component, together with the identity code. */
+  #define STM_PIDR4_JEP106_cont_Pos (0UL)            /*!< Position of JEP106_cont field.                                       */
+  #define STM_PIDR4_JEP106_cont_Msk (0xFUL << STM_PIDR4_JEP106_cont_Pos) /*!< Bit mask of JEP106_cont field.                   */
+  #define STM_PIDR4_JEP106_cont_Min (0x4UL)          /*!< Min enumerator value of JEP106_cont field.                           */
+  #define STM_PIDR4_JEP106_cont_Max (0x4UL)          /*!< Max enumerator value of JEP106_cont field.                           */
+  #define STM_PIDR4_JEP106_cont_Arm (0x4UL)          /*!< Indicates that ARM's JEDEC identity code is on the 5th bank.         */
+
+/* FourKB_Count @Bits 4..7 : This is a 4-bit value that indicates the total contiguous size of the memory window used by this
+                             component in powers of 2 from the standard 4KB. If a component only requires the standard 4KB, this
+                             must read as 0x0, 4KB only. For 8KB set to 0x1, for 16KB set to 0x2, for 32KB set to 0x3, and so
+                             on. */
+
+  #define STM_PIDR4_FourKB_Count_Pos (4UL)           /*!< Position of FourKB_Count field.                                      */
+  #define STM_PIDR4_FourKB_Count_Msk (0xFUL << STM_PIDR4_FourKB_Count_Pos) /*!< Bit mask of FourKB_Count field.                */
+  #define STM_PIDR4_FourKB_Count_Min (0x0UL)         /*!< Min enumerator value of FourKB_Count field.                          */
+  #define STM_PIDR4_FourKB_Count_Max (0x0UL)         /*!< Max enumerator value of FourKB_Count field.                          */
+  #define STM_PIDR4_FourKB_Count_Size4KB (0x0UL)     /*!< Indicates that the device only occupies 4KB of memory.               */
+
+
+/* STM_PIDR0: Coresight peripheral identification register. Contains part of the designer specific part number. */
+  #define STM_PIDR0_ResetValue (0x00000062UL)        /*!< Reset value of PIDR0 register.                                       */
+
+/* Part_Number_bits7to0 @Bits 0..7 : Bits [7:0] of the component part number. This is selected by the designer of the component.
+                                     */
+
+  #define STM_PIDR0_Part_Number_bits7to0_Pos (0UL)   /*!< Position of Part_Number_bits7to0 field.                              */
+  #define STM_PIDR0_Part_Number_bits7to0_Msk (0xFFUL << STM_PIDR0_Part_Number_bits7to0_Pos) /*!< Bit mask of
+                                                                            Part_Number_bits7to0 field.*/
+  #define STM_PIDR0_Part_Number_bits7to0_Min (0x62UL) /*!< Min enumerator value of Part_Number_bits7to0 field.                 */
+  #define STM_PIDR0_Part_Number_bits7to0_Max (0x62UL) /*!< Max enumerator value of Part_Number_bits7to0 field.                 */
+  #define STM_PIDR0_Part_Number_bits7to0_PartNumberLow (0x62UL) /*!< Lowest 8 bits of the Part Number, 0x962.                  */
+
+
+/* STM_PIDR1: Coresight peripheral identification register. Contains part of the designer specific part number and part of the
+               designer identity. */
+
+  #define STM_PIDR1_ResetValue (0x000000B9UL)        /*!< Reset value of PIDR1 register.                                       */
+
+/* Part_Number_bits11to8 @Bits 0..3 : Bits [11:8] of the component part number. This is selected by the designer of the
+                                      component. */
+
+  #define STM_PIDR1_Part_Number_bits11to8_Pos (0UL)  /*!< Position of Part_Number_bits11to8 field.                             */
+  #define STM_PIDR1_Part_Number_bits11to8_Msk (0xFUL << STM_PIDR1_Part_Number_bits11to8_Pos) /*!< Bit mask of
+                                                                            Part_Number_bits11to8 field.*/
+  #define STM_PIDR1_Part_Number_bits11to8_Min (0x9UL) /*!< Min enumerator value of Part_Number_bits11to8 field.                */
+  #define STM_PIDR1_Part_Number_bits11to8_Max (0x9UL) /*!< Max enumerator value of Part_Number_bits11to8 field.                */
+  #define STM_PIDR1_Part_Number_bits11to8_PartNumberHigh (0x9UL) /*!< Upper 4 bits of the Part Number, 0x962.                  */
+
+/* JEP106_bits3to0 @Bits 4..7 : Bits [3:0] of the JEDEC identity code indicating the designer of the component, together with
+                                the continuation code. */
+
+  #define STM_PIDR1_JEP106_bits3to0_Pos (4UL)        /*!< Position of JEP106_bits3to0 field.                                   */
+  #define STM_PIDR1_JEP106_bits3to0_Msk (0xFUL << STM_PIDR1_JEP106_bits3to0_Pos) /*!< Bit mask of JEP106_bits3to0 field.       */
+  #define STM_PIDR1_JEP106_bits3to0_Min (0xBUL)      /*!< Min enumerator value of JEP106_bits3to0 field.                       */
+  #define STM_PIDR1_JEP106_bits3to0_Max (0xBUL)      /*!< Max enumerator value of JEP106_bits3to0 field.                       */
+  #define STM_PIDR1_JEP106_bits3to0_JEP106IdentityLow (0xBUL) /*!< Lowest 4 bits of the JEP106 Identity Code.                  */
+
+
+/* STM_PIDR2: Coresight peripheral identification register. Contains part of the designer identity and the product revision. */
+  #define STM_PIDR2_ResetValue (0x0000001BUL)        /*!< Reset value of PIDR2 register.                                       */
+
+/* JEP106_bits6to4 @Bits 0..2 : Bits [6:4] of the JEDEC identity code indicating the designer of the component, together with
+                                the continuation code. */
+
+  #define STM_PIDR2_JEP106_bits6to4_Pos (0UL)        /*!< Position of JEP106_bits6to4 field.                                   */
+  #define STM_PIDR2_JEP106_bits6to4_Msk (0x7UL << STM_PIDR2_JEP106_bits6to4_Pos) /*!< Bit mask of JEP106_bits6to4 field.       */
+  #define STM_PIDR2_JEP106_bits6to4_Min (0x3UL)      /*!< Min enumerator value of JEP106_bits6to4 field.                       */
+  #define STM_PIDR2_JEP106_bits6to4_Max (0x3UL)      /*!< Max enumerator value of JEP106_bits6to4 field.                       */
+  #define STM_PIDR2_JEP106_bits6to4_JEP106IdentityHigh (0x3UL) /*!< Upper 3 bits of the JEP106 Identity Code.                  */
+
+/* JEDEC @Bit 3 : Always set. Indicates that a JEDEC assigned value is used. */
+  #define STM_PIDR2_JEDEC_Pos (3UL)                  /*!< Position of JEDEC field.                                             */
+  #define STM_PIDR2_JEDEC_Msk (0x1UL << STM_PIDR2_JEDEC_Pos) /*!< Bit mask of JEDEC field.                                     */
+  #define STM_PIDR2_JEDEC_Min (0x1UL)                /*!< Min enumerator value of JEDEC field.                                 */
+  #define STM_PIDR2_JEDEC_Max (0x1UL)                /*!< Max enumerator value of JEDEC field.                                 */
+  #define STM_PIDR2_JEDEC_JedecAssigned (0x1UL)      /*!< The designer ID is specified by JEDEC (http://www.jedec.org).        */
+
+/* Revision @Bits 4..7 : The Revision field is an incremental value starting at 0x0 for the first design of this component. This
+                         only increases by 1 for both major and minor revisions and is used as a look-up to establish the exact
+                         major and minor revision. */
+
+  #define STM_PIDR2_Revision_Pos (4UL)               /*!< Position of Revision field.                                          */
+  #define STM_PIDR2_Revision_Msk (0xFUL << STM_PIDR2_Revision_Pos) /*!< Bit mask of Revision field.                            */
+  #define STM_PIDR2_Revision_Min (0x1UL)             /*!< Min enumerator value of Revision field.                              */
+  #define STM_PIDR2_Revision_Max (0x1UL)             /*!< Max enumerator value of Revision field.                              */
+  #define STM_PIDR2_Revision_R0P1 (0x1UL)            /*!< This device is at r0p1.                                              */
+
+
+/* STM_PIDR3: Coresight peripheral identification register. Contains the RevAnd and Customer Modified fields. */
+  #define STM_PIDR3_ResetValue (0x00000000UL)        /*!< Reset value of PIDR3 register.                                       */
+
+/* Customer_Modified @Bits 0..3 : Where the component is reusable IP, this value indicates if the customer has modified the
+                                  behavior of the component. In most cases this field is zero. */
+
+  #define STM_PIDR3_Customer_Modified_Pos (0UL)      /*!< Position of Customer_Modified field.                                 */
+  #define STM_PIDR3_Customer_Modified_Msk (0xFUL << STM_PIDR3_Customer_Modified_Pos) /*!< Bit mask of Customer_Modified field. */
+  #define STM_PIDR3_Customer_Modified_Min (0x0UL)    /*!< Min enumerator value of Customer_Modified field.                     */
+  #define STM_PIDR3_Customer_Modified_Max (0x0UL)    /*!< Max enumerator value of Customer_Modified field.                     */
+  #define STM_PIDR3_Customer_Modified_NoModifications (0x0UL) /*!< Indicates that there have been no modifications made.       */
+
+/* RevAnd @Bits 4..7 : This field indicates minor errata fixes specific to this design, for example metal fixes after
+                       implementation. In most cases this field is zero. */
+
+  #define STM_PIDR3_RevAnd_Pos (4UL)                 /*!< Position of RevAnd field.                                            */
+  #define STM_PIDR3_RevAnd_Msk (0xFUL << STM_PIDR3_RevAnd_Pos) /*!< Bit mask of RevAnd field.                                  */
+  #define STM_PIDR3_RevAnd_Min (0x0UL)               /*!< Min enumerator value of RevAnd field.                                */
+  #define STM_PIDR3_RevAnd_Max (0x0UL)               /*!< Max enumerator value of RevAnd field.                                */
+  #define STM_PIDR3_RevAnd_NoMetalFixes (0x0UL)      /*!< Indicates that there have been no metal fixes to this component.     */
+
+
+/* STM_CIDR0: Coresight component identification register, that indicates that the identification registers are present. */
+  #define STM_CIDR0_ResetValue (0x0000000DUL)        /*!< Reset value of CIDR0 register.                                       */
+
+/* Preamble @Bits 0..7 : Contains bits [24:31] of the component identification. */
+  #define STM_CIDR0_Preamble_Pos (0UL)               /*!< Position of Preamble field.                                          */
+  #define STM_CIDR0_Preamble_Msk (0xFFUL << STM_CIDR0_Preamble_Pos) /*!< Bit mask of Preamble field.                           */
+  #define STM_CIDR0_Preamble_Min (0x0DUL)            /*!< Min enumerator value of Preamble field.                              */
+  #define STM_CIDR0_Preamble_Max (0x0DUL)            /*!< Max enumerator value of Preamble field.                              */
+  #define STM_CIDR0_Preamble_IdentificationValue (0x0DUL) /*!< Identification value.                                           */
+
+
+/* STM_CIDR1: Coresight component identification register, that indicates that the identification registers are present. This
+               register also indicates the component class. */
+
+  #define STM_CIDR1_ResetValue (0x00000090UL)        /*!< Reset value of CIDR1 register.                                       */
+
+/* Preamble @Bits 0..3 : Contains bits [19:16] of the component identification. */
+  #define STM_CIDR1_Preamble_Pos (0UL)               /*!< Position of Preamble field.                                          */
+  #define STM_CIDR1_Preamble_Msk (0xFUL << STM_CIDR1_Preamble_Pos) /*!< Bit mask of Preamble field.                            */
+  #define STM_CIDR1_Preamble_Min (0x0UL)             /*!< Min enumerator value of Preamble field.                              */
+  #define STM_CIDR1_Preamble_Max (0x0UL)             /*!< Max enumerator value of Preamble field.                              */
+  #define STM_CIDR1_Preamble_IdentificationValue (0x0UL) /*!< Identification value.                                            */
+
+/* Class @Bits 4..7 : Class of the component, for example, ROM table or CoreSight component. */
+  #define STM_CIDR1_Class_Pos (4UL)                  /*!< Position of Class field.                                             */
+  #define STM_CIDR1_Class_Msk (0xFUL << STM_CIDR1_Class_Pos) /*!< Bit mask of Class field.                                     */
+  #define STM_CIDR1_Class_Min (0x9UL)                /*!< Min enumerator value of Class field.                                 */
+  #define STM_CIDR1_Class_Max (0x9UL)                /*!< Max enumerator value of Class field.                                 */
+  #define STM_CIDR1_Class_CoreSightComponent (0x9UL) /*!< Indicates the component is a CoreSight component.                    */
+
+
+/* STM_CIDR2: Coresight component identification register, that indicates that the identification registers are present. */
+  #define STM_CIDR2_ResetValue (0x00000005UL)        /*!< Reset value of CIDR2 register.                                       */
+
+/* Preamble @Bits 0..7 : Contains bits [15:8] of the component identification. */
+  #define STM_CIDR2_Preamble_Pos (0UL)               /*!< Position of Preamble field.                                          */
+  #define STM_CIDR2_Preamble_Msk (0xFFUL << STM_CIDR2_Preamble_Pos) /*!< Bit mask of Preamble field.                           */
+  #define STM_CIDR2_Preamble_Min (0x05UL)            /*!< Min enumerator value of Preamble field.                              */
+  #define STM_CIDR2_Preamble_Max (0x05UL)            /*!< Max enumerator value of Preamble field.                              */
+  #define STM_CIDR2_Preamble_IdentificationValue (0x05UL) /*!< Identification value.                                           */
+
+
+/* STM_CIDR3: Coresight component identification register, that indicates that the identification registers are present. */
+  #define STM_CIDR3_ResetValue (0x000000B1UL)        /*!< Reset value of CIDR3 register.                                       */
+
+/* Preamble @Bits 0..7 : Contains bits [7:0] of the component identification. */
+  #define STM_CIDR3_Preamble_Pos (0UL)               /*!< Position of Preamble field.                                          */
+  #define STM_CIDR3_Preamble_Msk (0xFFUL << STM_CIDR3_Preamble_Pos) /*!< Bit mask of Preamble field.                           */
+  #define STM_CIDR3_Preamble_Min (0xB1UL)            /*!< Min enumerator value of Preamble field.                              */
+  #define STM_CIDR3_Preamble_Max (0xB1UL)            /*!< Max enumerator value of Preamble field.                              */
+  #define STM_CIDR3_Preamble_IdentificationValue (0xB1UL) /*!< Identification value.                                           */
+
+
 #endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
 
 /* =========================================================================================================================== */
 /* ================                                          STMDATA                                          ================ */
 /* =========================================================================================================================== */
 
-#if !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__) /*!< Ignore C structs for assembly code.                                 */
-
-/* ================================================== Struct STMDATA_DOMAIN ================================================== */
-/**
-  * @brief DOMAIN [STMDATA_DOMAIN] (unspecified)
-  */
-typedef struct {
-  __IOM uint8_t   DATA[16777216];                    /*!< (@ 0x00000000) STM extended stimulus port data buffer area for domain
-                                                                         n. NonSecure writes to this region generates trace
-                                                                         packets with id n+96. Secure writes to this region
-                                                                         generates trace packets with id n+32.*/
-} NRF_STMDATA_DOMAIN_Type;                           /*!< Size = 16777216 (0x1000000)                                          */
-  #define STMDATA_DOMAIN_MaxCount (16UL)             /*!< Size of DOMAIN[16] array.                                            */
-  #define STMDATA_DOMAIN_MaxIndex (15UL)             /*!< Max index of DOMAIN[16] array.                                       */
-  #define STMDATA_DOMAIN_MinIndex (0UL)              /*!< Min index of DOMAIN[16] array.                                       */
-
-/* ===================================================== Struct STMDATA ====================================================== */
 /**
   * @brief System Trace Macrocell data buffer
   */
-  typedef struct {                                   /*!< STMDATA Structure                                                    */
-    __IOM NRF_STMDATA_DOMAIN_Type DOMAIN[16];        /*!< (@ 0x00000000) (unspecified)                                         */
-  } NRF_STMDATA_Type;                                /*!< Size = 268435456 (0x10000000)                                        */
+/**
+  * @brief DOMAIN [STMDATA_DOMAIN[n]] (unspecified)
+  */
+  #define STMDATA_DOMAIN_MaxCount (16UL)             /*!< Max size of DOMAIN[16] array.                                        */
+  #define STMDATA_DOMAIN_MaxIndex (15UL)             /*!< Max index of DOMAIN[16] array.                                       */
+  #define STMDATA_DOMAIN_MinIndex (0UL)              /*!< Min index of DOMAIN[16] array.                                       */
 
-#endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */
+/**
+  * @brief DATA [STMDATA_DOMAIN[n]_DATA[o]] STM extended stimulus port data buffer area for domain n. NonSecure writes to this
+            region generates trace packets with id n+96. Secure writes to this region generates trace packets with id n+32.
+
+  */
+  #define STMDATA_DOMAIN_DATA(n, o) ((n * 16777216ul) + (o * 1ul) + 0x00000000ul)
+  #define STMDATA_DOMAIN_DATA_MaxCount (16777216UL)  /*!< Max size of DATA[16777216] array.                                    */
+  #define STMDATA_DOMAIN_DATA_MaxIndex (16777215UL)  /*!< Max index of DATA[16777216] array.                                   */
+  #define STMDATA_DOMAIN_DATA_MinIndex (0UL)         /*!< Min index of DATA[16777216] array.                                   */
+  #define STMDATA_DOMAIN_DATA_ResetValue (0x00UL)    /*!< Reset value of DATA[16777216] register.                              */
+
+
+
 
 /* =========================================================================================================================== */
 /* ================                                            SWI                                            ================ */
@@ -68033,8 +68728,7 @@ typedef struct {
   */
 typedef struct {
   __IOM uint32_t  APPLICATION;                       /*!< (@ 0x00000000) APPLICATION access port protection                    */
-  __IOM uint32_t  RADIOCORE;                         /*!< (@ 0x00000004) RADIOCORE access port protection                      */
-  __IM  uint32_t  RESERVED;
+  __IM  uint32_t  RESERVED[2];
   __IOM uint32_t  CORESIGHT;                         /*!< (@ 0x0000000C) CoreSight access port protection                      */
 } NRF_UICR_APPROTECT_Type;                           /*!< Size = 16 (0x010)                                                    */
 
@@ -68053,22 +68747,6 @@ typedef struct {
   #define UICR_APPROTECT_APPLICATION_PALL_Profile3 (0x488C5ED6UL) /*!< Reserved for future use                                 */
   #define UICR_APPROTECT_APPLICATION_PALL_Profile4 (0x83C6B58DUL) /*!< Reserved for future use                                 */
   #define UICR_APPROTECT_APPLICATION_PALL_Protected (0xFFFFFFFFUL) /*!< Debug access fully disabled through the access port    */
-
-
-/* UICR_APPROTECT_RADIOCORE: RADIOCORE access port protection */
-  #define UICR_APPROTECT_RADIOCORE_ResetValue (0xBD2328A8UL) /*!< Reset value of RADIOCORE register.                           */
-
-/* PALL @Bits 0..31 : (unspecified) */
-  #define UICR_APPROTECT_RADIOCORE_PALL_Pos (0UL)    /*!< Position of PALL field.                                              */
-  #define UICR_APPROTECT_RADIOCORE_PALL_Msk (0xFFFFFFFFUL << UICR_APPROTECT_RADIOCORE_PALL_Pos) /*!< Bit mask of PALL field.   */
-  #define UICR_APPROTECT_RADIOCORE_PALL_Min (0x1730C77FUL) /*!< Min enumerator value of PALL field.                            */
-  #define UICR_APPROTECT_RADIOCORE_PALL_Max (0xFFFFFFFFUL) /*!< Max enumerator value of PALL field.                            */
-  #define UICR_APPROTECT_RADIOCORE_PALL_Unprotected (0xBD2328A8UL) /*!< Full debug access enabled through the access port      */
-  #define UICR_APPROTECT_RADIOCORE_PALL_Profile1 (0x1730C77FUL) /*!< Reserved for future use                                   */
-  #define UICR_APPROTECT_RADIOCORE_PALL_Profile2 (0xF05F1363UL) /*!< Reserved for future use                                   */
-  #define UICR_APPROTECT_RADIOCORE_PALL_Profile3 (0x488C5ED6UL) /*!< Reserved for future use                                   */
-  #define UICR_APPROTECT_RADIOCORE_PALL_Profile4 (0x83C6B58DUL) /*!< Reserved for future use                                   */
-  #define UICR_APPROTECT_RADIOCORE_PALL_Protected (0xFFFFFFFFUL) /*!< Debug access fully disabled through the access port      */
 
 
 /* UICR_APPROTECT_CORESIGHT: CoreSight access port protection */
@@ -68174,8 +68852,7 @@ typedef struct {
   */
 typedef struct {
   __IOM uint32_t  APPLICATIONSIZE1KB;                /*!< (@ 0x00000000) Size of the APPLICATION partition in 1 kiB blocks     */
-  __IOM uint32_t  RADIOCORESIZE1KB;                  /*!< (@ 0x00000004) Size of the RADIOCORE partition in 1 kiB blocks       */
-} NRF_UICR_SECURESTORAGE_CRYPTO_Type;                /*!< Size = 8 (0x008)                                                     */
+} NRF_UICR_SECURESTORAGE_CRYPTO_Type;                /*!< Size = 4 (0x004)                                                     */
 
 /* UICR_SECURESTORAGE_CRYPTO_APPLICATIONSIZE1KB: Size of the APPLICATION partition in 1 kiB blocks */
   #define UICR_SECURESTORAGE_CRYPTO_APPLICATIONSIZE1KB_ResetValue (0xBD2328A8UL) /*!< Reset value of APPLICATIONSIZE1KB
@@ -68187,15 +68864,6 @@ typedef struct {
                                                                             /*!< Bit mask of SIZE1KB field.*/
 
 
-/* UICR_SECURESTORAGE_CRYPTO_RADIOCORESIZE1KB: Size of the RADIOCORE partition in 1 kiB blocks */
-  #define UICR_SECURESTORAGE_CRYPTO_RADIOCORESIZE1KB_ResetValue (0xBD2328A8UL) /*!< Reset value of RADIOCORESIZE1KB register.  */
-
-/* SIZE1KB @Bits 0..31 : (unspecified) */
-  #define UICR_SECURESTORAGE_CRYPTO_RADIOCORESIZE1KB_SIZE1KB_Pos (0UL) /*!< Position of SIZE1KB field.                         */
-  #define UICR_SECURESTORAGE_CRYPTO_RADIOCORESIZE1KB_SIZE1KB_Msk (0xFFFFFFFFUL << UICR_SECURESTORAGE_CRYPTO_RADIOCORESIZE1KB_SIZE1KB_Pos)
-                                                                            /*!< Bit mask of SIZE1KB field.*/
-
-
 
 /* ============================================== Struct UICR_SECURESTORAGE_ITS ============================================== */
 /**
@@ -68203,8 +68871,7 @@ typedef struct {
   */
 typedef struct {
   __IOM uint32_t  APPLICATIONSIZE1KB;                /*!< (@ 0x00000000) Size of the APPLICATION partition in 1 kiB blocks     */
-  __IOM uint32_t  RADIOCORESIZE1KB;                  /*!< (@ 0x00000004) Size of the RADIOCORE partition in 1 kiB blocks       */
-} NRF_UICR_SECURESTORAGE_ITS_Type;                   /*!< Size = 8 (0x008)                                                     */
+} NRF_UICR_SECURESTORAGE_ITS_Type;                   /*!< Size = 4 (0x004)                                                     */
 
 /* UICR_SECURESTORAGE_ITS_APPLICATIONSIZE1KB: Size of the APPLICATION partition in 1 kiB blocks */
   #define UICR_SECURESTORAGE_ITS_APPLICATIONSIZE1KB_ResetValue (0xBD2328A8UL) /*!< Reset value of APPLICATIONSIZE1KB register. */
@@ -68212,15 +68879,6 @@ typedef struct {
 /* SIZE1KB @Bits 0..31 : (unspecified) */
   #define UICR_SECURESTORAGE_ITS_APPLICATIONSIZE1KB_SIZE1KB_Pos (0UL) /*!< Position of SIZE1KB field.                          */
   #define UICR_SECURESTORAGE_ITS_APPLICATIONSIZE1KB_SIZE1KB_Msk (0xFFFFFFFFUL << UICR_SECURESTORAGE_ITS_APPLICATIONSIZE1KB_SIZE1KB_Pos)
-                                                                            /*!< Bit mask of SIZE1KB field.*/
-
-
-/* UICR_SECURESTORAGE_ITS_RADIOCORESIZE1KB: Size of the RADIOCORE partition in 1 kiB blocks */
-  #define UICR_SECURESTORAGE_ITS_RADIOCORESIZE1KB_ResetValue (0xBD2328A8UL) /*!< Reset value of RADIOCORESIZE1KB register.     */
-
-/* SIZE1KB @Bits 0..31 : (unspecified) */
-  #define UICR_SECURESTORAGE_ITS_RADIOCORESIZE1KB_SIZE1KB_Pos (0UL) /*!< Position of SIZE1KB field.                            */
-  #define UICR_SECURESTORAGE_ITS_RADIOCORESIZE1KB_SIZE1KB_Msk (0xFFFFFFFFUL << UICR_SECURESTORAGE_ITS_RADIOCORESIZE1KB_SIZE1KB_Pos)
                                                                             /*!< Bit mask of SIZE1KB field.*/
 
 
@@ -68234,9 +68892,10 @@ typedef struct {
   __IOM uint32_t  ADDRESS;                           /*!< (@ 0x00000004) Start address of the Secure Storage region            */
   __IOM NRF_UICR_SECURESTORAGE_CRYPTO_Type CRYPTO;   /*!< (@ 0x00000008) Secure Storage partitions for the Cryptographic
                                                                          service*/
+  __IM  uint32_t  RESERVED;
   __IOM NRF_UICR_SECURESTORAGE_ITS_Type ITS;         /*!< (@ 0x00000010) Secure Storage partitions for the Internal Trusted
                                                                          Storage service*/
-} NRF_UICR_SECURESTORAGE_Type;                       /*!< Size = 24 (0x018)                                                    */
+} NRF_UICR_SECURESTORAGE_Type;                       /*!< Size = 20 (0x014)                                                    */
 
 /* UICR_SECURESTORAGE_ENABLE: Enable the Secure Storage */
   #define UICR_SECURESTORAGE_ENABLE_ResetValue (0xBD2328A8UL) /*!< Reset value of ENABLE register.                             */
@@ -68405,39 +69064,6 @@ typedef struct {
   #define UICR_SECONDARY_TRIGGER_RESETREAS_APPLICATIONLOCKUP_Enabled (0x1UL) /*!< This reset reason will trigger secondary
                                                                             firmware boot*/
   #define UICR_SECONDARY_TRIGGER_RESETREAS_APPLICATIONLOCKUP_Disabled (0x0UL) /*!< This reset reason will not trigger secondary
-                                                                            firmware boot*/
-
-/* RADIOCOREWDT0 @Bit 5 : (unspecified) */
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT0_Pos (5UL) /*!< Position of RADIOCOREWDT0 field.                       */
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT0_Msk (0x1UL << UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT0_Pos) /*!<
-                                                                            Bit mask of RADIOCOREWDT0 field.*/
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT0_Min (0x0UL) /*!< Min enumerator value of RADIOCOREWDT0 field.         */
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT0_Max (0x1UL) /*!< Max enumerator value of RADIOCOREWDT0 field.         */
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT0_Enabled (0x1UL) /*!< This reset reason will trigger secondary firmware
-                                                                            boot*/
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT0_Disabled (0x0UL) /*!< This reset reason will not trigger secondary
-                                                                            firmware boot*/
-
-/* RADIOCOREWDT1 @Bit 6 : (unspecified) */
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT1_Pos (6UL) /*!< Position of RADIOCOREWDT1 field.                       */
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT1_Msk (0x1UL << UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT1_Pos) /*!<
-                                                                            Bit mask of RADIOCOREWDT1 field.*/
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT1_Min (0x0UL) /*!< Min enumerator value of RADIOCOREWDT1 field.         */
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT1_Max (0x1UL) /*!< Max enumerator value of RADIOCOREWDT1 field.         */
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT1_Enabled (0x1UL) /*!< This reset reason will trigger secondary firmware
-                                                                            boot*/
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCOREWDT1_Disabled (0x0UL) /*!< This reset reason will not trigger secondary
-                                                                            firmware boot*/
-
-/* RADIOCORELOCKUP @Bit 8 : (unspecified) */
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCORELOCKUP_Pos (8UL) /*!< Position of RADIOCORELOCKUP field.                   */
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCORELOCKUP_Msk (0x1UL << UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCORELOCKUP_Pos)
-                                                                            /*!< Bit mask of RADIOCORELOCKUP field.*/
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCORELOCKUP_Min (0x0UL) /*!< Min enumerator value of RADIOCORELOCKUP field.     */
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCORELOCKUP_Max (0x1UL) /*!< Max enumerator value of RADIOCORELOCKUP field.     */
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCORELOCKUP_Enabled (0x1UL) /*!< This reset reason will trigger secondary
-                                                                            firmware boot*/
-  #define UICR_SECONDARY_TRIGGER_RESETREAS_RADIOCORELOCKUP_Disabled (0x0UL) /*!< This reset reason will not trigger secondary
                                                                             firmware boot*/
 
 
@@ -68665,10 +69291,9 @@ typedef struct {
   #define UICR_SECONDARY_PROCESSOR_PROCESSOR_Pos (0UL) /*!< Position of PROCESSOR field.                                       */
   #define UICR_SECONDARY_PROCESSOR_PROCESSOR_Msk (0xFFFFFFFFUL << UICR_SECONDARY_PROCESSOR_PROCESSOR_Pos) /*!< Bit mask of
                                                                             PROCESSOR field.*/
-  #define UICR_SECONDARY_PROCESSOR_PROCESSOR_Min (0x1730C77FUL) /*!< Min enumerator value of PROCESSOR field.                  */
+  #define UICR_SECONDARY_PROCESSOR_PROCESSOR_Min (0xBD2328A8UL) /*!< Min enumerator value of PROCESSOR field.                  */
   #define UICR_SECONDARY_PROCESSOR_PROCESSOR_Max (0xBD2328A8UL) /*!< Max enumerator value of PROCESSOR field.                  */
   #define UICR_SECONDARY_PROCESSOR_PROCESSOR_APPLICATION (0xBD2328A8UL) /*!< Boot the APPLICATION processor.                   */
-  #define UICR_SECONDARY_PROCESSOR_PROCESSOR_RADIOCORE (0x1730C77FUL) /*!< Boot the RADIOCORE processor.                       */
 
 
 /* UICR_SECONDARY_ADDRESS: Start address of the secondary firmware. This value is used as the initial value of the secure VTOR
@@ -68698,7 +69323,7 @@ typedef struct {
     __IOM NRF_UICR_WDTSTART_Type WDTSTART;           /*!< (@ 0x0000002C) Start a local watchdog timer ahead of the CPU boot.   */
     __IM uint32_t RESERVED2;
     __IOM NRF_UICR_SECURESTORAGE_Type SECURESTORAGE; /*!< (@ 0x0000003C) Secure Storage configuration                          */
-    __IM uint32_t RESERVED3[5];
+    __IM uint32_t RESERVED3[6];
     __IOM NRF_UICR_PERIPHCONF_Type PERIPHCONF;       /*!< (@ 0x00000068) Global domain peripheral configuration                */
     __IOM NRF_UICR_MPCCONF_Type MPCCONF;             /*!< (@ 0x00000074) Global domain MPC configuration                       */
     __IOM NRF_UICR_SECONDARY_Type SECONDARY;         /*!< (@ 0x00000080) Secondary firmware configuration                      */

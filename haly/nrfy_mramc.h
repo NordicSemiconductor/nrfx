@@ -61,10 +61,6 @@ NRFY_STATIC_INLINE void __nrfy_internal_mramc_config_set(NRF_MRAMC_Type *       
 
 NRFY_STATIC_INLINE void __nrfy_internal_mramc_word_write(uint32_t addr, uint32_t value);
 
-# if NRF_UICR_HAS_OTP
-NRFY_STATIC_INLINE bool __nrfy_internal_mramc_is_otp_word_writable(uint32_t index);
-#endif
-
 /**
  * @defgroup nrfy_mramc MRAMC HALY
  * @{
@@ -379,9 +375,8 @@ NRFY_STATIC_INLINE void nrfy_mramc_event_clear(NRF_MRAMC_Type * p_reg, nrf_mramc
 /**
  * @brief Function for reading a word from the OTP in UICR.
  *
- * OTP is a region of the UICR present in some chips. This function must be used
- * to read word data from this region since unaligned accesses are not
- * available on the OTP MRAM area.
+ * @deprecated Use @ref nrfy_mramc_word_read with the address obtained
+ *             from @ref nrf_uicr_otp_address_get instead.
  *
  * @param[in] index Address (index) in OTP table from which a word is to be read.
  *
@@ -389,12 +384,9 @@ NRFY_STATIC_INLINE void nrfy_mramc_event_clear(NRF_MRAMC_Type * p_reg, nrf_mramc
  */
 NRFY_STATIC_INLINE uint32_t nrfy_mramc_otp_word_read(uint32_t index)
 {
-    NRFX_ASSERT(index < UICR_OTP_MaxCount);
+    NRFX_ASSERT(index < NRF_UICR_OTP_COUNT);
 #if !defined(NRF_TRUSTZONE_NONSECURE)
-    nrf_barrier_r();
-    uint32_t val32 = NRF_UICR->OTP[index];
-    nrf_barrier_r();
-    return val32;
+    return nrfy_mramc_word_read(nrf_uicr_otp_address_get(NRF_UICR, index));
 #else
     return UINT32_MAX;
 #endif
@@ -404,8 +396,11 @@ NRFY_STATIC_INLINE uint32_t nrfy_mramc_otp_word_read(uint32_t index)
  * @brief Function for writing a 32-bit word at index position to OTP region in UICR.
  *
  * The OTP can only be written once after each Erase All is performed.
- * This function checks if the value currently residing at the specified index can
- * be transformed to the desired value. If yes, then performs the write operation.
+ * This function checks if the word at the specified index is still erased.
+ * If yes, then performs the write operation.
+ *
+ * @deprecated Use @ref nrfx_mramc_word_writable_check and @ref nrfx_mramc_word_write
+ *             with the address obtained from @ref nrf_uicr_otp_address_get instead.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] index Address (index) in OTP table to which a word it to be written.
@@ -419,10 +414,12 @@ NRFY_STATIC_INLINE bool nrfy_mramc_otp_word_write(NRF_MRAMC_Type * p_reg,
                                                   uint32_t         index,
                                                   uint32_t         value)
 {
-    NRFX_ASSERT(index < UICR_OTP_MaxCount);
+    NRFX_ASSERT(index < NRF_UICR_OTP_COUNT);
 
 #if !defined(NRF_TRUSTZONE_NONSECURE)
-    if (!__nrfy_internal_mramc_is_otp_word_writable(index))
+    uint32_t address = nrf_uicr_otp_address_get(NRF_UICR, index);
+
+    if (nrfy_mramc_word_read(address) != NRFY_MRAMC_WORD_AFTER_ERASED)
     {
         return false;
     }
@@ -438,13 +435,14 @@ NRFY_STATIC_INLINE bool nrfy_mramc_otp_word_write(NRF_MRAMC_Type * p_reg,
 
     nrfy_mramc_confignvr_perm_set(p_reg, true, 2);
 
-    NRF_UICR->OTP[index] = value;
+    __nrfy_internal_mramc_word_write(address, value);
 
     nrfy_mramc_confignvr_perm_set(p_reg, false, 2);
     nrf_mramc_readynext_timeout_set(p_reg, &prev_readynext_timeout);
 
     return true;
 #else
+    (void)p_reg;
     (void)index;
     (void)value;
 
@@ -1003,20 +1001,6 @@ NRFY_STATIC_INLINE void __nrfy_internal_mramc_word_write(uint32_t addr, uint32_t
     *(volatile uint32_t *)addr = value;
     nrf_barrier_w();
 }
-
-#if NRF_UICR_HAS_OTP
-NRFY_STATIC_INLINE bool __nrfy_internal_mramc_is_otp_word_writable(uint32_t index)
-{
-#if !defined(NRF_TRUSTZONE_NONSECURE)
-    nrf_barrier_r();
-    uint32_t val_on_addr = NRF_UICR->OTP[index];
-    nrf_barrier_r();
-    return (val_on_addr == UINT32_MAX);
-#else
-    return false;
-#endif
-}
-#endif // NRF_UICR_HAS_OTP
 
 #ifdef __cplusplus
 }

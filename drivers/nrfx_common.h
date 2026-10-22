@@ -52,13 +52,13 @@ extern "C" {
 
 #if defined(__CORTEX_M) || defined(__NRFX_DOXYGEN__)
 #define ISA_ARM     1
-#elif defined(__VPR_REV)
+#elif defined(__riscv)
 #define ISA_RISCV   1
 #else
 #define ISA_UNKNOWN 1
 #endif
 
-#if defined(ISA_RISCV)
+#if !defined(__STATIC_INLINE) && !defined(__NRFX_DOXYGEN__)
 #define __STATIC_INLINE __attribute__((always_inline)) static inline
 #endif
 
@@ -91,7 +91,7 @@ extern "C" {
 #define NRFX_RELEASE_VER_MAJOR 4
 
 /** @brief Symbol specifying minor number of the current nrfx version. */
-#define NRFX_RELEASE_VER_MINOR 6
+#define NRFX_RELEASE_VER_MINOR 7
 
 /** @brief Symbol specifying micro number of the current nrfx version. */
 #define NRFX_RELEASE_VER_MICRO 0

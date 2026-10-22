@@ -69,14 +69,14 @@ typedef struct
 /** @brief PDM prescalers structure. */
 typedef struct
 {
-#if NRF_PDM_HAS_PDMCLKCTRL
+#if NRF_PDM_HAS_PDMCLKCTRL || defined(__NRFX_DOXYGEN__)
     nrf_pdm_freq_t         clock_freq;   ///< Selectable clock frequency.
 #elif NRF_PDM_HAS_PRESCALER
     uint32_t               prescaler;    ///< Prescaler divisor.
 #endif
-#if NRF_PDM_HAS_RATIO_CONFIG
+#if NRF_PDM_HAS_RATIO_CONFIG || defined(__NRFX_DOXYGEN__)
     nrf_pdm_ratio_t        ratio;        ///< Ratio between PDM_CLK and output sample rate.
-#if NRF_PDM_HAS_CUSTOM_RATIO
+#if NRF_PDM_HAS_CUSTOM_RATIO || defined(__NRFX_DOXYGEN__)
     nrf_pdm_custom_ratio_t custom_ratio; /**< Custom ratio configuration, applied if
                                                @ref nrfx_pdm_prescalers_t.ratio equals
                                                @ref NRF_PDM_RATIO_CUSTOM. */
@@ -95,7 +95,7 @@ typedef struct
     nrf_pdm_gain_t        gain_r;             ///< Right channel gain.
     uint8_t               interrupt_priority; ///< Interrupt priority.
     nrfx_pdm_prescalers_t prescalers;         ///< Clock prescalers.
-#if NRF_PDM_HAS_SELECTABLE_CLOCK
+#if NRF_PDM_HAS_SELECTABLE_CLOCK || defined(__NRFX_DOXYGEN__)
     nrf_pdm_mclksrc_t     mclksrc;            ///< Clock source selection.
 #endif
     bool                  skip_gpio_cfg;      ///< Skip GPIO configuration of pins.
@@ -114,6 +114,15 @@ typedef struct
                                                *   as they are ignored anyway. */
 } nrfx_pdm_config_t;
 
+#if NRF_PDM_HAS_SELECTABLE_CLOCK
+/** @brief Default master clock source. */
+#if (NRF_PDM_HAS_PCLK16M && NRFX_API_VER_AT_LEAST(4, 7, 0))
+#define NRFX_PDM_DEFAULT_MCLKSRC NRF_PDM_MCLKSRC_PCLK16M
+#else
+#define NRFX_PDM_DEFAULT_MCLKSRC NRF_PDM_MCLKSRC_PCLK32M
+#endif
+#endif
+
 /**
  * @brief PDM driver default configuration.
  *
@@ -126,33 +135,33 @@ typedef struct
  * @param[in] _pin_clk CLK output pin.
  * @param[in] _pin_din DIN input pin.
  */
-#define NRFX_PDM_DEFAULT_CONFIG(_pin_clk, _pin_din)                                  \
-{                                                                                    \
-    .mode               = NRF_PDM_MODE_MONO,                                         \
-    .edge               = NRF_PDM_EDGE_LEFTFALLING,                                  \
-    .clk_pin            = _pin_clk,                                                  \
-    .din_pin            = _pin_din,                                                  \
-    .gain_l             = NRF_PDM_GAIN_DEFAULT,                                      \
-    .gain_r             = NRF_PDM_GAIN_DEFAULT,                                      \
-    .interrupt_priority = NRFX_PDM_DEFAULT_CONFIG_IRQ_PRIORITY,                      \
-    .prescalers         =                                                            \
-    {                                                                                \
-        NRFX_COND_CODE_1(NRF_PDM_HAS_PDMCLKCTRL,                                     \
-                     (.clock_freq = NRF_PDM_FREQ_1032K,), ())                        \
-        NRFX_COND_CODE_1(NRF_PDM_HAS_PRESCALER,                                      \
-                     (.prescaler = 4,), ())                                          \
-        NRFX_COND_CODE_1(NRF_PDM_HAS_RATIO_CONFIG,                                   \
-                     (.ratio = NRF_PDM_RATIO_64X,), ())                              \
-        NRFX_COND_CODE_1(NRF_PDM_HAS_CUSTOM_RATIO,                                   \
-                     (.custom_ratio = {                                              \
-                                       .ratio = 64,                                  \
-                                       .filter_msb = NRF_PDM_FILTER_CIC_MSB_RANGE_5, \
-                                       .compensation_gain = 0,                       \
-                                       .minor_compensation_gain = false,             \
-                                      }), ())                                        \
-    },                                                                               \
-    NRFX_COND_CODE_1(NRF_PDM_HAS_SELECTABLE_CLOCK,                                   \
-                     (.mclksrc = NRF_PDM_MCLKSRC_PCLK32M,), ())                      \
+#define NRFX_PDM_DEFAULT_CONFIG(_pin_clk, _pin_din)                                    \
+{                                                                                      \
+    .mode               = NRF_PDM_MODE_MONO,                                           \
+    .edge               = NRF_PDM_EDGE_LEFTFALLING,                                    \
+    .clk_pin            = _pin_clk,                                                    \
+    .din_pin            = _pin_din,                                                    \
+    .gain_l             = NRF_PDM_GAIN_DEFAULT,                                        \
+    .gain_r             = NRF_PDM_GAIN_DEFAULT,                                        \
+    .interrupt_priority = NRFX_PDM_DEFAULT_CONFIG_IRQ_PRIORITY,                        \
+    .prescalers         =                                                              \
+    {                                                                                  \
+        NRFX_COND_CODE_1(NRF_PDM_HAS_PDMCLKCTRL,                                       \
+                     (.clock_freq = NRF_PDM_FREQ_1032K,), ())                          \
+        NRFX_COND_CODE_1(NRF_PDM_HAS_PRESCALER,                                        \
+                     (.prescaler = 4,), ())                                            \
+        NRFX_COND_CODE_1(NRF_PDM_HAS_RATIO_CONFIG,                                     \
+                     (.ratio = NRF_PDM_RATIO_64X,), ())                                \
+        NRFX_COND_CODE_1(NRF_PDM_HAS_CUSTOM_RATIO,                                     \
+                     (.custom_ratio = {                                                \
+                                       .ratio = 64,                                    \
+                                       .filter_msb = NRF_PDM_FILTER_CIC_MSB_RANGE_5,   \
+                                       .compensation_gain = 0,                         \
+                                       .minor_compensation_gain = false,               \
+                                      }), ())                                          \
+    },                                                                                 \
+    NRFX_COND_CODE_1(NRF_PDM_HAS_SELECTABLE_CLOCK,                                     \
+                     (.mclksrc = NRFX_PDM_DEFAULT_MCLKSRC,), ())                        \
 }
 
 /** @brief PDM output frequency and sampling rate values. */
@@ -316,7 +325,8 @@ int nrfx_pdm_stop(nrfx_pdm_t * p_instance);
  * @retval 0            The buffer was applied successfully.
  * @retval -EBUSY       The buffer was already supplied or the peripheral is currently being stopped.
  * @retval -EINPROGRESS The driver was not initialized.
- * @retval -EINVAL      Invalid parameters were provided.
+ * @retval -EINVAL      No buffer was provided or the provided transfer length is too short.
+ * @retval -EACCES      The provided buffer is not placed in the Data RAM region.
  */
 int nrfx_pdm_buffer_set(nrfx_pdm_t * p_instance,
                         int16_t *    buffer,

@@ -159,6 +159,25 @@ static void nfct_frame_delay_max_set(bool default_delay)
     }
 }
 
+static void nfct_frame_delay_min_set(bool default_delay)
+{
+    if (default_delay)
+    {
+        nrfy_nfct_frame_delay_min_set(NRF_NFCT, NRF_NFCT_FAME_DELAY_MIN_DEFAULT);
+    }
+    else
+    {
+        nrfy_nfct_frame_delay_min_set(NRF_NFCT, (uint16_t)m_nfct_cb.frame_delay_min);
+    }
+}
+
+static void nfct_frame_delay_reset_to_default(void)
+{
+    nfct_frame_delay_max_set(true);
+    nfct_frame_delay_min_set(true);
+    nrfy_nfct_frame_delay_mode_set(NRF_NFCT, NRF_NFCT_FRAME_DELAY_MODE_DEFAULT);
+}
+
 static void nfct_trims_apply(void)
 {
 #if NRFY_NFCT_HAS_BIAS_CONFIG_TRIM_REG && defined(FICR_TRIM_GLOBAL_NFCT_BIASCFG_VALUE_Msk)
@@ -244,6 +263,7 @@ static void nfct_field_event_handler(volatile nrfx_nfct_field_state_t field_stat
         case NRFX_NFC_FIELD_STATE_OFF:
             if (m_nfct_cb.field_on)
             {
+                nfct_frame_delay_reset_to_default();
                 nrfy_nfct_task_trigger(NRF_NFCT, NRF_NFCT_TASK_SENSE);
                 nrfy_nfct_int_disable(NRF_NFCT, NRFX_NFCT_RX_INT_MASK | NRFX_NFCT_TX_INT_MASK);
                 m_nfct_cb.field_on = false;
@@ -1064,6 +1084,7 @@ void nrfx_nfct_irq_handler(void)
         nrfy_nfct_event_clear(NRF_NFCT, NRF_NFCT_EVENT_TXFRAMEEND);
 
         nfct_frame_delay_max_set(false);
+        nfct_frame_delay_min_set(false);
 
         /* At this point any previous error status can be ignored. */
         nrfy_nfct_rx_frame_status_clear(NRF_NFCT, NRFX_NFCT_FRAME_STATUS_RX_ALL_MASK);

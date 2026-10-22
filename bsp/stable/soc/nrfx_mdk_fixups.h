@@ -96,6 +96,7 @@
     #define SAADC_SAMPLERATE_CC_Max          2047UL
     #define NFCT_FRAMEDELAYMIN_ResetValue    0x480UL
     #define NFCT_FRAMEDELAYMAX_ResetValue    0x1000UL
+    #define NFCT_FRAMEDELAYMODE_ResetValue   0x0001UL
     #define NVMC_FLASH_BASE_ADDRESS          0
     #if defined(NRF52805_XXAA) || defined(NRF52810_XXAA) || \
         defined(NRF52811_XXAA) || defined(NRF52840_XXAA)
@@ -178,6 +179,7 @@
     #define SAADC_SAMPLERATE_CC_Max          2047UL
     #define NFCT_FRAMEDELAYMIN_ResetValue    0x480UL
     #define NFCT_FRAMEDELAYMAX_ResetValue    0x1000UL
+    #define NFCT_FRAMEDELAYMODE_ResetValue   0x0001UL
     #define NVMC_PAGE_ERASE_DURATION_MS      87
     #define TWIM_1MBPS_NEEDS_E0E1
 
@@ -205,9 +207,18 @@
 
     #define I2S_MCKFREQ_FACTOR 1048576
 
-    #define KMU_KEYSLOTNUM 128
-
     #define GPIO_DETECTMODE_ACCESSIBLE 1
+
+    #define UICR_PERM_HALFWORD_DEFAULT_VAL 0x0000ffffUL
+    #define UICR_KEYSLOT_DEST_DEFAULT_VAL  0xffffffffUL
+
+    #define KMU_SELECTKEYSLOT_IDLE_ID  0
+    #define KMU_KEYSLOTNUM             128
+    #define KMU_KEYSLOTBITS            128
+    #define KMU_HAS_READ_KEY_SLOT      1
+    #define KMU_USES_UICR              1
+
+    #define CC_AES_SUPPORTS_256_KEY_SIZE 1
 #endif
 /**************************************************************************************************/
 /* End fixups section for NRF53_SERIES                                                            */
@@ -242,9 +253,16 @@
 
     #define DOMAIN_MODEM
 
-    #define KMU_KEYSLOTNUM 128
-
     #define GPIO_DETECTMODE_ACCESSIBLE 1
+
+    #define UICR_PERM_HALFWORD_DEFAULT_VAL 0x0000ffffUL
+    #define UICR_KEYSLOT_DEST_DEFAULT_VAL  0xffffffffUL
+
+    #define KMU_SELECTKEYSLOT_IDLE_ID  0
+    #define KMU_KEYSLOTNUM             128
+    #define KMU_KEYSLOTBITS            128
+    #define KMU_HAS_READ_KEY_SLOT      1
+    #define KMU_USES_UICR              1
 #endif
 /**************************************************************************************************/
 /* End fixups section for NRF91_SERIES                                                            */
@@ -1457,6 +1475,50 @@
     #endif
 
     #define INSTANCE_12X_FREQUENCY 256
+
+    #if !defined(NRF_MRAMC110_S) && !defined(NRF_MRAMC111_S)
+        typedef struct {
+            __IM uint32_t RESERVED[256];
+            __IM uint32_t READY;
+            __IM uint32_t READYNEXT;
+        } NRF_MRAMC_Type;
+
+        #define MRAMC_READY_ResetValue (0x00000000UL)
+
+        #define MRAMC_READY_READY_Pos (0UL)
+        #define MRAMC_READY_READY_Msk (0x1UL << MRAMC_READY_READY_Pos)
+        #define MRAMC_READY_READY_Min (0x0UL)
+        #define MRAMC_READY_READY_Max (0x1UL)
+        #define MRAMC_READY_READY_Busy (0x0UL)
+        #define MRAMC_READY_READY_Ready (0x1UL)
+
+        #define MRAMC_READYNEXT_ResetValue (0x00000000UL)
+
+        #define MRAMC_READYNEXT_READYNEXT_Pos (0UL)
+        #define MRAMC_READYNEXT_READYNEXT_Msk (0x1UL << MRAMC_READYNEXT_READYNEXT_Pos)
+        #define MRAMC_READYNEXT_READYNEXT_Min (0x0UL)
+        #define MRAMC_READYNEXT_READYNEXT_Max (0x1UL)
+        #define MRAMC_READYNEXT_READYNEXT_Busy (0x0UL)
+        #define MRAMC_READYNEXT_READYNEXT_Ready (0x1UL)
+
+        #define NRF_MRAMC110_NS_BASE 0x4F092000UL
+        #define NRF_MRAMC110_S_BASE 0x5F092000UL
+        #define NRF_MRAMC111_NS_BASE 0x4F093000UL
+        #define NRF_MRAMC111_S_BASE 0x5F093000UL
+
+        #define NRF_MRAMC110_NS ((NRF_MRAMC_Type*) NRF_MRAMC110_NS_BASE)
+        #define NRF_MRAMC110_S ((NRF_MRAMC_Type*) NRF_MRAMC110_S_BASE)
+        #define NRF_MRAMC111_NS ((NRF_MRAMC_Type*) NRF_MRAMC111_NS_BASE)
+        #define NRF_MRAMC111_S ((NRF_MRAMC_Type*) NRF_MRAMC111_S_BASE)
+
+        #ifdef NRF_TRUSTZONE_NONSECURE
+            #define NRF_MRAMC110 NRF_MRAMC110_NS
+            #define NRF_MRAMC111 NRF_MRAMC111_NS
+        #else
+            #define NRF_MRAMC110 NRF_MRAMC110_S
+            #define NRF_MRAMC111 NRF_MRAMC111_S
+        #endif
+    #endif
 #endif
 /**************************************************************************************************/
 /* End fixups section for NRF9220_XXAA                                                            */

@@ -194,6 +194,7 @@ extern "C" {
 #define nrfx_usbreg_irq_handler     USBREGULATOR_IRQHandler
 
 // KMU_IRQn
+#define nrfx_kmu_irq_handler        KMU_IRQHandler
 
 // CRYPTOCELL_IRQn
 

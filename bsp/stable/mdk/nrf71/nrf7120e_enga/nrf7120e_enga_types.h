@@ -2872,8 +2872,8 @@ typedef struct {
     __OM uint32_t TASKS_XO24MSTOP;                   /*!< (@ 0x00000028) Stop request HFXO for PCLK24M. When all requests for
                                                                          HFXO are stopped, HFXO will also stop.*/
     __IM uint32_t RESERVED1[5];
-    __OM uint32_t TASKS_AUXPLLSTART;                 /*!< (@ 0x00000040) Start AUXPLL audio / USB clock source                 */
-    __OM uint32_t TASKS_AUXPLLSTOP;                  /*!< (@ 0x00000044) Stop AUXPLL audio / USB clock source                  */
+    __OM uint32_t TASKS_AUXPLLSTART;                 /*!< (@ 0x00000040) Start AUXPLL audio clock source                       */
+    __OM uint32_t TASKS_AUXPLLSTOP;                  /*!< (@ 0x00000044) Stop AUXPLL audio clock source                        */
     __IM uint32_t RESERVED2[14];
     __IOM uint32_t SUBSCRIBE_XOSTART;                /*!< (@ 0x00000080) Subscribe configuration for task XOSTART              */
     __IOM uint32_t SUBSCRIBE_XOSTOP;                 /*!< (@ 0x00000084) Subscribe configuration for task XOSTOP               */
@@ -3014,10 +3014,10 @@ typedef struct {
   #define CLOCK_TASKS_XO24MSTOP_TASKS_XO24MSTOP_Trigger (0x1UL) /*!< Trigger task                                              */
 
 
-/* CLOCK_TASKS_AUXPLLSTART: Start AUXPLL audio / USB clock source */
+/* CLOCK_TASKS_AUXPLLSTART: Start AUXPLL audio clock source */
   #define CLOCK_TASKS_AUXPLLSTART_ResetValue (0x00000000UL) /*!< Reset value of TASKS_AUXPLLSTART register.                    */
 
-/* TASKS_AUXPLLSTART @Bit 0 : Start AUXPLL audio / USB clock source */
+/* TASKS_AUXPLLSTART @Bit 0 : Start AUXPLL audio clock source */
   #define CLOCK_TASKS_AUXPLLSTART_TASKS_AUXPLLSTART_Pos (0UL) /*!< Position of TASKS_AUXPLLSTART field.                        */
   #define CLOCK_TASKS_AUXPLLSTART_TASKS_AUXPLLSTART_Msk (0x1UL << CLOCK_TASKS_AUXPLLSTART_TASKS_AUXPLLSTART_Pos) /*!< Bit mask
                                                                             of TASKS_AUXPLLSTART field.*/
@@ -3026,10 +3026,10 @@ typedef struct {
   #define CLOCK_TASKS_AUXPLLSTART_TASKS_AUXPLLSTART_Trigger (0x1UL) /*!< Trigger task                                          */
 
 
-/* CLOCK_TASKS_AUXPLLSTOP: Stop AUXPLL audio / USB clock source */
+/* CLOCK_TASKS_AUXPLLSTOP: Stop AUXPLL audio clock source */
   #define CLOCK_TASKS_AUXPLLSTOP_ResetValue (0x00000000UL) /*!< Reset value of TASKS_AUXPLLSTOP register.                      */
 
-/* TASKS_AUXPLLSTOP @Bit 0 : Stop AUXPLL audio / USB clock source */
+/* TASKS_AUXPLLSTOP @Bit 0 : Stop AUXPLL audio clock source */
   #define CLOCK_TASKS_AUXPLLSTOP_TASKS_AUXPLLSTOP_Pos (0UL) /*!< Position of TASKS_AUXPLLSTOP field.                           */
   #define CLOCK_TASKS_AUXPLLSTOP_TASKS_AUXPLLSTOP_Msk (0x1UL << CLOCK_TASKS_AUXPLLSTOP_TASKS_AUXPLLSTOP_Pos) /*!< Bit mask of
                                                                             TASKS_AUXPLLSTOP field.*/
@@ -11788,6 +11788,29 @@ typedef struct {
 
 
 
+/* =================================================== Struct FICR_SOCINFO =================================================== */
+/**
+  * @brief SOCINFO [FICR_SOCINFO] (unspecified)
+  */
+typedef struct {
+  __IM  uint32_t  RESERVED;
+  __IOM uint32_t  HWREVISION;                        /*!< (@ 0x00000004) Hardware Revision of the device. Will be updated in
+                                                                         production test.*/
+} NRF_FICR_SOCINFO_Type;                             /*!< Size = 8 (0x008)                                                     */
+
+/* FICR_SOCINFO_HWREVISION: Hardware Revision of the device. Will be updated in production test. */
+  #define FICR_SOCINFO_HWREVISION_ResetValue (0xFFFFFFFFUL) /*!< Reset value of HWREVISION register.                           */
+
+/* HWREVISION @Bits 0..31 : (unspecified) */
+  #define FICR_SOCINFO_HWREVISION_HWREVISION_Pos (0UL) /*!< Position of HWREVISION field.                                      */
+  #define FICR_SOCINFO_HWREVISION_HWREVISION_Msk (0xFFFFFFFFUL << FICR_SOCINFO_HWREVISION_HWREVISION_Pos) /*!< Bit mask of
+                                                                            HWREVISION field.*/
+  #define FICR_SOCINFO_HWREVISION_HWREVISION_Min (0x00000000UL) /*!< Min enumerator value of HWREVISION field.                 */
+  #define FICR_SOCINFO_HWREVISION_HWREVISION_Max (0x00000000UL) /*!< Max enumerator value of HWREVISION field.                 */
+  #define FICR_SOCINFO_HWREVISION_HWREVISION_SOC1 (0x00000000UL) /*!< (unspecified)                                            */
+
+
+
 /* =================================================== Struct FICR_TRIMCNF =================================================== */
 /**
   * @brief TRIMCNF [FICR_TRIMCNF] (unspecified)
@@ -12000,18 +12023,20 @@ typedef struct {
   typedef struct {                                   /*!< FICR Structure                                                       */
     __IM uint32_t RESERVED[192];
     __IOM NRF_FICR_INFO_Type INFO;                   /*!< (@ 0x00000300) Device info                                           */
-    __IM uint32_t RESERVED1[19];
+    __IM uint32_t RESERVED1[3];
+    __IOM NRF_FICR_SOCINFO_Type SOCINFO;             /*!< (@ 0x00000340) (unspecified)                                         */
+    __IM uint32_t RESERVED2[14];
     __IOM uint32_t ER[4];                            /*!< (@ 0x00000380) Common encryption root key, word n                    */
     __IOM uint32_t IR[4];                            /*!< (@ 0x00000390) Common identity root key, word n                      */
     __IOM uint32_t DEVICEADDRTYPE;                   /*!< (@ 0x000003A0) Device address type                                   */
     __IOM uint32_t DEVICEADDR[2];                    /*!< (@ 0x000003A4) Device address n                                      */
-    __IM uint32_t RESERVED2[21];
+    __IM uint32_t RESERVED3[21];
     __IOM NRF_FICR_TRIMCNF_Type TRIMCNF[128];        /*!< (@ 0x00000400) (unspecified)                                         */
-    __IM uint32_t RESERVED3[64];
+    __IM uint32_t RESERVED4[64];
     __IOM NRF_FICR_NFC_Type NFC;                     /*!< (@ 0x00000900) (unspecified)                                         */
-    __IM uint32_t RESERVED4[188];
+    __IM uint32_t RESERVED5[188];
     __IOM NRF_FICR_MACADDR_Type MACADDR[2];          /*!< (@ 0x00000C00) 48-bit MAC address n                                  */
-    __IM uint32_t RESERVED5[4];
+    __IM uint32_t RESERVED6[4];
     __IOM NRF_FICR_XTALCOMP_Type XTALCOMP;           /*!< (@ 0x00000C20) Crystal oscillator (XTAL) temperature compensation
                                                                          data*/
   } NRF_FICR_Type;                                   /*!< Size = 3136 (0xC40)                                                  */
@@ -12107,6 +12132,29 @@ typedef struct {
 /* =========================================================================================================================== */
 
 #if !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__) /*!< Ignore C structs for assembly code.                                 */
+
+/* =================================================== Struct GPIO_PORTCNF =================================================== */
+/**
+  * @brief PORTCNF [GPIO_PORTCNF] (unspecified)
+  */
+typedef struct {
+  __IOM uint32_t  PWRCTRL;                           /*!< (@ 0x00000000) Power control of the pins in this port                */
+} NRF_GPIO_PORTCNF_Type;                             /*!< Size = 4 (0x004)                                                     */
+
+/* GPIO_PORTCNF_PWRCTRL: Power control of the pins in this port */
+  #define GPIO_PORTCNF_PWRCTRL_ResetValue (0x00000300UL) /*!< Reset value of PWRCTRL register.                                 */
+
+/* PWRCTRL @Bits 8..9 : Power control */
+  #define GPIO_PORTCNF_PWRCTRL_PWRCTRL_Pos (8UL)     /*!< Position of PWRCTRL field.                                           */
+  #define GPIO_PORTCNF_PWRCTRL_PWRCTRL_Msk (0x3UL << GPIO_PORTCNF_PWRCTRL_PWRCTRL_Pos) /*!< Bit mask of PWRCTRL field.         */
+  #define GPIO_PORTCNF_PWRCTRL_PWRCTRL_Min (0x0UL)   /*!< Min enumerator value of PWRCTRL field.                               */
+  #define GPIO_PORTCNF_PWRCTRL_PWRCTRL_Max (0x3UL)   /*!< Max enumerator value of PWRCTRL field.                               */
+  #define GPIO_PORTCNF_PWRCTRL_PWRCTRL_Off (0x0UL)   /*!< Power off                                                            */
+  #define GPIO_PORTCNF_PWRCTRL_PWRCTRL_FloatingGND0V (0x1UL) /*!< Static floating GND of the pin, connected to 0V              */
+  #define GPIO_PORTCNF_PWRCTRL_PWRCTRL_FloatingGND1V8 (0x2UL) /*!< Static floating GND of the pin, connected to 1.8V           */
+  #define GPIO_PORTCNF_PWRCTRL_PWRCTRL_FloatingGNDBuf (0x3UL) /*!< Buffered floating GND of the pin, generating VDDIO - 1.8V   */
+
+
 /* ======================================================= Struct GPIO ======================================================= */
 /**
   * @brief GPIO Port
@@ -12124,7 +12172,9 @@ typedef struct {
                                                                          the criteria set in the PIN_CNF[n].SENSE registers*/
     __IOM uint32_t DETECTMODE;                       /*!< (@ 0x00000024) Select between default DETECT signal behavior and
                                                                          LDETECT mode*/
-    __IM uint32_t RESERVED1[22];
+    __IM uint32_t RESERVED1[2];
+    __IOM NRF_GPIO_PORTCNF_Type PORTCNF;             /*!< (@ 0x00000030) (unspecified)                                         */
+    __IM uint32_t RESERVED2[19];
     __IOM uint32_t PIN_CNF[32];                      /*!< (@ 0x00000080) Pin n configuration of GPIO pin                       */
   } NRF_GPIO_Type;                                   /*!< Size = 256 (0x100)                                                   */
 
@@ -14434,7 +14484,7 @@ typedef struct {
   typedef struct {                                   /*!< GPIOHSPADCTRL Structure                                              */
     __IM uint32_t RESERVED[12];
     __IOM uint32_t BIAS;                             /*!< (@ 0x00000030) Bias control                                          */
-    __IOM uint32_t OVERRIDE;                         /*!< (@ 0x00000034) Override control                                      */
+    __IM uint32_t RESERVED1;
     __IOM uint32_t CTRL[2];                          /*!< (@ 0x00000038) Input sampling and buffering control (used by the
                                                                          MSPI0n peripheral)*/
   } NRF_GPIOHSPADCTRL_Type;                          /*!< Size = 64 (0x040)                                                    */
@@ -14461,28 +14511,6 @@ typedef struct {
                                                                             field.*/
   #define GPIOHSPADCTRL_BIAS_REPLICABIAS01_Min (0x0UL) /*!< Min value of REPLICABIAS01 field.                                  */
   #define GPIOHSPADCTRL_BIAS_REPLICABIAS01_Max (0x1UL) /*!< Max size of REPLICABIAS01 field.                                   */
-
-
-/* GPIOHSPADCTRL_OVERRIDE: Override control */
-  #define GPIOHSPADCTRL_OVERRIDE_ResetValue (0x00000000UL) /*!< Reset value of OVERRIDE register.                              */
-
-/* FORCEON @Bit 0 : Force on */
-  #define GPIOHSPADCTRL_OVERRIDE_FORCEON_Pos (0UL)   /*!< Position of FORCEON field.                                           */
-  #define GPIOHSPADCTRL_OVERRIDE_FORCEON_Msk (0x1UL << GPIOHSPADCTRL_OVERRIDE_FORCEON_Pos) /*!< Bit mask of FORCEON field.     */
-
-/* ATB0 @Bits 1..3 : ATB0 settings */
-  #define GPIOHSPADCTRL_OVERRIDE_ATB0_Pos (1UL)      /*!< Position of ATB0 field.                                              */
-  #define GPIOHSPADCTRL_OVERRIDE_ATB0_Msk (0x7UL << GPIOHSPADCTRL_OVERRIDE_ATB0_Pos) /*!< Bit mask of ATB0 field.              */
-  #define GPIOHSPADCTRL_OVERRIDE_ATB0_Min (0x5UL)    /*!< Min enumerator value of ATB0 field.                                  */
-  #define GPIOHSPADCTRL_OVERRIDE_ATB0_Max (0x7UL)    /*!< Max enumerator value of ATB0 field.                                  */
-  #define GPIOHSPADCTRL_OVERRIDE_ATB0_BiasTrim (0x7UL) /*!< (unspecified)                                                      */
-  #define GPIOHSPADCTRL_OVERRIDE_ATB0_BiasSupply (0x6UL) /*!< (unspecified)                                                    */
-  #define GPIOHSPADCTRL_OVERRIDE_ATB0_BiasPTAT (0x5UL) /*!< (unspecified)                                                      */
-
-/* DUALDRIVE @Bit 4 : Drive pad from both high-speed pad and regular pad (when highspeed is enabled) */
-  #define GPIOHSPADCTRL_OVERRIDE_DUALDRIVE_Pos (4UL) /*!< Position of DUALDRIVE field.                                         */
-  #define GPIOHSPADCTRL_OVERRIDE_DUALDRIVE_Msk (0x1UL << GPIOHSPADCTRL_OVERRIDE_DUALDRIVE_Pos) /*!< Bit mask of DUALDRIVE
-                                                                            field.*/
 
 
 /* GPIOHSPADCTRL_CTRL: Input sampling and buffering control (used by the MSPI0n peripheral) */
@@ -80226,7 +80254,9 @@ typedef struct {
     __IM uint32_t RESERVED1[26];
     __IOM uint32_t VTFDATA;                          /*!< (@ 0x00000100) Pointer to memory location containing VTF data from the
                                                                          VTF monitoring system*/
-  } NRF_WICR_Type;                                   /*!< Size = 260 (0x104)                                                   */
+    __IOM uint32_t * RFPARAMSDATAADDR;               /*!< (@ 0x00000104) Base address of RF parameter data                     */
+    __IOM uint32_t RFPARAMSDATASIZE;                 /*!< (@ 0x00000108) Size of RF parameter data in bytes                    */
+  } NRF_WICR_Type;                                   /*!< Size = 268 (0x10C)                                                   */
 
 /* WICR_VTFDATA: Pointer to memory location containing VTF data from the VTF monitoring system */
   #define WICR_VTFDATA_ResetValue (0xFFFFFFFFUL)     /*!< Reset value of VTFDATA register.                                     */
@@ -80234,6 +80264,22 @@ typedef struct {
 /* ADDRESS @Bits 0..31 : Address of the VTF monitoring data in RAM */
   #define WICR_VTFDATA_ADDRESS_Pos (0UL)             /*!< Position of ADDRESS field.                                           */
   #define WICR_VTFDATA_ADDRESS_Msk (0xFFFFFFFFUL << WICR_VTFDATA_ADDRESS_Pos) /*!< Bit mask of ADDRESS field.                  */
+
+
+/* WICR_RFPARAMSDATAADDR: Base address of RF parameter data */
+  #define WICR_RFPARAMSDATAADDR_ResetValue (0x00000000UL) /*!< Reset value of RFPARAMSDATAADDR register.                       */
+
+/* ADDRESS @Bits 0..31 : Base address of RF parameter data */
+  #define WICR_RFPARAMSDATAADDR_ADDRESS_Pos (0UL)    /*!< Position of ADDRESS field.                                           */
+  #define WICR_RFPARAMSDATAADDR_ADDRESS_Msk (0xFFFFFFFFUL << WICR_RFPARAMSDATAADDR_ADDRESS_Pos) /*!< Bit mask of ADDRESS field.*/
+
+
+/* WICR_RFPARAMSDATASIZE: Size of RF parameter data in bytes */
+  #define WICR_RFPARAMSDATASIZE_ResetValue (0x00000000UL) /*!< Reset value of RFPARAMSDATASIZE register.                       */
+
+/* SIZE @Bits 0..31 : Size in bytes */
+  #define WICR_RFPARAMSDATASIZE_SIZE_Pos (0UL)       /*!< Position of SIZE field.                                              */
+  #define WICR_RFPARAMSDATASIZE_SIZE_Msk (0xFFFFFFFFUL << WICR_RFPARAMSDATASIZE_SIZE_Pos) /*!< Bit mask of SIZE field.         */
 
 
 #endif                                               /*!< !defined(__ASSEMBLER__) && !defined(__ASSEMBLY__)                    */

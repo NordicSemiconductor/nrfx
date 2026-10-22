@@ -47,18 +47,13 @@ typedef struct
 } rramc_control_block_t;
 static rramc_control_block_t m_cb;
 
-NRFX_STATIC_INLINE uint32_t rram_variant_get(NRF_FICR_Type const * p_reg)
-{
-    return p_reg->INFO.RRAM;
-}
-
 NRFX_STATIC_INLINE uint32_t total_memory_size_get(void)
 {
-    uint32_t size = rram_variant_get(NRF_FICR);
+    uint32_t size = nrf_ficr_nv_mem_info_get(NRF_FICR);
 
     if (size == FICR_INFO_RRAM_RRAM_Unspecified)
     {
-        return (uint32_t)FICR_INFO_RRAM_RRAM_Unspecified;
+        return (uint32_t)NRF_MEMORY_FLASH_SIZE;
     }
 
     return (size * 1024UL);
@@ -149,6 +144,22 @@ void nrfx_rramc_words_write(uint32_t address, void const * src, uint32_t num_wor
                 nrfx_is_word_aligned(src));
 
     nrfy_rramc_words_write(NRF_RRAMC, address, src, num_words);
+}
+
+bool nrfx_rramc_word_writable_check(uint32_t address)
+{
+    NRFX_ASSERT(is_valid_address(address, true) &&
+                fit_in_memory(address, true, NRFY_RRAMC_BYTES_IN_WORD) &&
+                nrfx_is_word_aligned((void const *)address));
+
+#if NRF_UICR_HAS_OTP && !defined(NRF_TRUSTZONE_NONSECURE)
+    if (nrf_uicr_otp_fits_check(NRF_UICR, address, NRFY_RRAMC_BYTES_IN_WORD))
+    {
+        return nrfy_rramc_word_read(address) == UINT32_MAX;
+    }
+#endif
+
+    return true;
 }
 
 void nrfx_rramc_write_enable_set(bool enable, uint32_t write_buff_size)

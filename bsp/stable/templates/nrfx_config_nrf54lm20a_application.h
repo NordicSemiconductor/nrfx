@@ -1422,6 +1422,15 @@
 #endif
 
 /**
+ * @brief NRFX_WDT_CONFIG_STOP_AT_INIT - Stop WDT during driver initialization
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_WDT_CONFIG_STOP_AT_INIT
+#define NRFX_WDT_CONFIG_STOP_AT_INIT 0
+#endif
+
+/**
  * @brief NRFX_WDT_CONFIG_LOG_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.

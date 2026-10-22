@@ -271,6 +271,11 @@ static int pdm_buffer_set(nrfx_pdm_t * p_instance,
         return -EINVAL;
     }
 
+    if (!nrf_dma_accessible_check(p_instance->p_reg, buffer) || !nrfx_is_word_aligned(buffer))
+    {
+        return -EACCES;
+    }
+
     int err_code = 0;
 
     // Enter the PDM critical section.

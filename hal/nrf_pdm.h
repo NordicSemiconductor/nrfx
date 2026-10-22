@@ -200,6 +200,21 @@ extern "C" {
 #define NRF_PDM_HAS_SELECTABLE_CLOCK 0
 #endif
 
+#if defined(PDM_CLKSELECT_SRC_PCLK16M) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether PDM has PCLK16M clock source. */
+#define NRF_PDM_HAS_PCLK16M 1
+#else
+#define NRF_PDM_HAS_PCLK16M 0
+#endif
+
+#if defined(PDM_MCLKCONFIG_SRC_PCLK32M) || defined(PDM_CLKSELECT_SRC_PCLK32M) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether PDM has PCLK32M clock source. */
+#define NRF_PDM_HAS_PCLK32M 1
+#else
+#define NRF_PDM_HAS_PCLK32M 0
+#endif
+
 /** @brief Minimum value of PDM gain. */
 #define NRF_PDM_GAIN_MINIMUM PDM_GAINL_GAINL_MinGain
 /** @brief Default value of PDM gain. */
@@ -337,7 +352,15 @@ typedef enum
     NRF_PDM_MCLKSRC_PCLK32M = PDM_MCLKCONFIG_SRC_PCLK32M, ///< 32MHz peripheral clock.
     NRF_PDM_MCLKSRC_ACLK    = PDM_MCLKCONFIG_SRC_ACLK     ///< Audio PLL clock.
 #elif NRF_PDM_HAS_CLKSELECT
+#if NRF_PDM_HAS_PCLK16M
+#if NRFX_API_VER_AT_LEAST(4, 7, 0)
+    NRF_PDM_MCLKSRC_PCLK16M = PDM_CLKSELECT_SRC_PCLK16M,  ///< 16MHz peripheral clock.
+#else
+    NRF_PDM_MCLKSRC_PCLK32M = PDM_CLKSELECT_SRC_PCLK16M,  ///< 32MHz peripheral clock.
+#endif
+#elif NRF_PDM_HAS_PCLK32M
     NRF_PDM_MCLKSRC_PCLK32M = PDM_CLKSELECT_SRC_PCLK32M,  ///< 32MHz peripheral clock.
+#endif
     NRF_PDM_MCLKSRC_ACLK    = PDM_CLKSELECT_SRC_ACLK      ///< Audio PLL clock.
 #endif
 } nrf_pdm_mclksrc_t;

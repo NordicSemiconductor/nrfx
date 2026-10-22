@@ -29,6 +29,12 @@
  */
 #define NRFX_NFCT_CONFIG_IRQ_PRIORITY
 
+/** @brief Timer instance used for workarounds in the driver.
+ *
+ * @note This is an NRF_CONFIG macro.
+ */
+#define NRFX_NFCT_CONFIG_TIMER_INSTANCE_ID
+
 /** @brief Enables logging in the module.
  *
  *  Set to 1 to activate.

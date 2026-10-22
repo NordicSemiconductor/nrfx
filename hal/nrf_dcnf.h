@@ -58,7 +58,7 @@ extern "C" {
  */
 NRF_STATIC_INLINE uint32_t nrf_dcnf_cpuid_get(NRF_DCNF_Type const * p_reg);
 
-#if defined(DCNF_EXTPERI_PROTECT_SLAVE0_Msk)
+#if defined(DCNF_EXTPERI_PROTECT_SLAVE0_Msk) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for configuring the control access to local peripheral memory regions.
  *        Intended for external master connected to specified AMLI master port.
@@ -85,7 +85,7 @@ NRF_STATIC_INLINE uint32_t nrf_dcnf_peripheral_access_get(NRF_DCNF_Type const * 
                                                           uint8_t               port_idx);
 #endif // defined(DCNF_EXTPERI_PROTECT_SLAVE0_Msk)
 
-#if defined(DCNF_EXTRAM_PROTECT_SLAVE0_Msk)
+#if defined(DCNF_EXTRAM_PROTECT_SLAVE0_Msk) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for configuring the control access to local RAM memory regions.
  *        Intended for external master connected to specified AMLI master port.
@@ -112,7 +112,7 @@ NRF_STATIC_INLINE uint32_t nrf_dcnf_ram_access_get(NRF_DCNF_Type const * p_reg,
                                                    uint8_t               port_idx);
 #endif // defined(DCNF_EXTRAM_PROTECT_SLAVE0_Msk)
 
-#if defined(DCNF_EXTCODE_PROTECT_SLAVE0_Msk)
+#if defined(DCNF_EXTCODE_PROTECT_SLAVE0_Msk) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for configuring the control access to local code memory regions.
  *        Intended for external master connected to specified AMLI master port.

@@ -850,7 +850,7 @@ NRF_STATIC_INLINE bool nrf_power_powerstatus_get(NRF_POWER_Type const * p_reg);
 NRF_STATIC_INLINE uint32_t nrf_power_ramstatus_get(NRF_POWER_Type const * p_reg);
 #endif // defined(POWER_RAMSTATUS_RAMBLOCK0_Msk) || defined(__NRFX_DOXYGEN__)
 
-#if defined(POWER_SYSTEMOFF_SYSTEMOFF_Enter)
+#if defined(POWER_SYSTEMOFF_SYSTEMOFF_Enter) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for going into System OFF mode.
  *

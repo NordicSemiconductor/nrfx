@@ -148,10 +148,38 @@ extern "C" {
 #endif
 
 #if defined(TAMPC_STATUS_GLITCHSLOWDOMAIN0_Msk) || defined(__NRFX_DOXYGEN__)
-/** @brief Symbol indicating whether TAMPC has slow domain glitch detection */
-#define NRF_TAMPC_HAS_GLITCHSLOWDOMAIN 1
+/** @brief Symbol indicating whether TAMPC has slow domain glitch detection status registers. */
+#define NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_STATUS 1
 #else
-#define NRF_TAMPC_HAS_GLITCHSLOWDOMAIN 0
+#define NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_STATUS 0
+#endif
+
+#if defined(TAMPC_STATUS_GLITCHFASTDOMAIN0_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether TAMPC has fast domain glitch detection status register. */
+#define NRF_TAMPC_HAS_GLITCHFASTDOMAIN_STATUS 1
+#else
+#define NRF_TAMPC_HAS_GLITCHFASTDOMAIN_STATUS 0
+#endif
+
+#if defined(TAMPC_STATUS_DETECTOR_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether TAMPC has internal tamper detection status register. */
+#define NRF_TAMPC_HAS_INTERNAL_TAMPER_STATUS 1
+#else
+#define NRF_TAMPC_HAS_INTERNAL_TAMPER_STATUS 0
+#endif
+
+#if defined(TAMPC_PROTECT_GLITCHSLOWDOMAIN_CTRL_VALUE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether TAMPC has slow domain glitch detection control registers. */
+#define NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_CTRL 1
+#else
+#define NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_CTRL 0
+#endif
+
+#if defined(TAMPC_PROTECT_GLITCHFASTDOMAIN_CTRL_VALUE_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether TAMPC has fast domain glitch detection control register. */
+#define NRF_TAMPC_HAS_GLITCHFASTDOMAIN_CTRL 1
+#else
+#define NRF_TAMPC_HAS_GLITCHFASTDOMAIN_CTRL 0
 #endif
 
 #if NRF_TAMPC_HAS_ACTIVE_SHIELD_CHANNELS
@@ -221,14 +249,17 @@ typedef enum
 #if NRF_TAMPC_HAS_CRACEN
     NRF_TAMPC_DETECTOR_CRACEN             = TAMPC_STATUS_CRACENTAMP_Msk,         ///< CRACEN error detector.
 #endif
-#if NRF_TAMPC_HAS_GLITCHSLOWDOMAIN
+#if NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_STATUS
     NRF_TAMPC_DETECTOR_GLITCH_DOMAIN_SLOW = TAMPC_STATUS_GLITCHSLOWDOMAIN0_Msk,  ///< Slow domain glitch error detector.
+#endif
+#if NRF_TAMPC_HAS_GLITCHFASTDOMAIN_STATUS
     NRF_TAMPC_DETECTOR_GLITCH_DOMAIN_FAST = TAMPC_STATUS_GLITCHFASTDOMAIN0_Msk | ///< Fast domain glitch error detector.
                                             TAMPC_STATUS_GLITCHFASTDOMAIN1_Msk |
                                             TAMPC_STATUS_GLITCHFASTDOMAIN2_Msk |
-                                            TAMPC_STATUS_GLITCHFASTDOMAIN3_Msk
-#else
-    NRF_TAMPC_DETECTOR_GLITCH_DOMAIN_FAST = TAMPC_STATUS_DETECTOR_Msk
+                                            TAMPC_STATUS_GLITCHFASTDOMAIN3_Msk,
+#endif
+#if NRF_TAMPC_HAS_INTERNAL_TAMPER_STATUS
+    NRF_TAMPC_DETECTOR_INTERNAL           = TAMPC_STATUS_DETECTOR_Msk            ///< Interal tamper error detector.
 #endif
 } nrf_tampc_detector_t;
 
@@ -243,10 +274,12 @@ typedef enum
 #if NRF_TAMPC_HAS_CRACEN
     NRF_TAMPC_PROTECT_CRACEN             = offsetof(NRF_TAMPC_Type, PROTECT.CRACENTAMP),       ///< Control register for CRACEN tamper detector enable signal.
 #endif
-#if NRF_TAMPC_HAS_GLITCHSLOWDOMAIN
+#if NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_CTRL
     NRF_TAMPC_PROTECT_GLITCH_DOMAIN_SLOW = offsetof(NRF_TAMPC_Type, PROTECT.GLITCHSLOWDOMAIN), ///< Control register for slow domain glitch detectors enable signal.
 #endif
+#if NRF_TAMPC_HAS_GLITCHFASTDOMAIN_CTRL
     NRF_TAMPC_PROTECT_GLITCH_DOMAIN_FAST = offsetof(NRF_TAMPC_Type, PROTECT.GLITCHFASTDOMAIN), ///< Control register for fast domain glitch detectors enable signal.
+#endif
     NRF_TAMPC_PROTECT_RESETEN_EXT        = offsetof(NRF_TAMPC_Type, PROTECT.EXTRESETEN),       ///< Control register for external tamper reset enable signal.
     NRF_TAMPC_PROTECT_RESETEN_INT        = offsetof(NRF_TAMPC_Type, PROTECT.INTRESETEN),       ///< Control register for internal tamper reset enable signal.
 #if NRF_TAMPC_HAS_ERASE_PROTECTOR
@@ -799,14 +832,26 @@ NRF_STATIC_INLINE void nrf_tampc_detector_status_clear(NRF_TAMPC_Type *     p_re
 #if NRF_TAMPC_HAS_EXTENDED_PROTECTORS
     switch (detector)
     {
-#if NRF_TAMPC_HAS_GLITCHSLOWDOMAIN
+#if NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_STATUS && NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_CTRL
         case NRF_TAMPC_DETECTOR_GLITCH_DOMAIN_SLOW:
             nrf_tampc_protector_ctrl_value_set(p_reg, NRF_TAMPC_PROTECT_GLITCH_DOMAIN_SLOW, false);
             break;
 #endif
+#if NRF_TAMPC_HAS_GLITCHFASTDOMAIN_STATUS && NRF_TAMPC_HAS_GLITCHFASTDOMAIN_CTRL
         case NRF_TAMPC_DETECTOR_GLITCH_DOMAIN_FAST:
             nrf_tampc_protector_ctrl_value_set(p_reg, NRF_TAMPC_PROTECT_GLITCH_DOMAIN_FAST, false);
             break;
+#endif
+#if NRF_TAMPC_HAS_INTERNAL_TAMPER_STATUS
+        case NRF_TAMPC_DETECTOR_INTERNAL:
+#if NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_CTRL
+            nrf_tampc_protector_ctrl_value_set(p_reg, NRF_TAMPC_PROTECT_GLITCH_DOMAIN_SLOW, false);
+#endif
+#if NRF_TAMPC_HAS_GLITCHFASTDOMAIN_CTRL
+            nrf_tampc_protector_ctrl_value_set(p_reg, NRF_TAMPC_PROTECT_GLITCH_DOMAIN_FAST, false);
+#endif
+            break;
+#endif // NRF_TAMPC_HAS_INTERNAL_TAMPER_STATUS
         default:
             break;
     }
@@ -815,14 +860,18 @@ NRF_STATIC_INLINE void nrf_tampc_detector_status_clear(NRF_TAMPC_Type *     p_re
 #if NRF_TAMPC_HAS_DETECTORS_ENABLE
     switch (detector)
     {
+#if NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_STATUS
         case NRF_TAMPC_DETECTOR_GLITCH_DOMAIN_SLOW:
             p_reg->ENABLE = ((p_reg->ENABLE & ~TAMPC_ENABLE_GLITCHSLOWDOMAIN_Msk) |
                 (TAMPC_ENABLE_GLITCHSLOWDOMAIN_Disabled << TAMPC_ENABLE_GLITCHSLOWDOMAIN_Pos));
             break;
+#endif
+#if NRF_TAMPC_HAS_GLITCHFASTDOMAIN_STATUS
         case NRF_TAMPC_DETECTOR_GLITCH_DOMAIN_FAST:
             p_reg->ENABLE = ((p_reg->ENABLE & ~TAMPC_ENABLE_GLITCHFASTDOMAIN_Msk) |
                 (TAMPC_ENABLE_GLITCHFASTDOMAIN_Disabled << TAMPC_ENABLE_GLITCHFASTDOMAIN_Pos));
             break;
+#endif
         default:
             break;
     }
@@ -833,14 +882,18 @@ NRF_STATIC_INLINE void nrf_tampc_detector_status_clear(NRF_TAMPC_Type *     p_re
 #if NRF_TAMPC_HAS_DETECTORS_ENABLE
     switch (detector)
     {
+#if NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_STATUS
         case NRF_TAMPC_DETECTOR_GLITCH_DOMAIN_SLOW:
             p_reg->ENABLE = ((p_reg->ENABLE & ~TAMPC_ENABLE_GLITCHSLOWDOMAIN_Msk) |
                 (TAMPC_ENABLE_GLITCHSLOWDOMAIN_Enabled << TAMPC_ENABLE_GLITCHSLOWDOMAIN_Pos));
             break;
+#endif
+#if NRF_TAMPC_HAS_GLITCHFASTDOMAIN_STATUS
         case NRF_TAMPC_DETECTOR_GLITCH_DOMAIN_FAST:
             p_reg->ENABLE = ((p_reg->ENABLE & ~TAMPC_ENABLE_GLITCHFASTDOMAIN_Msk) |
                 (TAMPC_ENABLE_GLITCHFASTDOMAIN_Enabled << TAMPC_ENABLE_GLITCHFASTDOMAIN_Pos));
             break;
+#endif
         default:
             break;
     }
@@ -849,14 +902,26 @@ NRF_STATIC_INLINE void nrf_tampc_detector_status_clear(NRF_TAMPC_Type *     p_re
 #if NRF_TAMPC_HAS_EXTENDED_PROTECTORS
     switch (detector)
     {
-#if NRF_TAMPC_HAS_GLITCHSLOWDOMAIN
+#if NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_STATUS && NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_CTRL
         case NRF_TAMPC_DETECTOR_GLITCH_DOMAIN_SLOW:
             nrf_tampc_protector_ctrl_value_set(p_reg, NRF_TAMPC_PROTECT_GLITCH_DOMAIN_SLOW, true);
             break;
 #endif
+#if NRF_TAMPC_HAS_GLITCHFASTDOMAIN_STATUS && NRF_TAMPC_HAS_GLITCHFASTDOMAIN_CTRL
         case NRF_TAMPC_DETECTOR_GLITCH_DOMAIN_FAST:
             nrf_tampc_protector_ctrl_value_set(p_reg, NRF_TAMPC_PROTECT_GLITCH_DOMAIN_FAST, true);
             break;
+#endif
+#if NRF_TAMPC_HAS_INTERNAL_TAMPER_STATUS
+        case NRF_TAMPC_DETECTOR_INTERNAL:
+#if NRF_TAMPC_HAS_GLITCHSLOWDOMAIN_CTRL
+            nrf_tampc_protector_ctrl_value_set(p_reg, NRF_TAMPC_PROTECT_GLITCH_DOMAIN_SLOW, true);
+#endif
+#if NRF_TAMPC_HAS_GLITCHFASTDOMAIN_CTRL
+            nrf_tampc_protector_ctrl_value_set(p_reg, NRF_TAMPC_PROTECT_GLITCH_DOMAIN_FAST, true);
+#endif
+            break;
+#endif // NRF_TAMPC_HAS_INTERNAL_TAMPER_STATUS
         default:
             break;
     }
@@ -887,7 +952,7 @@ NRF_STATIC_INLINE void nrf_tampc_domain_ctrl_value_set(NRF_TAMPC_Type *       p_
                                                        nrf_domain_t           domain,
                                                        bool                   enable)
 {
-    NRFX_ASSERT((domain > 0) && (domain < NRF_DOMAIN_COUNT));
+    NRFX_ASSERT(domain < NRF_DOMAIN_COUNT);
 
     switch (type)
     {
@@ -958,7 +1023,7 @@ NRF_STATIC_INLINE bool nrf_tampc_domain_ctrl_value_get(NRF_TAMPC_Type const * p_
                                                        nrf_tampc_debug_type_t type,
                                                        nrf_domain_t           domain)
 {
-    NRFX_ASSERT((domain > 0) && (domain < NRF_DOMAIN_COUNT));
+    NRFX_ASSERT(domain < NRF_DOMAIN_COUNT);
 
     switch (type)
     {
@@ -991,7 +1056,7 @@ NRF_STATIC_INLINE void nrf_tampc_domain_ctrl_lock_set(NRF_TAMPC_Type *       p_r
                                                       nrf_domain_t           domain,
                                                       bool                   enable)
 {
-    NRFX_ASSERT((domain > 0) && (domain < NRF_DOMAIN_COUNT));
+    NRFX_ASSERT(domain < NRF_DOMAIN_COUNT);
 
     switch (type)
     {
@@ -1062,7 +1127,7 @@ NRF_STATIC_INLINE bool nrf_tampc_domain_ctrl_lock_get(NRF_TAMPC_Type const * p_r
                                                       nrf_tampc_debug_type_t type,
                                                       nrf_domain_t           domain)
 {
-    NRFX_ASSERT((domain > 0) && (domain < NRF_DOMAIN_COUNT));
+    NRFX_ASSERT(domain < NRF_DOMAIN_COUNT);
 
     switch (type)
     {
@@ -1095,7 +1160,7 @@ NRF_STATIC_INLINE void nrf_tampc_ap_ctrl_value_set(NRF_TAMPC_Type *       p_reg,
                                                    nrf_domain_t           domain,
                                                    bool                   enable)
 {
-    NRFX_ASSERT((domain > 0) && (domain < NRF_DOMAIN_COUNT));
+    NRFX_ASSERT(domain < NRF_DOMAIN_COUNT);
 
     switch (type)
     {
@@ -1138,7 +1203,7 @@ NRF_STATIC_INLINE bool nrf_tampc_ap_ctrl_value_get(NRF_TAMPC_Type const * p_reg,
                                                    nrf_tampc_debug_type_t type,
                                                    nrf_domain_t           domain)
 {
-    NRFX_ASSERT((domain > 0) && (domain < NRF_DOMAIN_COUNT));
+    NRFX_ASSERT(domain < NRF_DOMAIN_COUNT);
 
     switch (type)
     {
@@ -1163,7 +1228,7 @@ NRF_STATIC_INLINE void nrf_tampc_ap_ctrl_lock_set(NRF_TAMPC_Type *       p_reg,
                                                   nrf_domain_t           domain,
                                                   bool                   enable)
 {
-    NRFX_ASSERT((domain > 0) && (domain < NRF_DOMAIN_COUNT));
+    NRFX_ASSERT(domain < NRF_DOMAIN_COUNT);
 
     switch (type)
     {
@@ -1206,7 +1271,7 @@ NRF_STATIC_INLINE bool nrf_tampc_ap_ctrl_lock_get(NRF_TAMPC_Type const * p_reg,
                                                   nrf_tampc_debug_type_t type,
                                                   nrf_domain_t           domain)
 {
-    NRFX_ASSERT((domain > 0) && (domain < NRF_DOMAIN_COUNT));
+    NRFX_ASSERT(domain < NRF_DOMAIN_COUNT);
 
     switch (type)
     {

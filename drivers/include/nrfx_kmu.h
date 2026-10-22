@@ -51,6 +51,44 @@ extern "C" {
 /** @brief Macro for calculating how many 32-bit words can be placed in one key slot. */
 #define KEY_SLOT_WORDS_COUNT ((KMU_KEYSLOTBITS) / 32)
 
+#if NRFX_CHECK(CC_AES_PRESENT) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol specifying address of the CryptoCell AES key register. */
+#define NRFX_KMU_CC_AES_KEY_ADDR (NRF_CC_AES_S_BASE + offsetof(NRF_CC_AES_Type, \
+                                                               AES_KEY_0))
+
+#if NRFX_CHECK(CC_AES_SUPPORTS_256_KEY_SIZE) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol specifying address of the first 128 bits of CryptoCell AES key register. */
+#define NRFX_KMU_CC_AES_KEY_HALF1_ADDR (NRF_CC_AES_S_BASE + offsetof(NRF_CC_AES_Type, \
+                                                                     AES_KEY_0))
+
+/** @brief Symbol specifying address of the last 128 bits of CryptoCell AES key register. */
+#define NRFX_KMU_CC_AES_KEY_HALF2_ADDR (NRF_CC_AES_S_BASE +                    \
+                                        offsetof(NRF_CC_AES_Type, AES_KEY_0) + \
+                                        KMU_KEYSLOTBITS / 8)
+#endif
+#endif
+
+#if NRFX_CHECK(CC_CHACHA_PRESENT) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol specifying address of the CryptoCell ChaChaPoly key register. */
+#define NRFX_KMU_CC_CHACHA_KEY_ADDR (NRF_CC_CHACHA_S_BASE + offsetof(NRF_CC_CHACHA_Type, \
+                                                                     CHACHA_KEY))
+
+/** @brief Symbol specifying address of the first 128 bits of CryptoCell ChaChaPoly key register. */
+#define NRFX_KMU_CC_CHACHA_KEY_HALF1_ADDR (NRF_CC_CHACHA_S_BASE + offsetof(NRF_CC_CHACHA_Type, \
+                                                                           CHACHA_KEY))
+
+/** @brief Symbol specifying address of the last 128 bits of CryptoCell ChaChaPoly key register. */
+#define NRFX_KMU_CC_CHACHA_KEY_HALF2_ADDR (NRF_CC_CHACHA_S_BASE +                     \
+                                           offsetof(NRF_CC_CHACHA_Type, CHACHA_KEY) + \
+                                           KMU_KEYSLOTBITS / 8)
+#endif
+
+#if defined(CC_HOST_RGF_HOST_IOT_KDR0_HOST_IOT_KDR0_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol specifying address of the CryptoCell HOST_RGF K_DR register. */
+#define NRFX_KMU_CC_HOST_RGF_KDR_ADDR (NRF_CC_HOST_RGF_S_BASE + offsetof(NRF_CC_HOST_RGF_Type, \
+                                                                         HOST_IOT_KDR0))
+#endif
+
 #if NRF_KMU_HAS_REVOKE_POLICY || defined(__NRFX_DOXYGEN__)
 /** @brief KMU revoke policy type. */
 typedef enum
@@ -71,6 +109,15 @@ typedef struct {
 } nrfx_kmu_key_slot_metadata_t;
 #endif
 
+#if NRFX_CHECK(KMU_USES_UICR) || defined(__NRFX_DOXYGEN__)
+/** @brief KMU permission struct type. */
+typedef struct {
+    bool write_enable; ///< Enable write to the key slot.
+    bool read_enable;  ///< Enable reading the key slot.
+    bool push_enable;  ///< Enable pushing the key slot.
+} nrfx_kmu_key_slot_perm_t;
+#endif
+
 /** @brief Key slot data structure. */
 typedef struct __PACKED
 {
@@ -85,6 +132,9 @@ typedef struct __PACKED
 #if NRF_KMU_HAS_METADATA || defined(__NRFX_DOXYGEN__)
     nrfx_kmu_key_slot_metadata_t metadata;                            ///< Metadata to write to keyslot.
 #endif
+#if NRFX_CHECK(KMU_USES_UICR) || defined(__NRFX_DOXYGEN__)
+    nrfx_kmu_key_slot_perm_t     permission;                          ///< Key slot permissions.
+#endif
 } nrfx_kmu_key_slot_data_t;
 
 /**
@@ -97,13 +147,19 @@ typedef void (* nrfx_kmu_event_handler_t)(nrf_kmu_event_t event_type);
 /**
  * @brief Function for initializing KMU driver.
  *
- * @param[in] handler Event handler. Used only if KMU interrupts are present on a device (can be
- *                    checked with @ref NRF_KMU_HAS_INTEN)
+ * @param[in] handler      Event handler. Used only if KMU interrupts are present on a device (can be
+ *                         checked with @ref NRF_KMU_HAS_INTEN).
+ * @param[in] irq_priority Interrupt priority. Used only if KMU interrupts are present on a device
+ *                         (can be checked with @ref NRF_KMU_HAS_INTEN).
  *
  * @retval 0         Initialization successful.
  * @retval -EALREADY The driver is already initialized.
  */
-int nrfx_kmu_init(nrfx_kmu_event_handler_t * handler);
+#if NRFX_API_VER_AT_LEAST(4, 7, 0) || defined(__NRFX_DOXYGEN__)
+int nrfx_kmu_init(nrfx_kmu_event_handler_t handler, uint8_t irq_priority);
+#else
+int nrfx_kmu_init(nrfx_kmu_event_handler_t handler);
+#endif
 
 /** @brief Function for uninitializing KMU driver. */
 void nrfx_kmu_uninit(void);
@@ -113,15 +169,37 @@ void nrfx_kmu_uninit(void);
  *
  * @note Requires enabled writing to non-volatile memory.
  *
+ * @warning On some devices slot IDs are numbered from 1 instead of 0.
+ *
  * @param[in] p_key_slot_data Pointer to the key slot data structure.
  * @param[in] slot_id         ID of a slot to use.
  *
- * @retval 0          Provisioning was successful.
- * @retval -EAGAIN    KMU is currently busy with the previous operation.
- * @retval -EFAULT    An error occured when provisioning the key.
- * @retval -ETIMEDOUT Timeout occured when waiting for result event.
+ * @retval 0           Provisioning was successful.
+ * @retval -EAGAIN     KMU is currently busy with the previous operation.
+ * @retval -EALREADY   KMU slot is not empty.
+ * @retval -EFAULT     An error occured when provisioning or writing the key.
+ * @retval -ETIMEDOUT  Timeout occured when waiting for result event, or when waiting for STATUS
+                       register update.
+ * @retval -ECANCELLED KMU is blocked, the last performed operation was illegal.
  */
 int nrfx_kmu_key_slot_provision(nrfx_kmu_key_slot_data_t const * p_key_slot_data, uint32_t slot_id);
+
+#if NRF_KMU_HAS_READ_KEY_SLOT_KEY || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for reading a key from KMU key slot with @p slot_id ID number.
+ *
+ * @warning On some devices slot IDs are numbered from 1 instead of 0.
+ *
+ * @param[in]  slot_id     ID of a slot to use.
+ * @param[out] p_key_value Pointer to the key values.
+ *
+ * @retval 0           Reading was successful.
+ * @retval -ENODATA    The key slot is revoked.
+ * @retval -EACCES     The key slot does not have a read permission.
+ * @retval -ECANCELLED KMU is blocked, the last performed operation was illegal.
+ */
+int nrfx_kmu_key_slot_key_read(uint32_t slot_id, uint32_t * p_key_value);
+#endif
 
 /**
  * @brief Function for pushing @p num_slots consecutive key slots from KMU to address specified in
@@ -130,12 +208,16 @@ int nrfx_kmu_key_slot_provision(nrfx_kmu_key_slot_data_t const * p_key_slot_data
  * @param[in] slot_id   ID of a slot to use.
  * @param[in] num_slots Number of consecutive keys slots to push.
  *
- * @retval 0          Pushing was successful.
- * @retval -EACCES    The key slot is revoked.
- * @retval -EAGAIN    KMU is currently busy with the previous operation. Can also happen after
- *                    pushing only a part of the given keys.
- * @retval -EFAULT    An error occured when pushing the key slot (slot is bloked or empty).
- * @retval -ETIMEDOUT Timeout occured when waiting for result event.
+ * @warning On some devices slot IDs are numbered from 1 instead of 0.
+ *
+ * @retval 0           Pushing was successful.
+ * @retval -EACCES     The key slot is revoked.
+ * @retval -EAGAIN     KMU is currently busy with the previous operation. Can also happen after
+ *                     pushing only a part of the given keys.
+ * @retval -EFAULT     An error occured when pushing the key slot (slot is bloked, empty or does not
+ *                     have the push permission).
+ * @retval -ETIMEDOUT  Timeout occured when waiting for result event.
+ * @retval -ECANCELLED KMU is blocked, the last performed operation was illegal.
  */
 int nrfx_kmu_key_slots_push(uint32_t slot_id, uint32_t num_slots);
 
@@ -177,11 +259,14 @@ int nrfx_kmu_key_slots_block(uint32_t slot_id, uint32_t num_slots);
  * @param[in] slot_id   ID of a slot to use.
  * @param[in] num_slots Number of consecutive keys slots to revoke.
  *
- * @retval 0          Revoking was successful.
- * @retval -EAGAIN    KMU is currently busy with the previous operation. Can also happen after
- *                    revoking only a part of the given keys.
- * @retval -EFAULT    An error occured when revoking the key slot.
- * @retval -ETIMEDOUT Timeout occured when waiting for result event.
+ * @warning On some devices slot IDs are numbered from 1 instead of 0.
+ *
+ * @retval 0           Revoking was successful.
+ * @retval -EAGAIN     KMU is currently busy with the previous operation. Can also happen after
+ *                     revoking only a part of the given keys.
+ * @retval -EFAULT     An error occured when revoking the key slot.
+ * @retval -ETIMEDOUT  Timeout occured when waiting for result event.
+ * @retval -ECANCELLED KMU is blocked, the last performed operation was illegal.
  */
 int nrfx_kmu_key_slots_revoke(uint32_t slot_id, uint32_t num_slots);
 
@@ -204,20 +289,25 @@ int nrfx_kmu_key_slot_metadata_read(uint32_t slot_id, nrfx_kmu_key_slot_metadata
 /**
  * @brief Function for checking if given @p num_slots consecutive key slots can be written to.
  *
+ * @warning On some devices slot IDs are numbered from 1 instead of 0.
+ *
  * @param[in]  slot_id    ID of a slot to check.
  * @param[in]  num_slots  Number of consecutive keys slots to check.
  * @param[out] p_is_empty Pointer to a variable determining if @p num_slots consecutive key slots
  *                        are empty. If at least one of the @p num_slots key slots is occupied
  *                        or revoked (non-rotating policy), @p p_is_empty is equal to false.
  *
- * @retval 0          Metadata was read.
- * @retval -EAGAIN    KMU is currently busy with the previous operation.
- * @retval -ETIMEDOUT Timeout occured when waiting for result event.
+ * @retval 0           Metadata was read.
+ * @retval -EAGAIN     KMU is currently busy with the previous operation.
+ * @retval -ETIMEDOUT  Timeout occured when waiting for result event.
+ * @retval -ECANCELLED KMU is blocked, the last performed operation was illegal.
  */
 int nrfx_kmu_key_slots_empty_check(uint32_t slot_id, uint32_t num_slots, bool * p_is_empty);
 
 /**
  * @brief Function for checking if given @p num_slots consecutive key slots are revoked.
+ *
+ * @warning On some devices slot IDs are numbered from 1 instead of 0.
  *
  * @param[in]  slot_id      ID of a slot to check.
  * @param[in]  num_slots    Number of consecutive keys slots to check.
@@ -225,24 +315,33 @@ int nrfx_kmu_key_slots_empty_check(uint32_t slot_id, uint32_t num_slots, bool * 
  *                          are revoked. If at least one of the @p num_slots key slots is empty
  *                          or occupied, @p p_is_empty is equal to false.
  *
- * @retval 0          Metadata was read.
- * @retval -EAGAIN    KMU is currently busy with the previous operation.
- * @retval -ETIMEDOUT Timeout occured when waiting for result event.
+ * @retval 0           Metadata was read.
+ * @retval -EAGAIN     KMU is currently busy with the previous operation.
+ * @retval -ETIMEDOUT  Timeout occured when waiting for result event.
+ * @retval -ECANCELLED KMU is blocked, the last performed operation was illegal.
  */
 int nrfx_kmu_key_slots_revoked_check(uint32_t slot_id, uint32_t num_slots, bool * p_is_revoked);
 
 /**
  * @brief Function for finding first @p num_slots consecutive available key slots.
  *
+ * @warning On some devices slot IDs are numbered from 1 instead of 0.
+ *
  * @param[in] num_slots Number of consecutive key slots to find.
  *
  * @retval non-negative Slot ID of the first available key slot.
  * @retval -ENOMEM      num_slots consecutive empty key slots were not found, too many occupied
  *                      and/or revoked key slots.
+ * @retval -EAGAIN      KMU is currently busy with the previous operation.
+ * @retval -ECANCELLED  KMU is blocked, the last performed operation was illegal.
  */
 int nrfx_kmu_next_available_key_slots_find(uint32_t num_slots);
 
 /** @} */
+
+#if NRF_KMU_HAS_INTEN
+void nrfx_kmu_irq_handler(void);
+#endif
 
 #ifdef __cplusplus
 }

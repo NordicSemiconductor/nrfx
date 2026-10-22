@@ -268,6 +268,7 @@ typedef enum
 /** @brief NFC frame delay mode for data transmission. */
 typedef enum
 {
+    NRF_NFCT_FRAME_DELAY_MODE_DEFAULT    = NFCT_FRAMEDELAYMODE_ResetValue,               /**< Default frame transmission mode. */
     NRF_NFCT_FRAME_DELAY_MODE_FREERUN    = NFCT_FRAMEDELAYMODE_FRAMEDELAYMODE_FreeRun,   /**< Frame transmission starts when @ref NRF_NFCT_TASK_STARTTX is set (delay timer is not used). */
     NRF_NFCT_FRAME_DELAY_MODE_WINDOW     = NFCT_FRAMEDELAYMODE_FRAMEDELAYMODE_Window,    /**< Frame transmission starts in a window between FRAMEDELAYMIN and FRAMEDELAYMAX. */
     NRF_NFCT_FRAME_DELAY_MODE_EXACTVAL   = NFCT_FRAMEDELAYMODE_FRAMEDELAYMODE_ExactVal,  /**< Frame transmission starts when the delay timer reaches FRAMEDELAYMAX. */

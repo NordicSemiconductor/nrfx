@@ -508,7 +508,7 @@ void nrfx_cracen_uninit(void)
 {
     NRFX_ASSERT(m_cb.initialized != NRFX_DRV_STATE_UNINITIALIZED);
 
-    m_cb.initialized = NRFX_DRV_STATE_UNINITIALIZED;
+    memset(&m_cb, 0, sizeof(m_cb));
 }
 
 #if NRF_CRACEN_HAS_CRYPTOMASTER
@@ -563,12 +563,7 @@ int nrfx_cracen_ctr_drbg_random_get(uint8_t * p_buf, size_t size)
     }
 
     m_cb.reseed_counter += 1;
-    r = nrfx_cracen_entropy_get(p_buf, size);
 
-    if (r != 0)
-    {
-        return -ECANCELED;
-    }
     return 0;
 }
 #endif

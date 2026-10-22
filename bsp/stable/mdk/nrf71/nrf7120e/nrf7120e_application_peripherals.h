@@ -91,6 +91,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define FICR_PRESENT 1
 #define FICR_COUNT 1
 
+#define FICR_HWREVISION_PUBLIC 1                     /*!< SOCINFO.HWREVISION is public.                                        */
+
 /*User Information Configuration Registers*/
 #define UICR_PRESENT 1
 #define UICR_COUNT 1
@@ -755,6 +757,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P2_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P2_CTRLSEL_MAP4 1                            /*!< (unspecified)                                                        */
 #define P2_CTRLSEL_MAP5 0                            /*!< (unspecified)                                                        */
+#define P2_CTRLSEL_MAP_GENERIC 0                     /*!< (unspecified)                                                        */
 #define P2_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P2_PIN_NUM_MAX 11                            /*!< (unspecified)                                                        */
 #define P2_PIN_NUM_SIZE 12                           /*!< (unspecified)                                                        */
@@ -770,6 +773,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P2_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P2_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P2_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P2_PWRREQ 0                                  /*!< (unspecified)                                                        */
 #define P2_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
 #define P1_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
@@ -777,6 +781,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P1_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP4 1                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP5 0                            /*!< (unspecified)                                                        */
+#define P1_CTRLSEL_MAP_GENERIC 0                     /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_MAX 15                            /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_SIZE 16                           /*!< (unspecified)                                                        */
@@ -792,6 +797,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P1_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P1_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P1_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P1_PWRREQ 0                                  /*!< (unspecified)                                                        */
 #define P1_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
 #define P3_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
@@ -799,6 +805,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P3_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P3_CTRLSEL_MAP4 1                            /*!< (unspecified)                                                        */
 #define P3_CTRLSEL_MAP5 0                            /*!< (unspecified)                                                        */
+#define P3_CTRLSEL_MAP_GENERIC 0                     /*!< (unspecified)                                                        */
 #define P3_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P3_PIN_NUM_MAX 11                            /*!< (unspecified)                                                        */
 #define P3_PIN_NUM_SIZE 12                           /*!< (unspecified)                                                        */
@@ -814,6 +821,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P3_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P3_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P3_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P3_PWRREQ 0                                  /*!< (unspecified)                                                        */
 #define P3_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
 #define P4_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
@@ -821,6 +829,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P4_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P4_CTRLSEL_MAP4 1                            /*!< (unspecified)                                                        */
 #define P4_CTRLSEL_MAP5 0                            /*!< (unspecified)                                                        */
+#define P4_CTRLSEL_MAP_GENERIC 0                     /*!< (unspecified)                                                        */
 #define P4_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P4_PIN_NUM_MAX 11                            /*!< (unspecified)                                                        */
 #define P4_PIN_NUM_SIZE 12                           /*!< (unspecified)                                                        */
@@ -830,12 +839,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P4_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P4_WEAKPU 0                                  /*!< (unspecified)                                                        */
 #define P4_RETAIN 0                                  /*!< (unspecified)                                                        */
-#define P4_PWRCTRL 0                                 /*!< (unspecified)                                                        */
+#define P4_PWRCTRL 1                                 /*!< Supports register PWRCTRL.                                           */
 #define P4_SLEWMODE 0                                /*!< (unspecified)                                                        */
 #define P4_PULLSTR 0                                 /*!< (unspecified)                                                        */
 #define P4_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P4_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P4_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P4_PWRREQ 0                                  /*!< (unspecified)                                                        */
 #define P4_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
 #define P0_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
@@ -843,6 +853,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P0_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP4 1                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP5 0                            /*!< (unspecified)                                                        */
+#define P0_CTRLSEL_MAP_GENERIC 0                     /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_MAX 12                            /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_SIZE 13                           /*!< (unspecified)                                                        */
@@ -858,6 +869,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P0_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P0_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P0_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P0_PWRREQ 0                                  /*!< (unspecified)                                                        */
 #define P0_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
 /*Control access port*/

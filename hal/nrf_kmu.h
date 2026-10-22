@@ -63,9 +63,9 @@ extern "C" {
 
 #if defined(KMU_TASKS_REVOKE_TASKS_REVOKE_Msk) || defined(__NRFX_DOXYGEN__)
 /** @brief Symbol indicating whether KMU has REVOKE registers. */
-#define NRF_KMU_HAS_REVOKE 1
+#define NRF_KMU_HAS_REVOKE_TASK 1
 #else
-#define NRF_KMU_HAS_REVOKE 0
+#define NRF_KMU_HAS_REVOKE_TASK 0
 #endif
 
 #if defined(KMU_TASKS_READMETADATA_TASKS_READMETADATA_Msk) || defined(__NRFX_DOXYGEN__)
@@ -117,6 +117,34 @@ extern "C" {
 #define NRF_KMU_HAS_REVOKE_POLICY 0
 #endif
 
+#if defined(KMU_HAS_READ_KEY_SLOT) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether it is possible to read key from KMU key slot. */
+#define NRF_KMU_HAS_READ_KEY_SLOT_KEY 1
+#else
+#define NRF_KMU_HAS_READ_KEY_SLOT_KEY 0
+#endif
+
+#if defined(KMU_STATUS_BLOCKED_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether STATUS register has BLOCKED field. */
+#define NRF_KMU_HAS_STATUS_BLOCKED 1
+#else
+#define NRF_KMU_HAS_STATUS_BLOCKED 0
+#endif
+
+#if defined(KMU_STATUS_SELECTED_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether STATUS register has SELECTED field. */
+#define NRF_KMU_HAS_STATUS_SELECTED 1
+#else
+#define NRF_KMU_HAS_STATUS_SELECTED 0
+#endif
+
+#if defined(KMU_STATUS_STATUS_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether STATUS register has STATUS field. */
+#define NRF_KMU_HAS_STATUS_STATUS 1
+#else
+#define NRF_KMU_HAS_STATUS_STATUS 0
+#endif
+
 /** @brief KMU tasks. */
 typedef enum
 {
@@ -128,7 +156,7 @@ typedef enum
 #else
     NRF_KMU_TASK_PUSH_KEYSLOT      = offsetof(NRF_KMU_Type, TASKS_PUSH),         ///< Push key slot.
 #endif
-#if NRF_KMU_HAS_REVOKE
+#if NRF_KMU_HAS_REVOKE_TASK
     NRF_KMU_TASK_REVOKE_KEYSLOT    = offsetof(NRF_KMU_Type, TASKS_REVOKE),       ///< Revoke key slot.
 #endif
 #if NRF_KMU_HAS_READ_METADATA
@@ -186,20 +214,23 @@ typedef enum
 {
     NRF_KMU_INT_PUSHED_MASK  = KMU_INTEN_KEYSLOT_PUSHED_Msk,  ///< Interrupt on KEYSLOT_PUSHED event.
     NRF_KMU_INT_REVOKED_MASK = KMU_INTEN_KEYSLOT_REVOKED_Msk, ///< Interrupt on KEYSLOT_REVOKED event.
-    NRF_KMU_INT_ERROR_MASK   = KMU_INTEN_KEYSLOT_ERROR_Msk    ///< Interrupt on KEYSLOT_ERROR event.
+    NRF_KMU_INT_ERROR_MASK   = KMU_INTEN_KEYSLOT_ERROR_Msk,   ///< Interrupt on KEYSLOT_ERROR event.
+    NRF_KMU_INT_ALL_MASK     = NRF_KMU_INT_PUSHED_MASK  |
+                               NRF_KMU_INT_REVOKED_MASK |
+                               NRF_KMU_INT_ERROR_MASK         ///< All KMU interrupts.
 } nrf_kmu_int_mask_t;
 #endif
 
 /** @brief KMU operation status. */
 typedef enum
 {
-#if defined(KMU_STATUS_BLOCKED_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_KMU_HAS_STATUS_BLOCKED
     NRF_KMU_STATUS_BLOCKED_MASK  = KMU_STATUS_BLOCKED_Msk,  ///< Access violation detected and blocked.
 #endif
-#if defined(KMU_STATUS_SELECTED_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_KMU_HAS_STATUS_SELECTED
     NRF_KMU_STATUS_SELECTED_MASK = KMU_STATUS_SELECTED_Msk, ///< Key slot ID successfully selected by KMU.
 #endif
-#if defined(KMU_STATUS_STATUS_Msk) || defined(__NRFX_DOXYGEN__)
+#if NRF_KMU_HAS_STATUS_STATUS
     NRF_KMU_STATUS_READY         = KMU_STATUS_STATUS_Ready, ///< KMU is ready for a new operation.
     NRF_KMU_STATUS_BUSY          = KMU_STATUS_STATUS_Busy,  ///< KMU is busy, an operation is in progress.
 #endif
@@ -433,7 +464,8 @@ NRF_STATIC_INLINE uint32_t nrf_kmu_status_get(NRF_KMU_Type const * p_reg)
 
 NRF_STATIC_INLINE void nrf_kmu_keyslot_set(NRF_KMU_Type * p_reg, uint32_t keyslot_id)
 {
-    NRFX_ASSERT(keyslot_id < KMU_KEYSLOTNUM);
+    NRFX_ASSERT(keyslot_id <= KMU_KEYSLOT_ID_MAX);
+
 #if defined(KMU_SELECTKEYSLOT_ID_Msk)
     p_reg->SELECTKEYSLOT = (uint32_t)keyslot_id;
 #elif defined(KMU_KEYSLOT_ID_Msk)

@@ -27,6 +27,7 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #include <stdbool.h>
 #include "../nrf.h"
 #include "system_nrf71.h"
+#include "nrf71_erratas.h"
 #include "system_nrf71_approtect.h"
 #include "../common/system_config_sau.h"
 /*lint ++flb "Enter library region" */
@@ -40,10 +41,12 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 #define TRACE_TRACEDATA2_PIN        (9ul)
 #define TRACE_TRACEDATA3_PIN        (10ul)
 
-#define TRACE_PIN_CLEAR             (~(GPIO_PIN_CNF_CTRLSEL_Msk | GPIO_PIN_CNF_DRIVE0_Msk | GPIO_PIN_CNF_DRIVE1_Msk))
+#define TRACE_PIN_CLEAR             (~(GPIO_PIN_CNF_CTRLSEL_Msk | GPIO_PIN_CNF_DRIVE0_Msk | \
+                                       GPIO_PIN_CNF_DRIVE1_Msk | GPIO_PIN_CNF_DIR_Msk))
 
 #define TRACE_PIN_CONFIG            ((GPIO_PIN_CNF_DRIVE0_E0 << GPIO_PIN_CNF_DRIVE0_Pos) \
-                                    | (GPIO_PIN_CNF_DRIVE1_E1 << GPIO_PIN_CNF_DRIVE1_Pos))
+                                    | (GPIO_PIN_CNF_DRIVE1_E1 << GPIO_PIN_CNF_DRIVE1_Pos) \
+                                    | (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos))
 
 /* Boot count limit to avoid MRAM recovery */
 #define BOOTCOUNTCLAMP              (2)
@@ -107,21 +110,40 @@ void SystemInit(void)
             #ifndef NRF_SKIP_SAU_CONFIGURATION   
                 configure_default_sau();
             #endif          
+
+            #if !defined (NRF_DISABLE_FICR_TRIMCNF)
+                /* Trimming of the device. Copy all the trimming values from FICR into the target addresses. Trim
+                until one ADDR is not initialized. */
+                uint32_t index = 0ul;
+                for (index = 0ul; index < FICR_TRIMCNF_MaxCount && NRF_FICR_NS->TRIMCNF[index].ADDR != 0xFFFFFFFFul && NRF_FICR_NS->TRIMCNF[index].ADDR != 0x00000000ul; index++) {
+                #if defined ( __ICCARM__ )
+                    /* IAR will complain about the order of volatile pointer accesses. */
+                    #pragma diag_suppress=Pa082
+                #endif
+                * ((volatile uint32_t*)NRF_FICR_NS->TRIMCNF[index].ADDR) = NRF_FICR_NS->TRIMCNF[index].DATA;
+                #if defined ( __ICCARM__ )
+                    #pragma diag_default=Pa082
+                #endif
+                }
+            #endif
         #endif
 
-        #if !defined (NRF_DISABLE_FICR_TRIMCNF)
-            /* Trimming of the device. Copy all the trimming values from FICR into the target addresses. Trim
-               until one ADDR is not initialized. */
-            uint32_t index = 0ul;
-            for (index = 0ul; index < FICR_TRIMCNF_MaxCount && NRF_FICR_NS->TRIMCNF[index].ADDR != 0xFFFFFFFFul && NRF_FICR_NS->TRIMCNF[index].ADDR != 0x00000000ul; index++) {
-            #if defined ( __ICCARM__ )
-                /* IAR will complain about the order of volatile pointer accesses. */
-                #pragma diag_suppress=Pa082
-            #endif
-            * ((volatile uint32_t*)NRF_FICR_NS->TRIMCNF[index].ADDR) = NRF_FICR_NS->TRIMCNF[index].DATA;
-            #if defined ( __ICCARM__ )
-                #pragma diag_default=Pa082
-            #endif
+        #if NRF71_ERRATA_157_ENABLE_WORKAROUND
+            /* Workaround for Errata 157 */
+            if (nrf71_errata_157())
+            {
+                *((volatile uint32_t *)0x50126448ul) = 0x3;
+            }
+        #endif
+
+        #if NRF71_ERRATA_158_ENABLE_WORKAROUND
+            /* Workaround for Errata 158 */
+            if (nrf71_errata_158())
+            {
+                if (NRF_RESET->RESETREAS & RESET_RESETREAS_RESETPIN_Msk)
+                {
+                    NRF_RESET->RESETREAS =  ~RESET_RESETREAS_RESETPIN_Msk;
+                }
             }
         #endif
 
@@ -225,6 +247,8 @@ void SystemInit(void)
         #if defined (NRF_ENABLE_NRF7120_APPROTECT_BOOT_WORKAROUND)
             #if !defined(NRF_TRUSTZONE_NONSECURE)
                 #if defined (NRF7120_ENGA_XXAA) || defined (NRF7120E_ENGA_XXAA) || defined (NRF7120_XXAA) || defined (NRF7120E_XXAA)
+                    uint32_t resetbehavior = NRF_TAMPC->PROTECT.RESETBEHAVIOR.CTRL;
+
                     // Set RESETBEHAVIOR such that a soft-reset clears the locked APPROTECT registers.
                     NRF_TAMPC->PROTECT.RESETBEHAVIOR.CTRL =
                             ((TAMPC_PROTECT_RESETBEHAVIOR_CTRL_WRITEPROTECTION_Clear << TAMPC_PROTECT_RESETBEHAVIOR_CTRL_WRITEPROTECTION_Pos) |
@@ -237,26 +261,10 @@ void SystemInit(void)
                     __DSB();
                     __ISB();
 
-                    #ifdef NRF_BOOTLOOP_DETECTION_ENABLED
-                        /* When boot loop detection is enabled ROM increments BOOTCOUNT on each boot attempt hence the first attempt contains the value 1 */
-                        if (((NRF_REGULATORS->MRAMRECOVERY & REGULATORS_MRAMRECOVERY_BOOTCOUNT_Msk) >> REGULATORS_MRAMRECOVERY_BOOTCOUNT_Pos) == 1)
-                        {
-                            NRF_CTRLAP->RESET = CTRLAPPERI_RESET_RESET_SoftReset << CTRLAPPERI_RESET_RESET_Pos;
-
-                            while(1)
-                                ;   // Reset will terminate execution here.
-                        }
-                    #else
-                        /* When boot loop detection is NOT enabled BOOTCOUNT is zero on the first boot, is incremented here and survives reset */
-                        if (((NRF_REGULATORS->MRAMRECOVERY & REGULATORS_MRAMRECOVERY_BOOTCOUNT_Msk) >> REGULATORS_MRAMRECOVERY_BOOTCOUNT_Pos) == 0)
-                        {
-                            NRF_REGULATORS->MRAMRECOVERY = (
-                                    (REGULATORS_MRAMRECOVERY_KEY_Key << REGULATORS_MRAMRECOVERY_KEY_Pos) |
-                                    (0x1 << REGULATORS_MRAMRECOVERY_BOOTCOUNT_Pos) |
-                                    (NRF_REGULATORS->MRAMRECOVERY & (REGULATORS_MRAMRECOVERY_TAKESNAPSHOT_Msk | REGULATORS_MRAMRECOVERY_RECOVERMRAM_Msk))
-                                );
-
-                            // Barriers to ensure register write lands before reset takes effect.
+                    if (((NRF_TAMPC->PROTECT.DOMAIN[0].DBGEN.CTRL &
+                        TAMPC_PROTECT_DOMAIN_DBGEN_CTRL_LOCK_Msk) != 0) &&
+                        ((resetbehavior & TAMPC_PROTECT_RESETBEHAVIOR_CTRL_VALUE_Msk) == 0))
+                    {
                             __DSB();
                             __ISB();
                             NRF_CTRLAP->RESET = CTRLAPPERI_RESET_RESET_SoftReset << CTRLAPPERI_RESET_RESET_Pos;
@@ -264,7 +272,6 @@ void SystemInit(void)
                             while(1)
                                 ;   // Reset will terminate execution here.
                         }
-                    #endif
                 #endif
             #endif
         #else

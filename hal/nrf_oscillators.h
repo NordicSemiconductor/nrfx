@@ -89,6 +89,8 @@ extern "C" {
  * - From 7 pF to 20 pF in 0.5 pF steps for nRF5340.
  * - From 4 pF to 17 pF in 0.25 pF steps for other SoCs.
  * This macro should be used to calculate argument's value for @ref nrf_oscillators_hfxo_cap_set function.
+ *
+ * @deprecated Use @ref nrf_ficr_hfxo_cap_calculate instead.
 */
 #define NRF_OSCILLATORS_HFXO_CAP_CALCULATE(p_ficr_reg, cap_val) \
     OSCILLATORS_HFXO_CAP_CALCULATE(p_ficr_reg, cap_val)
@@ -99,6 +101,8 @@ extern "C" {
  *
  * The capacitance of internal capacitors ranges from 4 pF to 18 pF in 0.5 pF steps.
  * This macro should be used to calculate argument's value for @ref nrf_oscillators_lfxo_cap_set function.
+ *
+ * @deprecated Use @ref nrf_ficr_lfxo_cap_calculate instead.
 */
 #define NRF_OSCILLATORS_LFXO_CAP_CALCULATE(p_ficr_reg, cap_val)                      \
       (((((p_ficr_reg->XOSC32KTRIM & FICR_XOSC32KTRIM_SLOPE_Msk)                     \
@@ -197,7 +201,7 @@ NRF_STATIC_INLINE void nrf_oscillators_lfxo_bypass_set(NRF_OSCILLATORS_Type * p_
  * @brief Function for configuring the internal capacitors of LFXO.
  *
  * For SoCs other than nRF5340, to calculate the correct @p cap_value,
- * use @ref NRF_OSCILLATORS_LFXO_CAP_CALCULATE macro.
+ * use @ref nrf_ficr_lfxo_cap_calculate function.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] cap   Capacitors configuration.
@@ -209,7 +213,7 @@ NRF_STATIC_INLINE void nrf_oscillators_lfxo_cap_set(NRF_OSCILLATORS_Type *     p
 /**
  * @brief Function for configuring the internal capacitors of HFXO.
  *
- * To calculate the correct @p cap_value, use @ref NRF_OSCILLATORS_HFXO_CAP_CALCULATE macro.
+ * To calculate the correct @p cap_value, use @ref nrf_ficr_hfxo_cap_calculate function.
  *
  * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
  * @param[in] enable    True if internal capacitors are to be enabled, false otherwise.

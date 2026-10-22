@@ -36,6 +36,7 @@
 
 #include <nrfx.h>
 #include <hal/nrf_rramc.h>
+#include <hal/nrf_uicr.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,8 +67,6 @@ NRFY_STATIC_INLINE void __nrfy_internal_rramc_word_write(NRF_RRAMC_Type * p_reg,
                                                          uint32_t         addr,
                                                          uint32_t         value);
 
-NRFY_STATIC_INLINE bool __nrfy_internal_rramc_is_otp_word_writable(uint32_t index);
-
 /**
  * @defgroup nrfy_rramc RRAMC HALY
  * @{
@@ -75,6 +74,9 @@ NRFY_STATIC_INLINE bool __nrfy_internal_rramc_is_otp_word_writable(uint32_t inde
  * @brief   Hardware access layer with cache and barrier support for managing the RRAMC peripheral.
  * @note    Extended Hardware Access Layer (HALY) is deprecated.
  */
+
+/** @brief Value representing the number of bits in a byte. */
+#define NRFY_RRAMC_BITS_IN_BYTE 8
 
 /**
  * @brief Value representing the number of bytes in a word.
@@ -88,7 +90,8 @@ NRFY_STATIC_INLINE bool __nrfy_internal_rramc_is_otp_word_writable(uint32_t inde
  *
  * It is used in loops iterating over words contained in buffer lines.
  */
-#define NRFY_RRAMC_WORDS_IN_BUFER_LINE 4
+#define NRFY_RRAMC_WORDS_IN_BUFER_LINE \
+    (RRAMC_NRRAMDATAUNITSIZE / (NRFY_RRAMC_BITS_IN_BYTE * NRFY_RRAMC_BYTES_IN_WORD))
 
 /** @brief Value representing resistive random access memory (RRAM) base address. */
 #define NRFY_RRAMC_RRAM_BASE_ADDRESS NRF_MEMORY_FLASH_BASE
@@ -345,12 +348,12 @@ NRFY_STATIC_INLINE void nrfy_rramc_buffer_read(void *   dst,
     nrf_barrier_r();
 }
 
+#if NRF_UICR_HAS_OTP
 /**
  * @brief Function for reading a word from the OTP in UICR.
  *
- * OTP is a region of the UICR present in some chips. This function must be used
- * to read word data from this region since unaligned accesses are not
- * available on the OTP RRAM area.
+ * @deprecated Use @ref nrfy_rramc_word_read with the address obtained
+ *             from @ref nrf_uicr_otp_address_get instead.
  *
  * @param[in] index Address (index) in OTP table from which a word is to be read.
  *
@@ -358,14 +361,11 @@ NRFY_STATIC_INLINE void nrfy_rramc_buffer_read(void *   dst,
  */
 NRFY_STATIC_INLINE uint32_t nrfy_rramc_otp_word_read(uint32_t index)
 {
-    NRFX_ASSERT(index < UICR_OTP_MaxCount);
+    NRFX_ASSERT(index < NRF_UICR_OTP_COUNT);
 #if !defined(NRF_TRUSTZONE_NONSECURE)
-    nrf_barrier_r();
-    uint32_t val32 = NRF_UICR->OTP[index];
-    nrf_barrier_r();
-    return val32;
+    return nrfy_rramc_word_read(nrf_uicr_otp_address_get(NRF_UICR, index));
 #else
-    return 0xFFFFFFFF;
+    return UINT32_MAX;
 #endif
 }
 
@@ -373,8 +373,11 @@ NRFY_STATIC_INLINE uint32_t nrfy_rramc_otp_word_read(uint32_t index)
  * @brief Function for writing a 32-bit word at index position to OTP region in UICR.
  *
  * The OTP can only be written once after each Erase All is performed.
- * This function checks if the value currently residing at the specified index can
- * be transformed to the desired value. If yes, then performs the write operation.
+ * This function checks if the word at the specified index is still erased.
+ * If yes, then performs the write operation.
+ *
+ * @deprecated Use @ref nrfx_rramc_word_writable_check and @ref nrfx_rramc_word_write
+ *             with the address obtained from @ref nrf_uicr_otp_address_get instead.
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] index Address (index) in OTP table to which a word it to be written.
@@ -388,33 +391,28 @@ NRFY_STATIC_INLINE bool nrfy_rramc_otp_word_write(NRF_RRAMC_Type * p_reg,
                                                   uint32_t         index,
                                                   uint32_t         value)
 {
-    NRFX_ASSERT(index < UICR_OTP_MaxCount);
+    NRFX_ASSERT(index < NRF_UICR_OTP_COUNT);
 
 #if !defined(NRF_TRUSTZONE_NONSECURE)
-    if (!__nrfy_internal_rramc_is_otp_word_writable(index))
+    uint32_t address = nrf_uicr_otp_address_get(NRF_UICR, index);
+
+    if (nrfy_rramc_word_read(address) != UINT32_MAX)
     {
         return false;
     }
 
-    nrf_rramc_config_t rramc_config;
-    nrf_rramc_config_t prev_rramc_config;
-
-    __nrfy_internal_rramc_config_get(p_reg, &rramc_config);
-    prev_rramc_config = rramc_config;
-    rramc_config.mode_write = true;
-
-    __nrfy_internal_rramc_config_set(p_reg, &rramc_config);
-    NRF_UICR->OTP[index] = value;
-    __nrfy_internal_rramc_config_set(p_reg, &prev_rramc_config);
+    nrfy_rramc_word_write(p_reg, address, value);
 
     return true;
 #else
+    (void)p_reg;
     (void)index;
     (void)value;
 
     return false;
 #endif
 }
+#endif // NRF_UICR_HAS_OTP
 
 /** @refhal{nrf_rramc_task_trigger} */
 NRFY_STATIC_INLINE void nrfy_rramc_task_trigger(NRF_RRAMC_Type * p_reg, nrf_rramc_task_t task)
@@ -702,18 +700,6 @@ NRFY_STATIC_INLINE void __nrfy_internal_rramc_word_write(NRF_RRAMC_Type * p_reg,
 
     nrf_rramc_word_write(addr, value);
     nrf_barrier_w();
-}
-
-NRFY_STATIC_INLINE bool __nrfy_internal_rramc_is_otp_word_writable(uint32_t index)
-{
-#if !defined(NRF_TRUSTZONE_NONSECURE)
-    nrf_barrier_r();
-    uint32_t val_on_addr = NRF_UICR->OTP[index];
-    nrf_barrier_r();
-    return (val_on_addr == 0xFFFFFFFF);
-#else
-    return false;
-#endif
 }
 
 #ifdef __cplusplus

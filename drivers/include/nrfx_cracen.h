@@ -67,7 +67,7 @@ int nrfx_cracen_init(void);
  */
 void nrfx_cracen_uninit(void);
 
-#if NRF_CRACEN_HAS_CRYPTOMASTER
+#if NRF_CRACEN_HAS_CRYPTOMASTER || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for initializing the CRACEN CTR_DRBG random generator.
  *

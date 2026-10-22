@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* MDK version */
 #define MDK_MAJOR_VERSION   9 
-#define MDK_MINOR_VERSION   1 
+#define MDK_MINOR_VERSION   2 
 #define MDK_MICRO_VERSION   0 
 
 #ifdef __ZEPHYR__

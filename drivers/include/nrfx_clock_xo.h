@@ -54,10 +54,10 @@ extern "C" {
 typedef enum
 {
     NRFX_CLOCK_XO_EVT_HFCLK_STARTED  = NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_HF_STARTED_MASK),   ///< XO has been started.
-#if NRF_CLOCK_HAS_PLL
+#if NRF_CLOCK_HAS_PLL || defined(__NRFX_DOXYGEN__)
     NRFX_CLOCK_XO_EVT_PLL_STARTED    = NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_PLL_STARTED_MASK),  ///< PLL has been started.
 #endif
-#if NRF_CLOCK_HAS_XO_TUNE
+#if NRF_CLOCK_HAS_XO_TUNE || defined(__NRFX_DOXYGEN__)
     NRFX_CLOCK_XO_EVT_XO_TUNED       = NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_XOTUNED_MASK),      ///< XO tune has been done.
     NRFX_CLOCK_XO_EVT_XO_TUNE_ERROR  = NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_XOTUNEERROR_MASK),  ///< XO is not tuned.
     NRFX_CLOCK_XO_EVT_XO_TUNE_FAILED = NRFX_BITMASK_TO_BITPOS(NRF_CLOCK_INT_XOTUNEFAILED_MASK), ///< XO tune operation failed.
@@ -112,7 +112,7 @@ void nrfx_clock_xo_stop(void);
 NRFX_STATIC_INLINE bool nrfx_clock_xo_running_check(nrf_clock_hfclk_t * p_clk_src);
 
 
-#if NRF_CLOCK_HAS_XO_TUNE
+#if NRF_CLOCK_HAS_XO_TUNE || defined(__NRFX_DOXYGEN__)
 
 /**
  * @brief Function for starting tune of crystal XO.

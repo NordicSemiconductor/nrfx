@@ -117,58 +117,61 @@ typedef struct
 /** @brief PWM flags providing additional playback options. */
 typedef enum
 {
-    NRFX_PWM_FLAG_STOP = 0x01, /**< When the requested playback is finished,
-                                    the peripheral will be stopped.
-                                    @note The STOP task is triggered when
-                                    the last value of the final sequence is
-                                    loaded from RAM, and the peripheral stops
-                                    at the end of the current PWM period.
-                                    For sequences with configured repeating
-                                    of duty cycle values, this might result in
-                                    less than the requested number of repeats
-                                    of the last value. */
-    NRFX_PWM_FLAG_LOOP = 0x02, /**< When the requested playback is finished,
-                                    it will be started from the beginning.
-                                    This flag is ignored if used together
-                                    with @ref NRFX_PWM_FLAG_STOP.
-                                    @note The playback restart is done via a
-                                    shortcut configured in the PWM peripheral.
-                                    This shortcut triggers the proper starting
-                                    task when the final value of previous
-                                    playback is read from RAM and applied to
-                                    the pulse generator counter.
-                                    When this mechanism is used together with
-                                    the @ref NRF_PWM_STEP_TRIGGERED mode,
-                                    the playback restart will occur right
-                                    after switching to the final value (this
-                                    final value will be played only once). */
-    NRFX_PWM_FLAG_SIGNAL_END_SEQ0 = 0x04, /**< The event handler is to be
-                                               called when the last value
-                                               from sequence 0 is loaded. */
-    NRFX_PWM_FLAG_SIGNAL_END_SEQ1 = 0x08, /**< The event handler is to be
-                                               called when the last value
-                                               from sequence 1 is loaded. */
-    NRFX_PWM_FLAG_NO_EVT_FINISHED = 0x10, /**< The playback finished event
-                                               (enabled by default) is to be
-                                               suppressed. */
-    NRFX_PWM_FLAG_START_VIA_TASK = 0x80, /**< The playback must not be
-                                              started directly by the called
-                                              function. Instead, the function
-                                              must only prepare it and
-                                              return the address of the task
-                                              to be triggered to start the
-                                              playback. */
+    NRFX_PWM_FLAG_STOP              = 0x01, /**< When the requested playback is finished,
+                                                 the peripheral will be stopped.
+                                                 @note The STOP task is triggered when
+                                                 the last value of the final sequence is
+                                                 loaded from RAM, and the peripheral stops
+                                                 at the end of the current PWM period.
+                                                 For sequences with configured repeating
+                                                 of duty cycle values, this might result in
+                                                 less than the requested number of repeats
+                                                 of the last value. */
+    NRFX_PWM_FLAG_LOOP              = 0x02, /**< When the requested playback is finished,
+                                                 it will be started from the beginning.
+                                                 This flag is ignored if used together
+                                                 with @ref NRFX_PWM_FLAG_STOP.
+                                                 @note The playback restart is done via a
+                                                 shortcut configured in the PWM peripheral.
+                                                 This shortcut triggers the proper starting
+                                                 task when the final value of previous
+                                                 playback is read from RAM and applied to
+                                                 the pulse generator counter.
+                                                 When this mechanism is used together with
+                                                 the @ref NRF_PWM_STEP_TRIGGERED mode,
+                                                 the playback restart will occur right
+                                                 after switching to the final value (this
+                                                 final value will be played only once). */
+    NRFX_PWM_FLAG_SIGNAL_END_SEQ0   = 0x04, /**< The event handler is to be
+                                                 called when the last value
+                                                 from sequence 0 is loaded. */
+    NRFX_PWM_FLAG_SIGNAL_END_SEQ1   = 0x08, /**< The event handler is to be
+                                                 called when the last value
+                                                 from sequence 1 is loaded. */
+    NRFX_PWM_FLAG_NO_EVT_FINISHED   = 0x10, /**< The playback finished event
+                                                 (enabled by default) is to be
+                                                 suppressed. */
+    NRFX_PWM_FLAG_SIGNAL_END_PERIOD = 0x20, /**< The event handler is to be called
+                                                 each time a PWM period ends. */
+    NRFX_PWM_FLAG_START_VIA_TASK    = 0x80, /**< The playback must not be
+                                                 started directly by the called
+                                                 function. Instead, the function
+                                                 must only prepare it and
+                                                 return the address of the task
+                                                 to be triggered to start the
+                                                 playback. */
 } nrfx_pwm_flag_t;
 
 /** @brief PWM driver event type. */
 typedef enum
 {
-    NRFX_PWM_EVENT_FINISHED, ///< Sequence playback finished.
-    NRFX_PWM_EVENT_END_SEQ0, /**< End of sequence 0 reached. Its data can be
-                                safely modified now. */
-    NRFX_PWM_EVENT_END_SEQ1, /**< End of sequence 1 reached. Its data can be
-                                safely modified now. */
-    NRFX_PWM_EVENT_STOPPED,  ///< The PWM peripheral has been stopped.
+    NRFX_PWM_EVENT_FINISHED,   ///< Sequence playback finished.
+    NRFX_PWM_EVENT_END_SEQ0,   /**< End of sequence 0 reached. Its data can be
+                                    safely modified now. */
+    NRFX_PWM_EVENT_END_SEQ1,   /**< End of sequence 1 reached. Its data can be
+                                    safely modified now. */
+    NRFX_PWM_EVENT_END_PERIOD, ///< A PWM period has ended.
+    NRFX_PWM_EVENT_STOPPED,    ///< The PWM peripheral has been stopped.
 } nrfx_pwm_event_type_t;
 
 /** @brief PWM event handler type for user-defined callback function. */
@@ -371,7 +374,7 @@ bool nrfx_pwm_stopped_check(nrfx_pwm_t * p_instance);
  */
 void nrfx_pwm_irq_handler(nrfx_pwm_t * p_instance);
 
-#if NRF_ERRATA_STATIC_CHECK(52, 109)
+#if NRF_ERRATA_STATIC_CHECK(52, 109) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief EGU interrupt handler for nRF52 Anomaly 109 processing.
  *

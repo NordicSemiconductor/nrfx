@@ -50,19 +50,17 @@ static void wdt_configure(nrfx_wdt_t *              p_instance,
 
     nrfy_wdt_periph_configure(p_instance->p_reg, &nrfy_conf);
 
-    nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
-
 #if NRFX_WDT_HAS_STOP
-    p_cb->stoppable = (bool)(p_config->behaviour & NRF_WDT_BEHAVIOUR_STOP_ENABLE_MASK);
+    p_instance->cb.stoppable = (bool)(p_config->behaviour & NRF_WDT_BEHAVIOUR_STOP_ENABLE_MASK);
 #endif
 
 #if !NRFX_CHECK(NRFX_WDT_CONFIG_NO_IRQ)
-    if (p_cb->wdt_event_handler)
+    if (p_instance->cb.wdt_event_handler)
     {
         uint32_t mask = NRF_WDT_INT_TIMEOUT_MASK;
 
 #if NRFX_WDT_HAS_STOP
-        if (p_cb->stoppable)
+        if (p_instance->cb.stoppable)
         {
             mask |= NRF_WDT_INT_STOPPED_MASK;
         }
@@ -76,6 +74,44 @@ static void wdt_configure(nrfx_wdt_t *              p_instance,
 #endif
 }
 
+#if NRFX_WDT_HAS_STOP && NRFX_CHECK(NRFX_WDT_CONFIG_STOP_AT_INIT)
+static int wdt_stop_if_running(nrfx_wdt_t * p_instance)
+{
+    NRF_WDT_Type * p_reg = p_instance->p_reg;
+
+    if (!nrfy_wdt_started_check(p_reg))
+    {
+        return 0;
+    }
+
+    if (!(nrfy_wdt_behaviour_get(p_reg) & NRF_WDT_BEHAVIOUR_STOP_ENABLE_MASK))
+    {
+        return -EPERM;
+    }
+
+    nrfy_wdt_int_disable(p_reg, NRF_WDT_INT_STOPPED_MASK);
+    nrfy_wdt_event_clear(p_reg, NRF_WDT_EVENT_STOPPED);
+    nrfy_wdt_task_stop_enable_set(p_reg, true);
+    nrfy_wdt_task_trigger(p_reg, NRF_WDT_TASK_STOP);
+
+    while (nrfy_wdt_started_check(p_reg))
+    {}
+
+    nrfy_wdt_task_stop_enable_set(p_reg, false);
+
+    for (uint8_t i = 0; i < NRF_WDT_CHANNEL_NUMBER; i++)
+    {
+        nrfy_wdt_reload_request_disable(p_reg, (nrf_wdt_rr_register_t)(NRF_WDT_RR0 + i));
+    }
+
+    nrfy_wdt_event_clear(p_reg, NRF_WDT_EVENT_STOPPED);
+    p_instance->cb.alloc_index = 0;
+    p_instance->cb.stoppable = false;
+
+    return 0;
+}
+#endif
+
 static int wdt_init(nrfx_wdt_t *              p_instance,
                     nrfx_wdt_config_t const * p_config,
                     nrfx_wdt_event_handler_t  wdt_event_handler,
@@ -87,6 +123,26 @@ static int wdt_init(nrfx_wdt_t *              p_instance,
 
     nrfx_wdt_control_block_t * p_cb = &p_instance->cb;
 
+    if (p_cb->state != NRFX_DRV_STATE_UNINITIALIZED)
+    {
+        err_code = -EALREADY;
+        NRFX_LOG_WARNING("Function: %s, error code: %s.",
+                         __func__,
+                         NRFX_LOG_ERROR_STRING_GET(err_code));
+        return err_code;
+    }
+
+#if NRFX_WDT_HAS_STOP && NRFX_CHECK(NRFX_WDT_CONFIG_STOP_AT_INIT)
+    err_code = wdt_stop_if_running(p_instance);
+    if (err_code != 0)
+    {
+        NRFX_LOG_WARNING("Function: %s, error code: %s.",
+                         __func__,
+                         NRFX_LOG_ERROR_STRING_GET(err_code));
+        return err_code;
+    }
+#endif
+
 #if NRFX_CHECK(NRFX_WDT_CONFIG_NO_IRQ)
     (void)wdt_event_handler;
     (void)p_context;
@@ -95,18 +151,7 @@ static int wdt_init(nrfx_wdt_t *              p_instance,
     p_cb->p_context = p_context;
 #endif
 
-    if (p_cb->state == NRFX_DRV_STATE_UNINITIALIZED)
-    {
-        p_cb->state = NRFX_DRV_STATE_INITIALIZED;
-    }
-    else
-    {
-        err_code = -EALREADY;
-        NRFX_LOG_WARNING("Function: %s, error code: %s.",
-                         __func__,
-                         NRFX_LOG_ERROR_STRING_GET(err_code));
-        return err_code;
-    }
+    p_cb->state = NRFX_DRV_STATE_INITIALIZED;
 
     if (p_config)
     {

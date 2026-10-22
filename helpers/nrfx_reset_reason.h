@@ -218,95 +218,100 @@ extern "C" {
 #define NRFX_RESET_REASON_HAS_LOCAL_DOG1 0
 #endif
 
+#if defined(NRF_RESET) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether reset reason can be read from RESET peripheral. */
+#define NRFX_RESET_REASON_PERIPH_RESET 1
+#else
+#define NRFX_RESET_REASON_PERIPH_RESET 0
+#endif
+
+#if defined(NRF_RESETINFO) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether reset reason can be read from RESETINFO peripheral. */
+#define NRFX_RESET_REASON_PERIPH_RESETINFO 1
+#else
+#define NRFX_RESET_REASON_PERIPH_RESETINFO 0
+#endif
+
+#if (defined(NRF_POWER) && NRF_POWER_HAS_RESETREAS) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether reset reason can be read from POWER peripheral. */
+#define NRFX_RESET_REASON_PERIPH_POWER 1
+#else
+#define NRFX_RESET_REASON_PERIPH_POWER 0
+#endif
+
 /** @brief Reset reason bit masks. */
 typedef enum
 {
-#if defined(NRF_RESET) || defined(__NRFX_DOXYGEN__)
-    /**< Reset from pin-reset detected. */
-    NRFX_RESET_REASON_RESETPIN_MASK     = NRF_RESET_RESETREAS_RESETPIN_MASK,
-    /**< Reset from watchdog/application watchdog timer 0 detected. */
-    NRFX_RESET_REASON_DOG0_MASK         = NRF_RESET_RESETREAS_DOG0_MASK,
-    /**< Reset from watchdog/application watchdog timer 0 detected. */
-    NRFX_RESET_REASON_DOG_MASK          = NRF_RESET_RESETREAS_DOG0_MASK,
+#if NRFX_RESET_REASON_PERIPH_RESET
+    NRFX_RESET_REASON_RESETPIN_MASK         = NRF_RESET_RESETREAS_RESETPIN_MASK,             /**< Reset from pin-reset detected. */
+    NRFX_RESET_REASON_DOG0_MASK             = NRF_RESET_RESETREAS_DOG0_MASK,                 /**< Reset from watchdog watchdog timer 0 detected. */
+    NRFX_RESET_REASON_DOG_MASK              = NRF_RESET_RESETREAS_DOG0_MASK,                 /**< Reset from watchdog watchdog timer 0 detected. */
 #if NRFX_RESET_REASON_HAS_CTRLAP
-    /**< Reset from application CTRL-AP detected. */
-    NRFX_RESET_REASON_CTRLAP_MASK       = NRF_RESET_RESETREAS_CTRLAP_MASK,
+    NRFX_RESET_REASON_CTRLAP_MASK           = NRF_RESET_RESETREAS_CTRLAP_MASK,               /**< Reset from application CTRL-AP detected. */
 #endif
-    /**< Reset from soft reset/application soft reset detected. */
-    NRFX_RESET_REASON_SREQ_MASK         = NRF_RESET_RESETREAS_SREQ_MASK,
-    /**< Reset from CPU lockup/application CPU lockup detected. */
-    NRFX_RESET_REASON_LOCKUP_MASK       = NRF_RESET_RESETREAS_LOCKUP_MASK,
-    /**< Reset due to wakeup from System OFF mode when wakeup is triggered by DETECT signal from
-     *   GPIO. */
-    NRFX_RESET_REASON_OFF_MASK          = NRF_RESET_RESETREAS_OFF_MASK,
+    NRFX_RESET_REASON_SREQ_MASK             = NRF_RESET_RESETREAS_SREQ_MASK,                 /**< Reset from soft reset soft reset detected. */
+    NRFX_RESET_REASON_LOCKUP_MASK           = NRF_RESET_RESETREAS_LOCKUP_MASK,               /**< Reset from CPU lockup CPU lockup detected. */
+    NRFX_RESET_REASON_OFF_MASK              = NRF_RESET_RESETREAS_OFF_MASK,                  /**< Reset due to wakeup from System OFF mode when wakeup
+                                                                                              *   is triggered by DETECT signal from GPIO. */
 #if NRFX_RESET_REASON_HAS_LPCOMP
-    /**< Reset due to wakeup from System OFF mode when wakeup is triggered by ANADETECT signal from
-     *   LPCOMP. */
-    NRFX_RESET_REASON_LPCOMP_MASK       = NRF_RESET_RESETREAS_LPCOMP_MASK,
+    NRFX_RESET_REASON_LPCOMP_MASK           = NRF_RESET_RESETREAS_LPCOMP_MASK,               /**< Reset due to wakeup from System OFF mode when wakeup
+                                                                                              *   is triggered by ANADETECT signal from LPCOMP. */
 #endif
-    /**< Reset due to wakeup from System OFF mode when wakeup is triggered by entering the debug
-     *   interface mode. */
-    NRFX_RESET_REASON_DIF_MASK          = NRF_RESET_RESETREAS_DIF_MASK,
+    NRFX_RESET_REASON_DIF_MASK              = NRF_RESET_RESETREAS_DIF_MASK,                  /**< Reset due to wakeup from System OFF mode when wakeup
+                                                                                              *   is triggered by entering the debug interface mode. */
 #if NRFX_RESET_REASON_HAS_LSREQ
-    /**< Reset from network soft reset detected. */
-    NRFX_RESET_REASON_LSREQ_MASK        = NRF_RESET_RESETREAS_LSREQ_MASK,
+    NRFX_RESET_REASON_LSREQ_MASK            = NRF_RESET_RESETREAS_LSREQ_MASK,                /**< Reset from network soft reset detected. */
 #endif
 #if NRFX_RESET_REASON_HAS_LLOCKUP
-    /**< Reset from network CPU lockup detected. */
-    NRFX_RESET_REASON_LLOCKUP_MASK      = NRF_RESET_RESETREAS_LLOCKUP_MASK,
+    NRFX_RESET_REASON_LLOCKUP_MASK          = NRF_RESET_RESETREAS_LLOCKUP_MASK,              /**< Reset from network CPU lockup detected. */
 #endif
 #if NRFX_RESET_REASON_HAS_LDOG
-    /**< Reset from network watchdog timer detected. */
-    NRFX_RESET_REASON_LDOG_MASK         = NRF_RESET_RESETREAS_LDOG_MASK,
+    NRFX_RESET_REASON_LDOG_MASK             = NRF_RESET_RESETREAS_LDOG_MASK,                 /**< Reset from network watchdog timer detected. */
 #endif
 #if NRFX_RESET_REASON_HAS_MFORCEOFF
-    /**< Force off reset from application core detected. */
-    NRFX_RESET_REASON_MFORCEOFF_MASK    = NRF_RESET_RESETREAS_MFORCEOFF_MASK,
+    NRFX_RESET_REASON_MFORCEOFF_MASK        = NRF_RESET_RESETREAS_MFORCEOFF_MASK,            /**< Force off reset from application core detected. */
 #endif
 #if NRFX_RESET_REASON_HAS_NFC
-    /**< Reset after wakeup from System OFF mode due to NFC field being detected. */
-    NRFX_RESET_REASON_NFC_MASK          = NRF_RESET_RESETREAS_NFC_MASK,
+    NRFX_RESET_REASON_NFC_MASK              = NRF_RESET_RESETREAS_NFC_MASK,                  /**< Reset after wakeup from System OFF mode due to NFC
+                                                                                              *   field being detected. */
 #endif
 #if NRFX_RESET_REASON_HAS_DOG1
-    /**< Reset from application watchdog timer 1 detected. */
-    NRFX_RESET_REASON_DOG1_MASK         = NRF_RESET_RESETREAS_DOG1_MASK,
+    NRFX_RESET_REASON_DOG1_MASK             = NRF_RESET_RESETREAS_DOG1_MASK,                 /**< Reset from application watchdog timer 1 detected. */
 #endif
 #if NRFX_RESET_REASON_HAS_VBUS
-    /**< Reset after wakeup from System OFF mode due to VBUS rising into valid range. */
-    NRFX_RESET_REASON_VBUS_MASK         = NRF_RESET_RESETREAS_VBUS_MASK,
+    NRFX_RESET_REASON_VBUS_MASK             = NRF_RESET_RESETREAS_VBUS_MASK,                 /**< Reset after wakeup from System OFF mode due to VBUS
+                                                                                              *   rising into valid range. */
 #endif
 #if NRFX_RESET_REASON_HAS_LCTRLAP
-    /**< Reset from network CTRL-AP detected. */
-    NRFX_RESET_REASON_LCTRLAP_MASK      = NRF_RESET_RESETREAS_LCTRLAP_MASK,
+    NRFX_RESET_REASON_LCTRLAP_MASK          = NRF_RESET_RESETREAS_LCTRLAP_MASK,              /**< Reset from network CTRL-AP detected. */
 #endif
 #if NRFX_RESET_REASON_HAS_CTRLAPSOFT
-    /**< Soft reset from CTRL-AP detected. */
-    NRFX_RESET_REASON_CTRLAPSOFT_MASK   = NRF_RESET_RESETREAS_CTRLAPSOFT_MASK,
+    NRFX_RESET_REASON_CTRLAPSOFT_MASK       = NRF_RESET_RESETREAS_CTRLAPSOFT_MASK,           /**< Soft reset from CTRL-AP detected. */
 #endif
 #if NRFX_RESET_REASON_HAS_CTRLAPHARD
-    /**< Reset due to CTRL-AP hard reset. */
-    NRFX_RESET_REASON_CTRLAPHARD_MASK   = NRF_RESET_RESETREAS_CTRLAPHARD_MASK,
+    NRFX_RESET_REASON_CTRLAPHARD_MASK       = NRF_RESET_RESETREAS_CTRLAPHARD_MASK,           /**< Reset due to CTRL-AP hard reset. */
 #endif
 #if NRFX_RESET_REASON_HAS_CTRLAPPIN
-    /**< Reset due to CTRL-AP pin reset. */
-    NRFX_RESET_REASON_CTRLAPPIN_MASK    = NRF_RESET_RESETREAS_CTRLAPPIN_MASK,
+    NRFX_RESET_REASON_CTRLAPPIN_MASK        = NRF_RESET_RESETREAS_CTRLAPPIN_MASK,            /**< Reset due to CTRL-AP pin reset. */
 #endif
 #if NRFX_RESET_REASON_HAS_GRTC
-    /**< Reset due to wakeup from GRTC. */
-    NRFX_RESET_REASON_GRTC_MASK         = NRF_RESET_RESETREAS_GRTC_MASK,
+    NRFX_RESET_REASON_GRTC_MASK             = NRF_RESET_RESETREAS_GRTC_MASK,                 /**< Reset due to wakeup from GRTC. */
 #endif
 #if NRFX_RESET_REASON_HAS_SECTAMPER
-    /**< Reset due to illegal tampering of the device. */
-    NRFX_RESET_REASON_SECTAMPER_MASK    = NRF_RESET_RESETREAS_SECTAMPER_MASK,
+    NRFX_RESET_REASON_SECTAMPER_MASK        = NRF_RESET_RESETREAS_SECTAMPER_MASK,            /**< Reset due to illegal tampering of the device. */
 #endif
-#elif defined(NRF_RESETINFO)
-    NRFX_RESET_REASON_POR_MASK              = NRF_RESETINFO_RESETREAS_GLOBAL_POR_MASK,
+#endif
+#if NRFX_RESET_REASON_PERIPH_RESETINFO
+    NRFX_RESET_REASON_POR_MASK              = NRF_RESETINFO_RESETREAS_GLOBAL_POR_MASK,       /**< Reset from power on reset. */
+    /** @cond */
     NRFX_RESET_REASON_RESETPIN_MASK         = NRF_RESETINFO_RESETREAS_GLOBAL_PIN_MASK,
     NRFX_RESET_REASON_DOG_MASK              = NRF_RESETINFO_RESETREAS_GLOBAL_DOG_MASK,
     NRFX_RESET_REASON_CTRLAP_MASK           = NRF_RESETINFO_RESETREAS_GLOBAL_CTRLAP_MASK,
     NRFX_RESET_REASON_SREQ_MASK             = NRF_RESETINFO_RESETREAS_GLOBAL_SECSREQ_MASK,
-    NRFX_RESET_REASON_SECWDT0_MASK          = NRF_RESETINFO_RESETREAS_GLOBAL_SECWDT0_MASK,
-    NRFX_RESET_REASON_SECWDT1_MASK          = NRF_RESETINFO_RESETREAS_GLOBAL_SECWDT1_MASK,
+    /** @endcond */
+    NRFX_RESET_REASON_SECWDT0_MASK          = NRF_RESETINFO_RESETREAS_GLOBAL_SECWDT0_MASK,   /**< Reset due to secure domain watchdog timer 0 detected. */
+    NRFX_RESET_REASON_SECWDT1_MASK          = NRF_RESETINFO_RESETREAS_GLOBAL_SECWDT1_MASK,   /**< Reset due to secure domain watchdog timer 1 detected. */
+    /** @cond */
     NRFX_RESET_REASON_LOCKUP_MASK           = NRF_RESETINFO_RESETREAS_GLOBAL_SECLOCKUP_MASK,
     NRFX_RESET_REASON_SECTAMPER_MASK        = NRF_RESETINFO_RESETREAS_GLOBAL_SECTAMPER_MASK,
     NRFX_RESET_REASON_OFF_MASK              = NRF_RESETINFO_RESETREAS_GLOBAL_GPIO_MASK,
@@ -317,44 +322,50 @@ typedef enum
     NRFX_RESET_REASON_GRTC_MASK             = NRF_RESETINFO_RESETREAS_GLOBAL_GRTC_MASK,
     NRFX_RESET_REASON_NFC_MASK              = NRF_RESETINFO_RESETREAS_GLOBAL_NFC_MASK,
     NRFX_RESET_REASON_VBUS_MASK             = NRF_RESETINFO_RESETREAS_GLOBAL_VUSB_MASK,
+    /** @endcond */
 #if NRFX_RESET_REASON_HAS_LOCAL_DOG
     NRFX_RESET_REASON_LOCAL_DOG_MASK        = NRF_RESETINFO_RESETREAS_LOCAL_DOG_MASK
-                                              << NRFX_RESET_REASON_LOCAL_OFFSET,
+                                              << NRFX_RESET_REASON_LOCAL_OFFSET,             /**< Reset from the local watchdog timer detected */
 #endif
 #if NRFX_RESET_REASON_HAS_LOCAL_DOG0
     NRFX_RESET_REASON_LOCAL_DOG0_MASK       = NRF_RESETINFO_RESETREAS_LOCAL_WDT0_MASK
-                                              << NRFX_RESET_REASON_LOCAL_OFFSET,
+                                              << NRFX_RESET_REASON_LOCAL_OFFSET,             /**< Reset from the local watchdog timer 0 detected */
 #endif
 #if NRFX_RESET_REASON_HAS_LOCAL_DOG1
     NRFX_RESET_REASON_LOCAL_DOG1_MASK       = NRF_RESETINFO_RESETREAS_LOCAL_WDT1_MASK
-                                              << NRFX_RESET_REASON_LOCAL_OFFSET,
+                                              << NRFX_RESET_REASON_LOCAL_OFFSET,             /**< Reset from the local watchdog timer 1 detected.  */
 #endif
     NRFX_RESET_REASON_LOCAL_SREQ_MASK       = NRF_RESETINFO_RESETREAS_LOCAL_SREQ_MASK
-                                              << NRFX_RESET_REASON_LOCAL_OFFSET,
+                                              << NRFX_RESET_REASON_LOCAL_OFFSET,             /**< Reset from the local soft reset request detected. */
     NRFX_RESET_REASON_LOCAL_LOCKUP_MASK     = NRF_RESETINFO_RESETREAS_LOCAL_LOCKUP_MASK
-                                              << NRFX_RESET_REASON_LOCAL_OFFSET,
+                                              << NRFX_RESET_REASON_LOCAL_OFFSET,             /**< Reset from local CPU lockup detected. */
     NRFX_RESET_REASON_LOCAL_UNRETAINED_MASK = NRF_RESETINFO_RESETREAS_LOCAL_UNRETAINED_MASK
-                                              << NRFX_RESET_REASON_LOCAL_OFFSET,
-#elif defined(NRF_POWER)
-    NRFX_RESET_REASON_RESETPIN_MASK     = NRF_POWER_RESETREAS_RESETPIN_MASK,
-    NRFX_RESET_REASON_DOG_MASK          = NRF_POWER_RESETREAS_DOG_MASK,
-    NRFX_RESET_REASON_SREQ_MASK         = NRF_POWER_RESETREAS_SREQ_MASK,
-    NRFX_RESET_REASON_LOCKUP_MASK       = NRF_POWER_RESETREAS_LOCKUP_MASK,
-    NRFX_RESET_REASON_OFF_MASK          = NRF_POWER_RESETREAS_OFF_MASK,
+                                              << NRFX_RESET_REASON_LOCAL_OFFSET,             /**< Reset due to wake from unretained state. */
+#endif
+#if NRFX_RESET_REASON_PERIPH_POWER
+    /** @cond */
+    NRFX_RESET_REASON_RESETPIN_MASK         = NRF_POWER_RESETREAS_RESETPIN_MASK,
+    NRFX_RESET_REASON_DOG_MASK              = NRF_POWER_RESETREAS_DOG_MASK,
+    NRFX_RESET_REASON_SREQ_MASK             = NRF_POWER_RESETREAS_SREQ_MASK,
+    NRFX_RESET_REASON_LOCKUP_MASK           = NRF_POWER_RESETREAS_LOCKUP_MASK,
+    NRFX_RESET_REASON_OFF_MASK              = NRF_POWER_RESETREAS_OFF_MASK,
 #if NRFX_RESET_REASON_HAS_CTRLAP
-    NRFX_RESET_REASON_CTRLAP_MASK       = NRF_POWER_RESETREAS_CTRLAP_MASK,
+    NRFX_RESET_REASON_CTRLAP_MASK           = NRF_POWER_RESETREAS_CTRLAP_MASK,
 #endif
 #if NRFX_RESET_REASON_HAS_LPCOMP
-    NRFX_RESET_REASON_LPCOMP_MASK       = NRF_POWER_RESETREAS_LPCOMP_MASK,
+    NRFX_RESET_REASON_LPCOMP_MASK           = NRF_POWER_RESETREAS_LPCOMP_MASK,
 #endif
-    NRFX_RESET_REASON_DIF_MASK          = NRF_POWER_RESETREAS_DIF_MASK,
+    NRFX_RESET_REASON_DIF_MASK              = NRF_POWER_RESETREAS_DIF_MASK,
 #if NRFX_RESET_REASON_HAS_NFC
-    NRFX_RESET_REASON_NFC_MASK          = NRF_POWER_RESETREAS_NFC_MASK,
+    NRFX_RESET_REASON_NFC_MASK              = NRF_POWER_RESETREAS_NFC_MASK,
 #endif
 #if NRFX_RESET_REASON_HAS_VBUS
-    NRFX_RESET_REASON_VBUS_MASK         = NRF_POWER_RESETREAS_VBUS_MASK,
+    NRFX_RESET_REASON_VBUS_MASK             = NRF_POWER_RESETREAS_VBUS_MASK,
 #endif
-#else
+    /** @endcond */
+#endif
+#if !NRFX_RESET_REASON_PERIPH_RESET && ! NRFX_RESET_REASON_PERIPH_RESETINFO && \
+      !NRFX_RESET_REASON_PERIPH_POWER
 #error "Unsupported device"
 #endif
 } nrfx_reset_reason_mask_t;

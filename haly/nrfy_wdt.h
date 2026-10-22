@@ -245,6 +245,15 @@ NRFY_STATIC_INLINE void nrfy_wdt_behaviour_set(NRF_WDT_Type * p_reg, uint32_t ma
     nrf_barrier_w();
 }
 
+/** @refhal{nrf_wdt_behaviour_get} */
+NRFY_STATIC_INLINE uint32_t nrfy_wdt_behaviour_get(NRF_WDT_Type const * p_reg)
+{
+    nrf_barrier_rw();
+    uint32_t configuration = nrf_wdt_behaviour_get(p_reg);
+    nrf_barrier_r();
+    return configuration;
+}
+
 /** @refhal{nrf_wdt_started_check} */
 NRFY_STATIC_INLINE bool nrfy_wdt_started_check(NRF_WDT_Type const * p_reg)
 {

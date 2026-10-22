@@ -297,6 +297,8 @@ void nrfx_grtc_channel_callback_set(uint8_t                channel,
                                     nrfx_grtc_cc_handler_t handler,
                                     void *                 p_context)
 {
+    NRFX_ASSERT(channel < NRF_GRTC_SYSCOUNTER_CC_COUNT);
+
     uint8_t ch_data_idx = m_cb.ch_to_data[channel];
 
     m_cb.channel_data[ch_data_idx].handler = handler;

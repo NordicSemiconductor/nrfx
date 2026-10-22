@@ -61,7 +61,7 @@ typedef struct
     nrf_lpcomp_ref_t    reference;          ///< Reference selection.
     nrfx_analog_input_t ext_ref;            ///< External analog reference selection.
     nrf_lpcomp_detect_t detection;          ///< Detection type.
-#if NRF_LPCOMP_HAS_HYST
+#if NRF_LPCOMP_HAS_HYST || defined(__NRFX_DOXYGEN__)
     nrf_lpcomp_hyst_t   hyst;               ///< Comparator hysteresis.
 #endif
     nrfx_analog_input_t input;              ///< Input to be monitored.

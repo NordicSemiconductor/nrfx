@@ -146,6 +146,7 @@ typedef struct
  *
  * @retval 0         Initialization was successful.
  * @retval -EALREADY The driver is already initialized.
+ * @retval -EPERM    The running watchdog configuration does not allow stopping.
  */
 int nrfx_wdt_init(nrfx_wdt_t *              p_instance,
                   nrfx_wdt_config_t const * p_config,

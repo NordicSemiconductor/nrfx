@@ -103,6 +103,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define STMDATA_PRESENT 1
 #define STMDATA_COUNT 1
 
+#define STMDATA_START_ADDRESS 0xA0000000             /*!< STM Data region start address: 0xA0000000                            */
+
 /*TDDCONF*/
 #define TDDCONF_PRESENT 1
 #define TDDCONF_COUNT 1
@@ -190,9 +192,11 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GRTC_CLKSELLFLPRC 1                          /*!< The CLKCFG.CLKSEL register supports LFLPRC.                          */
 #define GRTC_CCADD_WRITE_ONLY 1                      /*!< The CC[n].CCADD register has write access only.                      */
 #define GRTC_READY_STATUS_AND_EVENTS 1               /*!< The ready status and events are available.                           */
+#define GRTC_MULTIINTERVAL 0                         /*!< (unspecified)                                                        */
+#define GRTC_STATUSDEBUGREG 0                        /*!< (unspecified)                                                        */
 #define GRTC_SYSCOUNTER_LOADED_STATUS 1              /*!< SYSCOUNTER[n].SYSCOUNTERH.LOADED status is available                 */
 #define GRTC_CC_PAST_STATUS 1                        /*!< CC[n].CCEN.PASTCC status is available                                */
-#define GRTC_SYSCOUNTER_WRITEABLE 0                  /*!< (unspecified)                                                        */
+#define GRTC_SYSCOUNTER_WRITEABLE 1                  /*!< (unspecified)                                                        */
 
 /*BELLBOARD public registers*/
 #define BELLBOARDPUBLIC_PRESENT 1
@@ -664,74 +668,84 @@ POSSIBILITY OF SUCH DAMAGE.
 #define GPIO_PRESENT 1
 #define GPIO_COUNT 6
 
-#define P0_CTRLSEL_MAP1 1                            /*!< (unspecified)                                                        */
+#define P0_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP2 0                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP4 0                            /*!< (unspecified)                                                        */
 #define P0_CTRLSEL_MAP5 0                            /*!< (unspecified)                                                        */
+#define P0_CTRLSEL_MAP_GENERIC 1                     /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_MAX 4                             /*!< (unspecified)                                                        */
 #define P0_PIN_NUM_SIZE 5                            /*!< (unspecified)                                                        */
 #define P0_FEATURE_PINS_PRESENT 0x0000001FUL         /*!< (unspecified)                                                        */
-#define P0_FEATURE_I5_LIBRARY 0                      /*!< (unspecified)                                                        */
+#define P0_FEATURE_I5_LIBRARY 1                      /*!< (unspecified)                                                        */
 #define P0_PIN_SENSE_MECHANISM 1                     /*!< I/O pins on this port have pin sense mechanism                       */
 #define P0_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P0_WEAKPU 0                                  /*!< (unspecified)                                                        */
 #define P0_RETAIN 1                                  /*!< (unspecified)                                                        */
 #define P0_PWRCTRL 0                                 /*!< (unspecified)                                                        */
 #define P0_SLEWMODE 0                                /*!< (unspecified)                                                        */
-#define P0_PULLSTR 0                                 /*!< (unspecified)                                                        */
+#define P0_PULLSTR 1                                 /*!< Supports pull-up or pull-down strength configuration through PIN_CNF
+                                                          register.*/
 #define P0_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P0_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P0_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P0_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
-#define P1_CTRLSEL_MAP1 1                            /*!< (unspecified)                                                        */
+#define P1_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP2 0                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP4 0                            /*!< (unspecified)                                                        */
 #define P1_CTRLSEL_MAP5 0                            /*!< (unspecified)                                                        */
+#define P1_CTRLSEL_MAP_GENERIC 1                     /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_MAX 11                            /*!< (unspecified)                                                        */
 #define P1_PIN_NUM_SIZE 12                           /*!< (unspecified)                                                        */
 #define P1_FEATURE_PINS_PRESENT 0x00000FFFUL         /*!< (unspecified)                                                        */
-#define P1_FEATURE_I5_LIBRARY 0                      /*!< (unspecified)                                                        */
+#define P1_FEATURE_I5_LIBRARY 1                      /*!< (unspecified)                                                        */
 #define P1_PIN_SENSE_MECHANISM 1                     /*!< I/O pins on this port have pin sense mechanism                       */
 #define P1_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P1_WEAKPU 0                                  /*!< (unspecified)                                                        */
 #define P1_RETAIN 1                                  /*!< (unspecified)                                                        */
 #define P1_PWRCTRL 0                                 /*!< (unspecified)                                                        */
 #define P1_SLEWMODE 0                                /*!< (unspecified)                                                        */
-#define P1_PULLSTR 0                                 /*!< (unspecified)                                                        */
-#define P1_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
+#define P1_PULLSTR 1                                 /*!< Supports pull-up or pull-down strength configuration through PIN_CNF
+                                                          register.*/
+#define P1_SUPPORT_1V2 1                             /*!< Supports 1V2 operation.                                              */
 #define P1_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P1_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P1_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
-#define P2_CTRLSEL_MAP1 1                            /*!< (unspecified)                                                        */
+#define P2_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P2_CTRLSEL_MAP2 0                            /*!< (unspecified)                                                        */
 #define P2_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P2_CTRLSEL_MAP4 0                            /*!< (unspecified)                                                        */
 #define P2_CTRLSEL_MAP5 0                            /*!< (unspecified)                                                        */
+#define P2_CTRLSEL_MAP_GENERIC 1                     /*!< (unspecified)                                                        */
 #define P2_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P2_PIN_NUM_MAX 9                             /*!< (unspecified)                                                        */
 #define P2_PIN_NUM_SIZE 10                           /*!< (unspecified)                                                        */
 #define P2_FEATURE_PINS_PRESENT 0x000003FFUL         /*!< (unspecified)                                                        */
-#define P2_FEATURE_I5_LIBRARY 0                      /*!< (unspecified)                                                        */
+#define P2_FEATURE_I5_LIBRARY 1                      /*!< (unspecified)                                                        */
 #define P2_PIN_SENSE_MECHANISM 1                     /*!< I/O pins on this port have pin sense mechanism                       */
 #define P2_DRIVECTRL 0                               /*!< (unspecified)                                                        */
 #define P2_WEAKPU 0                                  /*!< (unspecified)                                                        */
 #define P2_RETAIN 1                                  /*!< (unspecified)                                                        */
 #define P2_PWRCTRL 0                                 /*!< (unspecified)                                                        */
 #define P2_SLEWMODE 0                                /*!< (unspecified)                                                        */
-#define P2_PULLSTR 0                                 /*!< (unspecified)                                                        */
-#define P2_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
+#define P2_PULLSTR 1                                 /*!< Supports pull-up or pull-down strength configuration through PIN_CNF
+                                                          register.*/
+#define P2_SUPPORT_1V2 1                             /*!< Supports 1V2 operation.                                              */
 #define P2_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P2_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P2_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
-#define P5_CTRLSEL_MAP1 1                            /*!< (unspecified)                                                        */
+#define P5_CTRLSEL_MAP1 0                            /*!< (unspecified)                                                        */
 #define P5_CTRLSEL_MAP2 0                            /*!< (unspecified)                                                        */
 #define P5_CTRLSEL_MAP3 0                            /*!< (unspecified)                                                        */
 #define P5_CTRLSEL_MAP4 0                            /*!< (unspecified)                                                        */
 #define P5_CTRLSEL_MAP5 0                            /*!< (unspecified)                                                        */
+#define P5_CTRLSEL_MAP_GENERIC 1                     /*!< (unspecified)                                                        */
 #define P5_PIN_NUM_MIN 0                             /*!< (unspecified)                                                        */
 #define P5_PIN_NUM_MAX 5                             /*!< (unspecified)                                                        */
 #define P5_PIN_NUM_SIZE 6                            /*!< (unspecified)                                                        */
@@ -747,12 +761,14 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P5_SUPPORT_1V2 0                             /*!< (unspecified)                                                        */
 #define P5_PIN_OWNER_SEC 0                           /*!< (unspecified)                                                        */
 #define P5_BIASCTRL 0                                /*!< (unspecified)                                                        */
+#define P5_PHASEPOLARITY 0                           /*!< (unspecified)                                                        */
 
-#define P10_CTRLSEL_MAP1 1                           /*!< (unspecified)                                                        */
+#define P10_CTRLSEL_MAP1 0                           /*!< (unspecified)                                                        */
 #define P10_CTRLSEL_MAP2 0                           /*!< (unspecified)                                                        */
 #define P10_CTRLSEL_MAP3 0                           /*!< (unspecified)                                                        */
 #define P10_CTRLSEL_MAP4 0                           /*!< (unspecified)                                                        */
 #define P10_CTRLSEL_MAP5 0                           /*!< (unspecified)                                                        */
+#define P10_CTRLSEL_MAP_GENERIC 1                    /*!< (unspecified)                                                        */
 #define P10_PIN_NUM_MIN 0                            /*!< (unspecified)                                                        */
 #define P10_PIN_NUM_MAX 7                            /*!< (unspecified)                                                        */
 #define P10_PIN_NUM_SIZE 8                           /*!< (unspecified)                                                        */
@@ -768,27 +784,31 @@ POSSIBILITY OF SUCH DAMAGE.
 #define P10_SUPPORT_1V2 0                            /*!< (unspecified)                                                        */
 #define P10_PIN_OWNER_SEC 0                          /*!< (unspecified)                                                        */
 #define P10_BIASCTRL 0                               /*!< (unspecified)                                                        */
+#define P10_PHASEPOLARITY 0                          /*!< (unspecified)                                                        */
 
-#define P12_CTRLSEL_MAP1 1                           /*!< (unspecified)                                                        */
+#define P12_CTRLSEL_MAP1 0                           /*!< (unspecified)                                                        */
 #define P12_CTRLSEL_MAP2 0                           /*!< (unspecified)                                                        */
 #define P12_CTRLSEL_MAP3 0                           /*!< (unspecified)                                                        */
 #define P12_CTRLSEL_MAP4 0                           /*!< (unspecified)                                                        */
 #define P12_CTRLSEL_MAP5 0                           /*!< (unspecified)                                                        */
+#define P12_CTRLSEL_MAP_GENERIC 1                    /*!< (unspecified)                                                        */
 #define P12_PIN_NUM_MIN 0                            /*!< (unspecified)                                                        */
 #define P12_PIN_NUM_MAX 2                            /*!< (unspecified)                                                        */
 #define P12_PIN_NUM_SIZE 3                           /*!< (unspecified)                                                        */
 #define P12_FEATURE_PINS_PRESENT 0x00000007UL        /*!< (unspecified)                                                        */
-#define P12_FEATURE_I5_LIBRARY 0                     /*!< (unspecified)                                                        */
+#define P12_FEATURE_I5_LIBRARY 1                     /*!< (unspecified)                                                        */
 #define P12_PIN_SENSE_MECHANISM 1                    /*!< I/O pins on this port have pin sense mechanism                       */
 #define P12_DRIVECTRL 0                              /*!< (unspecified)                                                        */
 #define P12_WEAKPU 0                                 /*!< (unspecified)                                                        */
 #define P12_RETAIN 1                                 /*!< (unspecified)                                                        */
 #define P12_PWRCTRL 0                                /*!< (unspecified)                                                        */
 #define P12_SLEWMODE 0                               /*!< (unspecified)                                                        */
-#define P12_PULLSTR 0                                /*!< (unspecified)                                                        */
+#define P12_PULLSTR 1                                /*!< Supports pull-up or pull-down strength configuration through PIN_CNF
+                                                          register.*/
 #define P12_SUPPORT_1V2 0                            /*!< (unspecified)                                                        */
 #define P12_PIN_OWNER_SEC 0                          /*!< (unspecified)                                                        */
 #define P12_BIASCTRL 0                               /*!< (unspecified)                                                        */
+#define P12_PHASEPOLARITY 0                          /*!< (unspecified)                                                        */
 
 /*AUXPLL*/
 #define AUXPLL_PRESENT 1
@@ -802,6 +822,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_BURSTREG 1                             /*!< (unspecified)                                                        */
 #define SAADC_PSEL_V2 1                              /*!< (unspecified)                                                        */
 #define SAADC_TASKS_CALIBRATEGAIN 1                  /*!< (unspecified)                                                        */
+#define SAADC_PSELP_MEASURE_0V8_1V8 0                /*!< (unspecified)                                                        */
 #define SAADC_SAMPLERATE_CC_VALUERANGE_MIN 4         /*!< (unspecified)                                                        */
 #define SAADC_SAMPLERATE_CC_VALUERANGE_MAX 2047      /*!< (unspecified)                                                        */
 #define SAADC_SAMPLERATE_CC_VALUERANGE_SIZE 2048     /*!< (unspecified)                                                        */
@@ -812,6 +833,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #define SAADC_TCONV_VALUE_RANGE_MAX 7                /*!< (unspecified)                                                        */
 #define SAADC_TCONV_VALUE_RANGE_SIZE 8               /*!< (unspecified)                                                        */
 #define SAADC_HAS_EVENTSCANDONE 0                    /*!< (unspecified)                                                        */
+#define SAADC_AVSS_PUBLIC 1                          /*!< AVSS (analog ground) option in PSELN.TEST field is public            */
 #define SAADC_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< CURRENTAMOUNT register not included.                             */
 
 /*Temperature Sensor*/
@@ -834,6 +856,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define PDM_PDMV2 1                                  /*!< (unspecified)                                                        */
 #define PDM_PCLK24M 0                                /*!< (unspecified)                                                        */
 #define PDM_AUDIOPLL 1                               /*!< (unspecified)                                                        */
+#define PDM_PCLK32M 0                                /*!< (unspecified)                                                        */
+#define PDM_PCLK16M 1                                /*!< (unspecified)                                                        */
 #define PDM_EASYDMA_CURRENT_AMOUNT_REGISTER_INCLUDED 0 /*!< (unspecified)                                                      */
 
 /*Pulse width modulation unit*/

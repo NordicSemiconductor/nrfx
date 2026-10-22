@@ -128,6 +128,13 @@ extern "C" {
 #define NRF_UICR_HAS_OTP 0
 #endif
 
+#if defined(UICR_KEYSLOT_CONFIG_DEST_DEST_Msk) || defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether KMU key slots are present.*/
+#define NRF_UICR_HAS_KMU_KEYSLOTS 1
+#else
+#define NRF_UICR_HAS_KMU_KEYSLOTS 0
+#endif
+
 /** @brief Number of memory blocks. */
 #define NRF_UICR_MEM_COUNT         UICR_MEM_MaxCount
 
@@ -156,6 +163,11 @@ extern "C" {
 
 /** @brief Number of MAILBOXes. */
 #define NRF_UICR_MAILBOX_COUNT     UICR_MAILBOX_MaxCount
+
+#if NRF_UICR_HAS_OTP
+/** @brief Number of 32-bit words in the OTP area. */
+#define NRF_UICR_OTP_COUNT         UICR_OTP_MaxCount
+#endif
 
 /** @brief Immutable boot region permissions bitmask. */
 #define NRF_UICR_BOOTCONF_PERM_MASK (UICR_BOOTCONF_READ_Msk | \
@@ -315,6 +327,23 @@ typedef struct
 } nrf_uicr_boot_region_config_t;
 #endif
 
+#if NRF_UICR_HAS_KMU_KEYSLOTS
+/** @brief Key slot possible states. */
+typedef enum
+{
+    NRF_UICR_KEYSLOT_PERM_STATE_REVOKED = UICR_KEYSLOT_CONFIG_PERM_STATE_Revoked, /**< Key slot is in revoked state. */
+    NRF_UICR_KEYSLOT_PERM_STATE_ACTIVE  = UICR_KEYSLOT_CONFIG_PERM_STATE_Active,  /**< Key slot is active. */
+} nrf_uicr_keyslot_perm_state_t;
+
+/** @brief Key slot possible permissions. */
+typedef enum
+{
+    NRF_UICR_KEYSLOT_WRITE_ENABLE = UICR_KEYSLOT_CONFIG_PERM_WRITE_Msk, /**< Write enable. */
+    NRF_UICR_KEYSLOT_READ_ENABLE  = UICR_KEYSLOT_CONFIG_PERM_READ_Msk,  /**< Read enable. */
+    NRF_UICR_KEYSLOT_PUSH_ENABLE  = UICR_KEYSLOT_CONFIG_PERM_PUSH_Msk,  /**< Push enable. */
+} nrf_uicr_keyslot_perm_permisions_t;
+#endif
+
 /**
  * @brief Function for checking whether the specified range of addresses fits in UICR.
  *
@@ -328,6 +357,33 @@ typedef struct
 NRF_STATIC_INLINE bool nrf_uicr_fits_check(NRF_UICR_Type const * p_reg,
                                            uint32_t              addr,
                                            uint32_t              len_bytes);
+
+#if NRF_UICR_HAS_OTP
+/**
+ * @brief Function for checking whether the specified range of addresses fits in the OTP area.
+ *
+ * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
+ * @param[in] addr      Starting address of the range to be checked.
+ * @param[in] len_bytes Length of the range to be checked in bytes.
+ *
+ * @retval true  Range fits in the OTP area.
+ * @retval false Range doesn't fit in the OTP area.
+ */
+NRF_STATIC_INLINE bool nrf_uicr_otp_fits_check(NRF_UICR_Type const * p_reg,
+                                               uint32_t              addr,
+                                               uint32_t              len_bytes);
+
+/**
+ * @brief Function for getting the address of the specified word in the OTP area.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ * @param[in] index Index of the word in the OTP area.
+ *
+ * @return Address of the specified OTP word.
+ */
+NRF_STATIC_INLINE uint32_t nrf_uicr_otp_address_get(NRF_UICR_Type const * p_reg,
+                                                    uint32_t              index);
+#endif
 
 #if NRF_UICR_HAS_MEM_CONFIG
 /**
@@ -520,6 +576,138 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_gpio_ctrlsel_get(NRF_UICREXTENDED_Type const
                                                      uint32_t                      pin_number);
 #endif
 
+#if NRF_UICR_HAS_KMU_KEYSLOTS
+/**
+ * @brief Function for setting the DEST configuration for the specified key slot number.
+ *
+ * @note Requires enabled writing to non-volatile memory.
+ *
+ * @note Writing more than once to the same @p slot_idx will block the KMU if the value to be
+ *       written is different from the existing value.
+ *
+ * @warning @p slot_idx is the KMU slot ID decremented by 1.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] slot_idx Key slot index.
+ * @param[in] dest     Destination address to be written.
+ */
+NRF_STATIC_INLINE void nrf_uicr_keyslot_config_dest_set(NRF_UICR_Type * p_reg,
+                                                        uint32_t        slot_idx,
+                                                        uint32_t        dest);
+
+/**
+ * @brief Function for getting the DEST configuration for the specified key slot index.
+ *
+ * @warning @p slot_idx is the KMU slot ID decremented by 1.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] slot_idx Key slot index.
+ *
+ * @return Value of DEST configuration field.
+ */
+NRF_STATIC_INLINE uint32_t nrf_uicr_keyslot_config_dest_get(NRF_UICR_Type const * p_reg,
+                                                            uint32_t              slot_idx);
+
+/**
+ * @brief Function for setting the PERM permissions configuration for the specified key slot index.
+ *
+ * @warning @p slot_idx is the KMU slot ID decremented by 1.
+ *
+ * @note Requires enabled writing to non-volatile memory.
+ *
+ * @note Writing more than once to the same @p slot_idx will block the KMU if the value to be
+ *       written is different from the existing value.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] slot_idx Key slot index.
+ * @param[in] mask     Permissions mask constructed from @ref nrf_uicr_keyslot_perm_permisions_t
+ *                     values.
+ */
+NRF_STATIC_INLINE void nrf_uicr_keyslot_config_perm_permissions_set(NRF_UICR_Type * p_reg,
+                                                                    uint32_t        slot_idx,
+                                                                    uint32_t        mask);
+
+/**
+ * @brief Function for getting the PERM permissions configuration for the specified key slot index.
+ *
+ * @warning @p slot_idx is the KMU slot ID decremented by 1.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] slot_idx Key slot index.
+ *
+ * @return PERM permissions configuration constructed from @ref nrf_uicr_keyslot_perm_permisions_t
+ *         values.
+ */
+NRF_STATIC_INLINE
+uint32_t nrf_uicr_keyslot_config_perm_permissions_get(NRF_UICR_Type const * p_reg,
+                                                      uint32_t              slot_idx);
+
+/**
+ * @brief Function for setting the PERM state configuration for the specified key slot index.
+ *
+ * @warning @p slot_idx is the KMU slot ID decremented by 1.
+ *
+ * @note Requires enabled writing to non-volatile memory.
+ *
+ * @note Writing more than once to the same @p slot_idx will block the KMU if the value to be
+ *       written is different from the existing value.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] slot_idx Key slot index.
+ * @param[in] state    PERM state value.
+ */
+NRF_STATIC_INLINE
+void nrf_uicr_keyslot_config_perm_state_set(NRF_UICR_Type *                p_reg,
+                                            uint32_t                       slot_idx,
+                                            nrf_uicr_keyslot_perm_state_t state);
+
+/**
+ * @brief Function for getting the PERM state configuration for the specified key slot index.
+ *
+ * @warning @p slot_idx is the KMU slot ID decremented by 1.
+ *
+ * @param[in] p_reg    Pointer to the structure of registers of the peripheral.
+ * @param[in] slot_idx Key slot index.
+ *
+ * @return Value of PERM state configuration.
+ */
+NRF_STATIC_INLINE nrf_uicr_keyslot_perm_state_t
+nrf_uicr_keyslot_config_perm_state_get(NRF_UICR_Type const * p_reg,
+                                       uint32_t              slot_idx);
+
+/**
+ * @brief Function for setting the key value for the specified key slot index and value index.
+ *
+ * @warning @p slot_idx is the KMU slot ID decremented by 1.
+ *
+ * @note Requires enabled writing to non-volatile memory.
+ *
+ * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
+ * @param[in] slot_idx  Key slot index.
+ * @param[in] value     Value to be written.
+ * @param[in] value_idx Value index.
+ */
+NRF_STATIC_INLINE void nrf_uicr_keyslot_key_value_set(NRF_UICR_Type * p_reg,
+                                                      uint32_t        slot_idx,
+                                                      uint32_t        value,
+                                                      uint32_t        value_idx);
+
+/**
+ * @brief Function for getting the key value for the specified key slot index and value index.
+ *
+ * @warning @p slot_idx is the KMU slot ID decremented by 1.
+ *
+ * @param[in] p_reg     Pointer to the structure of registers of the peripheral.
+ * @param[in] slot_idx  Key slot index.
+ * @param[in] value_idx Value index.
+ *
+ * @return Key value.
+ */
+NRF_STATIC_INLINE uint32_t nrf_uicr_keyslot_key_value_get(NRF_UICR_Type const * p_reg,
+                                                          uint32_t              slot_idx,
+                                                          uint32_t              value_idx);
+#endif
+
 #ifndef NRF_DECLARE_ONLY
 
 NRF_STATIC_INLINE bool nrf_uicr_fits_check(NRF_UICR_Type const * p_reg,
@@ -533,11 +721,38 @@ NRF_STATIC_INLINE bool nrf_uicr_fits_check(NRF_UICR_Type const * p_reg,
     return ((addr - (uint32_t)p_reg) < sizeof(NRF_UICR_Type)) &&
            (len_bytes <= ((uint32_t)p_reg + sizeof(NRF_UICR_Type) - addr));
 #else
+    (void)p_reg;
     (void)addr;
     (void)len_bytes;
     return false;
 #endif
 }
+
+#if NRF_UICR_HAS_OTP
+NRF_STATIC_INLINE bool nrf_uicr_otp_fits_check(NRF_UICR_Type const * p_reg,
+                                               uint32_t              addr,
+                                               uint32_t              len_bytes)
+{
+#if !defined(NRF_TRUSTZONE_NONSECURE)
+    uint32_t otp_start = (uint32_t)&p_reg->OTP[0];
+    uint32_t otp_end   = otp_start + sizeof(p_reg->OTP);
+
+    return (addr >= otp_start) && (addr < otp_end) && (len_bytes <= (otp_end - addr));
+#else
+    (void)p_reg;
+    (void)addr;
+    (void)len_bytes;
+    return false;
+#endif
+}
+
+NRF_STATIC_INLINE uint32_t nrf_uicr_otp_address_get(NRF_UICR_Type const * p_reg,
+                                                    uint32_t              index)
+{
+    NRFX_ASSERT(index < NRF_UICR_OTP_COUNT);
+    return (uint32_t)&p_reg->OTP[index];
+}
+#endif
 
 #if NRF_UICR_HAS_MEM_CONFIG
 NRF_STATIC_INLINE nrf_uicr_mem_config_t nrf_uicr_mem_config_get(NRF_UICR_Type const * p_reg,
@@ -838,6 +1053,80 @@ NRF_STATIC_INLINE uint32_t nrf_uicr_gpio_ctrlsel_get(NRF_UICREXTENDED_Type const
     uint32_t pin  = NRF_PIN_NUMBER_TO_PIN(pin_number);
     NRFX_ASSERT(port < NRF_UICR_GPIO_COUNT);
     return p_reg->GPIO[port].PIN[pin].CTRLSEL;
+}
+#endif
+
+#if NRF_UICR_HAS_KMU_KEYSLOTS
+NRF_STATIC_INLINE void nrf_uicr_keyslot_config_dest_set(NRF_UICR_Type * p_reg,
+                                                        uint32_t        slot_idx,
+                                                        uint32_t        dest)
+{
+    NRFX_ASSERT(slot_idx < KMU_KEYSLOTNUM);
+    p_reg->KEYSLOT.CONFIG[(uint8_t)slot_idx].DEST = dest;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_uicr_keyslot_config_dest_get(NRF_UICR_Type const * p_reg,
+                                                            uint32_t              slot_idx)
+{
+    NRFX_ASSERT(slot_idx < KMU_KEYSLOTNUM);
+    return p_reg->KEYSLOT.CONFIG[(uint8_t)slot_idx].DEST;
+}
+
+NRF_STATIC_INLINE void nrf_uicr_keyslot_config_perm_permissions_set(NRF_UICR_Type * p_reg,
+                                                                    uint32_t        slot_idx,
+                                                                    uint32_t        mask)
+{
+    NRFX_ASSERT(slot_idx < KMU_KEYSLOTNUM);
+    p_reg->KEYSLOT.CONFIG[(uint8_t)slot_idx].PERM = (mask | (UICR_PERM_HALFWORD_DEFAULT_VAL << 16));
+}
+
+NRF_STATIC_INLINE
+uint32_t nrf_uicr_keyslot_config_perm_permissions_get(NRF_UICR_Type const * p_reg,
+                                                      uint32_t              slot_idx)
+{
+    NRFX_ASSERT(slot_idx < KMU_KEYSLOTNUM);
+
+    return (p_reg->KEYSLOT.CONFIG[(uint8_t)slot_idx].PERM & UICR_PERM_HALFWORD_DEFAULT_VAL);
+}
+
+NRF_STATIC_INLINE
+void nrf_uicr_keyslot_config_perm_state_set(NRF_UICR_Type *                p_reg,
+                                            uint32_t                       slot_idx,
+                                            nrf_uicr_keyslot_perm_state_t state)
+{
+    NRFX_ASSERT(slot_idx < KMU_KEYSLOTNUM);
+    p_reg->KEYSLOT.CONFIG[(uint8_t)slot_idx].PERM = (UICR_PERM_HALFWORD_DEFAULT_VAL |
+                                                     ((state <<UICR_KEYSLOT_CONFIG_PERM_STATE_Pos) &
+                                                      UICR_KEYSLOT_CONFIG_PERM_STATE_Msk));
+}
+
+
+NRF_STATIC_INLINE nrf_uicr_keyslot_perm_state_t
+nrf_uicr_keyslot_config_perm_state_get(NRF_UICR_Type const * p_reg,
+                                       uint32_t              slot_idx)
+{
+    NRFX_ASSERT(slot_idx < KMU_KEYSLOTNUM);
+
+    return (nrf_uicr_keyslot_perm_state_t)((p_reg->KEYSLOT.CONFIG[(uint8_t)slot_idx].PERM
+                                             & UICR_KEYSLOT_CONFIG_PERM_STATE_Msk) >>
+                                            UICR_KEYSLOT_CONFIG_PERM_STATE_Pos);
+}
+
+NRF_STATIC_INLINE void nrf_uicr_keyslot_key_value_set(NRF_UICR_Type * p_reg,
+                                                      uint32_t        slot_idx,
+                                                      uint32_t        value,
+                                                      uint32_t        value_idx)
+{
+    NRFX_ASSERT(slot_idx < KMU_KEYSLOTNUM);
+    p_reg->KEYSLOT.KEY[(uint8_t)slot_idx].VALUE[value_idx] = value;
+}
+
+NRF_STATIC_INLINE uint32_t nrf_uicr_keyslot_key_value_get(NRF_UICR_Type const * p_reg,
+                                                          uint32_t              slot_id,
+                                                          uint32_t              value_idx)
+{
+    NRFX_ASSERT(slot_id < KMU_KEYSLOTNUM);
+    return p_reg->KEYSLOT.KEY[(uint8_t)slot_id].VALUE[value_idx];
 }
 #endif
 

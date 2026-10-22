@@ -138,6 +138,14 @@ extern "C" {
 #define NRF_GPIO_HAS_PORT_IMPEDANCE 0
 #endif
 
+#if (defined(GPIO_PORTCNF_PWRCTRL_PWRCTRL_Msk) && NRFX_FEATURE_PRESENT(P, _PWRCTRL)) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Presence of port power control. */
+#define NRF_GPIO_HAS_PORT_PWRCTRL 1
+#else
+#define NRF_GPIO_HAS_PORT_PWRCTRL 0
+#endif
+
 #if defined(GPIO_RETAIN_ResetValue) || defined(__NRFX_DOXYGEN__)
 /** @brief Presence of register retention. */
 #define NRF_GPIO_HAS_RETENTION 1
@@ -325,6 +333,21 @@ typedef enum
     NRF_GPIO_PORT_IMPEDANCE_800_MASK  = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE800_Msk,  ///< Enable 800 Ohm impedance.
     NRF_GPIO_PORT_IMPEDANCE_1600_MASK = GPIO_PORTCNF_DRIVECTRL_IMPEDANCE1600_Msk, ///< Enable 1600 Ohm impedance.
 } nrf_gpio_port_impedance_mask_t;
+#endif
+
+#if NRF_GPIO_HAS_PORT_PWRCTRL
+/**
+ * @brief Port power control modes.
+ *
+ * @note The floating ground mode must match the voltage supplied to the port (VDDIO).
+ */
+typedef enum
+{
+    NRF_GPIO_PORT_PWRCTRL_OFF              = GPIO_PORTCNF_PWRCTRL_PWRCTRL_Off,            ///< Power off.
+    NRF_GPIO_PORT_PWRCTRL_FLOATING_GND_0V  = GPIO_PORTCNF_PWRCTRL_PWRCTRL_FloatingGND0V,  ///< Static floating GND connected to 0 V. Intended for VDDIO = 1.8 V.
+    NRF_GPIO_PORT_PWRCTRL_FLOATING_GND_1V8 = GPIO_PORTCNF_PWRCTRL_PWRCTRL_FloatingGND1V8, ///< Static floating GND connected to 1.8 V.
+    NRF_GPIO_PORT_PWRCTRL_FLOATING_GND_BUF = GPIO_PORTCNF_PWRCTRL_PWRCTRL_FloatingGNDBuf, ///< Buffered floating GND generating VDDIO - 1.8 V. Intended for VDDIO > 1.8 V.
+} nrf_gpio_port_pwrctrl_t;
 #endif
 
 #if NRF_GPIO_HAS_RETENTION
@@ -784,6 +807,46 @@ NRF_STATIC_INLINE void nrf_gpio_port_impedance_set(NRF_GPIO_Type * p_reg, uint32
  * @return Mask of impedances set, created using @ref nrf_gpio_port_impedance_mask_t.
  */
 NRF_STATIC_INLINE uint32_t nrf_gpio_port_impedance_get(NRF_GPIO_Type const * p_reg);
+#endif
+
+#if NRF_GPIO_HAS_PORT_PWRCTRL
+/**
+ * @brief Function for checking if the given port supports power control.
+ *
+ * @param p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @retval true  Port supports power control.
+ * @retval false Port does not support power control.
+ */
+NRF_STATIC_INLINE bool nrf_gpio_port_pwrctrl_check(NRF_GPIO_Type const * p_reg);
+
+/**
+ * @brief Function for setting the power control mode of the pins on the given port.
+ *
+ * @note Power control is available only on some ports.
+ *       Use @ref nrf_gpio_port_pwrctrl_check to check if the given port supports it.
+ *
+ * @warning This register is retained when retention is enabled.
+ *
+ * @param p_reg Pointer to the structure of registers of the peripheral.
+ * @param mode  Power control mode to be set.
+ */
+NRF_STATIC_INLINE void nrf_gpio_port_pwrctrl_set(NRF_GPIO_Type *         p_reg,
+                                                 nrf_gpio_port_pwrctrl_t mode);
+
+/**
+ * @brief Function for getting the power control mode of the pins on the given port.
+ *
+ * @note Power control is available only on some ports.
+ *       Use @ref nrf_gpio_port_pwrctrl_check to check if the given port supports it.
+ *
+ * @warning This register is retained when retention is enabled.
+ *
+ * @param p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Power control mode currently set.
+ */
+NRF_STATIC_INLINE nrf_gpio_port_pwrctrl_t nrf_gpio_port_pwrctrl_get(NRF_GPIO_Type const * p_reg);
 #endif
 
 #if NRF_GPIO_HAS_RETENTION
@@ -1464,6 +1527,37 @@ NRF_STATIC_INLINE void nrf_gpio_port_impedance_set(NRF_GPIO_Type * p_reg, uint32
 NRF_STATIC_INLINE uint32_t nrf_gpio_port_impedance_get(NRF_GPIO_Type const * p_reg)
 {
     return p_reg->PORTCNF.DRIVECTRL & NRF_GPIO_PORT_IMPEDANCE_ALL_MASK;
+}
+#endif
+
+#if NRF_GPIO_HAS_PORT_PWRCTRL
+NRF_STATIC_INLINE bool nrf_gpio_port_pwrctrl_check(NRF_GPIO_Type const * p_reg)
+{
+    uint32_t present = 0;
+
+    /* Generates an else-if per present port, setting present to P<n>_PWRCTRL on a match. */
+    if (0) {}
+    NRFX_FOREACH_PRESENT(P, NRF_INTERNAL_ELSE_IF_EXTRACT_1, (), (), present, _PWRCTRL, p_reg)
+
+    return present != 0;
+}
+
+NRF_STATIC_INLINE void nrf_gpio_port_pwrctrl_set(NRF_GPIO_Type *         p_reg,
+                                                 nrf_gpio_port_pwrctrl_t mode)
+{
+    NRFX_ASSERT(nrf_gpio_port_pwrctrl_check(p_reg));
+
+    p_reg->PORTCNF.PWRCTRL = ((p_reg->PORTCNF.PWRCTRL & ~GPIO_PORTCNF_PWRCTRL_PWRCTRL_Msk) |
+                              (((uint32_t)mode << GPIO_PORTCNF_PWRCTRL_PWRCTRL_Pos) &
+                               GPIO_PORTCNF_PWRCTRL_PWRCTRL_Msk));
+}
+
+NRF_STATIC_INLINE nrf_gpio_port_pwrctrl_t nrf_gpio_port_pwrctrl_get(NRF_GPIO_Type const * p_reg)
+{
+    NRFX_ASSERT(nrf_gpio_port_pwrctrl_check(p_reg));
+
+    return (nrf_gpio_port_pwrctrl_t)((p_reg->PORTCNF.PWRCTRL & GPIO_PORTCNF_PWRCTRL_PWRCTRL_Msk) >>
+                                     GPIO_PORTCNF_PWRCTRL_PWRCTRL_Pos);
 }
 #endif
 

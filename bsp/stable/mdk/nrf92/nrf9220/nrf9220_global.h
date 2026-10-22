@@ -73,8 +73,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define NRF_MICR_NS_BASE                  0x0FFF6000UL
 #define NRF_FICR_NS_BASE                  0x0FFFE000UL
-#define NRF_STMDATA_NS_BASE               0xA0000000UL
-#define NRF_STMDATA_S_BASE                0xA0000000UL
 #define NRF_TDDCONF_NS_BASE               0xBF001000UL
 #define NRF_TDDCONF_S_BASE                0xBF001000UL
 #define NRF_TSGEN_NS_BASE                 0xBF041000UL
@@ -223,8 +221,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define NRF_MICR_NS                       ((NRF_MICR_Type*)                     NRF_MICR_NS_BASE)
 #define NRF_FICR_NS                       ((NRF_FICR_Type*)                     NRF_FICR_NS_BASE)
-#define NRF_STMDATA_NS                    ((NRF_STMDATA_Type*)                  NRF_STMDATA_NS_BASE)
-#define NRF_STMDATA_S                     ((NRF_STMDATA_Type*)                  NRF_STMDATA_S_BASE)
 #define NRF_TDDCONF_NS                    ((NRF_TDDCONF_Type*)                  NRF_TDDCONF_NS_BASE)
 #define NRF_TDDCONF_S                     ((NRF_TDDCONF_Type*)                  NRF_TDDCONF_S_BASE)
 #define NRF_TSGEN_NS                      ((NRF_TSGEN_Type*)                    NRF_TSGEN_NS_BASE)
@@ -374,7 +370,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifdef NRF_TRUSTZONE_NONSECURE                       /*!< Remap NRF_X_NS instances to NRF_X symbol for ease of use.            */
   #define NRF_MICR                                NRF_MICR_NS
   #define NRF_FICR                                NRF_FICR_NS
-  #define NRF_STMDATA                             NRF_STMDATA_NS
   #define NRF_TDDCONF                             NRF_TDDCONF_NS
   #define NRF_TSGEN                               NRF_TSGEN_NS
   #define NRF_STM                                 NRF_STM_NS
@@ -457,7 +452,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #else                                                /*!< Remap NRF_X_S instances to NRF_X symbol for ease of use.             */
   #define NRF_MICR                                NRF_MICR_NS
   #define NRF_FICR                                NRF_FICR_NS
-  #define NRF_STMDATA                             NRF_STMDATA_S
   #define NRF_TDDCONF                             NRF_TDDCONF_S
   #define NRF_TSGEN                               NRF_TSGEN_NS
   #define NRF_STM                                 NRF_STM_NS

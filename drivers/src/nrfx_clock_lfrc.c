@@ -82,6 +82,10 @@ int nrfx_clock_lfrc_init(nrfx_clock_lfrc_event_handler_t event_handler)
     {
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
         m_clock_cb.cal_state = CAL_STATE_IDLE;
+#if NRF_LFRC_HAS_CALIBRATION
+        nrf_lfrc_int_disable(NRF_LFRC, NRF_LFRC_INT_CALDONE_MASK);
+        nrf_lfrc_event_clear(NRF_LFRC, NRF_LFRC_EVENT_CALDONE);
+#endif
 #endif
         m_clock_cb.event_handler = event_handler;
         m_clock_cb.module_initialized = true;
@@ -199,8 +203,11 @@ void nrfx_clock_lfrc_irq_handler(void)
     {
         nrf_lfrc_event_clear(NRF_LFRC, NRF_LFRC_EVENT_CALDONE);
         nrf_lfrc_int_disable(NRF_LFRC, NRF_LFRC_INT_CALDONE_MASK);
-        m_clock_cb.cal_state = CAL_STATE_IDLE;
-        m_clock_cb.event_handler(NRFX_CLOCK_LFRC_EVT_CAL_DONE);
+        if (m_clock_cb.cal_state == CAL_STATE_CAL)
+        {
+            m_clock_cb.cal_state = CAL_STATE_IDLE;
+            m_clock_cb.event_handler(NRFX_CLOCK_LFRC_EVT_CAL_DONE);
+        }
     }
 #endif
 }

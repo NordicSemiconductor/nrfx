@@ -39,6 +39,8 @@
 #define NRFX_LOG_MODULE MRAMC
 #include <nrfx_log.h>
 
+#define MRAMC_UICR_OTP_NVR_PAGE 2
+
 // Control block - driver instance local data.
 typedef struct
 {
@@ -47,18 +49,13 @@ typedef struct
 } mramc_control_block_t;
 static mramc_control_block_t m_cb;
 
-NRFX_STATIC_INLINE uint32_t mram_variant_get(NRF_FICR_Type const * p_reg)
-{
-    return p_reg->INFO.MRAM;
-}
-
 NRFX_STATIC_INLINE uint32_t total_memory_size_get(void)
 {
-    uint32_t size = mram_variant_get(NRF_FICR);
+    uint32_t size = nrf_ficr_nv_mem_info_get(NRF_FICR);
 
     if (size == FICR_INFO_MRAM_MRAM_Unspecified)
     {
-        return (uint32_t)FICR_INFO_MRAM_MRAM_Unspecified;
+        return (uint32_t)NRF_MEMORY_FLASH_SIZE;
     }
 
     return (size * 1024UL);
@@ -112,6 +109,20 @@ void nrfx_mramc_all_erase(void)
     {}
 }
 
+static bool otp_overlap_check(uint32_t address, uint32_t bytes)
+{
+#if NRF_UICR_HAS_OTP && !defined(NRF_TRUSTZONE_NONSECURE)
+    uint32_t otp_start = nrf_uicr_otp_address_get(NRF_UICR, 0);
+    uint32_t otp_end   = otp_start + (NRF_UICR_OTP_COUNT * NRFY_MRAMC_BYTES_IN_WORD);
+
+    return (bytes > 0) && (address < otp_end) && ((address + bytes) > otp_start);
+#else
+    (void)address;
+    (void)bytes;
+    return false;
+#endif
+}
+
 void nrfx_mramc_word_write(uint32_t address, uint32_t value)
 {
     NRFX_ASSERT((m_cb.state == NRFX_DRV_STATE_INITIALIZED) &&
@@ -119,7 +130,19 @@ void nrfx_mramc_word_write(uint32_t address, uint32_t value)
                 nrfx_mramc_fits_memory_check(address, true, NRFY_MRAMC_BYTES_IN_WORD) &&
                 nrfx_is_word_aligned((void const *)address));
 
+    bool otp = otp_overlap_check(address, NRFY_MRAMC_BYTES_IN_WORD);
+
+    if (otp)
+    {
+        nrfx_mramc_confignvr_perm_set(true, MRAMC_UICR_OTP_NVR_PAGE);
+    }
+
     nrfy_mramc_word_write(NRF_MRAMC, address, value);
+
+    if (otp)
+    {
+        nrfx_mramc_confignvr_perm_set(false, MRAMC_UICR_OTP_NVR_PAGE);
+    }
 }
 
 void nrfx_mramc_words_write(uint32_t address, void const * src, uint32_t num_words)
@@ -130,7 +153,33 @@ void nrfx_mramc_words_write(uint32_t address, void const * src, uint32_t num_wor
                 &&
                 nrfx_is_word_aligned((void const *)address));
 
+    bool otp = otp_overlap_check(address, num_words * NRFY_MRAMC_BYTES_IN_WORD);
+
+    if (otp)
+    {
+        nrfx_mramc_confignvr_perm_set(true, MRAMC_UICR_OTP_NVR_PAGE);
+    }
+
     nrfy_mramc_words_write(NRF_MRAMC, address, src, num_words);
+
+    if (otp)
+    {
+        nrfx_mramc_confignvr_perm_set(false, MRAMC_UICR_OTP_NVR_PAGE);
+    }
+}
+
+bool nrfx_mramc_word_writable_check(uint32_t address)
+{
+    NRFX_ASSERT(nrfx_mramc_valid_address_check(address, true) &&
+                nrfx_mramc_fits_memory_check(address, true, NRFY_MRAMC_BYTES_IN_WORD) &&
+                nrfx_is_word_aligned((void const *)address));
+
+    if (otp_overlap_check(address, NRFY_MRAMC_BYTES_IN_WORD))
+    {
+        return nrfy_mramc_word_read(address) == NRFY_MRAMC_WORD_AFTER_ERASED;
+    }
+
+    return true;
 }
 
 void nrfx_mramc_buffer_read(void * dst, uint32_t address, uint32_t num_bytes)

@@ -153,17 +153,17 @@ typedef struct
     nrf_spim_mode_t      mode;           ///< SPIM mode.
     nrf_spim_bit_order_t bit_order;      ///< SPIM bit order.
     nrf_gpio_pin_pull_t  miso_pull;      ///< MISO pull up configuration.
-#if NRF_SPIM_HAS_DCX
+#if NRF_SPIM_HAS_DCX || defined(__NRFX_DOXYGEN__)
     uint32_t             dcx_pin;        ///< D/CX pin number (optional).
 #endif
-#if NRF_SPIM_HAS_RXDELAY
+#if NRF_SPIM_HAS_RXDELAY || defined(__NRFX_DOXYGEN__)
     uint8_t              rx_delay;       ///< Sample delay for input serial data on MISO.
                                          /**< The value specifies the delay, in number of 64 MHz clock cycles
                                           *   (15.625 ns), from the the sampling edge of SCK (leading edge for
                                           *   CONFIG.CPHA = 0, trailing edge for CONFIG.CPHA = 1) until
                                           *   the input serial data is sampled. */
 #endif
-#if NRF_SPIM_HAS_HW_CSN
+#if NRF_SPIM_HAS_HW_CSN || defined(__NRFX_DOXYGEN__)
     bool                 use_hw_ss;      ///< Indication to use software or hardware controlled Slave Select pin.
     uint8_t              ss_duration;    ///< Slave Select duration before and after transmission.
                                          /**< Minimum duration between the edge of CSN and the edge of SCK.
@@ -399,7 +399,7 @@ int nrfx_spim_xfer(nrfx_spim_t *                 p_instance,
                    nrfx_spim_xfer_desc_t const * p_xfer_desc,
                    uint32_t                      flags);
 
-#if NRF_SPIM_HAS_DCX
+#if NRF_SPIM_HAS_DCX || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for starting the SPIM data transfer with DCX control.
  *

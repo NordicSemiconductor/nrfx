@@ -43,7 +43,7 @@ extern "C" {
 /* Analog pins definitions. */
 #ifndef ANALOG_REF_INTERNAL_VAL
 #if defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
-#define ANALOG_REF_INTERNAL_VAL 1350
+#define ANALOG_REF_INTERNAL_VAL 1335
 #elif defined(NRF9220_XXAA) || defined(NRF9230_ENGB_XXAA) ||  \
     defined(NRF54H20_XXAA) || defined(NRF7120_ENGA_XXAA) || \
     defined(NRF7120E_ENGA_XXAA) || defined(NRF7120_XXAA) || \
@@ -98,12 +98,6 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(10U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(11U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(12U, 1)
-#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
-    #define COMP_EXTERNAL_AIN_PSELS         \
-        NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1),  \
-        NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1),  \
-        NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1),  \
-        NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1)
 #elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
     defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     #define COMP_EXTERNAL_AIN_PSELS                     \
@@ -175,12 +169,6 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(10U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(11U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(12U, 1),
-#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
-    #define COMP_EXTERNAL_REF_PSELS        \
-        NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1), \
-        NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
-        NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1), \
-        NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1),
 #elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
     defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     #define COMP_EXTERNAL_REF_PSELS                      \
@@ -252,12 +240,6 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(10U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(11U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(12U, 1),
-#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
-    #define LPCOMP_EXTERNAL_AIN_PSELS      \
-        NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1), \
-        NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
-        NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1), \
-        NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1),
 #elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
     defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     #define LPCOMP_EXTERNAL_AIN_PSELS                      \
@@ -327,12 +309,6 @@ extern "C" {
         NRF_PIN_PORT_TO_PIN_NUMBER(10U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(11U, 1), \
         NRF_PIN_PORT_TO_PIN_NUMBER(12U, 1),
-#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
-    #define LPCOMP_EXTERNAL_REF_PSELS      \
-        NRF_PIN_PORT_TO_PIN_NUMBER(4U, 1), \
-        NRF_PIN_PORT_TO_PIN_NUMBER(5U, 1), \
-        NRF_PIN_PORT_TO_PIN_NUMBER(6U, 1), \
-        NRF_PIN_PORT_TO_PIN_NUMBER(7U, 1),
 #elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
     defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     #define LPCOMP_EXTERNAL_REF_PSELS                        \
@@ -452,7 +428,7 @@ extern "C" {
 
 #ifndef SAADC_TEST_AIN_PSELS
 #if defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
-    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
+    defined(NRF7120_XXAA) || defined(NRF7120E_XXAA) || defined(NRF9220_XXAA)
     #define SAADC_TEST_AIN_PSELS \
         NRF_SAADC_INPUT_AVSS
 #endif
@@ -509,6 +485,29 @@ extern "C" {
 #elif defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
     defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     #define SAADC_INTERNAL_AIN_PSELS  \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRF_SAADC_INPUT_INTERNAL0,    \
+        NRF_SAADC_INPUT_INTERNAL1,    \
+        NRF_SAADC_INPUT_INTERNAL2,    \
+        NRF_SAADC_INPUT_INTERNAL3,
+#elif defined(NRF9220_XXAA)
+    #define SAADC_INTERNAL_AIN_PSELS  \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
+        NRFX_SAADC_INPUT_NOT_PRESENT, \
         NRFX_SAADC_INPUT_NOT_PRESENT, \
         NRFX_SAADC_INPUT_NOT_PRESENT, \
         NRFX_SAADC_INPUT_NOT_PRESENT, \
@@ -864,11 +863,16 @@ extern "C" {
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 16
 #define RAM_UNIFORM_SECTIONS_TOTAL     16
-#elif defined(NRF54LS05A_XXAA) || defined(NRF54LS05B_XXAA)
+#elif defined(NRF54LS05A_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
 #define RAM_UNIFORM_BLOCKS             1
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 2
 #define RAM_UNIFORM_SECTIONS_TOTAL     2
+#elif defined(NRF54LS05B_XXAA)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 3
+#define RAM_UNIFORM_SECTIONS_TOTAL     3
 #elif defined(NRF54LC10A_XXAA) || defined(NRF54LV10A_XXAA)
 #define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
 #define RAM_UNIFORM_BLOCKS             1
@@ -885,6 +889,16 @@ extern "C" {
 #define RAM_UNIFORM_BLOCKS             8
 #define RAM_UNIFORM_SECTIONS_PER_BLOCK 4
 #define RAM_UNIFORM_SECTIONS_TOTAL     32
+#elif defined(NRF9220_XXAA) && defined(NRF_APPLICATION)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 1
+#define RAM_UNIFORM_SECTIONS_TOTAL     1
+#elif defined(NRF9220_XXAA) && defined(NRF_CELLCORE)
+#define RAM_SECTION_UNIT_SIZE          (32UL * 1024UL)
+#define RAM_UNIFORM_BLOCKS             1
+#define RAM_UNIFORM_SECTIONS_PER_BLOCK 12
+#define RAM_UNIFORM_SECTIONS_TOTAL     12
 #endif
 
 /* PRS boxes definitions. */
@@ -1060,7 +1074,79 @@ extern "C" {
     #define NRFX_PRS_BOX_9_ADDR     NRF_COMP
 #endif
 
+/* Definition of macro calculating LFXO internal capacitor value. */
+#if defined(NRF54L_SERIES)
+#define FICR_LFXO_CAP_CALCULATE(p_ficr_reg, cap_val_ff)                            \
+    do                                                                             \
+    {                                                                              \
+        uint32_t xosc32ktrim = p_ficr_reg->XOSC32KTRIM;                            \
+        uint32_t slope_field = (xosc32ktrim & FICR_XOSC32KTRIM_SLOPE_Msk)          \
+                            >> FICR_XOSC32KTRIM_SLOPE_Pos;                         \
+        uint32_t slope_mask = FICR_XOSC32KTRIM_SLOPE_Msk                           \
+                           >> FICR_XOSC32KTRIM_SLOPE_Pos;                          \
+        uint32_t slope_sign = (slope_mask - (slope_mask >> 1));                    \
+        int32_t slope = (int32_t)(slope_field ^ slope_sign) - (int32_t)slope_sign; \
+        uint32_t offset = (xosc32ktrim & FICR_XOSC32KTRIM_OFFSET_Msk)              \
+                       >> FICR_XOSC32KTRIM_OFFSET_Pos;                             \
+        uint32_t capvalue_mid_val = (2UL * cap_val_ff - 12000UL)                   \
+                * (uint32_t)(slope + 392) + (offset << 3UL) * 1000UL;              \
+        uint32_t capvalue = capvalue_mid_val / 512000UL;                           \
+        if (capvalue_mid_val % 512000UL >= 256000UL)                               \
+        {                                                                          \
+            capvalue++;                                                            \
+        }                                                                          \
+        return (uint32_t)capvalue;                                                 \
+    } while (0)
+#endif
+
 /* Definition of macro calculating HFXO internal capacitor value. */
+#if defined(NRF5340_XXAA_APPLICATION)
+#define FICR_HFXO_CAP_CALCULATE(p_ficr_reg, cap_val_ff)                            \
+    do                                                                             \
+    {                                                                              \
+        uint32_t xosc32mtrim = p_ficr_reg->XOSC32MTRIM;                            \
+        uint32_t slope_field = (xosc32mtrim & FICR_XOSC32MTRIM_SLOPE_Msk)          \
+                            >> FICR_XOSC32MTRIM_SLOPE_Pos;                         \
+        uint32_t slope_mask = FICR_XOSC32MTRIM_SLOPE_Msk                           \
+                           >> FICR_XOSC32MTRIM_SLOPE_Pos;                          \
+        uint32_t slope_sign = (slope_mask - (slope_mask >> 1));                    \
+        int32_t slope = (int32_t)(slope_field ^ slope_sign) - (int32_t)slope_sign; \
+        uint32_t offset = (xosc32mtrim & FICR_XOSC32MTRIM_OFFSET_Msk)              \
+                       >> FICR_XOSC32MTRIM_OFFSET_Pos;                             \
+        uint32_t capvalue_mid_val = ((uint32_t)(slope + 56) * ((cap_val_ff << 1UL) \
+                        - 14000UL) + ((offset - 8UL) << 4UL) * 1000UL) >> 6UL;     \
+        uint32_t capvalue = capvalue_mid_val / 1000;                               \
+        if (capvalue_mid_val % 1000 >= 500)                                        \
+        {                                                                          \
+            capvalue++;                                                            \
+        }                                                                          \
+        return capvalue;                                                           \
+    } while (0)
+#elif defined(NRF54L_SERIES)
+#define FICR_HFXO_CAP_CALCULATE(p_ficr_reg, cap_val_ff)                            \
+    do                                                                             \
+    {                                                                              \
+        uint32_t xosc32mtrim = p_ficr_reg->XOSC32MTRIM;                            \
+        uint32_t slope_field = (xosc32mtrim & FICR_XOSC32MTRIM_SLOPE_Msk)          \
+                            >> FICR_XOSC32MTRIM_SLOPE_Pos;                         \
+        uint32_t slope_mask = FICR_XOSC32MTRIM_SLOPE_Msk                           \
+                           >> FICR_XOSC32MTRIM_SLOPE_Pos;                          \
+        uint32_t slope_sign = (slope_mask - (slope_mask >> 1));                    \
+        int32_t slope = (int32_t)(slope_field ^ slope_sign) - (int32_t)slope_sign; \
+        uint32_t offset = (xosc32mtrim & FICR_XOSC32MTRIM_OFFSET_Msk)              \
+                       >> FICR_XOSC32MTRIM_OFFSET_Pos;                             \
+        uint32_t capvalue_mid_val = (((cap_val_ff - 5500UL)                        \
+                * (uint32_t)(slope + 791)) + (offset << 2UL) * 1000UL) >> 8UL;     \
+        uint32_t capvalue = capvalue_mid_val / 1000;                               \
+        if (capvalue_mid_val % 1000 >= 500)                                        \
+        {                                                                          \
+            capvalue++;                                                            \
+        }                                                                          \
+        return capvalue;                                                           \
+    } while (0)
+#endif
+
+/* Deprecated. Use FICR_HFXO_CAP_CALCULATE. */
 #if defined(NRF5340_XXAA_APPLICATION)
 #define OSCILLATORS_HFXO_CAP_CALCULATE(p_ficr_reg, cap_val)                   \
     (((((((p_ficr_reg->XOSC32MTRIM & FICR_XOSC32MTRIM_SLOPE_Msk)              \
@@ -1078,6 +1164,15 @@ extern "C" {
 #if defined(NRF54L_SERIES) || defined(NRF7120_ENGA_XXAA) || defined(NRF7120E_ENGA_XXAA) || \
     defined(NRF7120_XXAA) || defined(NRF7120E_XXAA)
     #define UARTE_NEEDS_BAUDRATE_FACTOR 1
+#endif
+
+/* Definitions of KMU key slot ID minimum and maximal value. */
+#if defined(NRF53_SERIES) || defined(NRF91_SERIES)
+#define KMU_KEYSLOT_ID_MIN 1
+#define KMU_KEYSLOT_ID_MAX 128
+#elif defined(KMU_KEYSLOT_ID_Min)
+#define KMU_KEYSLOT_ID_MIN KMU_KEYSLOT_ID_Min
+#define KMU_KEYSLOT_ID_MAX KMU_KEYSLOT_ID_Max
 #endif
 
 #ifdef __cplusplus

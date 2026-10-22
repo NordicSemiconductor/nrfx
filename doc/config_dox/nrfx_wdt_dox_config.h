@@ -23,6 +23,14 @@
  */
 #define NRFX_WDT_CONFIG_NO_IRQ
 
+/** @brief Stop a running WDT during driver initialization
+ *
+ *  Set to 1 to stop a running WDT before applying the driver configuration.
+ *
+ * @note This is an NRF_CONFIG macro.
+ */
+#define NRFX_WDT_CONFIG_STOP_AT_INIT
+
 /** @brief Interrupt priority
  *
  *  Following options are available:

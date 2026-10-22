@@ -64,7 +64,7 @@ static const nrf_saadc_input_t nrfx_saadc_internal_ain_psels[] =
     SAADC_INTERNAL_AIN_PSELS
 };
 
-#if NRF_SAADC_HAS_CH_PSELP_TEST
+#if NRF_SAADC_HAS_CH_PSELP_TEST || defined(__NRFX_DOXYGEN__)
 /** @brief SAADC test inputs mapping table. */
 static const nrf_saadc_input_t nrfx_saadc_test_ain_psels[] =
 {

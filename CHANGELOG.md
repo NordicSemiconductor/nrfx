@@ -1,6 +1,39 @@
 # Changelog
 All notable changes to this project are documented in this file.
 
+## [4.7.0] - 2026-10-22
+
+### Added
+- Added support for nRF53 and nRF91 SoC series in the KMU driver.
+- Added support for nRF91 Series anomaly 7 in the KMU driver.
+- Added support for PERIODEND event in the PWM driver.
+- Added support for writing the OTP area in UICR using generic write functions in the MRAMC driver.
+- Added buffer placement verification in the PDM driver. Now, the function returns -EACCES in case buffer is not in Data RAM region.
+- Added support for nRF9220 SoC in the RAM control helper layer.
+- Added support for KEYSLOT feature in the UICR HAL.
+- Added functions for checking whether a word is writable in MRAMC and RRAMC drivers.
+- Added functions for calculating internal capacitor value in the FICR HAL.
+- Added OTP helper functions in the UICR HAL.
+- Added functions for configuring port power control in the GPIO HAL.
+
+### Changed
+- Updated MDK to version 9.2.0.
+- Changed nrfx_kmu_init() function to expect additional interrupt priority parameter.
+- Changed KMU driver functions to return -ECANCELLED error code if the peripheral is blocked.
+- Changed nrfx_kmu_key_slot_provision() function to return -EALREADY if chosen keyslot is not empty.
+- Replaced PCLK32M clock source symbol with PCLK16M for devices that support it in the PDM HAL.
+- Deprecated NRF_OSCILLATORS_LFXO_CAP_CALCULATE() and NRF_OSCILLATORS_HFXO_CAP_CALCULATE() macros. Use nrf_ficr_lfxo_cap_calculate() and nrf_ficr_hfxo_cap_calculate() funtions instead.
+- Deprecated index-based OTP access functions in MRAMC and RRAMC drivers and HALYs. Use generic word read, write, and writable check functions with the OTP address instead.
+
+### Fixed
+- Fixed incorrect handling of FIELD OFF event in the NFCT driver.
+- Fixed incorrect handling of CALDONE event in the LFRC CLOCK driver.
+- Fixed incorrect GPPI channel deallocation procedure in case of connection setup failure in the GPPI helper layer.
+- Fixed incorrect SAADC reference voltage value for nRF54LC10A and nRF54LV10A SoCs.
+- Fixed initialization procedure when the watchdog is already running in the WDT driver.
+- Fixed incorrect domain assertions in the TAMPC HAL.
+- Fixed incorrect key slot ID assertions in the KMU HAL.
+
 ## [4.6.0] - 2026-09-08
 
 ### Added

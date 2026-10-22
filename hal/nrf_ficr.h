@@ -210,6 +210,14 @@ extern "C" {
 #define NRF_FICR_HAS_HSFLL_TRIM_TCOEF 0
 #endif
 
+#if defined(FICR_INFO_RRAM_RRAM_Pos) || defined(FICR_INFO_MRAM_MRAM_Pos) || \
+    defined(__NRFX_DOXYGEN__)
+/** @brief Symbol indicating whether FICR non-volatile memory information register is present. */
+#define NRF_FICR_HAS_NV_MEM_INFO 1
+#else
+#define NRF_FICR_HAS_NV_MEM_INFO 0
+#endif
+
 #if NRF_FICR_HAS_CODE_PAGE_SIZE || NRF_FICR_HAS_INFO_CODE_PAGE_SIZE
 /**
  * @brief Function for getting the size of the code memory page.
@@ -392,6 +400,55 @@ uint16_t nrf_ficr_hsfll_trim_fine_get(NRF_FICR_Type const * p_reg,
 NRF_STATIC_INLINE uint8_t nrf_ficr_hsfll_trim_tcoef_get(NRF_FICR_Type const * p_reg);
 #endif
 
+#if NRF_FICR_HAS_NV_MEM_INFO
+/**
+ * @brief Function for getting the size of non-volatile memory.
+ *
+ * @param[in] p_reg Pointer to the structure of registers of the peripheral.
+ *
+ * @return Size of non-volatile memory in kBs.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ficr_nv_mem_info_get(NRF_FICR_Type const * p_reg);
+#endif
+
+#if defined(FICR_LFXO_CAP_CALCULATE) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for calculating LFXO internal capacitor value.
+ *
+ * The supported capacitance range and step size of the internal capacitors depend on the SoC.
+ * Refer to the Product Specification for details.
+ *
+ * To avoid floating point calculation, capacitance value expected by the function is expresses in femto Farads.
+ * This function should be used to calculate argument's value for @ref nrf_oscillators_hfxo_cap_set function.
+ *
+ * @param[in] p_reg      Pointer to the structure of registers of the peripheral.
+ * @param[in] cap_val_ff LFXO capacitance value in femto Farads.
+ *
+ * @return LFXO internal capacitance value.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ficr_lfxo_cap_calculate(NRF_FICR_Type const * p_reg,
+                                                       uint32_t              cap_val_ff);
+#endif
+
+#if defined(FICR_HFXO_CAP_CALCULATE) || defined(__NRFX_DOXYGEN__)
+/**
+ * @brief Function for calculating HFXO internal capacitor value.
+ *
+ * The supported capacitance range and step size of the internal capacitors depend on the SoC.
+ * Refer to the Product Specification for details.
+ *
+ * To avoid floating point calculation, capacitance value expected by the function is expresses in femto Farads.
+ * This function should be used to calculate argument's value for @ref nrf_oscillators_hfxo_cap_set function.
+ *
+ * @param[in] p_reg      Pointer to the structure of registers of the peripheral.
+ * @param[in] cap_val_ff HFXO capacitance value in femto Farads.
+ *
+ * @return HFXO internal capacitance value.
+ */
+NRF_STATIC_INLINE uint32_t nrf_ficr_hfxo_cap_calculate(NRF_FICR_Type const * p_reg,
+                                                       uint32_t              cap_val_ff);
+#endif
+
 #ifndef NRF_DECLARE_ONLY
 
 #if NRF_FICR_HAS_CODE_PAGE_SIZE || NRF_FICR_HAS_INFO_CODE_PAGE_SIZE
@@ -569,6 +626,33 @@ NRF_STATIC_INLINE uint8_t nrf_ficr_hsfll_trim_tcoef_get(NRF_FICR_Type const * p_
 #elif defined(NRF_RADIOCORE)
     return (uint8_t)p_reg->TRIM.RADIOCORE.HSFLL.TRIM.TCOEF;
 #endif
+}
+#endif
+
+#if NRF_FICR_HAS_NV_MEM_INFO
+NRF_STATIC_INLINE uint32_t nrf_ficr_nv_mem_info_get(NRF_FICR_Type const * p_reg)
+{
+#if defined(FICR_INFO_RRAM_RRAM_Pos)
+    return p_reg->INFO.RRAM;
+#elif defined(FICR_INFO_MRAM_MRAM_Pos)
+    return p_reg->INFO.MRAM;
+#endif
+}
+#endif
+
+#if defined(FICR_LFXO_CAP_CALCULATE)
+NRF_STATIC_INLINE uint32_t nrf_ficr_lfxo_cap_calculate(NRF_FICR_Type const * p_reg,
+                                                       uint32_t              cap_val_ff)
+{
+    FICR_LFXO_CAP_CALCULATE(p_reg, cap_val_ff);
+}
+#endif
+
+#if defined(FICR_HFXO_CAP_CALCULATE)
+NRF_STATIC_INLINE uint32_t nrf_ficr_hfxo_cap_calculate(NRF_FICR_Type const * p_reg,
+                                                       uint32_t              cap_val_ff)
+{
+    FICR_HFXO_CAP_CALCULATE(p_reg, cap_val_ff);
 }
 #endif
 

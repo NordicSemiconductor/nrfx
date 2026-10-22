@@ -86,6 +86,10 @@ typedef enum {
     NRFX_ANALOG_INTERNAL_DECB,                                  ///< Internal DECB
     NRFX_ANALOG_INTERNAL_VSS,                                   ///< Internal VSS
     NRFX_ANALOG_INTERNAL_VDDAO3V0,                              ///< Internal VDDA - 3.0V
+    NRFX_ANALOG_INTERNAL_VDDAO1V8,                              ///< Internal VDDA - 1.8V
+    NRFX_ANALOG_INTERNAL_VDDAO0V8,                              ///< Internal VDDA - 0.8V
+    NRFX_ANALOG_INTERNAL_VDDRF,                                 ///< Internal VDDRF
+    NRFX_ANALOG_INTERNAL_VBAT,                                  ///< Internal VBAT
     NRFX_ANALOG_INTERNAL0,                                      ///< Internal input 0
     NRFX_ANALOG_INTERNAL1,                                      ///< Internal input 1
     NRFX_ANALOG_INTERNAL2,                                      ///< Internal input 2

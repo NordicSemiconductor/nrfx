@@ -41,6 +41,10 @@
 extern "C" {
 #endif
 
+#if !defined(RRAMC_NRRAMDATAUNITSIZE) && defined(RRAMC_NRRAMWORDSIZE)
+#define RRAMC_NRRAMDATAUNITSIZE RRAMC_NRRAMWORDSIZE
+#endif
+
 /**
  * @defgroup nrf_rramc_hal RRAMC HAL
  * @{

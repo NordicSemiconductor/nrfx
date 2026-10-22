@@ -495,6 +495,48 @@
 #endif
 
 /**
+ * @brief NRFX_KMU_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_KMU_ENABLED
+#define NRFX_KMU_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_KMU_DEFAULT_CONFIG_IRQ_PRIORITY
+ *
+ * Integer value. Minimum: 0. Maximum: 7.
+ */
+#ifndef NRFX_KMU_DEFAULT_CONFIG_IRQ_PRIORITY
+#define NRFX_KMU_DEFAULT_CONFIG_IRQ_PRIORITY NRFX_DEFAULT_IRQ_PRIORITY
+#endif
+
+/**
+ * @brief NRFX_KMU_CONFIG_LOG_ENABLED
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_KMU_CONFIG_LOG_ENABLED
+#define NRFX_KMU_CONFIG_LOG_ENABLED 0
+#endif
+
+/**
+ * @brief NRFX_KMU_CONFIG_LOG_LEVEL
+ *
+ * Integer value.
+ * Supported values:
+ * - Off     = 0
+ * - Error   = 1
+ * - Warning = 2
+ * - Info    = 3
+ * - Debug   = 4
+ */
+#ifndef NRFX_KMU_CONFIG_LOG_LEVEL
+#define NRFX_KMU_CONFIG_LOG_LEVEL 3
+#endif
+
+/**
  * @brief NRFX_LPCOMP_ENABLED
  *
  * Boolean. Accepted values: 0 and 1.
@@ -1347,6 +1389,15 @@
  */
 #ifndef NRFX_WDT_CONFIG_NO_IRQ
 #define NRFX_WDT_CONFIG_NO_IRQ 0
+#endif
+
+/**
+ * @brief NRFX_WDT_CONFIG_STOP_AT_INIT - Stop WDT during driver initialization
+ *
+ * Boolean. Accepted values: 0 and 1.
+ */
+#ifndef NRFX_WDT_CONFIG_STOP_AT_INIT
+#define NRFX_WDT_CONFIG_STOP_AT_INIT 0
 #endif
 
 /**

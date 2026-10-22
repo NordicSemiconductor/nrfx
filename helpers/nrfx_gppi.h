@@ -131,7 +131,7 @@ NRFX_STATIC_INLINE uint32_t nrfx_gppi_group_domain_id_get(nrfx_gppi_group_handle
  *
  * @return Domain ID.
  */
-#if NRFX_CHECK(NRFX_GPPI_MULTI_DOMAIN)
+#if NRFX_CHECK(NRFX_GPPI_MULTI_DOMAIN) || defined(__NRFX_DOXYGEN__)
 uint32_t nrfx_gppi_domain_id_get(uint32_t addr);
 #else
 NRFX_STATIC_INLINE uint32_t nrfx_gppi_domain_id_get(uint32_t addr);
@@ -586,7 +586,7 @@ NRFX_STATIC_INLINE int nrfx_gppi_ext_conn_alloc(uint32_t producer, uint32_t cons
                                                 nrfx_gppi_resource_t * p_resource);
 #endif
 
-#if NRFX_CHECK(NRFX_GPPI_CONFIG_DPPI_PPIB_EXT_FUNC)
+#if NRFX_CHECK(NRFX_GPPI_CONFIG_DPPI_PPIB_EXT_FUNC) || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Function for writing to a PPIB register.
  *

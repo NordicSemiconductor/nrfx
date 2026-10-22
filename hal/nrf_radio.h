@@ -979,7 +979,7 @@ typedef struct
     nrf_radio_dfectrl_sample_spacing_t spacing_ref;    /**< Interval between samples in the reference period. */
     nrf_radio_dfectrl_sample_type_t    sample_type;    /**< Indicates whether to sample I/Q or magnitude/phase. */
     nrf_radio_dfectrl_sample_spacing_t sample_spacing; /**< Interval between samples in the switching period. */
-#if defined(RADIO_DFECTRL1_REPEATPATTERN_Msk)
+#if defined(RADIO_DFECTRL1_REPEATPATTERN_Msk) || defined(__NRFX_DOXYGEN__)
     uint8_t                            repeat_pattern; /**< Number of times antenna pattern should be repeated. */
 #endif
     uint8_t                            gain_steps;     /**< Number of gain steps lowering the total gain at the start of CTE . */

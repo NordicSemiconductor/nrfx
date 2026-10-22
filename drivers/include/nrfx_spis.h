@@ -277,7 +277,6 @@ bool nrfx_spis_init_check(nrfx_spis_t const * p_instance);
  * @retval 0            The operation was successful.
  * @retval -EINPROGRESS The operation failed because the SPI slave device is in an incorrect state.
  * @retval -EACCES      The provided buffers are not placed in the Data RAM region.
- * @retval -E2BIG       Provided lengths exceed the EasyDMA limits for the peripheral.
  * @retval -ECANCELED   The operation failed because of an internal error.
  */
 int nrfx_spis_buffers_set(nrfx_spis_t *   p_instance,
