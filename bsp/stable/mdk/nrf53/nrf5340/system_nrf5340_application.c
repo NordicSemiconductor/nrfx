@@ -216,6 +216,7 @@ void SystemInit(void)
 
                 while (NRF_NVMC_S->READY == NVMC_READY_READY_Busy);
                 NRF_UICR_S->NFCPINS &= ~UICR_NFCPINS_PROTECT_Msk;
+                __DSB();
 
                 while (NRF_NVMC_S->READY == NVMC_READY_READY_Busy);
                 NRF_NVMC_S->CONFIG = NVMC_CONFIG_WEN_Ren << NVMC_CONFIG_WEN_Pos;
